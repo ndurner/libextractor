@@ -1,6 +1,6 @@
 /*
      This file is part of libextractor.
-     (C) 2002, 2003, 2004 Vidyut Samanta and Christian Grothoff
+     (C) 2002, 2003, 2004, 2005 Vidyut Samanta and Christian Grothoff
 
      libextractor is free software; you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published
@@ -46,7 +46,7 @@ static struct EXTRACTOR_Keywords * addKeyword(EXTRACTOR_KeywordType type,
   return result;
 }
 
-static int getIntAt(char * pos) {
+static int getIntAt(const char * pos) {
   char p[4];
 
   memcpy(p, pos, 4); /* ensure alignment! */
@@ -72,7 +72,7 @@ static struct {
    { NULL, EXTRACTOR_UNKNOWN},
 };
 
-static struct EXTRACTOR_Keywords * processtEXt(unsigned char * data,
+static struct EXTRACTOR_Keywords * processtEXt(const unsigned char * data,
 					       unsigned int length,
 					       struct EXTRACTOR_Keywords * prev) {
   char * keyword;
@@ -100,13 +100,13 @@ static struct EXTRACTOR_Keywords * processtEXt(unsigned char * data,
 		    prev);
 }
 
-static struct EXTRACTOR_Keywords * processiTXt(unsigned char * data,
+static struct EXTRACTOR_Keywords * processiTXt(const unsigned char * data,
 					       unsigned int length,
 					       struct EXTRACTOR_Keywords * prev) {
   unsigned int pos;
   char * keyword;
-  char * language;
-  char * translated;
+  const char * language;
+  const char * translated;
   int i;
   int compressed;
   char * buf;
@@ -182,7 +182,7 @@ static struct EXTRACTOR_Keywords * processiTXt(unsigned char * data,
 		    prev);
 }
 
-static struct EXTRACTOR_Keywords * processIHDR(unsigned char * data,
+static struct EXTRACTOR_Keywords * processIHDR(const unsigned char * data,
 					       unsigned int length,
 					       struct EXTRACTOR_Keywords * prev) {
   char * tmp;
@@ -202,7 +202,7 @@ static struct EXTRACTOR_Keywords * processIHDR(unsigned char * data,
 }
 
 /* not supported... */
-static struct EXTRACTOR_Keywords * processzTXt(unsigned char * data,
+static struct EXTRACTOR_Keywords * processzTXt(const unsigned char * data,
 					       unsigned int length,
 					       struct EXTRACTOR_Keywords * prev) {
   char * keyword;
@@ -291,8 +291,11 @@ struct EXTRACTOR_Keywords * libextractor_png_extract(char * filename,
     if (pos+12 >= end)
       break;
     length = htonl(getIntAt(pos));  pos+=4;
-    if (pos+4+length+4 > end)
+    /* printf("Length: %u, pos %u\n", length, pos - data); */
+    if ( (pos+4+length+4 > end) ||
+	 (pos+4+length+4 < pos + 4 + length) ) 
       break;
+    
     if (0 == strncmp(pos, "IHDR", 4))
       result = processIHDR(pos, length, result);
     if (0 == strncmp(pos, "iTXt", 4)) 
