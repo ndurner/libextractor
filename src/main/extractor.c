@@ -181,16 +181,6 @@ const char * EXTRACTOR_getDefaultLibraries() {
 
 /* ************library initialization ***************** */
 
-#ifdef MINGW
-void __attribute__ ((constructor)) le_win_init(void) {
-  InitWinEnv();
-}
-
-void __attribute__ ((destructor)) le_win_fini(void) {
-  ShutdownWinEnv();
-}
-#endif
-
 static char * old_dlsearchpath = NULL;
 
 /* using libtool, needs init! */
@@ -221,12 +211,19 @@ void __attribute__ ((constructor)) le_ltdl_init(void) {
   if (strstr (lt_dlgetsearchpath (), PLUGIN_PATH) == NULL)
     lt_dladdsearchdir (PLUGIN_PATH);
 #endif
+#ifdef MINGW
+  InitWinEnv();
+#endif
 }
 
 void __attribute__ ((destructor)) le_ltdl_fini(void) {
   lt_dlsetsearchpath(old_dlsearchpath);
   if (old_dlsearchpath != NULL)
     free(old_dlsearchpath);
+#ifdef MINGW
+  ShutdownWinEnv();
+#endif    
+
   lt_dlexit ();
 }
 
