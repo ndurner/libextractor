@@ -1,3 +1,6 @@
+Sun Feb 20 12:48:15 EST 2005
+	Fixed (rare) integer overflow bug in PNG extractor.
+
 Sat Feb 19 22:58:30 EST 2005
 	Fixed problems with wrong byteorder for Unicode decoding
 	in PDF meta-data.  Fixed minor problems with character
