@@ -557,7 +557,7 @@ struct EXTRACTOR_Keywords * libextractor_translit_extract(char * filename,
 
   pos = prev;
 
-  mem = 20;
+  mem = 256;
   transl = (char *) malloc(mem + 1);
 
   
@@ -636,8 +636,8 @@ struct EXTRACTOR_Keywords * libextractor_translit_extract(char * filename,
       else
         trlen = 1;
 
-      if (dest + trlen >= mem) {
-        mem += len;
+      if (dest + trlen > mem) {
+        mem = dest + trlen;
         transl = (char *) realloc(transl, mem + 1);
       }
 
