@@ -81,7 +81,7 @@ unsigned int chars[][2] = {
   {0x00D4, 423}, {0x00DB, 426}, {0x00E2, 431}, {0x00EA, 76}, /* Ô, Û, â, ê */
   {0x00EE, 80}, {0x00F4, 41}, {0x00FB, 5}, {0x00CB, 77}, /* î, ô, û, Ë */
   {0x00CF, 63}, {0x00EB, 76}, {0x00EF, 80}, {0x00C7, 57}, /* Ï, ë, ï, Ç */
-  {0x00E7, 118}, /* ç */
+  {0x00E7, 118}, {0x0152, 445}, {0x0053, 19}, {0x0080, 66}, /* ç, Œ, œ, € */
   
   /* Language independent */
   {0xFB00, 391}, {0xFB01, 392}, {0xFB02, 393}, {0xFB03, 394},
@@ -609,14 +609,14 @@ struct EXTRACTOR_Keywords * libextractor_translit_extract(char * filename,
           /* 4 bits from the first byte and 6 bits from the second and third
              byte. 4096 = 2^12 */
           unicode = ((srcdata[src] & 0xF) * 4096) |
-            ((srcdata[src + 1] & 0x3F) * 256) | (srcdata[src + 2] & 0x3F);
+            ((srcdata[src + 1] & 0x3F) * 64) | (srcdata[src + 2] & 0x3F);
         }
         else if (charlen == 4) {
           /* 3 bits from the first byte and 6 bits from the second, third
              and fourth byte. 262144 = 2^18 */
           unicode = ((srcdata[src] & 7) * 262144) |
             ((srcdata[src] & 0xF) * 4096) |
-            ((srcdata[src + 1] & 0x3F) * 256) | (srcdata[src + 2] & 0x3F);
+            ((srcdata[src + 1] & 0x3F) * 64) | (srcdata[src + 2] & 0x3F);
         }
         
         /* Look it up */
