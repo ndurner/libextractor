@@ -31,8 +31,11 @@ msgstr ""
 
 #: src/main/extract.c:58
 #, c-format
-msgid "Arguments mandatory for long options are also mandatory for short options.\n"
-msgstr "Argumentele obligatorii pentru opþiunile lungi sunt obligatorii ºi pentru opþiunile scurte.\n"
+msgid ""
+"Arguments mandatory for long options are also mandatory for short options.\n"
+msgstr ""
+"Argumentele obligatorii pentru opþiunile lungi sunt obligatorii ºi pentru "
+"opþiunile scurte.\n"
 
 #: src/main/extract.c:132
 msgid "do not remove any duplicates"
@@ -43,8 +46,12 @@ msgid "print output in bibtex format"
 msgstr "afiºeazã ieºirea în format bibtex"
 
 #: src/main/extract.c:136
-msgid "use the generic plaintext extractor for the language with the 2-letter language code LANG"
-msgstr "foloseºte extractorul text-simplu generic pentru limba cu codul de limbã din 2 litere LANG"
+msgid ""
+"use the generic plaintext extractor for the language with the 2-letter "
+"language code LANG"
+msgstr ""
+"foloseºte extractorul text-simplu generic pentru limba cu codul de limbã din "
+"2 litere LANG"
 
 #: src/main/extract.c:138
 msgid "remove duplicates only if types match"
@@ -52,7 +59,9 @@ msgstr "îndepãrteazã duplicatele numai dacã tipul este acelaºi"
 
 #: src/main/extract.c:140
 msgid "use the filename as a keyword (loads filename-extractor plugin)"
-msgstr "foloseºte numele de fiºier ca ºi cuvânt cheie (încarcã plugin nume_fiºier-extractor)"
+msgstr ""
+"foloseºte numele de fiºier ca ºi cuvânt cheie (încarcã plugin nume_fiºier-"
+"extractor)"
 
 #: src/main/extract.c:142
 msgid "print this help"
@@ -60,7 +69,9 @@ msgstr "afiºeazã acest mesaj de ajutor"
 
 #: src/main/extract.c:144
 msgid "compute hash using the given ALGORITHM (currently sha1 or md5)"
-msgstr "calculeazã tabela de dispersie (hash) folosind ALGORITM-ul dat (curent sha1 sau md5)"
+msgstr ""
+"calculeazã tabela de dispersie (hash) folosind ALGORITM-ul dat (curent sha1 "
+"sau md5)"
 
 #: src/main/extract.c:146
 msgid "load an extractor plugin named LIBRARY"
@@ -76,15 +87,20 @@ msgstr "nu folosi setul implicit de plugin-uri extractor"
 
 #: src/main/extract.c:152
 msgid "print only keywords of the given TYPE (use -L to get a list)"
-msgstr "afiºeazã numai cuvintele cheie pentru TIP-ul dat (foloseºte -L pentru a obþine o listã"
+msgstr ""
+"afiºeazã numai cuvintele cheie pentru TIP-ul dat (foloseºte -L pentru a "
+"obþine o listã"
 
 #: src/main/extract.c:154
 msgid "remove duplicates even if keyword types do not match"
-msgstr "îndepãrteazã duplicatele chiar dacã tipurile cuvintelor cheie nu sunt aceleaºi"
+msgstr ""
+"îndepãrteazã duplicatele chiar dacã tipurile cuvintelor cheie nu sunt "
+"aceleaºi"
 
 #: src/main/extract.c:156
 msgid "use keyword splitting (loads split-extractor plugin)"
-msgstr "foloseºte spargere dupã cuvinte cheie (încarcã plugin-ul split-extractor)"
+msgstr ""
+"foloseºte spargere dupã cuvinte cheie (încarcã plugin-ul split-extractor)"
 
 #: src/main/extract.c:158
 msgid "print the version number"
@@ -167,7 +183,8 @@ msgstr "numãr de pagini"
 #: src/main/extract.c:475
 #, c-format
 msgid "You must specify an argument for the '%s' option (option ignored).\n"
-msgstr "Trebuie sã specificaþi un argument pentru opþiunea '%s' (opþiune ignoratã).\n"
+msgstr ""
+"Trebuie sã specificaþi un argument pentru opþiunea '%s' (opþiune ignoratã).\n"
 
 #: src/main/extract.c:539
 #, c-format
@@ -427,8 +444,12 @@ msgstr "iniþializare mecanismului de plugin a eºuat: %s!\n"
 
 #: src/main/extractor.c:393
 #, c-format
-msgid "Resolving symbol '%s' in library '%s' failed, so I tried '%s', but that failed also.  Errors are: '%s' and '%s'.\n"
-msgstr "Rezolvarea simbolului '%s' în biblioteca '%s' a eºuat, aºa cã am încercat '%s', dar ºi acesta a eºuat.  Erorile sunt: '%s' ºi '%s'.\n"
+msgid ""
+"Resolving symbol '%s' in library '%s' failed, so I tried '%s', but that "
+"failed also.  Errors are: '%s' and '%s'.\n"
+msgstr ""
+"Rezolvarea simbolului '%s' în biblioteca '%s' a eºuat, aºa cã am încercat '%"
+"s', dar ºi acesta a eºuat.  Erorile sunt: '%s' ºi '%s'.\n"
 
 #: src/main/extractor.c:422
 #, c-format

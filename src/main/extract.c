@@ -402,6 +402,9 @@ main (int argc, char *argv[])
   int bibtex = NO;
   char * binary = NULL;
 
+  setlocale(LC_ALL, "");
+  textdomain(PACKAGE);
+  bindtextdomain(PACKAGE, LOCALEDIR);
   print = malloc (sizeof (int) * EXTRACTOR_getHighestKeywordTypeNumber ());
   for (i = 0; i < EXTRACTOR_getHighestKeywordTypeNumber (); i++)
     print[i] = YES;		/* default: print everything */
