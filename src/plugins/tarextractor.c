@@ -20,11 +20,7 @@
 
 #include "platform.h"
 #include "extractor.h"
-#include <time.h>
 #include <zlib.h>
-#ifndef MINGW
-  #include <langinfo.h>
-#endif
 
 /*
  * Note that this code is not complete!

@@ -51,11 +51,14 @@
  #include <sys/mman.h>
  #include <netinet/in.h>
  #include <arpa/inet.h>
+
 #else
  #include <winsock2.h>
  #include <pthread.h>
- #include <locale.h>
 #endif
+#include <locale.h>
+#include <iconv.h>
+
 
 #ifndef MINGW
  #define DIR_SEPARATOR '/'

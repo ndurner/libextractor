@@ -21,9 +21,6 @@
 #include "platform.h"
 #include "extractor.h"
 #include "convert.h"
-#ifndef MINGW
-#include <langinfo.h>
-#endif
 
 
 /* "extract" the 'filename' as a keyword */

@@ -26,11 +26,7 @@
 #else
 #include <../../libltdl/ltdl.h>
 #endif
-#include <locale.h>
-#include <iconv.h>
-#ifndef MINGW
-#include <langinfo.h>
-#endif
+
 
 #define DEBUG 1
 

@@ -22,12 +22,6 @@
 #include "extractor.h"
 #include "getopt.h"
 
-#include <locale.h>
-#include <iconv.h>
-#ifndef MINGW
-#include <langinfo.h>
-#endif
-
 #define YES 1
 #define NO 0
 

@@ -22,11 +22,6 @@
 #include "extractor.h"
 #include "convert.h"
 
-#include <iconv.h>
-#ifndef MINGW
-#include <langinfo.h>
-#endif
-
 /**
  * Convert the len characters long character sequence
  * given in input that is in the given charset
