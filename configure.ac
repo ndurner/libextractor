@@ -1,0 +1,217 @@
+# Process this file with autoconf to produce a configure script.
+AC_PREREQ(2.57)
+AC_INIT([libextractor], [0.4.0-cvs], [libextractor@cs.purdue.edu])
+AC_REVISION($Revision: 1.67 $)
+AM_INIT_AUTOMAKE([libextractor], [0.4.0-cvs])
+AM_CONFIG_HEADER(src/include/config.h)
+
+# Checks for programs.
+AC_CANONICAL_HOST
+
+# The problem that I'm trying to solve here by specifying gcc-3.3 and gcc2
+# in the search list ahead of the other stuff is that gcc-3.1 on Mac OS X
+# does not work for some of the pdf extractor code.  Now, it would seem
+# that we could have a conditional on $host_os that puts just the right
+# amount of crazyness into the checks only on the Mac.  Unfortunately, this
+# will not work, because (according to some mailing lists and painful
+# personal experiences) AC_PROG_CXX does not work inside of conditionals.
+# So, instead, we do this crazyness globally.  The list of compilers that
+# you see below is taken right out of the autoconf (version 2.57) sources,
+# so it should not impede our portability.
+AC_PROG_CC(gcc-3.3 gcc2 gcc cc /usr/ucb/cc cl)
+AC_PROG_CPP
+AC_PROG_CXX(g++-3.3 g++2 g++ c++ gpp aCC CC cxx cc++ cl FCC KCC RCC xlC_r xlC)
+
+AC_PROG_INSTALL
+AC_PROG_LN_S
+AC_PROG_MAKE_SET
+
+case "$host_os" in
+linux*)
+     AC_DEFINE(LINUX,1,[This is a Linux system])
+     ;;
+freebsd*)
+     AC_DEFINE_UNQUOTED(SOMEBSD,1,[This is a BSD system])
+     AC_CHECK_LIB(c_r, pthread_create)
+     ;;
+openbsd*)
+     AC_DEFINE_UNQUOTED(SOMEBSD,1,[This is a BSD system])
+     AC_CHECK_LIB(c_r, pthread_create)
+     ;;
+netbsd*)
+     AC_DEFINE_UNQUOTED(SOMEBSD,1,[This is a BSD system])
+     AC_CHECK_LIB(c_r, pthread_create)
+     ;;
+*solaris*)
+     AC_DEFINE_UNQUOTED(SOLARIS,1,[This is a Solaris system])
+     AC_CHECK_LIB(resolv, res_init)
+     XTRA_CPPLIBS=-lstdc++
+     ;;
+darwin*)
+     AC_DEFINE_UNQUOTED(DARWIN,1,[This is a Darwin system])
+     ;;
+cygwin*)
+     AC_DEFINE_UNQUOTED(CYGWIN,1,[This is a CYGWIN system])
+     LDFLAGS="$LDFLAGS -no-undefined"
+     ;;
+mingw*)
+     AC_DEFINE_UNQUOTED(MINGW,1,[This is a MinGW system])
+     AC_DEFINE_UNQUOTED(WINDOWS,1,[This is a Windows system])
+     AC_CHECK_LIB(intl, gettext)
+     LDFLAGS="$LDFLAGS -no-undefined -Wl,--export-all-symbols -lws2_32"
+     ;;
+*)
+     AC_MSG_RESULT(Unrecognised OS $host_os)
+     AC_DEFINE_UNQUOTED(OTHEROS,1,[Some strange OS])
+     AC_MSG_RESULT(otheros)
+     ;;
+esac
+
+AC_LIBTOOL_DLOPEN
+AC_LIBLTDL_INSTALLABLE
+AC_SUBST(LTDLINCL)
+AC_SUBST(LIBLTDL)
+AM_PROG_LIBTOOL
+AC_LIB_LTDL
+AC_CONFIG_SUBDIRS(libltdl)
+
+AM_ICONV
+
+# large file support
+AC_SYS_LARGEFILE
+AC_FUNC_FSEEKO
+
+AM_CONDITIONAL(CYGWIN, test "$build_os" = "cygwin")
+AM_CONDITIONAL(MINGW, test "$build_os" = "mingw32")
+
+# use '-fno-strict-aliasing', but only if the compiler can take it
+if gcc -fno-strict-aliasing -S -o /dev/null -xc /dev/null >/dev/null 2>&1; 
+then
+ CFLAGS="-fno-strict-aliasing $CFLAGS"
+fi
+
+# Checks for libraries.
+
+# the library tests that follow should not result in every plugin linking to them,
+# thus we need to backup LIBS and restore
+LIBSOLD=$LIBS
+
+# Redhat 9, gcc 3.2, libextractor_pdf barfs if we don't check for this
+AC_CHECK_LIB(stdc++, fclose)
+# but: only use for the PDF extractor and NOT for everything else!
+XTRA_CPPLIBS=$LIBS $XTRA_CPPLIBS
+
+LIBS=$LIBSOLD
+# FIXME: allow --with-oggvorbis=PFX
+
+# test if we have vorbisfile
+# prior versions had ov_open_callbacks in libvorbis, test that, too.
+AC_CHECK_LIB(vorbisfile, ov_open_callbacks,
+        [AM_CONDITIONAL(HAVE_VORBISFILE, true)
+         AC_DEFINE(HAVE_VORBISFILE,1,[Have vorbisfile])],
+        [AM_CONDITIONAL(HAVE_VORBISFILE, false)])
+
+
+AC_CHECK_LIB(z, inflate,
+        [AM_CONDITIONAL(HAVE_ZLIB, true)
+        AC_DEFINE(HAVE_ZLIB,1,[Have zlib])],
+        [AM_CONDITIONAL(HAVE_ZLIB, false)])
+
+# restore LIBS
+LIBS=$LIBSOLD
+
+# Special check for broken Operating Systems (OS X)
+AC_CACHE_CHECK(whether ${CC-cc} accepts -no-cpp-precomp,
+cv_prog_cc_darwin_cpp_precomp,
+[echo 'void f(){}' > conftest.c
+if test -z "`${CC-cc} -no-cpp-precomp -c conftest.c 2>&1`"; then
+  cv_prog_cc_darwin_cpp_precomp=yes
+else
+  cv_prog_cc_darwin_cpp_precomp=no
+fi
+rm -f conftest*
+])
+if test $cv_prog_cc_darwin_cpp_precomp = yes; then
+  CFLAGS="$CFLAGS -no-cpp-precomp"
+fi
+
+
+# Checks for header files.
+AC_HEADER_STDC
+AC_HEADER_DIRENT
+AC_HEADER_STDBOOL
+AC_CHECK_HEADERS([fcntl.h netinet/in.h stdlib.h string.h unistd.h libintl.h limits.h stddef.h zlib.h])
+AC_CHECK_HEADERS([ltdl.h iconv.h])
+# fixme, we need to die here if a header is not found!
+
+AC_CHECK_HEADERS([jni.h])
+# jni.h is purely optional!  But if not present => no Java support!
+
+##AC_PYTHON_DEVEL
+##AC_CHECK_HEADERS([python/Python.h])
+
+AC_CHECK_HEADERS([vorbis/vorbisfile.h])
+
+# Checks for typedefs, structures, and compiler characteristics.
+AC_C_CONST
+AC_C_INLINE
+AC_TYPE_SIZE_T
+AC_TYPE_PID_T
+GNUPG_CHECK_ENDIAN
+
+# Checks for library functions.
+AC_FUNC_MEMCMP
+AC_FUNC_VPRINTF
+AC_FUNC_MMAP
+AC_FUNC_STAT
+AC_FUNC_ERROR_AT_LINE
+AC_CHECK_FUNCS([strndup munmap strcasecmp strdup strncasecmp memmove memset strtoul floor getcwd pow setenv sqrt strchr strcspn strrchr strnlen strndup])
+
+AM_GNU_GETTEXT_VERSION(0.14)
+AM_GNU_GETTEXT([external])
+
+# check for GNU LD
+AC_LIB_PROG_LD_GNU
+
+# check for glib >= 2.0.0
+AC_MSG_CHECKING(for glib)
+AM_PATH_GLIB_2_0(2.0.0,
+	         without_glib=false,
+                 without_glib=true)
+if test x$without_glib != xtrue
+then
+  if test $with_gnu_ld == yes
+  then
+# We need both GNU LD and GLIB here!
+    AM_CONDITIONAL(HAVE_GLIB,true)
+    AC_DEFINE(HAVE_GLIB, 1, [Have glib])
+  else
+# We may have GLIB, but without GNU LD we must not use it!
+    AM_CONDITIONAL(HAVE_GLIB,false)
+    AC_DEFINE(HAVE_GLIB, 0, [Have glib, but not GNU LD])
+  fi
+else
+ AM_CONDITIONAL(HAVE_GLIB,false)
+ AC_DEFINE(HAVE_GLIB, 0, [Have glib])
+fi
+
+AC_SUBST(CPPFLAGS)
+AC_SUBST(LDFLAGS)
+AC_SUBST(XTRA_CPPLIBS)
+
+AC_CONFIG_FILES([Makefile po/Makefile.in m4/Makefile 
+doc/Makefile
+src/Makefile
+src/include/Makefile
+src/main/Makefile
+src/plugins/Makefile
+src/plugins/ole2/Makefile
+src/plugins/oo/Makefile
+src/plugins/pdf/Makefile
+src/plugins/rpm/Makefile
+src/plugins/printable/Makefile
+src/plugins/hash/Makefile
+src/test/Makefile
+])
+
+AC_OUTPUT

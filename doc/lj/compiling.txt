@@ -1,0 +1,8 @@
+$ wget http://ovmj.org/libextractor/download/libextractor-0.3.1.tar.gz
+$ tar xvfz libextractor-0.3.1.tar.gz
+$ cd libextractor-0.3.1
+$ ./configure --prefix=/usr/local
+$ make
+# make install
+
+Caption: Compiling libextractor requires about 200 MB memory.

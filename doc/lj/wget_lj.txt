@@ -1,0 +1,8 @@
+$ wget -q http://www.linuxjournal.com/
+$ extract index.html
+description - The Monthly Magazine of the Linux Community
+keywords - linux, linux journal, magazine
+author - Linux Journal  - The Premier Magazine of the Linux Community
+title - Linux Journal  - The Premier Magazine of the Linux Community
+
+Caption: Extracting meta-data from HTML.

@@ -1,0 +1,11 @@
+About the author:
+
+
+Christian Grothoff graduated in mathematics from the University of
+Wuppertal in 2000.  He is currently a PhD student in computer science
+at Purdue University, with interests in static program analysis and
+secure peer-to-peer networking.  A Linux user since 1995, he has
+contributed to various free software projects and is now the
+maintainer of GNUnet and a member of the core team of libextractor.
+
+Homepage: http://grothoff.org/christian/

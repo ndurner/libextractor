@@ -1,0 +1,84 @@
+
+ID3v1 and ID3v1.1 testsuite
+
+  This testsuite was written by Martin Nilsson and is Copyright (c)
+  2003 Martin Nilsson. It may be used freely for non-commercial
+  purposes. More information about ID3 is available on
+  http://www.id3.org/
+
+  ID3v1 and ID3v1.1 are not formally standardized so this testsuite
+  should not be considered normative.
+
+  The small applications are writting in the programming language
+  Pike, available at http://pike.ida.liu.se/ . The applications uses
+  new functionality only available in the development version (7.5) of
+  Pike.
+
+  Should you find any bugs with this testsuite or otherwise find it
+  useful I wouldn't mind a contribution to my paypal account
+  (nilsson@pike.ida.liu.se). If you find any errors in the testsuite
+  I'd be happy to give one back.
+
+
+Files
+
+  This testsuite contains the following files.
+
+  README
+    This file.
+
+  analyze.pike
+    This program analyzes an ID3 tag and displays its findings. It has
+    the following exit codes.
+    1  No file or more than one file passed as argument.
+    2  File could not be found and opened.
+    3  File is too small to contain an ID3 tag.
+    4  File contains no ID3 tag in the proper position.
+    5  Something is wrong with the actual tag.
+
+  generate.pike
+    The program that generated the test mp3 files. Executing it
+    without any parameters will regenerate the mp3 files. Execute it
+    with the option --help to get a list of the additional settings
+    the program offers (not much I'm afraid).
+
+  generation.log
+    A log file generated when then test mp3 files was generated. It
+    contains some information about every generated test, e.g. its
+    file name, a short description and a dump of the contents of the
+    tag.
+
+  id3v1*.mp3
+    All test mp3 files follows the convention id3v1_N_C[_P].mp3 where
+    N is the number of the test, C is the category the test is in and
+    the optional P is a flag indicating what kind of problems this tag
+    might cause. P is either "W" for warning or "F" for failure. As an
+    example the third test is an ID3 tag with a faulty header, and
+    thus has the file name id3v1_003_basic_F.mp3.
+
+  tags.m3u
+    A playlist file with a list of all MP3 files, to easily have a
+    player read all the test files at once.
+
+
+Categories
+
+  The test mp3 files are divided into the following categories.
+
+  basic
+    Testing the basic capabilities of the tags.
+
+  year
+    Tests that focus on the year field.
+
+  genre
+    Tests that focus on the genre field. This is the biggest category
+    since there is one test for every defined category. Note that only
+    the first 80 are considered safe, since the categories after that
+    were not present in the original ID3 implementation.
+
+  extra
+    Tests that test additional capabilities in the ID3 reader. The
+    charset of ID3 isn't formally defined, so both ISO-8859-1
+    capability as well as UTF-8 capability is tested. Also, some
+    readers detect URL:s in the comment field, so this is also tested.

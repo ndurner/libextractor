@@ -1,0 +1,1990 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>StarWrite File Format</title>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+</head>
+<body>
+<h1>StarWriter &lt;= 5.x File Format (.sdw)</h1>
+<h2>Overview</h2>
+<p>The .sdw file format is an OLE2 Stream. libole2 (available as part of<a
+ href="http://www.wvware.com/"> wv</a>) can be used to access the
+different      substreams contained in the file.</p>
+<p>All numbers given below are decimal, unless prefixed by 0x, in which
+case        they are hexadecimal.<br>
+</p>
+<p>Note that this documentation is far from complete!<br>
+</p>
+<p>The example code given below was used with a C++ Compiler, but
+should mostly be valid C as well.</p>
+<p>While writing the SDW Importer, I found this small  utility I wrote (<a
+ href="dumpstream.c">dumpstream.c [requires libole2]</a>) (GPL) very
+helpful.  It can be used to print out the contents of a OLE2 stream. If
+invoked like  "<code>dumpstream filename.sdw</code>",  it lists the
+streams that are part  of the file. If invoked like "<code>dumpstream 
+filename.sdw StarWriterDocument</code>",  it prints out the contents of
+that  stream (you might want to pipe the output  through <code>xxd</code>
+to get  a hexdump). Don't expect too much from this  tool - it's a
+q&amp;d hack I've made to be able to see the contents of a stream.<br>
+</p>
+<p>Filepaths like <code>sw/source/...</code> are paths to the
+OpenOffice sourcecode, relative to the root.</p>
+<h2>Data Types</h2>
+<p>Most types should speak for themselves (e.g. uint16 = unsigned 16
+bit integer, sint32 = signed 32 bit integer).</p>
+<p>There is, however, at least one special type: The Class ID, also
+known        as ClsId. It's a structure defined a follows:</p>
+<code>struct ClsId {<br>
+&nbsp; &nbsp;sint32 n1;<br>
+&nbsp; &nbsp;sint16 n2, n3;<br>
+&nbsp; &nbsp;uint8 n4, n5, n6, n7, n8, n9, n10, n11;<br>
+};</code><br>
+<p>The elements of the structure are stored in the file without any
+padding       and in the order in which they occur in the above struct
+definition.</p>
+<p>The type <code>bool</code> is a one-byte integer, where 0 means
+false and all other values true; though usually 1 is stored.<br>
+</p>
+<p>Another important type is the <a name="Bytestring"></a><code>Bytestring</code>,<code></code>it
+looks like this: First, there is an <code>uint16</code>,   giving the
+length in bytes of the following string. A <code>char[]</code> follows.
+It is supposed to be firstly decrypted (if in the StarWriterDocument  
+stream outside the header and if the document is encrypted; see below).
+Under the same condition, the string is in the character set specified
+in the document   header.<br>
+</p>
+<h2>Streams</h2>
+The file consists of the following streams:<br>
+<a href="#SwPageStyleSheets">SwPageStyleSheets</a><br>
+<a href="#SwNumRules">SwNumRules</a><br>
+<a href="#StarWriterDocument">StarWriterDocument</a> - the actual  	  
+document and most important stream<br>
+<a href="#SfxWindows">SfxWindows</a> - position of windows (?)<br>
+<a href="#SfxStyleSheets">SfxStyleSheets</a><br>
+<a href="#SfxDocumentInfo">SfxDocumentInfo</a> - information  about   
+the   document, like charset, author etc<br>
+<a href="#persist_elements">persist elements</a><br>
+<a href="#SummaryInformation">SummaryInformation</a><br>
+<a href="#001Ole">\001Ole</a> - ?<br>
+<a href="#001CompObj">\001CompObj</a> - "Compatibility Object"   (?),  
+contains   information about the creator of the document<br>
+<br>
+<h3><a name="SwPageStyleSheets"></a>SwPageStyleSheets</h3>
+<h3><a name="SwNumRules"></a> SwNumRules</h3>
+<h3><a name="StarWriterDocument"></a> StarWriterDocument</h3>
+<table cellpadding="2" cellspacing="2" border="1" width="790">
+  <tbody>
+    <tr>
+      <td valign="top">Offset in Hex<br>
+      </td>
+      <td valign="top">Length<br>
+      </td>
+      <td valign="top">Type<br>
+      </td>
+      <td valign="top">Default Value<br>
+      </td>
+      <td valign="top">Description<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">0x00<br>
+      </td>
+      <td valign="top">7<br>
+      </td>
+      <td valign="top">char[]<br>
+      </td>
+      <td valign="top">"SW5HDR"<br>
+      </td>
+      <td valign="top">Version Indicator, null-terminated.<br>
+Can be "SW3HDR", "SW4HDR" or "SW5HDR"<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">0x07<br>
+      </td>
+      <td valign="top">1<br>
+      </td>
+      <td valign="top">uint8<br>
+      </td>
+      <td valign="top">0x2e (?)<br>
+      </td>
+      <td valign="top">Length of the header, including Block Name,  
+but  not including Record Sizes (if used)<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">0x08<br>
+      </td>
+      <td valign="top">2<br>
+      </td>
+      <td valign="top">uint16<br>
+      </td>
+      <td valign="top">0x0217<br>
+      </td>
+      <td valign="top">Document version, increased every time a new  
+feature  is added.<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">0x0A<br>
+      </td>
+      <td valign="top">2<br>
+      </td>
+      <td valign="top">uint16<br>
+      </td>
+      <td valign="top">n/a<br>
+      </td>
+      <td valign="top">File Flags, see <a href="#File_Flags">below</a><br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">0x0C<br>
+      </td>
+      <td valign="top">4<br>
+      </td>
+      <td valign="top">uint32<br>
+      </td>
+      <td valign="top">n/a<br>
+      </td>
+      <td valign="top">Document Flags, see <a href="#Document_Flags">below</a><br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">0x10<br>
+      </td>
+      <td valign="top">4<br>
+      </td>
+      <td valign="top">uint32<br>
+      </td>
+      <td valign="top">0<br>
+      </td>
+      <td valign="top">nRecSzPos (?)<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">0x14<br>
+      </td>
+      <td valign="top">6<br>
+      </td>
+      <td valign="top">--<br>
+      </td>
+      <td valign="top">0<br>
+      </td>
+      <td valign="top">dummy bytes... actually, uint32, uint8, uint8<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">0x1A<br>
+      </td>
+      <td valign="top">1<br>
+      </td>
+      <td valign="top">uint8<br>
+      </td>
+      <td valign="top">0x30<br>
+      </td>
+      <td valign="top">Redline mode, see <a href="#Redline_Mode">below</a><br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">0x1B<br>
+      </td>
+      <td valign="top">1<br>
+      </td>
+      <td valign="top">uint8<br>
+      </td>
+      <td valign="top">0x00<br>
+      </td>
+      <td valign="top">Compatibility Version. Is increased when a 
+change    makes the file format incompatible with previous versions.<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">0x1C<br>
+      </td>
+      <td valign="top">16<br>
+      </td>
+      <td valign="top">uint8[]<br>
+      </td>
+      <td valign="top">n/a<br>
+      </td>
+      <td valign="top">Password verification data, see <a
+ href="#Password_Protection">below</a><br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">0x2C<br>
+      </td>
+      <td valign="top">1<br>
+      </td>
+      <td valign="top">uint8<br>
+      </td>
+      <td valign="top">depends<br>
+      </td>
+      <td valign="top">The character coding of the file. <a
+ href="encodings.txt">Here</a> is a file which includes mapping of
+StarWriter     IDs to iconv names, usable a a C/C++ Header file<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">0x2D<br>
+      </td>
+      <td valign="top">1<br>
+      </td>
+      <td valign="top">uint8<br>
+      </td>
+      <td valign="top">0x00<br>
+      </td>
+      <td valign="top">cGui (?) "OLD: eSysType" (?) so not in use
+anymore?<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">0x2E<br>
+      </td>
+      <td valign="top">4<br>
+      </td>
+      <td valign="top">uint32<br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top">Current Date, used for Password verification 
+(see <a href="#Password_Protection">below</a>). Format:
+20020501<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">0x32<br>
+      </td>
+      <td valign="top">4<br>
+      </td>
+      <td valign="top">uint32<br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top">Current Time, also for PW Verification, Format: 
+22034800  (HHMMSS00)<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">0x36<br>
+      </td>
+      <td valign="top">64<br>
+      </td>
+      <td valign="top">char[]<br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top">sBlockName (?) (in the document charset) (only  
+read  if <code>SWGF_BLOCKNAME</code> flag is set!)<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top">rec sizes... only if nRecSzPos != 0 &amp;&amp;  
+nVersion  &gt;= SWG_RECSIZES<br>
+see <code>sw/source/core/sw3io/sw3imp.cxx</code> lines 1070ff<br>
+I don't know details yet<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>After the header, the file consists of many sections. Each section
+starts    with a character (<code>char</code>) that indicates of what
+type it is (hereafter   called section id). After that, there are three
+bytes indicating the length   of the section (little-endian). (to
+convert this to a usable integer, use   for example: (<code>buf [0] |
+(buf[1] &lt;&lt; 8) | (buf [2] &lt;&lt; 16))</code> where buf points to
+the first of the three read bytes). This means that unsupported 
+Sections can easily be skipped.<br>
+</p>
+<p>See <a href="#Section_Types">below</a> for a list of section types.<br>
+</p>
+<h4><a name="File_Flags"></a>File Flags<br>
+</h4>
+<p>(from <code>sw/source/core/sw3io/sw3ids.hxx</code> lines 65ff)<br>
+<code>#define SWGF_BLOCKNAME&nbsp; 0x0002<br>
+</code>Header has textmodule<code><br>
+#define SWGF_HAS_PASSWD 0x0008<br>
+</code>Stream is password protected, see below for details.<code><br>
+#define SWGF_HAS_PGNUMS 0x0100<br>
+</code>Stream has pagenumbers<code><br>
+#define SWGF_BAD_FILE&nbsp;&nbsp; 0x8000<br>
+</code>There was an error writing the file - treat it as unusable.<br>
+</p>
+<h4><a name="Document_Flags"></a>Document Flags</h4>
+<p><code>#define SWDF_BROWSEMODE1 0x1</code><br>
+Show document in browse mode?<br>
+<code>#define SWDF_BROWSEMODE2 0x2</code><br>
+Same as above, only one of them need to be set<br>
+<code>#define SWDF_HTMLMODE 0x4</code><br>
+Document is in HTML Mode<br>
+<code>#define SWDF_HEADINBROWSE 0x8</code><br>
+Show headers in Browse Mode<br>
+<code>#define SWDF_FOOTINBROWSE 0x10</code><br>
+Show footers in browse mode<br>
+<code>#define SWDF_GLOBALDOC 0x20</code><br>
+Is a global document (a global document can contain chapter
+documents...      I think)<br>
+<code>#define SWDF_GLOBALDOCSAVELINK 0x40</code><br>
+Include sections that are linked to the global document when saving<br>
+<code>#define SWDF_LABELDOC 0x80</code><br>
+Is a label ("etiketten") document</p>
+<h4><a name="Redline_Mode"></a>Redline Mode</h4>
+<p>(from <code>sw/inc/redlenum.hxx</code> lines 83ff)</p>
+<p><code>&nbsp;enum SwRedlineMode<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; REDLINE_NONE,<br>
+</code>No Redline mode<code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; REDLINE_ON = 0x01,</code><code><br>
+</code>Redlines are on<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+REDLINE_IGNORE&nbsp;      = 0x02,<br>
+</code>Don't react to redlines<code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; REDLINE_SHOW_INSERT   
+=  0x10,<br>
+</code>Show all inserts<code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; REDLINE_SHOW_DELETE   
+=  0x20,</code><br>
+Show all deletes <br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+REDLINE_SHOW_MASK      = REDLINE_SHOW_INSERT | REDLINE_SHOW_DELETE<br>
+</code>The Default<code><br>
+};<br>
+</code></p>
+<h4><a name="Password_Protection"></a>Password Protection</h4>
+<p>(from <code>sw/source/core/sw3io/sw3imp.cxx</code> lines 2721ff and <code>sw/source/core/sw3io/crypter.cxx</code>
+lines 77ff)<br>
+</p>
+<p>Firstly, to be able to en- or decrypt data, the password must be
+encrypted     in memory (see below for the actual algorithm). For this
+encryption, this     password is always used. Also, the password needs
+to be exactly 16 characters     long; if it's shorter, it needs to be
+padded with spaces:</p>
+<p><code>static const UT_uint8 gEncode[] =<br>
+{ 0xab, 0x9e, 0x43, 0x05, 0x38, 0x12, 0x4d, 0x44,<br>
+&nbsp; 0xd5, 0x7e, 0xe3, 0x84, 0x98, 0x23, 0x3f, 0xba };<br>
+</code></p>
+<p>The resulting string will be used as the password for actual en- or
+decryption.     (For both en- and decryption the same algorithm will be
+used).<br>
+</p>
+<p>Here's the algorithm:<br>
+</p>
+<p><code>void SDWCryptor::Decrypt(const char* aEncrypted, char*
+aBuffer, UT_uint32 aLen) const {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; size_t nCryptPtr = 0;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; UT_uint8 cBuf[maxPWLen];<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; memcpy(cBuf, mPassword, 
+maxPWLen);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; UT_uint8* p = cBuf;<br>
+<br>
+&nbsp;&nbsp;&nbsp; if (!aLen)<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; aLen = strlen(aEncrypted);<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; while (aLen--) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+*aBuffer++ = *aEncrypted++ ^ ( *p ^ (UT_uint8) ( cBuf[ 0 ] * nCryptPtr 
+)  );<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+*p += ( nCryptPtr &lt; (maxPWLen-1) ) ? *(p+1) : cBuf[ 0 ];<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+if( !*p ) *p += 1;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+p++;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; if( ++nCryptPtr &gt;= maxPWLen ) {<br>
+&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp;
+ &nbsp;&nbsp; nCryptPtr = 0;<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
+ &nbsp;&nbsp; p = cBuf;<br>
+&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+}</code><br>
+</p>
+<p>Where:<br>
+<code>maxPWLen</code> = 16<br>
+<code>mPassword</code> is an array of characters, 16 bytes long, and  
+contains   the password which will be used<br>
+</p>
+<p>To verify that the given password is actually correct, these steps
+should     be taken:<br>
+</p>
+<p>A new string, say <code>testString</code>, should be built,
+consisting     of the Date and Time (from the header) next to each
+other in Hex format,    padded with 0 on the left if shorter than 8
+characters (can for example  be  archieved by <code>snprintf(testString,
+sizeof(testString), "%08lx%08lx",    mDate, mTime);</code>)</p>
+<p>This string should now be encrypted with the given password, and the
+result     should be compared to the password verification data
+mentioned above. If   they are equal, the password is correct.<br>
+</p>
+<h4><a name="Section_Types"></a>Section Types</h4>
+<p>(the letter in parentheses is the section id)<br>
+</p>
+<ul>
+  <li>SWG_CONTENTS (<code>'N'</code>)<br>
+Actual textual content of the document. This section's header looks 
+like   this:<br>
+    <ul>
+      <li>if version &gt;= SWG_LAYFRAMES (5): one byte of flags, where 
+the  lower 4 bits give the length of the flag part.</li>
+      <li>if version &gt;= SWG_LONGIDX (0x201): <code>uint32</code>
+giving the number of nodes (?) (<code>sw/source/core/sw3io/sw3sectn.cxx</code>
+lines 181ff)<code></code></li>
+      <li>else<br>
+if version &gt;= SWG_LAYFRAMES: <code>uint16</code> = a dummy section  
+id,  can be thrown away (at least that's what openoffice does)<br>
+        <code>uint16</code>, same meaning as the nodes from above, just
+as a 2 byte integer.</li>
+      <li>flag part is over; if the length (taken from the flags as 
+stated   above) hasn't been reached yet, skip the rest</li>
+    </ul>
+After the section header, SWG_CONTENTS consists of sections like the 
+document   itself. Most important seems to be<br>
+    <ul>
+      <li>SWG_TEXTNODE (<code>'T'</code>) (<code>sw/source/core/sw3io/sw3nodes.cxx</code>
+lines 788ff)<br>
+Firstly, textnodes contain a flag section as above (one byte of flags, 
+lower  four bits give the length). I haven't looked at the possible
+flags   yet, so  I just skip over them.<br>
+A bytestring (see <a href="#Bytestring">above</a>) follows, containing
+ a  paragraph of text.<br>
+After this, a set of records follow (usually attributes (<code>'A'</code>),
+which have the following structure)
+        <table cellpadding="2" cellspacing="2" border="1"
+ style="text-align: left; width: 100%;">
+          <tbody>
+            <tr>
+              <td style="vertical-align: top;">offset relative to
+record start</td>
+              <td style="vertical-align: top;">length<br>
+              </td>
+              <td style="vertical-align: top;">type<br>
+              </td>
+              <td style="vertical-align: top;">description<br>
+              </td>
+            </tr>
+            <tr>
+              <td style="vertical-align: top;">0x00<br>
+              </td>
+              <td style="vertical-align: top;">1<br>
+              </td>
+              <td style="vertical-align: top;">flag<br>
+              </td>
+              <td style="vertical-align: top;">Flag record, as above.<br>
+              </td>
+            </tr>
+            <tr>
+              <td style="vertical-align: top;">0x01<br>
+              </td>
+              <td style="vertical-align: top;">2<br>
+              </td>
+              <td style="vertical-align: top;">uint16<br>
+              </td>
+              <td style="vertical-align: top;">Which type of attribute
+this is.<br>
+              </td>
+            </tr>
+            <tr>
+              <td style="vertical-align: top;">0x03<br>
+              </td>
+              <td style="vertical-align: top;">2<br>
+              </td>
+              <td style="vertical-align: top;">uint16<br>
+              </td>
+              <td style="vertical-align: top;">Version of the attribute
+(I don't know details yet) (seems to be 0 usually)<br>
+              </td>
+            </tr>
+            <tr>
+              <td style="vertical-align: top;">0x05<br>
+              </td>
+              <td style="vertical-align: top;">2<br>
+              </td>
+              <td style="vertical-align: top;">uint16</td>
+              <td style="vertical-align: top;">offset of the first
+character to which this attribute applies, relative to the start of the
+textnode. only exists if flag 0x10 is set. zero-based.<br>
+              </td>
+            </tr>
+            <tr>
+              <td style="vertical-align: top;">0x07<br>
+              </td>
+              <td style="vertical-align: top;">2<br>
+              </td>
+              <td style="vertical-align: top;">uint16<br>
+              </td>
+              <td style="vertical-align: top;">offset of the last
+character. only exists if flag 0x20 is set.</td>
+            </tr>
+          </tbody>
+        </table>
+In addition, there can be an "S"-Record, which contains attributes (as
+above) which apply to the whole paragraph.<br>
+Known values for the attribute type:<br>
+        <table cellpadding="2" cellspacing="2" border="1"
+ style="text-align: left; width: 100%;">
+          <tbody>
+            <tr>
+              <td style="vertical-align: top;">0x100a<br>
+              </td>
+              <td style="vertical-align: top;">Italic<br>
+              </td>
+            </tr>
+            <tr>
+              <td style="vertical-align: top;">0x100d<br>
+              </td>
+              <td style="vertical-align: top;">Underline<br>
+              </td>
+            </tr>
+            <tr>
+              <td style="vertical-align: top;">0x100e<br>
+              </td>
+              <td style="vertical-align: top;">Bold<br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+      </li>
+      <li>SWG_JOBSETUP (<code>'J'</code>)<br>
+        <p>This section contains informations about the selected
+printer and paper. This only reflects     the settings made in
+File|Printer Setup, not Format|Page!</p>
+Firstly, two defines:<br>
+        <code>#define </code><code>JOBSET_FILE364_SYSTEM</code><code>
+(0xFFFF)</code><br>
+        <code>#define JOBSET_FILE605_SYSTEM (0xFFFE)</code><br>
+        <table cellpadding="2" cellspacing="2" border="1" width="760">
+          <tbody>
+            <tr>
+              <td valign="top">Offset in Hex<br>
+              </td>
+              <td valign="top">Length<br>
+              </td>
+              <td valign="top">Type<br>
+              </td>
+              <td valign="top">Default Value<br>
+              </td>
+              <td valign="top">Description<br>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">0x00<br>
+              </td>
+              <td valign="top">2<br>
+              </td>
+              <td valign="top">uint16<br>
+              </td>
+              <td valign="top">TBD<br>
+              </td>
+              <td valign="top">Length [nLen]<br>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">0x02<br>
+              </td>
+              <td valign="top">2<br>
+              </td>
+              <td valign="top">uint16<br>
+              </td>
+              <td valign="top">TBD<br>
+              </td>
+              <td valign="top">System (?)<br>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">0x04<br>
+              </td>
+              <td valign="top">64<br>
+              </td>
+              <td valign="top">char[]<br>
+              </td>
+              <td valign="top"><br>
+              </td>
+              <td valign="top">Printer Name<br>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">0x44<br>
+              </td>
+              <td valign="top">32<br>
+              </td>
+              <td valign="top">char[]<br>
+              </td>
+              <td valign="top"><br>
+              </td>
+              <td valign="top">Device Name<br>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">0x64<br>
+              </td>
+              <td valign="top">32<br>
+              </td>
+              <td valign="top">char[]<br>
+              </td>
+              <td valign="top"><br>
+              </td>
+              <td valign="top">Port Name<br>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">0x84<br>
+              </td>
+              <td valign="top">32<br>
+              </td>
+              <td valign="top">char[]<br>
+              </td>
+              <td valign="top"><br>
+              </td>
+              <td valign="top">Driver Name<br>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top"><br>
+              </td>
+              <td valign="top"><br>
+              </td>
+              <td valign="top"><br>
+              </td>
+              <td valign="top"><br>
+              </td>
+              <td valign="top">All further fields are only used if
+System  is <code></code><code>JOBSET_FILE364_SYSTEM</code> or <code>JOBSET_FILE605_SYSTEM</code><br>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">0xA4<br>
+              </td>
+              <td valign="top">2<br>
+              </td>
+              <td valign="top">uint16<br>
+              </td>
+              <td valign="top">TBD<br>
+              </td>
+              <td valign="top">nSize<br>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">0xA6<br>
+              </td>
+              <td valign="top">2<br>
+              </td>
+              <td valign="top">uint16<br>
+              </td>
+              <td valign="top">TBD<br>
+              </td>
+              <td valign="top">nSystem (again??)<br>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">0xA8<br>
+              </td>
+              <td valign="top">4<br>
+              </td>
+              <td valign="top">uint32<br>
+              </td>
+              <td valign="top">TBD<br>
+              </td>
+              <td valign="top">Driver Data Length<br>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">0xAC<br>
+              </td>
+              <td valign="top">2<br>
+              </td>
+              <td valign="top">enum [uint16]<br>
+              </td>
+              <td valign="top"><br>
+              </td>
+              <td valign="top">Orientation (0=Portrait, 1=Landscape)<br>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">0xAE<br>
+              </td>
+              <td valign="top">2<br>
+              </td>
+              <td valign="top">uint16<br>
+              </td>
+              <td valign="top"><br>
+              </td>
+              <td valign="top">Paper Bin<br>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">0xB0<br>
+              </td>
+              <td valign="top">2<br>
+              </td>
+              <td valign="top">enum [uint16]<br>
+              </td>
+              <td valign="top"><br>
+              </td>
+              <td valign="top">Paper Format (0=A3, 1=A4, 2=A5, 3=B4,
+4=B5,  5=Letter, 6=Legal, 7=Tabloid, 8=User defined<br>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">0xB2<br>
+              </td>
+              <td valign="top">4<br>
+              </td>
+              <td valign="top">uint32<br>
+              </td>
+              <td valign="top"><br>
+              </td>
+              <td valign="top">Paper Width<br>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">0xB6<br>
+              </td>
+              <td valign="top">4<br>
+              </td>
+              <td valign="top">uint32<br>
+              </td>
+              <td valign="top"><br>
+              </td>
+              <td valign="top">Paper Height<br>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">0xBA<br>
+              </td>
+              <td valign="top">Driver Data Length<br>
+              </td>
+              <td valign="top">?<br>
+              </td>
+              <td valign="top"><br>
+              </td>
+              <td valign="top">Driver Data (?)
+(vcl/source/gdi/jobset.cxx  lines 383ff). Only if the Driver Data
+Length is &gt; 0.<br>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top"><br>
+              </td>
+              <td valign="top">nLen minus already read data<br>
+              </td>
+              <td valign="top"><br>
+              </td>
+              <td valign="top"><br>
+              </td>
+              <td valign="top">Corresponding Key and Value strings
+(ByteStrings,  in UTF-8 encoding). Only if System == <code>JOBSET_FILE605_SYSTEM</code><br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <h5></h5>
+The encoding of the Printer, Device, Port and Driver name is UTF-8,
+unless  the System is <code>JOBSET_FILE364_SYSTEM</code>, in which
+case it is the  same encoding as the rest of the document.<br>
+      </li>
+      <li>SWG_EOF (<code>'Z'</code>)<br>
+Marks the end of the SWG_CONTENTS section (zero-len</li>
+    </ul>
+  </li>
+  <li>SWG_STRINGPOOL (<code>'!'</code>)<br>
+There are two variants of the string pool, depending on the document
+version.  The old one is used if Version &lt;= SWG_POOLIDS (0x3),
+otherwise the new  one is used.</li>
+  <ul>
+    <li>New:<br>
+      <table cellpadding="2" cellspacing="2" border="1" width="720">
+        <tbody>
+          <tr>
+            <td valign="top">Offset in Hex<br>
+            </td>
+            <td valign="top">Length<br>
+            </td>
+            <td valign="top">Type<br>
+            </td>
+            <td valign="top">Description<br>
+            </td>
+          </tr>
+          <tr>
+            <td valign="top">0x00<br>
+            </td>
+            <td valign="top">1<br>
+            </td>
+            <td valign="top">uint8<br>
+            </td>
+            <td valign="top">Character Set for the strings<br>
+            </td>
+          </tr>
+          <tr>
+            <td valign="top">0x01<br>
+            </td>
+            <td valign="top">2<br>
+            </td>
+            <td valign="top">uint16<br>
+            </td>
+            <td valign="top">Number of strings<br>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+Now, the strings follow; each one having the following structure:<br>
+      <table cellpadding="2" cellspacing="2" border="1" width="720">
+        <tbody>
+          <tr>
+            <td valign="top">Length<br>
+            </td>
+            <td valign="top">Type<br>
+            </td>
+            <td valign="top">Description<br>
+            </td>
+          </tr>
+          <tr>
+            <td valign="top">2<br>
+            </td>
+            <td valign="top">uint16<br>
+            </td>
+            <td valign="top">ID of the string<br>
+            </td>
+          </tr>
+          <tr>
+            <td valign="top">n/a<br>
+            </td>
+            <td valign="top">Bytestring<br>
+            </td>
+            <td valign="top">The string. Not encrypted. If ID ==
+IDX_NOCONV_FF  (0xFFFC), then the 0xFF character in the string should
+be left unconverted;  else, a normal conversion can be performed.<br>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+If the version of the file is less than SWG_HTMLCOLLCHG (0x0203) (the
+version  for new HTML Pool-Template IDs), the ID is not zero and below
+IDX_SPEC_VALUE  (0xFFF0) ("from here on reserved for special values"),
+the ID must be mapped  to a new one; but before that, the actual string
+must possibly be changed,  according to this table:<br>
+      <table cellpadding="2" cellspacing="2" border="1" width="720">
+        <tbody>
+          <tr>
+            <td valign="top">ID<br>
+            </td>
+            <td valign="top">New String<br>
+            </td>
+          </tr>
+          <tr>
+            <td valign="top">RES_POOLCOLL_HTML_LISTING_40 (0x3002)<br>
+            </td>
+            <td valign="top">"LISTING"<br>
+            </td>
+          </tr>
+          <tr>
+            <td valign="top">RES_POOLCOLL_HTML_XMP_40 (0x3003)<br>
+            </td>
+            <td valign="top">"XMP"<br>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+Afterwards, the ID must be changed according to this table (only if
+version  &lt; SWG_HTMLCOLLCHG)<br>
+      <table cellpadding="2" cellspacing="2" border="1" width="100%">
+        <tbody>
+          <tr>
+            <td valign="top">old ID<br>
+            </td>
+            <td valign="top">new ID<br>
+            </td>
+          </tr>
+          <tr>
+            <td valign="top">RES_POOLCOLL_HTML_LISTING_40 /
+RES_POOLCOLL_HTML_XMP_40<br>
+            </td>
+            <td valign="top">must be or'ed with USER_FMT (1 &lt;&lt; 15)<br>
+            </td>
+          </tr>
+          <tr>
+            <td valign="top">RES_POOLCOLL_HTML_HR_40 (0x3004)<br>
+            </td>
+            <td valign="top">RES_POOLCOLL_HTML_HR (0x3002)<br>
+            </td>
+          </tr>
+          <tr>
+            <td valign="top">RES_POOLCOLL_HTML_H6_40 (0x3005)<br>
+            </td>
+            <td valign="top">RES_POOLCOLL_HEADLINE6 (0x80f)<br>
+            </td>
+          </tr>
+          <tr>
+            <td valign="top">RES_POOLCOLL_HTML_DD_40 (0x3006)<br>
+            </td>
+            <td valign="top">RES_POOLCOLL_HTML_DD (0x3003)<br>
+            </td>
+          </tr>
+          <tr>
+            <td valign="top">RES_POOLCOLL_HTML_DT_40 (0x3007)<br>
+            </td>
+            <td valign="top">RES_POOLCOLL_HTML_DT (0x3004)<br>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+possibly interesting: sw/inc/poolfmt.hxx#L112<br>
+I don't really know what happens with the strings there, yet.<br>
+    </li>
+  </ul>
+  <li>SWG_EOF (<code>'Z'</code>)<br>
+Marks the end of the file and is of zero length. (XXX not sure if this 
+is actually present)<br>
+  </li>
+</ul>
+<h3><a name="SfxWindows"></a> SfxWindows</h3>
+<h3><a name="SfxStyleSheets"></a> SfxStyleSheets</h3>
+<h3><a name="SfxDocumentInfo"></a> SfxDocumentInfo</h3>
+<p>(OpenOffice Tree: <code>sfx2/source/doc/docinf.cxx</code> lines
+786ff)<br>
+</p>
+<p>offsets assume a version of 0x0B and default values (for bytestrings
+and lengths). quotes are from openoffice code or comments<br>
+</p>
+<table cellpadding="2" cellspacing="2" border="1" width="820">
+  <tbody>
+    <tr>
+      <td valign="top">present if header version &gt;<br>
+      </td>
+      <td valign="top">Offset in Hex<br>
+      </td>
+      <td valign="top">Length<br>
+      </td>
+      <td valign="top">Type<br>
+      </td>
+      <td valign="top">Default Value<br>
+      </td>
+      <td valign="top">Description<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"><br>
+      </td>
+      <td valign="top">0x00<br>
+      </td>
+      <td valign="top">2<br>
+      </td>
+      <td valign="top">uint16<br>
+      </td>
+      <td valign="top">0x0F<br>
+      </td>
+      <td valign="top">Length of the following String<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"><br>
+      </td>
+      <td valign="top">0x02<br>
+      </td>
+      <td valign="top">15<br>
+      </td>
+      <td valign="top">char[]<br>
+      </td>
+      <td valign="top">"SfxDocumentInfo"<br>
+      </td>
+      <td valign="top">Headerstring (stored without terminating  zero)<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"><br>
+      </td>
+      <td valign="top">0x11<br>
+      </td>
+      <td valign="top">2<br>
+      </td>
+      <td valign="top">uint16<br>
+      </td>
+      <td valign="top">0x000B<br>
+      </td>
+      <td valign="top">Version<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"><br>
+      </td>
+      <td valign="top">0x13<br>
+      </td>
+      <td valign="top">1<br>
+      </td>
+      <td valign="top">bool<br>
+      </td>
+      <td valign="top">0x00<br>
+      </td>
+      <td valign="top">True if doc is pw protected<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"><br>
+      </td>
+      <td valign="top">0x14<br>
+      </td>
+      <td valign="top">2<br>
+      </td>
+      <td valign="top">uint16<br>
+      </td>
+      <td valign="top">0x0016 (on my system)<br>
+      </td>
+      <td valign="top">Charset, see below.<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"><br>
+      </td>
+      <td valign="top">0x16<br>
+      </td>
+      <td valign="top">1<br>
+      </td>
+      <td valign="top">bool<br>
+      </td>
+      <td valign="top">0x00<br>
+      </td>
+      <td valign="top">Graphics are saved portable<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"><br>
+      </td>
+      <td valign="top">0x17<br>
+      </td>
+      <td valign="top">1<br>
+      </td>
+      <td valign="top">bool<br>
+      </td>
+      <td valign="top">0x01<br>
+      </td>
+      <td valign="top">Ask the user whether the template should be
+reloaded<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"><br>
+      </td>
+      <td valign="top">0x18<br>
+      </td>
+      <td valign="top">41<br>
+      </td>
+      <td valign="top">Timestamp<br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top">Creator Timestamp, see below<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"><br>
+      </td>
+      <td valign="top">0x41<br>
+      </td>
+      <td valign="top">41<br>
+      </td>
+      <td valign="top">Timestamp<br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top">Timestamp for last Modification<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"><br>
+      </td>
+      <td valign="top">0x6a<br>
+      </td>
+      <td valign="top">41<br>
+      </td>
+      <td valign="top">Timestamp<br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top">Timestamp for last Printing<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"><br>
+      </td>
+      <td valign="top">0x93<br>
+      </td>
+      <td valign="top">65<br>
+      </td>
+      <td valign="top">Bytestring+Padding<br>
+      </td>
+      <td valign="top">""<br>
+      </td>
+      <td valign="top">Title of the document; pad until 63 chars are
+read<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"><br>
+      </td>
+      <td valign="top">0xd4<br>
+      </td>
+      <td valign="top">65<br>
+      </td>
+      <td valign="top">Bytestring+Padding<br>
+      </td>
+      <td valign="top">""<br>
+      </td>
+      <td valign="top">Theme/Subject of the document, pad until 63<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"><br>
+      </td>
+      <td valign="top">0x115<br>
+      </td>
+      <td valign="top">257<br>
+      </td>
+      <td valign="top">Bytestring+Padding<br>
+      </td>
+      <td valign="top">""<br>
+      </td>
+      <td valign="top">Comment, pad until 255<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"><br>
+      </td>
+      <td valign="top">0x216<br>
+      </td>
+      <td valign="top">129<br>
+      </td>
+      <td valign="top">Bytestring+Padding<br>
+      </td>
+      <td valign="top">""<br>
+      </td>
+      <td valign="top">Keywords, pad until 127<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"><br>
+      </td>
+      <td valign="top">0x297<br>
+      </td>
+      <td valign="top">4*42<br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top">following two fields are repeated 4 times:<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top">21<br>
+      </td>
+      <td valign="top">Bytestring+Padding <br>
+      </td>
+      <td valign="top">"Info0" - "Info4"<br>
+      </td>
+      <td valign="top">Name of user-defined field, padded until 19<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top">21<br>
+      </td>
+      <td valign="top">Bytestring+Padding <br>
+      </td>
+      <td valign="top">""<br>
+      </td>
+      <td valign="top">content of user-defined field, padded until 19<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"><br>
+      </td>
+      <td valign="top">0x33f<br>
+      </td>
+      <td valign="top">--<br>
+      </td>
+      <td valign="top">Bytestring<br>
+      </td>
+      <td valign="top">""<br>
+      </td>
+      <td valign="top">Template Name<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"><br>
+      </td>
+      <td valign="top" rowspan="1" colspan="5">from here on, offset
+assumes an empty template name and filename<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"><br>
+      </td>
+      <td valign="top">0x341<br>
+      </td>
+      <td valign="top">--<br>
+      </td>
+      <td valign="top">Bytestring<br>
+      </td>
+      <td valign="top">""<br>
+      </td>
+      <td valign="top">Template Filename<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"><br>
+      </td>
+      <td valign="top">0x343<br>
+      </td>
+      <td valign="top">4<br>
+      </td>
+      <td valign="top">uint32<br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top">Template Date (format as in Timestamp)<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"><br>
+      </td>
+      <td valign="top">0x347<br>
+      </td>
+      <td valign="top">4<br>
+      </td>
+      <td valign="top">uint32<br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top">Template Time (format as in Timestamp)<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"><br>
+      </td>
+      <td valign="top">0x34b<br>
+      </td>
+      <td valign="top">2<br>
+      </td>
+      <td valign="top">uint16<br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top">Mail-Adress count. Only if the stream version
+(of StarWriterDocument?) is &lt;= SOFFICE_FILEFORMAT_40 (3580). Unused
+field.<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"><br>
+      </td>
+      <td valign="top" rowspan="1" colspan="5">following two fields are
+repeated number_of<small>_</small>mail_adresses times; and can be
+ignored<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top">--<br>
+      </td>
+      <td valign="top">Bytestring<br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top">the address<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top">2<br>
+      </td>
+      <td valign="top">uint16<br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top">flags<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"><br>
+      </td>
+      <td valign="top" rowspan="1" colspan="5">following offsets assume
+that the stream version is &gt;= SOFFICE_FILEFORMAT_40 and that
+therefore the mail addresses aren't present<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"><br>
+      </td>
+      <td valign="top">0x34b<br>
+      </td>
+      <td valign="top">4<br>
+      </td>
+      <td valign="top">int32<br>
+      </td>
+      <td valign="top">?<br>
+      </td>
+      <td valign="top">lTime (?)<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">4<br>
+      </td>
+      <td valign="top">0x34f<br>
+      </td>
+      <td valign="top">2<br>
+      </td>
+      <td valign="top">uint16<br>
+      </td>
+      <td valign="top">1<br>
+      </td>
+      <td valign="top">Document number (seems to be the version, ie.
+how often the document was saved)<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"><br>
+      </td>
+      <td valign="top">0x351<br>
+      </td>
+      <td valign="top">2<br>
+      </td>
+      <td valign="top">uint16<br>
+      </td>
+      <td valign="top">0<br>
+      </td>
+      <td valign="top">user data size<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"><br>
+      </td>
+      <td valign="top">0x353<br>
+      </td>
+      <td valign="top">see above<br>
+      </td>
+      <td valign="top">byte[]<br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top">user data "e.g. document statistic". following
+offsets assume that this is not present<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"><br>
+      </td>
+      <td valign="top">0x353<br>
+      </td>
+      <td valign="top">1<br>
+      </td>
+      <td valign="top">bool<br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top">Template contains configuration<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">5<br>
+      </td>
+      <td valign="top">0x354<br>
+      </td>
+      <td valign="top">1<br>
+      </td>
+      <td valign="top">bool<br>
+      </td>
+      <td valign="top">false<br>
+      </td>
+      <td valign="top">Reload enabled?<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">5<br>
+      </td>
+      <td valign="top">0x355<br>
+      </td>
+      <td valign="top">--<br>
+      </td>
+      <td valign="top">Bytestring<br>
+      </td>
+      <td valign="top">""<br>
+      </td>
+      <td valign="top">Reload URL<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">5<br>
+      </td>
+      <td valign="top">0x357<br>
+      </td>
+      <td valign="top">4<br>
+      </td>
+      <td valign="top">uint32<br>
+      </td>
+      <td valign="top">60<br>
+      </td>
+      <td valign="top">Reload seconds<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">5<br>
+      </td>
+      <td valign="top">0x35b<br>
+      </td>
+      <td valign="top">--<br>
+      </td>
+      <td valign="top">Bytestring<br>
+      </td>
+      <td valign="top">""<br>
+      </td>
+      <td valign="top">Default Target Frame<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">6<br>
+      </td>
+      <td valign="top">0x35d<br>
+      </td>
+      <td valign="top">1<br>
+      </td>
+      <td valign="top">bool<br>
+      </td>
+      <td valign="top">true<br>
+      </td>
+      <td valign="top">Save Graphics compressed (if true, next field is
+also true)<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">7<br>
+      </td>
+      <td valign="top">0x35e<br>
+      </td>
+      <td valign="top">1<br>
+      </td>
+      <td valign="top">bool<br>
+      </td>
+      <td valign="top">true<br>
+      </td>
+      <td valign="top">Save Original Graphics<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">8<br>
+      </td>
+      <td valign="top">0x35f<br>
+      </td>
+      <td valign="top">1<br>
+      </td>
+      <td valign="top">bool<br>
+      </td>
+      <td valign="top">false<br>
+      </td>
+      <td valign="top">Save Version on Close (?)<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">8<br>
+      </td>
+      <td valign="top">0x360<br>
+      </td>
+      <td valign="top">--<br>
+      </td>
+      <td valign="top">Bytestring<br>
+      </td>
+      <td valign="top">""<br>
+      </td>
+      <td valign="top">Copies to<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">8<br>
+      </td>
+      <td valign="top">0x362<br>
+      </td>
+      <td valign="top">--<br>
+      </td>
+      <td valign="top">Bytestring<br>
+      </td>
+      <td valign="top">""<br>
+      </td>
+      <td valign="top">Original<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">8<br>
+      </td>
+      <td valign="top">0x364<br>
+      </td>
+      <td valign="top">--<br>
+      </td>
+      <td valign="top">Bytestring<br>
+      </td>
+      <td valign="top">""<br>
+      </td>
+      <td valign="top">References<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">8<br>
+      </td>
+      <td valign="top">0x366<br>
+      </td>
+      <td valign="top">--<br>
+      </td>
+      <td valign="top">Bytestring<br>
+      </td>
+      <td valign="top">""<br>
+      </td>
+      <td valign="top">Recipient<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">8<br>
+      </td>
+      <td valign="top">0x368<br>
+      </td>
+      <td valign="top">--<br>
+      </td>
+      <td valign="top">Bytestring<br>
+      </td>
+      <td valign="top">""<br>
+      </td>
+      <td valign="top">Reply To<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">8<br>
+      </td>
+      <td valign="top">0x36a<br>
+      </td>
+      <td valign="top">--<br>
+      </td>
+      <td valign="top">Bytestring<br>
+      </td>
+      <td valign="top">""<br>
+      </td>
+      <td valign="top">Blind Copies<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">8<br>
+      </td>
+      <td valign="top">0x36c<br>
+      </td>
+      <td valign="top">--<br>
+      </td>
+      <td valign="top">Bytestring<br>
+      </td>
+      <td valign="top">""<br>
+      </td>
+      <td valign="top">In Reply To<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">8<br>
+      </td>
+      <td valign="top">0x36e<br>
+      </td>
+      <td valign="top">--<br>
+      </td>
+      <td valign="top">Bytestring<br>
+      </td>
+      <td valign="top">""<br>
+      </td>
+      <td valign="top">Newsgroups<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">8<br>
+      </td>
+      <td valign="top">0x370<br>
+      </td>
+      <td valign="top">2<br>
+      </td>
+      <td valign="top">uint16<br>
+      </td>
+      <td valign="top">0x0000<br>
+      </td>
+      <td valign="top">Priority<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">9<br>
+      </td>
+      <td valign="top">0x372<br>
+      </td>
+      <td valign="top">--<br>
+      </td>
+      <td valign="top">Bytestring<br>
+      </td>
+      <td valign="top">""<br>
+      </td>
+      <td valign="top">Special Mime-Type<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">10<br>
+      </td>
+      <td valign="top">0x374<br>
+      </td>
+      <td valign="top">1<br>
+      </td>
+      <td valign="top">bool<br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top">Use user data<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p> A Timestamp has this structure:<br>
+</p>
+<table cellpadding="2" cellspacing="2" border="1" width="720">
+  <tbody>
+    <tr>
+      <td valign="top">length<br>
+      </td>
+      <td valign="top">type<br>
+      </td>
+      <td valign="top">desc<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">--<br>
+      </td>
+      <td valign="top">ByteString<br>
+      </td>
+      <td valign="top">name of the creator/modifier. Is less than or
+exactly 31 characters; after it, padding bytes follow until the total
+data length is 31 bytes (padding bytes = 0x20 = Spaces)<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">4<br>
+      </td>
+      <td valign="top">uint32<br>
+      </td>
+      <td valign="top">Modification Date (format:
+day+month*100+year*10000<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">4<br>
+      </td>
+      <td valign="top">uint32<br>
+      </td>
+      <td valign="top">Modification Time (format:
+centiseconds+seconds*100+minutes*10000+hours*1000000)<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p><br>
+</p>
+<h3><a name="persist_elements"></a> persist elements</h3>
+<p>(In the OpenOffice tree: <code>so3/source/persist/persist.cxx</code>)</p>
+This stream is also known as <code>\002OlePress00</code> or<code>\001Ole10Native</code>
+.<br>
+<h3><a name="SummaryInformation"></a> SummaryInformation</h3>
+<h3><a name="001Ole"></a> \001Ole</h3>
+<p>(In the OpenOffice tree: <code>class StgOleStream</code>, <code>sot/source/sdstor/stgole.cxx</code>
+and <code>.hxx</code>)</p>
+<table cellpadding="2" cellspacing="2" border="1" width="790">
+  <tbody>
+    <tr>
+      <td valign="top">Offset in Hex<br>
+      </td>
+      <td valign="top">Length<br>
+      </td>
+      <td valign="top">Type<br>
+      </td>
+      <td valign="top">Default Value<br>
+      </td>
+      <td valign="top">Description<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">0x00<br>
+      </td>
+      <td valign="top">4<br>
+      </td>
+      <td valign="top">sint32<br>
+      </td>
+      <td valign="top">0x2000001<br>
+      </td>
+      <td valign="top">Version of this stream<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">0x04<br>
+      </td>
+      <td valign="top">4<br>
+      </td>
+      <td valign="top">uint32<br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top">Object Flags<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">0x08<br>
+      </td>
+      <td valign="top">4<br>
+      </td>
+      <td valign="top">sint32<br>
+      </td>
+      <td valign="top">0<br>
+      </td>
+      <td valign="top">Update Options<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">0x0C<br>
+      </td>
+      <td valign="top">4<br>
+      </td>
+      <td valign="top">sint32<br>
+      </td>
+      <td valign="top">0<br>
+      </td>
+      <td valign="top">reserved<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">0x10<br>
+      </td>
+      <td valign="top">4<br>
+      </td>
+      <td valign="top">sint32<br>
+      </td>
+      <td valign="top">0<br>
+      </td>
+      <td valign="top">Moniker 1<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+(Sorry, I don't know anything about the meaning of these fields)<br>
+<h3><a name="001CompObj"></a> \001CompObj</h3>
+<p>(In the OpenOffice tree: <code>class StgCompObjStream</code>, <code>sot/source/sdstor/stgole.cxx</code>
+and <code>.hxx</code>)</p>
+This stream is the "Compatibility Object" I suppose. Its format   is 
+this:<br>
+<table cellpadding="2" cellspacing="2" border="1" width="790">
+  <tbody>
+    <tr>
+      <td valign="top">Offset in Hex<br>
+      </td>
+      <td valign="top">Length<br>
+      </td>
+      <td valign="top">Type<br>
+      </td>
+      <td valign="top">Default Value<br>
+      </td>
+      <td valign="top">Description<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">0x00<br>
+      </td>
+      <td valign="top">2<br>
+      </td>
+      <td valign="top">uint16<br>
+      </td>
+      <td valign="top">0x0001<br>
+      </td>
+      <td valign="top">Version of the CompObj<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">0x02<br>
+      </td>
+      <td valign="top">2<br>
+      </td>
+      <td valign="top">uint16<br>
+      </td>
+      <td valign="top">0xFFFE<br>
+      </td>
+      <td valign="top">Byte Order<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">0x04<br>
+      </td>
+      <td valign="top">4<br>
+      </td>
+      <td valign="top">uint32<br>
+      </td>
+      <td valign="top">0x0A03<br>
+(=Windows 3.1)<br>
+      </td>
+      <td valign="top">Windows version (?)<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">0x08<br>
+      </td>
+      <td valign="top">4<br>
+      </td>
+      <td valign="top">sint32<br>
+      </td>
+      <td valign="top">0xFFFF (-1)<br>
+If this is -1, continue reading the stream<br>
+      </td>
+      <td valign="top">Marker<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">0x0C<br>
+      </td>
+      <td valign="top">16<br>
+      </td>
+      <td valign="top">ClsId<br>
+      </td>
+      <td valign="top">{C20CF9D1-85AE-11D1-AAB4-006097DA561A} <br>
+      </td>
+      <td valign="top">StarOffice's Class ID?<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">0x1C<br>
+      </td>
+      <td valign="top">4<br>
+      </td>
+      <td valign="top">uint32<br>
+      </td>
+      <td valign="top">5<br>
+      </td>
+      <td valign="top">Length of the "Username"<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">0x20<br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top">char[]<br>
+      </td>
+      <td valign="top">"Text"<br>
+      </td>
+      <td valign="top">A string of characters, known as "Username"<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">0x20 + length of username<br>
+      </td>
+      <td valign="top">4<br>
+      </td>
+      <td valign="top">uint32<br>
+      </td>
+      <td valign="top">15<br>
+      </td>
+      <td valign="top">Length of the file format string<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">0x24 + length of username<br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top">char[]<br>
+      </td>
+      <td valign="top">"StarWriter 5.0"<br>
+      </td>
+      <td valign="top">File format string. Basically, this describes   
+the  version of the file<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">0x24 + length1 + length2<br>
+      </td>
+      <td valign="top">4<br>
+      </td>
+      <td valign="top">uint32<br>
+      </td>
+      <td valign="top">0x0000<br>
+      </td>
+      <td valign="top">Terminator, always zero<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<h4>Notes</h4>
+<ol>
+  <li>Both strings are stored with a terminating zero, and the  length 
+includes  this character. If zero, no version/format string is stored
+in   the stream.<br>
+  </li>
+  <li>The length of the file format string can either be -1, zero   or 
+a  positive  value. If it is -1, it means that the next 4 bytes should 
+be  interpreted  as a Windows Clipboard format. If it's zero, see
+above. If it's  greater than   zero, the version string follows. See
+below.</li>
+  <li>Star/Open Office knows about lots of version strings.(see <code>sot/source/base/exchange.cxx</code>and<code>tools/inc/solar.h</code>
+lines 471ff). OpenOffice  uses <code>RegisterFormatName</code>
+(line 253ff from the first file)  to get  the version number from the
+string. (XXX  There was another file, but I can't  find it right now)</li>
+  <li>Common version strings and their numbers:</li>
+</ol>
+<table cellpadding="2" cellspacing="2" border="1" width="400">
+  <tbody>
+    <tr>
+      <td valign="top">StarWriter 3.0<br>
+      </td>
+      <td valign="top">3450<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">StarWriter 4.0<br>
+      </td>
+      <td valign="top">3580<br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">StarWriter 5.0<br>
+      </td>
+      <td valign="top">5050<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+</body>
+</html>

@@ -1,0 +1,20 @@
+[ REFERENCES ]
+
+[1] http://ovmj.org/libextractor/  
+[2] http://getid3.sf.net/ 
+[3] http://evidence.sf.net/
+[4] http://ovmj.org/GNUnet/
+[5] http://www.wotsit.org/
+[6] http://dublincore.org/documents/dcmi-terms/
+[7] http://freshmeat.net/projects/aviinfo/
+[8] http://freshmeat.net/projects/id3edit/
+[9] http://freshmeat.net/projects/jpeginfo/
+[10] http://freshmeat.net/projects/vocoditor/
+[11] http://freshmeat.net/projects/file/
+[12] http://dmoz.org/Computers/Software/Typesetting/TeX/BibTeX/
+[13] http://enlightenment.org/
+[14] http://www.gnu.org/licenses/gpl.html
+[15] http://packages.debian.org/extract
+[16] http://packages.debian.org/libextractor0-devel
+[17] http://ovmj.org/GNUnet/download/bloomfilter.ps
+[18] http://ovmj.org/libextractor/doxygen/html/extractor_8h-source.html

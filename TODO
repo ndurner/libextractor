@@ -1,0 +1,49 @@
+Core:
+* error reporting facilities
+* add support for different character sets (to 'all' extractors)
+* add support for passing options to extractors
+
+Untested code:
+* QuickTime is untested: it may or may not work
+  => also: check with code from bitzi collider
+
+'Unclean' code:
+* QT
+* ASF
+* RPM
+
+Incomplete code (missing features):
+* RIFF (idx1 attribute)
+* IDv2{3,4} (some attributes)
+* StarOffice sdw (some attributes, see doc/)
+* man pages (interpret sections for authors, brief description)
+* pdf: full-text extraction!
+
+Desirable missing formats:
+* mbox / various e-mail formats
+* info pages (scan for 'Node: %s^?ID' - see end of .info files!)
+* sources (Java, C, C++, see doxygen!)
+* EXIF (www.exif.org)
+* a.out (== ar?)
+* rtf 
+* EXE
+* APEv2 (MPC file format, www.personal.uni-jena.de/~pfk/mpp/sv8/apetag.html)
+
+==============
+
+UTF-8 conversion (only listing what is left to do):
+* DVI: special headers are in what format? (rest is ASCII)
+* SDW: needs to be done (need info about charsets)
+* JPEG: presumably ASCII (or not specified)
+* PS?
+* WAV?
+* ZIP?
+* TAR?
+* RIFF?
+* MAN: presumably ASCII/Utf-8
+* DEB: to be done
+* ASF: ?
+* HTML: to be done
+* OLE2: to be done
+* OO: to be done
+* PDF: to be done

@@ -1,0 +1,112 @@
+/**
+ * Tool to build a bloomfilter from a dictionary.
+ */
+
+#include "platform.h"
+#include "bloomfilter.h"
+
+#include "sha1.c"
+#include "bloomfilter.c" 
+
+#define ADDR_PER_ELEMENT 46
+
+int main(int argc,
+	 char ** argv) {
+  Bloomfilter bf;
+  HashCode160 hc;
+  int val=1; /* for endianness */
+  int i;
+  int cnt;
+  char * fn;
+  char ** words;
+  char line[2048]; /* buffer overflow, here we go */
+  FILE *dictin;
+  char * bn;
+#define ALLOCSIZE 1024*1024
+  
+  if (argc<2) {
+    fprintf(stderr, 
+	    _("Please provide the name of the language you are building\n"
+	      "a dictionary for.  For example:\n"));
+    fprintf(stderr, "$ ./dictionary-builder en > en.c\n");
+    exit(-1);
+  }
+  
+  fn = malloc(strlen(argv[1]) + 6);
+  strcpy(fn, argv[1]);
+  strcat(fn, ".txt");
+  dictin=fopen(fn,"r");
+  free(fn);
+  if (dictin==NULL) {
+    fprintf(stderr, 
+	    _("Error opening file '%s': %s\n"),
+	    argv[1],strerror(errno));
+    exit(-1);
+  }
+  
+  words = malloc(sizeof(char*) * ALLOCSIZE); /* don't we LOVE constant size buffers? */
+  if (words == NULL) {
+    fprintf(stderr, 
+	    _("Error allocating: %s\n."),
+	    strerror(errno));
+    exit(-1);
+  }
+  cnt = 0;
+  memset(&line[0], 0, 2048);
+  while (1 == fscanf(dictin, "%s", (char*)&line)) {
+    words[cnt] = strdup(line);    
+    cnt++;
+    memset(&line[0], 0, 2048);
+    if (cnt > ALLOCSIZE) {
+      fprintf(stderr, 
+	      _("Increase ALLOCSIZE (in %s).\n"),
+	      __FILE__);
+      exit(-1);
+    }
+      
+  }
+  
+  bf.addressesPerElement = ADDR_PER_ELEMENT;
+  bf.bitArraySize = cnt*4;
+  bf.bitArray = malloc(bf.bitArraySize);
+  memset(bf.bitArray, 0, bf.bitArraySize);
+
+  for (i=0;i<cnt;i++) {
+    hash(words[i],
+	 strlen(words[i]),
+	 &hc);
+    addToBloomfilter(&bf, &hc);
+  }
+
+  fprintf(stdout,
+	  "#include \"bloomfilter.h\"\n");
+
+  /* use int[] instead of char[] since it cuts the memory use of
+     gcc down to a quarter; don't use long long since various 
+     gcc versions then output tons of warnings about "decimal constant
+     is so large that it is unsigned" (even for unsigned long long[]
+     that warning is generated and dramatically increases compile times). */
+  fprintf(stdout,
+	  "static int bits[] = { ");
+  for (i=0;i<bf.bitArraySize/sizeof(int);i++)
+    fprintf(stdout,
+	    "%dL,", 
+	    (((int*)bf.bitArray)[i]));
+  fprintf(stdout,
+	  "};\n");
+  bn = &argv[1][strlen(argv[1])];
+  while ( (bn != argv[1]) &&
+	  (bn[0] != '/') )
+    bn--;
+  if (bn[0] == '/')
+    bn++;
+  fprintf(stdout,
+	  "Bloomfilter libextractor_printable_%s_filter = {\n"
+	  "  %u,\n"
+	  "  (unsigned char*)bits,\n"
+	  "  %u };\n",
+	  bn,
+	  ADDR_PER_ELEMENT,
+	  bf.bitArraySize);
+  return 0;
+}

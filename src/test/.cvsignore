@@ -1,0 +1,8 @@
+multiload
+plugintest
+Makefile
+Makefile.in
+trivialtest
+keywordlisttest
+.libs
+.deps

@@ -1,0 +1,253 @@
+<html>
+<head>
+<title></title>
+<link rel=stylesheet href="../styles/body.css" type="text/css">
+</head>
+<body>
+<center><a href="registry.htm">
+<img src="../icons/prev.gif" border="0" alt="previous"></a>
+<a href="glossary.htm">
+<img src="../icons/next.gif" border="0" alt="next"></a>
+</center>
+<h1><a name="22397">
+ Appendix G: 	 RealMedia File Format (RMFF)
+
+</a></h1>
+<p><a name="3637"></a>RealSystem Architecture introduces RealMedia File Format (RMFF), which lets RealSystem deliver high-quality multimedia content over a variety of network bandwidths. Third-party developers can convert their media formats into RMFF, enabling RealServer to deliver the files to RealPlayer or other applications built with the RealSystem SDK. Third-party developers can thereby use RealSystem to transport content over the Internet to their own applications.</p>
+<p><a name="3647"></a>RealMedia File Format is a standard tagged file format that uses four-character codes to identify file elements. These codes are 32-bit, represented by a sequence of one to four ASCII alphanumeric characters, padded on the right with space characters. The data type for four-character codes is FOURCC. Use the <code>PN_FOURCC</code> macro to convert four characters into a four-character code. </p>
+<p><a name="3649"></a>The basic building block of a RealMedia File is a <I>chunk</I>, which is a logical unit of data, such as a stream header or a packet of data. Each chunk contains the following fields: </p>
+<ul>
+<p><li><a name="3651"></a>four-character code specifying the chunk identifier 
+<p><li><a name="3653"></a>32-bit value specifying the size of the data member in the chunk 
+<p><li><a name="3655"></a>blob of opaque chunk data 
+</ul>
+<p><a name="3657"></a>Depending on its type, a top-level chunk can contain subobjects. This document describes the tagged chunks contained in RMFF, as well as the format of the data stored in each type of tagged chunk. </p>
+<h5><a name="17311"></a>
+ Tagged File Formats</h5>
+<p><a name="17314"></a>
+<img src="../graphics/tagff.gif"></p>
+<h1><a name="3668"></a> Header Section</h1>
+<p><a name="3670"></a>Because RMFF is a tagged file format, the order of the chunks is not explicit, except that the RealMedia File Header must be the first chunk in the file. However, most applications write the standard headers into the file's header section. The following chunks are typically found in the header section of RMFF: </p>
+<ul>
+<p><li><a name="3672"></a>RealMedia File Header (This must be the first chunk of the file)
+<p><li><a name="3674"></a>Properties Header
+<p><li><a name="3676"></a>Media Properties Header
+<p><li><a name="3678"></a>Content Description Header
+</ul>
+<p><a name="3680"></a>After the RealMedia File Header object, the other headers may appear in any order. All headers are required except the Index Header. The following sections describe the individual header objects .</p>
+<h2><a name="3686"></a> RealMedia File Header</h2>
+<p><a name="3688"></a>Each RealMedia file begins with the RealMedia File Header, which identifies the file as RMFF. There is only one RealMedia File Header in a RealMedia file. Because the contents of the RealMedia File Header may change with different versions of RMFF, the header structure supports an object version field for determining what additional fields exists. The following pseudo-structure describes the RealMedia File Header: </p>
+<pre><a name="22781"></a>
+RealMedia_File_Header<br>{<br>  UINT32    object_id;<br>  UINT32    size;<br>  UINT16    <code>object_version</code>;<br><br>  if (<code>object_version</code> == 0)<br>  {<br>    UINT32   file_version;<br>    UINT32   num_headers;<br>  }<br>}
+</pre>
+<p><a name="3693"></a>The RealMedia File Header contains the following fields: </p>
+<h4><a name="3695"></a> object_id: 32 bits </h4>
+<p><a name="3697"></a>The unique object ID for a RealMedia File (<kbd>.RMF</kbd>). All RealMedia files begin with this identifier. </p>
+<h4><a name="3699"></a> size: 32 bits </h4>
+<p><a name="3701"></a>The size of the RealMedia header section in bytes. </p>
+<h4><a name="3703"></a> object_version: 16 bits </h4>
+<p><a name="3705"></a>The version of the RealMedia File Header object. All files created according to this specification have an <code>object_version</code> number of 0 (zero). </p>
+<h4><a name="3707"></a> file_version: 32 bits </h4>
+<p><a name="3709"></a>The version of the RealMedia file in PN Version format. All files created according to this specification have a major version number of 1. This member is present on all <code>RealMedia_File_Header</code> objects with an <code>object_version</code> of 0 (zero). </p>
+<h4><a name="3711"></a> num_headers: 32 bits </h4>
+<p><a name="3713"></a>The number of headers in the header section that follow the RealMedia File Header. This member is present on all <code>RealMedia_File_Header</code> objects with an <code>object_version</code> of 0 (zero). </p>
+<h2><a name="3719"></a> Properties Header</h2>
+<p><a name="22973"></a>The Properties Header describes the general media properties of the RealMedia File. Components of the RealMedia system use this object to configure themselves for handling the data in the RealMedia file or stream. There is only one Properties Header in a RealMedia file. The following pseudo-structure describes the Properties header:</p>
+<pre><a name="23066"></a>
+Properties<br>{<br>  UINT32    object_id;<br>  UINT32    size;<br>  UINT16    <code>object_version</code>;<br><br>  if (<code>object_version</code> == 0)<br>  {<br>    UINT32   max_bit_rate;<br>    UINT32   avg_bit_rate;<br>    UINT32   max_packet_size;<br>    UINT32   avg_packet_size;<br>    UINT32   num_packets;<br>    UINT32   duration;<br>    UINT32   preroll;<br>    UINT32   index_offset;<br>    UINT32   data_offset;<br>    UINT16   num_streams;<br>    UINT16   flags;<br>  }<br>}
+</pre>
+<p><a name="3726"></a>The Properties Header contains the following fields: </p>
+<h4><a name="3728"></a> object_id: 32 bits </h4>
+<p><a name="3730"></a>The unique object ID for a Properties Header ('PROP'). </p>
+<h4><a name="3732"></a> size: 32 bits </h4>
+<p><a name="3734"></a>The size of the Properties Header in bytes. </p>
+<h4><a name="3736"></a> object_version: 16 bits </h4>
+<p><a name="3738"></a>The version of the RealMedia File Header object. All files created according to this specification have an <code>object_version</code> number of 0 (zero). </p>
+<h4><a name="3740"></a> max_bit_rate: 32 bits </h4>
+<p><a name="3742"></a>The maximum bit rate required to deliver this file over a network. This member is present on all Properties objects with an <code>object_version</code> of 0 (zero). </p>
+<h4><a name="3744"></a> avg_bit_rate: 32 bits </h4>
+<p><a name="3746"></a>The average bit rate required to deliver this file over a network. This member is present on all Properties objects with an <code>object_version</code> of 0 (zero). </p>
+<h4><a name="3748"></a> max_packet_size: 32 bits </h4>
+<p><a name="3750"></a>The largest packet size (in bytes) in the media data. This member is present on all Properties objects with an <code>object_version</code> of 0 (zero). </p>
+<h4><a name="3752"></a> avg_packet_size: 32 bits </h4>
+<p><a name="3754"></a>The average packet size (in bytes) in the media data. This member is present on all Properties objects with an <code>object_version</code> of 0 (zero). </p>
+<h4><a name="3756"></a> num_packets: 32 bits </h4>
+<p><a name="3758"></a>The number of packets in the media data. This member is present on all Properties objects with an <code>object_version</code> of 0 (zero). </p>
+<h4><a name="3760"></a> duration: 32 bits </h4>
+<p><a name="3762"></a>The duration of the file in milliseconds. This member is present on all Properties objects with an <code>object_version</code> of 0 (zero). </p>
+<h4><a name="3764"></a> preroll: 32 bits </h4>
+<p><a name="3766"></a>The number of milliseconds to pre-buffer before starting playback. This member is present on all Properties objects with an <code>object_version</code> of 0 (zero). </p>
+<h4><a name="3768"></a> index_offset: 32 bits </h4>
+<p><a name="3770"></a>The offset in bytes from the start of the file to the start of the index header object. This member is present on all Properties objects with an <code>object_version</code> of 0 (zero). </p>
+<h4><a name="3772"></a> data_offset: 32 bits </h4>
+<p><a name="3774"></a>The offset in bytes from the start of the file to the start of the Data Section. This member is present on all Properties objects with an <code>object_version</code> of 0 (zero). </p>
+<h4><a name="3776"></a> num_streams: 16 bits </h4>
+<p><a name="3778"></a>The number of media streams contained in the file. This member is present on all Properties objects with an <code>object_version</code> of 0 (zero). </p>
+<h4><a name="3780"></a> flags: 16 bits </h4>
+<p><a name="24472"></a>Flags indicating characteristics of the RealMedia file. The following flags are defined: </p>
+<ul>
+<p><li><a name="24473"></a><code>#define PN_SAVE_ENABLED 0x0001</code> 
+<p><a name="24474"></a>Allows clients to save a copy of the RealMedia file to disk. </p>
+<p><li><a name="3788"></a><code>#define PN_PERFECT_PLAY_ENABLED 0x0002</code> 
+<p><a name="3790"></a>Allows clients to use extra buffering to ensure Perfect Play. </p>
+<p><li><a name="3792"></a><code>#define PN_LIVE_BROADCAST 0x0004</code> 
+<p><a name="3794"></a>The RealMedia file is being generated by a live broadcast. </p>
+</ul>
+<h2><a name="3800"></a> Media Properties Header</h2>
+<p><a name="3802"></a>The Media Properties Header describes the specific media properties of each stream in a RealMedia File. Components of the RealMedia system use this object to configure themselves for handling the media data in each stream. There is one Media Properties Header for each media stream in a RealMedia file. The following pseudo-structure describes the Media Properties header: </p>
+<pre><a name="23667"></a>
+Media_Properties<br>{<br>  UINT32     object_id;<br>  UINT32     size;<br>  UINT16     <code>object_version</code>;<br><br>  if (<code>object_version</code> == 0)<br>  {<br>    UINT16                      stream_number;<br>    UINT32                      max_bit_rate;<br>    UINT32                      avg_bit_rate;<br>    UINT32                      max_packet_size;<br>    UINT32                      avg_packet_size;<br>    UINT32                      start_time;<br>    UINT32                      preroll;<br>    UINT32                      duration;<br>    UINT8                       stream_name_size;<br>    UINT8[stream_name_size]     stream_name;<br>    UINT8                       mime_type_size;<br>    UINT8[mime_type_size]       mime_type;<br>    UINT32                      type_specific_len;<br>    UINT8[type_specific_len]    type_specific_data;<br>  }<br>}
+</pre>
+<p><a name="3807"></a>The Media Properties Header contains the following fields: </p>
+<h4><a name="3809"></a> object_id: 32 bits </h4>
+<p><a name="3811"></a>The unique object ID for a Media Properties Header ("MDPR"). </p>
+<h4><a name="3813"></a> size: 32 bits </h4>
+<p><a name="3815"></a>The size of the Media Properties Header in bytes. </p>
+<h4><a name="3817"></a> object_version: 16 bits </h4>
+<p><a name="3819"></a>The version of the Media Properties Header object. </p>
+<h4><a name="3821"></a> stream_number: 32 bits </h4>
+<p><a name="3823"></a>The <code>stream_number</code> (synchronization source identifier) is a unique value that identifies a media stream. Every data packet that belongs to a media stream contains the same <code>STREAM_NUMBER</code>. The <code>STREAM_NUMBER</code> enables a receiver of multiple media streams to distinguish which packets belong to each media stream. This member is present on all MediaProperties objects with an <code>object_version</code> of 0 (zero). </p>
+<h4><a name="3825"></a> max_bit_rate: 32 bits </h4>
+<p><a name="3827"></a>The maximum bit rate required to deliver this stream over a network. This member is present on all MediaProperties objects with an <code>object_version</code> of 0 (zero). </p>
+<h4><a name="3829"></a> avg_bit_rate: 32 bits </h4>
+<p><a name="3831"></a>The average bit rate required to deliver this stream over a network. This member is present on all MediaProperties objects with an <code>object_version</code> of 0 (zero). </p>
+<h4><a name="3833"></a> max_packet_size: 32 bits </h4>
+<p><a name="3835"></a>The largest packet size (in bytes) in the stream of media data. This member is present on all MediaProperties objects with an <code>object_version</code> of 0 (zero). </p>
+<h4><a name="3837"></a> avg_packet_size: 32 bits </h4>
+<p><a name="3839"></a>The average packet size (in bytes) in the stream of media data. This member is present on all MediaProperties objects with an <code>object_version</code> of 0 (zero). </p>
+<h4><a name="3841"></a> start_time: 32 bits </h4>
+<p><a name="3843"></a>The time offset in milliseconds to add to the timestamp of each packet in a media stream. This member is present on all MediaProperties objects with an <code>object_version</code> of 0 (zero). </p>
+<h4><a name="3845"></a> preroll: 32 bits </h4>
+<p><a name="3847"></a>The time offset in milliseconds to subtract to the timestamp of each packet in a media stream. This member is present on all MediaProperties objects with an <code>object_version</code> of 0 (zero). </p>
+<h4><a name="3849"></a> duration: 32 bits </h4>
+<p><a name="3851"></a>The duration of the stream in milliseconds. This member is present on all MediaProperties objects with an <code>object_version</code> of 0 (zero). </p>
+<h4><a name="3853"></a> stream_name_size: 8 bits </h4>
+<p><a name="3855"></a>The length of the following stream_name field in bytes. This member is present on all MediaProperties objects with an <code>object_version</code> of 0 (zero). </p>
+<h4><a name="3857"></a> stream_name: variable length </h4>
+<p><a name="3859"></a>A non-unique alias or name for the stream. This member is present on all MediaProperties objects with an <code>object_version</code> of 0 (zero). </p>
+<h4><a name="3861"></a> mime_type_size: 8 bits </h4>
+<p><a name="3863"></a>The length of the following <code>mime_type</code> field in bytes. This member is present on all MediaProperties objects with an <code>object_version</code> of 0 (zero). </p>
+<h4><a name="3865"></a> mime_type: variable length </h4>
+<p><a name="3867"></a>A non-unique MIME style type/subtype string for data associated with the stream. This member is present on all MediaProperties objects with an <code>object_version</code> of 0 (zero). </p>
+<h4><a name="3869"></a> type_specific_len: 32 bits </h4>
+<p><a name="3871"></a>The length of the following <code>type_specific_data</code> in bytes. The <code>type_specific_data</code> is typically used by the datatype renderer to initialize itself in order to process the media stream. This member is present on all MediaProperties objects with an <code>object_version</code> of 0 (zero). </p>
+<h4><a name="3873"></a> type_specific_data: variable length </h4>
+<p><a name="3875"></a>The <code>type_specific_data</code> is typically used by the data-type renderer to initialize itself in order to process the media stream. This member is present on all MediaProperties objects with an <code>object_version</code> of 0 (zero). </p>
+<h2><a name="3881"></a> Content Description Header</h2>
+<p><a name="3883"></a>The Content Description Header contains the title, author, copyright, and comments information for the RealMedia File. All text data is in ASCII format. The following pseudo-structure describes the Content Description Header: </p>
+<pre><a name="23418"></a>
+Content_Description<br>{<br>  UINT32     object_id;<br>  UINT32     size;<br>  UINT16      <code>object_version</code>;<br><br>  if (<code>object_version</code> == 0)<br>  {<br>    UINT16    title_len;<br>    UINT8[title_len]  title;<br>    UINT16    author_len;<br>    UINT8[author_len]  author;<br>    UINT16    copyright_len;<br>    UINT8[copyright_len]  copyright;<br>    UINT16    comment_len;<br>    UINT8[comment_len]  comment;<br>  }<br>}
+</pre>
+<p><a name="3888"></a>The Content Description Header contains the following fields: </p>
+<h4><a name="3890"></a> object_id: 32 bits </h4>
+<p><a name="3892"></a>The unique object ID for the Content Description Header ('CONT'). </p>
+<h4><a name="3894"></a> size: 32 bits </h4>
+<p><a name="3896"></a>The size of the Content Description Header in bytes. </p>
+<h4><a name="3898"></a> object_version: 16 bits </h4>
+<p><a name="3900"></a>The version of the Content Description Header object. </p>
+<h4><a name="3902"></a> title_len: 16 bits </h4>
+<p><a name="3904"></a>The length of the title data in bytes. Note that the title data is not null terminated. This member is present on all Content Description Header objects with an <code>object_version</code> of 0 (zero). </p>
+<h4><a name="3906"></a> title: variable length </h4>
+<p><a name="3908"></a>An array of ASCII characters that represents the title information for the RealMedia file. This member is present on all Content Description Header objects with an <code>object_version</code> of 0 (zero). </p>
+<h4><a name="3910"></a> author_len: 16 bits </h4>
+<p><a name="3912"></a>The length of the author data in bytes. Note that the author data is not null terminated. This member is present on all Content Description Header objects with an <code>object_version</code> of 0 (zero). </p>
+<h4><a name="3914"></a> author: variable length </h4>
+<p><a name="3916"></a>An array of ASCII characters that represents the author information for the RealMedia file. This member is present on all Content Description Header objects with an <code>object_version</code> of 0 (zero). </p>
+<h4><a name="3918"></a> copyright_len: 16 bits </h4>
+<p><a name="3920"></a>The length of the copyright data in bytes. Note that the copyright data is not null terminated. This member is present on all Content Description Header objects with an <code>object_version</code> of 0 (zero). </p>
+<h4><a name="3922"></a> copyright: variable length </h4>
+<p><a name="3924"></a>An array of ASCII characters that represents the copyright information for the RealMedia file. This member is present on all Content Description Header objects with an <code>object_version</code> of 0 (zero). </p>
+<h4><a name="3926"></a> comment_len: 16 bits </h4>
+<p><a name="3928"></a>The length of the comment data in bytes. Note that the comment data is not null terminated. This member is present on all Content Description Header objects with an <code>object_version</code> of 0 (zero). </p>
+<h4><a name="3930"></a> comment: variable length </h4>
+<p><a name="3932"></a>An array of ASCII characters that represents the comment information for the RealMedia file. This member is present on all Content Description Header objects with an <code>object_version</code> of 0 (zero). </p>
+<h1><a name="3940"></a> Data Section</h1>
+<p><a name="3942"></a>The data section of the RealMedia file consists of a Data Section Header that describes the contents of the data section, followed by a series of interleaved media data packets. Note that the size field of the Data Chunk Header is the size of the entire data chunk, including the media data packets. </p>
+<h2><a name="3948"></a> Data Chunk Header</h2>
+<p><a name="3950"></a>The Data Chunk Header marks the start of the data chunk. There is usually only one data chunk in a RealMedia file, however for extremely large files there may be multiple data chunks. The following pseudo-structure describes the Data chunk header: </p>
+<pre><a name="23546"></a>
+Data_Chunk_Header<br>{<br>  UINT32     object_id;<br>  UINT32     size;<br>  UINT16      <code>object_version</code>;<br><br>  if (<code>object_version</code> == 0)<br>  {<br>    UINT32    num_packets; <br>    UINT32    next_data_header;<br>  }<br>}
+</pre>
+<p><a name="3955"></a>The Data Chunk Header contains the following fields: </p>
+<h4><a name="3957"></a> object_id: 32 bits </h4>
+<p><a name="3959"></a>The unique object ID for the Data Chunk Header ('DATA'). </p>
+<h4><a name="3961"></a> size: 32 bits </h4>
+<p><a name="3963"></a>The size of the Data Chunk in bytes. </p>
+<h4><a name="3965"></a> object_version: 16 bits </h4>
+<p><a name="3967"></a>The version of the Data Chunk Header object. </p>
+<h4><a name="3969"></a> num_packets: 32 bits </h4>
+<p><a name="3971"></a>Number of packets in the data chunk. This member is present on all Data Chunk Header objects with an <code>object_version</code> of 0 (zero). </p>
+<h4><a name="3973"></a> next_data_header: 32 bits </h4>
+<p><a name="3975"></a>Offset from start of file to the next data chunk. This field is not typically used. This member is present on all Data Chunk Header objects with an <code>object_version</code> of 0 (zero). </p>
+<h2><a name="3981"></a> Data Packet Header</h2>
+<p><a name="3983"></a>The data section of a RealMedia file consists of a series of interleaved data objects. Each data object contains a packet of data for a media stream. Because a RealMedia file can contain numerous media streams, data objects for each stream are interleaved. The following pseudo-structure describes the details of each interleaved packet: </p>
+<pre><a name="23558"></a>
+Media_Packet_Header<br>{<br>  UINT16    <code>object_version</code>;<br><br>  if (<code>object_version</code> == 0)<br>  {<br>    UINT16   length;<br>    UINT16   stream_number;<br>    UINT32   timestamp;<br>    UINT8   reserved; <br>    UINT8   flags; <br>    UINT8[length]  data; <br>  }<br>}
+</pre>
+<p><a name="3988"></a>The Media Packet Header contains the following fields: </p>
+<h4><a name="3990"></a> object_version: 16 bits </h4>
+<p><a name="3992"></a>The version of the Media Packet Header object. </p>
+<h4><a name="3994"></a> length: 16 bits </h4>
+<p><a name="3996"></a>The length of the packet in bytes. This member is present on all Media Packet Header objects with an <code>object_version</code> of 0 (zero). </p>
+<h4><a name="3998"></a> stream_number: 16 bits </h4>
+<p><a name="4000"></a>The 16-bit alias used to associate data packets with their associated Media Properties Header. This member is present on all Media Packet Header objects with an <code>object_version</code> of 0 (zero). </p>
+<h4><a name="4002"></a> timeStamp: 32 bits </h4>
+<p><a name="4004"></a>The timestamp of the packet in milliseconds This member is present on all Media Packet Header objects with an <code>object_version</code> of 0 (zero). </p>
+<h4><a name="4006"></a> reserved: 8 bits </h4>
+<p><a name="4008"></a>This is not used. This member is present on all Media Packet Header objects with an <code>object_version</code> of 0 (zero). </p>
+<h4><a name="4010"></a> flags: 16 bits </h4>
+<p><a name="4012"></a>Flags describing the properties of the packet. The following flags are defined: </p>
+<h4><a name="4014"></a> #define PN_RELIABLE_FLAG 0x0001</h4>
+<p><a name="4016"></a>If this flag is set, the packet is delivered reliably. </p>
+<h4><a name="4018"></a> #define PN_KEYFRAME_FLAG 0x0002</h4>
+<p><a name="4020"></a>If this flag is set, the packet is part of a key frame or in some way marks a boundary in your data stream. </p>
+<p><a name="4022"></a>This member is present on all Media Packet Header objects with an <code>object_version</code> of 0 (zero). </p>
+<h4><a name="4024"></a> data: variable length </h4>
+<p><a name="4026"></a>The application-specific media data. This member is present on all Media Packet Header objects with an <code>object_version</code> of 0 (zero). </p>
+<h1><a name="4034"></a> Index Section</h1>
+<p><a name="4036"></a>The index section of the RealMedia file consists of a Index Chunk Header that describes the contents of the index section, followed by a series of index records. Note that the size field of the Index Chunk Header is the size of the entire index chunk, including the index records. </p>
+<h2><a name="4042"></a> Index Section Header</h2>
+<p><a name="4044"></a>The Index Chunk Header marks the start of the index chunk. There is usually one index chunk per stream in a RealMedia file. The following pseudo-structure describes the Index chunk header. </p>
+<pre><a name="23589"></a>
+Index_Chunk_Header<br>{<br>  u_int32     object_id;<br>  u_int32     size;<br>  u_int16      <code>object_version</code>;<br><br>  if (<code>object_version</code> == 0)<br>  {<br>    u_int32     num_indices;<br>    u_int16     stream_number;<br>    u_int32     next_index_header;<br>  }<br>}
+</pre>
+<p><a name="4049"></a>The Index Chunk Header contains the following fields: </p>
+<h4><a name="4051"></a> object_id: 32 bits </h4>
+<p><a name="4053"></a>The unique object ID for the Index Chunk Header ('INDX'). </p>
+<h4><a name="4055"></a> size: 32 bits </h4>
+<p><a name="4057"></a>The size of the Index Chunk in bytes. </p>
+<h4><a name="4059"></a> object_version: 16 bits </h4>
+<p><a name="4061"></a>The version of the Index Chunk Header object. </p>
+<h4><a name="4063"></a> num_indices: 32 bits </h4>
+<p><a name="4065"></a>Number of index records in the index chunk. This member is present on all Index Chunk Header objects with an <code>object_version</code> of 0 (zero). </p>
+<h4><a name="4067"></a> stream_number: 16 bits </h4>
+<p><a name="4069"></a>The stream number for which the index records in this index chunk are associated. This member is present on all Index Chunk Header objects with an <code>object_version</code> of 0 (zero). </p>
+<h4><a name="4071"></a> next_index_header: 32 bits </h4>
+<p><a name="4073"></a>Offset from start of file to the next index chunk. This field lets RealMedia file format readers find all the index chunks quickly. This member is present on all Index Chunk Header objects with an <code>object_version</code> of 0 (zero). </p>
+<h2><a name="4079"></a> Index Record</h2>
+<p><a name="4081"></a>The index section of a RealMedia file consists of a series of index record objects. Each index record contains information for quickly finding a packet of a particular time stamp for a media stream. The following pseudo-structure describes the details of each index record: </p>
+<pre><a name="23614"></a>
+IndexRecord<br>{<br>  UINT16   <code>object_version</code>;<br><br>  if (<code>object_version</code> == 0)<br>  {<br>    u_int32  timestamp;<br>    u_int32  offset;<br>    u_int32   packet_count_for_this_packet;<br>  }<br>}
+</pre>
+<p><a name="4086"></a>An Index Record contains the following fields: </p>
+<h4><a name="4088"></a> object_version: 16 bits </h4>
+<p><a name="4090"></a>The version of the Index Record object. </p>
+<h4><a name="4092"></a> timestamp: 32 bits </h4>
+<p><a name="22590"></a>The timestamp in milliseconds associated with this record. This member is present on all Index Record objects with an <code>object_version</code> of 0 (zero). </p>
+<h4><a name="22591"></a> offset: 32 bits </h4>
+<p><a name="22592"></a>The offset from the start of the file at which this packet can be found. This member is present on all Index Record objects with an <code>object_version</code> of 0 (zero). </p>
+<h4><a name="4100"></a> packet_count_for_this_packet: 32 bits </h4>
+<p><a name="4102"></a>The packet number of the packet for this record. This is the same number of packets that would have been seen had the file been played from the beginning to this point. This member is present on all Index Record objects with an <code>object_version</code> of 0 (zero). </p>
+<p><a name="4447"></a></p>
+<p><hr align=left size=2 width=100%>
+<font size=-1><a href=notice.htm>Copyright</a> &#169; 2000
+<a href="http://www.real.com/" target="_top">RealNetworks</a>
+<br>For technical support, please contact <a href="mailto:supportsdk@real.com">supportsdk@real.com</a>.
+<br><font size=-2>This file last updated on 05/17/00 at 12:50:46.</font>
+<center><a href="registry.htm">
+<img src="../icons/prev.gif" border="0" alt="previous"></a>
+<a href="glossary.htm">
+<img src="../icons/next.gif" border="0" alt="next"></a>
+</center>
+</body>
+</html>

@@ -1,0 +1,1705 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Christian Grothoff
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: libextractor@cs.purdue.edu\n"
+"POT-Creation-Date: 2005-01-01 19:09-0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/main/extract.c:55
+#, c-format
+msgid ""
+"Usage: %s\n"
+"%s\n"
+"\n"
+msgstr ""
+
+#: src/main/extract.c:58
+#, c-format
+msgid ""
+"Arguments mandatory for long options are also mandatory for short options.\n"
+msgstr ""
+
+#: src/main/extract.c:132
+msgid "do not remove any duplicates"
+msgstr ""
+
+#: src/main/extract.c:134
+msgid "print output in bibtex format"
+msgstr ""
+
+#: src/main/extract.c:136
+msgid ""
+"use the generic plaintext extractor for the language with the 2-letter "
+"language code LANG"
+msgstr ""
+
+#: src/main/extract.c:138
+msgid "remove duplicates only if types match"
+msgstr ""
+
+#: src/main/extract.c:140
+msgid "use the filename as a keyword (loads filename-extractor plugin)"
+msgstr ""
+
+#: src/main/extract.c:142
+msgid "print this help"
+msgstr ""
+
+#: src/main/extract.c:144
+msgid "compute hash using the given ALGORITHM (currently sha1 or md5)"
+msgstr ""
+
+#: src/main/extract.c:146
+msgid "load an extractor plugin named LIBRARY"
+msgstr ""
+
+#: src/main/extract.c:148
+msgid "list all keyword types"
+msgstr ""
+
+#: src/main/extract.c:150
+msgid "do not use the default set of extractor plugins"
+msgstr ""
+
+#: src/main/extract.c:152
+msgid "print only keywords of the given TYPE (use -L to get a list)"
+msgstr ""
+
+#: src/main/extract.c:154
+msgid "remove duplicates even if keyword types do not match"
+msgstr ""
+
+#: src/main/extract.c:156
+msgid "use keyword splitting (loads split-extractor plugin)"
+msgstr ""
+
+#: src/main/extract.c:158
+msgid "print the version number"
+msgstr ""
+
+#: src/main/extract.c:160
+msgid "be verbose"
+msgstr ""
+
+#: src/main/extract.c:162
+msgid "do not print keywords of the given TYPE"
+msgstr ""
+
+#: src/main/extract.c:165
+msgid "extract [OPTIONS] [FILENAME]*"
+msgstr ""
+
+#: src/main/extract.c:166
+msgid "Extract metadata from files."
+msgstr ""
+
+#: src/main/extract.c:242 src/main/extractor.c:781
+#, c-format
+msgid "INVALID TYPE - %s\n"
+msgstr ""
+
+#: src/main/extract.c:307 src/main/extractor.c:44
+msgid "title"
+msgstr ""
+
+#: src/main/extract.c:309 src/main/extractor.c:42
+msgid "filename"
+msgstr ""
+
+#: src/main/extract.c:314 src/main/extractor.c:45
+msgid "author"
+msgstr ""
+
+#: src/main/extract.c:318 src/main/extractor.c:47
+msgid "description"
+msgstr ""
+
+#: src/main/extract.c:320 src/main/extractor.c:59
+msgid "keywords"
+msgstr ""
+
+#: src/main/extract.c:322 src/main/extractor.c:48
+msgid "comment"
+msgstr ""
+
+#: src/main/extract.c:326 src/main/extractor.c:49
+msgid "date"
+msgstr ""
+
+#: src/main/extract.c:328 src/main/extractor.c:71
+msgid "creation date"
+msgstr ""
+
+#: src/main/extract.c:356 src/main/extractor.c:50
+msgid "publisher"
+msgstr ""
+
+#: src/main/extract.c:360 src/main/extractor.c:56
+msgid "organization"
+msgstr ""
+
+#: src/main/extract.c:364 src/main/extractor.c:58
+msgid "subject"
+msgstr ""
+
+#: src/main/extract.c:368 src/main/extractor.c:75
+msgid "page count"
+msgstr ""
+
+#: src/main/extract.c:502
+#, c-format
+msgid "You must specify an argument for the '%s' option (option ignored).\n"
+msgstr ""
+
+#: src/main/extract.c:566
+#, c-format
+msgid "Use --help to get a list of options.\n"
+msgstr ""
+
+#: src/main/extract.c:620
+#, c-format
+msgid "%% BiBTeX file\n"
+msgstr ""
+
+#: src/main/extract.c:627
+#, c-format
+msgid "Keywords for file %s:\n"
+msgstr ""
+
+#: src/main/extractor.c:41
+msgid "unknown"
+msgstr ""
+
+#: src/main/extractor.c:43
+msgid "mimetype"
+msgstr ""
+
+#: src/main/extractor.c:46
+msgid "artist"
+msgstr ""
+
+#: src/main/extractor.c:51
+msgid "language"
+msgstr ""
+
+#: src/main/extractor.c:52
+msgid "album"
+msgstr ""
+
+#: src/main/extractor.c:53
+msgid "genre"
+msgstr ""
+
+#: src/main/extractor.c:54
+msgid "location"
+msgstr ""
+
+#: src/main/extractor.c:55
+msgid "version"
+msgstr ""
+
+#: src/main/extractor.c:57
+msgid "copyright"
+msgstr ""
+
+#: src/main/extractor.c:60
+msgid "contributor"
+msgstr ""
+
+#: src/main/extractor.c:61
+msgid "resource-type"
+msgstr ""
+
+#: src/main/extractor.c:62
+msgid "format"
+msgstr ""
+
+#: src/main/extractor.c:63
+msgid "resource-identifier"
+msgstr ""
+
+#: src/main/extractor.c:64
+msgid "source"
+msgstr ""
+
+#: src/main/extractor.c:65
+msgid "relation"
+msgstr ""
+
+#: src/main/extractor.c:66
+msgid "coverage"
+msgstr ""
+
+#: src/main/extractor.c:67
+msgid "software"
+msgstr ""
+
+#: src/main/extractor.c:68
+msgid "disclaimer"
+msgstr ""
+
+#: src/main/extractor.c:69
+msgid "warning"
+msgstr ""
+
+#: src/main/extractor.c:70
+msgid "translated"
+msgstr ""
+
+#: src/main/extractor.c:72
+msgid "modification date"
+msgstr ""
+
+#: src/main/extractor.c:73
+msgid "creator"
+msgstr ""
+
+#: src/main/extractor.c:74
+msgid "producer"
+msgstr ""
+
+#: src/main/extractor.c:76
+msgid "page orientation"
+msgstr ""
+
+#: src/main/extractor.c:77
+msgid "paper size"
+msgstr ""
+
+#: src/main/extractor.c:78
+msgid "used fonts"
+msgstr ""
+
+#: src/main/extractor.c:79
+msgid "page order"
+msgstr ""
+
+#: src/main/extractor.c:80
+msgid "created for"
+msgstr ""
+
+#: src/main/extractor.c:81
+msgid "magnification"
+msgstr ""
+
+#: src/main/extractor.c:82
+msgid "release"
+msgstr ""
+
+#: src/main/extractor.c:83
+msgid "group"
+msgstr ""
+
+#: src/main/extractor.c:84
+msgid "size"
+msgstr ""
+
+#: src/main/extractor.c:85
+msgid "summary"
+msgstr ""
+
+#: src/main/extractor.c:86
+msgid "packager"
+msgstr ""
+
+#: src/main/extractor.c:87
+msgid "vendor"
+msgstr ""
+
+#: src/main/extractor.c:88
+msgid "license"
+msgstr ""
+
+#: src/main/extractor.c:89
+msgid "distribution"
+msgstr ""
+
+#: src/main/extractor.c:90
+msgid "build-host"
+msgstr ""
+
+#: src/main/extractor.c:91
+msgid "os"
+msgstr ""
+
+#: src/main/extractor.c:92
+msgid "dependency"
+msgstr ""
+
+#: src/main/extractor.c:93
+msgid "MD4"
+msgstr ""
+
+#: src/main/extractor.c:94
+msgid "MD5"
+msgstr ""
+
+#: src/main/extractor.c:95
+msgid "SHA-0"
+msgstr ""
+
+#: src/main/extractor.c:96
+msgid "SHA-1"
+msgstr ""
+
+#: src/main/extractor.c:97
+msgid "RipeMD160"
+msgstr ""
+
+#: src/main/extractor.c:98
+msgid "resolution"
+msgstr ""
+
+#: src/main/extractor.c:99
+msgid "category"
+msgstr ""
+
+#: src/main/extractor.c:100
+msgid "book title"
+msgstr ""
+
+#: src/main/extractor.c:101
+msgid "priority"
+msgstr ""
+
+#: src/main/extractor.c:102
+msgid "conflicts"
+msgstr ""
+
+#: src/main/extractor.c:103
+msgid "replaces"
+msgstr ""
+
+#: src/main/extractor.c:104
+msgid "provides"
+msgstr ""
+
+#: src/main/extractor.c:105
+msgid "conductor"
+msgstr ""
+
+#: src/main/extractor.c:106
+msgid "interpreter"
+msgstr ""
+
+#: src/main/extractor.c:107
+msgid "owner"
+msgstr ""
+
+#: src/main/extractor.c:108
+msgid "lyrics"
+msgstr ""
+
+#: src/main/extractor.c:109
+msgid "media type"
+msgstr ""
+
+#: src/main/extractor.c:110
+msgid "contact"
+msgstr ""
+
+#: src/main/extractor.c:206
+#, c-format
+msgid "Initialization of plugin mechanism failed: %s!\n"
+msgstr ""
+
+#: src/main/extractor.c:392
+#, c-format
+msgid ""
+"Resolving symbol '%s' in library '%s' failed, so I tried '%s', but that "
+"failed also.  Errors are: '%s' and '%s'.\n"
+msgstr ""
+
+#: src/main/extractor.c:421
+#, c-format
+msgid "Loading '%s' plugin failed: %s\n"
+msgstr ""
+
+#: src/main/extractor.c:526
+#, c-format
+msgid "Unloading plugin '%s' failed!\n"
+msgstr ""
+
+#: src/main/getopt.c:681
+#, c-format
+msgid "%s: option `%s' is ambiguous\n"
+msgstr ""
+
+#: src/main/getopt.c:706
+#, c-format
+msgid "%s: option `--%s' doesn't allow an argument\n"
+msgstr ""
+
+#: src/main/getopt.c:712
+#, c-format
+msgid "%s: option `%c%s' doesn't allow an argument\n"
+msgstr ""
+
+#: src/main/getopt.c:729 src/main/getopt.c:900
+#, c-format
+msgid "%s: option `%s' requires an argument\n"
+msgstr ""
+
+#: src/main/getopt.c:758
+#, c-format
+msgid "%s: unrecognized option `--%s'\n"
+msgstr ""
+
+#: src/main/getopt.c:762
+#, c-format
+msgid "%s: unrecognized option `%c%s'\n"
+msgstr ""
+
+#: src/main/getopt.c:788
+#, c-format
+msgid "%s: illegal option -- %c\n"
+msgstr ""
+
+#: src/main/getopt.c:790
+#, c-format
+msgid "%s: invalid option -- %c\n"
+msgstr ""
+
+#: src/main/getopt.c:819 src/main/getopt.c:949
+#, c-format
+msgid "%s: option requires an argument -- %c\n"
+msgstr ""
+
+#: src/main/getopt.c:867
+#, c-format
+msgid "%s: option `-W %s' is ambiguous\n"
+msgstr ""
+
+#: src/main/getopt.c:885
+#, c-format
+msgid "%s: option `-W %s' doesn't allow an argument\n"
+msgstr ""
+
+#: src/main/winproc.c:36 src/main/winproc.c:1897
+msgid "No error"
+msgstr ""
+
+#: src/main/winproc.c:37
+msgid "Unknown host"
+msgstr ""
+
+#: src/main/winproc.c:38
+msgid "Host name lookup failure"
+msgstr ""
+
+#: src/main/winproc.c:39
+msgid "Unknown server error"
+msgstr ""
+
+#: src/main/winproc.c:40
+msgid "No address associated with name"
+msgstr ""
+
+#: src/main/winproc.c:41
+msgid "Internal resolver error"
+msgstr ""
+
+#: src/main/winproc.c:42
+msgid "Unknown resolver error"
+msgstr ""
+
+#: src/main/winproc.c:417
+#, c-format
+msgid "Cannot determine root directory (%s)\n"
+msgstr ""
+
+#: src/main/winproc.c:418
+#, c-format
+msgid "Cannot determine home directory (%s)\n"
+msgstr ""
+
+#: src/main/winproc.c:1303
+msgid "Not super-user"
+msgstr ""
+
+#: src/main/winproc.c:1308
+msgid "No such file or directory"
+msgstr ""
+
+#: src/main/winproc.c:1313
+msgid "No such process"
+msgstr ""
+
+#: src/main/winproc.c:1318
+msgid "Interrupted system call"
+msgstr ""
+
+#: src/main/winproc.c:1323
+msgid "I/O error"
+msgstr ""
+
+#: src/main/winproc.c:1328
+msgid "No such device or address"
+msgstr ""
+
+#: src/main/winproc.c:1333
+msgid "Arg list too long"
+msgstr ""
+
+#: src/main/winproc.c:1338
+msgid "Exec format error"
+msgstr ""
+
+#: src/main/winproc.c:1343
+msgid "Bad file number"
+msgstr ""
+
+#: src/main/winproc.c:1348
+msgid "No children"
+msgstr ""
+
+#: src/main/winproc.c:1353
+msgid "Resource unavailable or operation would block, try again"
+msgstr ""
+
+#: src/main/winproc.c:1358
+msgid "Not enough memory"
+msgstr ""
+
+#: src/main/winproc.c:1363
+msgid "Permission denied"
+msgstr ""
+
+#: src/main/winproc.c:1368
+msgid "Bad address"
+msgstr ""
+
+#: src/main/winproc.c:1373
+msgid "Block device required"
+msgstr ""
+
+#: src/main/winproc.c:1378
+msgid "Mount device busy"
+msgstr ""
+
+#: src/main/winproc.c:1383
+msgid "File exists"
+msgstr ""
+
+#: src/main/winproc.c:1388
+msgid "Cross-device link"
+msgstr ""
+
+#: src/main/winproc.c:1393
+msgid "No such device"
+msgstr ""
+
+#: src/main/winproc.c:1398
+msgid "Not a directory"
+msgstr ""
+
+#: src/main/winproc.c:1403
+msgid "Is a directory"
+msgstr ""
+
+#: src/main/winproc.c:1408
+msgid "Invalid argument"
+msgstr ""
+
+#: src/main/winproc.c:1413
+msgid "Too many open files in system"
+msgstr ""
+
+#: src/main/winproc.c:1418
+msgid "Too many open files"
+msgstr ""
+
+#: src/main/winproc.c:1423
+msgid "Not a typewriter"
+msgstr ""
+
+#: src/main/winproc.c:1428
+msgid "Text file busy"
+msgstr ""
+
+#: src/main/winproc.c:1433
+msgid "File too large"
+msgstr ""
+
+#: src/main/winproc.c:1438
+msgid "No space left on device"
+msgstr ""
+
+#: src/main/winproc.c:1443
+msgid "Illegal seek"
+msgstr ""
+
+#: src/main/winproc.c:1448
+msgid "Read only file system"
+msgstr ""
+
+#: src/main/winproc.c:1453
+msgid "Too many links"
+msgstr ""
+
+#: src/main/winproc.c:1458
+msgid "Broken pipe"
+msgstr ""
+
+#: src/main/winproc.c:1463
+msgid "Math arg out of domain of func"
+msgstr ""
+
+#: src/main/winproc.c:1468
+msgid "Math result not representable"
+msgstr ""
+
+#: src/main/winproc.c:1473
+msgid "No message of desired type"
+msgstr ""
+
+#: src/main/winproc.c:1478
+msgid "Identifier removed"
+msgstr ""
+
+#: src/main/winproc.c:1483
+msgid "Channel number out of range"
+msgstr ""
+
+#: src/main/winproc.c:1488
+msgid "Level 2 not synchronized"
+msgstr ""
+
+#: src/main/winproc.c:1493
+msgid "Level 3 halted"
+msgstr ""
+
+#: src/main/winproc.c:1498
+msgid "Level 3 reset"
+msgstr ""
+
+#: src/main/winproc.c:1503
+msgid "Link number out of range"
+msgstr ""
+
+#: src/main/winproc.c:1508
+msgid "Protocol driver not attached"
+msgstr ""
+
+#: src/main/winproc.c:1513
+msgid "No CSI structure available"
+msgstr ""
+
+#: src/main/winproc.c:1518
+msgid "Level 2 halted"
+msgstr ""
+
+#: src/main/winproc.c:1523
+msgid "Deadlock condition"
+msgstr ""
+
+#: src/main/winproc.c:1528
+msgid "No record locks available"
+msgstr ""
+
+#: src/main/winproc.c:1533
+msgid "Invalid exchange"
+msgstr ""
+
+#: src/main/winproc.c:1538
+msgid "Invalid request descriptor"
+msgstr ""
+
+#: src/main/winproc.c:1543
+msgid "Exchange full"
+msgstr ""
+
+#: src/main/winproc.c:1548
+msgid "No anode"
+msgstr ""
+
+#: src/main/winproc.c:1553
+msgid "Invalid request code"
+msgstr ""
+
+#: src/main/winproc.c:1558
+msgid "Invalid slot"
+msgstr ""
+
+#: src/main/winproc.c:1563
+msgid "File locking deadlock error"
+msgstr ""
+
+#: src/main/winproc.c:1568
+msgid "Bad font file fmt"
+msgstr ""
+
+#: src/main/winproc.c:1573
+msgid "Device not a stream"
+msgstr ""
+
+#: src/main/winproc.c:1578
+msgid "No data (for no delay io)"
+msgstr ""
+
+#: src/main/winproc.c:1583
+msgid "Timer expired"
+msgstr ""
+
+#: src/main/winproc.c:1588
+msgid "Out of streams resources"
+msgstr ""
+
+#: src/main/winproc.c:1593
+msgid "Machine is not on the network"
+msgstr ""
+
+#: src/main/winproc.c:1598
+msgid "Package not installed"
+msgstr ""
+
+#: src/main/winproc.c:1603
+msgid "The object is remote"
+msgstr ""
+
+#: src/main/winproc.c:1608
+msgid "The link has been severed"
+msgstr ""
+
+#: src/main/winproc.c:1613
+msgid "Advertise error"
+msgstr ""
+
+#: src/main/winproc.c:1618
+msgid "Srmount error"
+msgstr ""
+
+#: src/main/winproc.c:1623
+msgid "Communication error on send"
+msgstr ""
+
+#: src/main/winproc.c:1628
+msgid "Protocol error"
+msgstr ""
+
+#: src/main/winproc.c:1633
+msgid "Multihop attempted"
+msgstr ""
+
+#: src/main/winproc.c:1638
+msgid "Inode is remote (not really error)"
+msgstr ""
+
+#: src/main/winproc.c:1643
+msgid "Cross mount point (not really error)"
+msgstr ""
+
+#: src/main/winproc.c:1648
+msgid "Trying to read unreadable message"
+msgstr ""
+
+#: src/main/winproc.c:1653
+msgid "Given log. name not unique"
+msgstr ""
+
+#: src/main/winproc.c:1658
+msgid "f.d. invalid for this operation"
+msgstr ""
+
+#: src/main/winproc.c:1663
+msgid "Remote address changed"
+msgstr ""
+
+#: src/main/winproc.c:1668
+msgid "Can't access a needed shared lib"
+msgstr ""
+
+#: src/main/winproc.c:1673
+msgid "Accessing a corrupted shared lib"
+msgstr ""
+
+#: src/main/winproc.c:1678
+msgid ".lib section in a.out corrupted"
+msgstr ""
+
+#: src/main/winproc.c:1683
+msgid "Attempting to link in too many libs"
+msgstr ""
+
+#: src/main/winproc.c:1688
+msgid "Attempting to exec a shared library"
+msgstr ""
+
+#: src/main/winproc.c:1693
+msgid "Function not implemented"
+msgstr ""
+
+#: src/main/winproc.c:1698
+msgid "No more files"
+msgstr ""
+
+#: src/main/winproc.c:1703
+msgid "Directory not empty"
+msgstr ""
+
+#: src/main/winproc.c:1708
+msgid "File or path name too long"
+msgstr ""
+
+#: src/main/winproc.c:1713
+msgid "Too many symbolic links"
+msgstr ""
+
+#: src/main/winproc.c:1718
+msgid "Operation not supported on transport endpoint"
+msgstr ""
+
+#: src/main/winproc.c:1723
+msgid "Protocol family not supported"
+msgstr ""
+
+#: src/main/winproc.c:1728
+msgid "Connection reset by peer"
+msgstr ""
+
+#: src/main/winproc.c:1733
+msgid "No buffer space available"
+msgstr ""
+
+#: src/main/winproc.c:1738
+msgid "Address family not supported by protocol family"
+msgstr ""
+
+#: src/main/winproc.c:1743
+msgid "Protocol wrong type for socket"
+msgstr ""
+
+#: src/main/winproc.c:1748
+msgid "Socket operation on non-socket"
+msgstr ""
+
+#: src/main/winproc.c:1753
+msgid "Protocol not available"
+msgstr ""
+
+#: src/main/winproc.c:1758
+msgid "Can't send after socket shutdown"
+msgstr ""
+
+#: src/main/winproc.c:1763
+msgid "Connection refused"
+msgstr ""
+
+#: src/main/winproc.c:1768
+msgid "Address already in use"
+msgstr ""
+
+#: src/main/winproc.c:1773
+msgid "Connection aborted"
+msgstr ""
+
+#: src/main/winproc.c:1778
+msgid "Network is unreachable"
+msgstr ""
+
+#: src/main/winproc.c:1783
+msgid "Network interface is not configured"
+msgstr ""
+
+#: src/main/winproc.c:1788
+msgid "Connection timed out"
+msgstr ""
+
+#: src/main/winproc.c:1793
+msgid "Host is down"
+msgstr ""
+
+#: src/main/winproc.c:1798
+msgid "Host is unreachable"
+msgstr ""
+
+#: src/main/winproc.c:1803
+msgid "Connection already in progress"
+msgstr ""
+
+#: src/main/winproc.c:1808
+msgid "Socket already connected"
+msgstr ""
+
+#: src/main/winproc.c:1813
+msgid "Destination address required"
+msgstr ""
+
+#: src/main/winproc.c:1818
+msgid "Message too long"
+msgstr ""
+
+#: src/main/winproc.c:1823
+msgid "Unknown protocol"
+msgstr ""
+
+#: src/main/winproc.c:1828
+msgid "Socket type not supported"
+msgstr ""
+
+#: src/main/winproc.c:1833
+msgid "Address not available"
+msgstr ""
+
+#: src/main/winproc.c:1838
+msgid "Connection aborted by network"
+msgstr ""
+
+#: src/main/winproc.c:1843
+msgid "Socket is already connected"
+msgstr ""
+
+#: src/main/winproc.c:1848
+msgid "Socket is not connected"
+msgstr ""
+
+#: src/main/winproc.c:1853
+msgid "Too many references: cannot splice"
+msgstr ""
+
+#: src/main/winproc.c:1858
+msgid "Too many processes"
+msgstr ""
+
+#: src/main/winproc.c:1863
+msgid "Too many users"
+msgstr ""
+
+#: src/main/winproc.c:1868
+msgid "Disk quota exceeded"
+msgstr ""
+
+#: src/main/winproc.c:1873 src/main/winproc.c:1900
+msgid "Unknown error"
+msgstr ""
+
+#: src/main/winproc.c:1878
+msgid "Not supported"
+msgstr ""
+
+#: src/main/winproc.c:1883
+msgid "No medium (in tape drive)"
+msgstr ""
+
+#: src/main/winproc.c:1888
+msgid "No such host or network path"
+msgstr ""
+
+#: src/main/winproc.c:1893
+msgid "Filename exists with different case"
+msgstr ""
+
+#: src/main/winproc.c:1902
+#, c-format
+msgid "ERROR: Unknown error %i in %s\n"
+msgstr ""
+
+#: src/plugins/rpm/rpmextractor.c:3048
+#, c-format
+msgid "Source RPM %d.%d"
+msgstr ""
+
+#: src/plugins/rpm/rpmextractor.c:3053
+#, c-format
+msgid "Binary RPM %d.%d"
+msgstr ""
+
+#: src/plugins/manextractor.c:128
+msgid "Commands"
+msgstr ""
+
+#: src/plugins/manextractor.c:133
+msgid "System calls"
+msgstr ""
+
+#: src/plugins/manextractor.c:138
+msgid "Library calls"
+msgstr ""
+
+#: src/plugins/manextractor.c:143
+msgid "Special files"
+msgstr ""
+
+#: src/plugins/manextractor.c:148
+msgid "File formats and conventions"
+msgstr ""
+
+#: src/plugins/manextractor.c:153
+msgid "Games"
+msgstr ""
+
+#: src/plugins/manextractor.c:158
+msgid "Conventions and miscellaneous"
+msgstr ""
+
+#: src/plugins/manextractor.c:163
+msgid "System management commands"
+msgstr ""
+
+#: src/plugins/manextractor.c:168
+msgid "Kernel routines"
+msgstr ""
+
+#: src/plugins/htmlextractor.c:130 src/plugins/htmlextractor.c:928
+#, c-format
+msgid "Fatal: could not allocate (%s at %s:%d).\n"
+msgstr ""
+
+#: src/plugins/jpegextractor.c:178
+#, c-format
+msgid "%ux%u dots per inch"
+msgstr ""
+
+#: src/plugins/jpegextractor.c:188
+#, c-format
+msgid "%ux%u dots per cm"
+msgstr ""
+
+#: src/plugins/jpegextractor.c:198
+#, c-format
+msgid "%ux%u dots per inch?"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:49
+msgid "Blues"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:50
+msgid "Classic Rock"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:51
+msgid "Country"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:52
+msgid "Dance"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:53
+msgid "Disco"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:54
+msgid "Funk"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:55
+msgid "Grunge"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:56
+msgid "Hip-Hop"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:57
+msgid "Jazz"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:58
+msgid "Metal"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:59
+msgid "New Age"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:60
+msgid "Oldies"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:61
+msgid "Other"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:62
+msgid "Pop"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:63
+msgid "R&B"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:64
+msgid "Rap"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:65
+msgid "Reggae"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:66
+msgid "Rock"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:67
+msgid "Techno"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:68
+msgid "Industrial"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:69
+msgid "Alternative"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:70
+msgid "Ska"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:71
+msgid "Death Metal"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:72
+msgid "Pranks"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:73
+msgid "Soundtrack"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:74
+msgid "Euro-Techno"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:75
+msgid "Ambient"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:76
+msgid "Trip-Hop"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:77
+msgid "Vocal"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:78
+msgid "Jazz+Funk"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:79
+msgid "Fusion"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:80
+msgid "Trance"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:81
+msgid "Classical"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:82
+msgid "Instrumental"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:83
+msgid "Acid"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:84
+msgid "House"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:85
+msgid "Game"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:86
+msgid "Sound Clip"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:87
+msgid "Gospel"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:88
+msgid "Noise"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:89
+msgid "Alt. Rock"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:90
+msgid "Bass"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:91
+msgid "Soul"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:92
+msgid "Punk"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:93
+msgid "Space"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:94
+msgid "Meditative"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:95
+msgid "Instrumental Pop"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:96
+msgid "Instrumental Rock"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:97
+msgid "Ethnic"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:98
+msgid "Gothic"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:99
+msgid "Darkwave"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:100
+msgid "Techno-Industrial"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:101
+msgid "Electronic"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:102
+msgid "Pop-Folk"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:103
+msgid "Eurodance"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:104
+msgid "Dream"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:105
+msgid "Southern Rock"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:106
+msgid "Comedy"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:107
+msgid "Cult"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:108
+msgid "Gangsta Rap"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:109
+msgid "Top 40"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:110
+msgid "Christian Rap"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:111
+msgid "Pop/Funk"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:112
+msgid "Jungle"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:113
+msgid "Native American"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:114
+msgid "Cabaret"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:115
+msgid "New Wave"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:116
+msgid "Psychedelic"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:117
+msgid "Rave"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:118
+msgid "Showtunes"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:119
+msgid "Trailer"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:120
+msgid "Lo-Fi"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:121
+msgid "Tribal"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:122
+msgid "Acid Punk"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:123
+msgid "Acid Jazz"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:124
+msgid "Polka"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:125
+msgid "Retro"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:126
+msgid "Musical"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:127
+msgid "Rock & Roll"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:128
+msgid "Hard Rock"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:129
+msgid "Folk"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:130
+msgid "Folk/Rock"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:131
+msgid "National Folk"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:132
+msgid "Swing"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:133
+msgid "Fast-Fusion"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:134
+msgid "Bebob"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:135
+msgid "Latin"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:136
+msgid "Revival"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:137
+msgid "Celtic"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:138
+msgid "Bluegrass"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:139
+msgid "Avantgarde"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:140
+msgid "Gothic Rock"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:141
+msgid "Progressive Rock"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:142
+msgid "Psychedelic Rock"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:143
+msgid "Symphonic Rock"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:144
+msgid "Slow Rock"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:145
+msgid "Big Band"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:146
+msgid "Chorus"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:147
+msgid "Easy Listening"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:148
+msgid "Acoustic"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:149
+msgid "Humour"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:150
+msgid "Speech"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:151
+msgid "Chanson"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:152
+msgid "Opera"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:153
+msgid "Chamber Music"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:154
+msgid "Sonata"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:155
+msgid "Symphony"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:156
+msgid "Booty Bass"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:157
+msgid "Primus"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:158
+msgid "Porn Groove"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:159
+msgid "Satire"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:160
+msgid "Slow Jam"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:161
+msgid "Club"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:162
+msgid "Tango"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:163
+msgid "Samba"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:164
+msgid "Folklore"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:165
+msgid "Ballad"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:166
+msgid "Power Ballad"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:167
+msgid "Rhythmic Soul"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:168
+msgid "Freestyle"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:169
+msgid "Duet"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:170
+msgid "Punk Rock"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:171
+msgid "Drum Solo"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:172
+msgid "A Cappella"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:173
+msgid "Euro-House"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:174
+msgid "Dance Hall"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:175
+msgid "Goa"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:176
+msgid "Drum & Bass"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:177
+msgid "Club-House"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:178
+msgid "Hardcore"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:179
+msgid "Terror"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:180
+msgid "Indie"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:181
+msgid "BritPop"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:182
+msgid "Negerpunk"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:183
+msgid "Polsk Punk"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:184
+msgid "Beat"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:185
+msgid "Christian Gangsta Rap"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:186
+msgid "Heavy Metal"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:187
+msgid "Black Metal"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:188
+msgid "Crossover"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:189
+msgid "Contemporary Christian"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:190
+msgid "Christian Rock"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:191
+msgid "Merengue"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:192
+msgid "Salsa"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:193
+msgid "Thrash Metal"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:194
+msgid "Anime"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:195
+msgid "JPop"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:196
+msgid "Synthpop"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:438 src/plugins/wavextractor.c:114
+msgid "stereo"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:438 src/plugins/wavextractor.c:114
+msgid "mono"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:439
+msgid "(variable bps)"
+msgstr ""
+
+#: src/plugins/riffextractor.c:167
+#, c-format
+msgid "codec: %s, %u fps, %u ms"
+msgstr ""
+
+#: src/plugins/printable/dictionary-builder.c:29
+#, c-format
+msgid ""
+"Please provide the name of the language you are building\n"
+"a dictionary for.  For example:\n"
+msgstr ""
+
+#: src/plugins/printable/dictionary-builder.c:42
+#, c-format
+msgid "Error opening file '%s': %s\n"
+msgstr ""
+
+#: src/plugins/printable/dictionary-builder.c:50
+#, c-format
+msgid ""
+"Error allocating: %s\n"
+"."
+msgstr ""
+
+#: src/plugins/printable/dictionary-builder.c:62
+#, c-format
+msgid "Increase ALLOCSIZE (in %s).\n"
+msgstr ""

@@ -1,0 +1,245 @@
+        Reading file meta-data with extract and libextractor
+
+
+                     by Christian Grothoff
+
+
+INTRODUCTION
+
+Modern file formats have provisions to annotate the contents of the
+file with descriptive information.  This development is driven by the
+need to find a better way to organize data than merely using
+filenames.  The problem with such meta-data is that the way it is
+stored is not standardized across different file formats.  This makes
+it difficult for format-agnostic tools such as file managers or
+file-sharing applications to make use of the information.  It also
+results in a plethora of format-specific tools that are used to
+extract the meta-data, such as AVInfo [7] id3edit [8], jpeginfo [9]
+or Vocoditor [10].
+
+In this article, the libextractor library and the extract tool are
+introduced.  The goal of the libextractor project [1] is to provide a
+uniform interface for obtaining meta-data from different file formats.
+libextractor is currently used by evidence [3], the file-manager for
+the forthcomming version of Enlightenment [13], and GNUnet [4], an
+anonymous, censorship-resistant peer-to-peer file-sharing system.  The
+extract tool is a command-line interface to the library.  libextractor
+is licensed under the GNU Public License [14].
+
+libextractor shares some similarities with the popular file [11] tool
+which uses the first bytes in a file to guess the mime-type.
+libextractor differs from file that it tries to obtain much more
+information than just the mime-type.  Depending on the file format,
+libextractor can obtain additional information.  Examples of this
+extra information include the name of the software used to create the
+file, the author, descriptions, album titles, image dimensions or the
+duration of the movie.
+
+libextractor achieves this by using specific parser code for many
+popular formats.  The list currently includes mp3, ogg, real-media,
+mpeg, riff (avi), gif, jpeg, png, tiff, html, pdf, ps and zip as well
+as generic methods such as mime-type detection.  Many other formats
+exist [5], but among the more popular formats only a few proprietary
+formats are not supported.  Integrating support for new formats is
+easy since libextractor uses plugins to gather data.  libextractor
+plugins are shared libraries that typically provide code to parse one
+particular format.  At the end of the article we will show how to
+integrate support for new formats into the library.  libextractor
+gathers the meta-data obtained from the various plugins and provides
+clients with a list of pairs consisting of a classification and a
+character sequence.  The classification is used to organize the
+meta-data into categories like title, creator, subject, description
+and so on [6].
+
+
+[ INSTALLING LIBEXTRACTOR AND USING EXTRACT ]
+
+The simplest way to install libextractor is to use one of the binary
+packages which are available online for many distributions.  Note
+that under Debian, the extract tool is in a separate package extract
+[15] and headers required to compile other applications against
+libextractor are in libextractor0-devel [16].  If you want to compile
+libextractor from source you will need an unusual amount of memory:
+256 MB system memory is roughly the minimum, since gcc will take about
+200 MB to compile one of the plugins.  Otherwise, compiling by hand
+follows the usual sequence:
+
+$ wget http://ovmj.org/libextractor/download/libextractor-0.3.1.tar.gz
+$ tar xvfz libextractor-0.3.1.tar.gz
+$ cd libextractor-0.3.1
+$ ./configure --prefix=/usr/local
+$ make
+# make install
+
+After installing libextractor, the extract tool can be used to obtain
+meta-data from documents.  By default, the extract tool uses the
+canonical set of plugins, which consists of all file-format-specific
+plugins supported by the current version of libextractor together with
+the mime-type detection plugin.  For example, extract returns something
+like the following for LinuxJournal's webpage:
+
+$ wget -q http://www.linuxjournal.com/
+$ extract index.html
+description - The Monthly Magazine of the Linux Community
+keywords - linux, linux journal, magazine
+author - Linux Journal  - The Premier Magazine of the Linux Community
+title - Linux Journal  - The Premier Magazine of the Linux Community
+
+If you are a user of bibtex [12] the option -b is likely to come in
+handy to automatically create bibtex entries from documents that have
+been properly equipped with meta-data:
+
+$ wget -q http://www.copyright.gov/legislation/dmca.pdf
+$ extract -b ~/dmca.pdf
+% BiBTeX file
+@misc{ unite2001the_d,
+    title = "The Digital Millennium Copyright Act of 1998",
+    author = "United States Copyright Office - jmf",
+    note = "digital millennium copyright act circumvention technological protection management information online service provider liability limitation computer maintenance competitiion repair ephemeral recording webcasting distance education study vessel hull",
+    year = "2001",
+    month = "10",
+    key = "Copyright Office Summary of the DMCA",
+    pages = "18"
+}
+
+Another interesting option is "-B LANG".  This option loads one of the
+language specific (but format-agnostic) plugins.  These plugins
+attempt to find plaintext in a document by matching strings in the
+document against a dictionary.  If the need for 200 MB of memory to
+compile libextractor seems mysterious, the answer lies in these
+plugins.  In order to be able to perform a fast dictionary search, a
+bloomfilter [17] is created that allows fast probabilistic matching;
+gcc finds the resulting datastructure a bit hard to swallow.  The
+option -B is useful for formats that are undocumented or currently
+unsupported.  Note that the printable plugins typically print the
+entire text of the document in order.  A typical use is:
+
+$ wget -q http://www.bayern.de/HDBG/polges.doc
+$ extract -B de polges.doc | head -n 4 
+unknown - FEE Politische Geschichte Bayerns Herausgegeben vom Haus der Geschichte als Heft der zur Geschichte und Kultur Redaktion Manfred Bearbeitung Otto Copyright Haus der Geschichte München Gestaltung fürs Internet Rudolf Inhalt im.
+unknown - und das Deutsche Reich.
+unknown - und seine.
+unknown - Henker im Zeitalter von Reformation und Gegenreformation.
+
+This is a rather precise description of the text for a German
+speaker.  The supported languages at the moment are Danish (da),
+German (de), English (en), Spanish (es), Italian (it) and Norvegian
+(no).  Supporting other languages is merely a question of adding
+(free) dictionaries in an appropriate character set.  Further options
+are described in the extract manpage (man 1 extract).
+
+
+[ USING LIBEXTRACTOR IN YOUR PROJECTS ]
+
+The shortest program using libextractor looks roughly like this
+(compilation requires passing the option -Lextractor to gcc):
+
+#include <extractor.h>                 
+int main(int argc, char * argv[]) {
+  EXTRACTOR_ExtractorList * plugins;
+  EXTRACTOR_KeywordList   * md_list;
+  plugins = EXTRACTOR_loadDefaultLibraries(); 
+  md_list = EXTRACTOR_getKeywords(plugins, argv[1]);
+  EXTRACTOR_printKeywords(stdout, md_list); 
+  EXTRACTOR_freeKeywords(md_list); 
+  EXTRACTOR_removeAll(plugins); /* unload plugins */
+}
+
+The EXTRACTOR_KeywordList is a simple linked list containing
+a keyword and a keyword type.  For details and additional functions
+for loading plugins and manipulating the keyword list, see the
+libextractor manpage (man 3 libextractor).  Java programmers
+should note that a Java class that uses JNI to communicate with
+libextractor is also available.
+
+
+[ WRITING PLUGINS ]
+
+The most complicated thing when writing a new plugin for libextractor
+is the writing of the actual parser for a specific format.
+Nevertheless, the basic pattern is always the same.  The plugin
+library must be called libextractor_XXX.so where XXX denotes the file
+format of the plugin.  The library must export a method
+libextractor_XXX_extract with the following signature:
+
+struct EXTRACTOR_Keywords * 
+libextractor_XXX_extract
+   (char * filename,
+    char * data,
+    size_t size,
+    struct EXTRACTOR_Keywords * prev);
+
+The argument filename specifies the name of the file that is being
+processed.  data is a pointer to the (typically mmapped) contents of
+the file, and size is the filesize.  Most plugins to not make use of
+the filename and just directly parse data directly, staring by
+verifying that the header of the data matches the specific format.
+prev is the list of keywords that have been extracted so far by other
+plugins for the file.  The function is expected to return an updated
+list of keywords.  If the format does not match the expectations of
+the plugin, prev is returned.  Most plugins use a function like
+addKeyword to extend the list:
+
+static void addKeyword
+   (struct EXTRACTOR_Keywords ** list,
+    char * keyword,
+    EXTRACTOR_KeywordType type) 
+{
+  EXTRACTOR_KeywordList * next;
+  next = malloc(sizeof(EXTRACTOR_KeywordList));
+  next->next = *list;
+  next->keyword = keyword;
+  next->keywordType = type;
+  *list = next;
+}
+
+A typical use of addKeyword is to add the mime-type once the file format
+has been established.  For example, the JPEG-extractor checks the first
+bytes of the JPEG header and then either aborts or claims the file to be
+a JPEG:
+
+if ( (data[0] != 0xFF) || (data[1] != 0xD8) )
+  return prev; /* not a JPEG */
+addKeyword(&prev,
+           strdup("image/jpeg"),
+           EXTRACTOR_MIMETYPE);
+/* ... more parsing code here ... */
+return prev;
+
+Note that the strdup here is important since the string will be
+deallocated later, typically in EXTRACTOR_freeKeywords().  A list of
+supported keyword classifications (EXTRACTOR_XXXX) can be found in the
+extractor.h header file [18].
+
+
+
+[ CONCLUSION ]
+
+libextractor is a simple extensible C library for obtaining meta-data
+from documents.  Its plugin architecture and broad support for formats
+set it apart from format-specific tools.  The design is limited by the
+fact that libextractor cannot be used to update meta-data, which more
+specialized tools typically support.
+
+
+[ REFERENCES ]
+
+[1] http://ovmj.org/libextractor/  
+[2] http://getid3.sf.net/ 
+[3] http://evidence.sf.net/
+[4] http://ovmj.org/GNUnet/
+[5] http://www.wotsit.org/
+[6] http://dublincore.org/documents/dcmi-terms/
+[7] http://freshmeat.net/projects/aviinfo/
+[8] http://freshmeat.net/projects/id3edit/
+[9] http://freshmeat.net/projects/jpeginfo/
+[10] http://freshmeat.net/projects/vocoditor/
+[11] http://freshmeat.net/projects/file/
+[12] http://dmoz.org/Computers/Software/Typesetting/TeX/BibTeX/
+[13] http://enlightenment.org/
+[14] http://www.gnu.org/licenses/gpl.html
+[15] http://packages.debian.org/extract
+[16] http://packages.debian.org/libextractor0-devel
+[17] http://ovmj.org/GNUnet/download/bloomfilter.ps
+[18] http://ovmj.org/libextractor/doxygen/html/extractor_8h-source.html
+

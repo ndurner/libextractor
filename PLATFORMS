@@ -1,0 +1,40 @@
+This file lists the known problems with libextractor on various
+platforms.  Let us know if you know more about it than we do.
+
+Linux (x86):
+- perfect
+
+FreeBSD (x86):
+- perfect
+
+OpenBSD/NetBSD:
+- unknown
+
+Linux (Ultra Sparc):
+- perfect 
+
+Linux (Alpha):
+- perfect
+
+Solaris 8 (SunOS 5.8, Sparc SunFire 880):
+- possibly with small libltdl compile problem
+  (add #define LT_USE_POSIX_DIRENT in line 88 of ltdl.c).
+
+OS X (10.3, PowerPC):
+- perfect
+
+MinGW:
+- linking against libstdc++ fails
+    my workaround: rename libstdc++.la
+    Gerrit P. Haase writes: 
+      Linking -lstdc++ with the provided libtool fails also on Cygwin, this
+      is a problem with libtool, there is unfortunately no flag to tell
+      libtool how to do its job on Cygwin and it seems that it cannot be the
+      default to set the library check to 'pass_all'.  Workaround as you
+      suggested doesn't work on Cygwin, IIRC.  I use a patched libtool for
+      these kind of problems.
+
+Cygwin:
+- compiles fine after touch src/plugins/printable/config.h
+- plugins do not load (weird Win32 error code)
+

@@ -1,0 +1,2 @@
+#!/bin/sh
+extract -V test.jpg test.html test.png test.rpm | diff testcase -

@@ -1,0 +1,46 @@
+Keywords for file test.jpg:
+comment - (C) 2001 by Christian Grothoff, using gimp 1.2 1
+mimetype - image/jpeg
+
+Keywords for file test.html:
+copyright - (C) 2000 by Christian Grothoff
+date - 2000-08-20
+publisher - Christian Grothoff
+language - en
+keywords - Christian,Grothoff
+author - Christian Grothoff
+description - Homepage of Christian Grothoff
+title - Christian Grothoff
+
+Keywords for file test.png:
+comment - Testing keyword extraction
+resource-identifier - dc6c58c971715e8043baef058b675eec
+mimetype - image/png
+
+Keywords for file test.rpm:
+os - linux
+resource-identifier - http://www.gnu.org/software/libtool/
+group - Development/Tools
+packager - Red Hat, Inc. <http://bugzilla.redhat.com/bugzilla>
+license - GPL
+copyright - GPL
+vendor - Red Hat, Inc.
+distribution - Red Hat Linux
+size - 2623621
+build-host - bullwinkle.devel.redhat.com
+creation date - Thu Oct  2 04:44:33 2003
+description - The libtool package contains the GNU libtool, a set of shell scripts
+which automatically configure UNIX and UNIX-like architectures to
+generically build shared libraries.  Libtool provides a consistent,
+portable interface which simplifies the process of using shared
+libraries.
+
+If you are developing programs which will use shared libraries, you
+should install libtool.
+summary - The GNU libtool, which simplifies the use of shared libraries.
+release - 6
+version - 1.5
+title - libtool
+unknown - BINARY RPM 3.0
+mimetype - application/x-rpm
+

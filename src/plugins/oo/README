@@ -1,0 +1,11 @@
+This is to become an extractor for OpenOffice formats.
+
+OO uses 'zip' files that contain a file 'meta.xml' which
+in turn contains the data we care about.
+
+The plugin will use zlib to get to the zip-contents
+(the code here so far is a copy of some demo code from
+ zlib, which I hope will work nicely).
+
+Anyway, after we get to meta.xml we'll need to parse 
+it.  Both is not done yet, standby.

@@ -1,0 +1,93 @@
+The files crypt.h, ioapi.c, ioapi.h, miniunz, unzip.c and unzip.h are
+from contrib/ in zlib (copyright below).  The code was adapted for
+libextractor and extended to support OpenOffice meta-data extraction
+by Christian Grothoff.
+
+  Copyright (C) 1998-2003 Gilles Vollant
+
+   This unzip package allow extract file from .ZIP file, compatible with PKZip 2.04g
+     WinZip, InfoZip tools and compatible.
+   Encryption and multi volume ZipFile (span) are not supported.
+   Old compressions used by old PKZip 1.x are not supported
+
+
+   I WAIT FEEDBACK at mail info@winimage.com
+   Visit also http://www.winimage.com/zLibDll/unzip.htm for evolution
+
+   Condition of use and distribution are the same than zlib :
+
+  This software is provided 'as-is', without any express or implied
+  warranty.  In no event will the authors be held liable for any damages
+  arising from the use of this software.
+
+  Permission is granted to anyone to use this software for any purpose,
+  including commercial applications, and to alter it and redistribute it
+  freely, subject to the following restrictions:
+
+  1. The origin of this software must not be misrepresented; you must not
+     claim that you wrote the original software. If you use this software
+     in a product, an acknowledgment in the product documentation would be
+     appreciated but is not required.
+  2. Altered source versions must be plainly marked as such, and must not be
+     misrepresented as being the original software.
+  3. This notice may not be removed or altered from any source distribution.
+
+
+Original ChangeLog (from before LE integration):
+
+
+Change in 1.00: (10 sept 03)
+- rename to 1.00
+- cosmetic code change
+
+Change in 0.22: (19 May 03)
+- crypting support (unless you define NOCRYPT)
+- append file in existing zipfile
+
+Change in 0.21: (10 Mar 03)
+- bug fixes
+
+Change in 0.17: (27 Jan 02)
+- bug fixes
+
+Change in 0.16: (19 Jan 02)
+- Support of ioapi for virtualize zip file access
+
+Change in 0.15: (19 Mar 98)
+- fix memory leak in minizip.c
+
+Change in 0.14: (10 Mar 98)
+- fix bugs in minizip.c sample for zipping big file
+- fix problem in month in date handling
+- fix bug in unzlocal_GetCurrentFileInfoInternal in unzip.c for
+    comment handling
+
+Change in 0.13: (6 Mar 98)
+- fix bugs in zip.c
+- add real minizip sample
+
+Change in 0.12: (4 Mar 98)
+- add zip.c and zip.h for creates .zip file
+- fix change_file_date in miniunz.c for Unix (Jean-loup Gailly)
+- fix miniunz.c for file without specific record for directory
+
+Change in 0.11: (3 Mar 98)
+- fix bug in unzGetCurrentFileInfo for get extra field and comment
+- enhance miniunz sample, remove the bad unztst.c sample
+
+Change in 0.10: (2 Mar 98)
+- fix bug in unzReadCurrentFile
+- rename unzip* to unz* function and structure
+- remove Windows-like hungary notation variable name
+- modify some structure in unzip.h
+- add somes comment in source
+- remove unzipGetcCurrentFile function
+- replace ZUNZEXPORT by ZEXPORT
+- add unzGetLocalExtrafield for get the local extrafield info
+- add a new sample, miniunz.c
+
+Change in 0.4: (25 Feb 98)
+- suppress the type unzipFileInZip.
+  Only on file in the zipfile can be open at the same time
+- fix somes typo in code
+- added tm_unz structure in unzip_file_info (date/time in readable format)
