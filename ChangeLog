@@ -1,5 +1,7 @@
 Wed Jan 26 19:31:04 EST 2005
-	Workaround possible bug in glib quarks (OLE2 extractor)
+	Workaround possible bug in glib quarks (OLE2 extractor).
+	Improved QT support (?nam tag, support for description).
+	Releasing libextractor 0.4.1.
 
 Fri Jan 21 15:23:43 PST 2005
 	Adding support for creation date for tar files.

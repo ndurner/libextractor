@@ -3,10 +3,6 @@ Core:
 * add support for different character sets (to 'all' extractors)
 * add support for passing options to extractors
 
-Untested code:
-* QuickTime is untested: it may or may not work
-  => also: check with code from bitzi collider
-
 'Unclean' code:
 * QT
 * ASF

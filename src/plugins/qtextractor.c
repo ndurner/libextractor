@@ -139,6 +139,7 @@ typedef unsigned char ext_uint8_t;
 
 #define UDTA_ATOM QT_ATOM('u', 'd', 't', 'a')
 #define CPY_ATOM QT_ATOM(0xA9, 'c', 'p', 'y')
+#define NAM_ATOM QT_ATOM(0xA9, 'n', 'a', 'm')
 #define DES_ATOM QT_ATOM(0xA9, 'd', 'e', 's')
 #define CMT_ATOM QT_ATOM(0xA9, 'c', 'm', 't')
 
@@ -318,6 +319,7 @@ typedef struct {
   int seek_flag;  /* this is set to indicate that a seek has just occurred */
 
   char              *copyright;
+  char              *name;
   char              *description;
   char              *comment;
 
@@ -547,6 +549,7 @@ static qt_info *create_qt_info(void) {
   info->audio_trak = -1;
 
   info->copyright = NULL;
+  info->name = NULL;
   info->description = NULL;
   info->comment = NULL;
 
@@ -588,6 +591,8 @@ static void free_qt_info(qt_info *info) {
     }
     if (info->copyright != NULL)
       free(info->copyright);
+    if (info->name != NULL)
+      free(info->name);
     if (info->description != NULL)
       free(info->description);
     if (info->comment != NULL)
@@ -1586,6 +1591,13 @@ static void parse_moov_atom(qt_info *info, unsigned char *moov_atom) {
       strncpy(info->copyright, &moov_atom[i + 8], string_size - 1);
       info->copyright[string_size - 1] = 0;
 
+    } else if (current_atom == NAM_ATOM) {
+
+      string_size = BE_16(&moov_atom[i + 4]) + 1;
+      info->name = realloc (info->name, string_size);
+      strncpy(info->name, &moov_atom[i + 8], string_size - 1);
+      info->name[string_size - 1] = 0;
+
     } else if (current_atom == DES_ATOM) {
 
       string_size = BE_16(&moov_atom[i + 4]) + 1;
@@ -2018,6 +2030,8 @@ struct EXTRACTOR_Keywords * libextractor_qt_extract(char * filename,
     prev = addKeyword(EXTRACTOR_COMMENT, this->comment, prev);
   if (this->copyright != NULL)
     prev = addKeyword(EXTRACTOR_COPYRIGHT, this->copyright, prev);
+  if (this->name != NULL)
+    prev = addKeyword(EXTRACTOR_DESCRIPTION, this->name, prev);
   prev = addKeyword(EXTRACTOR_MIMETYPE, "video/quicktime", prev);
 
   free_qt_info(this);
