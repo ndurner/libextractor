@@ -21,7 +21,10 @@ Solaris 8 (SunOS 5.8, Sparc SunFire 880):
   (add #define LT_USE_POSIX_DIRENT in line 88 of ltdl.c).
 
 OS X (10.3, PowerPC):
-- perfect
+- MacOS X users must bootstrap the configuration system using
+  libtool 1.5.10 or later (in the root libextractor directory):
+  autoreconf -f -i; cd libltdl; autoreconf -f -i; cd ..
+  After this, configure & make should work properly.
 
 MinGW:
 - linking against libstdc++ fails
