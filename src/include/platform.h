@@ -78,7 +78,7 @@
  #define GN_FREAD(b, s, c, f) fread(b, s, c, f)
  #define GN_FWRITE(b, s, c, f) fwrite(b, s, c, f)
  #define MMAP(s, l, p, f, d, o) mmap(s, l, p, f, d, o)
- #define MUNMAP(s, l) munmap(s, l);
+ #define MUNMAP(s, l) munmap(s, l)
  #define STRERROR(i) strerror(i)
 #else
 
