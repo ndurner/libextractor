@@ -1,6 +1,6 @@
 /*
      This file is part of libextractor.
-     (C) 2002 - 2005 Vidyut Samanta and Christian Grothoff
+     (C) 2002, 2003, 2004, 2005 Vidyut Samanta and Christian Grothoff
 
      libextractor is free software; you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published
@@ -105,11 +105,12 @@ static const char *keywordTypes[] = {
   gettext_noop("media type"),
   gettext_noop("contact"),
   gettext_noop("binary thumbnail data"),
+  gettext_noop("publication date"),
   NULL,
 };
 
 /* the number of keyword types (for bounds-checking) */
-#define HIGHEST_TYPE_NUMBER 71
+#define HIGHEST_TYPE_NUMBER 72
 
 #ifdef HAVE_LIBOGG
 #if HAVE_VORBIS
