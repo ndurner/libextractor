@@ -923,7 +923,6 @@ struct EXTRACTOR_Keywords * libextractor_ole2_extract(const char * filename,
 						      struct EXTRACTOR_Keywords * prev) {
   GsfInput   *input;
   GsfInfile  *infile;
-  GError    *err;
   guint8 const *data;
   size_t len;
   int i;
@@ -934,13 +933,11 @@ struct EXTRACTOR_Keywords * libextractor_ole2_extract(const char * filename,
   if (input == NULL) 
     return prev;  
   
-  infile = gsf_infile_msole_new(input, &err);
+  infile = gsf_infile_msole_new(input, NULL);
   g_object_unref(G_OBJECT(input));
   
-  if (infile == NULL) {
-    g_error_free(err);
+  if (infile == NULL) 
     return prev;
-  }
 
   if (GSF_IS_INFILE(infile) &&
       gsf_infile_num_children (GSF_INFILE (infile)) > 0) {
