@@ -179,10 +179,10 @@ printHelp ()
  * @param print array indicating which types to print
  */
 static void
-printSelectedKeywords (FILE * handle,
-		       EXTRACTOR_KeywordList * keywords,
-		       const int * print, 
-		       const int verbose)
+printSelectedKeywords(FILE * handle,
+		      EXTRACTOR_KeywordList * keywords,
+		      const int * print, 
+		      const int verbose)
 {
   char * keyword;
   iconv_t cd;
@@ -202,18 +202,24 @@ printSelectedKeywords (FILE * handle,
 			    keywords->keyword);
     else
       keyword = strdup(keywords->keyword);
-    
-    if (NULL == EXTRACTOR_getKeywordTypeAsString (keywords->keywordType)) {
-      if (verbose == YES) {
-	fprintf(handle, 
-		_("INVALID TYPE - %s\n"),
-		keyword);
-      }
-    } else if (print[keywords->keywordType] == YES)
+
+    if (keywords->keywordType == EXTRACTOR_THUMBNAIL_DATA) {
       fprintf (handle,
-	       "%s - %s\n",
-	       EXTRACTOR_getKeywordTypeAsString(keywords->keywordType),
-	       keyword);
+	       _("%s - (binary)\n"),
+	       EXTRACTOR_getKeywordTypeAsString(keywords->keywordType));
+    } else {
+      if (NULL == EXTRACTOR_getKeywordTypeAsString(keywords->keywordType)) {
+	if (verbose == YES) {
+	  fprintf(handle, 
+		  _("INVALID TYPE - %s\n"),
+		  keyword);
+	}
+      } else if (print[keywords->keywordType] == YES)
+	fprintf (handle,
+		 "%s - %s\n",
+		 EXTRACTOR_getKeywordTypeAsString(keywords->keywordType),
+		 keyword);
+    }
     free(keyword);
     keywords = keywords->next;
   }

@@ -10,9 +10,14 @@ if HAVE_GLIB
  oledir=ole2
 endif
 
-SUBDIRS = . oo printable hash $(oledir) rpm pdf
+if HAVE_WAND
+ thumbdir=thumbnail
+endif
+
+SUBDIRS = . oo printable hash $(oledir) rpm pdf $(thumbdir)
 
 PLUGINFLAGS = -export-dynamic -avoid-version -module
+
 
 if HAVE_VORBISFILE
  extraogg = libextractor_ogg.la

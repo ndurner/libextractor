@@ -25,6 +25,8 @@ Desirable missing formats:
 * EXE
 * APEv2 (MPC file format, www.personal.uni-jena.de/~pfk/mpp/sv8/apetag.html)
 * PRC (Palm module, http://web.mit.edu/tytso/www/pilot/prc-format.html)
+* KOffice
+* TGA
 
 ==============
 
@@ -43,4 +45,3 @@ UTF-8 conversion (only listing what is left to do):
 * HTML: to be done
 * OLE2: to be done
 * OO: to be done
-* PDF: to be done

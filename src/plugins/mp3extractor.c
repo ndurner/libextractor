@@ -467,6 +467,8 @@ libextractor_mp3_extract(char * filename,
     klist = addkword(klist, info.year, EXTRACTOR_DATE);
   if (strlen(info.genre) > 0) 
     klist = addkword(klist, info.genre, EXTRACTOR_GENRE);
+  if (strlen(info.genre) > 0) 
+    klist = addkword(klist, info.comment, EXTRACTOR_COMMENT);
 
 
   /* A keyword that has all of the information together) */

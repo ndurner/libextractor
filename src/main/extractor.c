@@ -108,11 +108,12 @@ static const char *keywordTypes[] = {
   gettext_noop("lyrics"),
   gettext_noop("media type"),
   gettext_noop("contact"),
+  gettext_noop("binary thumbnail data"),
   NULL,
 };
 
 /* the number of keyword types (for bounds-checking) */
-#define HIGHEST_TYPE_NUMBER 70
+#define HIGHEST_TYPE_NUMBER 71
 
 #ifdef HAVE_LIBOGG
 #if HAVE_VORBIS
@@ -729,8 +730,8 @@ EXTRACTOR_removeEmptyKeywords (EXTRACTOR_KeywordList * list)
  * @param keywords the list of keywords to print, may be NULL
  */
 void
-EXTRACTOR_printKeywords (FILE * handle, 
-			 EXTRACTOR_KeywordList * keywords)
+EXTRACTOR_printKeywords(FILE * handle, 
+			EXTRACTOR_KeywordList * keywords)
 {
   iconv_t cd;
   char * buf;
@@ -749,15 +750,21 @@ EXTRACTOR_printKeywords (FILE * handle,
       else
 	buf = iconvHelper(cd,
 			  keywords->keyword);
-      if (keywords->keywordType >= HIGHEST_TYPE_NUMBER)
-	fprintf(handle, 
-		_("INVALID TYPE - %s\n"),
-		buf);
-      else
+      if (keywords->keywordType == EXTRACTOR_THUMBNAIL_DATA) {
 	fprintf(handle,
-		"%s - %s\n",
-		gettext(keywordTypes[keywords->keywordType]),
-		buf);
+		_("%s - (binary)\n"),
+		gettext(keywordTypes[keywords->keywordType]));
+      } else {   
+	if (keywords->keywordType >= HIGHEST_TYPE_NUMBER)
+	  fprintf(handle, 
+		  _("INVALID TYPE - %s\n"),
+		  buf);
+	else
+	  fprintf(handle,
+		  "%s - %s\n",
+		  gettext(keywordTypes[keywords->keywordType]),
+		  buf);
+      }
       free(buf);
       keywords = keywords->next;
     }

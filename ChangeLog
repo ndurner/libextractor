@@ -1,3 +1,12 @@
+Thu Feb 24 00:32:44 EST 2005
+	Added extractor that extracts binary (!) thumbnails from
+	images using ImageMagick.  Decoder function for the binary
+	string is in the thumbnailextractor.c source.
+	Releasing libextractor 0.4.2.
+
+Wed Feb 23 22:42:08 EST 2005
+	Comment tag was not extracted from ID3 tags.  Fixed.
+	
 Sun Feb 20 16:36:17 EST 2005
 	Fixed similar problem in REAL extractor.  Added support
 	for new Helix/Real format to REAL extractor.

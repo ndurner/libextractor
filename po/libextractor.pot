@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: libextractor@cs.purdue.edu\n"
-"POT-Creation-Date: 2005-01-26 19:50-0500\n"
+"POT-Creation-Date: 2005-02-24 01:28-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -104,75 +104,80 @@ msgstr ""
 msgid "Extract metadata from files."
 msgstr ""
 
-#: src/main/extract.c:242 src/main/extractor.c:781
+#: src/main/extract.c:208 src/main/extractor.c:755
+#, c-format
+msgid "%s - (binary)\n"
+msgstr ""
+
+#: src/main/extract.c:214 src/main/extractor.c:760
 #, c-format
 msgid "INVALID TYPE - %s\n"
 msgstr ""
 
-#: src/main/extract.c:307 src/main/extractor.c:44
+#: src/main/extract.c:280 src/main/extractor.c:44
 msgid "title"
 msgstr ""
 
-#: src/main/extract.c:309 src/main/extractor.c:42
+#: src/main/extract.c:282 src/main/extractor.c:42
 msgid "filename"
 msgstr ""
 
-#: src/main/extract.c:314 src/main/extractor.c:45
+#: src/main/extract.c:287 src/main/extractor.c:45
 msgid "author"
 msgstr ""
 
-#: src/main/extract.c:318 src/main/extractor.c:47
+#: src/main/extract.c:291 src/main/extractor.c:47
 msgid "description"
 msgstr ""
 
-#: src/main/extract.c:320 src/main/extractor.c:59
+#: src/main/extract.c:293 src/main/extractor.c:59
 msgid "keywords"
 msgstr ""
 
-#: src/main/extract.c:322 src/main/extractor.c:48
+#: src/main/extract.c:295 src/main/extractor.c:48
 msgid "comment"
 msgstr ""
 
-#: src/main/extract.c:326 src/main/extractor.c:49
+#: src/main/extract.c:299 src/main/extractor.c:49
 msgid "date"
 msgstr ""
 
-#: src/main/extract.c:328 src/main/extractor.c:71
+#: src/main/extract.c:301 src/main/extractor.c:71
 msgid "creation date"
 msgstr ""
 
-#: src/main/extract.c:356 src/main/extractor.c:50
+#: src/main/extract.c:329 src/main/extractor.c:50
 msgid "publisher"
 msgstr ""
 
-#: src/main/extract.c:360 src/main/extractor.c:56
+#: src/main/extract.c:333 src/main/extractor.c:56
 msgid "organization"
 msgstr ""
 
-#: src/main/extract.c:364 src/main/extractor.c:58
+#: src/main/extract.c:337 src/main/extractor.c:58
 msgid "subject"
 msgstr ""
 
-#: src/main/extract.c:368 src/main/extractor.c:75
+#: src/main/extract.c:341 src/main/extractor.c:75
 msgid "page count"
 msgstr ""
 
-#: src/main/extract.c:502
+#: src/main/extract.c:475
 #, c-format
 msgid "You must specify an argument for the '%s' option (option ignored).\n"
 msgstr ""
 
-#: src/main/extract.c:566
+#: src/main/extract.c:539
 #, c-format
 msgid "Use --help to get a list of options.\n"
 msgstr ""
 
-#: src/main/extract.c:620
+#: src/main/extract.c:593
 #, c-format
 msgid "%% BiBTeX file\n"
 msgstr ""
 
-#: src/main/extract.c:627
+#: src/main/extract.c:600
 #, c-format
 msgid "Keywords for file %s:\n"
 msgstr ""
@@ -409,24 +414,28 @@ msgstr ""
 msgid "contact"
 msgstr ""
 
-#: src/main/extractor.c:206
+#: src/main/extractor.c:111
+msgid "binary thumbnail data"
+msgstr ""
+
+#: src/main/extractor.c:207
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr ""
 
-#: src/main/extractor.c:392
+#: src/main/extractor.c:393
 #, c-format
 msgid ""
 "Resolving symbol '%s' in library '%s' failed, so I tried '%s', but that "
 "failed also.  Errors are: '%s' and '%s'.\n"
 msgstr ""
 
-#: src/main/extractor.c:421
+#: src/main/extractor.c:422
 #, c-format
 msgid "Loading '%s' plugin failed: %s\n"
 msgstr ""
 
-#: src/main/extractor.c:526
+#: src/main/extractor.c:527
 #, c-format
 msgid "Unloading plugin '%s' failed!\n"
 msgstr ""

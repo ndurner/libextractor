@@ -1,8 +1,8 @@
 # Process this file with autoconf to produce a configure script.
 AC_PREREQ(2.57)
-AC_INIT([libextractor], [0.4.1-cvs], [libextractor@cs.purdue.edu])
+AC_INIT([libextractor], [0.4.2], [libextractor@cs.purdue.edu])
 AC_REVISION($Revision: 1.67 $)
-AM_INIT_AUTOMAKE([libextractor], [0.4.1-cvs])
+AM_INIT_AUTOMAKE([libextractor], [0.4.2])
 AM_CONFIG_HEADER(src/include/config.h)
 
 # Checks for programs.
@@ -147,6 +147,25 @@ AC_CHECK_HEADERS([ltdl.h iconv.h])
 AC_CHECK_HEADERS([jni.h])
 # jni.h is purely optional!  But if not present => no Java support!
 
+AC_CHECK_HEADERS([wand/magick-wand.h])
+
+AC_PATH_PROG(WAND_CONFIG, Wand-config, no)
+if test "$WAND_CONFIG" = "no" ; then
+  AC_MSG_RESULT([*** All Imagemagick dependent parts will be disabled, Wand-config not found. ***])
+else
+  WAND_CFLAGS=`$WAND_CONFIG --cflags`
+  WAND_LDFLAGS=`$WAND_CONFIG --ldflags`
+  WAND_LIBS=`$WAND_CONFIG --libs`
+  have_imagemagick="yes"
+  AC_DEFINE(HAVE_WAND,1,[Define this if you have Imagemagick])
+fi
+
+AM_CONDITIONAL(HAVE_WAND, test x"$have_imagemagick" = "xyes" )
+AC_SUBST(WAND_CFLAGS)
+AC_SUBST(WAND_LDFLAGS)
+AC_SUBST(WAND_LIBS)
+
+
 ##AC_PYTHON_DEVEL
 ##AC_CHECK_HEADERS([python/Python.h])
 
@@ -223,6 +242,7 @@ src/plugins/pdf/Makefile
 src/plugins/rpm/Makefile
 src/plugins/printable/Makefile
 src/plugins/hash/Makefile
+src/plugins/thumbnail/Makefile
 src/test/Makefile
 ])
 
