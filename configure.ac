@@ -178,6 +178,17 @@ AC_MSG_CHECKING(for glib)
 AM_PATH_GLIB_2_0(2.0.0,
 	         without_glib=false,
                  without_glib=true)
+AC_MSG_CHECKING([whether glib is disabled])
+AC_ARG_ENABLE(glib,
+  [AC_HELP_STRING([--disable-glib],[disable glib support])],
+  [case "$enableval" in
+   no)  AC_MSG_RESULT(disabled)
+        without_glib=true
+        ;;
+   *)   AC_MSG_RESULT(allowed)
+        ;;
+   esac])
+
 if test x$without_glib != xtrue
 then
   if test $with_gnu_ld == yes
@@ -194,6 +205,7 @@ else
  AM_CONDITIONAL(HAVE_GLIB,false)
  AC_DEFINE(HAVE_GLIB, 0, [Have glib])
 fi
+        
 
 AC_SUBST(CPPFLAGS)
 AC_SUBST(LDFLAGS)

@@ -3040,7 +3040,7 @@ struct EXTRACTOR_Keywords * libextractor_rpm_extract(char * filename,
     return prev;
   }
   prev = addKeyword(EXTRACTOR_MIMETYPE,
-		    "application/x-rpm",
+		    "application/x-redhat-package-manager",
 		    prev);
   /* FIXME: add platform! */
   if (isSource)
