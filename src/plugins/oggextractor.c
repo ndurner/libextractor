@@ -73,7 +73,7 @@ static long tellError(void * datasource) {
   return -1;
 }
 
-/* mimetype = audio/ogg */
+/* mimetype = application/ogg */
 struct EXTRACTOR_Keywords * libextractor_ogg_extract(char * filename,
                                                      char * data,
                                                      size_t size,
@@ -131,7 +131,7 @@ struct EXTRACTOR_Keywords * libextractor_ogg_extract(char * filename,
   /* we have determined for sure that this is an 
      ogg-vorbis stream, we should add this as a keyword, too */
   prev = addKeyword(EXTRACTOR_MIMETYPE, 
-		    "audio/ogg", 
+		    "application/ogg", 
 		    prev);
   /* build a description from artist, title and album */
   {
