@@ -70,9 +70,12 @@ typedef struct {
 #define MDPR_HEADER 0x4D445052
 #define CONT_HEADER 0x434F4e54
 
-static struct EXTRACTOR_Keywords * addKeyword(EXTRACTOR_KeywordType type,
-				    char * keyword,
-				    struct EXTRACTOR_Keywords * next) {
+#define RAFF4_HEADER 0x2E7261FD
+
+static struct EXTRACTOR_Keywords * 
+addKeyword(EXTRACTOR_KeywordType type,
+	   char * keyword,
+	   struct EXTRACTOR_Keywords * next) {
   EXTRACTOR_KeywordList * result;
 
   if (keyword == NULL)
@@ -84,9 +87,10 @@ static struct EXTRACTOR_Keywords * addKeyword(EXTRACTOR_KeywordType type,
   return result;
 }
 
-static struct EXTRACTOR_Keywords * processMediaProperties(Media_Properties * prop,
-							  struct EXTRACTOR_Keywords * prev) {
-
+static struct EXTRACTOR_Keywords *
+processMediaProperties(const Media_Properties * prop,
+		       struct EXTRACTOR_Keywords * prev) {
+  
   UINT8 mime_type_size;
   UINT32 prop_size;
   char * data;
@@ -114,8 +118,9 @@ static struct EXTRACTOR_Keywords * processMediaProperties(Media_Properties * pro
 		    prev);
 }
 
-static struct EXTRACTOR_Keywords * processContentDescription(Content_Description * prop,
-							     struct EXTRACTOR_Keywords * prev) {
+static struct EXTRACTOR_Keywords * 
+processContentDescription(const Content_Description * prop,
+			  struct EXTRACTOR_Keywords * prev) {
   
 
   UINT16 author_len;
@@ -204,50 +209,146 @@ static struct EXTRACTOR_Keywords * processContentDescription(Content_Description
   return prev;
 }
 
+typedef struct RAFF4_header { 
+  unsigned short version;     
+  unsigned short revision;    
+  unsigned short header_length; 
+  unsigned short compression_type;
+  unsigned int granularity; 
+  unsigned int total_bytes; 
+  unsigned int bytes_per_minute;
+  unsigned int bytes_per_minute2;
+  unsigned short interleave_factor; 
+  unsigned short interleave_block_size;
+  unsigned int user_data;    
+  float sample_rate;         
+  unsigned short sample_size;
+  unsigned short channels;  
+  unsigned char interleave_code[5]; 
+  unsigned char compression_code[5];
+  unsigned char is_interleaved;
+  unsigned char copy_byte;    
+  unsigned char stream_type;  
+  /*
+  unsigned char tlen;
+  unsigned char title[tlen];
+  unsigned char alen;       
+  unsigned char author[alen];
+  unsigned char clen;        
+  unsigned char copyright[clen];
+  unsigned char aplen;  
+  unsigned char app[aplen]; */
+} RAFF4_header;
 
-struct EXTRACTOR_Keywords * libextractor_real_extract(char * filename,
-                                                      unsigned char * data,
+#define RAFF4_HDR_SIZE 53
+
+static char * stndup(const char * str,
+                     size_t n) {
+  char * tmp;
+  tmp = malloc(n+1);
+  tmp[n] = '\0';
+  memcpy(tmp, str, n);
+  return tmp;
+}
+
+/* audio/vnd.rn-realaudio */
+struct EXTRACTOR_Keywords * libextractor_real_extract(unsigned char * filename,
+                                                      const unsigned char * data,
                                                       size_t size,
                                                       struct EXTRACTOR_Keywords * prev) {
-  unsigned char * pos;
-  unsigned char * end;
+  const unsigned char * pos;
+  const unsigned char * end;
   struct EXTRACTOR_Keywords * result;
-  unsigned int length;
+  unsigned int length;  
+  const RAFF4_header * hdr;
+  unsigned char tlen;
+  unsigned char alen;
+  unsigned char clen;
+  unsigned char aplen;
 
-  if (size < 2*sizeof(int)) {
+  if (size <= 2*sizeof(int)) 
+    return prev;  
+  
+  if (RAFF4_HEADER == ntohl(*(int*)data)) {    
+    /* HELIX */
+    if (size <= RAFF4_HDR_SIZE + 16 + 4)
+      return prev;    
+    prev = addKeyword(EXTRACTOR_MIMETYPE,
+		      strdup("audio/vnd.rn-realaudio"),
+		      prev);
+    hdr = (const RAFF4_header*) &data[16];
+    if (ntohs(hdr->header_length) + 16 > size)
+      return prev;
+    tlen = data[16 + RAFF4_HDR_SIZE];
+    if (tlen + RAFF4_HDR_SIZE + 20 > size)
+      return prev;
+    alen = data[17 + tlen + RAFF4_HDR_SIZE];
+    if (tlen + alen + RAFF4_HDR_SIZE + 20 > size)
+      return prev;
+    clen = data[18 + tlen + alen + RAFF4_HDR_SIZE];
+    if (tlen + alen + clen + RAFF4_HDR_SIZE + 20 > size)
+      return prev; 
+    aplen = data[19 + tlen + clen + alen + RAFF4_HDR_SIZE];
+    if (tlen + alen + clen + aplen + RAFF4_HDR_SIZE + 20 > size)
+      return prev;
+
+    if (tlen > 0)
+      prev = addKeyword(EXTRACTOR_TITLE,
+			stndup(&data[17 + RAFF4_HDR_SIZE],
+			       tlen),
+			prev);
+    if (alen > 0)
+      prev = addKeyword(EXTRACTOR_AUTHOR,
+			stndup(&data[18 + RAFF4_HDR_SIZE + tlen],
+			       alen),
+			prev);
+    if (clen > 0)
+      prev = addKeyword(EXTRACTOR_COPYRIGHT,
+			stndup(&data[19 + RAFF4_HDR_SIZE + tlen + alen],
+			       clen),
+			prev);
+    if (aplen > 0)
+      prev = addKeyword(EXTRACTOR_SOFTWARE,
+			stndup(&data[20 + RAFF4_HDR_SIZE + tlen + alen + clen],
+			       aplen),
+			prev);
     return prev;
+    
   }
-  if (REAL_HEADER != ntohl(*(int*)data)) {
-    return prev; 
-  }
-  result = prev;
-  end = &data[size];
-  pos = &data[0];
-  while(1) {
-    if (pos+8 >= end)
+  if (REAL_HEADER == ntohl(*(int*)data)) {
+    /* old real */
+    result = prev;
+    end = &data[size];
+    pos = &data[0];
+    while(1) {
+      if ( (pos+8 >= end) ||
+	   (pos+8 < pos) )
+	break;
+      length = ntohl(*(((unsigned int*) pos)+1));
+      if (length <= 0)
+	break;
+      if ( (pos + length >= end) ||
+	   (pos + length < pos) )
       break;
-    length = ntohl(*(((unsigned int*) pos)+1));
-    if (length <= 0)
-      break;
-    if (pos + length >= end)
-      break;
-    switch (ntohl(*((unsigned int*) pos))) {
-    case MDPR_HEADER:
-      result = processMediaProperties((Media_Properties *)pos,
-				      result);
-      pos += length;
-      break;
-    case CONT_HEADER:
-      result = processContentDescription((Content_Description *)pos,
-					 result);
-      pos += length;
-      break;
-    case REAL_HEADER: /* treat like default */
-    default:
-      pos += length;
-      break;
+      switch (ntohl(*((unsigned int*) pos))) {
+      case MDPR_HEADER:
+	result = processMediaProperties((Media_Properties *)pos,
+					result);
+	pos += length;
+	break;
+      case CONT_HEADER:
+	result = processContentDescription((Content_Description *)pos,
+					   result);
+	pos += length;
+	break;
+      case REAL_HEADER: /* treat like default */
+      default:
+	pos += length;
+	break;
+      }
     }
-  }
-  return result;  
+    return result;  
+  } 
+  return prev;
 }
 

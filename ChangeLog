@@ -1,3 +1,7 @@
+Sun Feb 20 16:36:17 EST 2005
+	Fixed similar problem in REAL extractor.  Added support
+	for new Helix/Real format to REAL extractor.
+
 Sun Feb 20 12:48:15 EST 2005
 	Fixed (rare) integer overflow bug in PNG extractor.
 
