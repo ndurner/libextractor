@@ -720,37 +720,7 @@ EXTRACTOR_removeEmptyKeywords (EXTRACTOR_KeywordList * list)
   return list;
 }
 
-/**
- * Convert the given input using the given converter
- * and return as a 0-terminated string.
- */
-static char * iconvHelper(iconv_t cd,
-			  const char * in) {
-  size_t inSize;
-  char * buf;
-  char * ibuf;
-  size_t outSize;
-  size_t outLeft;
-  /* reset iconv */
-  iconv(cd, NULL, NULL, NULL, NULL);
-
-  inSize = strlen(in);
-  outSize = 4 * strlen(in) + 2;
-  outLeft = outSize - 2; /* make sure we have 2 0-terminations! */
-  buf = malloc(outSize);
-  ibuf = buf;
-  memset(buf, 0, outSize);
-  if (iconv(cd, 
-	    (char**) &in,
-	    &inSize,
-	    &ibuf, 
-	    &outLeft) == (size_t)-1) {
-    /* conversion failed */
-    free(buf);
-    return strdup(in); 
-  }
-  return buf;
-}
+#include "iconv.c"
 
 /**
  * Print a keyword list to a file.
@@ -774,8 +744,11 @@ EXTRACTOR_printKeywords (FILE * handle,
     , "UTF-8");
   while (keywords != NULL)
     {
-      buf = iconvHelper(cd,
-			keywords->keyword);
+      if (cd == (iconv_t) -1)
+	buf = strdup(keywords->keyword);
+      else
+	buf = iconvHelper(cd,
+			  keywords->keyword);
       if (keywords->keywordType >= HIGHEST_TYPE_NUMBER)
 	fprintf(handle, 
 		_("INVALID TYPE - %s\n"),
@@ -788,7 +761,8 @@ EXTRACTOR_printKeywords (FILE * handle,
       free(buf);
       keywords = keywords->next;
     }
-  iconv_close(cd);
+  if (cd != (iconv_t) -1)
+    iconv_close(cd);
 }
 
 /**

@@ -72,12 +72,26 @@ extern "C" {
       s = s1->getCString();
       if ((((unsigned char)s[0]) & 0xff) == 0xfe &&
 	  (((unsigned char)s[1]) & 0xff) == 0xff) {
-	s = &s[2];
+	char * result;
+	unsigned char u[2];
+	unsigned int pos;
+	unsigned int len;
+	char * con;
+
+	result = (char*) malloc(s1->getLength() * 4);
+	result[0] = '\0';
+	len = s1->getLength();
+	for (pos=0;pos<len;pos+=2) {
+	  u[0] = s1->getChar(pos+1);
+	  u[1] = s1->getChar(pos);
+	  con = (char*) convertToUtf8((const char*) u, 2, "UNICODE");
+	  strcat(result, con);
+	  free(con);
+	}		       
 	next = addKeyword(type,
-			  convertToUtf8(s,
-					strlen(s),
-					"UNICODE"),
+			  strdup(result),
 			  next);
+	free(result);
       } else {
 	next = addKeyword(type, 
 			  convertToUtf8(s,
@@ -105,12 +119,26 @@ extern "C" {
       if ((s1->getChar(0) & 0xff) == 0xfe &&
 	  (s1->getChar(1) & 0xff) == 0xff) {
 	/* isUnicode */
-	s = &s[2];
+	char * result;
+	unsigned char u[2];
+	unsigned int pos;
+	unsigned int len;
+	char * con;
+
+	result = (char*) malloc(s1->getLength() * 4);
+	result[0] = '\0';
+	len = s1->getLength();
+	for (pos=0;pos<len;pos+=2) {
+	  u[0] = s1->getChar(pos+1);
+	  u[1] = s1->getChar(pos);
+	  con = (char*) convertToUtf8((const char*) u, 2, "UNICODE");
+	  strcat(result, con);
+	  free(con);
+	}		       
 	next = addKeyword(type,
-			  convertToUtf8(s,
-					strlen(s),
-					"UNICODE"),
+			  strdup(result),
 			  next);
+	free(result);
       } else {
 	if (s[0] == 'D' && s[1] == ':') {
 	  s += 2;
@@ -238,6 +266,13 @@ extern "C" {
 			    strdup(pcnt),
 			    result);
       }
+      {
+	char pcnt[20];
+	sprintf(pcnt, "PDF %.1f", doc->getPDFVersion());
+	result = addKeyword(EXTRACTOR_FORMAT,
+			    strdup(pcnt),
+			    result);
+      }
       result = printInfoDate(info.getDict(),   
 			     "CreationDate", 
 			     EXTRACTOR_CREATION_DATE,
@@ -247,6 +282,7 @@ extern "C" {
 			     EXTRACTOR_MODIFICATION_DATE,
 			     result);
     }
+
     info.free();
     delete doc;
     freeParams();
@@ -254,4 +290,3 @@ extern "C" {
     return result;  
   }
 }
-

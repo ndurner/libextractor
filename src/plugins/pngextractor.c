@@ -269,11 +269,11 @@ static struct EXTRACTOR_Keywords * processzTXt(unsigned char * data,
 
 
 struct EXTRACTOR_Keywords * libextractor_png_extract(char * filename,
-                                                     unsigned char * data,
+                                                     const unsigned char * data,
                                                      size_t size,
                                                      struct EXTRACTOR_Keywords * prev) {
-  unsigned char * pos;
-  unsigned char * end;
+  const unsigned char * pos;
+  const unsigned char * end;
   struct EXTRACTOR_Keywords * result;
   unsigned int length;
 
@@ -290,7 +290,7 @@ struct EXTRACTOR_Keywords * libextractor_png_extract(char * filename,
   while(1) {
     if (pos+12 >= end)
       break;
-    length = htonl(getIntAt(pos));  pos+=4;    
+    length = htonl(getIntAt(pos));  pos+=4;
     if (pos+4+length+4 > end)
       break;
     if (0 == strncmp(pos, "IHDR", 4))

@@ -34,7 +34,8 @@ libextractor_la_DEPENDENCIES = \
 EXTRA_DIST = \
   winproc.c \
   libextractor_python.c \
-  extract.py
+  extract.py \
+  iconv.c
 
 if MINGW
   winproc = winproc.c

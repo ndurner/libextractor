@@ -23,6 +23,9 @@
 #include "convert.h"
 
 #include <iconv.h>
+#ifndef MINGW
+#include <langinfo.h>
+#endif
 
 /**
  * Convert the len characters long character sequence
@@ -40,11 +43,13 @@ char * convertToUtf8(const char * input,
   char * tmp;
   char * ret;
   char * itmp;
+  const char * i;
   iconv_t cd;
   
+  i = input;
   cd = iconv_open("UTF-8", charset);
   if (cd == (iconv_t) -1)
-    return strdup(charset);
+    return strdup(i);
   tmpSize = 3 * len + 4;
   tmp = malloc(tmpSize);
   itmp = tmp;
@@ -56,7 +61,7 @@ char * convertToUtf8(const char * input,
 	    &finSize) == (size_t)-1) {
     iconv_close(cd);
     free(tmp);
-    return strdup(charset);
+    return strdup(i);
   }
   ret = malloc(tmpSize - finSize + 1);
   memcpy(ret,

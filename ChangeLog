@@ -1,3 +1,8 @@
+Sat Feb 19 22:58:30 EST 2005
+	Fixed problems with wrong byteorder for Unicode decoding
+	in PDF meta-data.  Fixed minor problems with character
+	set conversion error handling.
+
 Wed Jan 26 19:31:04 EST 2005
 	Workaround possible bug in glib quarks (OLE2 extractor).
 	Improved QT support (?nam tag, support for description).
