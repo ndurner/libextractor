@@ -1,6 +1,6 @@
 /*
      This file is part of GNUnet.
-     (C) 2001 - 2004 Christian Grothoff (and other contributing authors)
+     (C) 2001 - 2005 Christian Grothoff (and other contributing authors)
 
      libextractor is free software; you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published
@@ -77,6 +77,8 @@
  #define READ(f, b, n) read(f, b, n)
  #define GN_FREAD(b, s, c, f) fread(b, s, c, f)
  #define GN_FWRITE(b, s, c, f) fwrite(b, s, c, f)
+ #define MMAP(s, l, p, f, d, o) mmap(s, l, p, f, d, o)
+ #define MUNMAP(s, l) munmap(s, l);
  #define STRERROR(i) strerror(i)
 #else
 
@@ -105,6 +107,8 @@
  #define READ(f, b, n) _win_read(f, b, n)
  #define GN_FREAD(b, s, c, f) _win_fread(b, s, c, f)
  #define GN_FWRITE(b, s, c, f) _win_fwrite(b, s, c, f)
+ #define MMAP(s, l, p, f, d, o) _win_mmap(s, l, p, f, d, o)
+ #define MUNMAP(s, l) _win_munmap(s, l)
  #define STRERROR(i) _win_strerror(i)
 #endif
 

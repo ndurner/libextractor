@@ -1,6 +1,6 @@
 /*
      This file is part of libextractor.
-     (C) 2001, 2002, 2003 Christian Grothoff (and other contributing authors)
+     (C) 2001 - 2005 Christian Grothoff (and other contributing authors)
 
      libextractor is free software; you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published
@@ -195,6 +195,12 @@ extern "C" {
 #undef NO_ADDRESS
 #define NO_ADDRESS 4
  
+#define PROT_READ   0x1
+#define PROT_WRITE  0x2
+#define MAP_SHARED  0x1
+#define MAP_PRIVATE  0x2
+#define MAP_FIXED   0x10
+
 struct statfs
 {
   long f_type;                  /* type of filesystem (see below) */
@@ -328,6 +334,9 @@ int _win_write(int fildes, const void *buf, size_t nbyte);
 int _win_read(int fildes, void *buf, size_t nbyte);
 size_t _win_fwrite(const void *buffer, size_t size, size_t count, FILE *stream);
 size_t _win_fread( void *buffer, size_t size, size_t count, FILE *stream );
+void *_win_mmap(void *start, size_t len, int access, int flags, int fd,
+                unsigned long long offset);
+int _win_munmap(void *start, size_t length);
 char *_win_strerror(int errnum);
 
 #if !HAVE_STRNDUP

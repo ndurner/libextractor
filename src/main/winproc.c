@@ -1078,6 +1078,88 @@ int _win_pipe(int *phandles)
 }
 
 /**
+ * map files into memory
+ * @author Cygwin team
+ * @author Nils Durner
+ */
+void *_win_mmap(void *start, size_t len, int access, int flags, int fd,
+                unsigned long long off) {
+  DWORD protect, high, low, access_param;
+  HANDLE h, hFile;
+  SECURITY_ATTRIBUTES sec_none;
+  void *base;
+
+  errno = 0;
+
+  switch(access)
+  {
+    case PROT_WRITE:
+      protect = PAGE_READWRITE;
+      access_param = FILE_MAP_WRITE;
+      break;
+    case PROT_READ:
+      protect = PAGE_READONLY;
+      access_param = FILE_MAP_READ;
+      break;
+    default:
+      protect = PAGE_WRITECOPY;
+      access_param = FILE_MAP_COPY;
+      break;
+  }
+  
+  sec_none.nLength = sizeof(SECURITY_ATTRIBUTES);
+  sec_none.bInheritHandle = TRUE;
+  sec_none.lpSecurityDescriptor = NULL;
+  
+  hFile = (HANDLE) _get_osfhandle(fd);
+  
+  h = CreateFileMapping(hFile, &sec_none, protect, 0, 0, NULL);
+  
+  if (! h)
+  {
+    SetErrnoFromWinError(GetLastError());
+    return (void *) -1;
+  }
+  
+  high = off >> 32;
+  low = off & ULONG_MAX;
+  base = NULL;
+  
+  /* If a non-zero start is given, try mapping using the given address first.
+     If it fails and flags is not MAP_FIXED, try again with NULL address. */
+  if (start)
+    base = MapViewOfFileEx(h, access_param, high, low, len, start);
+  if (!base && !(flags & MAP_FIXED))
+    base = MapViewOfFileEx(h, access_param, high, low, len, NULL);
+  
+  if (!base || ((flags & MAP_FIXED) && base != start))
+  {
+    if (!base)
+      SetErrnoFromWinError(GetLastError());
+    else
+      errno = EINVAL;
+    
+    CloseHandle(h);
+    return (void *) -1;
+  }
+  
+  return base;
+}
+
+/**
+ * Unmap files from memory
+ * @author Cygwin team
+ * @author Nils Durner
+ */
+int _win_munmap(void *start, size_t length)
+{
+  BOOL success = UnmapViewOfFile(start);
+  SetErrnoFromWinError(GetLastError());
+  
+  return success ? 0 : -1;
+}
+
+/**
  * Determine file-access permission.
  */
 int _win_access( const char *path, int mode )

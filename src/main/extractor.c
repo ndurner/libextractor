@@ -1,6 +1,6 @@
 /*
      This file is part of libextractor.
-     (C) 2002, 2003, 2004 Vidyut Samanta and Christian Grothoff
+     (C) 2002 - 2005 Vidyut Samanta and Christian Grothoff
 
      libextractor is free software; you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published
@@ -574,22 +574,9 @@ EXTRACTOR_getKeywords (EXTRACTOR_ExtractorList * extractor,
     return NULL;
   }
 
-#ifndef MINGW
   if (size > 1* 1024 * 1024 * 1024)
     size = 1 * 1024 * 1024 * 1024; /* do not mmap/read more than 1 GB! */
-  buffer = mmap(NULL, size, PROT_READ | PROT_WRITE, MAP_PRIVATE, file, 0);
-#else
-  if (size > 250 * 1024 * 1024)
-    size = 250 * 1024 * 1024; /* do not malloc/read more than 250 MB! */
-  buffer = malloc(size + 1);
-  if (buffer == NULL) { /* out of memory? */
-    close(file);
-    return NULL;
-  }
-  buffer[size] = 0;
-  if (size > 0)
-    read(file, buffer, size);
-#endif
+  buffer = MMAP(NULL, size, PROT_READ | PROT_WRITE, MAP_PRIVATE, file, 0);
   close(file);
   if ( (buffer == NULL) || (buffer == (void *) -1) )
     return NULL;
@@ -598,14 +585,10 @@ EXTRACTOR_getKeywords (EXTRACTOR_ExtractorList * extractor,
     result = extractor->extractMethod (filename, buffer, size, result);
     extractor = extractor->next;
   }
-#ifndef MINGW
   if (size > 0)
-    munmap (buffer, size);
+    MUNMAP (buffer, size);
   else
     free(buffer);
-#else
-  free(buffer);
-#endif
   return result;
 }
 
