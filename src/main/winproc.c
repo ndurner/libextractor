@@ -926,7 +926,7 @@ int flock(int fd, int operation)
   BOOL bRet;
 
   hFile = (HANDLE) _get_osfhandle(fd);
-  memset(&theOvInfo, sizeof(OVERLAPPED), 0);
+  memset(&theOvInfo, 0, sizeof(OVERLAPPED));
 
   /* Don't deadlock ourselves */
   if (theWinVersion.dwPlatformId == VER_PLATFORM_WIN32_NT)
