@@ -1,3 +1,6 @@
+Tue Apr  5 17:22:28 EST 2005
+	Added translation to Kinyarwanda.
+
 Thu Feb 24 00:32:44 EST 2005
 	Added extractor that extracts binary (!) thumbnails from
 	images using ImageMagick.  Decoder function for the binary
