@@ -720,11 +720,7 @@ EXTRACTOR_printKeywords(FILE * handle,
   char * buf;
 
   cd = iconv_open(
-#ifdef MINGW
-    ""
-#else
     nl_langinfo(CODESET)
-#endif
     , "UTF-8");
   while (keywords != NULL)
     {

@@ -189,11 +189,7 @@ printSelectedKeywords(FILE * handle,
   char * buf;
 
   cd = iconv_open(
-#ifdef MINGW
-    "char"
-#else
     nl_langinfo(CODESET)
-#endif
     , "UTF-8");
   while (keywords != NULL) {
     buf = NULL;

@@ -44,11 +44,7 @@ struct EXTRACTOR_Keywords * libextractor_filename_extract(const char * filename,
   keyword->next = prev;    
   keyword->keyword = convertToUtf8(filenameRoot,
 				   strlen(filenameRoot),
-#ifndef MINGW
 				   nl_langinfo(CODESET)
-#else
-           ""
-#endif
            );
   keyword->keywordType = EXTRACTOR_FILENAME;
   return keyword;

@@ -166,11 +166,7 @@ struct EXTRACTOR_Keywords * libextractor_tar_extract(const char * filename,
 
       ctm = *gmtime(&ctime);
       if (strftime(tmbuf, sizeof(tmbuf),
-#ifndef MINGW      
        nl_langinfo(D_FMT),
-#else
-       "%x",
-#endif
        &ctm))
         prev = addKeyword(EXTRACTOR_CREATION_DATE, strdup(tmbuf), prev);
     }

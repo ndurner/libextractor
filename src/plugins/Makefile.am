@@ -128,7 +128,8 @@ libextractor_asf_la_LDFLAGS = \
 libextractor_tar_la_SOURCES = \
   tarextractor.c 
 libextractor_tar_la_LDFLAGS = \
-  $(PLUGINFLAGS) -lz
+  $(PLUGINFLAGS) -lz \
+  $(top_builddir)/src/main/libextractor.la
 
 libextractor_lower_la_SOURCES = \
   lowerextractor.c
@@ -228,7 +229,8 @@ libextractor_png_la_LIBADD = \
 libextractor_filename_la_SOURCES = \
   filenameextractor.c 
 libextractor_filename_la_LDFLAGS = \
-  $(PLUGINFLAGS)
+  $(PLUGINFLAGS) \
+  $(top_builddir)/src/main/libextractor.la
 libextractor_filename_la_LIBADD = \
   libconvert.la
 

@@ -34,11 +34,13 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/timeb.h>
+#include <time.h>
 #include <dirent.h>
 #include <windows.h>
 #include <winsock.h>
 #include <winerror.h>
 #include <iphlpapi.h>
+#include "platform.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -338,6 +340,9 @@ void *_win_mmap(void *start, size_t len, int access, int flags, int fd,
                 unsigned long long offset);
 int _win_munmap(void *start, size_t length);
 char *_win_strerror(int errnum);
+#ifndef HAVE_LANGINFO_H
+char *nl_langinfo(int item);
+#endif
 
 #if !HAVE_STRNDUP
 char *strndup (const char *s, size_t n);
