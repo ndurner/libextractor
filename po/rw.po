@@ -1,1733 +1,1947 @@
-# Mesajele în limba românã pentru libextractor.
-# Copyright (C) 2003 Free Software Foundation, Inc.
-# Acest fiºier este distribuit sub aceeaºi licenþã ca ºi pachetul libextractor.
-# Laurentiu Buzdugan <lbuz@rolix.org>, 2005.
-#
-#
+# Kinyarwanda translations for libextractor package.
+# Copyright (C) 2005 Free Software Foundation, Inc.
+# This file is distributed under the same license as the libextractor package.
+# Steve Murphy <murf@e-tools.com>, 2005.
+# Steve performed initial rough translation from compendium built from translations provided by the following translators:
+# Philibert Ndandali  <ndandali@yahoo.fr>, 2005.
+# Viateur MUGENZI <muvia1@yahoo.fr>, 2005.
+# NoÃ«lla Mupole <s24211045@tuks.co.za>, 2005.
+# Carole Karema <karemacarole@hotmail.com>, 2005.
+# JEAN BAPTISTE NGENDAHAYO <ngenda_denis@yahoo.co.uk>, 2005.
+# Augustin KIBERWA  <akiberwa@yahoo.co.uk>, 2005.
+# Donatien NSENGIYUMVA <ndonatienuk@yahoo.co.uk>, 2005.
+# Antoine Bigirimana <antoine@e-tools.com>, 2005.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: libextractor 0.4.2\n"
+"Project-Id-Version: libextractor 0.3.11\n"
 "Report-Msgid-Bugs-To: libextractor@cs.purdue.edu\n"
 "POT-Creation-Date: 2005-04-05 17:09-0500\n"
-"PO-Revision-Date: 2005-02-25 12:00-0500\n"
-"Last-Translator: Laurentiu Buzdugan <lbuz@rolix.org>\n"
-"Language-Team: Romanian <translation-team-ro@lists.sourceforge.net>\n"
+"PO-Revision-Date: 2005-04-04 10:55-0700\n"
+"Last-Translator: Steven Michael Murphy <murf@e-tools.com>\n"
+"Language-Team: Kinyarwanda <translation-team-rw@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ISO-8859-2\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: src/main/extract.c:49
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "Usage: %s\n"
 "%s\n"
 "\n"
-msgstr ""
-"Folosire: %s\n"
-"%s\n"
-"\n"
+msgstr "Ikoresha:"
 
 #: src/main/extract.c:52
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "Arguments mandatory for long options are also mandatory for short options.\n"
-msgstr ""
-"Argumentele obligatorii pentru opþiunile lungi sunt obligatorii ºi pentru "
-"opþiunile scurte.\n"
+msgstr "kugirango Amahitamo kugirango Amahitamo"
 
 #: src/main/extract.c:126
+#, fuzzy
 msgid "do not remove any duplicates"
-msgstr "nu îndepãrta nici un duplicat"
+msgstr "OYA Gukuraho..."
 
 #: src/main/extract.c:128
+#, fuzzy
 msgid "print output in bibtex format"
-msgstr "afiºeazã ieºirea în format bibtex"
+msgstr "Gucapa Ibisohoka in Imiterere"
 
 #: src/main/extract.c:130
+#, fuzzy
 msgid ""
 "use the generic plaintext extractor for the language with the 2-letter "
 "language code LANG"
 msgstr ""
-"foloseºte extractorul text-simplu generic pentru limba cu codul de limbã din "
-"2 litere LANG"
+"Gukoresha i Gifitanye isano kugirango i Ururimi Na: i 2. Ibaruwa... Ururimi "
+"ITEGEKONGENGA"
 
 #: src/main/extract.c:132
+#, fuzzy
 msgid "remove duplicates only if types match"
-msgstr "îndepãrteazã duplicatele numai dacã tipul este acelaºi"
+msgstr "Gukuraho... NIBA BIHUYE"
 
 #: src/main/extract.c:134
+#, fuzzy
 msgid "use the filename as a keyword (loads filename-extractor plugin)"
-msgstr ""
-"foloseºte numele de fiºier ca ºi cuvânt cheie (încarcã plugin nume_fiºier-"
-"extractor)"
+msgstr "Gukoresha i Izina ry'idosiye: Nka a Ijambo- banze Izina ry'idosiye:"
 
 #: src/main/extract.c:136
+#, fuzzy
 msgid "print this help"
-msgstr "afiºeazã acest mesaj de ajutor"
+msgstr "Gucapa iyi Ifashayobora"
 
 #: src/main/extract.c:138
+#, fuzzy
 msgid "compute hash using the given ALGORITHM (currently sha1 or md5)"
-msgstr ""
-"calculeazã tabela de dispersie (hash) folosind ALGORITM-ul dat (curent sha1 "
-"sau md5)"
+msgstr "ikoresha i Cyangwa"
 
 #: src/main/extract.c:140
+#, fuzzy
 msgid "load an extractor plugin named LIBRARY"
-msgstr "încarcã un plugin extractor numit LIBRÃRIE"
+msgstr "Ibirimo"
 
 #: src/main/extract.c:142
+#, fuzzy
 msgid "list all keyword types"
-msgstr "listeazã toate tipurile de cuvinte cheie"
+msgstr "Urutonde Byose Ijambo- banze"
 
 #: src/main/extract.c:144
+#, fuzzy
 msgid "do not use the default set of extractor plugins"
-msgstr "nu folosi setul implicit de plugin-uri extractor"
+msgstr "OYA Gukoresha i Mburabuzi Gushyiraho Bya"
 
 #: src/main/extract.c:146
+#, fuzzy
 msgid "print only keywords of the given TYPE (use -L to get a list)"
-msgstr ""
-"afiºeazã numai cuvintele cheie pentru TIP-ul dat (foloseºte -L pentru a "
-"obþine o listã"
+msgstr "Gucapa Amagambo fatizo Bya i Gukoresha Kuri Kubona a Urutonde"
 
 #: src/main/extract.c:148
+#, fuzzy
 msgid "remove duplicates even if keyword types do not match"
-msgstr ""
-"îndepãrteazã duplicatele chiar dacã tipurile cuvintelor cheie nu sunt "
-"aceleaºi"
+msgstr "Gukuraho... ATARIIGIHARWE NIBA Ijambo- banze OYA BIHUYE"
 
 #: src/main/extract.c:150
+#, fuzzy
 msgid "use keyword splitting (loads split-extractor plugin)"
-msgstr ""
-"foloseºte spargere dupã cuvinte cheie (încarcã plugin-ul split-extractor)"
+msgstr "Gukoresha Ijambo- banze Gutandukanya"
 
 #: src/main/extract.c:152
+#, fuzzy
 msgid "print the version number"
-msgstr "afiºeazã numãrul versiunii"
+msgstr "Gucapa i Verisiyo Umubare"
 
 #: src/main/extract.c:154
 msgid "be verbose"
-msgstr "fi vorbãreþ"
+msgstr ""
 
 #: src/main/extract.c:156
+#, fuzzy
 msgid "do not print keywords of the given TYPE"
-msgstr "nu afiºa cuvinte cheie de TIP-ul dat"
+msgstr "OYA Gucapa Amagambo fatizo Bya i"
 
 #: src/main/extract.c:159
 msgid "extract [OPTIONS] [FILENAME]*"
-msgstr "extract [OPÞIUNI] [NUME_FIªIER]*"
+msgstr ""
 
 #: src/main/extract.c:160
+#, fuzzy
 msgid "Extract metadata from files."
-msgstr "Extrage metadata din fiºiere."
+msgstr "Bivuye Idosiye"
 
 #: src/main/extract.c:198 src/main/extractor.c:728
 #, c-format
 msgid "%s - (binary)\n"
-msgstr "%s - (binar)\n"
+msgstr ""
 
 #: src/main/extract.c:204 src/main/extractor.c:733
 #, c-format
 msgid "INVALID TYPE - %s\n"
-msgstr "TIP INVALID - %s\n"
+msgstr ""
 
 #: src/main/extract.c:270 src/main/extractor.c:40
 msgid "title"
-msgstr "titlu"
+msgstr "umutwe"
 
 #: src/main/extract.c:272 src/main/extractor.c:38
+#, fuzzy
 msgid "filename"
-msgstr "nume_fiºier"
+msgstr "Izina ry'idosiye"
 
+# sc/source\ui\miscdlgs\acredlin.src:RID_POPUP_CHANGES.SC_SUB_SORT.SC_SORT_AUTHOR.text
 #: src/main/extract.c:277 src/main/extractor.c:41
+#, fuzzy
 msgid "author"
-msgstr "autor"
+msgstr "Umwanditsi"
 
 #: src/main/extract.c:281 src/main/extractor.c:43
 msgid "description"
-msgstr "descriere"
+msgstr "Isobanuramiterere"
 
+# sfx2/source\dialog\dinfdlg.src:TP_DOCINFODESC.FT_KEYWORDS.text
 #: src/main/extract.c:283 src/main/extractor.c:55
+#, fuzzy
 msgid "keywords"
-msgstr "cuvinte cheie"
+msgstr "Amagambo fatizo"
 
+# padmin/source\padialog.src:RID_TXT_TESTPAGE_COMMENT.text
 #: src/main/extract.c:285 src/main/extractor.c:44
+#, fuzzy
 msgid "comment"
-msgstr "comentariu"
+msgstr "Icyo wongeraho"
 
 #: src/main/extract.c:289 src/main/extractor.c:45
 msgid "date"
-msgstr "data"
+msgstr "Itariki"
 
+# setup2/source\ui\app.src:FT_INSTINFO_MKDIR.text
 #: src/main/extract.c:291 src/main/extractor.c:67
+#, fuzzy
 msgid "creation date"
-msgstr "data creãrii"
+msgstr "Irema ry'itariki"
 
 #: src/main/extract.c:319 src/main/extractor.c:46
+#, fuzzy
 msgid "publisher"
-msgstr "publicist"
+msgstr "Uwasohoye inyandiko"
 
 #: src/main/extract.c:323 src/main/extractor.c:52
+#, fuzzy
 msgid "organization"
-msgstr "organizaþie"
+msgstr "Ihuzagahunda"
 
+# #-#-#-#-#  officecfg.pot (PACKAGE VERSION)  #-#-#-#-#
+# officecfg/registry\schema\org\openoffice\Office\Writer.xcs:....Wizard.Agenda.Save.DocInfoSubject.text
+# #-#-#-#-#  officecfg.pot (PACKAGE VERSION)  #-#-#-#-#
+# officecfg/registry\schema\org\openoffice\Office\Writer.xcs:....Wizard.Letter.Elements.Subject.Text.text
+# #-#-#-#-#  officecfg.pot (PACKAGE VERSION)  #-#-#-#-#
+# officecfg/registry\schema\org\openoffice\Office\Writer.xcs:....Wizard.Letter.Save.DocInfoSubject.text
+# #-#-#-#-#  officecfg.pot (PACKAGE VERSION)  #-#-#-#-#
+# officecfg/registry\schema\org\openoffice\Office\Writer.xcs:....Wizard.Fax.Save.DocInfoSubject.text
+# #-#-#-#-#  officecfg.pot (PACKAGE VERSION)  #-#-#-#-#
+# officecfg/registry\schema\org\openoffice\Office\Writer.xcs:....Wizard.Memo.Save.DocInfoSubject.text
 #: src/main/extract.c:327 src/main/extractor.c:54
 msgid "subject"
-msgstr "subiect"
+msgstr "Ikivugwaho"
 
+# sw/source\ui\inc\swmn.hrc:_MN_INS.MN_SUB_FIELD.FN_INSERT_FLD_PGCOUNT.text
 #: src/main/extract.c:331 src/main/extractor.c:71
+#, fuzzy
 msgid "page count"
-msgstr "numãr de pagini"
+msgstr "Kubara amapaje"
 
 #: src/main/extract.c:468
-#, c-format
+#, fuzzy, c-format
 msgid "You must specify an argument for the '%s' option (option ignored).\n"
-msgstr ""
-"Trebuie sã specificaþi un argument pentru opþiunea '%s' (opþiune ignoratã).\n"
+msgstr "kugirango i Ihitamo Ihitamo"
 
 #: src/main/extract.c:532
-#, c-format
+#, fuzzy, c-format
 msgid "Use --help to get a list of options.\n"
-msgstr "Folosiþi --help pentru a obþine o listã de opþiuni.\n"
+msgstr "Ifashayobora Kuri Kubona a Urutonde Bya Amahitamo"
 
 #: src/main/extract.c:586
 #, c-format
 msgid "%% BiBTeX file\n"
-msgstr "%% BiBTeX file\n"
+msgstr ""
 
 #: src/main/extract.c:593
-#, c-format
+#, fuzzy, c-format
 msgid "Keywords for file %s:\n"
-msgstr "Cuvinte cheie pentru fiºier %s:\n"
+msgstr "kugirango IDOSIYE"
 
 #: src/main/extractor.c:37
 msgid "unknown"
-msgstr "necunoscut"
+msgstr "itazwi"
 
 #: src/main/extractor.c:39
 msgid "mimetype"
-msgstr "mimetype"
+msgstr ""
 
 #: src/main/extractor.c:42
+#, fuzzy
 msgid "artist"
-msgstr "artist"
+msgstr "Umuhanzi"
 
+# sc/source\ui\src\sortdlg.src:RID_SCPAGE_SORT_OPTIONS.FT_LANGUAGE.text
 #: src/main/extractor.c:47
+#, fuzzy
 msgid "language"
-msgstr "limbã"
+msgstr "Ururimi"
 
 #: src/main/extractor.c:48
 msgid "album"
-msgstr "album"
+msgstr ""
 
 #: src/main/extractor.c:49
 msgid "genre"
-msgstr "gen"
+msgstr ""
 
 #: src/main/extractor.c:50
 msgid "location"
-msgstr "locaþie"
+msgstr "Inturo"
 
+# goodies/source\filter.vcl\eps\dlgeps.src:DLG_EXPORT_EPS.GRP_VERSION.text
 #: src/main/extractor.c:51
+#, fuzzy
 msgid "version"
-msgstr "versiune"
+msgstr "Verisiyo"
 
 #: src/main/extractor.c:53
+#, fuzzy
 msgid "copyright"
-msgstr "copyright"
+msgstr "Uburenganzira bw'umuhimbyi"
 
 #: src/main/extractor.c:56
 msgid "contributor"
-msgstr "contribuitor"
+msgstr ""
 
 #: src/main/extractor.c:57
+#, fuzzy
 msgid "resource-type"
-msgstr "tip-resursã"
+msgstr "Ubwoko"
 
 #: src/main/extractor.c:58
+#, fuzzy
 msgid "format"
-msgstr "format"
+msgstr "Imiterere"
 
 #: src/main/extractor.c:59
+#, fuzzy
 msgid "resource-identifier"
-msgstr "identificator-resursã"
+msgstr "Ikiranga"
 
 #: src/main/extractor.c:60
+#, fuzzy
 msgid "source"
-msgstr "sursã"
+msgstr "Inkomoko"
 
+# 5033
 #: src/main/extractor.c:61
+#, fuzzy
 msgid "relation"
-msgstr "relaþie"
+msgstr "Isano"
 
 #: src/main/extractor.c:62
 msgid "coverage"
-msgstr "acoperire"
+msgstr ""
 
 #: src/main/extractor.c:63
 msgid "software"
-msgstr "software"
+msgstr ""
 
 #: src/main/extractor.c:64
 msgid "disclaimer"
-msgstr "repudiere"
+msgstr ""
 
 #: src/main/extractor.c:65
+#, fuzzy
 msgid "warning"
-msgstr "avertisment"
+msgstr "Iburira"
 
 #: src/main/extractor.c:66
 msgid "translated"
-msgstr "tradus"
+msgstr ""
 
+# 3880
 #: src/main/extractor.c:68
+#, fuzzy
 msgid "modification date"
-msgstr "data modificãrii"
+msgstr "itariki y'ihindura"
 
 #: src/main/extractor.c:69
 msgid "creator"
-msgstr "creator"
+msgstr ""
 
 #: src/main/extractor.c:70
+#, fuzzy
 msgid "producer"
-msgstr "producãtor"
+msgstr "Umwanditsi"
 
 #: src/main/extractor.c:72
+#, fuzzy
 msgid "page orientation"
-msgstr "orientare paginã"
+msgstr "Ipaji Icyerekezo"
 
+# padmin/source\rtsetup.src:RID_RTS_PAPERPAGE.RID_RTS_PAPER_PAPER_TXT.text
 #: src/main/extractor.c:73
+#, fuzzy
 msgid "paper size"
-msgstr "dimensiune pagina"
+msgstr "Ingano y'urupapuro"
 
 #: src/main/extractor.c:74
+#, fuzzy
 msgid "used fonts"
-msgstr "fonturi folosite"
+msgstr "Imyandikire"
 
+# sc/source\ui\pagedlg\pagedlg.src:RID_SCPAGE_TABLE.FL_PAGEDIR.text
 #: src/main/extractor.c:75
+#, fuzzy
 msgid "page order"
-msgstr "ordine pagini"
+msgstr "Ikurikirana rya paji"
 
 #: src/main/extractor.c:76
+#, fuzzy
 msgid "created for"
-msgstr "creat pentru"
+msgstr "Byaremwe kugirango"
 
 #: src/main/extractor.c:77
 msgid "magnification"
-msgstr "mãrire"
+msgstr ""
 
 #: src/main/extractor.c:78
 msgid "release"
-msgstr "release"
+msgstr ""
 
+# #-#-#-#-#  sc.pot (PACKAGE VERSION)  #-#-#-#-#
+# sc/source\ui\src\globstr.src:RID_GLOBSTR.STR_UNDO_MAKEOUTLINE.text
+# #-#-#-#-#  sc.pot (PACKAGE VERSION)  #-#-#-#-#
+# sc/source\ui\src\miscdlgs.src:RID_SCDLG_GROUP.text
 #: src/main/extractor.c:79
+#, fuzzy
 msgid "group"
-msgstr "grup"
+msgstr "Itsinda"
 
 #: src/main/extractor.c:80
 msgid "size"
-msgstr "mãrime"
+msgstr "ingano"
 
 #: src/main/extractor.c:81
+#, fuzzy
 msgid "summary"
-msgstr "cuprins"
+msgstr "Inshamake"
 
 #: src/main/extractor.c:82
 msgid "packager"
-msgstr "împachetator"
+msgstr ""
 
 #: src/main/extractor.c:83
+#, fuzzy
 msgid "vendor"
-msgstr "vânzãtor"
+msgstr "Umucuruzi"
 
 #: src/main/extractor.c:84
 msgid "license"
-msgstr "licenþã"
+msgstr ""
 
+# svx/source\dialog\dstribut.src:RID_SVXPAGE_DISTRIBUTE.text
 #: src/main/extractor.c:85
+#, fuzzy
 msgid "distribution"
-msgstr "distribuþie"
+msgstr "Ikwirakwiza"
 
 #: src/main/extractor.c:86
+#, fuzzy
 msgid "build-host"
-msgstr "gazdã-contruit"
+msgstr "Ubuturo"
 
 #: src/main/extractor.c:87
 msgid "os"
-msgstr "sistem operare"
+msgstr ""
 
 #: src/main/extractor.c:88
 msgid "dependency"
-msgstr "dependinþe"
+msgstr ""
 
 #: src/main/extractor.c:89
 msgid "MD4"
-msgstr "MD4"
+msgstr ""
 
 #: src/main/extractor.c:90
 msgid "MD5"
-msgstr "MD5"
+msgstr ""
 
 #: src/main/extractor.c:91
+#, fuzzy
 msgid "SHA-0"
-msgstr "SHA-0"
+msgstr "0"
 
 #: src/main/extractor.c:92
+#, fuzzy
 msgid "SHA-1"
-msgstr "SHA-1"
+msgstr "1."
 
 #: src/main/extractor.c:93
 msgid "RipeMD160"
-msgstr "RipeMD160"
+msgstr ""
 
+# officecfg/registry\schema\org\openoffice\Office\Common.xcs:....Filter.Graphic.Export.BMP.Resolution.text
 #: src/main/extractor.c:94
+#, fuzzy
 msgid "resolution"
-msgstr "rezoluþie"
+msgstr "Imikemurire"
 
+# #-#-#-#-#  officecfg.pot (PACKAGE VERSION)  #-#-#-#-#
+# officecfg/registry\schema\org\openoffice\Office\Writer.xcs:....Insert.Caption.WriterObject.Table.Settings.Category.text
+# #-#-#-#-#  officecfg.pot (PACKAGE VERSION)  #-#-#-#-#
+# officecfg/registry\schema\org\openoffice\Office\Writer.xcs:....Insert.Caption.WriterObject.Frame.Settings.Category.text
+# #-#-#-#-#  officecfg.pot (PACKAGE VERSION)  #-#-#-#-#
+# officecfg/registry\schema\org\openoffice\Office\Writer.xcs:....Insert.Caption.WriterObject.Graphic.Settings.Category.text
+# #-#-#-#-#  officecfg.pot (PACKAGE VERSION)  #-#-#-#-#
+# officecfg/registry\schema\org\openoffice\Office\Writer.xcs:....Insert.Caption.OfficeObject.Calc.Settings.Category.text
+# #-#-#-#-#  officecfg.pot (PACKAGE VERSION)  #-#-#-#-#
+# officecfg/registry\schema\org\openoffice\Office\Writer.xcs:....Insert.Caption.OfficeObject.Draw.Settings.Category.text
+# #-#-#-#-#  officecfg.pot (PACKAGE VERSION)  #-#-#-#-#
+# officecfg/registry\schema\org\openoffice\Office\Writer.xcs:....Insert.Caption.OfficeObject.Chart.Settings.Category.text
+# #-#-#-#-#  officecfg.pot (PACKAGE VERSION)  #-#-#-#-#
+# officecfg/registry\schema\org\openoffice\Office\Writer.xcs:....Insert.Caption.OfficeObject.Image.Settings.Category.text
+# #-#-#-#-#  officecfg.pot (PACKAGE VERSION)  #-#-#-#-#
+# officecfg/registry\schema\org\openoffice\Office\Writer.xcs:....Insert.Caption.OfficeObject.Formula.Settings.Category.text
+# #-#-#-#-#  officecfg.pot (PACKAGE VERSION)  #-#-#-#-#
+# officecfg/registry\schema\org\openoffice\Office\Writer.xcs:....Insert.Caption.OfficeObject.Impress.Settings.Category.text
+# #-#-#-#-#  officecfg.pot (PACKAGE VERSION)  #-#-#-#-#
+# officecfg/registry\schema\org\openoffice\Office\Writer.xcs:....Insert.Caption.OfficeObject.OLEMisc.Settings.Category.text
 #: src/main/extractor.c:95
+#, fuzzy
 msgid "category"
-msgstr "categorie"
+msgstr "Icyiciro"
 
 #: src/main/extractor.c:96
+#, fuzzy
 msgid "book title"
-msgstr "titlu de carte"
+msgstr "Umutwe w'igitabo"
 
+# sw/source\ui\wizard\wizmmdlg.src:DLG_WIZARD_MM.DLG_MM2_Edit_Elem1.text
 #: src/main/extractor.c:97
 msgid "priority"
-msgstr "prioritate"
+msgstr "Icyihutirwa"
 
 #: src/main/extractor.c:98
 msgid "conflicts"
-msgstr "conflicte"
+msgstr ""
 
 #: src/main/extractor.c:99
 msgid "replaces"
-msgstr "înlocuieºte"
+msgstr ""
 
 #: src/main/extractor.c:100
 msgid "provides"
-msgstr "furnizeazã"
+msgstr ""
 
 #: src/main/extractor.c:101
 msgid "conductor"
-msgstr "conducãtor"
+msgstr ""
 
 #: src/main/extractor.c:102
 msgid "interpreter"
-msgstr "interpret(ã)"
+msgstr ""
 
 #: src/main/extractor.c:103
 msgid "owner"
-msgstr "proprietar"
+msgstr ""
 
 #: src/main/extractor.c:104
 msgid "lyrics"
-msgstr "versuri"
+msgstr ""
 
 #: src/main/extractor.c:105
+#, fuzzy
 msgid "media type"
-msgstr "tipul media"
+msgstr "Ibitangazamakuru Ubwoko"
 
 #: src/main/extractor.c:106
 msgid "contact"
-msgstr "contact"
+msgstr ""
 
 #: src/main/extractor.c:107
 msgid "binary thumbnail data"
-msgstr "data thumbnail binar"
+msgstr ""
 
+# setup2/source\ui\app.src:FT_INSTINFO_MKDIR.text
 #: src/main/extractor.c:108
 #, fuzzy
 msgid "publication date"
-msgstr "data creãrii"
+msgstr "Irema ry'itariki"
 
 #: src/main/extractor.c:194
-#, c-format
+#, fuzzy, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
-msgstr "iniþializare mecanismului de plugin a eºuat: %s!\n"
+msgstr "Bya Byanze"
 
 #: src/main/extractor.c:387
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "Resolving symbol '%s' in library '%s' failed, so I tried '%s', but that "
 "failed also.  Errors are: '%s' and '%s'.\n"
-msgstr ""
-"Rezolvarea simbolului '%s' în biblioteca '%s' a eºuat, aºa cã am încercat '%"
-"s', dar ºi acesta a eºuat.  Erorile sunt: '%s' ºi '%s'.\n"
+msgstr "IKIMENYETSO in Isomero Byanze Byanze Na"
 
 #: src/main/extractor.c:416
-#, c-format
+#, fuzzy, c-format
 msgid "Loading '%s' plugin failed: %s\n"
-msgstr "Încãrcarea plugin-ului '%s' a eºuat: %s\n"
+msgstr "Byanze"
 
 #: src/main/extractor.c:521
-#, c-format
+#, fuzzy, c-format
 msgid "Unloading plugin '%s' failed!\n"
-msgstr "Descãrcarea plugin-ului '%s' a eºuat!\n"
+msgstr "Byanze"
 
 #: src/main/getopt.c:681
-#, c-format
+#, fuzzy, c-format
 msgid "%s: option `%s' is ambiguous\n"
-msgstr "%s: opþiunea `%s' este ambiguã\n"
+msgstr "%s:Ihitamo ni"
 
 #: src/main/getopt.c:706
-#, c-format
+#, fuzzy, c-format
 msgid "%s: option `--%s' doesn't allow an argument\n"
-msgstr "%s: opþiunea `--%s' nu permite un argument\n"
+msgstr "%s:Ihitamo Kwemerera"
 
 #: src/main/getopt.c:712
-#, c-format
+#, fuzzy, c-format
 msgid "%s: option `%c%s' doesn't allow an argument\n"
-msgstr "%s: opþiunea `%c%s' nu permite un argument\n"
+msgstr "%s:Ihitamo Kwemerera"
 
 #: src/main/getopt.c:729 src/main/getopt.c:900
-#, c-format
+#, fuzzy, c-format
 msgid "%s: option `%s' requires an argument\n"
-msgstr "%s: opþiunea `%s' necesitã un argument\n"
+msgstr "%s:Ihitamo"
 
 #: src/main/getopt.c:758
-#, c-format
+#, fuzzy, c-format
 msgid "%s: unrecognized option `--%s'\n"
-msgstr "%s: opþiune nerecunoscutã `--%s'\n"
+msgstr "%s:Ihitamo"
 
 #: src/main/getopt.c:762
-#, c-format
+#, fuzzy, c-format
 msgid "%s: unrecognized option `%c%s'\n"
-msgstr "%s: opþiune nerecunoscutã `%c%s'\n"
+msgstr "%s:Ihitamo"
 
 #: src/main/getopt.c:788
-#, c-format
+#, fuzzy, c-format
 msgid "%s: illegal option -- %c\n"
-msgstr "%s: opþiune ilegalã -- %c\n"
+msgstr "%s:Ihitamo"
 
 #: src/main/getopt.c:790
-#, c-format
+#, fuzzy, c-format
 msgid "%s: invalid option -- %c\n"
-msgstr "%s: opþiune ilegalã -- %c\n"
+msgstr "%s:Sibyo Ihitamo"
 
 #: src/main/getopt.c:819 src/main/getopt.c:949
-#, c-format
+#, fuzzy, c-format
 msgid "%s: option requires an argument -- %c\n"
-msgstr "%s: opþiunea necesitã un argument -- %c\n"
+msgstr "%s:Ihitamo"
 
 #: src/main/getopt.c:867
-#, c-format
+#, fuzzy, c-format
 msgid "%s: option `-W %s' is ambiguous\n"
-msgstr "%s: opþiunea `-W %s' este ambiguã\n"
+msgstr "%s:Ihitamo ni"
 
 #: src/main/getopt.c:885
-#, c-format
+#, fuzzy, c-format
 msgid "%s: option `-W %s' doesn't allow an argument\n"
-msgstr "%s: opþiunea `-W %s' nu permite un argument\n"
+msgstr "%s:Ihitamo Kwemerera"
 
 #: src/main/winproc.c:36 src/main/winproc.c:2061
 msgid "No error"
-msgstr "Ni o eroare"
+msgstr "Nta kosa"
 
 #: src/main/winproc.c:37
+#, fuzzy
 msgid "Unknown host"
-msgstr "Gazdã necunoscutã"
+msgstr "Ubuturo"
 
 #: src/main/winproc.c:38
+#, fuzzy
 msgid "Host name lookup failure"
-msgstr "Cãutarea (lookup) numelui gazdei a eºuat"
+msgstr "Izina: GUSHAKISHA"
 
 #: src/main/winproc.c:39
+#, fuzzy
 msgid "Unknown server error"
-msgstr "Eroare server necunoscutã"
+msgstr "Seriveri Ikosa"
 
 #: src/main/winproc.c:40
+#, fuzzy
 msgid "No address associated with name"
-msgstr "Nici o adresã asociatã cu numele"
+msgstr "Aderesi Na: Izina:"
 
 #: src/main/winproc.c:41
+#, fuzzy
 msgid "Internal resolver error"
-msgstr "Eroare resolver intern"
+msgstr "Ikosa"
 
 #: src/main/winproc.c:42
+#, fuzzy
 msgid "Unknown resolver error"
-msgstr "Eroare resolver necunoscutã"
+msgstr "Ikosa"
 
 #: src/main/winproc.c:430
-#, c-format
+#, fuzzy, c-format
 msgid "Cannot determine root directory (%s)\n"
-msgstr "Nu pot determina directorul root (%s)\n"
+msgstr "Imizi bushyinguro"
 
 #: src/main/winproc.c:431
-#, c-format
+#, fuzzy, c-format
 msgid "Cannot determine home directory (%s)\n"
-msgstr "Nu pot determina directorul acasã (%s)\n"
+msgstr "Ku Ntangiriro bushyinguro"
 
 #: src/main/winproc.c:1467
+#, fuzzy
 msgid "Not super-user"
-msgstr "Nu sunteþi super-utilizator"
+msgstr "hejuru Ukoresha:"
 
 #: src/main/winproc.c:1472
+#, fuzzy
 msgid "No such file or directory"
-msgstr "Nici un asemenea fiºier sau director"
+msgstr "IDOSIYE Cyangwa bushyinguro"
 
 #: src/main/winproc.c:1477
 msgid "No such process"
-msgstr "Nici un asemenea proces"
+msgstr ""
 
 #: src/main/winproc.c:1482
+#, fuzzy
 msgid "Interrupted system call"
-msgstr "Apel sistem întrerupt"
+msgstr "Sisitemu"
 
 #: src/main/winproc.c:1487
+#, fuzzy
 msgid "I/O error"
-msgstr "Eroare I/O"
+msgstr "Ikosa"
 
 #: src/main/winproc.c:1492
+#, fuzzy
 msgid "No such device or address"
-msgstr "Nici un asemenea dispozitiv sau adresã"
+msgstr "APAREYE Cyangwa Aderesi"
 
 #: src/main/winproc.c:1497
+#, fuzzy
 msgid "Arg list too long"
-msgstr "Listã de argumente prea lungã"
+msgstr "Urutonde"
 
 #: src/main/winproc.c:1502
+#, fuzzy
 msgid "Exec format error"
-msgstr "Eroare format exec"
+msgstr "Imiterere Ikosa"
 
 #: src/main/winproc.c:1507
+#, fuzzy
 msgid "Bad file number"
-msgstr "Numãr de fiºier incorect"
+msgstr "IDOSIYE Umubare"
 
 #: src/main/winproc.c:1512
 msgid "No children"
-msgstr "Nici un copil"
+msgstr ""
 
 #: src/main/winproc.c:1517
+#, fuzzy
 msgid "Resource unavailable or operation would block, try again"
-msgstr "Resursã indisponibilã sau operaþia s-ar bloca, încercaþi din nou"
+msgstr "Cyangwa Funga"
 
 #: src/main/winproc.c:1522
 msgid "Not enough memory"
-msgstr "Memorie insuficientã"
+msgstr "Ububiko ntibuhagije"
 
 #: src/main/winproc.c:1527
 msgid "Permission denied"
-msgstr "Permisiune refuzatã"
+msgstr ""
 
 #: src/main/winproc.c:1532
+#, fuzzy
 msgid "Bad address"
-msgstr "Adresa incorectã"
+msgstr "Aderesi"
 
 #: src/main/winproc.c:1537
+#, fuzzy
 msgid "Block device required"
-msgstr "Dispozitiv bloc necesar"
+msgstr "APAREYE Bya ngombwa"
 
 #: src/main/winproc.c:1542
+#, fuzzy
 msgid "Mount device busy"
-msgstr "Dispozitiv montare ocupat"
+msgstr "APAREYE Irahuze"
 
 #: src/main/winproc.c:1547
+#, fuzzy
 msgid "File exists"
-msgstr "Fiºierul existã"
+msgstr "Idosiye"
 
 #: src/main/winproc.c:1552
+#, fuzzy
 msgid "Cross-device link"
-msgstr "Legãturã (link) între-dispozitive"
+msgstr "APAREYE Ihuza"
 
 #: src/main/winproc.c:1557
+#, fuzzy
 msgid "No such device"
-msgstr "Nici un asemenea dispozitiv"
+msgstr "APAREYE"
 
 #: src/main/winproc.c:1562
+#, fuzzy
 msgid "Not a directory"
-msgstr "Nu este un director"
+msgstr "a bushyinguro"
 
 #: src/main/winproc.c:1567
+#, fuzzy
 msgid "Is a directory"
-msgstr "Este un director"
+msgstr "a bushyinguro"
 
 #: src/main/winproc.c:1572
 msgid "Invalid argument"
-msgstr "Argument invalide"
+msgstr "Inkoresha siyo"
 
 #: src/main/winproc.c:1577
+#, fuzzy
 msgid "Too many open files in system"
-msgstr "Prea multe fiºiere deschise în sistem"
+msgstr "Gufungura Idosiye in Sisitemu"
 
 #: src/main/winproc.c:1582
+#, fuzzy
 msgid "Too many open files"
-msgstr "Prea multe fiºiere deschise"
+msgstr "Gufungura Idosiye"
 
 #: src/main/winproc.c:1587
+#, fuzzy
 msgid "Not a typewriter"
-msgstr "Nu este o maºinã de scris (typewriter)"
+msgstr "a"
 
 #: src/main/winproc.c:1592
+#, fuzzy
 msgid "Text file busy"
-msgstr "Fiºier text ocupat"
+msgstr "IDOSIYE Irahuze"
 
 #: src/main/winproc.c:1597
+#, fuzzy
 msgid "File too large"
-msgstr "Fiºier prea mare"
+msgstr "Idosiye Binini"
 
 #: src/main/winproc.c:1602
+#, fuzzy
 msgid "No space left on device"
-msgstr "Spaþiu indisponibil pe dispozitiv"
+msgstr "Umwanya Ibumoso: ku APAREYE"
 
 #: src/main/winproc.c:1607
 msgid "Illegal seek"
-msgstr "Cãutare ilegalã"
+msgstr ""
 
 #: src/main/winproc.c:1612
+#, fuzzy
 msgid "Read only file system"
-msgstr "Citeºte numai sistemul de fiºiere"
+msgstr "IDOSIYE Sisitemu"
 
 #: src/main/winproc.c:1617
+#, fuzzy
 msgid "Too many links"
-msgstr "Prea multe legãturi (links)"
+msgstr "amahuza"
 
 #: src/main/winproc.c:1622
 msgid "Broken pipe"
-msgstr "Pipe spart(ã)"
+msgstr ""
 
 #: src/main/winproc.c:1627
+#, fuzzy
 msgid "Math arg out of domain of func"
-msgstr "Argument matematic în afara domeniului funcþiei"
+msgstr "Inyuma Bya Urwego Bya"
 
 #: src/main/winproc.c:1632
+#, fuzzy
 msgid "Math result not representable"
-msgstr "Rezultatul matematic nu este reprezentabil"
+msgstr "Igisubizo OYA"
 
 #: src/main/winproc.c:1637
+#, fuzzy
 msgid "No message of desired type"
-msgstr "Nici un mesaj de tipul dorit"
+msgstr "Ubutumwa Bya Ubwoko"
 
 #: src/main/winproc.c:1642
+#, fuzzy
 msgid "Identifier removed"
-msgstr "Identificator îndepãrtat"
+msgstr "Cyavanyweho"
 
 #: src/main/winproc.c:1647
+#, fuzzy
 msgid "Channel number out of range"
-msgstr "Numãr canal în afara domeniului"
+msgstr "Umubare Inyuma Bya Urutonde"
 
 #: src/main/winproc.c:1652
+#, fuzzy
 msgid "Level 2 not synchronized"
-msgstr "Nivelul 2 nesincronizat"
+msgstr "2. OYA"
 
 #: src/main/winproc.c:1657
+#, fuzzy
 msgid "Level 3 halted"
-msgstr "Nivelul 3 oprit"
+msgstr "3."
 
 #: src/main/winproc.c:1662
+#, fuzzy
 msgid "Level 3 reset"
-msgstr "Nivelul 3 resetat"
+msgstr "3. Kugarura"
 
 #: src/main/winproc.c:1667
+#, fuzzy
 msgid "Link number out of range"
-msgstr "Numãr legãturi în afara domeniului"
+msgstr "Umubare Inyuma Bya Urutonde"
 
 #: src/main/winproc.c:1672
+#, fuzzy
 msgid "Protocol driver not attached"
-msgstr "Driver-ul de protocol nu este ataºat"
+msgstr "Musomyi: OYA"
 
 #: src/main/winproc.c:1677
+#, fuzzy
 msgid "No CSI structure available"
-msgstr "Nici o structurã CSI disponibilã"
+msgstr "Imiterere Bihari"
 
 #: src/main/winproc.c:1682
+#, fuzzy
 msgid "Level 2 halted"
-msgstr "Nivelul 2 oprit"
+msgstr "2."
 
 #: src/main/winproc.c:1687
+#, fuzzy
 msgid "Deadlock condition"
-msgstr "Condiþie blocare (Deadlock)"
+msgstr "Ibisabwa"
 
 #: src/main/winproc.c:1692
+#, fuzzy
 msgid "No record locks available"
-msgstr "Nici o încuietoare de articol (record lock) disponibilã"
+msgstr "Icyabitswe Bihari"
 
 #: src/main/winproc.c:1697
 msgid "Invalid exchange"
-msgstr "Schimbare invalidã"
+msgstr ""
 
 #: src/main/winproc.c:1702
+#, fuzzy
 msgid "Invalid request descriptor"
-msgstr "Descriptor de cerere invalid"
+msgstr "Kubaza..."
 
 #: src/main/winproc.c:1707
 msgid "Exchange full"
-msgstr "Schimbare întreagã"
+msgstr ""
 
 #: src/main/winproc.c:1712
 msgid "No anode"
-msgstr "Nici un anode"
+msgstr ""
 
 #: src/main/winproc.c:1717
+#, fuzzy
 msgid "Invalid request code"
-msgstr "Cod de cerere invalid"
+msgstr "Kubaza... ITEGEKONGENGA"
 
 #: src/main/winproc.c:1722
 msgid "Invalid slot"
-msgstr "Loc (slot) invalid"
+msgstr ""
 
 #: src/main/winproc.c:1727
+#, fuzzy
 msgid "File locking deadlock error"
-msgstr "Eroare la descuierea (locking deadlock) fiºierului"
+msgstr "Idosiye Ikosa"
 
 #: src/main/winproc.c:1732
+#, fuzzy
 msgid "Bad font file fmt"
-msgstr "Format fiºier font incorect"
+msgstr "Intego- nyuguti IDOSIYE"
 
 #: src/main/winproc.c:1737
+#, fuzzy
 msgid "Device not a stream"
-msgstr "Dispozitivul nu este un flux (stream)"
+msgstr "OYA a"
 
 #: src/main/winproc.c:1742
+#, fuzzy
 msgid "No data (for no delay io)"
-msgstr "Nici o datã (pentru intrare/ieºire fãrã întârziere)"
+msgstr "Ibyatanzwe kugirango Oya Gutinda io"
 
 #: src/main/winproc.c:1747
+#, fuzzy
 msgid "Timer expired"
-msgstr "Cronometru expirat"
+msgstr "Byarengeje igihe"
 
 #: src/main/winproc.c:1752
+#, fuzzy
 msgid "Out of streams resources"
-msgstr "Resurse în afara fluxurilor"
+msgstr "Bya"
 
 #: src/main/winproc.c:1757
+#, fuzzy
 msgid "Machine is not on the network"
-msgstr "Maºina nu este pe reþea"
+msgstr "ni OYA ku i urusobe"
 
 #: src/main/winproc.c:1762
+#, fuzzy
 msgid "Package not installed"
-msgstr "Pachet neinstalat"
+msgstr "OYA"
 
 #: src/main/winproc.c:1767
+#, fuzzy
 msgid "The object is remote"
-msgstr "Obiectul este îndepãrtat (remote)"
+msgstr "Igikoresho ni"
 
 #: src/main/winproc.c:1772
+#, fuzzy
 msgid "The link has been severed"
-msgstr "Legãtura a fost întreruptã"
+msgstr "Ihuza"
 
 #: src/main/winproc.c:1777
+#, fuzzy
 msgid "Advertise error"
-msgstr "Eroare reclamare"
+msgstr "Ikosa"
 
 #: src/main/winproc.c:1782
+#, fuzzy
 msgid "Srmount error"
-msgstr "Eroare Srmount"
+msgstr "Ikosa"
 
 #: src/main/winproc.c:1787
+#, fuzzy
 msgid "Communication error on send"
-msgstr "Eroare de comunicare la trimitere"
+msgstr "Ikosa ku Kohereza"
 
 #: src/main/winproc.c:1792
 msgid "Protocol error"
-msgstr "Eroare protocol"
+msgstr "Ikosa rya Protocol"
 
 #: src/main/winproc.c:1797
 msgid "Multihop attempted"
-msgstr "A fost încercat multihop"
+msgstr ""
 
 #: src/main/winproc.c:1802
+#, fuzzy
 msgid "Inode is remote (not really error)"
-msgstr "Inode este îndepãrtat (în realitate nu este o eroare)"
+msgstr "ni OYA Ikosa"
 
 #: src/main/winproc.c:1807
+#, fuzzy
 msgid "Cross mount point (not really error)"
-msgstr "Punct de montare încruciºat (în realitate nu este o eroare)"
+msgstr "Akadomo OYA Ikosa"
 
 #: src/main/winproc.c:1812
+#, fuzzy
 msgid "Trying to read unreadable message"
-msgstr "Încercare de citire a unui mesaj de necitit"
+msgstr "Kuri Gusoma Ubutumwa"
 
 #: src/main/winproc.c:1817
+#, fuzzy
 msgid "Given log. name not unique"
-msgstr "Numele de jurnal (log) furnizat nu este unic"
+msgstr "LOG Izina: OYA Cyo nyine"
 
 #: src/main/winproc.c:1822
+#, fuzzy
 msgid "f.d. invalid for this operation"
-msgstr "f.d. invalid pentru aceastã operaþie"
+msgstr "F. D."
 
 #: src/main/winproc.c:1827
+#, fuzzy
 msgid "Remote address changed"
-msgstr "Adresa îndepãrtatã (remote) schimbatã"
+msgstr "Aderesi Byahinduwe"
 
 #: src/main/winproc.c:1832
+#, fuzzy
 msgid "Can't access a needed shared lib"
-msgstr "Nu pot accesa o bibliotecã shared necesarã"
+msgstr "a"
 
 #: src/main/winproc.c:1837
+#, fuzzy
 msgid "Accessing a corrupted shared lib"
-msgstr "Accesez o bibliotecã shared coruptã"
+msgstr "a"
 
 #: src/main/winproc.c:1842
+#, fuzzy
 msgid ".lib section in a.out corrupted"
-msgstr "seciunea .lib în a.out este coruptã"
+msgstr ""
+".Project- Id- Version: basctl\n"
+"POT- Creation- Date: 2003- 12- 07 17: 13+ 02\n"
+"PO- Revision- Date: 2004- 11- 04 10: 13- 0700\n"
+"Last- Translator: Language- Team:< en@ li. org> MIME- Version: 1. 0\n"
+"Content- Type: text/ plain; charset= UTF- 8\n"
+"Content- Transfer- Encoding: 8bit\n"
+"X- Generator: KBabel 1. 0\n"
+"."
 
 #: src/main/winproc.c:1847
+#, fuzzy
 msgid "Attempting to link in too many libs"
-msgstr "Încercare de legare (link) în prea multe biblioteci"
+msgstr "Kuri Ihuza in"
 
 #: src/main/winproc.c:1852
+#, fuzzy
 msgid "Attempting to exec a shared library"
-msgstr "Încercare de executare a unei biblioteci shared"
+msgstr "Kuri a Isomero"
 
 #: src/main/winproc.c:1857
+#, fuzzy
 msgid "Function not implemented"
-msgstr "Funcþia nu este implematatã"
+msgstr "OYA"
 
 #: src/main/winproc.c:1862
 msgid "No more files"
-msgstr "Nici un alt fiºier"
+msgstr "Nta yandi madosiye"
 
 #: src/main/winproc.c:1867
+#, fuzzy
 msgid "Directory not empty"
-msgstr "Directorul nu este gol"
+msgstr "OYA ubusa"
 
 #: src/main/winproc.c:1872
+#, fuzzy
 msgid "File or path name too long"
-msgstr "Numele fiºierului sau cãii este prea lung"
+msgstr "Idosiye Cyangwa Inzira Izina:"
 
 #: src/main/winproc.c:1877
+#, fuzzy
 msgid "Too many symbolic links"
-msgstr "Pre multe legãturi simbolice"
+msgstr "amahuza"
 
 #: src/main/winproc.c:1882
+#, fuzzy
 msgid "Operation not supported on transport endpoint"
-msgstr "Operaþia nu este suportatã pe transport endpoint"
+msgstr "OYA ku"
 
 #: src/main/winproc.c:1887
+#, fuzzy
 msgid "Protocol family not supported"
-msgstr "Familie de protocoale nesuportatã"
+msgstr "OYA"
 
 #: src/main/winproc.c:1892
+#, fuzzy
 msgid "Connection reset by peer"
-msgstr "Conectare resetatã de pereche"
+msgstr "Kugarura ku"
 
 #: src/main/winproc.c:1897
+#, fuzzy
 msgid "No buffer space available"
-msgstr "Nici un spaþiu de buffer disponibil"
+msgstr "Umwanya Bihari"
 
 #: src/main/winproc.c:1902
+#, fuzzy
 msgid "Address family not supported by protocol family"
-msgstr "Familia de adrese nu este suportatã de familia de protocoale"
+msgstr "OYA ku Porotokole"
 
 #: src/main/winproc.c:1907
+#, fuzzy
 msgid "Protocol wrong type for socket"
-msgstr "Tip greºit de protocol pentru socket"
+msgstr "Ubwoko kugirango"
 
 #: src/main/winproc.c:1912
+#, fuzzy
 msgid "Socket operation on non-socket"
-msgstr "Operaþiune socket pe non-socket"
+msgstr "ku"
 
 #: src/main/winproc.c:1917
+#, fuzzy
 msgid "Protocol not available"
-msgstr "Protocol indisponibil"
+msgstr "OYA Bihari"
 
 #: src/main/winproc.c:1922
+#, fuzzy
 msgid "Can't send after socket shutdown"
-msgstr "Nu pot trimite dupã închiderea (shutdown) socket-ului"
+msgstr "Kohereza Nyuma Zimya"
 
 #: src/main/winproc.c:1927
 msgid "Connection refused"
-msgstr "Conectare refuzatã"
+msgstr ""
 
 #: src/main/winproc.c:1932
+#, fuzzy
 msgid "Address already in use"
-msgstr "Adresa este deja în uz"
+msgstr "in Gukoresha"
 
 #: src/main/winproc.c:1937
 msgid "Connection aborted"
-msgstr "Conectare abandonatã"
+msgstr ""
 
 #: src/main/winproc.c:1942
+#, fuzzy
 msgid "Network is unreachable"
-msgstr "Reþeaua nu poate fi atinsã"
+msgstr "ni"
 
 #: src/main/winproc.c:1947
+#, fuzzy
 msgid "Network interface is not configured"
-msgstr "Interfaþa de reþea nu este configuratã"
+msgstr "ni OYA"
 
 #: src/main/winproc.c:1952
+#, fuzzy
 msgid "Connection timed out"
-msgstr "Conectare expiratã (timed out)"
+msgstr "Inyuma"
 
 #: src/main/winproc.c:1957
+#, fuzzy
 msgid "Host is down"
-msgstr "Gazda este indisponibilã (down)"
+msgstr "ni Hasi"
 
 #: src/main/winproc.c:1962
+#, fuzzy
 msgid "Host is unreachable"
-msgstr "Gazda este de neatins (unreachable)"
+msgstr "ni"
 
 #: src/main/winproc.c:1967
+#, fuzzy
 msgid "Connection already in progress"
-msgstr "Conectare deja în progres"
+msgstr "in Aho bigeze"
 
 #: src/main/winproc.c:1972
 msgid "Socket already connected"
-msgstr "Socket deja conectat"
+msgstr ""
 
 #: src/main/winproc.c:1977
+#, fuzzy
 msgid "Destination address required"
-msgstr "Adresa destinaþie necesarã"
+msgstr "Aderesi Bya ngombwa"
 
 #: src/main/winproc.c:1982
 msgid "Message too long"
-msgstr "Mesaj prea lung"
+msgstr ""
 
 #: src/main/winproc.c:1987
+#, fuzzy
 msgid "Unknown protocol"
-msgstr "Protocol necunoscut"
+msgstr "Porotokole"
 
 #: src/main/winproc.c:1992
+#, fuzzy
 msgid "Socket type not supported"
-msgstr "Tip de socket nesuportat"
+msgstr "Ubwoko OYA"
 
 #: src/main/winproc.c:1997
+#, fuzzy
 msgid "Address not available"
-msgstr "Adresa nu este disponibilã"
+msgstr "OYA Bihari"
 
 #: src/main/winproc.c:2002
+#, fuzzy
 msgid "Connection aborted by network"
-msgstr "Conectare abandonatã de reþea"
+msgstr "ku urusobe"
 
 #: src/main/winproc.c:2007
+#, fuzzy
 msgid "Socket is already connected"
-msgstr "Socket-ul este deja conectat"
+msgstr "ni"
 
 #: src/main/winproc.c:2012
+#, fuzzy
 msgid "Socket is not connected"
-msgstr "Socket-ul nu este conectat"
+msgstr "ni OYA"
 
 #: src/main/winproc.c:2017
+#, fuzzy
 msgid "Too many references: cannot splice"
-msgstr "Prea multe referinþe: nu le pot îmbina"
+msgstr "Indango"
 
 #: src/main/winproc.c:2022
 msgid "Too many processes"
-msgstr "Prea multe procese"
+msgstr ""
 
 #: src/main/winproc.c:2027
 msgid "Too many users"
-msgstr "Prea mulþi utilizatori"
+msgstr ""
 
 #: src/main/winproc.c:2032
+#, fuzzy
 msgid "Disk quota exceeded"
-msgstr "Cota de disc depãºitã"
+msgstr "Igice"
 
 #: src/main/winproc.c:2037 src/main/winproc.c:2064
 msgid "Unknown error"
-msgstr "Eroare necunoscutã"
+msgstr "Ikosa itazwi"
 
 #: src/main/winproc.c:2042
 msgid "Not supported"
-msgstr "NU este suportat(ã)"
+msgstr ""
 
 #: src/main/winproc.c:2047
+#, fuzzy
 msgid "No medium (in tape drive)"
-msgstr "Nici un mediu (în unitatea de bandã)"
+msgstr "biringaniye in Porogaramu- shoboza"
 
 #: src/main/winproc.c:2052
+#, fuzzy
 msgid "No such host or network path"
-msgstr "Nici o asemenea gazdã sau cale de reþea"
+msgstr "Ubuturo Cyangwa urusobe Inzira"
 
 #: src/main/winproc.c:2057
+#, fuzzy
 msgid "Filename exists with different case"
-msgstr "Numele de fiºier existã cu cazul caracterelor diferit"
+msgstr "Na:"
 
 #: src/main/winproc.c:2066
-#, c-format
+#, fuzzy, c-format
 msgid "ERROR: Unknown error %i in %s\n"
-msgstr "EROARE: Eroare necunoscutã %i în %s\n"
+msgstr "Ikosa in"
 
 #: src/plugins/rpm/rpmextractor.c:3048
 #, c-format
 msgid "Source RPM %d.%d"
-msgstr "Sursã RPM %d.%d"
+msgstr ""
 
 #: src/plugins/rpm/rpmextractor.c:3053
 #, c-format
 msgid "Binary RPM %d.%d"
-msgstr "Binar RPM %d.%d"
+msgstr ""
 
 #: src/plugins/manextractor.c:128
 msgid "Commands"
-msgstr "Comenzi"
+msgstr "amabwiriza"
 
 #: src/plugins/manextractor.c:133
+#, fuzzy
 msgid "System calls"
-msgstr "Apeluri sistem"
+msgstr "Amahamagara:"
 
 #: src/plugins/manextractor.c:138
+#, fuzzy
 msgid "Library calls"
-msgstr "Apeluri de bibliotecã"
+msgstr "Amahamagara:"
 
 #: src/plugins/manextractor.c:143
+#, fuzzy
 msgid "Special files"
-msgstr "Fiºiere speciale"
+msgstr "Idosiye"
 
 #: src/plugins/manextractor.c:148
+#, fuzzy
 msgid "File formats and conventions"
-msgstr "Formate de fiºiere ºi convenþii"
+msgstr "Idosiye Imiterere Na"
 
 #: src/plugins/manextractor.c:153
 msgid "Games"
-msgstr "Jocuri"
+msgstr ""
 
 #: src/plugins/manextractor.c:158
+#, fuzzy
 msgid "Conventions and miscellaneous"
-msgstr "Convenþii ºi diverse"
+msgstr "Na Binyuranye"
 
 #: src/plugins/manextractor.c:163
+#, fuzzy
 msgid "System management commands"
-msgstr "Comenzi pentru managementul sistemului"
+msgstr "Amabwiriza"
 
 #: src/plugins/manextractor.c:168
 msgid "Kernel routines"
-msgstr "Proceduri kernel"
+msgstr ""
 
 #: src/plugins/htmlextractor.c:130 src/plugins/htmlextractor.c:928
-#, c-format
+#, fuzzy, c-format
 msgid "Fatal: could not allocate (%s at %s:%d).\n"
-msgstr "Fatal: nu am putut aloca (%s la %s:%d).\n"
+msgstr "OYA ku"
 
 #: src/plugins/jpegextractor.c:178
-#, c-format
+#, fuzzy, c-format
 msgid "%ux%u dots per inch"
-msgstr "%ux%u puncte pe inci (dpi)"
+msgstr "%ux%uUtudomo Inci"
 
 #: src/plugins/jpegextractor.c:188
-#, c-format
+#, fuzzy, c-format
 msgid "%ux%u dots per cm"
-msgstr "%ux%u puncte pe cm"
+msgstr "%ux%uUtudomo cm"
 
 #: src/plugins/jpegextractor.c:198
-#, c-format
+#, fuzzy, c-format
 msgid "%ux%u dots per inch?"
-msgstr "%ux%u puncte pe inci?"
+msgstr "%ux%uUtudomo Inci"
 
 #: src/plugins/mp3extractor.c:49
 msgid "Blues"
-msgstr "Blues"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:50
 msgid "Classic Rock"
-msgstr "Rock clasic"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:51
 msgid "Country"
-msgstr "Þarã"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:52
 msgid "Dance"
-msgstr "Dance"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:53
 msgid "Disco"
-msgstr "Disco"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:54
 msgid "Funk"
-msgstr "Funk"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:55
 msgid "Grunge"
-msgstr "Grunge"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:56
 msgid "Hip-Hop"
-msgstr "Hip-Hop"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:57
 msgid "Jazz"
-msgstr "Jazz"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:58
 msgid "Metal"
-msgstr "Metal"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:59
 msgid "New Age"
-msgstr "New Age"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:60
 msgid "Oldies"
-msgstr "Oldies"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:61
 msgid "Other"
-msgstr "Altele"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:62
 msgid "Pop"
-msgstr "Pop"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:63
 msgid "R&B"
-msgstr "R&B"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:64
 msgid "Rap"
-msgstr "Rap"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:65
 msgid "Reggae"
-msgstr "Reggae"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:66
 msgid "Rock"
-msgstr "Rock"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:67
 msgid "Techno"
-msgstr "Techno"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:68
 msgid "Industrial"
-msgstr "Industrial"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:69
 msgid "Alternative"
-msgstr "Alternative"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:70
 msgid "Ska"
-msgstr "Ska"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:71
 msgid "Death Metal"
-msgstr "Death Metal"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:72
 msgid "Pranks"
-msgstr "Pranks"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:73
 msgid "Soundtrack"
-msgstr "Soundtrack"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:74
 msgid "Euro-Techno"
-msgstr "Euro-Techno"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:75
 msgid "Ambient"
-msgstr "Ambient"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:76
 msgid "Trip-Hop"
-msgstr "Trip-Hop"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:77
 msgid "Vocal"
-msgstr "Vocal"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:78
 msgid "Jazz+Funk"
-msgstr "Jazz+Funk"
+msgstr ""
 
+# goodies/source\filter.vcl\eps\dlgeps.src:DLG_EXPORT_EPS.GRP_VERSION.text
 #: src/plugins/mp3extractor.c:79
+#, fuzzy
 msgid "Fusion"
-msgstr "Fusion"
+msgstr "Verisiyo"
 
 #: src/plugins/mp3extractor.c:80
 msgid "Trance"
-msgstr "Trance"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:81
 msgid "Classical"
-msgstr "Clasicã"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:82
 msgid "Instrumental"
-msgstr "Instrumental"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:83
 msgid "Acid"
-msgstr "Acid"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:84
 msgid "House"
-msgstr "House"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:85
 msgid "Game"
-msgstr "Joc"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:86
 msgid "Sound Clip"
-msgstr "Clip sonor"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:87
 msgid "Gospel"
-msgstr "Gospel"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:88
 msgid "Noise"
-msgstr "Zgomot"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:89
 msgid "Alt. Rock"
-msgstr "Rock Alternativ"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:90
 msgid "Bass"
-msgstr "Bass"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:91
 msgid "Soul"
-msgstr "Soul"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:92
 msgid "Punk"
-msgstr "Punk"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:93
 msgid "Space"
-msgstr "Spaþiu"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:94
+#, fuzzy
 msgid "Meditative"
-msgstr "Meditativ"
+msgstr "Ibitangazamakuru Ubwoko"
 
 #: src/plugins/mp3extractor.c:95
 msgid "Instrumental Pop"
-msgstr "Instrumental Pop"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:96
 msgid "Instrumental Rock"
-msgstr "Instrumental Rock"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:97
 msgid "Ethnic"
-msgstr "Ethnic"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:98
 msgid "Gothic"
-msgstr "Gothic"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:99
 msgid "Darkwave"
-msgstr "Darkwave"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:100
 msgid "Techno-Industrial"
-msgstr "Techno-Industrial"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:101
 msgid "Electronic"
-msgstr "Electronic"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:102
 msgid "Pop-Folk"
-msgstr "Pop-Folk"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:103
 msgid "Eurodance"
-msgstr "Eurodance"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:104
 msgid "Dream"
-msgstr "Dream"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:105
 msgid "Southern Rock"
-msgstr "Southern Rock"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:106
 msgid "Comedy"
-msgstr "Comedy"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:107
 msgid "Cult"
-msgstr "Cult"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:108
 msgid "Gangsta Rap"
-msgstr "Gangsta Rap"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:109
 msgid "Top 40"
-msgstr "Top 40"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:110
 msgid "Christian Rap"
-msgstr "Christian Rap"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:111
 msgid "Pop/Funk"
-msgstr "Pop/Funk"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:112
 msgid "Jungle"
-msgstr "Jungle"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:113
 msgid "Native American"
-msgstr "Native American"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:114
 msgid "Cabaret"
-msgstr "Cabaret"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:115
 msgid "New Wave"
-msgstr "New Wave"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:116
 msgid "Psychedelic"
-msgstr "Psychedelic"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:117
 msgid "Rave"
-msgstr "Rave"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:118
 msgid "Showtunes"
-msgstr "Showtunes"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:119
 msgid "Trailer"
-msgstr "Trailer"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:120
 msgid "Lo-Fi"
-msgstr "Lo-Fi"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:121
 msgid "Tribal"
-msgstr "Tribal"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:122
 msgid "Acid Punk"
-msgstr "Acid Punk"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:123
 msgid "Acid Jazz"
-msgstr "Acid Jazz"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:124
 msgid "Polka"
-msgstr "Polka"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:125
 msgid "Retro"
-msgstr "Retro"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:126
 msgid "Musical"
-msgstr "Musical"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:127
 msgid "Rock & Roll"
-msgstr "Rock & Roll"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:128
 msgid "Hard Rock"
-msgstr "Hard Rock"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:129
 msgid "Folk"
-msgstr "Folk"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:130
 msgid "Folk/Rock"
-msgstr "Folk/Rock"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:131
 msgid "National Folk"
-msgstr "National Folk"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:132
+#, fuzzy
 msgid "Swing"
-msgstr "Swing"
+msgstr "Iburira"
 
 #: src/plugins/mp3extractor.c:133
 msgid "Fast-Fusion"
-msgstr "Fast-Fusion"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:134
 msgid "Bebob"
-msgstr "Bebob"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:135
+#, fuzzy
 msgid "Latin"
-msgstr "Latin"
+msgstr "Inturo"
 
 #: src/plugins/mp3extractor.c:136
 msgid "Revival"
-msgstr "Revival"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:137
 msgid "Celtic"
-msgstr "Celtic"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:138
 msgid "Bluegrass"
-msgstr "Bluegrass"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:139
 msgid "Avantgarde"
-msgstr "Avantgarde"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:140
 msgid "Gothic Rock"
-msgstr "Gothic Rock"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:141
 msgid "Progressive Rock"
-msgstr "Progressive Rock"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:142
 msgid "Psychedelic Rock"
-msgstr "Psychedelic Rock"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:143
 msgid "Symphonic Rock"
-msgstr "Symphonic Rock"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:144
 msgid "Slow Rock"
-msgstr "Slow Rock"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:145
 msgid "Big Band"
-msgstr "Big Band"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:146
 msgid "Chorus"
-msgstr "Chorus"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:147
 msgid "Easy Listening"
-msgstr "Easy Listening"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:148
 msgid "Acoustic"
-msgstr "Acoustic"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:149
 msgid "Humour"
-msgstr "Umor"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:150
 msgid "Speech"
-msgstr "Discurs"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:151
 msgid "Chanson"
-msgstr "Chanson"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:152
 msgid "Opera"
-msgstr "Operã"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:153
 msgid "Chamber Music"
-msgstr "Muzicã de camerã"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:154
 msgid "Sonata"
-msgstr "Sonet"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:155
 msgid "Symphony"
-msgstr "Simfonie"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:156
 msgid "Booty Bass"
-msgstr "Booty Bass"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:157
 msgid "Primus"
-msgstr "Primus"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:158
 msgid "Porn Groove"
-msgstr "Porn Groove"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:159
+#, fuzzy
 msgid "Satire"
-msgstr "Satire"
+msgstr "Itariki"
 
 #: src/plugins/mp3extractor.c:160
 msgid "Slow Jam"
-msgstr "Slow Jam"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:161
 msgid "Club"
-msgstr "Club"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:162
 msgid "Tango"
-msgstr "Tango"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:163
 msgid "Samba"
-msgstr "Samba"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:164
 msgid "Folklore"
-msgstr "Folklore"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:165
 msgid "Ballad"
-msgstr "Ballad"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:166
 msgid "Power Ballad"
-msgstr "Power Ballad"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:167
 msgid "Rhythmic Soul"
-msgstr "Rhythmic Soul"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:168
 msgid "Freestyle"
-msgstr "Freestyle"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:169
 msgid "Duet"
-msgstr "Duet"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:170
 msgid "Punk Rock"
-msgstr "Punk Rock"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:171
 msgid "Drum Solo"
-msgstr "Drum Solo"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:172
 msgid "A Cappella"
-msgstr "A Cappella"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:173
 msgid "Euro-House"
-msgstr "Euro-House"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:174
 msgid "Dance Hall"
-msgstr "Dance Hall"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:175
 msgid "Goa"
-msgstr "Goa"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:176
 msgid "Drum & Bass"
-msgstr "Drum & Bass"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:177
 msgid "Club-House"
-msgstr "Club-House"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:178
 msgid "Hardcore"
-msgstr "Hardcore"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:179
+#, fuzzy
 msgid "Terror"
-msgstr "Terror"
+msgstr "Nta kosa"
 
 #: src/plugins/mp3extractor.c:180
 msgid "Indie"
-msgstr "Indie"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:181
 msgid "BritPop"
-msgstr "BritPop"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:182
 msgid "Negerpunk"
-msgstr "Negerpunk"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:183
 msgid "Polsk Punk"
-msgstr "Polsk Punk"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:184
 msgid "Beat"
-msgstr "Beat"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:185
 msgid "Christian Gangsta Rap"
-msgstr "Christian Gangsta Rap"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:186
 msgid "Heavy Metal"
-msgstr "Heavy Metal"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:187
 msgid "Black Metal"
-msgstr "Black Metal"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:188
 msgid "Crossover"
-msgstr "Crossover"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:189
 msgid "Contemporary Christian"
-msgstr "Contemporary Christian"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:190
 msgid "Christian Rock"
-msgstr "Christian Rock"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:191
 msgid "Merengue"
-msgstr "Merengue"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:192
 msgid "Salsa"
-msgstr "Salsa"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:193
 msgid "Thrash Metal"
-msgstr "Thrash Metal"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:194
 msgid "Anime"
-msgstr "Anime"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:195
 msgid "JPop"
-msgstr "JPop"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:196
 msgid "Synthpop"
-msgstr "Synthpop"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:438 src/plugins/wavextractor.c:114
 msgid "stereo"
-msgstr "stereo"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:438 src/plugins/wavextractor.c:114
 msgid "mono"
-msgstr "mono"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:439
+#, fuzzy
 msgid "(variable bps)"
-msgstr "(bps variabil)"
+msgstr "(IMPINDURAGACIRO"
 
 #: src/plugins/riffextractor.c:167
 #, c-format
 msgid "codec: %s, %u fps, %u ms"
-msgstr "codec: %s, %u fps, %u ms"
+msgstr ""
 
 #: src/plugins/printable/dictionary-builder.c:29
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "Please provide the name of the language you are building\n"
 "a dictionary for.  For example:\n"
-msgstr ""
-"Vã rugãm furnizaþi numele limbii pentru care contruiþi\n"
-"un dicþionar.  De exemplu:\n"
+msgstr "i Izina: Bya i Ururimi Inkoranyamagambo kugirango Urugero"
 
+# basctl/source\basicide\basidesh.src:RID_STR_ERROROPENSTORAGE.text
 #: src/plugins/printable/dictionary-builder.c:42
-#, c-format
+#, fuzzy, c-format
 msgid "Error opening file '%s': %s\n"
-msgstr "Eroare deschidere fiºier '%s': %s\n"
+msgstr "Hari ikibazo mu gufungura dosiye"
 
 #: src/plugins/printable/dictionary-builder.c:50
 #, c-format
@@ -1735,10 +1949,8 @@ msgid ""
 "Error allocating: %s\n"
 "."
 msgstr ""
-"Eroare de alocare: %s\n"
-"."
 
 #: src/plugins/printable/dictionary-builder.c:62
-#, c-format
+#, fuzzy, c-format
 msgid "Increase ALLOCSIZE (in %s).\n"
-msgstr "Creºteþi ALLOCSIZE (în %s).\n"
+msgstr "in"

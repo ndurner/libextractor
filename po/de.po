@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.4.0\n"
 "Report-Msgid-Bugs-To: libextractor@cs.purdue.edu\n"
-"POT-Creation-Date: 2005-02-24 01:28-0500\n"
+"POT-Creation-Date: 2005-04-05 17:09-0500\n"
 "PO-Revision-Date: 2004-12-29 15:40+0100\n"
 "Last-Translator: Karl Eichwalder <ke@gnu.franken.de>\n"
 "Language-Team: German <de@li.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/main/extract.c:55
+#: src/main/extract.c:49
 #, c-format
 msgid ""
 "Usage: %s\n"
@@ -29,7 +29,7 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: src/main/extract.c:58
+#: src/main/extract.c:52
 #, c-format
 msgid ""
 "Arguments mandatory for long options are also mandatory for short options.\n"
@@ -37,15 +37,15 @@ msgstr ""
 "Argumente, die für lange Optionen notwendig sind, sind ebenfalls für die\n"
 "Optionen in Kurzform notwendig.\n"
 
-#: src/main/extract.c:132
+#: src/main/extract.c:126
 msgid "do not remove any duplicates"
 msgstr "doppelte Einträge nicht entfernen"
 
-#: src/main/extract.c:134
+#: src/main/extract.c:128
 msgid "print output in bibtex format"
 msgstr "Ausgabe im BibTeX format"
 
-#: src/main/extract.c:136
+#: src/main/extract.c:130
 msgid ""
 "use the generic plaintext extractor for the language with the 2-letter "
 "language code LANG"
@@ -53,405 +53,410 @@ msgstr ""
 "generischen Klartext-extractor für die Sprache mit dem 2-Buchstabenkürzel "
 "LANG verwenden"
 
-#: src/main/extract.c:138
+#: src/main/extract.c:132
 msgid "remove duplicates only if types match"
 msgstr "doppelte Einträge nur entfernen, wenn die Art übereinstimmt"
 
-#: src/main/extract.c:140
+#: src/main/extract.c:134
 msgid "use the filename as a keyword (loads filename-extractor plugin)"
 msgstr ""
 "Dateinamen als Schlüsselwort verwenden (filename-extractor-Erweiterung wird "
 "geladen)"
 
-#: src/main/extract.c:142
+#: src/main/extract.c:136
 msgid "print this help"
 msgstr "diese Hilfe anzeigen"
 
-#: src/main/extract.c:144
+#: src/main/extract.c:138
 msgid "compute hash using the given ALGORITHM (currently sha1 or md5)"
 msgstr ""
 "Hash gemäß dem angegebenen ALGORITHMUS errechnen (z.Zt. »sha1« oder »md5«)"
 
-#: src/main/extract.c:146
+#: src/main/extract.c:140
 msgid "load an extractor plugin named LIBRARY"
 msgstr "extractor-Erweiterung mit der Bezeichnung LIBRARY laden"
 
-#: src/main/extract.c:148
+#: src/main/extract.c:142
 msgid "list all keyword types"
 msgstr "alle Arten Schlüsselwörter auflisten"
 
-#: src/main/extract.c:150
+#: src/main/extract.c:144
 msgid "do not use the default set of extractor plugins"
 msgstr "Standardsatz der extractor-Erweiterungen nicht verwenden"
 
-#: src/main/extract.c:152
+#: src/main/extract.c:146
 msgid "print only keywords of the given TYPE (use -L to get a list)"
 msgstr ""
 "nur Schlüsselwörter einer bestimmten ART ausgeben (mit -L die Liste anzeigen "
 "lassen)"
 
-#: src/main/extract.c:154
+#: src/main/extract.c:148
 msgid "remove duplicates even if keyword types do not match"
 msgstr "doppelte Einträge auch entfernen, wenn die Art nicht übereinstimmt"
 
-#: src/main/extract.c:156
+#: src/main/extract.c:150
 msgid "use keyword splitting (loads split-extractor plugin)"
 msgstr "Schlüsselwörter splitten (split-extractor-Erweiterung wird geladen)"
 
-#: src/main/extract.c:158
+#: src/main/extract.c:152
 msgid "print the version number"
 msgstr "die Versionsnummer anzeigen"
 
-#: src/main/extract.c:160
+#: src/main/extract.c:154
 msgid "be verbose"
 msgstr "viele Informationen ausgeben"
 
-#: src/main/extract.c:162
+#: src/main/extract.c:156
 msgid "do not print keywords of the given TYPE"
 msgstr "Schlüsselwörter einer bestimmten ART nicht ausgeben"
 
-#: src/main/extract.c:165
+#: src/main/extract.c:159
 msgid "extract [OPTIONS] [FILENAME]*"
 msgstr "extract [OPTIONEN] [DATEINAME]*"
 
-#: src/main/extract.c:166
+#: src/main/extract.c:160
 msgid "Extract metadata from files."
 msgstr "Metadaten aus den Dateien extrahieren."
 
-#: src/main/extract.c:208 src/main/extractor.c:755
+#: src/main/extract.c:198 src/main/extractor.c:728
 #, c-format
 msgid "%s - (binary)\n"
 msgstr ""
 
-#: src/main/extract.c:214 src/main/extractor.c:760
+#: src/main/extract.c:204 src/main/extractor.c:733
 #, c-format
 msgid "INVALID TYPE - %s\n"
 msgstr "UNGÜLTIGE ART - %s\n"
 
-#: src/main/extract.c:280 src/main/extractor.c:44
+#: src/main/extract.c:270 src/main/extractor.c:40
 msgid "title"
 msgstr "Titel"
 
-#: src/main/extract.c:282 src/main/extractor.c:42
+#: src/main/extract.c:272 src/main/extractor.c:38
 msgid "filename"
 msgstr "Dateiname"
 
-#: src/main/extract.c:287 src/main/extractor.c:45
+#: src/main/extract.c:277 src/main/extractor.c:41
 msgid "author"
 msgstr "Autor"
 
-#: src/main/extract.c:291 src/main/extractor.c:47
+#: src/main/extract.c:281 src/main/extractor.c:43
 msgid "description"
 msgstr "Beschreibung"
 
-#: src/main/extract.c:293 src/main/extractor.c:59
+#: src/main/extract.c:283 src/main/extractor.c:55
 msgid "keywords"
 msgstr "Schlüsselwörter"
 
-#: src/main/extract.c:295 src/main/extractor.c:48
+#: src/main/extract.c:285 src/main/extractor.c:44
 msgid "comment"
 msgstr "Kommentar"
 
-#: src/main/extract.c:299 src/main/extractor.c:49
+#: src/main/extract.c:289 src/main/extractor.c:45
 msgid "date"
 msgstr "Datum"
 
-#: src/main/extract.c:301 src/main/extractor.c:71
+#: src/main/extract.c:291 src/main/extractor.c:67
 msgid "creation date"
 msgstr "Datum der Erstellung"
 
-#: src/main/extract.c:329 src/main/extractor.c:50
+#: src/main/extract.c:319 src/main/extractor.c:46
 msgid "publisher"
 msgstr "Herausgeber"
 
-#: src/main/extract.c:333 src/main/extractor.c:56
+#: src/main/extract.c:323 src/main/extractor.c:52
 msgid "organization"
 msgstr "Organisation"
 
-#: src/main/extract.c:337 src/main/extractor.c:58
+#: src/main/extract.c:327 src/main/extractor.c:54
 msgid "subject"
 msgstr "Gegenstand"
 
-#: src/main/extract.c:341 src/main/extractor.c:75
+#: src/main/extract.c:331 src/main/extractor.c:71
 msgid "page count"
 msgstr "Seitenanzahl"
 
-#: src/main/extract.c:475
+#: src/main/extract.c:468
 #, c-format
 msgid "You must specify an argument for the '%s' option (option ignored).\n"
 msgstr ""
 "Sie müssen ein Argument für die Option »%s« angeben (Option wird "
 "ignoriert).\n"
 
-#: src/main/extract.c:539
+#: src/main/extract.c:532
 #, c-format
 msgid "Use --help to get a list of options.\n"
 msgstr "Verwenden Sie --help, um eine Liste aller Optionen zu sehen.\n"
 
-#: src/main/extract.c:593
+#: src/main/extract.c:586
 #, c-format
 msgid "%% BiBTeX file\n"
 msgstr "%% BibTeX Datei\n"
 
-#: src/main/extract.c:600
+#: src/main/extract.c:593
 #, c-format
 msgid "Keywords for file %s:\n"
 msgstr "Schlüsserwörter für die Datei %s:\n"
 
-#: src/main/extractor.c:41
+#: src/main/extractor.c:37
 msgid "unknown"
 msgstr "unbekannt"
 
-#: src/main/extractor.c:43
+#: src/main/extractor.c:39
 msgid "mimetype"
 msgstr "MIME-Typ"
 
-#: src/main/extractor.c:46
+#: src/main/extractor.c:42
 msgid "artist"
 msgstr "Künstler"
 
-#: src/main/extractor.c:51
+#: src/main/extractor.c:47
 msgid "language"
 msgstr "Sprache"
 
-#: src/main/extractor.c:52
+#: src/main/extractor.c:48
 msgid "album"
 msgstr "Album"
 
-#: src/main/extractor.c:53
+#: src/main/extractor.c:49
 msgid "genre"
 msgstr "Fach"
 
-#: src/main/extractor.c:54
+#: src/main/extractor.c:50
 msgid "location"
 msgstr "Ort"
 
-#: src/main/extractor.c:55
+#: src/main/extractor.c:51
 msgid "version"
 msgstr "Version"
 
-#: src/main/extractor.c:57
+#: src/main/extractor.c:53
 msgid "copyright"
 msgstr "Copyright"
 
-#: src/main/extractor.c:60
+#: src/main/extractor.c:56
 msgid "contributor"
 msgstr "Beiträger"
 
-#: src/main/extractor.c:61
+#: src/main/extractor.c:57
 msgid "resource-type"
 msgstr "Art der Ressource"
 
-#: src/main/extractor.c:62
+#: src/main/extractor.c:58
 msgid "format"
 msgstr "Format"
 
-#: src/main/extractor.c:63
+#: src/main/extractor.c:59
 msgid "resource-identifier"
 msgstr ""
 
-#: src/main/extractor.c:64
+#: src/main/extractor.c:60
 msgid "source"
 msgstr "Quelle"
 
-#: src/main/extractor.c:65
+#: src/main/extractor.c:61
 msgid "relation"
 msgstr ""
 
-#: src/main/extractor.c:66
+#: src/main/extractor.c:62
 msgid "coverage"
 msgstr ""
 
-#: src/main/extractor.c:67
+#: src/main/extractor.c:63
 msgid "software"
 msgstr "Software"
 
-#: src/main/extractor.c:68
+#: src/main/extractor.c:64
 msgid "disclaimer"
 msgstr ""
 
-#: src/main/extractor.c:69
+#: src/main/extractor.c:65
 msgid "warning"
 msgstr "Warnung"
 
-#: src/main/extractor.c:70
+#: src/main/extractor.c:66
 msgid "translated"
 msgstr "übersetzt"
 
-#: src/main/extractor.c:72
+#: src/main/extractor.c:68
 msgid "modification date"
 msgstr "Datum der Veränderung"
 
-#: src/main/extractor.c:73
+#: src/main/extractor.c:69
 msgid "creator"
 msgstr "Ersteller"
 
-#: src/main/extractor.c:74
+#: src/main/extractor.c:70
 msgid "producer"
 msgstr "Hersteller"
 
-#: src/main/extractor.c:76
+#: src/main/extractor.c:72
 msgid "page orientation"
 msgstr "Seitenausrichtung"
 
-#: src/main/extractor.c:77
+#: src/main/extractor.c:73
 msgid "paper size"
 msgstr "Seitengröße"
 
-#: src/main/extractor.c:78
+#: src/main/extractor.c:74
 msgid "used fonts"
 msgstr "verwendete Schriften"
 
-#: src/main/extractor.c:79
+#: src/main/extractor.c:75
 msgid "page order"
 msgstr "Seitenreihenfolge"
 
-#: src/main/extractor.c:80
+#: src/main/extractor.c:76
 msgid "created for"
 msgstr "erstellt für"
 
-#: src/main/extractor.c:81
+#: src/main/extractor.c:77
 msgid "magnification"
 msgstr "Vergrößerung"
 
-#: src/main/extractor.c:82
+#: src/main/extractor.c:78
 msgid "release"
 msgstr "Release"
 
-#: src/main/extractor.c:83
+#: src/main/extractor.c:79
 msgid "group"
 msgstr "Gruppe"
 
-#: src/main/extractor.c:84
+#: src/main/extractor.c:80
 msgid "size"
 msgstr "Größe"
 
-#: src/main/extractor.c:85
+#: src/main/extractor.c:81
 msgid "summary"
 msgstr "Kurzbeschreibung"
 
-#: src/main/extractor.c:86
+#: src/main/extractor.c:82
 msgid "packager"
 msgstr "Paket-Ersteller"
 
-#: src/main/extractor.c:87
+#: src/main/extractor.c:83
 msgid "vendor"
 msgstr ""
 
-#: src/main/extractor.c:88
+#: src/main/extractor.c:84
 msgid "license"
 msgstr "Lizenz"
 
-#: src/main/extractor.c:89
+#: src/main/extractor.c:85
 msgid "distribution"
 msgstr "Distribution"
 
-#: src/main/extractor.c:90
+#: src/main/extractor.c:86
 msgid "build-host"
 msgstr ""
 
-#: src/main/extractor.c:91
+#: src/main/extractor.c:87
 msgid "os"
 msgstr "Betriebssystem"
 
-#: src/main/extractor.c:92
+#: src/main/extractor.c:88
 msgid "dependency"
 msgstr "Abhängigkeit"
 
-#: src/main/extractor.c:93
+#: src/main/extractor.c:89
 msgid "MD4"
 msgstr "MD4"
 
-#: src/main/extractor.c:94
+#: src/main/extractor.c:90
 msgid "MD5"
 msgstr "MD5"
 
-#: src/main/extractor.c:95
+#: src/main/extractor.c:91
 msgid "SHA-0"
 msgstr "SHA-0"
 
-#: src/main/extractor.c:96
+#: src/main/extractor.c:92
 msgid "SHA-1"
 msgstr "SHA-1"
 
-#: src/main/extractor.c:97
+#: src/main/extractor.c:93
 msgid "RipeMD160"
 msgstr "RipeMD160"
 
-#: src/main/extractor.c:98
+#: src/main/extractor.c:94
 msgid "resolution"
 msgstr "Auflösung"
 
-#: src/main/extractor.c:99
+#: src/main/extractor.c:95
 msgid "category"
 msgstr "Kategorie"
 
-#: src/main/extractor.c:100
+#: src/main/extractor.c:96
 msgid "book title"
 msgstr "Buchtitel"
 
-#: src/main/extractor.c:101
+#: src/main/extractor.c:97
 msgid "priority"
 msgstr "Priorität"
 
-#: src/main/extractor.c:102
+#: src/main/extractor.c:98
 msgid "conflicts"
 msgstr ""
 
-#: src/main/extractor.c:103
+#: src/main/extractor.c:99
 msgid "replaces"
 msgstr "Ersatz für"
 
-#: src/main/extractor.c:104
+#: src/main/extractor.c:100
 msgid "provides"
 msgstr ""
 
-#: src/main/extractor.c:105
+#: src/main/extractor.c:101
 msgid "conductor"
 msgstr ""
 
-#: src/main/extractor.c:106
+#: src/main/extractor.c:102
 msgid "interpreter"
 msgstr "Interpret"
 
-#: src/main/extractor.c:107
+#: src/main/extractor.c:103
 msgid "owner"
 msgstr "Besitzer"
 
-#: src/main/extractor.c:108
+#: src/main/extractor.c:104
 msgid "lyrics"
 msgstr "Liedtexte"
 
-#: src/main/extractor.c:109
+#: src/main/extractor.c:105
 msgid "media type"
 msgstr "Medien-Art"
 
-#: src/main/extractor.c:110
+#: src/main/extractor.c:106
 msgid "contact"
 msgstr "Kontakt"
 
-#: src/main/extractor.c:111
+#: src/main/extractor.c:107
 msgid "binary thumbnail data"
 msgstr ""
 
-#: src/main/extractor.c:207
+#: src/main/extractor.c:108
+#, fuzzy
+msgid "publication date"
+msgstr "Datum der Erstellung"
+
+#: src/main/extractor.c:194
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "Initialisierung des Plugin-Mechanismus' ist fehlgeschlagen: %s.\n"
 
-#: src/main/extractor.c:393
+#: src/main/extractor.c:387
 #, c-format
 msgid ""
 "Resolving symbol '%s' in library '%s' failed, so I tried '%s', but that "
 "failed also.  Errors are: '%s' and '%s'.\n"
 msgstr ""
 
-#: src/main/extractor.c:422
+#: src/main/extractor.c:416
 #, c-format
 msgid "Loading '%s' plugin failed: %s\n"
 msgstr "Laden des »%s«-Plugins ist fehlgeschlagen: %s\n"
 
-#: src/main/extractor.c:527
+#: src/main/extractor.c:521
 #, c-format
 msgid "Unloading plugin '%s' failed!\n"
 msgstr "Entladen des »%s«-Erweiterung ist fehlgeschlagen.\n"
@@ -511,7 +516,7 @@ msgstr "%s: Option »-W %s« ist mehrdeutig\n"
 msgid "%s: option `-W %s' doesn't allow an argument\n"
 msgstr "%s: Option »-W %s« erwartet kein Argument\n"
 
-#: src/main/winproc.c:36 src/main/winproc.c:1901
+#: src/main/winproc.c:36 src/main/winproc.c:2061
 msgid "No error"
 msgstr "Kein Fehler"
 
@@ -539,493 +544,493 @@ msgstr ""
 msgid "Unknown resolver error"
 msgstr ""
 
-#: src/main/winproc.c:421
+#: src/main/winproc.c:430
 #, c-format
 msgid "Cannot determine root directory (%s)\n"
 msgstr ""
 
-#: src/main/winproc.c:422
+#: src/main/winproc.c:431
 #, c-format
 msgid "Cannot determine home directory (%s)\n"
 msgstr ""
 
-#: src/main/winproc.c:1307
+#: src/main/winproc.c:1467
 msgid "Not super-user"
 msgstr ""
 
-#: src/main/winproc.c:1312
+#: src/main/winproc.c:1472
 msgid "No such file or directory"
 msgstr ""
 
-#: src/main/winproc.c:1317
+#: src/main/winproc.c:1477
 msgid "No such process"
 msgstr ""
 
-#: src/main/winproc.c:1322
+#: src/main/winproc.c:1482
 msgid "Interrupted system call"
 msgstr ""
 
-#: src/main/winproc.c:1327
+#: src/main/winproc.c:1487
 msgid "I/O error"
 msgstr ""
 
-#: src/main/winproc.c:1332
+#: src/main/winproc.c:1492
 msgid "No such device or address"
 msgstr ""
 
-#: src/main/winproc.c:1337
+#: src/main/winproc.c:1497
 msgid "Arg list too long"
 msgstr ""
 
-#: src/main/winproc.c:1342
+#: src/main/winproc.c:1502
 msgid "Exec format error"
 msgstr ""
 
-#: src/main/winproc.c:1347
+#: src/main/winproc.c:1507
 msgid "Bad file number"
 msgstr ""
 
-#: src/main/winproc.c:1352
+#: src/main/winproc.c:1512
 msgid "No children"
 msgstr ""
 
-#: src/main/winproc.c:1357
+#: src/main/winproc.c:1517
 msgid "Resource unavailable or operation would block, try again"
 msgstr ""
 
-#: src/main/winproc.c:1362
+#: src/main/winproc.c:1522
 msgid "Not enough memory"
 msgstr ""
 
-#: src/main/winproc.c:1367
+#: src/main/winproc.c:1527
 msgid "Permission denied"
 msgstr ""
 
-#: src/main/winproc.c:1372
+#: src/main/winproc.c:1532
 msgid "Bad address"
 msgstr ""
 
-#: src/main/winproc.c:1377
+#: src/main/winproc.c:1537
 msgid "Block device required"
 msgstr ""
 
-#: src/main/winproc.c:1382
+#: src/main/winproc.c:1542
 msgid "Mount device busy"
 msgstr ""
 
-#: src/main/winproc.c:1387
+#: src/main/winproc.c:1547
 msgid "File exists"
 msgstr ""
 
-#: src/main/winproc.c:1392
+#: src/main/winproc.c:1552
 msgid "Cross-device link"
 msgstr ""
 
-#: src/main/winproc.c:1397
+#: src/main/winproc.c:1557
 msgid "No such device"
 msgstr ""
 
-#: src/main/winproc.c:1402
+#: src/main/winproc.c:1562
 msgid "Not a directory"
 msgstr ""
 
-#: src/main/winproc.c:1407
+#: src/main/winproc.c:1567
 msgid "Is a directory"
 msgstr ""
 
-#: src/main/winproc.c:1412
+#: src/main/winproc.c:1572
 msgid "Invalid argument"
 msgstr ""
 
-#: src/main/winproc.c:1417
+#: src/main/winproc.c:1577
 msgid "Too many open files in system"
 msgstr ""
 
-#: src/main/winproc.c:1422
+#: src/main/winproc.c:1582
 msgid "Too many open files"
 msgstr ""
 
-#: src/main/winproc.c:1427
+#: src/main/winproc.c:1587
 msgid "Not a typewriter"
 msgstr ""
 
-#: src/main/winproc.c:1432
+#: src/main/winproc.c:1592
 msgid "Text file busy"
 msgstr ""
 
-#: src/main/winproc.c:1437
+#: src/main/winproc.c:1597
 msgid "File too large"
 msgstr ""
 
-#: src/main/winproc.c:1442
+#: src/main/winproc.c:1602
 msgid "No space left on device"
 msgstr ""
 
-#: src/main/winproc.c:1447
+#: src/main/winproc.c:1607
 msgid "Illegal seek"
 msgstr ""
 
-#: src/main/winproc.c:1452
+#: src/main/winproc.c:1612
 msgid "Read only file system"
 msgstr ""
 
-#: src/main/winproc.c:1457
+#: src/main/winproc.c:1617
 msgid "Too many links"
 msgstr ""
 
-#: src/main/winproc.c:1462
+#: src/main/winproc.c:1622
 msgid "Broken pipe"
 msgstr ""
 
-#: src/main/winproc.c:1467
+#: src/main/winproc.c:1627
 msgid "Math arg out of domain of func"
 msgstr ""
 
-#: src/main/winproc.c:1472
+#: src/main/winproc.c:1632
 msgid "Math result not representable"
 msgstr ""
 
-#: src/main/winproc.c:1477
+#: src/main/winproc.c:1637
 msgid "No message of desired type"
 msgstr ""
 
-#: src/main/winproc.c:1482
+#: src/main/winproc.c:1642
 msgid "Identifier removed"
 msgstr ""
 
-#: src/main/winproc.c:1487
+#: src/main/winproc.c:1647
 msgid "Channel number out of range"
 msgstr ""
 
-#: src/main/winproc.c:1492
+#: src/main/winproc.c:1652
 msgid "Level 2 not synchronized"
 msgstr ""
 
-#: src/main/winproc.c:1497
+#: src/main/winproc.c:1657
 msgid "Level 3 halted"
 msgstr ""
 
-#: src/main/winproc.c:1502
+#: src/main/winproc.c:1662
 msgid "Level 3 reset"
 msgstr ""
 
-#: src/main/winproc.c:1507
+#: src/main/winproc.c:1667
 msgid "Link number out of range"
 msgstr ""
 
-#: src/main/winproc.c:1512
+#: src/main/winproc.c:1672
 msgid "Protocol driver not attached"
 msgstr ""
 
-#: src/main/winproc.c:1517
+#: src/main/winproc.c:1677
 msgid "No CSI structure available"
 msgstr ""
 
-#: src/main/winproc.c:1522
+#: src/main/winproc.c:1682
 msgid "Level 2 halted"
 msgstr ""
 
-#: src/main/winproc.c:1527
+#: src/main/winproc.c:1687
 msgid "Deadlock condition"
 msgstr ""
 
-#: src/main/winproc.c:1532
+#: src/main/winproc.c:1692
 msgid "No record locks available"
 msgstr ""
 
-#: src/main/winproc.c:1537
+#: src/main/winproc.c:1697
 msgid "Invalid exchange"
 msgstr ""
 
-#: src/main/winproc.c:1542
+#: src/main/winproc.c:1702
 msgid "Invalid request descriptor"
 msgstr ""
 
-#: src/main/winproc.c:1547
+#: src/main/winproc.c:1707
 msgid "Exchange full"
 msgstr ""
 
-#: src/main/winproc.c:1552
+#: src/main/winproc.c:1712
 msgid "No anode"
 msgstr ""
 
-#: src/main/winproc.c:1557
+#: src/main/winproc.c:1717
 msgid "Invalid request code"
 msgstr ""
 
-#: src/main/winproc.c:1562
+#: src/main/winproc.c:1722
 msgid "Invalid slot"
 msgstr ""
 
-#: src/main/winproc.c:1567
+#: src/main/winproc.c:1727
 msgid "File locking deadlock error"
 msgstr ""
 
-#: src/main/winproc.c:1572
+#: src/main/winproc.c:1732
 msgid "Bad font file fmt"
 msgstr ""
 
-#: src/main/winproc.c:1577
+#: src/main/winproc.c:1737
 msgid "Device not a stream"
 msgstr ""
 
-#: src/main/winproc.c:1582
+#: src/main/winproc.c:1742
 msgid "No data (for no delay io)"
 msgstr ""
 
-#: src/main/winproc.c:1587
+#: src/main/winproc.c:1747
 msgid "Timer expired"
 msgstr ""
 
-#: src/main/winproc.c:1592
+#: src/main/winproc.c:1752
 msgid "Out of streams resources"
 msgstr ""
 
-#: src/main/winproc.c:1597
+#: src/main/winproc.c:1757
 msgid "Machine is not on the network"
 msgstr ""
 
-#: src/main/winproc.c:1602
+#: src/main/winproc.c:1762
 msgid "Package not installed"
 msgstr ""
 
-#: src/main/winproc.c:1607
+#: src/main/winproc.c:1767
 msgid "The object is remote"
 msgstr ""
 
-#: src/main/winproc.c:1612
+#: src/main/winproc.c:1772
 msgid "The link has been severed"
 msgstr ""
 
-#: src/main/winproc.c:1617
+#: src/main/winproc.c:1777
 msgid "Advertise error"
 msgstr ""
 
-#: src/main/winproc.c:1622
+#: src/main/winproc.c:1782
 msgid "Srmount error"
 msgstr ""
 
-#: src/main/winproc.c:1627
+#: src/main/winproc.c:1787
 msgid "Communication error on send"
 msgstr ""
 
-#: src/main/winproc.c:1632
+#: src/main/winproc.c:1792
 msgid "Protocol error"
 msgstr ""
 
-#: src/main/winproc.c:1637
+#: src/main/winproc.c:1797
 msgid "Multihop attempted"
 msgstr ""
 
-#: src/main/winproc.c:1642
+#: src/main/winproc.c:1802
 msgid "Inode is remote (not really error)"
 msgstr ""
 
-#: src/main/winproc.c:1647
+#: src/main/winproc.c:1807
 msgid "Cross mount point (not really error)"
 msgstr ""
 
-#: src/main/winproc.c:1652
+#: src/main/winproc.c:1812
 msgid "Trying to read unreadable message"
 msgstr ""
 
-#: src/main/winproc.c:1657
+#: src/main/winproc.c:1817
 msgid "Given log. name not unique"
 msgstr ""
 
-#: src/main/winproc.c:1662
+#: src/main/winproc.c:1822
 msgid "f.d. invalid for this operation"
 msgstr ""
 
-#: src/main/winproc.c:1667
+#: src/main/winproc.c:1827
 msgid "Remote address changed"
 msgstr ""
 
-#: src/main/winproc.c:1672
+#: src/main/winproc.c:1832
 msgid "Can't access a needed shared lib"
 msgstr ""
 
-#: src/main/winproc.c:1677
+#: src/main/winproc.c:1837
 msgid "Accessing a corrupted shared lib"
 msgstr ""
 
-#: src/main/winproc.c:1682
+#: src/main/winproc.c:1842
 msgid ".lib section in a.out corrupted"
 msgstr ""
 
-#: src/main/winproc.c:1687
+#: src/main/winproc.c:1847
 msgid "Attempting to link in too many libs"
 msgstr ""
 
-#: src/main/winproc.c:1692
+#: src/main/winproc.c:1852
 msgid "Attempting to exec a shared library"
 msgstr ""
 
-#: src/main/winproc.c:1697
+#: src/main/winproc.c:1857
 msgid "Function not implemented"
 msgstr ""
 
-#: src/main/winproc.c:1702
+#: src/main/winproc.c:1862
 msgid "No more files"
 msgstr ""
 
-#: src/main/winproc.c:1707
+#: src/main/winproc.c:1867
 msgid "Directory not empty"
 msgstr ""
 
-#: src/main/winproc.c:1712
+#: src/main/winproc.c:1872
 msgid "File or path name too long"
 msgstr ""
 
-#: src/main/winproc.c:1717
+#: src/main/winproc.c:1877
 msgid "Too many symbolic links"
 msgstr ""
 
-#: src/main/winproc.c:1722
+#: src/main/winproc.c:1882
 msgid "Operation not supported on transport endpoint"
 msgstr ""
 
-#: src/main/winproc.c:1727
+#: src/main/winproc.c:1887
 msgid "Protocol family not supported"
 msgstr ""
 
-#: src/main/winproc.c:1732
+#: src/main/winproc.c:1892
 msgid "Connection reset by peer"
 msgstr ""
 
-#: src/main/winproc.c:1737
+#: src/main/winproc.c:1897
 msgid "No buffer space available"
 msgstr ""
 
-#: src/main/winproc.c:1742
+#: src/main/winproc.c:1902
 msgid "Address family not supported by protocol family"
 msgstr ""
 
-#: src/main/winproc.c:1747
+#: src/main/winproc.c:1907
 msgid "Protocol wrong type for socket"
 msgstr ""
 
-#: src/main/winproc.c:1752
+#: src/main/winproc.c:1912
 msgid "Socket operation on non-socket"
 msgstr ""
 
-#: src/main/winproc.c:1757
+#: src/main/winproc.c:1917
 msgid "Protocol not available"
 msgstr ""
 
-#: src/main/winproc.c:1762
+#: src/main/winproc.c:1922
 msgid "Can't send after socket shutdown"
 msgstr ""
 
-#: src/main/winproc.c:1767
+#: src/main/winproc.c:1927
 msgid "Connection refused"
 msgstr ""
 
-#: src/main/winproc.c:1772
+#: src/main/winproc.c:1932
 msgid "Address already in use"
 msgstr ""
 
-#: src/main/winproc.c:1777
+#: src/main/winproc.c:1937
 msgid "Connection aborted"
 msgstr ""
 
-#: src/main/winproc.c:1782
+#: src/main/winproc.c:1942
 msgid "Network is unreachable"
 msgstr ""
 
-#: src/main/winproc.c:1787
+#: src/main/winproc.c:1947
 msgid "Network interface is not configured"
 msgstr ""
 
-#: src/main/winproc.c:1792
+#: src/main/winproc.c:1952
 msgid "Connection timed out"
 msgstr ""
 
-#: src/main/winproc.c:1797
+#: src/main/winproc.c:1957
 msgid "Host is down"
 msgstr ""
 
-#: src/main/winproc.c:1802
+#: src/main/winproc.c:1962
 msgid "Host is unreachable"
 msgstr ""
 
-#: src/main/winproc.c:1807
+#: src/main/winproc.c:1967
 msgid "Connection already in progress"
 msgstr ""
 
-#: src/main/winproc.c:1812
+#: src/main/winproc.c:1972
 msgid "Socket already connected"
 msgstr ""
 
-#: src/main/winproc.c:1817
+#: src/main/winproc.c:1977
 msgid "Destination address required"
 msgstr ""
 
-#: src/main/winproc.c:1822
+#: src/main/winproc.c:1982
 msgid "Message too long"
 msgstr ""
 
-#: src/main/winproc.c:1827
+#: src/main/winproc.c:1987
 msgid "Unknown protocol"
 msgstr ""
 
-#: src/main/winproc.c:1832
+#: src/main/winproc.c:1992
 msgid "Socket type not supported"
 msgstr ""
 
-#: src/main/winproc.c:1837
+#: src/main/winproc.c:1997
 msgid "Address not available"
 msgstr ""
 
-#: src/main/winproc.c:1842
+#: src/main/winproc.c:2002
 msgid "Connection aborted by network"
 msgstr ""
 
-#: src/main/winproc.c:1847
+#: src/main/winproc.c:2007
 msgid "Socket is already connected"
 msgstr ""
 
-#: src/main/winproc.c:1852
+#: src/main/winproc.c:2012
 msgid "Socket is not connected"
 msgstr ""
 
-#: src/main/winproc.c:1857
+#: src/main/winproc.c:2017
 msgid "Too many references: cannot splice"
 msgstr ""
 
-#: src/main/winproc.c:1862
+#: src/main/winproc.c:2022
 msgid "Too many processes"
 msgstr ""
 
-#: src/main/winproc.c:1867
+#: src/main/winproc.c:2027
 msgid "Too many users"
 msgstr ""
 
-#: src/main/winproc.c:1872
+#: src/main/winproc.c:2032
 msgid "Disk quota exceeded"
 msgstr ""
 
-#: src/main/winproc.c:1877 src/main/winproc.c:1904
+#: src/main/winproc.c:2037 src/main/winproc.c:2064
 msgid "Unknown error"
 msgstr ""
 
-#: src/main/winproc.c:1882
+#: src/main/winproc.c:2042
 msgid "Not supported"
 msgstr ""
 
-#: src/main/winproc.c:1887
+#: src/main/winproc.c:2047
 msgid "No medium (in tape drive)"
 msgstr ""
 
-#: src/main/winproc.c:1892
+#: src/main/winproc.c:2052
 msgid "No such host or network path"
 msgstr ""
 
-#: src/main/winproc.c:1897
+#: src/main/winproc.c:2057
 msgid "Filename exists with different case"
 msgstr ""
 
-#: src/main/winproc.c:1906
+#: src/main/winproc.c:2066
 #, c-format
 msgid "ERROR: Unknown error %i in %s\n"
 msgstr ""
