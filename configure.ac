@@ -101,7 +101,7 @@ AC_CHECK_LIB(stdc++, fclose)
 # but: only use for the PDF extractor and NOT for everything else!
 XTRA_CPPLIBS=$LIBS $XTRA_CPPLIBS
 
-AC_CHECK_HEADER(langinfo.h)
+AC_CHECK_HEADERS(langinfo.h)
 
 LIBS=$LIBSOLD
 # FIXME: allow --with-oggvorbis=PFX
