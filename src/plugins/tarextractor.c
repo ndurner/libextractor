@@ -22,8 +22,9 @@
 #include "extractor.h"
 #include <time.h>
 #include <zlib.h>
-#include <langinfo.h>
-
+#ifndef MINGW
+  #include <langinfo.h>
+#endif
 
 /*
  * Note that this code is not complete!
@@ -164,7 +165,13 @@ struct EXTRACTOR_Keywords * libextractor_tar_extract(const char * filename,
       char tmbuf[60];
 
       ctm = *gmtime(&ctime);
-      if (strftime(tmbuf, sizeof(tmbuf), nl_langinfo(D_FMT), &ctm))
+      if (strftime(tmbuf, sizeof(tmbuf),
+#ifndef MINGW      
+       nl_langinfo(D_FMT),
+#else
+       "%x",
+#endif
+       &ctm))
         prev = addKeyword(EXTRACTOR_CREATION_DATE, strdup(tmbuf), prev);
     }
 
