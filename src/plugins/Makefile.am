@@ -48,6 +48,7 @@ plugin_LTLIBRARIES = \
   libextractor_ps.la \
   libextractor_zip.la \
   libextractor_lower.la \
+  libextractor_translit.la \
   $(extraqt) \
   $(extraogg) 
 
@@ -229,5 +230,10 @@ libextractor_filename_la_LIBADD = \
 libextractor_split_la_SOURCES = \
   splitextractor.c 
 libextractor_split_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+
+libextractor_translit_la_SOURCES = \
+  translitextractor.c 
+libextractor_translit_la_LDFLAGS = \
   $(PLUGINFLAGS)
 
