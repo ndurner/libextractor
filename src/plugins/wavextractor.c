@@ -21,8 +21,8 @@
      (PD) 2004 The Bitzi Corporation
      http://bitzi.com/
      (PD) 2001 The Bitzi Corporation
-     Please see file COPYING or http://bitzi.com/publicdomain 
-     for more info. 
+     Please see file COPYING or http://bitzi.com/publicdomain
+     for more info.
 */
 
 
@@ -35,7 +35,7 @@ static void addKeyword(struct EXTRACTOR_Keywords ** list,
 		       EXTRACTOR_KeywordType type) {
   EXTRACTOR_KeywordList * next;
   next = malloc(sizeof(EXTRACTOR_KeywordList));
-  next->next = *list;    
+  next->next = *list;
   next->keyword = keyword;
   next->keywordType = type;
   *list = next;
@@ -44,14 +44,14 @@ static void addKeyword(struct EXTRACTOR_Keywords ** list,
 #if BIG_ENDIAN_HOST
 static short toLittleEndian16(short in) {
   char *ptr = (char *)&in;
-  
-  return ((ptr[1] & 0xFF) << 8) | (ptr[0] & 0xFF); 
+
+  return ((ptr[1] & 0xFF) << 8) | (ptr[0] & 0xFF);
 }
 
 static unsigned int toLittleEndian32(unsigned int in) {
   char *ptr = (char *)&in;
-  
-  return ((ptr[3] & 0xFF) << 24) | ((ptr[2] & 0xFF) << 16) | ((ptr[1] & 0xFF) << 8) | (ptr[0] & 0xFF); 
+
+  return ((ptr[3] & 0xFF) << 24) | ((ptr[2] & 0xFF) << 16) | ((ptr[1] & 0xFF) << 8) | (ptr[0] & 0xFF);
 }
 #endif
 
@@ -74,20 +74,20 @@ struct EXTRACTOR_Keywords * libextractor_wav_extract(char * filename,
   int bytesProcessed;
   char * scratch;
 
-  
+
   if ( (bufLen < 44) ||
-       (buf[0] != 'R' || buf[1] != 'I' || 
+       (buf[0] != 'R' || buf[1] != 'I' ||
 	buf[2] != 'F' || buf[3] != 'F' ||
-	buf[8] != 'W' || buf[9] != 'A' || 
+	buf[8] != 'W' || buf[9] != 'A' ||
 	buf[10] != 'V' || buf[11] != 'E' ||
-	buf[12] != 'f' || buf[13] != 'm' || 
+	buf[12] != 'f' || buf[13] != 'm' ||
 	buf[14] != 't' || buf[15] != ' ') )
     return prev; /* not a WAV file */
-  
-  channels = *((unsigned short *)&buf[22]); 
-  sampleRate = *((unsigned int *)&buf[24]); 
-  sampleSize = *((unsigned short *)&buf[34]); 
-  dataLen = *((unsigned int *)&buf[40]); 
+
+  channels = *((unsigned short *)&buf[22]);
+  sampleRate = *((unsigned int *)&buf[24]);
+  sampleSize = *((unsigned short *)&buf[34]);
+  dataLen = *((unsigned int *)&buf[40]);
 
 #if BIG_ENDIAN_HOST
   channels = toLittleEndian16(channels);
@@ -96,17 +96,17 @@ struct EXTRACTOR_Keywords * libextractor_wav_extract(char * filename,
   dataLen = toLittleEndian32(dataLen);
 #endif
 
-  if (sampleSize != 8 && sampleSize != 16) 
+  if (sampleSize != 8 && sampleSize != 16)
     return prev; /* invalid sample size found in wav file */
   if (channels == 0)
     return prev; /* invalid channels value -- avoid division by 0! */
   samples = dataLen / (channels * (sampleSize >> 3));
-  
+
   scratch = malloc(256);
   snprintf(scratch,
 	   256,
 	   "%u ms, %d Hz, %s",
-	   (samples < sampleRate) 
+	   (samples < sampleRate)
 	   ? (samples * 1000 / sampleRate)
 	   : (samples / sampleRate) * 1000,
 	   sampleRate,

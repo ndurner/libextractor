@@ -2,7 +2,7 @@
 Catlib Copyright Notice
 
 The author of this software is Christopher Adam Telfer
-Copyright (c) 1998, 1999, 2000, 2001, 2002 
+Copyright (c) 1998, 1999, 2000, 2001, 2002
 by Christopher Adam Telfer.  All Rights Reserved.
 
 Permission to use, copy, modify, and distribute this software for any
@@ -28,7 +28,7 @@ MODIFICATIONS.
 #ifndef __CAT_PACK_H
 #define __CAT_PACK_H
 
-/* 
+/*
    "bhwAcslPBHWCSL"
 
    Small letters: do not convert (not implemented for arrays and P)
@@ -38,14 +38,14 @@ MODIFICATIONS.
    h - half-word
    w - word
    a - array (32-byte unsigned long + that many bytes)
-   c - signed 8 bit value 
+   c - signed 8 bit value
    s - signed 16 bit value
    l - signed 32 bit value
    p - (unpack only) value is a pointer to a pointer.  Generate the buffer
        to hold the data.
  */
 
-int cat_pack(void * buf, const char *fmt, ... ); 
+int cat_pack(void * buf, const char *fmt, ... );
 
 int cat_unpack(const void * buf, const char *fmt, ... );
 

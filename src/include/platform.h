@@ -62,7 +62,7 @@
 
 #ifndef MINGW
  #define DIR_SEPARATOR '/'
- 
+
  #define CREAT(p, m) creat(p, m)
  #undef FOPEN
  #define FOPEN(f, m) fopen(f, m)

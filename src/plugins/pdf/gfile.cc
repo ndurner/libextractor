@@ -14,7 +14,7 @@
 #endif
 #ifndef WIN32
 #include <pwd.h>
-#endif 
+#endif
 #include "GString.h"
 #include "gfile.h"
 #include <sys/types.h>

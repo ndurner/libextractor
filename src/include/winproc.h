@@ -196,7 +196,7 @@ extern "C" {
 #define NO_RECOVERY 3
 #undef NO_ADDRESS
 #define NO_ADDRESS 4
- 
+
 #define PROT_READ   0x1
 #define PROT_WRITE  0x2
 #define MAP_SHARED  0x1
@@ -277,7 +277,7 @@ typedef struct
   BOOL bBlocking;
 } Winsock;
 extern Winsock *pSocks;
-extern unsigned int uiSockCount; 
+extern unsigned int uiSockCount;
 
 #define SHUT_RDWR SD_BOTH
 

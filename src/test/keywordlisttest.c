@@ -1,4 +1,4 @@
-/** 
+/**
  * @file test/keywordlisttest.c
  * @brief testcase for libextractor keyword list manipulation
  * @author Christian Grothoff
@@ -27,7 +27,7 @@ int main(int argc, char * argv[]){
   };
   EXTRACTOR_KeywordList * head;
   EXTRACTOR_KeywordList * pos;
-  
+
   head = NULL;
   i = 0;
   while (keywords[i] != NULL) {

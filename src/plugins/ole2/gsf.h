@@ -1,6 +1,6 @@
 /* vim: set sw=8: -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /*
- * gsf.h: 
+ * gsf.h:
  *
  * Copyright (C) 2002-2004 Jody Goldberg (jody@gnome.org)
  *
@@ -39,7 +39,7 @@ typedef struct _GsfTimestamp	GsfTimestamp;
 /* FIXME:
  * gsf_off_t is really supposed to be the widest type off_t can be configured
  * to on the platform
- */ 
+ */
 typedef gint64 gsf_off_t;
 #define GSF_OFF_T_FORMAT	G_GINT64_FORMAT
 

@@ -22,14 +22,14 @@ static char * iconvHelper(iconv_t cd,
   buf = malloc(outSize);
   ibuf = buf;
   memset(buf, 0, outSize);
-  if (iconv(cd, 
+  if (iconv(cd,
 	    (char**) &in,
 	    &inSize,
-	    &ibuf, 
+	    &ibuf,
 	    &outLeft) == (size_t)-1) {
     /* conversion failed */
     free(buf);
-    return strdup(i); 
+    return strdup(i);
   }
   return buf;
 }

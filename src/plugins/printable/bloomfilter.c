@@ -28,7 +28,7 @@
  *
  * A property of the bloom filter is that sometimes we will have
  * a match even if the element is not on the disk (then we do
- * an unnecessary disk access), but what's most important is that 
+ * an unnecessary disk access), but what's most important is that
  * we never get a single "false negative".
  *
  * @author Igor Wronsky
@@ -42,17 +42,17 @@
 /**
  * Sets a bit active in the bitArray. Increment bit-specific
  * usage counter on disk only if below 4bit max (==15).
- * 
+ *
  * @param bitArray memory area to set the bit in
  * @param bitIdx which bit to set
  */
-static void setBit(unsigned char * bitArray, 
+static void setBit(unsigned char * bitArray,
 		   unsigned int bitIdx) {
   unsigned int arraySlot;
   unsigned int targetBit;
 
   arraySlot = bitIdx / 8;
-  targetBit = (1L << (bitIdx % 8));  
+  targetBit = (1L << (bitIdx % 8));
   bitArray[arraySlot] |= targetBit;
 }
 
@@ -63,13 +63,13 @@ static void setBit(unsigned char * bitArray,
  * @param bitIdx which bit to test
  * @return 1 if the bit is set, 0 if not.
  */
-static int testBit(unsigned char * bitArray, 
+static int testBit(unsigned char * bitArray,
 		   unsigned int bitIdx) {
   unsigned int slot;
   unsigned int targetBit;
 
   slot = bitIdx / 8;
-  targetBit = (1L << (bitIdx % 8)); 
+  targetBit = (1L << (bitIdx % 8));
   return (bitArray[slot] & targetBit) != 0;
 }
 
@@ -87,7 +87,7 @@ static int testBit(unsigned char * bitArray,
 typedef void (*BitIterator)(Bloomfilter * bf,
 			    unsigned int bit,
 			    void * arg);
-			    
+			
 /**
  * Call an iterator for each bit that the bloomfilter
  * must test or set for this element.
@@ -114,8 +114,8 @@ static void iterateBits(Bloomfilter * bf,
   while (bitCount > 0) {
     while (slot < (sizeof(HashCode160)/
 		   sizeof(unsigned int))) {
-      callback(bf, 
-	       (((unsigned int*)&tmp[round&1])[slot]) % (bf->bitArraySize*8), 
+      callback(bf,
+	       (((unsigned int*)&tmp[round&1])[slot]) % (bf->bitArraySize*8),
 	       arg);
       slot++;
       bitCount--;
@@ -149,7 +149,7 @@ static void setBitCallback(Bloomfilter * bf,
 /**
  * Callback: test if all bits are set
  *
- * @param bf the filter 
+ * @param bf the filter
  * @param bit the bit to test
  * @param arg pointer set to NO if bit is not set
  */
@@ -174,10 +174,10 @@ int testBloomfilter(Bloomfilter * bf,
 		    HashCode160 * e) {
   int res;
 
-  if (NULL == bf) 
+  if (NULL == bf)
     return 1;
   res = 1;
-  iterateBits(bf, 
+  iterateBits(bf,
 	      (BitIterator)&testBitCallback,
 	      &res,
 	      e);
@@ -193,7 +193,7 @@ int testBloomfilter(Bloomfilter * bf,
 void addToBloomfilter(Bloomfilter * bf,
 		      HashCode160 * e) {
 
-  if (NULL == bf) 
+  if (NULL == bf)
     return;
   iterateBits(bf,
 	      &setBitCallback,

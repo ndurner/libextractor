@@ -1,4 +1,4 @@
-/** 
+/**
  * @file test/multiload.c
  * @brief testcase for libextractor plugin loading that loads the same
  *    plugins multiple times!

@@ -48,9 +48,9 @@ static int timedRead(FD_t f,
 
   if (f->len - f->pos >= n)
     min = n;
-  else 
+  else
     min = f->len - f->pos;
-  memcpy(dst, 
+  memcpy(dst,
 	 &f->data[f->pos],
 	 min);
   f->pos += min;
@@ -405,7 +405,7 @@ struct rpmlead {
  * Alignment needs (and sizeof scalars types) for internal rpm data types.
  */
 /*@observer@*/ /*@unchecked@*/
-static int typeSizes[] =  { 
+static int typeSizes[] =  {
 	0,	/*!< RPM_NULL_TYPE */
 	1,	/*!< RPM_CHAR_TYPE */
 	1,	/*!< RPM_INT8_TYPE */
@@ -655,7 +655,7 @@ int (*HDRhdrwrite) (FD_t fd, /*@null@*/ Header h, enum hMagic magicp)
  */
 typedef
 int (*HDRisentry) (/*@null@*/Header h, int_32 tag)
-        /*@*/;  
+        /*@*/;
 
 /** \ingroup header
  * Free data allocated when retrieved from header.
@@ -1327,7 +1327,7 @@ indexEntry findEntry(/*@null@*/ Header h, int_32 tag, int_32 type)
 
     key.info.tag = tag;
 
-    entry2 = entry = 
+    entry2 = entry =
 	bsearch(&key, h->index, h->indexUsed, sizeof(*h->index), indexCmp);
     if (entry == NULL)
 	return NULL;
@@ -1377,7 +1377,7 @@ static int copyEntry(const indexEntry entry,
 {
     int_32 count = entry->info.count;
     int rc = 1;		/* XXX 1 on success. */
-    
+
     if (p)
     switch (entry->info.type) {
     case RPM_BIN_TYPE:
@@ -1443,7 +1443,7 @@ static int copyEntry(const indexEntry entry,
 	/*@=sizeoftype@*/
 	char * t;
 	int i;
-        
+
 	/*@-mods@*/
 	if (minMem) {
 	    *p = malloc(tableSize);
@@ -1548,7 +1548,7 @@ int headerAddOrAppendEntry(Header h, int_32 tag, int_32 type,
 
 /**
  * Does locale match entry in header i18n table?
- * 
+ *
  * \verbatim
  * The range [l,le) contains the next locale to match:
  *    ll[_CC][.EEEEE][@dddd]
@@ -1649,7 +1649,7 @@ headerFindI18NString(Header h, indexEntry entry)
         (lang = getenv("LC_MESSAGES")) == NULL &&
 	(lang = getenv("LANG")) == NULL)
 	    return entry->data;
-    
+
     /*@-mods@*/
     if ((table = findEntry(h, HEADER_I18NTABLE, RPM_STRING_ARRAY_TYPE)) == NULL)
 	return entry->data;
@@ -1916,7 +1916,7 @@ int headerNextIterator(HeaderIterator hi,
 	*tag = entry->info.tag;
 
     rc = copyEntry(entry, type, p, c, do_copy);
-    
+
     /* XXX 1 on success */
     return ((rc == 1) ? 1 : 0);
 }
@@ -1975,13 +1975,13 @@ Header headerFree(/*@killref@*/ /*@null@*/ Header h)
 /**
  * Sanity check on no. of tags.
  * This check imposes a limit of 65K tags, more than enough.
- */ 
+ */
 #define hdrchkTags(_ntags)	((_ntags) & 0xffff0000)
 
 /**
  * Sanity check on data size and/or offset.
  * This check imposes a limit of 16Mb, more than enough.
- */ 
+ */
 #define hdrchkData(_nbytes)	((_nbytes) & 0xff000000)
 
 
@@ -2130,7 +2130,7 @@ Header headerLoad(/*@kept@*/ void * uh)
     Header h = NULL;
     entryInfo pe;
     char * dataStart;
-    indexEntry entry; 
+    indexEntry entry;
     int rdlen;
     int i;
 
@@ -2330,7 +2330,7 @@ Header headerRead(FD_t fd, enum hMagic magicp)
 	    goto exit;
 	reserved = block[i++];
     }
-    
+
     il = ntohl(block[i]);	i++;
     dl = ntohl(block[i]);	i++;
 
@@ -2351,7 +2351,7 @@ Header headerRead(FD_t fd, enum hMagic magicp)
     if (timedRead(fd, (char *)&ei[2], len) != len)
 	goto exit;
     /*@=type@*/
-    
+
     h = headerLoad(ei);
 
 exit:
@@ -2546,7 +2546,7 @@ int headerRemoveEntry(Header h, int_32 tag)
     if (!entry) return 1;
 
     /* Make sure entry points to the first occurence of this tag. */
-    while (entry > h->index && (entry - 1)->info.tag == tag)  
+    while (entry > h->index && (entry - 1)->info.tag == tag)
 	entry--;
 
     /* Free data for tags being removed. */
@@ -2784,7 +2784,7 @@ static Header rpmFreeSignature(Header h);
  * @return		rpmRC return code
  */
 static rpmRC readPackageHeaders(FD_t fd,
-		/*@null@*/ /*@out@*/ struct rpmlead * leadPtr, 
+		/*@null@*/ /*@out@*/ struct rpmlead * leadPtr,
 		/*@null@*/ /*@out@*/ Header * sigs,
 		/*@null@*/ /*@out@*/ Header * hdrPtr)
 	/*@modifies fd, *leadPtr, *sigs, *hdrPtr @*/
@@ -2837,7 +2837,7 @@ static rpmRC readPackageHeaders(FD_t fd,
 
 	/*
 	 * We switched the way we do relocateable packages. We fix some of
-	 * it up here, though the install code still has to be a bit 
+	 * it up here, though the install code still has to be a bit
 	 * careful. This fixup makes queries give the new values though,
 	 * which is quite handy.
 	 */
@@ -2847,7 +2847,7 @@ static rpmRC readPackageHeaders(FD_t fd,
 	    defaultPrefix =
 	      stripTrailingChar(alloca_strdup(defaultPrefix), '/');
 	    (void) headerAddEntry(*hdr, RPMTAG_PREFIXES, RPM_STRING_ARRAY_TYPE,
-			   &defaultPrefix, 1); 
+			   &defaultPrefix, 1);
 	}
 
 	/*
@@ -2874,11 +2874,11 @@ static rpmRC readPackageHeaders(FD_t fd,
     default:
 	return RPMRC_FAIL;
 	/*@notreached@*/ break;
-    } 
+    }
 
     if (hdrPtr == NULL)
 	*hdr = headerFree(*hdr);
-    
+
     return RPMRC_OK;
 }
 
@@ -2956,13 +2956,13 @@ static rpmRC rpmReadPackageHeader(FD_t fd, Header * hdrp, int * isSource, int * 
 	headerMergeLegacySigs(*hdrp, sig);
 	sig = rpmFreeSignature(sig);
     }
-   
+
     if (isSource) *isSource = lead.type == RPMLEAD_SOURCE;
     /*@-mods@*/
     if (major) *major = lead.major;
     if (minor) *minor = lead.minor;
     /*@=mods@*/
-   
+
 exit:
     return rc;
 }
@@ -2978,7 +2978,7 @@ static struct EXTRACTOR_Keywords * addKeyword(EXTRACTOR_KeywordType type,
   if (keyword == NULL)
     return next;
   result = malloc(sizeof(EXTRACTOR_KeywordList));
-  result->next = next;    
+  result->next = next;
   result->keyword = strdup(keyword);
   result->keywordType = type;
   return result;
@@ -3028,13 +3028,13 @@ struct EXTRACTOR_Keywords * libextractor_rpm_extract(char * filename,
   int minor;
   int i;
   char verb[40];
-  
+
   handle.data = data;
   handle.pos = 0;
   handle.len = size;
   if (0 != rpmReadPackageHeader(&handle,
 				&hdr,
-				&isSource, 
+				&isSource,
 				&major,
 				&minor)) {
     return prev;
@@ -3051,7 +3051,7 @@ struct EXTRACTOR_Keywords * libextractor_rpm_extract(char * filename,
   else
     sprintf(verb,
 	    _("Binary RPM %d.%d"),
-	    major, 
+	    major,
 	    minor);
   prev = addKeyword(EXTRACTOR_UNKNOWN,
 		    verb,
@@ -3064,15 +3064,15 @@ struct EXTRACTOR_Keywords * libextractor_rpm_extract(char * filename,
 				 &c,
 				 0)) {
     i=0;
-    while (tests[i].rtype != 0) {   
+    while (tests[i].rtype != 0) {
       if (tests[i].rtype == tag) {
 	switch (type) {
-	case RPM_STRING_ARRAY_TYPE: {	  
+	case RPM_STRING_ARRAY_TYPE: {	
 	  char * tmp;
 	  const char * p2;
 	  int c2;
 	  int size;
-          
+
 	  c2 = c;
 	  p2 = p;
 	  size = 0;
@@ -3081,7 +3081,7 @@ struct EXTRACTOR_Keywords * libextractor_rpm_extract(char * filename,
 	    p2 = strchr(p2, 0);
 	    p2++;
 	  }
-	  
+	
 	  tmp = malloc(size+1);
 	  tmp[0] = '\0';
 	  while (c--) {
@@ -3091,11 +3091,11 @@ struct EXTRACTOR_Keywords * libextractor_rpm_extract(char * filename,
 	  }
 	  prev = addKeyword(tests[i].type,
 			    tmp,
-			    prev);	  
+			    prev);	
 	  free(tmp);
 	  break;
 	}
-	case RPM_I18NSTRING_TYPE: {	  
+	case RPM_I18NSTRING_TYPE: {	
 	  char * tmp;
 	  const char * p2;
 	  int c2;
@@ -3110,7 +3110,7 @@ struct EXTRACTOR_Keywords * libextractor_rpm_extract(char * filename,
 	    p2 = strchr(p2, 0);
 	    p2++;
 	  }
-	  
+	
 	  tmp = malloc(size+1);
 	  tmp[0] = '\0';
 	  p2 = p;
@@ -3122,7 +3122,7 @@ struct EXTRACTOR_Keywords * libextractor_rpm_extract(char * filename,
 	  }
 	  prev = addKeyword(tests[i].type,
 			    tmp,
-			    prev);	  
+			    prev);	
 	  free(tmp);
 	  break;
 	}
@@ -3139,27 +3139,27 @@ struct EXTRACTOR_Keywords * libextractor_rpm_extract(char * filename,
 	    tmp[strlen(tmp)-1] = '\0'; /* eat linefeed */
 	    prev = addKeyword(tests[i].type,
 			      tmp,
-			      prev); 
+			      prev);
 	  } else {
 	    char tmp[14];
-	  
+	
 	    sprintf(tmp, "%d", *(int*)p);
 	    prev = addKeyword(tests[i].type,
 			      tmp,
-			      prev); 
+			      prev);
 	  }
 	  break;
 	}
 	}
-      }	      
+      }	
       i++;
     }
     if ( ( (type == RPM_BIN_TYPE) ||
 	   (type == RPM_I18NSTRING_TYPE) ||
 	   (type == RPM_STRING_ARRAY_TYPE) ) &&
  	 (p != NULL) ) {
-      free((void*)p); 
-    }        
+      free((void*)p);
+    }
   }
   headerFreeIterator(hi);
   headerFree(hdr);

@@ -38,18 +38,18 @@ struct ArgvTable {
  * We now put them all in one big table that is passed
  * around inside the parser.
  *
- *                        The CallBacks                                 
- * You may call one ore several or even all callbacks. Except of the    
- * XHTMLCallBack, all CallBacks will work as expected and described     
- *                                                                      
- * XHTMLCallBack:                                                       
- * The XHTMLCallBack is a special case, because you can decide, if the  
- * XHTML specific tags should be handeled as a start- AND endtag, or    
- * as an XHTML tag. If you call nothing, except start and endtag, the   
- * behaviour is, that you'll get a start AND an endtag called back.     
+ *                        The CallBacks
+ * You may call one ore several or even all callbacks. Except of the
+ * XHTMLCallBack, all CallBacks will work as expected and described
+ *
+ * XHTMLCallBack:
+ * The XHTMLCallBack is a special case, because you can decide, if the
+ * XHTML specific tags should be handeled as a start- AND endtag, or
+ * as an XHTML tag. If you call nothing, except start and endtag, the
+ * behaviour is, that you'll get a start AND an endtag called back.
  * If you call XHTMLCallBack, it will only give you the XHTML call back.
- *                                                                      
- * If you are in doubt or simply confused now, call XHTMLCallBack()     
+ *
+ * If you are in doubt or simply confused now, call XHTMLCallBack()
  */
 typedef struct PC_ {
 /* handle comments and javascript */
@@ -65,7 +65,7 @@ typedef struct PC_ {
 
   /* End tag e.g. </html>*/
   int (*endCallBack) (char *tag, struct PC_ * pc);
-  
+
   /* handle plain text */
   int (*textCallBack) (char *text, struct PC_ * pc);
   int (*textStartCallBack) (struct PC_ * pc);
@@ -98,13 +98,13 @@ typedef struct PC_ {
    * 0: ignore, 1: add keyword
    */
   int nextTextAction;
-  
+
   /**
    * If nextTextAction == 1, this gives the type of the
    * keyword.
    */
   EXTRACTOR_KeywordType nextKeywordType;
-  
+
   /**
    * Result of the current pass.
    */
@@ -124,14 +124,14 @@ static struct ArgvTable *addArgToTable(struct ArgvTable *args, char *arg, char *
     args = (struct ArgvTable*) calloc(1, sizeof(struct ArgvTable)*(pc->numArgs+1));
   } else {
     args = (struct ArgvTable*) realloc(args, sizeof(struct ArgvTable)*(pc->numArgs+1));
-  }  
+  }
   if (args == NULL) {
     fprintf(stderr,
 	    _("Fatal: could not allocate (%s at %s:%d).\n"),
 	    strerror(errno),
 	    __FILE__, __LINE__);
     exit(EXIT_FAILURE);
-  }  
+  }
   args[pc->numArgs-1].arg = arg;
   args[pc->numArgs-1].val = val;
   return args;
@@ -141,12 +141,12 @@ static struct ArgvTable *addArgToTable(struct ArgvTable *args, char *arg, char *
 static void freeArgs (struct ArgvTable *args,
 		      struct PC_ * pc) {
   int i;
-  
+
   if (args != NULL) {
     for(i=0; i<pc->numArgs; i++) {
       free(args[i].arg);
       free(args[i].val);
-    }    
+    }
     free(args);
     args=NULL;
     pc->numArgs=0;
@@ -161,19 +161,19 @@ static const char *parseText(const char *html, struct PC_ * pc) {
   char *tmp;
   const char *tmp2;
   int ret=0;
-  
+
   while( (*html != '\0') && isspace((int) *html)) html++;
-  
+
   if (*html == '<') return html;
-  
+
   tmp2 = html;
   while ( (*html != '\0') && (*html != '<') ) html++;
-  
+
   tmp = (char *)calloc(1, (size_t)(html-tmp2+1));
   if (!tmp) return "";
-  
+
   memcpy(tmp, tmp2, (size_t)(html-tmp2));
-  
+
   if (strlen(tmp) > 0) {
     if (pc->textStartCallBack) {
       ret = pc->textStartCallBack(pc);
@@ -181,8 +181,8 @@ static const char *parseText(const char *html, struct PC_ * pc) {
 	free(tmp);
 	return "";
       }
-    }    
-    if (pc->textCallBack) {      
+    }
+    if (pc->textCallBack) {
       if (pc->entityCallBack){ /* that is textCallBack(text)
 			      with entityCallBack(entity) as an extrabonus */
 	/*printf("entity is here\n");*/
@@ -194,7 +194,7 @@ static const char *parseText(const char *html, struct PC_ * pc) {
 	  return "";
 	}
       }
-    }    
+    }
     if (pc->textEndCallBack) {
       ret = pc->textEndCallBack(pc);
       if (ret != 0) {
@@ -202,8 +202,8 @@ static const char *parseText(const char *html, struct PC_ * pc) {
 	return "";
       }
     }
-  }  
-  free(tmp);  
+  }
+  free(tmp);
   if (*html != '\0')
     if (*(html+1) == '>') html += 2;
   return html;
@@ -213,19 +213,19 @@ static const char *parseComment (const char *html, struct PC_ * pc) {
   char *tmp;
   const char *tmp2;
   int ret=0;
-  
+
   while ( (*html == '-') || isspace((int)*html))html++;
-  
+
   tmp2 = html;
   while ( (*html != '\0') && !(*html == '-' && *(html+1) == '-' && *(html+2) == '>')) html++;
-  
+
   tmp = (char *)calloc(1, (size_t)(html-tmp2+1));
   if (!tmp) return "";
-  
+
   memcpy(tmp, tmp2, (size_t)(html-tmp2));
-  
+
   if (*(html+3) != '\0') html += 3;
-  
+
   if (pc->commentStartCallBack) {
     ret = pc->commentStartCallBack(pc);
     if (ret != 0) {
@@ -239,7 +239,7 @@ static const char *parseComment (const char *html, struct PC_ * pc) {
       free(tmp);
       return "";
     }
-  }  
+  }
   if (pc->commentEndCallBack) {
     ret = pc->commentEndCallBack(pc);
     if (ret != 0) {
@@ -255,27 +255,27 @@ static const char *parseEndTag(const char *html, struct PC_ * pc) {
   char *tmp;
   const char *tmp2;
   int ret=0;
-  
+
   if (*html == '\0')
     return html;
 
-  html++;  
+  html++;
   tmp2 = html;
   while(*html != '\0' && *html != '>') html++;
-  
+
   tmp =(char *) calloc(1, (size_t)(html-tmp2+1));
   if (!tmp) return "";
-  
+
   memcpy(tmp, tmp2, (size_t)(html-tmp2));
-  
+
   if (pc->endCallBack) {
     ret = pc->endCallBack(tmp,pc);
     if (ret != 0) {
       free(tmp);
       return "";
     }
-  }  
-  if (*html == '>') html++;  
+  }
+  if (*html == '>') html++;
   free(tmp);
   return html;
 }
@@ -284,28 +284,28 @@ static const char *parsePHP(const char *html, struct PC_ * pc) {
   const char *tmp;
   char *tmp2;
   int ret=0;
-  
+
   html += 4;
   while(*html != '\0' && isspace((int)*html)) html++;
-  
+
   tmp = html;
-  
+
   while(*html != '\0' && !(*html == '?' && *(html+1) == '>')) html++;
   tmp2 = (char *)calloc(1, (size_t)(html-tmp+1));
   if (!tmp2) return "";
-  
+
   memcpy(tmp2, tmp, (size_t)(html-tmp));
-  
+
   if (pc->phpCallBack) {
     ret = pc->phpCallBack(tmp2, pc);
     if (ret != 0) {
       free(tmp2);
       return "";
     }
-  }  
+  }
   free(tmp2);
   html += 2;
-  return html; 
+  return html;
 }
 
 /* parse the XML tag itself */
@@ -314,18 +314,18 @@ static const char *parseXMLtag(const char *html, struct PC_ * pc) {
   const char *tmp;
   int ret;
   struct ArgvTable *tmp2 = NULL;
-  
+
   pc->numArgs = 0;
   tmp = html;
   while(*html != '\0' && !isspace((int)*html) && *html != '>') html++;
-  
+
   /* you may want to upper/lower tags, so I leave the tag itself untouched */
   tag = (char *)calloc(1, (size_t)(html-tmp+1));
   if (!tag) {
     return "";
-  }  
+  }
   memcpy(tag, tmp, (size_t)(html-tmp));
-  
+
   if (*html == '>') {
     if (pc->xmlCallBack != NULL) {
       ret = pc->xmlCallBack(tag, NULL, 0, pc);
@@ -333,13 +333,13 @@ static const char *parseXMLtag(const char *html, struct PC_ * pc) {
       if (*html == '>') html++;
       return((ret != 0) ? (char *) "" : html);
     }
-  }  
+  }
   while(*html != '\0' && isspace((int)*html)) html++;
-  
+
   while(*html != '\0' && *html != '>' ) {
     while(isspace((int)*html)) html++;
     if (*html == '>') break;
-    
+
     tmp = html;
     while(*html != '\0' && !isspace((int)*html) && *html != '=' && *html != '>') html++;
     name = (char *)calloc(1, (size_t)(html-tmp+1));
@@ -347,18 +347,18 @@ static const char *parseXMLtag(const char *html, struct PC_ * pc) {
       free(tag);
       tag = NULL;
       return "";
-    }    
-    memcpy(name, tmp, (size_t)(html-tmp));    
+    }
+    memcpy(name, tmp, (size_t)(html-tmp));
     if (isspace((int)*html)) {
       tmp2 = addArgToTable(tmp2, name, NULL, pc);
       while(*html != '\0' && isspace((int)*html) && *html != '>') html++;
-    }   
+    }
     if (*html == '>') {
-      tmp2 = addArgToTable(tmp2, name, NULL, pc);      
+      tmp2 = addArgToTable(tmp2, name, NULL, pc);
       html++;
       break;
-    }    
-    if (*html == '=') html++;    
+    }
+    if (*html == '=') html++;
     if (*html != '"' && *html != '\'') {
       tmp = html;
       while(*html != '\0' && *html != '>' && !isspace((int)*html)) html++;
@@ -374,7 +374,7 @@ static const char *parseXMLtag(const char *html, struct PC_ * pc) {
 	  tmp2 = NULL;
 	}
 	return "";
-      }      
+      }
       memcpy(value, tmp, (size_t)(html-tmp));
       tmp2 = addArgToTable(tmp2, name, value, pc);
     } else if (*html == '"') {
@@ -393,7 +393,7 @@ static const char *parseXMLtag(const char *html, struct PC_ * pc) {
 	  tmp2 = NULL;
 	}
 	return "";
-      }      
+      }
       memcpy(value, tmp, (size_t)(html-tmp));
       if (*html != '\0')
 	html++;
@@ -402,7 +402,7 @@ static const char *parseXMLtag(const char *html, struct PC_ * pc) {
       html++;
       tmp = html;
       while(*html != '\0' && !(*html == '\'' && *(html-1) != '\\')) html++;
-      
+
       value =  (char *)calloc(1, (size_t)(html-tmp+1));
       if (!value) {
 	free(name);
@@ -414,25 +414,25 @@ static const char *parseXMLtag(const char *html, struct PC_ * pc) {
 	  tmp2 = NULL;
 	}
 	return "";
-      }      
+      }
       memcpy(value, tmp, (size_t)(html-tmp));
       if (*html != '\0')
 	html++;
       tmp2 = addArgToTable(tmp2, name, value, pc);
-    }    
+    }
     tmp = NULL;
     value = NULL;
     name = NULL;
-  }  
-  if (*html != '\0') html++;  
-  ret = pc->xmlCallBack(tag, tmp2, pc->numArgs, pc);  
+  }
+  if (*html != '\0') html++;
+  ret = pc->xmlCallBack(tag, tmp2, pc->numArgs, pc);
   if (tmp2 != NULL) {
     freeArgs(tmp2, pc);
     tmp2 = NULL;
-  }  
+  }
   free(tag);
   tag = NULL;
-  pc->numArgsStatus=0;  
+  pc->numArgsStatus=0;
   return (ret != 0 ? "" : html);
 }
 
@@ -442,7 +442,7 @@ static const char *eatUp(const char *html){
 	  (*html != '\0') ) {
     html++;
   }
-  if (*html != '\0') 
+  if (*html != '\0')
     html++;
   return html;
 }
@@ -450,7 +450,7 @@ static const char *eatUp(const char *html){
 /* cannibalistic function, munches the actuall text */
 static const char *eatUpText(const char *html){
   while(*html != '\0' && *html != '<')
-    html++;   
+    html++;
   return html;
 }
 
@@ -459,10 +459,10 @@ static const char *eatUpText(const char *html){
    otherwise it gormandizes them up. *burps* */
 static const char *parseXML(const char *html, struct PC_ * pc) {
   /* conditional expressions inside a conditional expression
-     don't try _this_ at home kids! ;-) */  
+     don't try _this_ at home kids! ;-) */
   html=(((tolower((int)(*(html+1))))==(int)('p')) ?
 	( (pc->phpCallBack) ? parsePHP   (html, pc) :  eatUp(html) ) :
-	( (pc->xmlCallBack) ? parseXMLtag(html, pc) :  eatUp(html) )   );  
+	( (pc->xmlCallBack) ? parseXMLtag(html, pc) :  eatUp(html) )   );
   return html;
 }
 
@@ -472,31 +472,31 @@ static const char *parseStartTag (const char *html, struct PC_ * pc) {
   const char * start = html;
   int ret = 0;
   struct ArgvTable *tmp2 = NULL;
-  
+
   pc->numArgs = 0;
   tmp = html;
-  while(*html != '\0' && !isspace((int)*html) && 
+  while(*html != '\0' && !isspace((int)*html) &&
 	*html != '>' && *html != '/') html++;
-  
+
   tag = (char *)calloc(1, (size_t)(html-tmp+1));
   if (!tag) {
     return "";
-  }  
+  }
   memcpy(tag, tmp, (size_t)(html-tmp));
-  
+
   if (strncasecmp("script", tag, 6) == 0) {
     pc->lhtml_script_passthru = 1;
   }
   else if (strncasecmp("pre", tag, 3) == 0) {
     pc->lhtml_script_passthru = 2;
   }
-  
+
   if (*html == '>') {
     if (pc->startCallBack) {
       ret = pc->startCallBack(tag, NULL, 0, pc);
       free(tag);
       tag = NULL;
-      
+
       /* this check is redundant */
       /* if (*html == '>') */ html++;
       return((ret != 0) ? "" : html);
@@ -518,26 +518,26 @@ static const char *parseStartTag (const char *html, struct PC_ * pc) {
     if(pc->XHTMLCallBack){
       ret = pc->XHTMLCallBack(tag, NULL, 0, pc);
     }
-    
+
     free(tag);
     tag = NULL;
-    
+
     html += 2;
     return((ret != 0) ? "" : html);
   }
-  
+
   while(*html != '\0' && isspace((int)*html)) html++;
-  
+
   while(*html != '\0' && *html != '>' ) {
     while(isspace((int)*html)) html++;
     if (*html == '>') break;
-    
+
     if (*html == '/' && *(html+1) == '>') {
       html++; break;
     }
-    
+
     tmp = html;
-    while(*html != '\0' && !isspace((int)*html) && 
+    while(*html != '\0' && !isspace((int)*html) &&
 	  *html != '=' && *html != '>') html++;
     name = (char *)calloc(1, (size_t)(html-tmp+1));
     if (!name) {
@@ -545,9 +545,9 @@ static const char *parseStartTag (const char *html, struct PC_ * pc) {
       tag = NULL;
       return "";
     }
-    
+
     memcpy(name, tmp, (size_t)(html-tmp));
-    
+
     if (isspace((int)*html)) {
       const char *x = html;
       while(*x != '\0' && *x != '>' && *x != '=') x++;
@@ -556,35 +556,35 @@ static const char *parseStartTag (const char *html, struct PC_ * pc) {
 	goto namevalue;
       }
       tmp2 = addArgToTable(tmp2, name, NULL, pc);
-      while(*html != '\0' && isspace((int)*html) && 
-	    *html != '>' && 
-	    !(*html == '/' && *(html+1) == '>')) 
+      while(*html != '\0' && isspace((int)*html) &&
+	    *html != '>' &&
+	    !(*html == '/' && *(html+1) == '>'))
 	html++;
     } else {
-      
+
       if (*html == '/') {
 	html++;
 	break;
       }
-      
+
       /* html++ is repeated after the while loop
        * and may cause deletion of important info */
       if (*html == '>') {
 	tmp2 = addArgToTable(tmp2, name, NULL, pc);
 	/*html++;*/
-	break; 
+	break;
       }
-      
+
     namevalue:
       if (*html == '=') html++;
-      
+
       while(isspace(*html)) html++;
-      
+
       if (*html != '"' && *html != '\'') {
 	tmp = html;
-	while(*html != '\0' && *html != '>' && 
-	      !isspace((int)*html) && 
-	      !(*html == '/' && *(html+1) == '>')) 
+	while(*html != '\0' && *html != '>' &&
+	      !isspace((int)*html) &&
+	      !(*html == '/' && *(html+1) == '>'))
 	  html++;
 	value = (char *)calloc(1, (size_t)(html-tmp+1));
 	if (value == NULL) {
@@ -592,7 +592,7 @@ static const char *parseStartTag (const char *html, struct PC_ * pc) {
 	  name = NULL;
 	  free(tag);
 	  tag = NULL;
-	  
+	
 	  freeArgs(tmp2, pc);
 	  return "";
 	}	
@@ -601,8 +601,8 @@ static const char *parseStartTag (const char *html, struct PC_ * pc) {
       } else if (*html == '"') {
 	html++;
 	tmp = html;
-	while (*html != '\0' && 
-	      !(*html == '"' && *(html-1) != '\\')) 
+	while (*html != '\0' &&
+	      !(*html == '"' && *(html-1) != '\\'))
 	  html++;
 	value = (char *) calloc(1, (size_t)(html-tmp+1));
 	if (value == NULL) {
@@ -610,7 +610,7 @@ static const char *parseStartTag (const char *html, struct PC_ * pc) {
 	  name = NULL;
 	  free(tag);
 	  tag = NULL;
-	  
+	
 	  freeArgs(tmp2, pc);
 	  return "";
 	}
@@ -622,7 +622,7 @@ static const char *parseStartTag (const char *html, struct PC_ * pc) {
       } else if (*html == '\'') {
 	html++;
 	tmp = html;
-	while(*html != '\0' && !(*html == '\'' && 
+	while(*html != '\0' && !(*html == '\'' &&
 				 *(html-1) != '\\')) html++;
 	
 	value = (char *)calloc(1, (size_t)(html-tmp+1));
@@ -631,7 +631,7 @@ static const char *parseStartTag (const char *html, struct PC_ * pc) {
 	  name = NULL;
 	  free(tag);
 	  tag = NULL;
-	  
+	
 	  freeArgs(tmp2, pc);
 	  return "";
 	}
@@ -645,12 +645,12 @@ static const char *parseStartTag (const char *html, struct PC_ * pc) {
     }
   }
   if (*html != '\0') html++;
-  
+
   if (html - start > 2) {
     if (pc->startCallBack != NULL && (*(html-2)!='/')) {
       ret = pc->startCallBack(tag, tmp2, pc->numArgs, pc);
     }
-    if (pc->endCallBack != NULL && ret==0 && *(html-2)=='/' 
+    if (pc->endCallBack != NULL && ret==0 && *(html-2)=='/'
 	&& !(pc->XHTMLCallBack)) {
       ret = pc->endCallBack(tag, pc);
     }
@@ -664,9 +664,9 @@ static const char *parseStartTag (const char *html, struct PC_ * pc) {
   }
   free(tag);
   tag = NULL;
-  
+
   pc->numArgsStatus=0;
-  
+
   /* this is a bad hack, feel free to write a better one (maybe a more readable one? ;-)*/
   return
     (pc->XHTMLCallBack != NULL) ?
@@ -679,90 +679,90 @@ static const char *parseDecl(const char *html, struct PC_ * pc) {
   const char *tmp;
   int ret=0;
   struct ArgvTable *tmp2 = NULL;
-  
+
   pc->numArgs = 0;
   tmp = html;
   while(*html != '\0' && !isspace((int)*html) && *html != '>') html++;
-  
+
   tag = (char *)calloc(1, (size_t)(html-tmp+1));
   if (!tag) {
     return "";
   }
-  
+
   memcpy(tag, tmp, (size_t)(html-tmp));
-  
+
   if (*html == '>') {
     if (pc->declCallBack) {
       ret = pc->declCallBack(tag, NULL, 0, pc);
       free(tag);
       tag = NULL;
-      
+
       if (*html == '>') html++;
       return((ret != 0) ? "" : html);
     }
   }
-  
+
   while(*html != '\0' && isspace((int)*html)) html++;
-  
+
   while(*html != '\0' && *html != '>') {
     while(isspace((int)*html)) html++;
-    if (*html == '>') break;    
-    tmp = html;    
-    switch(*tmp) {      
-    case '\'' : 
+    if (*html == '>') break;
+    tmp = html;
+    switch(*tmp) {
+    case '\'' :
       html++;
       tmp = html;
-      while(*html != '\0' && !(*html == '\'' && *html != '\\')) 
+      while(*html != '\0' && !(*html == '\'' && *html != '\\'))
 	html++;
       break;
     case '"'  :
       html++;
       tmp = html;
-      while(*html != '\0' && !(*html == '"' && *html != '\\')) 
+      while(*html != '\0' && !(*html == '"' && *html != '\\'))
 	html++;
       break;
     default  :
-      while(*html != '\0' && !isspace((int)*html) && *html != '=' && *html != '>') 
+      while(*html != '\0' && !isspace((int)*html) && *html != '=' && *html != '>')
 	html++;
       break;
     }
-    
+
     name = (char *) calloc(1, (size_t)(html-tmp+1));
     if (!name) {
       free(tag);
       tag = NULL;
       return "";
     }
-    
+
     memcpy(name, tmp, (size_t)(html-tmp));
-    
+
     if (isspace((int)*html)) {
       tmp2 = addArgToTable(tmp2, name, NULL, pc);
-      while(*html != '\0' && isspace((int)*html) && *html != '>') 
+      while(*html != '\0' && isspace((int)*html) && *html != '>')
 	html++;
       continue;
     }
-    
+
     if (*html == '>') {
       tmp2 = addArgToTable(tmp2, name, NULL, pc);
       html++;
       break;
     }
-    
+
     if (*(html+1) == '>') {
       tmp2 = addArgToTable(tmp2, name, NULL, pc);
       html += 2;
       break;
     }
-    
-    if (*html == '=') html++;        
-    switch(*html){      
-    case '\''  :    
+
+    if (*html == '=') html++;
+    switch(*html){
+    case '\''  :
       html++;
       tmp = html;
-      while(*html != '\0' && !(*html == '\'' && *(html-1) != '\\')) 
+      while(*html != '\0' && !(*html == '\'' && *(html-1) != '\\'))
 	html++;
-      
+
       value = (char *) calloc(1, (size_t)(html-tmp+1));
       if (!value) {
 	free(name);
@@ -773,13 +773,13 @@ static const char *parseDecl(const char *html, struct PC_ * pc) {
 	freeArgs(tmp2, pc);
 	return "";
       }
-      
+
       memcpy(value, tmp, (size_t)(html-tmp));
       if (*html != '\0')
 	html++;
       tmp2 = addArgToTable(tmp2, name, value, pc);
       break;
-    case '"'  :    
+    case '"'  :
       html++;
       tmp = html;
       while (*html != '\0' && !(*html == '"' && *(html-1) != '\\'))
@@ -794,16 +794,16 @@ static const char *parseDecl(const char *html, struct PC_ * pc) {
 	freeArgs(tmp2, pc);
 	return "";
       }
-      
+
       memcpy(value, tmp, (size_t)(html-tmp));
-      if (*html != '\0') 
+      if (*html != '\0')
 	html++;
       tmp2 = addArgToTable(tmp2, name, value, pc);
       break;
-    default  :     
+    default  :
       html++;
       tmp = html;
-      while(*html != '\0' && *html != '>' && !isspace((int)*html)) 
+      while(*html != '\0' && *html != '>' && !isspace((int)*html))
 	html++;
       value = (char *) calloc(1, (size_t)(html-tmp+1));
       if (!value) {
@@ -815,26 +815,26 @@ static const char *parseDecl(const char *html, struct PC_ * pc) {
 	freeArgs(tmp2, pc);
 	return "";
       }
-      
+
       memcpy(value, tmp, (size_t)(html-tmp));
       tmp2 = addArgToTable(tmp2, name, value, pc);
       break;
     }
     tmp = NULL;
   }
-  
+
   if (*html != '\0') html++;
-  
+
   if (pc->declCallBack) {
     ret = pc->declCallBack(tag, tmp2, pc->numArgs, pc);
     freeArgs(tmp2, pc);
     free(tag);
-    tag = NULL;    
+    tag = NULL;
     return((ret != 0) ? "" : html);
-  }  
+  }
   freeArgs(tmp2, pc);
   pc->numArgsStatus=0;
-  
+
   return html;
 }
 
@@ -845,12 +845,12 @@ static const char *parseForEntities (const char *tmp, struct PC_ * pc){
   while(*tmp != '\0'){
     tmp1 = tmp;
     while(*tmp != '\0' && *tmp != '&')tmp++;
-    
+
     text = (char *)calloc(1, (size_t)(tmp-tmp1+1));
     if (text == NULL) {
       return "";
     }
-    
+
     memcpy(text, tmp1, (size_t)(tmp-tmp1));
     /* the chunk of text before the first entity will
        not be called, if it starts with an entity*/
@@ -859,9 +859,9 @@ static const char *parseForEntities (const char *tmp, struct PC_ * pc){
 	ret = pc->textCallBack(text, pc);
       }
       free(text);
-      text = NULL;      
+      text = NULL;
       tmp1 = "";
-    }    
+    }
     if(*tmp == '&'){
       tmp++;
       tmp2=tmp;
@@ -893,11 +893,11 @@ static void parse (const char *html, struct PC_ * pc) {
   while(*html != '\0') {
     /* while(isspace(*html)){html++;} there may be leading blanks in some autogenerated files
        add this or not, that is the question ;-)) */
-    
+
     if (pc->lhtml_script_passthru != 0) {
       const char *text;
       char *tmp;
-      
+
       text = html;
       if (pc->lhtml_script_passthru == 1 ){
 	while(*text != '\0') {
@@ -924,12 +924,12 @@ static void parse (const char *html, struct PC_ * pc) {
       }
       tmp = (char *) malloc((size_t)(text-html+1));
       if (tmp == NULL) {
-	fprintf(stderr, 
+	fprintf(stderr,
 		_("Fatal: could not allocate (%s at %s:%d).\n"),
 		strerror(errno), __FILE__, __LINE__);
 	return;
       }
-      
+
       strncpy(tmp, html, (size_t)(text-html));
       tmp[text-html] = '\0';  /* strncpy does not zero-terminate! */
       if (pc->textCallBack != NULL) {
@@ -937,21 +937,21 @@ static void parse (const char *html, struct PC_ * pc) {
 	if (ret != 0) {
 	  free(tmp);
 	  tmp = NULL;
-	  
+	
 	  return;
 	}
       }
-      
+
       free(tmp);
       tmp = NULL;
-      
+
       pc->lhtml_script_passthru = 0;
       html = text;
     }
-    
+
     if(*html == '<'){
       html++;
-      
+
       switch (*html){
       case '!'   :
 	html++;
@@ -1005,7 +1005,7 @@ static struct EXTRACTOR_Keywords * addKeyword(EXTRACTOR_KeywordType type,
   if (keyword == NULL)
     return next;
   result = (EXTRACTOR_KeywordList*)malloc(sizeof(EXTRACTOR_KeywordList));
-  result->next = next;    
+  result->next = next;
   result->keyword = strdup(keyword);
   result->keywordType = type;
   return result;
@@ -1043,7 +1043,7 @@ static char * getTag(char * arg,
 		     struct ArgvTable * args,
 		     int numargs) {
   int i;
-  for (i=0;i<numargs;i++) 
+  for (i=0;i<numargs;i++)
     if (0 == strcasecmp(args[i].arg, arg))
       return args[i].val;
   return NULL;
@@ -1053,10 +1053,10 @@ static struct {
   char * name;
   EXTRACTOR_KeywordType type;
 } tagmap[] = {
-   { "author" , EXTRACTOR_AUTHOR}, 
+   { "author" , EXTRACTOR_AUTHOR},
    { "description" , EXTRACTOR_DESCRIPTION},
    { "language", EXTRACTOR_LANGUAGE},
-   { "rights", EXTRACTOR_COPYRIGHT}, 
+   { "rights", EXTRACTOR_COPYRIGHT},
    { "publisher", EXTRACTOR_PUBLISHER},
    { "date", EXTRACTOR_DATE},
    { "keywords", EXTRACTOR_KEYWORDS},
@@ -1065,8 +1065,8 @@ static struct {
 
 
 
-static int starttag(char *tag, 
-		    struct ArgvTable *args, 
+static int starttag(char *tag,
+		    struct ArgvTable *args,
 		    int numargs,
 		    struct PC_ * pc) {
   int i;
@@ -1075,11 +1075,11 @@ static int starttag(char *tag,
     pc->nextTextAction = 1;
     pc->nextKeywordType = EXTRACTOR_TITLE;
     return 0;
-  } 
+  }
   if (0 == strcasecmp(tag,"meta")) {
     i = 0;
     while (tagmap[i].name != NULL) {
-      if (hasTag("name",tagmap[i].name,args, numargs)) 
+      if (hasTag("name",tagmap[i].name,args, numargs))
 	pc->result = addKeyword(tagmap[i].type,
 				getTag("content",
 				       args, numargs),
@@ -1094,8 +1094,8 @@ static int starttag(char *tag,
 			    "text/html",
 			    pc->result);
     return 0;
-  } 
-#endif  
+  }
+#endif
   if ( (tag != NULL) &&
        ( (0 == strcasecmp(tag, "body")) ||
 	 (0 == strcasecmp(tag, "/body")) ) )
@@ -1174,7 +1174,7 @@ struct EXTRACTOR_Keywords * libextractor_html_extract(const char * filename,
 	return prev;
       j++;
     }
-  }  
+  }
 
   memset(&pc,
 	 0,
@@ -1186,14 +1186,14 @@ struct EXTRACTOR_Keywords * libextractor_html_extract(const char * filename,
   if (size > 1024 * 32)
     xsize = 1024 * 32;
   else
-    xsize = size;  
+    xsize = size;
   /* the parser requires 0-termination. We just
      overwrite the last character in data and
      restore it later, assuming that it can
-     hardly be a keyword in a valid HTML text... 
+     hardly be a keyword in a valid HTML text...
   */
   backup = data[xsize-1];
-  data[xsize-1] = '\0';  
+  data[xsize-1] = '\0';
   parse(data, &pc);
   data[xsize-1] = backup;
   return pc.result;

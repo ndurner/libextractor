@@ -31,7 +31,7 @@ static PyObject * EXTRACTOR_PY_removeAll(PyObject * self,
   PyObject * py_exts;
 
   PyArg_ParseTuple(args, "O", &py_exts);
-  
+
   EXTRACTOR_removeAll((EXTRACTOR_ExtractorList*) PyCObject_AsVoidPtr(py_exts));
   Py_INCREF(Py_None);
   return Py_None;
@@ -41,9 +41,9 @@ static PyObject * EXTRACTOR_PY_getKeywordTypeAsString(PyObject * self,
 						      PyObject * args) {
   unsigned int type;
 
-  PyArg_ParseTuple(args, 
-		   "i", 
-		   &type); 
+  PyArg_ParseTuple(args,
+		   "i",
+		   &type);
   return Py_BuildValue("s",
 		       EXTRACTOR_getKeywordTypeAsString((EXTRACTOR_KeywordType)type));
 }
@@ -64,7 +64,7 @@ static PyObject * EXTRACTOR_PY_extract(PyObject * self,
   ret = PyList_New(0);
   pos = keys;
   while (pos != NULL) {
-    PyList_Append(ret, 
+    PyList_Append(ret,
 		  Py_BuildValue("(OO)",
 				PyInt_FromLong((long)pos->keywordType),
 				PyString_FromString(pos->keyword)));
@@ -86,7 +86,7 @@ static PyMethodDef ExtractorMethods[] = {
   { NULL, NULL, 0, NULL }
 };
 
-PyMODINIT_FUNC 
+PyMODINIT_FUNC
 initextractor() {
   Py_InitModule("extractor", ExtractorMethods);
 }

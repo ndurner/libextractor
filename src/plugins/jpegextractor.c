@@ -37,7 +37,7 @@ static EXTRACTOR_KeywordList * addKeyword(EXTRACTOR_KeywordType type,
   if (keyword == NULL)
     return next;
   result = malloc(sizeof(EXTRACTOR_KeywordList));
-  result->next = next;    
+  result->next = next;
   result->keyword = keyword;
   result->keywordType = type;
   return result;
@@ -56,14 +56,14 @@ unsigned int NEXTC(unsigned char ** data, char *  end) {
     char result = **data;
     (*data)++;
     return result;
-  } else 
+  } else
     return -1;
 }
 */
 
 /**
  * Read length, convert to unsigned int.
- * All 2-byte quantities in JPEG markers are MSB first 
+ * All 2-byte quantities in JPEG markers are MSB first
  * @return -1 on error
  */
 static int readLength(unsigned char ** data,
@@ -83,19 +83,19 @@ static int readLength(unsigned char ** data,
 /**
  * @return the next marker or -1 on error.
  */
-static int next_marker(unsigned char ** data, 
+static int next_marker(unsigned char ** data,
 		       unsigned char * end) {
   int c;
   c = NEXTC(data, end);
-  while ( (c != 0xFF) && (c != -1) ) 
-    c = NEXTC(data, end);  
+  while ( (c != 0xFF) && (c != -1) )
+    c = NEXTC(data, end);
   do {
     c = NEXTC(data, end);
   } while ( (c == 0xFF) && (c != -1) );
   return c;
 }
 
-static void skip_variable(unsigned char ** data, 
+static void skip_variable(unsigned char ** data,
 			  unsigned char * end) {
   int length;
 
@@ -108,7 +108,7 @@ static void skip_variable(unsigned char ** data,
   (*data) += length;
 }
 
-static char * process_COM(unsigned char ** data, 
+static char * process_COM(unsigned char ** data,
 			  unsigned char * end) {
   unsigned int length;
   int ch;
@@ -117,7 +117,7 @@ static char * process_COM(unsigned char ** data,
 
   length = readLength(data, end);
   if (length <= 0)
-    return NULL; 
+    return NULL;
   comment = malloc(length+1);
   pos = 0;
   while (length > 0) {
@@ -125,8 +125,8 @@ static char * process_COM(unsigned char ** data,
     if ( (ch == '\r')  ||
 	 (ch == '\n') )
       comment[pos++] = '\n';
-    else if (isprint(ch)) 
-      comment[pos++] = ch;    
+    else if (isprint(ch))
+      comment[pos++] = ch;
     length--;
   }
   comment[pos] = '\0';
@@ -160,12 +160,12 @@ struct EXTRACTOR_Keywords * libextractor_jpeg_extract(const char * filename,
     case -1: /* end of file */
     case M_SOS:
     case M_EOI:
-      goto RETURN; /* this used to be "return result", but this 
+      goto RETURN; /* this used to be "return result", but this
 		      makes certain compilers unhappy...*/
     case M_APP0: {
       int len = readLength(&data, end);
       if (len < 0x8)
-	goto RETURN;      
+	goto RETURN;
       if (0 == strncmp(data,
 		       "JFIF",
 		       4)) {
@@ -213,7 +213,7 @@ struct EXTRACTOR_Keywords * libextractor_jpeg_extract(const char * filename,
       char * val;
       int len = readLength(&data, end);
       if (len < 0x9)
-	goto RETURN;      
+	goto RETURN;
       val = malloc(128);
       snprintf(val, 128,
 	       "%ux%u",
@@ -222,7 +222,7 @@ struct EXTRACTOR_Keywords * libextractor_jpeg_extract(const char * filename,
       result = addKeyword(EXTRACTOR_SIZE,
 			  val,
 			  result);
-      data = &data[len]; 
+      data = &data[len];
       break;
     }
     case M_COM:

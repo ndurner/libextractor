@@ -38,7 +38,7 @@ static EXTRACTOR_KeywordList * addKeyword(EXTRACTOR_KeywordType type,
   if (keyword == NULL)
     return next;
   result = malloc(sizeof(EXTRACTOR_KeywordList));
-  result->next = next;    
+  result->next = next;
   result->keyword = keyword;
   result->keywordType = type;
   return result;
@@ -51,7 +51,7 @@ typedef struct {
 } Matches;
 
 static Matches tmap[] = {
-  { "meta:generator",     EXTRACTOR_SOFTWARE }, 
+  { "meta:generator",     EXTRACTOR_SOFTWARE },
   { "meta:page-count",    EXTRACTOR_PAGE_COUNT },
   { "meta:creation-date", EXTRACTOR_CREATION_DATE },
   { "dc:date",            EXTRACTOR_DATE },
@@ -59,7 +59,7 @@ static Matches tmap[] = {
   { "dc:language",        EXTRACTOR_LANGUAGE },
   { "dc:title",           EXTRACTOR_TITLE },
   { "dc:description",     EXTRACTOR_DESCRIPTION },
-  { "dc:subject",         EXTRACTOR_SUBJECT }, 
+  { "dc:subject",         EXTRACTOR_SUBJECT },
   { "meta:keyword",       EXTRACTOR_KEYWORDS },
   { "meta:user-defined meta:name=\"Info 1\"", EXTRACTOR_UNKNOWN },
   { "meta:user-defined meta:name=\"Info 2\"", EXTRACTOR_UNKNOWN },
@@ -105,7 +105,7 @@ struct EXTRACTOR_Keywords * libextractor_oo_extract(const char * filename,
     unzClose(uf);
     return prev; /* problems... */
   }
-  
+
   if (UNZ_OK != unzOpenCurrentFilePassword(uf,NULL)) {
     unzClose(uf);
     return prev; /* problems... */
@@ -123,7 +123,7 @@ struct EXTRACTOR_Keywords * libextractor_oo_extract(const char * filename,
     unzClose(uf);
     return prev; /* out of memory */
   }
-  
+
   if (buf_size != unzReadCurrentFile(uf,buf,buf_size)) {
     free(buf);
     unzCloseCurrentFile(uf);
@@ -150,10 +150,10 @@ struct EXTRACTOR_Keywords * libextractor_oo_extract(const char * filename,
 
       pbuf = buf;
 
-      while (1) {      
+      while (1) {
 	strcpy(needle, "<");
 	strcat(needle, tmap[i].text);
-	strcat(needle, ">");    
+	strcat(needle, ">");
 	spos = strstr(pbuf, needle);
 	if (NULL == spos) {
 	strcpy(needle, tmap[i].text);
@@ -165,7 +165,7 @@ struct EXTRACTOR_Keywords * libextractor_oo_extract(const char * filename,
 	epos = spos;
 	while ( (epos[0] != '\0') &&
 		(epos[0] != '"') )
-	  epos++;       
+	  epos++;
 	} else {
 	  oc = 0;
 	  spos += strlen(needle);
@@ -191,13 +191,13 @@ struct EXTRACTOR_Keywords * libextractor_oo_extract(const char * filename,
 	  key[epos-spos] = '\0';
 	  prev = addKeyword(tmap[i].type,
 			    key,
-			    prev);      
+			    prev);
 	  pbuf = epos;
 	} else
 	  break;
-      }      
+      }
     }
-  }  
+  }
   free(buf);
   unzClose(uf);
   return prev;

@@ -44,11 +44,11 @@ void __attribute__ ((constructor)) ole_gobject_init(void) {
   g_type_init(); /* really needed??? */
 }
 
-static struct EXTRACTOR_Keywords * addKeyword(EXTRACTOR_KeywordList *oldhead, 
+static struct EXTRACTOR_Keywords * addKeyword(EXTRACTOR_KeywordList *oldhead,
 					      const char *phrase,
 					      EXTRACTOR_KeywordType type) {
 
-   EXTRACTOR_KeywordList * keyword;   
+   EXTRACTOR_KeywordList * keyword;
    if (strlen(phrase) == 0)
      return oldhead;
    if (0 == strcmp(phrase, "\"\""))
@@ -58,7 +58,7 @@ static struct EXTRACTOR_Keywords * addKeyword(EXTRACTOR_KeywordList *oldhead,
    if (0 == strcmp(phrase, " "))
      return oldhead;
    keyword = (EXTRACTOR_KeywordList*) malloc(sizeof(EXTRACTOR_KeywordList));
-   keyword->next = oldhead;    
+   keyword->next = oldhead;
    keyword->keyword = strdup(phrase);
    keyword->keywordType = type;
    return keyword;
@@ -229,21 +229,21 @@ msole_prop_id_to_gsf (GsfMSOleMetaDataSection *section, guint32 id)
   char const *res = NULL;
   GsfMSOleMetaDataPropMap const *map = NULL;
   unsigned i = 0;
-  
+
   if (section->dict != NULL) {
     if (id & 0x1000000) {
       id &= ~0x1000000;
       d (printf ("LINKED "););
     }
-    
+
     res = g_hash_table_lookup (section->dict, GINT_TO_POINTER (id));
-    
+
     if (res != NULL) {
       d (printf (res););
       return res;
     }
   }
-  
+
   if (section->type == GSF_MSOLE_META_DATA_COMPONENT) {
     map = component_props;
     i = G_N_ELEMENTS (component_props);
@@ -256,7 +256,7 @@ msole_prop_id_to_gsf (GsfMSOleMetaDataSection *section, guint32 id)
       d (printf (map[i].name););
       return map[i].name;
     }
-  
+
   map = common_props;
   i = G_N_ELEMENTS (common_props);
   while (i-- > 0)
@@ -264,16 +264,16 @@ msole_prop_id_to_gsf (GsfMSOleMetaDataSection *section, guint32 id)
       d (printf (map[i].name););
       return map[i].name;
     }
-  
+
   d (printf ("_UNKNOWN_(0x%x %d)", id, id););
-  
+
   return NULL;
 }
 
 static GValue *
 msole_prop_parse(GsfMSOleMetaDataSection *section,
-		 guint32 type, 
-		 guint8 const **data, 
+		 guint32 type,
+		 guint8 const **data,
 		 guint8 const *data_end)
 {
   GValue *res;
@@ -281,19 +281,19 @@ msole_prop_parse(GsfMSOleMetaDataSection *section,
   guint32 len;
   gsize gslen;
   gboolean const is_vector = type & LE_VT_VECTOR;
-  
+
   g_return_val_if_fail (!(type & (unsigned)(~0x1fff)), NULL); /* not valid in a prop set */
-  
+
   type &= 0xfff;
-  
+
   if (is_vector) {
     unsigned i, n;
-    
+
     g_return_val_if_fail (*data + 4 <= data_end, NULL);
-    
+
     n = GSF_LE_GET_GUINT32 (*data);
     *data += 4;
-    
+
     d (printf (" array with %d elem\n", n);
        gsf_mem_dump (*data, (unsigned)(data_end - *data)););
     for (i = 0 ; i < n ; i++) {
@@ -309,152 +309,152 @@ msole_prop_parse(GsfMSOleMetaDataSection *section,
     }
     return NULL;
   }
-  
+
   res = g_new0 (GValue, 1);
   switch (type) {
   case LE_VT_EMPTY :		 d (puts ("VT_EMPTY"););
     /* value::unset == empty */
     break;
-    
+
   case LE_VT_NULL :		 d (puts ("VT_NULL"););
     /* value::unset == null too :-) do we need to distinguish ? */
     break;
-    
+
   case LE_VT_I2 :		 d (puts ("VT_I2"););
     g_return_val_if_fail (*data + 2 <= data_end, NULL);
     g_value_init (res, G_TYPE_INT);
     g_value_set_int	(res, GSF_LE_GET_GINT16 (*data));
     *data += 2;
     break;
-    
+
   case LE_VT_I4 :		 d (puts ("VT_I4"););
     g_return_val_if_fail (*data + 4 <= data_end, NULL);
     g_value_init (res, G_TYPE_INT);
     g_value_set_int	(res, GSF_LE_GET_GINT32 (*data));
     *data += 4;
     break;
-    
+
   case LE_VT_R4 :		 d (puts ("VT_R4"););
     g_return_val_if_fail (*data + 4 <= data_end, NULL);
     g_value_init (res, G_TYPE_FLOAT);
     g_value_set_float (res, GSF_LE_GET_FLOAT (*data));
     *data += 4;
     break;
-    
+
   case LE_VT_R8 :		 d (puts ("VT_R8"););
     g_return_val_if_fail (*data + 8 <= data_end, NULL);
     g_value_init (res, G_TYPE_DOUBLE);
     g_value_set_double (res, GSF_LE_GET_DOUBLE (*data));
     *data += 8;
     break;
-    
+
   case LE_VT_CY :		 d (puts ("VT_CY"););
     break;
-    
+
   case LE_VT_DATE :		 d (puts ("VT_DATE"););
     break;
-    
+
   case LE_VT_BSTR :		 d (puts ("VT_BSTR"););
     break;
-    
+
   case LE_VT_DISPATCH :	 d (puts ("VT_DISPATCH"););
     break;
-    
+
   case LE_VT_BOOL :		 d (puts ("VT_BOOL"););
     g_return_val_if_fail (*data + 1 <= data_end, NULL);
     g_value_init (res, G_TYPE_BOOLEAN);
     g_value_set_boolean (res, **data ? TRUE : FALSE);
     *data += 1;
     break;
-    
+
   case LE_VT_VARIANT :	 d (printf ("VT_VARIANT containing a "););
     g_free (res);
     type = GSF_LE_GET_GUINT32 (*data);
     *data += 4;
     return msole_prop_parse (section, type, data, data_end);
-    
+
   case LE_VT_UI1 :		 d (puts ("VT_UI1"););
     g_return_val_if_fail (*data + 1 <= data_end, NULL);
     g_value_init (res, G_TYPE_UCHAR);
     g_value_set_uchar (res, (guchar)(**data));
     *data += 1;
     break;
-    
+
   case LE_VT_UI2 :		 d (puts ("VT_UI2"););
     g_return_val_if_fail (*data + 2 <= data_end, NULL);
     g_value_init (res, G_TYPE_UINT);
     g_value_set_uint (res, GSF_LE_GET_GUINT16 (*data));
     *data += 2;
     break;
-    
+
   case LE_VT_UI4 :		 d (puts ("VT_UI4"););
     g_return_val_if_fail (*data + 4 <= data_end, NULL);
     g_value_init (res, G_TYPE_UINT);
     *data += 4;
     d (printf ("%u\n", GSF_LE_GET_GUINT32 (*data)););
     break;
-    
+
   case LE_VT_I8 :		 d (puts ("VT_I8"););
     g_return_val_if_fail (*data + 8 <= data_end, NULL);
     g_value_init (res, G_TYPE_INT64);
     *data += 8;
     break;
-    
+
   case LE_VT_UI8 :		 d (puts ("VT_UI8"););
     g_return_val_if_fail (*data + 8 <= data_end, NULL);
     g_value_init (res, G_TYPE_UINT64);
     *data += 8;
     break;
-    
+
   case LE_VT_LPSTR :		 d (puts ("VT_LPSTR"););
     /* be anal and safe */
     g_return_val_if_fail (*data + 4 <= data_end, NULL);
-    
+
     len = GSF_LE_GET_GUINT32 (*data);
-    
+
     g_return_val_if_fail (len < 0x10000, NULL);
     g_return_val_if_fail (*data + 4 + len*section->char_size <= data_end, NULL);
-    
+
     gslen = 0;
     str = g_convert_with_iconv (*data + 4,
 				len * section->char_size,
 				section->iconv_handle, &gslen, NULL, NULL);
     len = (guint32)gslen;
-    
+
     g_value_init (res, G_TYPE_STRING);
     g_value_set_string (res, str);
     g_free (str);
     *data += 4 + len;
     break;
-    
+
   case LE_VT_LPWSTR : d (puts ("VT_LPWSTR"););
     /* be anal and safe */
     g_return_val_if_fail (*data + 4 <= data_end, NULL);
-    
+
     len = GSF_LE_GET_GUINT32 (*data);
-    
+
     g_return_val_if_fail (len < 0x10000, NULL);
     g_return_val_if_fail (*data + 4 + len <= data_end, NULL);
-    
+
     str = g_convert (*data + 4, len*2,
 		     "UTF-8", "UTF-16LE", &gslen, NULL, NULL);
     len = (guint32)gslen;
-    
+
     g_value_init (res, G_TYPE_STRING);
     g_value_set_string (res, str);
     g_free (str);
     *data += 4 + len;
     break;
-    
+
   case LE_VT_FILETIME :	 d (puts ("VT_FILETIME"););
 
     g_return_val_if_fail (*data + 8 <= data_end, NULL);
-    
+
     g_value_init (res, G_TYPE_STRING);
     {
       /* ft * 100ns since Jan 1 1601 */
       guint64 ft = GSF_LE_GET_GUINT64 (*data);
-      
+
       ft /= 10000000; /* convert to seconds */
 #ifdef _MSC_VER
       ft -= 11644473600i64; /* move to Jan 1 1970 */
@@ -463,7 +463,7 @@ msole_prop_parse(GsfMSOleMetaDataSection *section,
 #endif
 
       str = g_strdup(ctime((time_t*)&ft));
-     
+
       g_value_set_string (res, str);
 
       *data += 8;
@@ -486,7 +486,7 @@ msole_prop_parse(GsfMSOleMetaDataSection *section,
   case LE_VT_CLSID :		 d (puts ("VT_CLSID"););
     *data += 16;
     break;
-    
+
   case LE_VT_ERROR :
   case LE_VT_UNKNOWN :
   case LE_VT_DECIMAL :
@@ -504,13 +504,13 @@ msole_prop_parse(GsfMSOleMetaDataSection *section,
     g_free (res);
     res = NULL;
     break;
-    
+
   default :
     warning ("Unknown property type %d (0x%x)", type, type);
     g_free (res);
     res = NULL;
   };
-  
+
   d ( if (res != NULL && G_IS_VALUE (res)) {
     char *val = g_strdup_value_contents (res);
     d(printf ("%s\n", val););
@@ -533,52 +533,52 @@ msole_prop_read (GsfInput *in,
   gsf_off_t size = ((i+1) >= section->num_props)
     ? section->size-4 : props[i+1].offset;
   char const *prop_name;
-  
+
   g_return_val_if_fail (i < section->num_props, NULL);
   g_return_val_if_fail (size >= props[i].offset + 4, NULL);
-  
+
   size -= props[i].offset; /* includes the type id */
   if (gsf_input_seek (in, section->offset+props[i].offset, G_SEEK_SET) ||
       NULL == (data = gsf_input_read (in, size, NULL))) {
     warning ("failed to read prop #%d", i);
     return NULL;
   }
-  
+
   type = GSF_LE_GET_GUINT32 (data);
   data += 4;
-  
+
   /* dictionary is magic */
   if (props[i].id == 0) {
     guint32 len, id, i, n;
     gsize gslen;
     char *name;
     guint8 const *start = data;
-    
+
     g_return_val_if_fail (section->dict == NULL, NULL);
-    
+
     section->dict = g_hash_table_new_full (
 					   g_direct_hash, g_direct_equal,
 					   NULL, g_free);
-    
+
     d (gsf_mem_dump (data-4, size););
     n = type;
     for (i = 0 ; i < n ; i++) {
       id = GSF_LE_GET_GUINT32 (data);
       len = GSF_LE_GET_GUINT32 (data + 4);
-      
+
       g_return_val_if_fail (len < 0x10000, NULL);
-      
+
       gslen = 0;
       name = g_convert_with_iconv (data + 8,
 				   len * section->char_size,
 				   section->iconv_handle, &gslen, NULL, NULL);
       len = (guint32)gslen;
       data += 8 + len;
-      
+
       d (printf ("\t%u == %s\n", id, name););
       g_hash_table_replace (section->dict,
 			    GINT_TO_POINTER (id), name);
-      
+
       /* MS documentation blows goats !
        * The docs claim there are padding bytes in the dictionary.
        * Their examples show padding bytes.
@@ -587,13 +587,13 @@ msole_prop_read (GsfInput *in,
       if (section->char_size != 1 && (data - start) % 4)
 	data += 4 - ((data - start) % 4);
     }
-    
+
     return NULL;
   }
-  
+
   d (printf ("%u) ", i););
   prop_name = msole_prop_id_to_gsf (section, props[i].id);
-  
+
   d (printf (" @ %x %x = ", (unsigned)props[i].offset, (unsigned)size););
   return msole_prop_parse (section, type, &data, data + size);
 }
@@ -614,12 +614,12 @@ msole_prop_cmp (gconstpointer a, gconstpointer b)
  * Returns an iconv converter for @codepage -> utf8.
  **/
 static GIConv
-gsf_msole_iconv_open_codepage_for_import(char const *to, 
+gsf_msole_iconv_open_codepage_for_import(char const *to,
 					 int codepage)
 {
   GIConv iconv_handle;
   g_return_val_if_fail (to != NULL, (GIConv)(-1));
-  
+
   /* sometimes it is stored as signed short */
   if (codepage == 65001 || codepage == -535) {
     iconv_handle = g_iconv_open (to, "UTF-8");
@@ -637,20 +637,20 @@ gsf_msole_iconv_open_codepage_for_import(char const *to,
     if (iconv_handle != (GIConv)(-1))
       return iconv_handle;
   }
-  
+
   /* Try aliases.  */
   if (codepage == 10000) {
     /* gnu iconv.  */
     iconv_handle = g_iconv_open (to, "MACROMAN");
     if (iconv_handle != (GIConv)(-1))
       return iconv_handle;
-    
+
     /* glibc.  */
     iconv_handle = g_iconv_open (to, "MACINTOSH");
     if (iconv_handle != (GIConv)(-1))
       return iconv_handle;
   }
-  
+
   warning ("Unable to open an iconv handle from codepage %d -> %s",
 	     codepage, to);
   return (GIConv)(-1);
@@ -683,18 +683,18 @@ static struct EXTRACTOR_Keywords * process(GsfInput * in,
   GsfMSOleMetaDataSection *sections;
   GsfMSOleMetaDataProp *props;
 
-  if (NULL == data) 
-    return prev; 
-  
+  if (NULL == data)
+    return prev;
+
   /* NOTE : high word is the os, low word is the os version
    * 0 = win16
    * 1 = mac
    * 2 = win32
    */
   os = GSF_LE_GET_GUINT16 (data + 6);
-  
+
   version = GSF_LE_GET_GUINT16 (data + 2);
-  
+
   num_sections = GSF_LE_GET_GUINT32 (data + 24);
   if (GSF_LE_GET_GUINT16 (data + 0) != 0xfffe
       || (version != 0 && version != 1)
@@ -702,7 +702,7 @@ static struct EXTRACTOR_Keywords * process(GsfInput * in,
       || num_sections > 100) { /* arbitrary sanity check */
     return prev;
   }
-  
+
   /* extract the section info */
   sections = (GsfMSOleMetaDataSection *)g_alloca (sizeof (GsfMSOleMetaDataSection)* num_sections);
   for (i = 0 ; i < num_sections ; i++) {
@@ -721,7 +721,7 @@ static struct EXTRACTOR_Keywords * process(GsfInput * in,
       warning ("Unknown property section type, treating it as USER");
       d(gsf_mem_dump (data, 16););
     }
-    
+
     sections [i].offset = GSF_LE_GET_GUINT32 (data + 16);
 #ifndef NO_DEBUG_OLE_PROPS
     d(printf ("0x%x\n", (guint32)sections [i].offset););
@@ -732,7 +732,7 @@ static struct EXTRACTOR_Keywords * process(GsfInput * in,
 	NULL == (data = gsf_input_read (in, 8, NULL))) {
       return prev;
     }
-    
+
     sections[i].iconv_handle = (GIConv)-1;
     sections[i].char_size    = 1;
     sections[i].dict      = NULL;
@@ -746,16 +746,16 @@ static struct EXTRACTOR_Keywords * process(GsfInput * in,
 	g_free (props);
 	return prev;
       }
-      
+
       props [j].id = GSF_LE_GET_GUINT32 (data);
       props [j].offset  = GSF_LE_GET_GUINT32 (data + 4);
     }
-    
+
     /* order prop info by offset to facilitate bounds checking */
     qsort (props, sections[i].num_props,
 	   sizeof (GsfMSOleMetaDataProp),
 	   msole_prop_cmp);
-    
+
     sections[i].iconv_handle = (GIConv)-1;
     sections[i].char_size = 1;
     for (j = 0; j < sections[i].num_props; j++) /* first codepage */
@@ -776,7 +776,7 @@ static struct EXTRACTOR_Keywords * process(GsfInput * in,
       }
     if (sections[i].iconv_handle == (GIConv)-1)
       sections[i].iconv_handle = gsf_msole_iconv_open_for_import (1252);
-    
+
     for (j = 0; j < sections[i].num_props; j++) /* then dictionary */
       if (props[j].id == 0) {
 	GValue *v = msole_prop_read (in, sections+i, props, j);
@@ -784,8 +784,8 @@ static struct EXTRACTOR_Keywords * process(GsfInput * in,
 	  if (G_VALUE_TYPE(v) == G_TYPE_STRING) {
 	    gchar * contents = g_strdup_value_contents(v);
 	    free(contents);
-	  } else {	  
-	    
+	  } else {	
+	
 	    /* FIXME: do something with non-strings...  */
 	  }
 	  if (G_IS_VALUE (v))
@@ -800,13 +800,13 @@ static struct EXTRACTOR_Keywords * process(GsfInput * in,
 	  gchar * contents = NULL;
 	  int pc;
 	  int ipc;
-	  
+	
 	  if (G_VALUE_TYPE(v) == G_TYPE_STRING) {
 	    contents = g_strdup_value_contents(v);
 	  } else {
 	    /* convert other formats? */
 	    contents = g_strdup_value_contents(v);
-	  }	  
+	  }	
 	  pc = 0;
 	  if (contents != NULL) {
 	    for (ipc=strlen(contents)-1;ipc>=0;ipc--)
@@ -819,7 +819,7 @@ static struct EXTRACTOR_Keywords * process(GsfInput * in,
 	  }
 	  if (pc > 0) {
 	    int pos = 0;
-	    const char * prop 
+	    const char * prop
 	      = msole_prop_id_to_gsf(sections+i, props[j].id);
 	    if (prop != NULL) {
 	      while (tmap[pos].text != NULL) {
@@ -833,7 +833,7 @@ static struct EXTRACTOR_Keywords * process(GsfInput * in,
 				  contents,
 				  tmap[pos].type);
 	    }
-	  } 
+	  }
 	  if (contents != NULL)
 	    free(contents);	
 	}
@@ -843,7 +843,7 @@ static struct EXTRACTOR_Keywords * process(GsfInput * in,
 	  g_free (v);
 	}
       }
-    
+
     gsf_iconv_close (sections[i].iconv_handle);
     g_free (props);
     if (sections[i].dict != NULL)
@@ -865,7 +865,7 @@ static struct EXTRACTOR_Keywords * process(GsfInput * in,
 		      "Win32",
 		      EXTRACTOR_OS);
     break;
-  }  
+  }
   return prev;
 }
 
@@ -876,12 +876,12 @@ static struct EXTRACTOR_Keywords * processSO(GsfInput * src,
 
   size = gsf_input_size(src);
   if (size < 0x374) /* == 0x375?? */
-    return prev;  
+    return prev;
   buf = malloc(size);
-  gsf_input_read(src, size, buf); 
+  gsf_input_read(src, size, buf);
   if ( (buf[0] != 0x0F) ||
        (buf[1] != 0x0) ||
-       (0 != strncmp(&buf[2], 
+       (0 != strncmp(&buf[2],
 		     "SfxDocumentInfo",
 		     strlen("SfxDocumentInfo"))) ||
        (buf[0x11] != 0x0B) ||
@@ -905,7 +905,7 @@ static struct EXTRACTOR_Keywords * processSO(GsfInput * src,
     prev = addKeyword(prev,
 		      &buf[0x117],
 		      EXTRACTOR_COMMENT);
-  buf[0x296] = '\0';  
+  buf[0x296] = '\0';
   if (buf[0x216] + buf[0x217] > 0)
     prev = addKeyword(prev,
 		      &buf[0x218],
@@ -926,17 +926,17 @@ struct EXTRACTOR_Keywords * libextractor_ole2_extract(const char * filename,
   guint8 const *data;
   size_t len;
   int i;
-  
-  input = gsf_input_memory_new((guint8 const *) date, 
-			       (gsf_off_t) size, 
+
+  input = gsf_input_memory_new((guint8 const *) date,
+			       (gsf_off_t) size,
 			       FALSE);
-  if (input == NULL) 
-    return prev;  
-  
+  if (input == NULL)
+    return prev;
+
   infile = gsf_infile_msole_new(input, NULL);
   g_object_unref(G_OBJECT(input));
-  
-  if (infile == NULL) 
+
+  if (infile == NULL)
     return prev;
 
   if (GSF_IS_INFILE(infile) &&
@@ -944,16 +944,16 @@ struct EXTRACTOR_Keywords * libextractor_ole2_extract(const char * filename,
     GsfInfile * in = GSF_INFILE (infile);
     GsfInput * src;
     const char * name;
-    
+
     for (i=0;i<gsf_infile_num_children(in);i++) {
       src = gsf_infile_child_by_index (in, i);
       name = gsf_infile_name_by_index (in, i);
 
-      if ( (0 == strcmp(name, "\005SummaryInformation")) 
-	   || (0 == strcmp(name, "\005DocumentSummaryInformation")) ) {      
+      if ( (0 == strcmp(name, "\005SummaryInformation"))
+	   || (0 == strcmp(name, "\005DocumentSummaryInformation")) ) {
 	prev = process(src,
 		       prev);
-      }           
+      }
       if (0 == strcmp(name, "SfxDocumentInfo")) {
 	prev = processSO(src,
 			 prev);

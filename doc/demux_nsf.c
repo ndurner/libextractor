@@ -20,7 +20,7 @@
  * NSF File "Demuxer" by Mike Melanson (melanson@pcisys.net)
  * This is really just a loader for NES Music File Format (extension NSF)
  * which loads an entire NSF file and passes it over to the NSF audio
- * decoder. 
+ * decoder.
  *
  * After the file is sent over, the demuxer controls the playback by
  * sending empty buffers with incrementing pts values.
@@ -175,7 +175,7 @@ static int demux_nsf_send_chunk(demux_plugin_t *this_gen) {
 
       buf->decoder_info[1] = this->current_song;
       this->new_song = 0;
-      sprintf(title, "%s, song %d/%d", 
+      sprintf(title, "%s, song %d/%d",
         this->title, this->current_song, this->total_songs);
       if (this->stream->meta_info[XINE_META_INFO_TITLE])
         free (this->stream->meta_info[XINE_META_INFO_TITLE]);
@@ -316,7 +316,7 @@ static demux_plugin_t *open_plugin (demux_class_t *class_gen, xine_stream_t *str
   demux_nsf_t   *this;
 
   if (! (input->get_capabilities(input) & INPUT_CAP_SEEKABLE)) {
-    if (stream->xine->verbosity >= XINE_VERBOSITY_DEBUG) 
+    if (stream->xine->verbosity >= XINE_VERBOSITY_DEBUG)
       printf(_("demux_nsf.c: input not seekable, can not handle!\n"));
     return NULL;
   }

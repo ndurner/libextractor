@@ -47,7 +47,7 @@ static struct EXTRACTOR_Keywords * addKeyword(struct EXTRACTOR_Keywords * list,
 					      char * keyword) {
   EXTRACTOR_KeywordList * next;
   next = malloc(sizeof(EXTRACTOR_KeywordList));
-  next->next = list;    
+  next->next = list;
   next->keyword = keyword;
   next->keywordType = EXTRACTOR_UNKNOWN;
   return next;
@@ -55,7 +55,7 @@ static struct EXTRACTOR_Keywords * addKeyword(struct EXTRACTOR_Keywords * list,
 
 
 /**
- * 
+ *
  * @param word (alphabetic characters without spaces)
  * @return 0 if it is no word, 1 if it is
  **/
@@ -83,8 +83,8 @@ static int wordTest(char * word,
       if (isupper(word[i]))
 	count++;
     }
-    if ( ((count==1) && (isupper(word[0]))) || 
-	 (count == strlen(word)) ){      
+    if ( ((count==1) && (isupper(word[0]))) ||
+	 (count == strlen(word)) ){
       lower = strdup(word);
       for (i=strlen(lower)-1;i>=0;i--)
 	lower[i] = tolower(lower[i]);
@@ -94,12 +94,12 @@ static int wordTest(char * word,
       i = testBloomfilter(&FILTER_NAME,
 			  &hc);
       free(lower);
-    } else 
+    } else
       i=0;
   }
   if (i) {
     switch(strlen(word)) {
-    case 1:      
+    case 1:
       *strlenthreshold = 6 * (*strlenthreshold);
       break;
     case 2:
@@ -129,7 +129,7 @@ static int wordTest(char * word,
     if (*strlenthreshold < 0.25)
       *strlenthreshold = 0.25;
   }
-  
+
   return i;
 }
 
@@ -140,7 +140,7 @@ static void addKeywordToList(char * keyword,
   if (*tail != NULL) {
     (*tail)->next = addKeyword(NULL, keyword);
     *tail = (*tail)->next;
-  } else { 
+  } else {
     *tail = addKeyword(NULL, keyword);
     *head = *tail;
   }
@@ -180,7 +180,7 @@ static int process(char * keyword,
     free(keyword);
     if (isprint(sxdup[0])) {
       i=0;
-      while ( (! isprint(sxdup[i+1])) 
+      while ( (! isprint(sxdup[i+1]))
 	     && (i<len-1) )
 	i++;
       free(sxdup);
@@ -191,7 +191,7 @@ static int process(char * keyword,
     }
   }
   addKeywordToList(xstrndup(keyword, max),
-		   head, 
+		   head,
 		   tail);
   free(keyword);
   p=0;
@@ -230,7 +230,7 @@ static void testKeyword(size_t start,
   if (wordTest(keyword, thresh)) {
     addKeywordToList(keyword,
 		     head,
-		     tail);    
+		     tail);
     return;
   }
   i = 0;
@@ -238,7 +238,7 @@ static void testKeyword(size_t start,
     i += process(xstrndup(&keyword[i], MAXBLEN),
 		 thresh,
 		 head,
-		 tail);		 
+		 tail);		
   }
   process(strdup(&keyword[i]),
 	  thresh,
@@ -299,7 +299,7 @@ static void processSentences(struct EXTRACTOR_Keywords ** head,
 	numWords = 0;
 	continue;
       }
-    }   
+    }
 
     /* found sentence! build & advance start! */
     if (start == NULL)
@@ -344,7 +344,7 @@ static void processSentences(struct EXTRACTOR_Keywords ** head,
     pos = last->next;
     numSentences++;
     numWords = 0;
-    continue;	      
+    continue;	
   }
   *tail = last;
 }
@@ -396,7 +396,7 @@ struct EXTRACTOR_Keywords * EXTRACT_NAME (char * filename,
   struct EXTRACTOR_Keywords * head = NULL;
   struct EXTRACTOR_Keywords * tail = NULL;
   double thresh = 2.0;
-  
+
   /* if the mime-type of the file is blacklisted, don't
      run the printable extactor! */
   mime = EXTRACTOR_extractLast(EXTRACTOR_MIMETYPE,
@@ -409,8 +409,8 @@ struct EXTRACTOR_Keywords * EXTRACT_NAME (char * filename,
 	return prev;
       j++;
     }
-  }  
-  
+  }
+
   last = 0;
   pos = 0;
   while (last < size) {
@@ -450,7 +450,7 @@ struct EXTRACTOR_Keywords * EXTRACT_NAME (char * filename,
 		&head,
 		&tail);
     while ( (last < size) &&
-	    (isspace(data[last])) )	    
+	    (isspace(data[last])) )	
       last++;
   }
   processSentences(&head, &tail);

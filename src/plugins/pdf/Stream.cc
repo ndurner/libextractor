@@ -250,7 +250,7 @@ Stream *Stream::makeFilter(char *name, Stream *str, Object *params) {
       obj.free();
     }
     str = new FlateStream(str, pred, columns, colors, bits);
-  } 
+  }
 #if 0
 else if (!strcmp(name, "JBIG2Decode")) {
     if (params->isDict()) {
@@ -260,7 +260,7 @@ else if (!strcmp(name, "JBIG2Decode")) {
     globals.free();
   } else if (!strcmp(name, "JPXDecode")) {
     str = new JPXStream(str);
-  } 
+  }
 #endif
 else {
     error(getPos(), "Unknown filter '%s'", name);
@@ -1532,7 +1532,7 @@ int CCITTFaxStream::lookChar() {
 	eatBits(1);
 	code1 = lookBits(13);
       } while ((code1 >> 1) != 0x001);
-      eatBits(12); 
+      eatBits(12);
       if (encoding > 0) {
 	eatBits(1);
 	nextLine2D = !(code1 & 1);

@@ -29,7 +29,7 @@ static EXTRACTOR_KeywordList * addKeyword(EXTRACTOR_KeywordType type,
   if (keyword == NULL)
     return next;
   result = malloc(sizeof(EXTRACTOR_KeywordList));
-  result->next = next;    
+  result->next = next;
   result->keyword = keyword;
   result->keywordType = type;
   return result;
@@ -88,7 +88,7 @@ static struct EXTRACTOR_Keywords * parseZZZ(unsigned char * data,
 		 slen);
 	  prev = addKeyword(tmap[i].type,
 			    value,
-			    prev);	  
+			    prev);	
 	  pos += slen + 1;
 	}
       }
@@ -129,7 +129,7 @@ struct EXTRACTOR_Keywords * libextractor_dvi_extract(const char * filename,
     return prev;
   if ( (data[0] != 247) || (data[1] != 2) )
     return prev; /* cannot be dvi or unsupported version */
-  klen = data[14]; 
+  klen = data[14];
 
   pos = size-1;
   while ( (data[pos] == 223) && (pos > 0) )
@@ -140,10 +140,10 @@ struct EXTRACTOR_Keywords * libextractor_dvi_extract(const char * filename,
   pos -= 4;
   /* assert pos at 'post_post tag' */
   if (data[pos] != 249)
-    return prev; 
+    return prev;
   opos = pos;
   pos = ntohl(getIntAt(&data[opos+1]));
-  if (pos+25 > size) 
+  if (pos+25 > size)
     return prev;
   /* assert pos at 'post' command */
   if (data[pos] != 248)
@@ -168,7 +168,7 @@ struct EXTRACTOR_Keywords * libextractor_dvi_extract(const char * filename,
   }
   /* ok, now we believe it's a dvi... */
   pages = malloc(16);
-  snprintf(pages, 
+  snprintf(pages,
 	   16,
 	   "%u",
 	   pageCount);
@@ -176,7 +176,7 @@ struct EXTRACTOR_Keywords * libextractor_dvi_extract(const char * filename,
   comment[klen] = '\0';
   memcpy(comment,
 	 &data[15],
-	 klen);  
+	 klen);
   prev = addKeyword(EXTRACTOR_MIMETYPE,
 		    strdup("application/x-dvi"),
 		    prev);
@@ -220,7 +220,7 @@ struct EXTRACTOR_Keywords * libextractor_dvi_extract(const char * filename,
 			len,
 			prev);
       pos += len+4;
-      break;     
+      break;
     case 242: /* zzz4, hurray! */
       len = ntohl(getIntAt(&data[pos+1]));
       if (pos + 1 + len < size)

@@ -93,7 +93,7 @@ typedef struct demux_asf_s {
   uint32_t          packet_size;
   uint8_t           packet_flags;
   uint32_t          data_size;
-  
+
   asf_stream_t      streams[MAX_NUM_STREAMS];
   uint32_t          bitrates[MAX_NUM_STREAMS];
   int               num_streams;
@@ -144,7 +144,7 @@ typedef struct demux_asf_s {
 
   off_t             header_size;
   int               buf_flag_seek;
-  
+
   /* first packet position */
   int64_t           first_packet_pos;
 
@@ -172,7 +172,7 @@ static uint8_t get_byte (demux_asf_t *this) {
   /* printf ("%02x ", buf); */
 
   if (i != 1) {
-    if (this->stream->xine->verbosity >= XINE_VERBOSITY_DEBUG) 
+    if (this->stream->xine->verbosity >= XINE_VERBOSITY_DEBUG)
       printf ("demux_asf: end of data\n");
     this->status = DEMUX_FINISHED;
   }
@@ -190,7 +190,7 @@ static uint16_t get_le16 (demux_asf_t *this) {
   /* printf (" [%02x %02x] ", buf[0], buf[1]); */
 
   if (i != 2) {
-    if (this->stream->xine->verbosity >= XINE_VERBOSITY_DEBUG) 
+    if (this->stream->xine->verbosity >= XINE_VERBOSITY_DEBUG)
       printf ("demux_asf: end of data\n");
     this->status = DEMUX_FINISHED;
   }
@@ -208,7 +208,7 @@ static uint32_t get_le32 (demux_asf_t *this) {
   /* printf ("%02x %02x %02x %02x ", buf[0], buf[1], buf[2], buf[3]); */
 
   if (i != 4) {
-    if (this->stream->xine->verbosity >= XINE_VERBOSITY_DEBUG) 
+    if (this->stream->xine->verbosity >= XINE_VERBOSITY_DEBUG)
       printf ("demux_asf: end of data\n");
     this->status = DEMUX_FINISHED;
   }
@@ -224,12 +224,12 @@ static uint64_t get_le64 (demux_asf_t *this) {
   i = this->input->read (this->input, buf, 8);
 
   if (i != 8) {
-    if (this->stream->xine->verbosity >= XINE_VERBOSITY_DEBUG) 
+    if (this->stream->xine->verbosity >= XINE_VERBOSITY_DEBUG)
       printf ("demux_asf: end of data\n");
     this->status = DEMUX_FINISHED;
   }
 
-  return (uint64_t) buf[0] 
+  return (uint64_t) buf[0]
     | ((uint64_t) buf[1] << 8)
     | ((uint64_t) buf[2] << 16)
     | ((uint64_t) buf[3] << 24)
@@ -249,7 +249,7 @@ static int get_guid (demux_asf_t *this) {
   for(i = 0; i < 8; i++) {
     g.v4[i] = get_byte(this);
   }
-  
+
   for (i = 1; i < GUID_END; i++) {
     if (!memcmp(&g, &guids[i].guid, sizeof(GUID))) {
 #ifdef LOG
@@ -258,8 +258,8 @@ static int get_guid (demux_asf_t *this) {
       return i;
     }
   }
-  
-  if (this->stream->xine->verbosity >= XINE_VERBOSITY_DEBUG) 
+
+  if (this->stream->xine->verbosity >= XINE_VERBOSITY_DEBUG)
     printf ("demux_asf: unknown GUID: 0x%x, 0x%x, 0x%x, "
 	    "{ 0x%hx, 0x%hx, 0x%hx, 0x%hx, 0x%hx, 0x%hx, 0x%hx, 0x%hx }\n",
 	    g.v1, g.v2, g.v3,
@@ -339,7 +339,7 @@ static int asf_read_header (demux_asf_t *this) {
 
   guid = get_guid(this);
   if (guid != GUID_ASF_HEADER) {
-    if (this->stream->xine->verbosity >= XINE_VERBOSITY_DEBUG) 
+    if (this->stream->xine->verbosity >= XINE_VERBOSITY_DEBUG)
       printf ("demux_asf: file doesn't start with an asf header\n");
     return 0;
   }
@@ -440,7 +440,7 @@ static int asf_read_header (demux_asf_t *this) {
               this->reorder_w = (buffer[2]<<8)|buffer[1];
               this->reorder_b = (buffer[4]<<8)|buffer[3];
               this->reorder_w /= this->reorder_b;
-	      if (this->stream->xine->verbosity >= XINE_VERBOSITY_DEBUG) 
+	      if (this->stream->xine->verbosity >= XINE_VERBOSITY_DEBUG)
 		printf ("demux_asf: audio conceal interleave detected (%d x %d x %d)\n",
 			this->reorder_w, this->reorder_h, this->reorder_b );
             } else {
@@ -763,13 +763,13 @@ static void check_newpts (demux_asf_t *this, int64_t pts, int video, int frame_e
 #endif
       }
     }
-    
+
     this->last_frame_pts = pts;
   }
 }
 
 
-static void asf_send_buffer_nodefrag (demux_asf_t *this, asf_stream_t *stream, 
+static void asf_send_buffer_nodefrag (demux_asf_t *this, asf_stream_t *stream,
 				      int frag_offset, int seq,
 				      int64_t timestamp,
 				      int frag_len, int payload_size) {
@@ -782,7 +782,7 @@ static void asf_send_buffer_nodefrag (demux_asf_t *this, asf_stream_t *stream,
     /* new packet */
     stream->seq = seq;
   } else {
-    if (seq == stream->seq && 
+    if (seq == stream->seq &&
 	frag_offset == stream->frag_offset) {
       /* continuing packet */
     } else {
@@ -799,19 +799,19 @@ static void asf_send_buffer_nodefrag (demux_asf_t *this, asf_stream_t *stream,
     }
   }
 
-  
+
   while( frag_len ) {
     if ( frag_len < stream->fifo->buffer_pool_buf_size )
       bufsize = frag_len;
     else
       bufsize = stream->fifo->buffer_pool_buf_size;
-  
+
     buf = stream->fifo->buffer_pool_alloc (stream->fifo);
     this->input->read (this->input, buf->content, bufsize);
 
     buf->extra_info->input_pos  = this->input->get_current_pos (this->input);
     if (this->rate)
-      buf->extra_info->input_time = (int)((int64_t)buf->extra_info->input_pos 
+      buf->extra_info->input_time = (int)((int64_t)buf->extra_info->input_pos
                                           * 1000 / this->rate);
     else
       buf->extra_info->input_time = 0;
@@ -827,13 +827,13 @@ static void asf_send_buffer_nodefrag (demux_asf_t *this, asf_stream_t *stream,
     buf->type       = stream->buf_type;
     buf->size       = bufsize;
     timestamp       = 0;
-  
+
     stream->frag_offset += bufsize;
     frag_len -= bufsize;
 
     package_done = (stream->frag_offset == payload_size);
 
-    if ((buf->type & BUF_MAJOR_MASK) == BUF_VIDEO_BASE) 
+    if ((buf->type & BUF_MAJOR_MASK) == BUF_VIDEO_BASE)
       check_newpts (this, buf->pts, PTS_VIDEO, package_done);
     else
       check_newpts (this, buf->pts, PTS_AUDIO, package_done);
@@ -1000,7 +1000,7 @@ static void asf_read_packet(demux_asf_t *this) {
       this->input->seek (this->input, this->packet_size_left, SEEK_CUR);
 
     if (!asf_get_packet(this)) {
-      if (this->stream->xine->verbosity >= XINE_VERBOSITY_DEBUG) 
+      if (this->stream->xine->verbosity >= XINE_VERBOSITY_DEBUG)
 	printf ("demux_asf: get_packet failed\n");
       this->status = DEMUX_FINISHED;
       return ;
@@ -1008,7 +1008,7 @@ static void asf_read_packet(demux_asf_t *this) {
 
     if (this->packet_padsize > this->packet_size) {
       /* skip packet */
-      if (this->stream->xine->verbosity >= XINE_VERBOSITY_DEBUG) 
+      if (this->stream->xine->verbosity >= XINE_VERBOSITY_DEBUG)
 	printf ("demux_asf: invalid padsize: %d\n", this->packet_padsize);
       this->frame = this->nb_frames - 1;
       return;
@@ -1066,7 +1066,7 @@ static void asf_read_packet(demux_asf_t *this) {
   case 3:
     seq = get_le32(this); s_hdr_size += 4; break;
   default:
-    if (this->stream->xine->verbosity >= XINE_VERBOSITY_DEBUG) 
+    if (this->stream->xine->verbosity >= XINE_VERBOSITY_DEBUG)
       printf ("demux_asf: seq=0\n");
     seq = 0;
   }
@@ -1079,7 +1079,7 @@ static void asf_read_packet(demux_asf_t *this) {
     case 3:
       frag_offset = get_le32(this); s_hdr_size += 4; break;
     default:
-      if (this->stream->xine->verbosity >= XINE_VERBOSITY_DEBUG) 
+      if (this->stream->xine->verbosity >= XINE_VERBOSITY_DEBUG)
 	printf ("demux_asf: frag_offset=0\n");
       frag_offset = 0;
   }
@@ -1101,7 +1101,7 @@ static void asf_read_packet(demux_asf_t *this) {
 
   if (rlen > this->packet_size_left) {
     /* skip packet */
-    if (this->stream->xine->verbosity >= XINE_VERBOSITY_DEBUG) 
+    if (this->stream->xine->verbosity >= XINE_VERBOSITY_DEBUG)
       printf ("demux_asf: invalid rlen %d\n", rlen);
     this->frame = this->nb_frames - 1;
     return;
@@ -1148,7 +1148,7 @@ static void asf_read_packet(demux_asf_t *this) {
 
     if (data_length > this->packet_size_left) {
       /* skip packet */
-      if (this->stream->xine->verbosity >= XINE_VERBOSITY_DEBUG) 
+      if (this->stream->xine->verbosity >= XINE_VERBOSITY_DEBUG)
 	printf ("demux_asf: invalid data_length\n");
       this->frame = this->nb_frames - 1;
       return;
@@ -1196,7 +1196,7 @@ static void asf_read_packet(demux_asf_t *this) {
       this->input->seek (this->input, rlen - 8, SEEK_CUR);
       s_hdr_size += rlen - 8;
     } else {
-      if (this->stream->xine->verbosity >= XINE_VERBOSITY_DEBUG) 
+      if (this->stream->xine->verbosity >= XINE_VERBOSITY_DEBUG)
 	printf ("demux_asf: strange rlen %d\n", rlen);
       timestamp    = 0;
       payload_size = 0;
@@ -1232,7 +1232,7 @@ static void asf_read_packet(demux_asf_t *this) {
 
     if (frag_len > this->packet_size_left) {
       /* skip packet */
-      if (this->stream->xine->verbosity >= XINE_VERBOSITY_DEBUG) 
+      if (this->stream->xine->verbosity >= XINE_VERBOSITY_DEBUG)
 	printf ("demux_asf: invalid frag_len %d\n", frag_len);
       this->frame = this->nb_frames - 1;
       return;
@@ -1313,7 +1313,7 @@ static int demux_asf_parse_http_references( demux_asf_t *this) {
     if (!strncmp(href, "http", 4)) {
       memcpy(href, "mmsh", 4);
     }
-    if (this->stream->xine->verbosity >= XINE_VERBOSITY_LOG) 
+    if (this->stream->xine->verbosity >= XINE_VERBOSITY_LOG)
       printf("demux_asf: http ref: %s\n", href);
     uevent.type = XINE_EVENT_MRL_REFERENCE;
     uevent.stream = this->stream;
@@ -1376,7 +1376,7 @@ static int demux_asf_parse_asf_references( demux_asf_t *this) {
       }
     }
 
-    if (this->stream->xine->verbosity >= XINE_VERBOSITY_DEBUG) 
+    if (this->stream->xine->verbosity >= XINE_VERBOSITY_DEBUG)
       printf("demux_asf: asf ref: %s\n", ptr);
     uevent.type = XINE_EVENT_MRL_REFERENCE;
     uevent.stream = this->stream;
@@ -1601,7 +1601,7 @@ static void demux_asf_send_headers (demux_plugin_t *this_gen) {
 
   if (!asf_read_header (this)) {
 
-    if (this->stream->xine->verbosity >= XINE_VERBOSITY_DEBUG) 
+    if (this->stream->xine->verbosity >= XINE_VERBOSITY_DEBUG)
       printf ("demux_asf: asf_read_header failed.\n");
 
     this->status = DEMUX_FINISHED;
@@ -1634,7 +1634,7 @@ static void demux_asf_send_headers (demux_plugin_t *this_gen) {
       stream_id  = this->streams[i].stream_id;
       bitrate    = this->bitrates[stream_id];
 
-      if (this->stream->xine->verbosity >= XINE_VERBOSITY_LOG) 
+      if (this->stream->xine->verbosity >= XINE_VERBOSITY_LOG)
 	printf("demux_asf: stream: %d, bitrate %d bps\n", stream_id, bitrate);
       if ((buf_type == BUF_VIDEO_BASE) &&
 	  (bitrate > max_vrate || this->video_stream_id == 0)) {
@@ -1659,7 +1659,7 @@ static void demux_asf_send_headers (demux_plugin_t *this_gen) {
 
     this->stream->stream_info[XINE_STREAM_INFO_BITRATE] = bitrate;
 
-    if (this->stream->xine->verbosity >= XINE_VERBOSITY_DEBUG) 
+    if (this->stream->xine->verbosity >= XINE_VERBOSITY_DEBUG)
       printf("demux_asf: video stream_id: %d, audio stream_id: %d\n",
 	     this->video_stream_id, this->audio_stream_id);
 
@@ -1821,7 +1821,7 @@ static demux_plugin_t *open_plugin (demux_class_t *class_gen,
   break;
 
   default:
-    printf ("demux_asf: warning, unkown method %d\n", 
+    printf ("demux_asf: warning, unkown method %d\n",
 	    stream->content_detection_method);
     return NULL;
   }

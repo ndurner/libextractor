@@ -97,7 +97,7 @@ void FontEncoding::addChar1(int code, char *name) {
   int h, i, code2;
 
   // insert name in hash table
-  h = hash(name); 
+  h = hash(name);
   for (i = 0; i < fontEncHashSize; ++i) {
     code2 = hashTab[h];
     if (code2 < 0) {

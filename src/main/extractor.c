@@ -77,7 +77,7 @@ static const char *keywordTypes[] = {
   gettext_noop("magnification"),
   gettext_noop("release"),
   gettext_noop("group"),
-  gettext_noop("size"), 
+  gettext_noop("size"),
   gettext_noop("summary"),
   gettext_noop("packager"),
   gettext_noop("vendor"),
@@ -218,7 +218,7 @@ void __attribute__ ((destructor)) le_ltdl_fini(void) {
     free(old_dlsearchpath);
 #ifdef MINGW
   ShutdownWinEnv();
-#endif    
+#endif
 
   lt_dlexit ();
 }
@@ -226,7 +226,7 @@ void __attribute__ ((destructor)) le_ltdl_fini(void) {
 /**
  * Open a file
  */
-static int OPEN(const char *filename, 
+static int OPEN(const char *filename,
 		int oflag, ...) {
   int mode;
   char *fn;
@@ -234,36 +234,36 @@ static int OPEN(const char *filename,
 #ifdef MINGW
   char szFile[_MAX_PATH + 1];
   long lRet;
-  
+
   if ((lRet = conv_to_win_path(filename, szFile)) != ERROR_SUCCESS)
   {
     errno = ENOENT;
     SetLastError(lRet);
-    
+
     return -1;
   }
   fn = szFile;
 #else
   fn = (char *) filename;
 #endif
-  
+
   if (oflag & O_CREAT)
   {
     va_list arg;
     va_start(arg, oflag);
     mode = va_arg(arg, int);
-    va_end(arg);    
+    va_end(arg);
   }
   else
   {
     mode = 0;
   }
-  
+
 #ifdef MINGW
   /* Set binary mode */
   mode |= O_BINARY;
 #endif
-  
+
   return open(fn, oflag, mode);
 }
 
@@ -271,7 +271,7 @@ static int OPEN(const char *filename,
 
 /**
  * Load the default set of libraries. The default set of
- * libraries consists of the libraries that are part of 
+ * libraries consists of the libraries that are part of
  * the libextractor distribution (except split and filename
  * extractor) plus the extractors that are specified
  * in the environment variable "LIBEXTRACTOR_LIBRARIES".
@@ -404,7 +404,7 @@ static void *getSymbolWithPrefix(void *lib_handle,
  */
 static int
 loadLibrary (const char *name,
-	     void **libHandle, 
+	     void **libHandle,
 	     ExtractMethod * method)
 {
   *libHandle = lt_dlopenext (name);
@@ -412,8 +412,8 @@ loadLibrary (const char *name,
     {
 #if DEBUG
       fprintf (stderr,
-	       _("Loading '%s' plugin failed: %s\n"), 
-	       name, 
+	       _("Loading '%s' plugin failed: %s\n"),
+	       name,
 	       lt_dlerror ());
 #endif
       return -1;
@@ -434,7 +434,7 @@ loadLibrary (const char *name,
  * @return the new list of libraries, equal to prev iff an error occured
  */
 EXTRACTOR_ExtractorList *
-EXTRACTOR_addLibrary (EXTRACTOR_ExtractorList * prev, 
+EXTRACTOR_addLibrary (EXTRACTOR_ExtractorList * prev,
 		      const char *library)
 {
   EXTRACTOR_ExtractorList *result;
@@ -459,7 +459,7 @@ EXTRACTOR_addLibrary (EXTRACTOR_ExtractorList * prev,
  *         except if prev was NULL and no error occurs
  */
 EXTRACTOR_ExtractorList *
-EXTRACTOR_addLibraryLast(EXTRACTOR_ExtractorList * prev, 
+EXTRACTOR_addLibraryLast(EXTRACTOR_ExtractorList * prev,
 			 const char *library)
 {
   EXTRACTOR_ExtractorList *result;
@@ -490,7 +490,7 @@ EXTRACTOR_addLibraryLast(EXTRACTOR_ExtractorList * prev,
  * @return the reduced list, unchanged if the library was not loaded
  */
 EXTRACTOR_ExtractorList *
-EXTRACTOR_removeLibrary(EXTRACTOR_ExtractorList * prev, 
+EXTRACTOR_removeLibrary(EXTRACTOR_ExtractorList * prev,
 			const char *library)
 {
   EXTRACTOR_ExtractorList *pos;
@@ -516,8 +516,8 @@ EXTRACTOR_removeLibrary(EXTRACTOR_ExtractorList * prev,
     }
 #if DEBUG
   else
-    fprintf(stderr, 
-	    _("Unloading plugin '%s' failed!\n"), 
+    fprintf(stderr,
+	    _("Unloading plugin '%s' failed!\n"),
 	    library);
 #endif
   return first;
@@ -589,7 +589,7 @@ static void
 removeKeyword (const char *keyword,
 	       const EXTRACTOR_KeywordType type,
 	       const unsigned int options,
-	       EXTRACTOR_KeywordList ** list, 
+	       EXTRACTOR_KeywordList ** list,
 	       EXTRACTOR_KeywordList * current)
 {
   EXTRACTOR_KeywordList *first;
@@ -676,7 +676,7 @@ EXTRACTOR_removeEmptyKeywords (EXTRACTOR_KeywordList * list)
       for (i=strlen(pos->keyword)-1;i>=0;i--)
 	if (! isspace(pos->keyword[i]))
 	  allWhite = 0;
-      if (allWhite) 
+      if (allWhite)
 	{
 	  EXTRACTOR_KeywordList * next;
 	  next = pos->next;
@@ -688,7 +688,7 @@ EXTRACTOR_removeEmptyKeywords (EXTRACTOR_KeywordList * list)
 	  free(pos);
 	  pos = next;
 	}
-      else 
+      else
 	{
 	  last = pos;
 	  pos = pos->next;
@@ -706,7 +706,7 @@ EXTRACTOR_removeEmptyKeywords (EXTRACTOR_KeywordList * list)
  * @param keywords the list of keywords to print, may be NULL
  */
 void
-EXTRACTOR_printKeywords(FILE * handle, 
+EXTRACTOR_printKeywords(FILE * handle,
 			EXTRACTOR_KeywordList * keywords)
 {
   iconv_t cd;
@@ -726,9 +726,9 @@ EXTRACTOR_printKeywords(FILE * handle,
 	fprintf(handle,
 		_("%s - (binary)\n"),
 		gettext(keywordTypes[keywords->keywordType]));
-      } else {   
+      } else {
 	if (keywords->keywordType >= HIGHEST_TYPE_NUMBER)
-	  fprintf(handle, 
+	  fprintf(handle,
 		  _("INVALID TYPE - %s\n"),
 		  buf);
 	else
@@ -798,7 +798,7 @@ EXTRACTOR_extractLast (const EXTRACTOR_KeywordType type,
  * @return the last matching keyword, or NULL if none matches
  */
 const char *
-EXTRACTOR_extractLastByString (const char * type, 
+EXTRACTOR_extractLastByString (const char * type,
 			       EXTRACTOR_KeywordList * keywords)
 {
   char * result = NULL;
@@ -865,7 +865,7 @@ JNIEXPORT jlong JNICALL Java_org_ovmj_libextractor_Extractor_loadDefaultInternal
  * Method:    unloadInternal
  * Signature: (J)V
  */
-JNIEXPORT void JNICALL Java_org_ovmj_libextractor_Extractor_unloadInternal(JNIEnv * env, 
+JNIEXPORT void JNICALL Java_org_ovmj_libextractor_Extractor_unloadInternal(JNIEnv * env,
 									   jclass c,
 									   jlong arg) {
   EXTRACTOR_removeAll((EXTRACTOR_ExtractorList*) (long) arg);
@@ -876,9 +876,9 @@ JNIEXPORT void JNICALL Java_org_ovmj_libextractor_Extractor_unloadInternal(JNIEn
  * Method:    extractInternal
  * Signature: (JLjava/lang/String;)J
  */
-JNIEXPORT jlong JNICALL Java_org_ovmj_libextractor_Extractor_extractInternal(JNIEnv * env, 
+JNIEXPORT jlong JNICALL Java_org_ovmj_libextractor_Extractor_extractInternal(JNIEnv * env,
 									     jclass c,
-									     jlong arg, 
+									     jlong arg,
 									     jstring f) {
   const char * fname;
   jboolean bo;
@@ -897,8 +897,8 @@ JNIEXPORT jlong JNICALL Java_org_ovmj_libextractor_Extractor_extractInternal(JNI
  * Method:    freeInternal
  * Signature: (J)V
  */
-JNIEXPORT void JNICALL Java_org_ovmj_libextractor_Extractor_freeInternal(JNIEnv * env, 
-									 jclass c, 
+JNIEXPORT void JNICALL Java_org_ovmj_libextractor_Extractor_freeInternal(JNIEnv * env,
+									 jclass c,
 									 jlong list) {
   EXTRACTOR_freeKeywords( (EXTRACTOR_KeywordList*) (long) list);
 }
@@ -908,8 +908,8 @@ JNIEXPORT void JNICALL Java_org_ovmj_libextractor_Extractor_freeInternal(JNIEnv 
  * Method:    typeInternal
  * Signature: (J)I
  */
-JNIEXPORT jint JNICALL Java_org_ovmj_libextractor_Extractor_typeInternal(JNIEnv * env, 
-									 jclass c, 
+JNIEXPORT jint JNICALL Java_org_ovmj_libextractor_Extractor_typeInternal(JNIEnv * env,
+									 jclass c,
 									 jlong list) {
   if (list == 0)
     return -1; /* error! */
@@ -921,8 +921,8 @@ JNIEXPORT jint JNICALL Java_org_ovmj_libextractor_Extractor_typeInternal(JNIEnv 
  * Method:    keywordInternal
  * Signature: (J)Ljava/lang/String;
  */
-JNIEXPORT jstring JNICALL Java_org_ovmj_libextractor_Extractor_keywordInternal(JNIEnv * env, 
-									       jclass c, 
+JNIEXPORT jstring JNICALL Java_org_ovmj_libextractor_Extractor_keywordInternal(JNIEnv * env,
+									       jclass c,
 									       jlong list) {
   char * str;
   if (list == 0)
@@ -936,8 +936,8 @@ JNIEXPORT jstring JNICALL Java_org_ovmj_libextractor_Extractor_keywordInternal(J
  * Method:    nextInternal
  * Signature: (J)J
  */
-JNIEXPORT jlong JNICALL Java_org_ovmj_libextractor_Extractor_nextInternal(JNIEnv * env, 
-									  jclass j, 
+JNIEXPORT jlong JNICALL Java_org_ovmj_libextractor_Extractor_nextInternal(JNIEnv * env,
+									  jclass j,
 									  jlong list) {
   if (list == 0)
     return 0; /* error! */
@@ -949,16 +949,16 @@ JNIEXPORT jlong JNICALL Java_org_ovmj_libextractor_Extractor_nextInternal(JNIEnv
  * Method:    getTypeAsStringInternal
  * Signature: (I)Ljava/lang/String;
  */
-JNIEXPORT jstring JNICALL Java_org_ovmj_libextractor_Extractor_getTypeAsStringInternal(JNIEnv * env, 
-										       jclass c, 
+JNIEXPORT jstring JNICALL Java_org_ovmj_libextractor_Extractor_getTypeAsStringInternal(JNIEnv * env,
+										       jclass c,
 										       jint type) {
   const char * str;
   if ( (type < 0) || (type > HIGHEST_TYPE_NUMBER) )
-    return NULL; /* error! */  
+    return NULL; /* error! */
   str = gettext(keywordTypes[type]);
   if (str == NULL)
     return NULL;
-  return (*env)->NewStringUTF(env, 
+  return (*env)->NewStringUTF(env,
 			      str);
 }
 
@@ -968,7 +968,7 @@ JNIEXPORT jstring JNICALL Java_org_ovmj_libextractor_Extractor_getTypeAsStringIn
  * Method:    getVersionInternal
  * Signature: ()I
  */
-JNIEXPORT jint JNICALL Java_org_ovmj_libextractor_Extractor_getVersionInternal(JNIEnv * env, 
+JNIEXPORT jint JNICALL Java_org_ovmj_libextractor_Extractor_getVersionInternal(JNIEnv * env,
 									       jclass c) {
   return EXTRACTOR_VERSION;
 }
@@ -978,7 +978,7 @@ JNIEXPORT jint JNICALL Java_org_ovmj_libextractor_Extractor_getVersionInternal(J
  * Method:    getMaxTypeInternal
  * Signature: ()I
  */
-JNIEXPORT jint JNICALL Java_org_ovmj_libextractor_Extractor_getMaxTypeInternal(JNIEnv * env, 
+JNIEXPORT jint JNICALL Java_org_ovmj_libextractor_Extractor_getMaxTypeInternal(JNIEnv * env,
 									       jclass c) {
   return HIGHEST_TYPE_NUMBER;
 }
@@ -988,9 +988,9 @@ JNIEXPORT jint JNICALL Java_org_ovmj_libextractor_Extractor_getMaxTypeInternal(J
  * Method:    unloadPlugin
  * Signature: (JLjava/lang/String;)J
  */
-JNIEXPORT jlong JNICALL Java_org_ovmj_libextractor_Extractor_unloadPlugin(JNIEnv * env, 
-									  jclass c, 
-									  jlong handle, 
+JNIEXPORT jlong JNICALL Java_org_ovmj_libextractor_Extractor_unloadPlugin(JNIEnv * env,
+									  jclass c,
+									  jlong handle,
 									  jstring name) {
   const char * lname;
   jboolean bo;
@@ -1001,7 +1001,7 @@ JNIEXPORT jlong JNICALL Java_org_ovmj_libextractor_Extractor_unloadPlugin(JNIEnv
   ret = (jlong) (long) EXTRACTOR_removeLibrary((EXTRACTOR_ExtractorList*) (long) handle,
 					       lname);
   (*env)->ReleaseStringUTFChars(env, name, lname);
-  return ret; 
+  return ret;
 }
 
 /*
@@ -1009,9 +1009,9 @@ JNIEXPORT jlong JNICALL Java_org_ovmj_libextractor_Extractor_unloadPlugin(JNIEnv
  * Method:    loadPlugin
  * Signature: (JLjava/lang/String;Z)J
  */
-JNIEXPORT jlong JNICALL Java_org_ovmj_libextractor_Extractor_loadPlugin(JNIEnv * env, 
-									jclass c, 
-									jlong handle, 
+JNIEXPORT jlong JNICALL Java_org_ovmj_libextractor_Extractor_loadPlugin(JNIEnv * env,
+									jclass c,
+									jlong handle,
 									jstring name,
 									jboolean place) {
   const char * lname;
@@ -1025,10 +1025,10 @@ JNIEXPORT jlong JNICALL Java_org_ovmj_libextractor_Extractor_loadPlugin(JNIEnv *
 						  lname);
   } else {
     ret = (jlong) (long) EXTRACTOR_addLibrary((EXTRACTOR_ExtractorList*) (long) handle,
-					      lname);    
+					      lname);
   }
   (*env)->ReleaseStringUTFChars(env, name, lname);
-  return ret; 
+  return ret;
 }
 
 /* #ifdef HAVE_JNI_H */

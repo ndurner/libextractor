@@ -29,7 +29,7 @@ static EXTRACTOR_KeywordList * addKeyword(EXTRACTOR_KeywordType type,
   if (keyword == NULL)
     return next;
   result = malloc(sizeof(EXTRACTOR_KeywordList));
-  result->next = next;    
+  result->next = next;
   result->keyword = keyword;
   result->keywordType = type;
   return result;

@@ -46,7 +46,7 @@ static struct EXTRACTOR_Keywords * addKeyword(EXTRACTOR_KeywordType type,
   if (keyword == NULL)
     return next;
   result = malloc(sizeof(EXTRACTOR_KeywordList));
-  result->next = next;    
+  result->next = next;
   result->keyword = strdup(keyword);
   result->keywordType = type;
   return result;
@@ -86,9 +86,9 @@ struct EXTRACTOR_Keywords * libextractor_ogg_extract(char * filename,
     return prev;
   }
   if (OGG_HEADER !=  ntohl(*(int*)data)) {
-    return prev; 
+    return prev;
   }
-  
+
   callbacks.read_func = &readError;
   callbacks.seek_func = &seekError;
   callbacks.close_func = &closeOk;
@@ -101,7 +101,7 @@ struct EXTRACTOR_Keywords * libextractor_ogg_extract(char * filename,
     return prev;
   }
   comments = ov_comment(&vf, -1);
-  
+
   if (NULL == comments) {
 #if DEBUG_EXTRACT_OGG
     fprintf(stderr,
@@ -125,17 +125,17 @@ struct EXTRACTOR_Keywords * libextractor_ogg_extract(char * filename,
   prev = addKeyword(EXTRACTOR_LOCATION,get_comment(comments, "location"), prev);
   prev = addKeyword(EXTRACTOR_DESCRIPTION, get_comment(comments, "description"), prev);
   prev = addKeyword(EXTRACTOR_VERSIONNUMBER, get_comment(comments, "version"), prev);
-  prev = addKeyword(EXTRACTOR_RESOURCE_IDENTIFIER, get_comment(comments, "isrc"), prev); 
+  prev = addKeyword(EXTRACTOR_RESOURCE_IDENTIFIER, get_comment(comments, "isrc"), prev);
   prev = addKeyword(EXTRACTOR_ORGANIZATION, get_comment(comments, "organization"), prev);
   prev = addKeyword(EXTRACTOR_COPYRIGHT, get_comment(comments, "copyright"), prev);
-  /* we have determined for sure that this is an 
+  /* we have determined for sure that this is an
      ogg-vorbis stream, we should add this as a keyword, too */
-  prev = addKeyword(EXTRACTOR_MIMETYPE, 
-		    "application/ogg", 
+  prev = addKeyword(EXTRACTOR_MIMETYPE,
+		    "application/ogg",
 		    prev);
   /* build a description from artist, title and album */
   {
-    EXTRACTOR_KeywordList * keyword = malloc(sizeof(EXTRACTOR_KeywordList)); 
+    EXTRACTOR_KeywordList * keyword = malloc(sizeof(EXTRACTOR_KeywordList));
     char * word;
     int len = 1+2+2+1;
     if (get_comment(comments, "artist") != NULL)
@@ -144,7 +144,7 @@ struct EXTRACTOR_Keywords * libextractor_ogg_extract(char * filename,
       len += strlen(get_comment(comments, "title"));
     if (get_comment(comments, "album") != NULL)
       len += strlen(get_comment(comments, "album"));
-    
+
     word = malloc(len);
     word[0] = 0;
     if (get_comment(comments, "artist") != NULL) {
@@ -152,9 +152,9 @@ struct EXTRACTOR_Keywords * libextractor_ogg_extract(char * filename,
     }
     if (get_comment(comments, "title") != NULL) {
       strcat(word,": ");
-      strcat(word, get_comment(comments, "title")); 
+      strcat(word, get_comment(comments, "title"));
     }
-    if (get_comment(comments, "album") != NULL) {     
+    if (get_comment(comments, "album") != NULL) {
       strcat(word," (");
       strcat(word, get_comment(comments, "album"));
       strcat(word, ")");
@@ -162,8 +162,8 @@ struct EXTRACTOR_Keywords * libextractor_ogg_extract(char * filename,
     keyword->next = prev;
     keyword->keyword = word;
     keyword->keywordType = EXTRACTOR_DESCRIPTION;
-    prev = keyword;   
-   
+    prev = keyword;
+
   }
 
   ov_clear(&vf);

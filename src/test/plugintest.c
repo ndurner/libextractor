@@ -1,4 +1,4 @@
-/** 
+/**
  * @file test/plugintest.c
  * @brief testcase for dynamic loading and unloading of plugins
  */
@@ -68,9 +68,9 @@ int main(int argc, char * argv[]){
   while (list1 != NULL) {
     if ( (strcmp(list1->keyword, "resolv") == 0) ||
 	 (strcmp(list1->keyword, "conf") == 0) ||
-	 (strcmp(list1->keyword, "resolv.conf") == 0) ) 
+	 (strcmp(list1->keyword, "resolv.conf") == 0) )
       i++;
-    list1 = list1->next;	 
+    list1 = list1->next;	
   }
   if (i != 3) {
     printf("Wrong keyword extracted.\n");
@@ -78,7 +78,7 @@ int main(int argc, char * argv[]){
 			    list);
     return -1;
   }
-  
+
   EXTRACTOR_removeAll(arg);
   EXTRACTOR_freeKeywords(list);
 

@@ -2,7 +2,7 @@
 Catlib Copyright Notice
 
 The author of this software is Christopher Adam Telfer
-Copyright (c) 1998, 1999, 2000, 2001, 2002 
+Copyright (c) 1998, 1999, 2000, 2001, 2002
 by Christopher Adam Telfer.  All Rights Reserved.
 
 Permission to use, copy, modify, and distribute this software for any
@@ -23,10 +23,10 @@ OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR
 MODIFICATIONS.
 
 */
- 
+
 #include "platform.h"
 #include "pack.h"
- 
+
 typedef unsigned char       byte;
 typedef unsigned short      half;
 typedef unsigned long       word;
@@ -35,7 +35,7 @@ typedef signed short        shalf;
 typedef signed long         sword;
 
 
-/* 
+/*
    "bhwAcslPBHWCSL"
 
    Small letters: do not convert (not implemented for arrays and P)
@@ -45,7 +45,7 @@ typedef signed long         sword;
    h - half-word
    w - word
    a - array (32-byte unsigned long + that many bytes)
-   c - signed 8 bit value 
+   c - signed 8 bit value
    s - signed 16 bit value
    l - signed 32 bit value
    p - (unpack only) value is a pointer to a pointer.  Generate the buffer
@@ -55,7 +55,7 @@ typedef signed long         sword;
    of the arguments specified by the letter
  */
 
-int cat_pack(void * buf, 
+int cat_pack(void * buf,
 	     const char *fmt,
 	     ...) {
   va_list ap;
@@ -68,15 +68,15 @@ int cat_pack(void * buf,
   void * arr;
   struct cat_bvec *cbvp;
   char *cp;
-  
+
   va_start(ap, fmt);
-  
+
   npacked = 0;
   bp = (byte *)buf;
 
   while( *fmt ) {
     nreps = 0;
-    
+
     if ( isdigit(*fmt) ) {
       /* We use cp instead of fmt to keep the 'const' qualifier of fmt */
       nreps = strtoul(fmt, &cp, 0);
@@ -98,7 +98,7 @@ int cat_pack(void * buf,
 	  npacked += 1;
 	}
       }
-      break;      
+      break;
 
     case 'h':
     case 's':
@@ -116,8 +116,8 @@ int cat_pack(void * buf,
 	  npacked += 2;
 	}
       }
-      break;      
-        
+      break;
+
     case 'H':
     case 'S':
       if ( ! nreps ) {
@@ -134,8 +134,8 @@ int cat_pack(void * buf,
 	  npacked += 2;
 	}
       }
-      break;      
-      
+      break;
+
     case 'l':
     case 'w':
       if ( ! nreps ) {
@@ -157,7 +157,7 @@ int cat_pack(void * buf,
 	}
       }
       break;
- 
+
     case 'L':
     case 'W':
       if ( ! nreps ) {
@@ -179,7 +179,7 @@ int cat_pack(void * buf,
 	}
       }
       break;
-      
+
     case 'A':
       if ( ! nreps ) {
 	blen = va_arg(ap, word);
@@ -206,14 +206,14 @@ int cat_pack(void * buf,
 	}
       }
       break;
-      
+
     default:
       va_end(ap);
       return -1;
     }
     ++fmt;
   }
-  
+
   va_end(ap);
   return npacked;
 }
@@ -235,7 +235,7 @@ int cat_unpack(const void * buf,
   unsigned int nreps, i, isnonprefixed = 1;  /* used for 'a' types only */
   struct cat_bvec *cbvp;
   char *cp;
-  
+
   bp = (byte *)buf;
   npacked = 0;
 
@@ -243,15 +243,15 @@ int cat_unpack(const void * buf,
 
   while ( *fmt ) {
     nreps = 1;
-    
+
     if ( isdigit(*fmt) ) {
       /* We use cp instead of format to keep the 'const' qualifier of fmt */
-      nreps = strtoul(fmt, &cp, 0); 
+      nreps = strtoul(fmt, &cp, 0);
       fmt = cp;
       if ( *fmt == 'a' )
 	isnonprefixed = 0;
     }
-    
+
     switch (*fmt) {
     case 'B':
     case 'b':
@@ -262,9 +262,9 @@ int cat_unpack(const void * buf,
 	npacked += 1;
       }
       break;
-      
-      
-      
+
+
+
     case 'h':
       halfp = va_arg(ap, half*);
       for ( i = 0 ; i < nreps ; ++i ) {
@@ -274,7 +274,7 @@ int cat_unpack(const void * buf,
 	npacked += 2;
       }
       break;
-  
+
     case 'H':
       halfp = va_arg(ap, half*);
       for ( i = 0 ; i < nreps ; ++i ) {
@@ -284,8 +284,8 @@ int cat_unpack(const void * buf,
 	npacked += 2;
       }
       break;
-      
-            
+
+
     case 'w':
       wordp = va_arg(ap, word*);
       for ( i = 0 ; i < nreps ; ++i ) {
@@ -297,7 +297,7 @@ int cat_unpack(const void * buf,
 	npacked += 4;
       }
       break;
-            
+
     case 'W':
       wordp = va_arg(ap, word*);
       for ( i = 0 ; i < nreps ; ++i ) {
@@ -309,9 +309,9 @@ int cat_unpack(const void * buf,
 	npacked += 4;
       }
       break;
-      
+
     case 'A':
-      if ( isnonprefixed ) {       
+      if ( isnonprefixed ) {
 	maxlen = va_arg(ap, word);
 	arr    = va_arg(ap, void *);
 	
@@ -332,26 +332,26 @@ int cat_unpack(const void * buf,
 	for ( i = 0 ; i < nreps ; ++i ) {
 	  maxlen = cbvp->len;
 	  arr    = cbvp->data;
-	  
+	
 	  len = *bp++ << 24;
 	  len |= *bp++ << 16;
 	  len |= *bp++ << 8;
 	  len |= *bp++;
-	  
+	
 	  if ( len > maxlen )
 	    return -1;
-	  
+	
 	  memmove(arr, bp, len);
 	  cbvp->len = len;
 	  bp += len;
-	  
+	
 	  ++cbvp;
 	  npacked += len;
 	}
 	isnonprefixed = 1;
       }
       break;
-      
+
     case 'C':	
     case 'c':
       sbytep = va_arg(ap, sbyte*);
@@ -365,8 +365,8 @@ int cat_unpack(const void * buf,
 	npacked += 1;
       }
       break;
-      
-      
+
+
     case 's':
       shalfp = va_arg(ap, shalf*);
       for ( i = 0 ; i < nreps ; ++i )	{
@@ -380,7 +380,7 @@ int cat_unpack(const void * buf,
 	npacked += 2;
       }
       break;
-       
+
     case 'S':
       shalfp = va_arg(ap, shalf*);
       for ( i = 0 ; i < nreps ; ++i )	{
@@ -394,7 +394,7 @@ int cat_unpack(const void * buf,
 	npacked += 2;
       }
       break;
-      
+
     case 'l':
       swordp = va_arg(ap, sword*);
       for ( i = 0 ; i < nreps ; ++i )	{
@@ -426,7 +426,7 @@ int cat_unpack(const void * buf,
 	npacked += 4;
       }
       break;
-      
+
     case 'P':
       cbvp = va_arg(ap, struct cat_bvec *);
       for ( i = 0 ; i < nreps ; ++i )	{
@@ -452,7 +452,7 @@ int cat_unpack(const void * buf,
 	npacked += len;
       }
       break;
-      
+
     default:
       va_end(ap);
       return -1;

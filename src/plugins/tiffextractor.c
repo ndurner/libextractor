@@ -29,7 +29,7 @@ static void addKeyword(struct EXTRACTOR_Keywords ** list,
 		       EXTRACTOR_KeywordType type) {
   EXTRACTOR_KeywordList * next;
   next = malloc(sizeof(EXTRACTOR_KeywordList));
-  next->next = *list;    
+  next->next = *list;
   next->keyword = keyword;
   next->keywordType = type;
   *list = next;
@@ -64,7 +64,7 @@ typedef struct {
     &(p)->value_or_offset
 static char * DIRECTORY_ENTRY_SPECS[] = {
   "hhww",
-  "HHWW" 
+  "HHWW"
 };
 
 #define TAG_LENGTH 0x101
@@ -115,7 +115,7 @@ struct EXTRACTOR_Keywords * libextractor_tiff_extract(char * filename,
   int current_ifd;
   long long length = -1;
   long long width = -1;
-  
+
   if (size < TIFF_HEADER_SIZE)
     return prev; /*  can not be tiff */
   if ( (data[0] == 0x49) &&
@@ -128,7 +128,7 @@ struct EXTRACTOR_Keywords * libextractor_tiff_extract(char * filename,
     return prev; /* can not be tiff */
 #if __BYTE_ORDER == __BIG_ENDIAN
   byteOrder = 1-byteOrder;
-#endif       
+#endif
   cat_unpack(data,
 	     TIFF_HEADER_SPECS[byteOrder],
 	     TIFF_HEADER_FIELDS(&hdr));
@@ -159,7 +159,7 @@ struct EXTRACTOR_Keywords * libextractor_tiff_extract(char * filename,
     for (i=0;i<len;i++) {
       DIRECTORY_ENTRY entry;
       off = current_ifd + 2 + DIRECTORY_ENTRY_SIZE*i;
-      
+
       cat_unpack(&data[off],
 		 DIRECTORY_ENTRY_SPECS[byteOrder],
 		 DIRECTORY_ENTRY_FIELDS(&entry));
@@ -174,7 +174,7 @@ struct EXTRACTOR_Keywords * libextractor_tiff_extract(char * filename,
 	if (width != -1) {
 	  char * tmp;
 	  tmp = malloc(128);
-	  sprintf(tmp, "%ux%u", 
+	  sprintf(tmp, "%ux%u",
 		  (unsigned int) width,
 		  (unsigned int) length);
 	  addKeyword(&prev,
@@ -182,17 +182,17 @@ struct EXTRACTOR_Keywords * libextractor_tiff_extract(char * filename,
 		     EXTRACTOR_SIZE);
 	  free(tmp);
 	}
-	break;      
+	break;
       case TAG_WIDTH:
 	if ( (entry.type == TYPE_SHORT) &&
-	     (byteOrder == 1) ) 
+	     (byteOrder == 1) )
 	  width = entry.value_or_offset >> 16;
 	else
 	  width = entry.value_or_offset;
 	if (length != -1) {
 	  char * tmp;
 	  tmp = malloc(128);
-	  sprintf(tmp, "%ux%u", 
+	  sprintf(tmp, "%ux%u",
 		  (unsigned int) width,
 		  (unsigned int) length);
 	  addKeyword(&prev,
@@ -251,13 +251,13 @@ struct EXTRACTOR_Keywords * libextractor_tiff_extract(char * filename,
 	break;
       }
     }
-    
+
     off = current_ifd + 2 + DIRECTORY_ENTRY_SIZE * len;
     if (byteOrder == 0)
       current_ifd = data[off+3]<<24|data[off+2]<<16|data[off+1]<<8|data[off];
     else
       current_ifd = data[off]<<24|data[off+1]<<16|data[off+2]<<8|data[off+3];
-  }  
+  }
   return prev;
 }
 

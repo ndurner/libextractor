@@ -41,7 +41,7 @@ static EXTRACTOR_KeywordList * addKeyword(EXTRACTOR_KeywordType type,
   if (keyword == NULL)
     return next;
   result = malloc(sizeof(EXTRACTOR_KeywordList));
-  result->next = next;    
+  result->next = next;
   result->keyword = keyword;
   result->keywordType = type;
   return result;
@@ -49,9 +49,9 @@ static EXTRACTOR_KeywordList * addKeyword(EXTRACTOR_KeywordType type,
 
 
 /* which mime-types maybe subjected to
-   the thumbnail extractor (ImageMagick 
+   the thumbnail extractor (ImageMagick
    crashes and/or prints errors for bad
-   formats, so we need to be rather 
+   formats, so we need to be rather
    conservative here) */
 static char * whitelist[] = {
   "image/jpeg",
@@ -87,12 +87,12 @@ struct EXTRACTOR_Keywords * libextractor_thumbnail_extract(const char * filename
   unsigned char marker;
   const char * mime;
   int j;
-  
+
   /* if the mime-type of the file is not whitelisted
      do not run the thumbnail extactor! */
   mime = EXTRACTOR_extractLast(EXTRACTOR_MIMETYPE,
 			       prev);
-  if (mime == NULL) 
+  if (mime == NULL)
     return prev;
   j = 0;
   while (whitelist[j] != NULL) {
@@ -103,7 +103,7 @@ struct EXTRACTOR_Keywords * libextractor_thumbnail_extract(const char * filename
   if (whitelist[j] == NULL)
     return prev;
 
-  magick_wand = NewMagickWand();  
+  magick_wand = NewMagickWand();
   status = MagickReadImageBlob(magick_wand, data, size);
   if (status == MagickFalse) {
     DestroyMagickWand(magick_wand);
@@ -124,7 +124,7 @@ struct EXTRACTOR_Keywords * libextractor_thumbnail_extract(const char * filename
     DestroyMagickWand(magick_wand);
     return prev;
   }
-    
+
 
   if (height > THUMBSIZE) {
     width = width * THUMBSIZE / height;
@@ -140,7 +140,7 @@ struct EXTRACTOR_Keywords * libextractor_thumbnail_extract(const char * filename
   MagickSetImageChannelDepth(magick_wand,
 			     RedChannel,
 			     2);
-  MagickCommentImage(magick_wand, ""); 
+  MagickCommentImage(magick_wand, "");
   MagickSetImageChannelDepth(magick_wand,
 			     GreenChannel,
 			     2);
@@ -159,10 +159,10 @@ struct EXTRACTOR_Keywords * libextractor_thumbnail_extract(const char * filename
   }
   thumb = MagickGetImageBlob(magick_wand, &length);
   DestroyMagickWand(magick_wand);
-  if (thumb == NULL) 
+  if (thumb == NULL)
     return prev;
-  
-  
+
+
   /* encode! */
   binary = malloc(2 + length + (length+256) / 254);
   if (binary == NULL)
@@ -179,8 +179,8 @@ struct EXTRACTOR_Keywords * libextractor_thumbnail_extract(const char * filename
     if (end > length)
       end = length;
     memset(markers, 0, sizeof(markers));
-    for (i=pos;i<end;i++) 
-      markers[thumb[i]&7] |= 1 << (thumb[i] >> 3);    
+    for (i=pos;i<end;i++)
+      markers[thumb[i]&7] |= 1 << (thumb[i] >> 3);
     marker = 1;
     while (markers[marker&7] & (1 << (marker >> 3))) {
       marker++;
@@ -208,7 +208,7 @@ struct EXTRACTOR_Keywords * libextractor_thumbnail_extract(const char * filename
 
 /**
  * This function can be used to decode the binary data
- * stream produced by the thumbnailextractor. 
+ * stream produced by the thumbnailextractor.
  *
  * @param in 0-terminated string from the meta-data
  * @return 1 on error, 0 on success
@@ -223,7 +223,7 @@ int decodeThumbnail(const unsigned char * in,
   size_t i;
   size_t end;
   size_t inSize;
-  
+
   inSize = strlen(in);
   if (inSize == 0) {
     *out = NULL;
@@ -233,7 +233,7 @@ int decodeThumbnail(const unsigned char * in,
 
   buf = malloc(inSize); /* slightly more than needed ;-) */
   *out = buf;
-  
+
   pos = 0;
   wpos = 0;
   while (pos < inSize) {
@@ -241,7 +241,7 @@ int decodeThumbnail(const unsigned char * in,
     if (end > inSize)
       end = inSize;
     marker = in[pos++];
-    for (i=pos;i<end;i++) 
+    for (i=pos;i<end;i++)
       buf[wpos++] = (in[i] == marker) ? 0 : in[i];
     pos = end;
   }

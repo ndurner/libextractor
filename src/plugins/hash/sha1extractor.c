@@ -22,13 +22,13 @@
 #include "extractor.h"
 #include "sha1.h"
 
-static struct EXTRACTOR_Keywords * addKeyword(EXTRACTOR_KeywordList *oldhead, 
+static struct EXTRACTOR_Keywords * addKeyword(EXTRACTOR_KeywordList *oldhead,
 					      const char *phrase,
 					      EXTRACTOR_KeywordType type) {
 
-   EXTRACTOR_KeywordList * keyword;   
+   EXTRACTOR_KeywordList * keyword;
    keyword = (EXTRACTOR_KeywordList*) malloc(sizeof(EXTRACTOR_KeywordList));
-   keyword->next = oldhead;    
+   keyword->next = oldhead;
    keyword->keyword = strdup(phrase);
    keyword->keywordType = type;
    return keyword;
@@ -38,7 +38,7 @@ static struct EXTRACTOR_Keywords * addKeyword(EXTRACTOR_KeywordList *oldhead,
 #define DIGEST_HEX_BYTES (DIGEST_BITS / 4)
 #define DIGEST_BIN_BYTES (DIGEST_BITS / 8)
 
-#define MAX_DIGEST_BIN_BYTES DIGEST_BIN_BYTES 
+#define MAX_DIGEST_BIN_BYTES DIGEST_BIN_BYTES
 
 struct EXTRACTOR_Keywords * libextractor_hash_sha1_extract(const char * filename,
 							   char * data,
@@ -50,7 +50,7 @@ struct EXTRACTOR_Keywords * libextractor_hash_sha1_extract(const char * filename
   int i;
 
   sha_buffer(data, size, bin_buffer);
-  
+
   hash[0] = '\0';
   for (i=0;i<DIGEST_HEX_BYTES / 2; i++) {
     snprintf(buf,
@@ -61,6 +61,6 @@ struct EXTRACTOR_Keywords * libextractor_hash_sha1_extract(const char * filename
   }
   prev = addKeyword(prev,
 		    hash,
-		    EXTRACTOR_HASH_SHA1);  
+		    EXTRACTOR_HASH_SHA1);
   return prev;
 }

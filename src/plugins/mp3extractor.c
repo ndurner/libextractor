@@ -18,7 +18,7 @@
      Boston, MA 02111-1307, USA.
 
 
-     Some of this code is based on AVInfo 1.0 alpha 11 
+     Some of this code is based on AVInfo 1.0 alpha 11
      (c) George Shuklin, gs]AT[shounen.ru, 2002-2004
      http://shounen.ru/soft/avinfo/
 
@@ -47,19 +47,19 @@ typedef struct {
 
 static const char *const genre_names[] = {
     gettext_noop("Blues"),
-    gettext_noop("Classic Rock"), 
-    gettext_noop("Country"), 
-    gettext_noop("Dance"), 
-    gettext_noop("Disco"), 
-    gettext_noop("Funk"), 
+    gettext_noop("Classic Rock"),
+    gettext_noop("Country"),
+    gettext_noop("Dance"),
+    gettext_noop("Disco"),
+    gettext_noop("Funk"),
     gettext_noop("Grunge"),
     gettext_noop("Hip-Hop"),
-    gettext_noop("Jazz"), 
-    gettext_noop("Metal"), 
+    gettext_noop("Jazz"),
+    gettext_noop("Metal"),
     gettext_noop("New Age"),
     gettext_noop("Oldies"),
-    gettext_noop("Other"), 
-    gettext_noop("Pop"), 
+    gettext_noop("Other"),
+    gettext_noop("Pop"),
     gettext_noop("R&B"),
     gettext_noop("Rap"),
     gettext_noop("Reggae"),
@@ -68,57 +68,57 @@ static const char *const genre_names[] = {
     gettext_noop("Industrial"),
     gettext_noop("Alternative"),
     gettext_noop("Ska"),
-    gettext_noop("Death Metal"), 
+    gettext_noop("Death Metal"),
     gettext_noop("Pranks"),
-    gettext_noop("Soundtrack"), 
+    gettext_noop("Soundtrack"),
     gettext_noop("Euro-Techno"),
-    gettext_noop("Ambient"), 
+    gettext_noop("Ambient"),
     gettext_noop("Trip-Hop"),
     gettext_noop("Vocal"),
     gettext_noop("Jazz+Funk"),
-    gettext_noop("Fusion"), 
-    gettext_noop("Trance"), 
-    gettext_noop("Classical"), 
+    gettext_noop("Fusion"),
+    gettext_noop("Trance"),
+    gettext_noop("Classical"),
     gettext_noop("Instrumental"),
     gettext_noop("Acid"),
     gettext_noop("House"),
     gettext_noop("Game"),
-    gettext_noop("Sound Clip"), 
+    gettext_noop("Sound Clip"),
     gettext_noop("Gospel"),
-    gettext_noop("Noise"), 
+    gettext_noop("Noise"),
     gettext_noop("Alt. Rock"),
-    gettext_noop("Bass"), 
-    gettext_noop("Soul"), 
+    gettext_noop("Bass"),
+    gettext_noop("Soul"),
     gettext_noop("Punk"),
     gettext_noop("Space"),
     gettext_noop("Meditative"),
     gettext_noop("Instrumental Pop"),
-    gettext_noop("Instrumental Rock"), 
-    gettext_noop("Ethnic"), 
+    gettext_noop("Instrumental Rock"),
+    gettext_noop("Ethnic"),
     gettext_noop("Gothic"),
-    gettext_noop("Darkwave"), 
+    gettext_noop("Darkwave"),
     gettext_noop("Techno-Industrial"),
     gettext_noop("Electronic"),
     gettext_noop("Pop-Folk"),
-    gettext_noop("Eurodance"), 
-    gettext_noop("Dream"), 
+    gettext_noop("Eurodance"),
+    gettext_noop("Dream"),
     gettext_noop("Southern Rock"),
     gettext_noop("Comedy"),
-    gettext_noop("Cult"), 
-    gettext_noop("Gangsta Rap"), 
-    gettext_noop("Top 40"), 
+    gettext_noop("Cult"),
+    gettext_noop("Gangsta Rap"),
+    gettext_noop("Top 40"),
     gettext_noop("Christian Rap"),
     gettext_noop("Pop/Funk"),
     gettext_noop("Jungle"),
     gettext_noop("Native American"),
-    gettext_noop("Cabaret"), 
+    gettext_noop("Cabaret"),
     gettext_noop("New Wave"),
     gettext_noop("Psychedelic"),
     gettext_noop("Rave"),
-    gettext_noop("Showtunes"), 
+    gettext_noop("Showtunes"),
     gettext_noop("Trailer"),
-    gettext_noop("Lo-Fi"), 
-    gettext_noop("Tribal"), 
+    gettext_noop("Lo-Fi"),
+    gettext_noop("Tribal"),
     gettext_noop("Acid Punk"),
     gettext_noop("Acid Jazz"),
     gettext_noop("Polka"),
@@ -130,53 +130,53 @@ static const char *const genre_names[] = {
     gettext_noop("Folk/Rock"),
     gettext_noop("National Folk"),
     gettext_noop("Swing"),
-    gettext_noop("Fast-Fusion"), 
+    gettext_noop("Fast-Fusion"),
     gettext_noop("Bebob"),
     gettext_noop("Latin"),
     gettext_noop("Revival"),
     gettext_noop("Celtic"),
     gettext_noop("Bluegrass"),
-    gettext_noop("Avantgarde"), 
+    gettext_noop("Avantgarde"),
     gettext_noop("Gothic Rock"),
-    gettext_noop("Progressive Rock"), 
+    gettext_noop("Progressive Rock"),
     gettext_noop("Psychedelic Rock"),
-    gettext_noop("Symphonic Rock"), 
+    gettext_noop("Symphonic Rock"),
     gettext_noop("Slow Rock"),
-    gettext_noop("Big Band"), 
+    gettext_noop("Big Band"),
     gettext_noop("Chorus"),
     gettext_noop("Easy Listening"),
-    gettext_noop("Acoustic"), 
+    gettext_noop("Acoustic"),
     gettext_noop("Humour"),
     gettext_noop("Speech"),
     gettext_noop("Chanson"),
-    gettext_noop("Opera"), 
+    gettext_noop("Opera"),
     gettext_noop("Chamber Music"),
     gettext_noop("Sonata"),
-    gettext_noop("Symphony"), 
+    gettext_noop("Symphony"),
     gettext_noop("Booty Bass"),
-    gettext_noop("Primus"), 
+    gettext_noop("Primus"),
     gettext_noop("Porn Groove"),
     gettext_noop("Satire"),
-    gettext_noop("Slow Jam"), 
-    gettext_noop("Club"), 
-    gettext_noop("Tango"), 
+    gettext_noop("Slow Jam"),
+    gettext_noop("Club"),
+    gettext_noop("Tango"),
     gettext_noop("Samba"),
-    gettext_noop("Folklore"), 
-    gettext_noop("Ballad"), 
-    gettext_noop("Power Ballad"), 
+    gettext_noop("Folklore"),
+    gettext_noop("Ballad"),
+    gettext_noop("Power Ballad"),
     gettext_noop("Rhythmic Soul"),
-    gettext_noop("Freestyle"), 
+    gettext_noop("Freestyle"),
     gettext_noop("Duet"),
     gettext_noop("Punk Rock"),
-    gettext_noop("Drum Solo"), 
-    gettext_noop("A Cappella"), 
+    gettext_noop("Drum Solo"),
+    gettext_noop("A Cappella"),
     gettext_noop("Euro-House"),
     gettext_noop("Dance Hall"),
     gettext_noop("Goa"),
     gettext_noop("Drum & Bass"),
     gettext_noop("Club-House"),
-    gettext_noop("Hardcore"), 
-    gettext_noop("Terror"), 
+    gettext_noop("Hardcore"),
+    gettext_noop("Terror"),
     gettext_noop("Indie"),
     gettext_noop("BritPop"),
     gettext_noop("Negerpunk"),
@@ -187,7 +187,7 @@ static const char *const genre_names[] = {
     gettext_noop("Black Metal"),
     gettext_noop("Crossover"),
     gettext_noop("Contemporary Christian"),
-    gettext_noop("Christian Rock"), 
+    gettext_noop("Christian Rock"),
     gettext_noop("Merengue"),
     gettext_noop("Salsa"),
     gettext_noop("Thrash Metal"),
@@ -244,11 +244,11 @@ int freq_table[4][3]={
 #define INVALID_ID3 2
 
 /**
- * Remove trailing whitespace from the end of a string 
+ * Remove trailing whitespace from the end of a string
  */
 static char * unpad(char * string) {
   char * end = &string[strlen(string) - 1];
-  while ( (end >= string) && 
+  while ( (end >= string) &&
 	  (' ' == end[0]) )
     (end--)[0]='\0';
   return string;
@@ -264,7 +264,7 @@ static int get_id3(unsigned char * data,
 
   pos = &data[size - 128];
   if (0 != strncmp((const char *)"TAG",(const char *)pos, 3))
-    return INVALID_ID3;      
+    return INVALID_ID3;
   pos += 3;
 
   id3->title = convertToUtf8(pos,
@@ -288,15 +288,15 @@ static int get_id3(unsigned char * data,
   return OK;
 }
 
-static struct EXTRACTOR_Keywords * 
-addkword(EXTRACTOR_KeywordList *oldhead, 
+static struct EXTRACTOR_Keywords *
+addkword(EXTRACTOR_KeywordList *oldhead,
 	 char *phrase,
 	 EXTRACTOR_KeywordType type) {
-  
+
    EXTRACTOR_KeywordList * keyword;
-   
+
    keyword = (EXTRACTOR_KeywordList*) malloc(sizeof(EXTRACTOR_KeywordList));
-   keyword->next = oldhead;    
+   keyword->next = oldhead;
    keyword->keyword = strdup(phrase);
    keyword->keywordType = type;
    return keyword;
@@ -304,7 +304,7 @@ addkword(EXTRACTOR_KeywordList *oldhead,
 
 
 
-static struct EXTRACTOR_Keywords * 
+static struct EXTRACTOR_Keywords *
 mp3parse(char * data,
 	 size_t size,
 	 struct EXTRACTOR_Keywords * prev) {
@@ -333,7 +333,7 @@ mp3parse(char * data,
     memcpy(&header,
 	   &data[pos],
 	   sizeof(header));
-    if ((header&sync_mask)==sync_mask) 
+    if ((header&sync_mask)==sync_mask)
       break;/*found header sync*/
     pos++;
     counter++; /*next try*/
@@ -343,36 +343,36 @@ mp3parse(char * data,
   };/*give up to find mp3 header*/
 
   prev = addkword(prev,
-		  "audio/mpeg", 
-		  EXTRACTOR_MIMETYPE); 
+		  "audio/mpeg",
+		  EXTRACTOR_MIMETYPE);
 
   do {		/*ok, now we found a mp3 frame header*/
     frames++;
     switch (header & mpeg_ver_mask){
-    case 0x1000: 
+    case 0x1000:
       mpeg_ver = MPEG_ERR; /*error*/
       break;
-    case 0x800: 
+    case 0x800:
       prev = addkword(prev,
-		      "MPEG V2", 
-		      EXTRACTOR_RESOURCE_TYPE); 
+		      "MPEG V2",
+		      EXTRACTOR_RESOURCE_TYPE);
       mpeg_ver = MPEG_V2;
       break;
     case 0x1800:
       prev = addkword(prev,
-		      "MPEG V1", 
-		      EXTRACTOR_RESOURCE_TYPE); 
+		      "MPEG V1",
+		      EXTRACTOR_RESOURCE_TYPE);
       mpeg_ver = MPEG_V1;
       break;
     case 0:	
       prev = addkword(prev,
-		      "MPEG V25", 
-		      EXTRACTOR_RESOURCE_TYPE); 
+		      "MPEG V25",
+		      EXTRACTOR_RESOURCE_TYPE);
       mpeg_ver = MPEG_V25;
       break;
     }
     switch(header&mpeg_layer_mask){
-    case 0x400: 
+    case 0x400:
       layer_ver=LAYER_2;
       break;
     case 0x200:
@@ -386,9 +386,9 @@ mp3parse(char * data,
     }
     if (!layer_ver||!mpeg_ver)
       return prev; /*unknown mpeg type*/
-    if (mpeg_ver<3) 
-      idx_num=(mpeg_ver-1)*3+layer_ver-1; 
-    else 
+    if (mpeg_ver<3)
+      idx_num=(mpeg_ver-1)*3+layer_ver-1;
+    else
       idx_num=2+layer_ver;
     bitrate = 1000*bitrate_table[(header&bitrate_mask)>>20][idx_num];
     if (bitrate<0) {
@@ -400,15 +400,15 @@ mp3parse(char * data,
       frames--;
       break;
     } /*error in header*/
-    if ((header&ch_mask)==ch_mask) 
+    if ((header&ch_mask)==ch_mask)
       ch=1;
-    else 
+    else
       ch=2; /*stereo non stereo select*/
     frame_size = 144*bitrate/(sample_rate?sample_rate:1)+((header&pad_mask)>>17);
     avg_bps += bitrate/1000;
 
     pos += frame_size-4;
-    if (frames > max_frames_scan) 
+    if (frames > max_frames_scan)
       break; /*optimization*/
     if (avg_bps/frames!=bitrate/1000)
       vbr_flag=1;
@@ -419,7 +419,7 @@ mp3parse(char * data,
 	   sizeof(header));
   } while ((header&sync_mask)==sync_mask);
 
-  if (!frames) 
+  if (!frames)
     return prev; /*no valid frames*/
   avg_bps = avg_bps/frames;
   if (max_frames_scan){ /*if not all frames scaned*/
@@ -427,7 +427,7 @@ mp3parse(char * data,
   } else{
     length=1152*frames/(sample_rate?sample_rate:0xFFFFFFFF);
   }
-  
+
   format = malloc(512);
   snprintf(format,
 	   512,
@@ -439,14 +439,14 @@ mp3parse(char * data,
 	   vbr_flag ? _("(variable bps)"):"");
   prev = addkword(prev,
 		  format,
-		  EXTRACTOR_FORMAT);   
+		  EXTRACTOR_FORMAT);
   free(format);
   return prev;
 }
 
 
 /* mimetype = audio/mpeg */
-struct EXTRACTOR_Keywords * 
+struct EXTRACTOR_Keywords *
 libextractor_mp3_extract(char * filename,
 			 char * data,
 			 size_t size,
@@ -454,29 +454,29 @@ libextractor_mp3_extract(char * filename,
   id3tag info;
   char * word;
 
-  if (0 != get_id3(data, size, &info)) 
+  if (0 != get_id3(data, size, &info))
     return klist;
 
-  if (strlen(info.title) > 0) 
-    klist = addkword(klist, info.title, EXTRACTOR_TITLE); 
+  if (strlen(info.title) > 0)
+    klist = addkword(klist, info.title, EXTRACTOR_TITLE);
   if (strlen(info.artist) > 0)
     klist = addkword(klist, info.artist, EXTRACTOR_ARTIST);
-  if (strlen(info.album) > 0) 
+  if (strlen(info.album) > 0)
     klist = addkword(klist, info.album, EXTRACTOR_ALBUM);
-  if (strlen(info.year) > 0) 
+  if (strlen(info.year) > 0)
     klist = addkword(klist, info.year, EXTRACTOR_DATE);
-  if (strlen(info.genre) > 0) 
+  if (strlen(info.genre) > 0)
     klist = addkword(klist, info.genre, EXTRACTOR_GENRE);
-  if (strlen(info.genre) > 0) 
+  if (strlen(info.genre) > 0)
     klist = addkword(klist, info.comment, EXTRACTOR_COMMENT);
 
 
   /* A keyword that has all of the information together) */
   word = (char*) malloc(strlen(info.artist) + strlen(info.title) + strlen(info.album) + 6);
-  sprintf(word, 
+  sprintf(word,
 	  "%s: %s (%s)",
-	  info.artist, 
-	  info.title, 
+	  info.artist,
+	  info.title,
 	  info.album);
   klist = addkword(klist, word, EXTRACTOR_DESCRIPTION);
   free(word);

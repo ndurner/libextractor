@@ -32,13 +32,13 @@ struct EXTRACTOR_Keywords * libextractor_filename_extract(const char * filename,
   const char * filenameRoot = filename;
   int res;
 
-  for (res=strlen(filename)-1;res>=0;res--) 
+  for (res=strlen(filename)-1;res>=0;res--)
     if (filename[res] == DIR_SEPARATOR) {
       filenameRoot = &filename[res+1];
       break;
     }
   keyword = malloc(sizeof(EXTRACTOR_KeywordList));
-  keyword->next = prev;    
+  keyword->next = prev;
   keyword->keyword = convertToUtf8(filenameRoot,
 				   strlen(filenameRoot),
 				   nl_langinfo(CODESET)

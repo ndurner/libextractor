@@ -43,7 +43,7 @@ static EXTRACTOR_KeywordList * addKeyword(EXTRACTOR_KeywordType type,
   if (keyword == NULL)
     return next;
   result = malloc(sizeof(EXTRACTOR_KeywordList));
-  result->next = next;    
+  result->next = next;
   result->keyword = keyword;
   result->keywordType = type;
   return result;
@@ -67,7 +67,7 @@ typedef struct {
 
 /* see also: "man 5 deb-control" */
 static Matches tmap[] = {
-  { "Package: ",        EXTRACTOR_SOFTWARE }, 
+  { "Package: ",        EXTRACTOR_SOFTWARE },
   { "Version: ",        EXTRACTOR_VERSIONNUMBER },
   { "Section: ",        EXTRACTOR_GENRE },
   { "Priority: ",       EXTRACTOR_PRIORITY },
@@ -75,7 +75,7 @@ static Matches tmap[] = {
   { "Depends: ",        EXTRACTOR_DEPENDENCY },
   { "Recommends: ",     EXTRACTOR_RELATION },
   { "Suggests: ",       EXTRACTOR_RELATION },
-  { "Installed-Size: ", EXTRACTOR_SIZE }, 
+  { "Installed-Size: ", EXTRACTOR_SIZE },
   { "Maintainer: ",     EXTRACTOR_PACKAGER },
   { "Description: ",    EXTRACTOR_DESCRIPTION },
   { "Source: ",         EXTRACTOR_SOURCE },
@@ -118,7 +118,7 @@ static struct EXTRACTOR_Keywords * processControl(const char * data,
 	    (data[eol] != '\n') ||
 	    ( (eol+1 < size) &&
 	      (data[eol+1] == ' ') ) )
-      eol++;    
+      eol++;
     if ( (eol == colon) || (eol > size) )
       return prev;
     key = stndup(&data[pos], colon-pos);
@@ -168,7 +168,7 @@ typedef struct {
 /**
  * Process the control.tar file.
  */
-static struct EXTRACTOR_Keywords * 
+static struct EXTRACTOR_Keywords *
 processControlTar(const char * data,
 		  const size_t size,
 		  struct EXTRACTOR_Keywords * prev) {
@@ -186,23 +186,23 @@ processControlTar(const char * data,
       ustar = (USTarHeader*) &data[pos];
       if (0 == strncmp("ustar",
 		       &ustar->magic[0],
-		       strlen("ustar"))) 
+		       strlen("ustar")))
 	pos += 512; /* sizeof(USTarHeader); */
       else
 	pos += 257; /* sizeof(TarHeader); minus gcc alignment... */
     } else {
       pos += 257; /* sizeof(TarHeader); minus gcc alignment... */
     }
-    
+
     memcpy(buf, &tar->filesize[0], 12);
-    buf[12] = '\0';   
+    buf[12] = '\0';
     if (1 != sscanf(buf, "%12llo", &fsize)) /* octal! Yuck yuck! */
       return prev;
     if ( (pos + fsize > size) ||
 	 (fsize > size) ||
 	 (pos + fsize < pos) )
       return prev;
-    
+
     if (0 == strncmp(&tar->name[0],
 		     "./control",
 		     strlen("./control"))) {
@@ -251,7 +251,7 @@ void * writeThread(void * arg) {
 /**
  * Process the control.tar.gz file.
  */
-static struct EXTRACTOR_Keywords * 
+static struct EXTRACTOR_Keywords *
 processControlTGZ(const unsigned char * data,
 		  size_t size,
 		  struct EXTRACTOR_Keywords * prev) {
@@ -286,7 +286,7 @@ processControlTGZ(const unsigned char * data,
     pthread_join(pt, &error);
     return prev;
   }
-  buf = malloc(bufSize);  
+  buf = malloc(bufSize);
   if (buf == NULL) {
     gzclose(gzf);
     close(fdes[1]);
@@ -302,11 +302,11 @@ processControlTGZ(const unsigned char * data,
   }
   close(fdes[1]);
   pthread_join(pt, &error);
-  gzclose(gzf);  
+  gzclose(gzf);
   prev = processControlTar(buf,
 			   bufSize,
 			   prev);
-  free(buf);  
+  free(buf);
   return prev;
 }
 
@@ -319,8 +319,8 @@ typedef struct {
   char filesize[10];
   char trailer[2];
 } ObjectHeader;
- 
-struct EXTRACTOR_Keywords * 
+
+struct EXTRACTOR_Keywords *
 libextractor_deb_extract(const char * filename,
 			 const char * data,
 			 const size_t size,
@@ -347,7 +347,7 @@ libextractor_deb_extract(const char * filename,
       return prev;
 
     memcpy(buf, &hdr->filesize[0], 10);
-    buf[10] = '\0'; 
+    buf[10] = '\0';
     if (1 != sscanf(buf, "%10llu", &fsize))
       return prev;
     pos += sizeof(ObjectHeader);
@@ -357,7 +357,7 @@ libextractor_deb_extract(const char * filename,
       return prev;
     if (0 == strncmp(&hdr->name[0],
 		     "control.tar.gz",
-		     strlen("control.tar.gz"))) { 
+		     strlen("control.tar.gz"))) {
       prev = processControlTGZ(&data[pos],
 			       fsize,
 			       prev);
@@ -374,7 +374,7 @@ libextractor_deb_extract(const char * filename,
     pos += fsize;
     if (done == 2)
       break; /* no need to process the rest of the archive */
-  }  
+  }
   return prev;
 }
 

@@ -1,4 +1,4 @@
-/** 
+/**
  * @file test/trivialtest.c
  * @brief trivial testcase for libextractor plugin loading
  * @author Christian Grothoff

@@ -1,4 +1,4 @@
-struct EXTRACTOR_Keywords * 
+struct EXTRACTOR_Keywords *
 libextractor_XXX_extract
    (char * filename,
     char * data,

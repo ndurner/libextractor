@@ -26,7 +26,7 @@
 #if DEBUG_GIF
 #define PRINT(a,b) fprintf(stderr,a,b)
 #else
-#define PRINT(a,b) 
+#define PRINT(a,b)
 #endif
 
 typedef struct {
@@ -90,7 +90,7 @@ static struct EXTRACTOR_Keywords * addKeyword(EXTRACTOR_KeywordType type,
   if (keyword == NULL)
     return next;
   result = malloc(sizeof(EXTRACTOR_KeywordList));
-  result->next = next;    
+  result->next = next;
   result->keyword = keyword;
   result->keywordType = type;
   return result;
@@ -127,7 +127,7 @@ static size_t skipGlobalColorMap(const unsigned char * data,
 				 const size_t size,
 				 const GIF_HEADER * header) {
   size_t gct_size;
-  
+
   if ( (header->flags &  HEADER_FLAGS__GLOBAL_COLOR_TABLE_FLAG) > 0)
     gct_size = 3*(1 << ((header->flags & HEADER_FLAGS__SIZE_OF_GLOBAL_COLOR_TABLE)+1));
   else
@@ -150,7 +150,7 @@ static size_t skipLocalColorMap(const unsigned char * data,
     lct_size = 3*(1 << ((descriptor->flags & DESCRIPTOR_FLAGS__PIXEL_SIZE)+1));
   else
     lct_size = 0;
-  return pos + GIF_DESCRIPTOR_SIZE + lct_size;  
+  return pos + GIF_DESCRIPTOR_SIZE + lct_size;
 }
 
 static struct EXTRACTOR_Keywords * parseComment(const unsigned char * data,
@@ -170,21 +170,21 @@ static struct EXTRACTOR_Keywords * parseComment(const unsigned char * data,
   curr = pos;
   length = 0;
   while ( (data[curr] != 0) &&
-	  (curr < size) ) {        
+	  (curr < size) ) {
     length += data[curr];
-    if (length >= size) 
+    if (length >= size)
       break;
     memcpy(&keyword[length-data[curr]],
 	   &data[curr]+1,
 	   data[curr]);
     keyword[length] = 0;
     curr += data[curr] + 1;
-  }   
+  }
   return addKeyword(EXTRACTOR_COMMENT,
 		    keyword,
 		    prev);
 }
-				      
+				
 
 struct EXTRACTOR_Keywords * libextractor_gif_extract(const char * filename,
                                                      const unsigned char * data,
@@ -209,9 +209,9 @@ struct EXTRACTOR_Keywords * libextractor_gif_extract(const char * filename,
 		      strdup("image/gif"),
 		      result);
   tmp = malloc(128);
-  snprintf(tmp, 
+  snprintf(tmp,
 	   128,
-	   "%ux%u", 
+	   "%ux%u",
 	   header.screen_width,
 	   header.screen_height);
   result = addKeyword(EXTRACTOR_SIZE,
@@ -253,6 +253,6 @@ struct EXTRACTOR_Keywords * libextractor_gif_extract(const char * filename,
     }
   }
   PRINT("returning at %d\n",pos);
-  return result;  
+  return result;
 }
 

@@ -28,7 +28,7 @@
 #include "sha1.h"
 
 typedef struct {
-  /** How many bits we set for each stored element */  
+  /** How many bits we set for each stored element */
   unsigned int addressesPerElement;
   /** The actual bloomfilter bit array */
   unsigned char * bitArray;
@@ -53,4 +53,4 @@ int testBloomfilter(Bloomfilter * bf,
 void addToBloomfilter(Bloomfilter * bf,
 		      HashCode160 * e);
 
-#endif 
+#endif

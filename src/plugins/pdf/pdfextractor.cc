@@ -48,25 +48,25 @@ extern "C" {
 						char * keyword,
 						struct EXTRACTOR_Keywords * next) {
     EXTRACTOR_KeywordList * result;
-    
+
     if (keyword == NULL)
       return next;
     result = (EXTRACTOR_KeywordList*) malloc(sizeof(EXTRACTOR_KeywordList));
-    result->next = next;    
+    result->next = next;
     result->keyword = keyword;
     result->keywordType = type;
     return result;
   }
-  
-  
-  static struct EXTRACTOR_Keywords * printInfoString(Dict *infoDict, 
-						     char *key, 
+
+
+  static struct EXTRACTOR_Keywords * printInfoString(Dict *infoDict,
+						     char *key,
 						     EXTRACTOR_KeywordType type,
 						     struct EXTRACTOR_Keywords * next) {
     Object obj;
     GString *s1;
     char * s;
-    
+
     if (infoDict->lookup(key, &obj)->isString()) {
       s1 = obj.getString();
       s = s1->getCString();
@@ -87,13 +87,13 @@ extern "C" {
 	  con = (char*) convertToUtf8((const char*) u, 2, "UNICODE");
 	  strcat(result, con);
 	  free(con);
-	}		       
+	}		
 	next = addKeyword(type,
 			  strdup(result),
 			  next);
 	free(result);
       } else {
-	next = addKeyword(type, 
+	next = addKeyword(type,
 			  convertToUtf8(s,
 					strlen(s),
 					"ISO-8859-1"),
@@ -103,9 +103,9 @@ extern "C" {
     obj.free();
     return next;
   }
-  
-  static struct EXTRACTOR_Keywords * printInfoDate(Dict *infoDict, 
-						   char *key, 
+
+  static struct EXTRACTOR_Keywords * printInfoDate(Dict *infoDict,
+						   char *key,
 						   EXTRACTOR_KeywordType type,
 						   struct EXTRACTOR_Keywords * next) {
     Object obj;
@@ -134,7 +134,7 @@ extern "C" {
 	  con = (char*) convertToUtf8((const char*) u, 2, "UNICODE");
 	  strcat(result, con);
 	  free(con);
-	}		       
+	}		
 	next = addKeyword(type,
 			  strdup(result),
 			  next);
@@ -151,7 +151,7 @@ extern "C" {
     return next;
   }
 
-  
+
   /* which mime-types should not be subjected to
      the PDF extractor? (no use trying!) */
   static char * blacklist[] = {
@@ -178,8 +178,8 @@ extern "C" {
     "video/asf",
     "video/quicktime",
     NULL,
-  };  
-  
+  };
+
 
   static const char *
   extractLast (const EXTRACTOR_KeywordType type,
@@ -204,7 +204,7 @@ extern "C" {
     Object info;
     struct EXTRACTOR_Keywords * result;
     const char * mime;
-    
+
     /* if the mime-type of the file is blacklisted, don't
        run the printable extactor! */
     mime = extractLast(EXTRACTOR_MIMETYPE,
@@ -218,7 +218,7 @@ extern "C" {
 
 	j++;
       }
-    }  
+    }
 
     fileName = new GString(filename);
     /* errorInit();   -- keep commented out, otherwise errors are printed to stderr for non-pdf files! */
@@ -229,34 +229,34 @@ extern "C" {
       freeParams();
       return prev;
     }
-    
+
     result = addKeyword(EXTRACTOR_MIMETYPE,
 			strdup("application/pdf"),
 			prev);
     doc->getDocInfo(&info);
     if (info.isDict()) {
-      result = printInfoString(info.getDict(), 
-			       "Title", 
+      result = printInfoString(info.getDict(),
+			       "Title",
 			       EXTRACTOR_TITLE,
 			       result);
-      result = printInfoString(info.getDict(), 
-			       "Subject",      
+      result = printInfoString(info.getDict(),
+			       "Subject",
 			       EXTRACTOR_SUBJECT,
 			       result);
-      result = printInfoString(info.getDict(), 
+      result = printInfoString(info.getDict(),
 			       "Keywords",
 			       EXTRACTOR_KEYWORDS,
 			       result);
-      result = printInfoString(info.getDict(), 
+      result = printInfoString(info.getDict(),
 			       "Author",
 			       EXTRACTOR_AUTHOR,
 			       result);
-      result = printInfoString(info.getDict(), 
+      result = printInfoString(info.getDict(),
 			       "Creator",
 			       EXTRACTOR_CREATOR,
 			       result);
-      result = printInfoString(info.getDict(), 
-			       "Producer",     
+      result = printInfoString(info.getDict(),
+			       "Producer",
 			       EXTRACTOR_PRODUCER,
 			       result);
       {
@@ -273,11 +273,11 @@ extern "C" {
 			    strdup(pcnt),
 			    result);
       }
-      result = printInfoDate(info.getDict(),   
-			     "CreationDate", 
+      result = printInfoDate(info.getDict(),
+			     "CreationDate",
 			     EXTRACTOR_CREATION_DATE,
 			     result);
-      result = printInfoDate(info.getDict(),   
+      result = printInfoDate(info.getDict(),
 			     "ModDate",
 			     EXTRACTOR_MODIFICATION_DATE,
 			     result);
@@ -286,7 +286,7 @@ extern "C" {
     info.free();
     delete doc;
     freeParams();
-    
-    return result;  
+
+    return result;
   }
 }

@@ -88,7 +88,7 @@
 #define GUID_ASF_EXTENDED_CONTENT_DESCRIPTION  14
 #define GUID_ASF_ERROR_CORRECTION              15
 #define GUID_ASF_PADDING                       16
-    
+
     /* stream properties object stream type */
 #define GUID_ASF_AUDIO_MEDIA                   17
 #define GUID_ASF_VIDEO_MEDIA                   18
@@ -104,7 +104,7 @@
 
     /* header extension */
 #define GUID_ASF_RESERVED_1                    24
-    
+
     /* script command */
 #define GUID_ASF_RESERVED_SCRIPT_COMMNAND      25
 
@@ -228,7 +228,7 @@ static const struct
     { "mutex bitrate",
     { 0xd6e22a01, 0x35da, 0x11d1, { 0x90, 0x34, 0x00, 0xa0, 0xc9, 0x03, 0x49, 0xbe }} },
 
-    { "mutex unknown", 
+    { "mutex unknown",
     { 0xd6e22a02, 0x35da, 0x11d1, { 0x90, 0x34, 0x00, 0xa0, 0xc9, 0x03, 0x49, 0xbe }} },
 
 
@@ -289,7 +289,7 @@ typedef struct demux_asf_s {
   ext_uint32_t          packet_size;
   ext_uint8_t           packet_flags;
   ext_uint32_t          data_size;
-  
+
   ext_uint32_t          bitrates[MAX_NUM_STREAMS];
   int               num_streams;
   int               num_audio_streams;
@@ -336,7 +336,7 @@ typedef struct demux_asf_s {
 
   off_t             header_size;
   int               buf_flag_seek;
-  
+
   /* first packet position */
   int64_t           first_packet_pos;
 
@@ -347,12 +347,12 @@ static int readBuf(demux_asf_t * this,
 		   void * buf,
 		   int len) {
   int min;
-  
+
   min = len;
   if (this->inputLen - this->inputPos < min)
     min = this->inputLen - this->inputPos;
-  memcpy(buf, 
-	 &this->input[this->inputPos], 
+  memcpy(buf,
+	 &this->input[this->inputPos],
 	 min);
   this->inputPos += min;
   return min;
@@ -363,7 +363,7 @@ static ext_uint8_t get_byte (demux_asf_t *this) {
   int     i;
 
   i = readBuf (this, &buf, 1);
-  if (i != 1) 
+  if (i != 1)
     this->status = DEMUX_FINISHED;
   return buf;
 }
@@ -373,7 +373,7 @@ static ext_uint16_t get_le16 (demux_asf_t *this) {
   int     i;
 
   i = readBuf (this, buf, 2);
-  if (i != 2) 
+  if (i != 2)
     this->status = DEMUX_FINISHED;
   return buf[0] | (buf[1] << 8);
 }
@@ -383,7 +383,7 @@ static ext_uint32_t get_le32 (demux_asf_t *this) {
   int     i;
 
   i = readBuf (this, buf, 4);
-  if (i != 4) 
+  if (i != 4)
     this->status = DEMUX_FINISHED;
   return buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24);
 }
@@ -393,9 +393,9 @@ static ext_uint64_t get_le64 (demux_asf_t *this) {
   int     i;
 
   i = readBuf (this, buf, 8);
-  if (i != 8) 
+  if (i != 8)
     this->status = DEMUX_FINISHED;
-  return (ext_uint64_t) buf[0] 
+  return (ext_uint64_t) buf[0]
     | ((ext_uint64_t) buf[1] << 8)
     | ((ext_uint64_t) buf[2] << 16)
     | ((ext_uint64_t) buf[3] << 24)
@@ -412,20 +412,20 @@ static int get_guid (demux_asf_t *this) {
   g.v1 = get_le32(this);
   g.v2 = get_le16(this);
   g.v3 = get_le16(this);
-  for(i = 0; i < 8; i++) 
+  for(i = 0; i < 8; i++)
     g.v4[i] = get_byte(this);
   if (this->status == DEMUX_FINISHED)
     return GUID_ERROR;
-  for (i = 1; i < GUID_END; i++) 
-    if (!memcmp(&g, &guids[i].guid, sizeof(LE_GUID))) 
+  for (i = 1; i < GUID_END; i++)
+    if (!memcmp(&g, &guids[i].guid, sizeof(LE_GUID)))
       return i;
-  
+
   return GUID_ERROR;
 }
 
-static void get_str16_nolen(demux_asf_t *this, 
+static void get_str16_nolen(demux_asf_t *this,
 			    int len,
-			    char *buf, 
+			    char *buf,
 			    int buf_size) {
 
   int c;
@@ -446,8 +446,8 @@ static int asf_read_header(demux_asf_t *this) {
   ext_uint64_t       gsize;
 
   guid = get_guid(this);
-  if (guid != GUID_ASF_HEADER) 
-    return 0;  
+  if (guid != GUID_ASF_HEADER)
+    return 0;
   get_le64(this);
   get_le32(this);
   get_byte(this);
@@ -617,7 +617,7 @@ static struct EXTRACTOR_Keywords * addKeyword(EXTRACTOR_KeywordType type,
   if (keyword == NULL)
     return next;
   result = malloc(sizeof(EXTRACTOR_KeywordList));
-  result->next = next;    
+  result->next = next;
   result->keyword = strdup(keyword);
   result->keywordType = type;
   return result;
@@ -650,7 +650,7 @@ struct EXTRACTOR_Keywords * libextractor_asf_extract(char * filename,
     free(this);
     return prev;
   }
-  
+
   if (strlen(this->title) > 0)
     prev = addKeyword(EXTRACTOR_TITLE, this->title, prev);
   if (strlen(this->author) > 0)
@@ -663,7 +663,7 @@ struct EXTRACTOR_Keywords * libextractor_asf_extract(char * filename,
 
   /* build a description from author and title */
   if (strlen(this->author) * strlen(this->title) > 0) {
-    EXTRACTOR_KeywordList * keyword = malloc(sizeof(EXTRACTOR_KeywordList)); 
+    EXTRACTOR_KeywordList * keyword = malloc(sizeof(EXTRACTOR_KeywordList));
     char * word;
     int len = 3 + strlen(this->author) + strlen(this->title);
 

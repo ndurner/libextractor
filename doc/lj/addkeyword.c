@@ -1,7 +1,7 @@
 static void addKeyword
    (struct EXTRACTOR_Keywords ** list,
     char * keyword,
-    EXTRACTOR_KeywordType type) 
+    EXTRACTOR_KeywordType type)
 {
   EXTRACTOR_KeywordList * next;
   next = malloc(sizeof(EXTRACTOR_KeywordList));

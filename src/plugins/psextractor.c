@@ -29,7 +29,7 @@ static struct EXTRACTOR_Keywords * addKeyword(EXTRACTOR_KeywordType type,
   if (keyword == NULL)
     return next;
   result = malloc(sizeof(EXTRACTOR_KeywordList));
-  result->next = next;    
+  result->next = next;
   result->keyword = strdup(keyword);
   result->keywordType = type;
   return result;
@@ -42,10 +42,10 @@ static char * readline(char * data,
   char * res;
 
   while ( ( pos < size) &&
-	  ( (data[pos] == (char)0x0d) || 
-	              (data[pos] == (char)0x0a) ) ) 
+	  ( (data[pos] == (char)0x0d) ||
+	              (data[pos] == (char)0x0a) ) )
     pos++;
-		      
+		
   if (pos >= size)
     return NULL; /* end of file */
   end = pos;
@@ -58,7 +58,7 @@ static char * readline(char * data,
 	 &data[pos],
 	 end-pos);
   res[end-pos] = '\0';
-		 
+		
   return res;
 }
 
@@ -79,7 +79,7 @@ static struct EXTRACTOR_Keywords * testmeta(char * line,
     }
     prev = addKeyword(type,
 		      key,
-		      prev);  
+		      prev);
   }
   return prev;
 }
@@ -103,9 +103,9 @@ static Matches tests[] = {
   { "%%Magnification: ", EXTRACTOR_UNKNOWN },
 
   /* Also widely used but not supported since they
-     probably make no sense: 
+     probably make no sense:
   "%%BoundingBox: ",
-  "%%DocumentNeededResources: ", 
+  "%%DocumentNeededResources: ",
   "%%DocumentSuppliedResources: ",
   "%%DocumentProcSets: ",
   "%%DocumentData: ", */
@@ -152,7 +152,7 @@ struct EXTRACTOR_Keywords * libextractor_ps_extract(char * filename,
   int i;
   int lastLine;
   const char * mime;
-   
+
   /* if the mime-type of the file is blacklisted, don't
      run the printable extactor! */
   mime = EXTRACTOR_extractLast(EXTRACTOR_MIMETYPE,
@@ -165,7 +165,7 @@ struct EXTRACTOR_Keywords * libextractor_ps_extract(char * filename,
 	return prev;
       j++;
     }
-  }  
+  }
 
 
   pos = 0;
@@ -176,15 +176,15 @@ struct EXTRACTOR_Keywords * libextractor_ps_extract(char * filename,
   if (pos != strlen(psheader)) {
     return prev; /* no ps */
   }
-  
+
   prev = addKeyword(EXTRACTOR_MIMETYPE,
 		    "application/postscript",
 		    prev);
 
   /* skip rest of first line */
-  while ( (pos<size) && (data[pos] != '\n') ) 
-    pos++; 
-    
+  while ( (pos<size) && (data[pos] != '\n') )
+    pos++;
+
   lastLine = -1;
   line = strdup(psheader);
 
@@ -192,22 +192,22 @@ struct EXTRACTOR_Keywords * libextractor_ps_extract(char * filename,
      "%%EndComments", this should allow us to not read through most of
      the file for all the sane applications... For Windows-generated
      PS files, we will bail out at the end of the file. */
-  while (0 != strncmp("%%EndComments", 
+  while (0 != strncmp("%%EndComments",
 		      line,
-		      strlen("%%EndComments"))) {    
+		      strlen("%%EndComments"))) {
     free(line);
     line = readline(data, size, pos);
     if (line == NULL)
       break;
     i=0;
     while (tests[i].prefix != NULL) {
-      prev = testmeta(line, 
+      prev = testmeta(line,
 		      tests[i].prefix,
 		      tests[i].type,
 		      prev);
       i++;
     }
-    
+
     /* %%+ continues previous meta-data type... */
     if ( (lastLine != -1) &&
 	 (0 == strncmp(line, "%%+ ", strlen("%%+ "))) ) {
@@ -225,7 +225,7 @@ struct EXTRACTOR_Keywords * libextractor_ps_extract(char * filename,
     pos += strlen(line)+1; /* skip newline, too; guarantee progress! */
   }
   free(line);
-  
+
   return prev;
 }
 

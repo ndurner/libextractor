@@ -36,7 +36,7 @@ extern "C" {
 /* ignore the 'type' of the keyword when eliminating duplicates */
 #define EXTRACTOR_DUPLICATES_TYPELESS 1
 /* remove type 'UNKNOWN' if there is a duplicate keyword of
-   known type, even if usually different types should be 
+   known type, even if usually different types should be
    preserved */
 #define EXTRACTOR_DUPLICATES_REMOVE_UNKNOWN 2
 
@@ -49,7 +49,7 @@ const char * EXTRACTOR_getDefaultLibraries();
  * See also
  * http://dublincore.org/documents/1998/09/dces/
  */
-typedef enum { 
+typedef enum {
   EXTRACTOR_UNKNOWN = 0,
   EXTRACTOR_FILENAME = 1,
   EXTRACTOR_MIMETYPE = 2,
@@ -75,7 +75,7 @@ typedef enum {
   EXTRACTOR_RESOURCE_IDENTIFIER = 22,
   EXTRACTOR_SOURCE = 23,
   EXTRACTOR_RELATION = 24,
-  EXTRACTOR_COVERAGE = 25,  
+  EXTRACTOR_COVERAGE = 25,
   EXTRACTOR_SOFTWARE = 26,
   EXTRACTOR_DISCLAIMER = 27,
   EXTRACTOR_WARNING = 28,
@@ -196,17 +196,17 @@ EXTRACTOR_KeywordType EXTRACTOR_getHighestKeywordTypeNumber();
  * @return the new list of libraries, equal to prev iff an error occured
  *         or if config was empty (or NULL).
  */
-EXTRACTOR_ExtractorList * 
+EXTRACTOR_ExtractorList *
 EXTRACTOR_loadConfigLibraries(EXTRACTOR_ExtractorList * prev,
 			      const char * config);
 
 /**
- * Add a library for keyword extraction. 
+ * Add a library for keyword extraction.
  * @param prev the previous list of libraries, may be NULL
  * @param library the name of the library
  * @return the new list of libraries, equal to prev iff an error occured
  */
-EXTRACTOR_ExtractorList * 
+EXTRACTOR_ExtractorList *
 EXTRACTOR_addLibrary(EXTRACTOR_ExtractorList * prev,
 		     const char * library);
 
@@ -217,7 +217,7 @@ EXTRACTOR_addLibrary(EXTRACTOR_ExtractorList * prev,
  * @return the new list of libraries, always equal to prev
  *         except if prev was NULL and no error occurs
  */
-EXTRACTOR_ExtractorList * 
+EXTRACTOR_ExtractorList *
 EXTRACTOR_addLibraryLast(EXTRACTOR_ExtractorList * prev,
 			 const char * library);
 
@@ -227,7 +227,7 @@ EXTRACTOR_addLibraryLast(EXTRACTOR_ExtractorList * prev,
  * @param library the name of the library to remove
  * @return the reduced list, unchanged if the library was not loaded
  */
-EXTRACTOR_ExtractorList * 
+EXTRACTOR_ExtractorList *
 EXTRACTOR_removeLibrary(EXTRACTOR_ExtractorList * prev,
 			const char * library);
 
@@ -244,7 +244,7 @@ void EXTRACTOR_removeAll(EXTRACTOR_ExtractorList * libraries);
  * @return the list of keywords found in the file, NULL if none
  *         were found (or other errors)
  */
-EXTRACTOR_KeywordList * 
+EXTRACTOR_KeywordList *
 EXTRACTOR_getKeywords(EXTRACTOR_ExtractorList * extractor,
 		      const char * filename);
 
@@ -254,8 +254,8 @@ EXTRACTOR_getKeywords(EXTRACTOR_ExtractorList * extractor,
  * @param list the original keyword list (destroyed in the process!)
  * @param options a set of options (DUPLICATES_XXXX)
  * @return a list of keywords without duplicates
- */ 
-EXTRACTOR_KeywordList * 
+ */
+EXTRACTOR_KeywordList *
 EXTRACTOR_removeDuplicateKeywords(EXTRACTOR_KeywordList * list,
 				  const unsigned int options);
 
@@ -293,7 +293,7 @@ void EXTRACTOR_freeKeywords(EXTRACTOR_KeywordList * keywords);
  *  not be freed or manipulated by the client.  It will become
  *  invalid once the keyword list is freed.
  */
-const char * EXTRACTOR_extractLast(const EXTRACTOR_KeywordType type, 
+const char * EXTRACTOR_extractLast(const EXTRACTOR_KeywordType type,
 				   EXTRACTOR_KeywordList * keywords);
 
 /**

@@ -45,7 +45,7 @@ static void formatHelp(const char * general,
   int p;
   char * scp;
   const char * trans;
-	   
+	
   printf(_("Usage: %s\n%s\n\n"),
 	 gettext(general),
 	 gettext(description));
@@ -65,7 +65,7 @@ static void formatHelp(const char * general,
       printf("=%s",
 	     opt[i].mandatoryArg);
       slen += 1+strlen(opt[i].mandatoryArg);
-    }    
+    }
     if (slen > BORDER) {
       printf("\n%*s", BORDER, "");
       slen = BORDER;
@@ -123,7 +123,7 @@ printHelp ()
 {
   static Help help[] = {
     { 'a', "all", NULL,
-      gettext_noop("do not remove any duplicates") }, 
+      gettext_noop("do not remove any duplicates") },
     { 'b', "bibtex", NULL,
       gettext_noop("print output in bibtex format") },
     { 'B', "binary", "LANG",
@@ -137,7 +137,7 @@ printHelp ()
     { 'H', "hash", "ALGORITHM",
       gettext_noop("compute hash using the given ALGORITHM (currently sha1 or md5)") },
     { 'l', "library", "LIBRARY",
-      gettext_noop("load an extractor plugin named LIBRARY") }, 
+      gettext_noop("load an extractor plugin named LIBRARY") },
     { 'L', "list", NULL,
       gettext_noop("list all keyword types") },
     { 'n', "nodefault", NULL,
@@ -159,7 +159,7 @@ printHelp ()
   formatHelp(_("extract [OPTIONS] [FILENAME]*"),
 	     _("Extract metadata from files."),
 	     help);
-  
+
 }
 
 #include "iconv.c"
@@ -175,7 +175,7 @@ printHelp ()
 static void
 printSelectedKeywords(FILE * handle,
 		      EXTRACTOR_KeywordList * keywords,
-		      const int * print, 
+		      const int * print,
 		      const int verbose)
 {
   char * keyword;
@@ -188,7 +188,7 @@ printSelectedKeywords(FILE * handle,
   while (keywords != NULL) {
     buf = NULL;
     if (cd != (iconv_t) -1)
-      keyword = iconvHelper(cd, 
+      keyword = iconvHelper(cd,
 			    keywords->keyword);
     else
       keyword = strdup(keywords->keyword);
@@ -200,7 +200,7 @@ printSelectedKeywords(FILE * handle,
     } else {
       if (NULL == EXTRACTOR_getKeywordTypeAsString(keywords->keywordType)) {
 	if (verbose == YES) {
-	  fprintf(handle, 
+	  fprintf(handle,
 		  _("INVALID TYPE - %s\n"),
 		  keyword);
 	}
@@ -221,8 +221,8 @@ printSelectedKeywords(FILE * handle,
  * Take title, auth, year and return a string
  */
 static char *
-splice(const char * title, 
-       const char * auth, 
+splice(const char * title,
+       const char * auth,
        const char * year)
 {
   char * temp = (char*)malloc(sizeof(char)*16);
@@ -248,7 +248,7 @@ splice(const char * title,
 static void
 printSelectedKeywordsBibtex (FILE * handle,
 			     EXTRACTOR_KeywordList * keywords,
-			     const int * print, 
+			     const int * print,
 			     const char * filename)
 {
   const char * last = NULL;
@@ -334,7 +334,7 @@ printSelectedKeywordsBibtex (FILE * handle,
 
       fprintf(handle, "@misc{ %s,\n",splice(title, author, year));
       if ( title )
-	fprintf(handle, "    title = \"%s\"%s\n", title, 
+	fprintf(handle, "    title = \"%s\"%s\n", title,
 	    (last == title)?"":",");
       if ( author )
 	fprintf(handle, "    author = \"%s\"%s\n", author,
@@ -408,7 +408,7 @@ main (int argc, char *argv[])
 	{"duplicates", 0, 0, 'd'},
 	{"filename", 0, 0, 'f'},
 	{"help", 0, 0, 'h'},
-	{"hash", 1, 0, 'H'}, 
+	{"hash", 1, 0, 'H'},
 	{"list", 0, 0, 'L'},
 	{"library", 1, 0, 'l'},
 	{"nodefault", 0, 0, 'n'},
@@ -422,8 +422,8 @@ main (int argc, char *argv[])
       };
       option_index = 0;
       c = getopt_long (argc,
-		       argv, "vhbl:nsH:fp:x:LVdraB:", 
-		       long_options, 
+		       argv, "vhbl:nsH:fp:x:LVdraB:",
+		       long_options,
 		       &option_index);
 
       if (c == -1)
@@ -562,7 +562,7 @@ main (int argc, char *argv[])
     free(name);
   }
   if (hash != NULL) {
-    char * name;    
+    char * name;
     name = malloc(strlen(hash) + strlen("libextractor_hash_") + 1);
     strcpy(name, "libextractor_hash_");
     strcat(name, hash);
@@ -570,7 +570,7 @@ main (int argc, char *argv[])
 					  name);
     free(name);
   }
-      
+
   if (splitKeywords == YES)
     extractors = EXTRACTOR_addLibraryLast(extractors,
 					  "libextractor_split");
@@ -582,7 +582,7 @@ main (int argc, char *argv[])
     }
   /* extract keywords */
   if ( bibtex == YES )
-    fprintf(stdout, 
+    fprintf(stdout,
 	    _("%% BiBTeX file\n"));
   for (i = optind; i < argc; i++)
     {

@@ -42,7 +42,7 @@ static EXTRACTOR_KeywordList * addKeyword(EXTRACTOR_KeywordType type,
     return next;
   }
   result = malloc(sizeof(EXTRACTOR_KeywordList));
-  result->next = next;    
+  result->next = next;
   result->keyword = keyword;
   result->keywordType = type;
   return result;
@@ -81,19 +81,19 @@ typedef struct {
 } USTarHeader;
 
 
-static struct EXTRACTOR_Keywords * 
+static struct EXTRACTOR_Keywords *
 tar_extract(const char * data,
 	    size_t size,
 	    struct EXTRACTOR_Keywords * prev) {
   TarHeader * tar;
   USTarHeader * ustar;
-  size_t pos; 
+  size_t pos;
 
   if (0 != (size % 512) )
     return prev; /* cannot be tar! */
   if (size < 1024)
     return prev;
-  size -= 1024; /* last 2 blocks are all zeros */ 
+  size -= 1024; /* last 2 blocks are all zeros */
   /* fixme: we may want to check that the last
      1024 bytes are all zeros here... */
 
@@ -108,13 +108,13 @@ tar_extract(const char * data,
       ustar = (USTarHeader*) &data[pos];
       if (0 == strncmp("ustar",
 		       &ustar->magic[0],
-		       strlen("ustar"))) 
+		       strlen("ustar")))
 	pos += 512; /* sizeof(USTarHeader); */
       else
 	pos += 257; /* sizeof(TarHeader); minus gcc alignment... */
     } else {
       pos += 257; /* sizeof(TarHeader); minus gcc alignment... */
-    }        
+    }
     memcpy(buf, &tar->filesize[0], 12);
     buf[12] = '\0';
     if (1 != sscanf(buf, "%12llo", &fsize)) /* octal! Yuck yuck! */
@@ -188,11 +188,11 @@ struct EXTRACTOR_Keywords * libextractor_tar_extract(const char * filename,
     }
     gzclose(gzf);
     prev = tar_extract(buf, bufSize, prev);
-    free(buf);  
+    free(buf);
     return prev;
   } else {
     /* try for uncompressed tar */
     return tar_extract(data, size, prev);
-  } 
+  }
 }
 

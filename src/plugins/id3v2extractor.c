@@ -29,13 +29,13 @@
 #define DEBUG_EXTRACT_ID3v2 0
 
 
-static struct EXTRACTOR_Keywords * addKeyword(EXTRACTOR_KeywordList *oldhead, 
+static struct EXTRACTOR_Keywords * addKeyword(EXTRACTOR_KeywordList *oldhead,
 					      char *phrase,
 					      EXTRACTOR_KeywordType type) {
   EXTRACTOR_KeywordList * keyword;
-  
+
   keyword = (EXTRACTOR_KeywordList*) malloc(sizeof(EXTRACTOR_KeywordList));
-  keyword->next = oldhead;    
+  keyword->next = oldhead;
   keyword->keyword = phrase;
   keyword->keywordType = type;
   return keyword;
@@ -104,7 +104,7 @@ struct EXTRACTOR_Keywords * libextractor_id3v2_extract(char * filename,
 	    ( (data[7] & 0x7F) << 14 ) |
 	    ( (data[8] & 0x7F) << 07 ) |
 	    ( (data[9] & 0x7F) << 00 ) );
-  
+
   if (tsize + 10 > size)
     return prev;
   pos = 10;

@@ -40,7 +40,7 @@ static struct EXTRACTOR_Keywords * addKeyword(EXTRACTOR_KeywordType type,
   if (keyword == NULL)
     return next;
   result = malloc(sizeof(EXTRACTOR_KeywordList));
-  result->next = next;    
+  result->next = next;
   result->keyword = keyword;
   result->keywordType = type;
   return result;
@@ -58,17 +58,17 @@ static struct {
   char * name;
   EXTRACTOR_KeywordType type;
 } tagmap[] = {
-   { "Author" , EXTRACTOR_AUTHOR}, 
+   { "Author" , EXTRACTOR_AUTHOR},
    { "Description" , EXTRACTOR_DESCRIPTION},
    { "Comment", EXTRACTOR_COMMENT},
-   { "Copyright", EXTRACTOR_COPYRIGHT}, 
+   { "Copyright", EXTRACTOR_COPYRIGHT},
    { "Source", EXTRACTOR_SOURCE},
    { "Creation Time", EXTRACTOR_DATE},
    { "Title", EXTRACTOR_TITLE},
    { "Software", EXTRACTOR_SOFTWARE},
    { "Disclaimer", EXTRACTOR_DISCLAIMER},
    { "Warning", EXTRACTOR_WARNING},
-   { "Signature", EXTRACTOR_RESOURCE_IDENTIFIER}, 
+   { "Signature", EXTRACTOR_RESOURCE_IDENTIFIER},
    { NULL, EXTRACTOR_UNKNOWN},
 };
 
@@ -83,7 +83,7 @@ static struct EXTRACTOR_Keywords * processtEXt(const unsigned char * data,
   off = strnlen(data, length) + 1;
   if (off >= length)
     return prev; /* failed to find '\0' */
-  keyword = convertToUtf8(&data[off], 
+  keyword = convertToUtf8(&data[off],
 			  length-off,
 			  "ISO-8859-1");
   i = 0;
@@ -111,7 +111,7 @@ static struct EXTRACTOR_Keywords * processiTXt(const unsigned char * data,
   int compressed;
   char * buf;
   uLongf bufLen;
-  int ret;  
+  int ret;
 
   pos = strnlen(data, length)+1;
   if (pos+3 >= length)
@@ -135,7 +135,7 @@ static struct EXTRACTOR_Keywords * processiTXt(const unsigned char * data,
   pos += strnlen(translated, length-pos)+1;
   if (pos >= length)
     return prev;
-  
+
   if (compressed) {
     bufLen = 1024 + 2 * (length - pos);
     while (1) {
@@ -167,10 +167,10 @@ static struct EXTRACTOR_Keywords * processiTXt(const unsigned char * data,
     free(buf);
   } else {
     keyword = stndup(&data[pos], length - pos);
-  }  
+  }
   i = 0;
   while (tagmap[i].name != NULL) {
-    if (0 == strcmp(tagmap[i].name, 
+    if (0 == strcmp(tagmap[i].name,
 		    data))
       return addKeyword(tagmap[i].type,
 			keyword, /* already in utf-8 */
@@ -195,7 +195,7 @@ static struct EXTRACTOR_Keywords * processIHDR(const unsigned char * data,
 	   128,
 	   "%ux%u",
 	   htonl(getIntAt(&data[4])),
-	   htonl(getIntAt(&data[8]))); 
+	   htonl(getIntAt(&data[8])));
   return addKeyword(EXTRACTOR_SIZE,
 		    tmp,
 		    prev);
@@ -293,19 +293,19 @@ struct EXTRACTOR_Keywords * libextractor_png_extract(char * filename,
     length = htonl(getIntAt(pos));  pos+=4;
     /* printf("Length: %u, pos %u\n", length, pos - data); */
     if ( (pos+4+length+4 > end) ||
-	 (pos+4+length+4 < pos + 4 + length) ) 
+	 (pos+4+length+4 < pos + 4 + length) )
       break;
-    
+
     if (0 == strncmp(pos, "IHDR", 4))
       result = processIHDR(pos, length, result);
-    if (0 == strncmp(pos, "iTXt", 4)) 
+    if (0 == strncmp(pos, "iTXt", 4))
       result = processiTXt(pos, length, result);
-    if (0 == strncmp(pos, "tEXt", 4)) 
+    if (0 == strncmp(pos, "tEXt", 4))
       result = processtEXt(pos, length, result);
-    if (0 == strncmp(pos, "zTXt", 4)) 
+    if (0 == strncmp(pos, "zTXt", 4))
       result = processzTXt(pos, length, result);
     pos += 4+length+4; /* Chunk type, data, crc */
   }
-  return result;  
+  return result;
 }
 

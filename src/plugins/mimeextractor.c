@@ -30,7 +30,7 @@ static EXTRACTOR_KeywordList * addKeyword(EXTRACTOR_KeywordType type,
   if (keyword == NULL)
     return next;
   result = malloc(sizeof(EXTRACTOR_KeywordList));
-  result->next = next;    
+  result->next = next;
   result->keyword = keyword;
   result->keywordType = type;
   return result;
@@ -53,7 +53,7 @@ typedef int (*Detector)(char * data,
  * @param len the length of the file
  * @return always 1
  **/
-static int defaultDetector(char * data, 
+static int defaultDetector(char * data,
 			   size_t len,
 			   void * arg) {
   return 1;
@@ -65,7 +65,7 @@ static int defaultDetector(char * data,
  * @param len the length of the file
  * @return always 0
  **/
-static int disableDetector(char * data, 
+static int disableDetector(char * data,
 			   size_t len,
 			   void * arg) {
   return 0;
@@ -101,7 +101,7 @@ static ExtraPattern xpatterns[] = {
   { 0, 0, NULL },
 #define ACON_XPATTERN 12
   { 8, 4, "ACON"},
-  { 0, 0, NULL}, 
+  { 0, 0, NULL},
 };
 
 /**
@@ -110,7 +110,7 @@ static ExtraPattern xpatterns[] = {
  * entries in the main table, so this "AND" (all match) semantics are
  * the only reasonable answer.
  **/
-static int xPatternMatcher(char * data, 
+static int xPatternMatcher(char * data,
 			   size_t len,
 			   ExtraPattern * arg) {
   while (arg->pattern != NULL) {
@@ -152,8 +152,8 @@ typedef struct Pattern {
 
 static Pattern patterns[] = {
   { "\xFF\xD8", 2, "image/jpeg", DEFAULT},
-  { "\211PNG\r\n\032\n", 8, "image/png", DEFAULT}, 
-  { "/* XPM */", 9, "image/x-xpm", DEFAULT}, 
+  { "\211PNG\r\n\032\n", 8, "image/png", DEFAULT},
+  { "/* XPM */", 9, "image/x-xpm", DEFAULT},
   { "GIF8", 4, "image/gif", DEFAULT},
   { "P1", 2, "image/x-portable-bitmap", DEFAULT},
   { "P2", 2, "image/x-portable-graymap", DEFAULT},
@@ -168,9 +168,9 @@ static Pattern patterns[] = {
   { "hsi1", 4, "image/x-jpeg-proprietary", DEFAULT},
   { "\x2E\x52\x4d\x46", 4, "video/real", DEFAULT},
   { "\x2e\x72\x61\xfd", 4, "audio/real", DEFAULT},
-  { "\177ELF", 4, "application/elf", DEFAULT}, 
+  { "\177ELF", 4, "application/elf", DEFAULT},
   /* FIXME: correct MIME-type for an ELF!? */
-  { "\xca\xfe\xba\xbe", 4, "application/java", DEFAULT}, 
+  { "\xca\xfe\xba\xbe", 4, "application/java", DEFAULT},
   /* FIXME: correct MIME for a class-file? */
   { "gimp xcf", 8, "image/xcf", DEFAULT},
   { "IIN1", 4, "image/tiff", DEFAULT},
@@ -183,13 +183,13 @@ static Pattern patterns[] = {
   { "RIFF", 4, "audio/x-wav", XPATTERN(WAVE_XPATTERN)},
   { "RIFX", 4, "video/avi", XPATTERN(AVI_XPATTERN)},
   { "RIFX", 4, "audio/x-wav", XPATTERN(WAVE_XPATTERN)},
-  { "RIFF", 4, "audio/midi", XPATTERN(RMID_XPATTERN)}, 
-  { "RIFX", 4, "audio/midi", XPATTERN(RMID_XPATTERN)}, 
-  { "RIFF", 4, "image/x-animated-cursor", XPATTERN(ACON_XPATTERN)}, 
-  { "RIFX", 4, "image/x-animated-cursor", XPATTERN(ACON_XPATTERN)}, 
+  { "RIFF", 4, "audio/midi", XPATTERN(RMID_XPATTERN)},
+  { "RIFX", 4, "audio/midi", XPATTERN(RMID_XPATTERN)},
+  { "RIFF", 4, "image/x-animated-cursor", XPATTERN(ACON_XPATTERN)},
+  { "RIFX", 4, "image/x-animated-cursor", XPATTERN(ACON_XPATTERN)},
   { "\211GND\r\n\032\n", 8, "application/gnunet-directory", DEFAULT},
   { "{\\rtf", 5, "application/rtf", DEFAULT},
-  { "\xf7\x02", 2, "application/x-dvi", DEFAULT}, 
+  { "\xf7\x02", 2, "application/x-dvi", DEFAULT},
   { "\x1F\x8B\x08\x00", 4, "application/x-gzip", DEFAULT},
   { "BZh91AY&SY", 10, "application/bz2", DEFAULT},
   { "\xED\xAB\xEE\xDB", 4, "application/x-rpm", DEFAULT}, /* binary */

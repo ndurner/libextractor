@@ -26,7 +26,7 @@ static void addKeyword(struct EXTRACTOR_Keywords ** list,
 		       EXTRACTOR_KeywordType type) {
   EXTRACTOR_KeywordList * next;
   next = malloc(sizeof(EXTRACTOR_KeywordList));
-  next->next = *list;    
+  next->next = *list;
   next->keyword = strdup(keyword);
   next->keywordType = type;
   *list = next;
@@ -79,16 +79,16 @@ typedef struct {
     &(p)->e_phnum,	     \
     &(p)->e_shentsize,	     \
     &(p)->e_shnum,	     \
-    &(p)->e_shstrndx	     
+    &(p)->e_shstrndx	
 static char * ELF_HEADER_SPECS[] = {
-  "hhwwwwwhhhhhh", 
+  "hhwwwwwhhhhhh",
   "HHWWWWWHHHHHH",
 };
 
 
 typedef struct {
   Elf32_Word sh_name;
-  Elf32_Word sh_type; 
+  Elf32_Word sh_type;
   Elf32_Word sh_flags;
   Elf32_Addr sh_addr; /* where loaded */
   Elf32_Off sh_offset; /* where in image (! sh_type==SHT_NOBITS) */
@@ -188,7 +188,7 @@ static char * ELF_DYN_SPECS[] = {
 #define SHT_NOTE 7
 #define SHT_NOBITS 8
 #define SHT_REL 9
-#define SHT_SHLIB 10 
+#define SHT_SHLIB 10
 #define SHT_DYNSYM 11
 #define SHT_LOPROC 0x70000000
 #define SHT_HIPROC 0x7fffffff
@@ -253,35 +253,35 @@ static char * ELF_DYN_SPECS[] = {
 /**
  * @param ei_data ELFDATA2LSB or ELFDATA2MSB
  * @return 1 if we need to convert, 0 if not
- */ 
+ */
 static int getByteorder(char ei_data) {
   if (ei_data == ELFDATA2LSB) {
 #if __BYTE_ORDER == __BIG_ENDIAN
     return 1;
 #else
     return 0;
-#endif       
+#endif
   } else {
 #if __BYTE_ORDER == __BIG_ENDIAN
     return 0;
 #else
     return 1;
-#endif       
+#endif
   }
 }
 
 /**
- * 
+ *
  * @return 0 on success, -1 on error
  */
 static int getSectionHdr(char * data,
 			 size_t size,
-			 Elf32_Ehdr * ehdr, 
+			 Elf32_Ehdr * ehdr,
 			 Elf32_Half idx,
 			 Elf32_Shdr * ret) {
   if (ehdr->e_shnum <= idx)
     return -1;
-  
+
   cat_unpack(&data[ehdr->e_shoff + ehdr->e_shentsize * idx],
 	     ELF_SECTION_SPECS[getByteorder(data[EI_CLASS])],
 	     ELF_SECTION_FIELDS(ret));
@@ -289,19 +289,19 @@ static int getSectionHdr(char * data,
 }
 
 /**
- * 
+ *
  * @return 0 on success, -1 on error
  */
 static int getDynTag(char * data,
 		     size_t size,
-		     Elf32_Ehdr * ehdr, 
+		     Elf32_Ehdr * ehdr,
 		     Elf32_Off off,
 		     Elf32_Word osize,
 		     unsigned int idx,
 		     Elf32_Dyn * ret) {
   if ( (off+osize > size) ||
        ((idx+1) * ELF_DYN_SIZE > osize) )
-    return -1;  
+    return -1;
   cat_unpack(&data[off + idx*ELF_DYN_SIZE],
 	     ELF_DYN_SPECS[getByteorder(data[EI_CLASS])],
 	     ELF_DYN_FIELDS(ret));
@@ -309,17 +309,17 @@ static int getDynTag(char * data,
 }
 
 /**
- * 
+ *
  * @return 0 on success, -1 on error
  */
 static int getProgramHdr(char * data,
 			 size_t size,
-			 Elf32_Ehdr * ehdr, 
+			 Elf32_Ehdr * ehdr,
 			 Elf32_Half idx,
 			 Elf32_Phdr * ret) {
   if (ehdr->e_phnum <= idx)
     return -1;
-  
+
   cat_unpack(&data[ehdr->e_phoff + ehdr->e_phensize * idx],
 	     ELF_PHDR_SPECS[getByteorder(data[EI_CLASS])],
 	     ELF_PHDR_FIELDS(ret));
@@ -340,7 +340,7 @@ static int getELFHdr(char * data,
 		   elfMagic,
 		   sizeof(elfMagic)))
     return -1; /* not an elf */
-  
+
   switch (data[EI_CLASS]) {
   case ELFDATA2LSB:
   case ELFDATA2MSB:
@@ -366,7 +366,7 @@ static int getELFHdr(char * data,
  */
 static const char * readStringTable(char * data,
 				    size_t size,
-				    Elf32_Ehdr * ehdr, 
+				    Elf32_Ehdr * ehdr,
 				    Elf32_Half strTableOffset,
 				    Elf32_Word sh_name) {
   Elf32_Shdr shrd;
@@ -389,7 +389,7 @@ static const char * readStringTable(char * data,
 /* application/x-executable, ELF */
 struct EXTRACTOR_Keywords * libextractor_elf_extract(char * filename,
 						     char * data,
-						     size_t size,						     
+						     size_t size,						
 						     struct EXTRACTOR_Keywords * prev) {
   Elf32_Ehdr ehdr;
   Elf32_Half idx;
@@ -400,24 +400,24 @@ struct EXTRACTOR_Keywords * libextractor_elf_extract(char * filename,
     return prev;
   addKeyword(&prev,
 	     "application/x-executable",
-	     EXTRACTOR_MIMETYPE);  
+	     EXTRACTOR_MIMETYPE);
   switch (ehdr.e_type) {
-  case ET_REL: 
+  case ET_REL:
     addKeyword(&prev,
 	       "Relocatable file",
 	       EXTRACTOR_RESOURCE_TYPE);
     break;
-  case ET_EXEC: 
+  case ET_EXEC:
     addKeyword(&prev,
 	       "Executable file",
 	       EXTRACTOR_RESOURCE_TYPE);
     break;
-  case ET_DYN: 
+  case ET_DYN:
     addKeyword(&prev,
 	       "Shared object file",
 	       EXTRACTOR_RESOURCE_TYPE);
     break;
-  case ET_CORE: 
+  case ET_CORE:
     addKeyword(&prev,
 	       "Core file",
 	       EXTRACTOR_RESOURCE_TYPE);
@@ -429,37 +429,37 @@ struct EXTRACTOR_Keywords * libextractor_elf_extract(char * filename,
   case EM_M32:
     addKeyword(&prev,
 	       "M32",
-	       EXTRACTOR_CREATED_FOR);  
+	       EXTRACTOR_CREATED_FOR);
     break;
   case EM_386:
     addKeyword(&prev,
 	       "i386",
-	       EXTRACTOR_CREATED_FOR);  
+	       EXTRACTOR_CREATED_FOR);
     break;
   case EM_68K:
     addKeyword(&prev,
 	       "68K",
-	       EXTRACTOR_CREATED_FOR);  
+	       EXTRACTOR_CREATED_FOR);
     break;
   case EM_88K:
     addKeyword(&prev,
 	       "88K",
-	       EXTRACTOR_CREATED_FOR);  
+	       EXTRACTOR_CREATED_FOR);
     break;
   case EM_SPARC:
     addKeyword(&prev,
 	       "Sparc",
-	       EXTRACTOR_CREATED_FOR);  
+	       EXTRACTOR_CREATED_FOR);
     break;
   case EM_860:
     addKeyword(&prev,
 	       "960",
-	       EXTRACTOR_CREATED_FOR);  
+	       EXTRACTOR_CREATED_FOR);
     break;
   case EM_MIPS:
     addKeyword(&prev,
 	       "MIPS",
-	       EXTRACTOR_CREATED_FOR);  
+	       EXTRACTOR_CREATED_FOR);
     break;
   default:
     break; /* oops */
@@ -480,7 +480,7 @@ struct EXTRACTOR_Keywords * libextractor_elf_extract(char * filename,
       Elf32_Addr stringPtr;
       Elf32_Half stringIdx;
       Elf32_Half six;
-      
+
       stringPtr = 0;
 
       for (id=0;id<dc;id++) {
@@ -491,7 +491,7 @@ struct EXTRACTOR_Keywords * libextractor_elf_extract(char * filename,
 			   phdr.p_offset,
 			   phdr.p_filesz,
 			   id,
-			   &dyn)) 
+			   &dyn))
 	  return prev;
 	if (DT_STRTAB == dyn.d_tag) {
 	  stringPtr = dyn.d_un.d_ptr;
@@ -523,7 +523,7 @@ struct EXTRACTOR_Keywords * libextractor_elf_extract(char * filename,
 			   phdr.p_offset,
 			   phdr.p_filesz,
 			   id,
-			   &dyn)) 
+			   &dyn))
 	  return prev;
 	switch(dyn.d_tag) {
 	case DT_RPATH: {
@@ -542,7 +542,7 @@ struct EXTRACTOR_Keywords * libextractor_elf_extract(char * filename,
 		       EXTRACTOR_SOURCE);
 	  }
 	  break;
-	}  
+	}
 	case DT_NEEDED: {
 	  const char * needed;
 
@@ -557,9 +557,9 @@ struct EXTRACTOR_Keywords * libextractor_elf_extract(char * filename,
 		       EXTRACTOR_DEPENDENCY);
 	  }
 	  break;
-	}  
 	}
-      }   
+	}
+      }
 
     }
   }

@@ -269,11 +269,11 @@ void hash(void * data,
   struct sha1_context ctx;
 
   sha1_starts( &ctx );
-  sha1_update( &ctx, 
+  sha1_update( &ctx,
 	       data,
 	       size);
 
-  sha1_finish( &ctx, hc->data );  
+  sha1_finish( &ctx, hc->data );
 }
 
 #ifdef TEST
@@ -285,7 +285,7 @@ void hash(void * data,
  * those are the standard FIPS 180-1 test vectors
  */
 
-static char *msg[] = 
+static char *msg[] =
 {
     "abc",
     "abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq",

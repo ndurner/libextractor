@@ -36,13 +36,13 @@
 #include "convert.h"
 
 
-static struct EXTRACTOR_Keywords * addKeyword(EXTRACTOR_KeywordList *oldhead, 
+static struct EXTRACTOR_Keywords * addKeyword(EXTRACTOR_KeywordList *oldhead,
 					      char *phrase,
 					      EXTRACTOR_KeywordType type) {
   EXTRACTOR_KeywordList * keyword;
-  
+
   keyword = (EXTRACTOR_KeywordList*) malloc(sizeof(EXTRACTOR_KeywordList));
-  keyword->next = oldhead;    
+  keyword->next = oldhead;
   keyword->keyword = phrase;
   keyword->keywordType = type;
   return keyword;
@@ -89,7 +89,7 @@ static Matches tmap[] = {
 
 
 /* mimetype = audio/mpeg */
-struct EXTRACTOR_Keywords * 
+struct EXTRACTOR_Keywords *
 libextractor_id3v24_extract(const char * filename,
 			    const unsigned char * data,
 			    const size_t size,
@@ -143,7 +143,7 @@ libextractor_id3v24_extract(const char * filename,
 	      ( (data[pos+5] & 0x7F) << 14 ) |
 	      ( (data[pos+6] & 0x7F) <<  7 ) |
 	      ( (data[pos+7] & 0x7F) <<  0 ) );
-  
+
     if ( (pos + 10 + csize > tsize) ||
 	 (csize > tsize) ||
 	 (csize == 0) )
@@ -186,7 +186,7 @@ libextractor_id3v24_extract(const char * filename,
 			       "UTF-16BE");
 	  break;
 	case 0x03 :
-	  word = malloc(csize+1);	  
+	  word = malloc(csize+1);	
 	  memcpy(word,
 		 &data[pos+11],
 		 csize);

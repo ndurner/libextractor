@@ -65,14 +65,14 @@ static void NEXT(size_t * end,
 		 const char * buf,
 		 const size_t size) {
   int quot;
-  
+
   quot = 0;
   while ( (*end < size) &&
-	  ( ((quot & 1) != 0) || 
+	  ( ((quot & 1) != 0) ||
 	    ( (buf[*end] != ' ') ) ) ) {
     if (buf[*end] == '\"')
       quot++;
-    (*end)++; 
+    (*end)++;
   }
   if ((quot & 1) == 1)
     (*end) = size+1;
@@ -84,7 +84,7 @@ static struct EXTRACTOR_Keywords * tryParse(const char * buf,
   int pos;
   size_t xsize;
   const size_t xlen = strlen(".TH ");
-  
+
   pos = 0;
   if (size < xlen)
     return prev;
@@ -100,12 +100,12 @@ static struct EXTRACTOR_Keywords * tryParse(const char * buf,
 	  (buf[xsize] != '\n') )
     xsize++;
   size = xsize;
-  
+
   if (0 == strncmp(".TH ",
 		   &buf[pos],
 		   xlen)) {
     int end;
-    
+
     pos += xlen;
     end = pos;
     NEXT(&end, buf, size); if (end > size) return prev;
@@ -113,19 +113,19 @@ static struct EXTRACTOR_Keywords * tryParse(const char * buf,
       prev = addKeyword(EXTRACTOR_TITLE,
 			stndup(&buf[pos],
 			       end - pos),
-			prev);      
+			prev);
       pos = end + 1;
     }
     if (pos >= size) return prev;
     end = pos;
-    NEXT(&end, buf, size); if (end > size) return prev;    
+    NEXT(&end, buf, size); if (end > size) return prev;
     if (buf[pos] == '\"')
       pos++;
     if ( (end-pos >= 1) && (end - pos <= 4) ) {
       switch (buf[pos]) {
       case '1':
 	prev = addKeyword(EXTRACTOR_CATEGORY,
-			  strdup(_("Commands")), 
+			  strdup(_("Commands")),
 			  prev);
 	break;
       case '2':
@@ -177,7 +177,7 @@ static struct EXTRACTOR_Keywords * tryParse(const char * buf,
       prev = addKeyword(EXTRACTOR_DATE,
 			stndup(&buf[pos],
 			       end - pos),
-			prev);      
+			prev);
       pos = end + 1;
     }
     end = pos;
@@ -186,7 +186,7 @@ static struct EXTRACTOR_Keywords * tryParse(const char * buf,
       prev = addKeyword(EXTRACTOR_SOURCE,
 			stndup(&buf[pos],
 			       end - pos),
-			prev);      
+			prev);
       pos = end + 1;
     }
     end = pos;
@@ -195,9 +195,9 @@ static struct EXTRACTOR_Keywords * tryParse(const char * buf,
       prev = addKeyword(EXTRACTOR_BOOKTITLE,
 			stndup(&buf[pos],
 			       end - pos),
-			prev);      
+			prev);
       pos = end + 1;
-    } 
+    }
   }
 
   return prev;
@@ -216,7 +216,7 @@ struct EXTRACTOR_Keywords * libextractor_man_extract(const char * filename,
   gzFile gz;
   char * buf;
   int len;
-  
+
   gz = gzopen(filename, "rb");
   buf = malloc(MAX_READ);
   len = gzread(gz, buf, MAX_READ);

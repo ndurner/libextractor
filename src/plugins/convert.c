@@ -40,7 +40,7 @@ char * convertToUtf8(const char * input,
   char * itmp;
   const char * i;
   iconv_t cd;
-  
+
   i = input;
   cd = iconv_open("UTF-8", charset);
   if (cd == (iconv_t) -1)
@@ -52,7 +52,7 @@ char * convertToUtf8(const char * input,
   if (iconv(cd,
 	    (char**) &input,
 	    &len,
-	    &itmp, 
+	    &itmp,
 	    &finSize) == (size_t)-1) {
     iconv_close(cd);
     free(tmp);

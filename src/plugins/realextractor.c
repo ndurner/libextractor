@@ -62,7 +62,7 @@ typedef struct {
     UINT8[copyright_len]  copyright;
     UINT16    comment_len;
     UINT8[comment_len]  comment;
-  */  
+  */
 } Content_Description;
 /* author, copyright and comment are supposed to be ASCII */
 
@@ -72,7 +72,7 @@ typedef struct {
 
 #define RAFF4_HEADER 0x2E7261FD
 
-static struct EXTRACTOR_Keywords * 
+static struct EXTRACTOR_Keywords *
 addKeyword(EXTRACTOR_KeywordType type,
 	   char * keyword,
 	   struct EXTRACTOR_Keywords * next) {
@@ -81,7 +81,7 @@ addKeyword(EXTRACTOR_KeywordType type,
   if (keyword == NULL)
     return next;
   result = malloc(sizeof(EXTRACTOR_KeywordList));
-  result->next = next;    
+  result->next = next;
   result->keyword = keyword;
   result->keywordType = type;
   return result;
@@ -90,38 +90,38 @@ addKeyword(EXTRACTOR_KeywordType type,
 static struct EXTRACTOR_Keywords *
 processMediaProperties(const Media_Properties * prop,
 		       struct EXTRACTOR_Keywords * prev) {
-  
+
   UINT8 mime_type_size;
   UINT32 prop_size;
   char * data;
 
   prop_size = ntohl(prop->size);
   if (prop_size <= sizeof(Media_Properties))
-    return prev;  
+    return prev;
   if (0 != prop->object_version)
     return prev;
   if (prop_size <= prop->stream_name_size + sizeof(UINT8)
       + sizeof(Media_Properties))
-    return prev;    
-  
+    return prev;
+
   mime_type_size = prop->data[prop->stream_name_size];
   if (prop_size <= prop->stream_name_size + sizeof(UINT8) +
       + mime_type_size + sizeof(Media_Properties))
-    return prev;  
-  
+    return prev;
+
   data = malloc(mime_type_size+1);
   memcpy(data,&prop->data[prop->stream_name_size+1],mime_type_size);
   data[mime_type_size]='\0';
-  
+
   return addKeyword(EXTRACTOR_MIMETYPE,
 		    data,
 		    prev);
 }
 
-static struct EXTRACTOR_Keywords * 
+static struct EXTRACTOR_Keywords *
 processContentDescription(const Content_Description * prop,
 			  struct EXTRACTOR_Keywords * prev) {
-  
+
 
   UINT16 author_len;
   UINT16 copyright_len;
@@ -135,7 +135,7 @@ processContentDescription(const Content_Description * prop,
 
   prop_size = ntohl(prop->size);
   if (prop_size <= sizeof(Content_Description))
-    return prev;  
+    return prev;
   if (0 != prop->object_version)
     return prev;
   title_len = ntohs(prop->title_len);
@@ -145,33 +145,33 @@ processContentDescription(const Content_Description * prop,
 
 
   author_len = ntohs( *(UINT16*)&prop->data[title_len]);
-   
-  if (prop_size <= title_len + sizeof(UINT16) 
+
+  if (prop_size <= title_len + sizeof(UINT16)
       + author_len + sizeof(Content_Description))
     return prev;
 
   copyright_len =ntohs(  *(UINT16*)&prop->data[title_len+
 					author_len+
 					sizeof(UINT16)]);
- 
-  if (prop_size <= title_len + 2*sizeof(UINT16) 
+
+  if (prop_size <= title_len + 2*sizeof(UINT16)
       + author_len + copyright_len + sizeof(Content_Description))
     return prev;
-  
+
   comment_len = ntohs( *(UINT16*)&prop->data[title_len+
 				      author_len+
 				      copyright_len+
 				      2*sizeof(UINT16)]);
-  
-  if (prop_size < title_len + 3*sizeof(UINT16) 
-      + author_len + copyright_len + comment_len 
+
+  if (prop_size < title_len + 3*sizeof(UINT16)
+      + author_len + copyright_len + comment_len
       + sizeof(Content_Description))
     return prev;
-  
+
   title = malloc(title_len+1);
   memcpy(title,&prop->data[0],title_len);
   title[title_len]='\0';
- 
+
   prev = addKeyword(EXTRACTOR_TITLE,
 		    title,
 		    prev);
@@ -209,34 +209,34 @@ processContentDescription(const Content_Description * prop,
   return prev;
 }
 
-typedef struct RAFF4_header { 
-  unsigned short version;     
-  unsigned short revision;    
-  unsigned short header_length; 
+typedef struct RAFF4_header {
+  unsigned short version;
+  unsigned short revision;
+  unsigned short header_length;
   unsigned short compression_type;
-  unsigned int granularity; 
-  unsigned int total_bytes; 
+  unsigned int granularity;
+  unsigned int total_bytes;
   unsigned int bytes_per_minute;
   unsigned int bytes_per_minute2;
-  unsigned short interleave_factor; 
+  unsigned short interleave_factor;
   unsigned short interleave_block_size;
-  unsigned int user_data;    
-  float sample_rate;         
+  unsigned int user_data;
+  float sample_rate;
   unsigned short sample_size;
-  unsigned short channels;  
-  unsigned char interleave_code[5]; 
+  unsigned short channels;
+  unsigned char interleave_code[5];
   unsigned char compression_code[5];
   unsigned char is_interleaved;
-  unsigned char copy_byte;    
-  unsigned char stream_type;  
+  unsigned char copy_byte;
+  unsigned char stream_type;
   /*
   unsigned char tlen;
   unsigned char title[tlen];
-  unsigned char alen;       
+  unsigned char alen;
   unsigned char author[alen];
-  unsigned char clen;        
+  unsigned char clen;
   unsigned char copyright[clen];
-  unsigned char aplen;  
+  unsigned char aplen;
   unsigned char app[aplen]; */
 } RAFF4_header;
 
@@ -259,20 +259,20 @@ struct EXTRACTOR_Keywords * libextractor_real_extract(unsigned char * filename,
   const unsigned char * pos;
   const unsigned char * end;
   struct EXTRACTOR_Keywords * result;
-  unsigned int length;  
+  unsigned int length;
   const RAFF4_header * hdr;
   unsigned char tlen;
   unsigned char alen;
   unsigned char clen;
   unsigned char aplen;
 
-  if (size <= 2*sizeof(int)) 
-    return prev;  
-  
-  if (RAFF4_HEADER == ntohl(*(int*)data)) {    
+  if (size <= 2*sizeof(int))
+    return prev;
+
+  if (RAFF4_HEADER == ntohl(*(int*)data)) {
     /* HELIX */
     if (size <= RAFF4_HDR_SIZE + 16 + 4)
-      return prev;    
+      return prev;
     prev = addKeyword(EXTRACTOR_MIMETYPE,
 		      strdup("audio/vnd.rn-realaudio"),
 		      prev);
@@ -287,7 +287,7 @@ struct EXTRACTOR_Keywords * libextractor_real_extract(unsigned char * filename,
       return prev;
     clen = data[18 + tlen + alen + RAFF4_HDR_SIZE];
     if (tlen + alen + clen + RAFF4_HDR_SIZE + 20 > size)
-      return prev; 
+      return prev;
     aplen = data[19 + tlen + clen + alen + RAFF4_HDR_SIZE];
     if (tlen + alen + clen + aplen + RAFF4_HDR_SIZE + 20 > size)
       return prev;
@@ -313,7 +313,7 @@ struct EXTRACTOR_Keywords * libextractor_real_extract(unsigned char * filename,
 			       aplen),
 			prev);
     return prev;
-    
+
   }
   if (REAL_HEADER == ntohl(*(int*)data)) {
     /* old real */
@@ -347,8 +347,8 @@ struct EXTRACTOR_Keywords * libextractor_real_extract(unsigned char * filename,
 	break;
       }
     }
-    return result;  
-  } 
+    return result;
+  }
   return prev;
 }
 

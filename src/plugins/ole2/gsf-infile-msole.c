@@ -362,11 +362,11 @@ ole_dirent_new (GsfInfileMSOle *ole, guint32 entry, MSOleDirent *parent)
 	if (prev == entry) {
 		g_warning ("Invalid OLE file with a cycle in its directory tree");
 	} else
-		ole_dirent_new (ole, prev, parent); 
+		ole_dirent_new (ole, prev, parent);
 	if (next == entry) {
 		g_warning ("Invalid OLE file with a cycle in its directory tree");
 	} else
-		ole_dirent_new (ole, next, parent); 
+		ole_dirent_new (ole, next, parent);
 
 	if (dirent->is_directory)
 		ole_dirent_new (ole, child, dirent);
@@ -713,7 +713,7 @@ gsf_infile_msole_seek (GsfInput *input, gsf_off_t offset, GSeekType whence)
 {
 	GsfInfileMSOle *ole = GSF_INFILE_MSOLE (input);
 
-	(void) offset; 
+	(void) offset;
 	(void) whence;
 
 	ole->cur_block = BAT_MAGIC_UNUSED;
@@ -776,7 +776,7 @@ gsf_infile_msole_new_child (GsfInfileMSOle *parent,
 			if (gsf_input_seek (GSF_INPUT (sb_file),
 				(gsf_off_t)(child->bat.block [i] << info->sb.shift), G_SEEK_SET) < 0 ||
 			    (data = gsf_input_read (GSF_INPUT (sb_file),
-				info->sb.size, 
+				info->sb.size,
 				child->stream.buf + (i << info->sb.shift))) == NULL) {
 
 				g_warning ("failure reading block %d", i);
@@ -851,7 +851,7 @@ gsf_infile_msole_init (GObject *obj)
 	ole->bat.num_blocks	= 0;
 	ole->cur_block		= BAT_MAGIC_UNUSED;
 	ole->stream.buf		= NULL;
-	ole->stream.buf_size	= 0; 
+	ole->stream.buf_size	= 0;
 }
 
 static void

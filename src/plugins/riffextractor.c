@@ -17,7 +17,7 @@
      Free Software Foundation, Inc., 59 Temple Place - Suite 330,
      Boston, MA 02111-1307, USA.
 
-     This code was based on AVInfo 1.0 alpha 11 
+     This code was based on AVInfo 1.0 alpha 11
      (c) George Shuklin, gs]AT[shounen.ru, 2002-2004
      http://shounen.ru/soft/avinfo/
 
@@ -35,7 +35,7 @@ static void addKeyword(struct EXTRACTOR_Keywords ** list,
 		       EXTRACTOR_KeywordType type) {
   EXTRACTOR_KeywordList * next;
   next = malloc(sizeof(EXTRACTOR_KeywordList));
-  next->next = *list;    
+  next->next = *list;
   next->keyword = keyword;
   next->keywordType = type;
   *list = next;
@@ -62,7 +62,7 @@ static struct EXTRACTOR_Keywords * riffparse_INFO(char * buffer,
     word[c-8] = '\0';
     addKeyword(&prev,
 	       strdup(buffer+c),
-	       EXTRACTOR_UNKNOWN); /* eh, what exactly is it */    
+	       EXTRACTOR_UNKNOWN); /* eh, what exactly is it */
   }
   return prev;
 }
@@ -71,12 +71,12 @@ static struct EXTRACTOR_Keywords * riffparse_INFO(char * buffer,
 
 /**
  * Read the specified number of bytes as a little-endian (least
- * significant byte first) integer. 
+ * significant byte first) integer.
  */
 static unsigned int fread_le(char * data) {
   int x;
   unsigned int result = 0;
-  
+
   for(x=0;x<4; x++)
     result |= ((unsigned char)data[x]) << (x*8);
   return result;
@@ -103,17 +103,17 @@ struct EXTRACTOR_Keywords * libextractor_riff_extract(char * filename,
   unsigned int height;
   char codec[5];
   char * format;
-  
+
   if (xsize < 32)
     return prev;
 
-  if ( (memcmp(&xdata[0], 
+  if ( (memcmp(&xdata[0],
 	       "RIFF", 4) !=0) ||
-       (memcmp(&xdata[8], 
-	       "AVI ", 
+       (memcmp(&xdata[8],
+	       "AVI ",
 	       4) !=0) )
     return prev;
-  
+
   if (memcmp(&xdata[12],
 	     "LIST",
 	     4) != 0)
@@ -132,11 +132,11 @@ struct EXTRACTOR_Keywords * libextractor_riff_extract(char * filename,
 					 * 1000 / fps);
   width = fread_le(&xdata[64]);
   height = fread_le(&xdata[68]);
-  
+
 
   /* pos: begin of video stream header */
   pos = blockLen + 32;
-  
+
   if ( (pos < blockLen) ||
        (pos + 32 > xsize) ||
        (pos > xsize) )
@@ -160,8 +160,8 @@ struct EXTRACTOR_Keywords * libextractor_riff_extract(char * filename,
 	 &xdata[pos+24],
 	 4);
   codec[4] = '\0';
-  
-  format = malloc(256); 
+
+  format = malloc(256);
   snprintf(format,
 	   256,
 	   _("codec: %s, %u fps, %u ms"),
@@ -171,7 +171,7 @@ struct EXTRACTOR_Keywords * libextractor_riff_extract(char * filename,
   addKeyword(&prev,
 	     format,
 	     EXTRACTOR_FORMAT);
-  format = malloc(256); 
+  format = malloc(256);
   snprintf(format,
 	   256,
 	   "%ux%u",

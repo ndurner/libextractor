@@ -18,7 +18,7 @@
      Free Software Foundation, Inc., 59 Temple Place - Suite 330,
      Boston, MA 02111-1307, USA.
 
-     This code was based on AVInfo 1.0 alpha 11 
+     This code was based on AVInfo 1.0 alpha 11
      (c) George Shuklin, gs]AT[shounen.ru, 2002-2004
      http://shounen.ru/soft/avinfo/
 
@@ -36,7 +36,7 @@ static void addKeyword(struct EXTRACTOR_Keywords ** list,
 		       EXTRACTOR_KeywordType type) {
   EXTRACTOR_KeywordList * next;
   next = malloc(sizeof(EXTRACTOR_KeywordList));
-  next->next = *list;    
+  next->next = *list;
   next->keyword = keyword;
   next->keywordType = type;
   *list = next;
@@ -54,9 +54,9 @@ static double round_double(double num) {
 static unsigned int fread_be(unsigned char * data) {
   int x;
   unsigned int result = 0;
-  
+
   for (x=3;x>=0;x--)
-    result |= data[4-x] << (x*8); 
+    result |= data[4-x] << (x*8);
   return result;
 }
 
@@ -79,7 +79,7 @@ struct EXTRACTOR_Keywords * libextractor_mpeg_extract(char * filename,
     return prev;
 
   if ( ! ( (xdata[0]==0x00) &&
-	   (xdata[1]==0x00) && 
+	   (xdata[1]==0x00) &&
 	   (xdata[2]==0x01) &&
 	   ( (xdata[3]==0xB3) || (xdata[3]==0xBA) ) ) )
     return prev;
@@ -94,7 +94,7 @@ struct EXTRACTOR_Keywords * libextractor_mpeg_extract(char * filename,
       version = 2;
     else
       return prev; /* unsupported mpeg version */
-    
+
     if (version == 1) {
       bitrate = round_double((double)((fread_be(&xdata[8]) & 0x7FFFFE) >> 1) * 0.4);
       pos = 12;
@@ -113,7 +113,7 @@ struct EXTRACTOR_Keywords * libextractor_mpeg_extract(char * filename,
 	  if (pos + 4 >= xsize)
 	    return prev;
 	  temp = fread_be(&xdata[pos]);
-	} 
+	}
       } else {
 	if (pos + 4 >= xsize)
 	  return prev;
@@ -124,8 +124,8 @@ struct EXTRACTOR_Keywords * libextractor_mpeg_extract(char * filename,
 	temp = fread_be(&xdata[pos]);	
       }
     }
-    pos += 4;  
-  
+    pos += 4;
+
     if (pos + 4 >= xsize)
       return prev;
     /* Now read byte by byte until we find the 0x000001B3 instead of actually
@@ -140,14 +140,14 @@ struct EXTRACTOR_Keywords * libextractor_mpeg_extract(char * filename,
 	return prev;
       temp |= xdata[pos++];
     }
-  } else 
+  } else
     pos = 4; /* video only */
-  
+
   if (pos + 16 >= xsize)
     return prev;
   width = (xdata[pos] << 4) + (xdata[pos+1] & 0xF);
   height = ((xdata[pos+1] & 0xF0) << 4) + xdata[pos+2];
- 
+
   addKeyword(&prev,
 	     strdup("video/mpeg"),
 	     EXTRACTOR_MIMETYPE);

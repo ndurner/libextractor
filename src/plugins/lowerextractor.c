@@ -26,7 +26,7 @@ static void addKeyword(struct EXTRACTOR_Keywords ** list,
 	       EXTRACTOR_KeywordType type) {
   EXTRACTOR_KeywordList * next;
   next = malloc(sizeof(EXTRACTOR_KeywordList));
-  next->next = *list;    
+  next->next = *list;
   next->keyword = strdup(keyword);
   next->keywordType = type;
   *list = next;

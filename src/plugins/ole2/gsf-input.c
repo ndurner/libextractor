@@ -160,7 +160,7 @@ GSF_CLASS_ABSTRACT (GsfInput, gsf_input,
 
 /**
  * gsf_input_name :
- * @input : 
+ * @input :
  *
  * Returns @input's name in utf8 form, DO NOT FREE THIS STRING
  **/
@@ -173,7 +173,7 @@ gsf_input_name (GsfInput *input)
 
 /**
  * gsf_input_container :
- * @input : 
+ * @input :
  *
  * Returns, but does not add a reference to @input's container.
  * Potentially NULL
@@ -429,7 +429,7 @@ gsf_input_seek_emulate (GsfInput *input, gsf_off_t pos)
  *
  * Returns : A utility quark to flag a GError as being an input problem.
  */
-GQuark 
+GQuark
 gsf_input_error (void)
 {
 	static GQuark quark;
@@ -479,7 +479,7 @@ gsf_input_uncompress (GsfInput *src)
 			if (res) {
 				g_object_unref (G_OBJECT (src));
 				return gsf_input_uncompress (res);
-			} 
+			}
 		}
 	}
 #endif
@@ -536,7 +536,7 @@ gsf_input_new_for_uri (char const * uri, GError ** err)
 		if (len > 7 && !strncmp (uri, "file:/", 6)) {
 			/* dumb attempt to translate this into a local path */
 			input = gsf_input_stdio_new (uri+7, err);
-		} 
+		}
 		/* else: unknown or unhandled protocol - bail */
 #endif
 	}
