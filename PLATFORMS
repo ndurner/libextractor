@@ -1,7 +1,7 @@
 This file lists the known problems with libextractor on various
 platforms.  Let us know if you know more about it than we do.
 
-Linux (x86):
+GNU/Linux (x86):
 - perfect
 
 FreeBSD (x86):
@@ -10,10 +10,10 @@ FreeBSD (x86):
 OpenBSD/NetBSD:
 - unknown
 
-Linux (Ultra Sparc):
+GNU/Linux (Ultra Sparc):
 - perfect 
 
-Linux (Alpha):
+GNU/Linux (Alpha):
 - perfect
 
 Solaris 8 (SunOS 5.8, Sparc SunFire 880):

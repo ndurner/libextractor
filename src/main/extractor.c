@@ -839,7 +839,7 @@ EXTRACTOR_countKeywords (EXTRACTOR_KeywordList * keywords)
 #include <jni.h>
 
 /* gcj's jni.h does not define JNIEXPORT/JNICALL (at least
- * not in my version).  Sun defines it to 'empty' in Linux,
+ * not in my version).  Sun defines it to 'empty' on GNU/Linux,
  * so that should work */
 #ifndef JNIEXPORT
 #define JNIEXPORT
