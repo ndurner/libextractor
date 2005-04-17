@@ -168,6 +168,7 @@ libextractor_id3v23_extract(const char * filename,
 	  pos++;
 	  csize--;
 	}
+	csize--;
 	/* this byte describes the encoding
 	   try to convert strings to UTF-8
 	   if it fails, then forget it */
@@ -191,7 +192,6 @@ libextractor_id3v23_extract(const char * filename,
 	  break;
 	}
 	pos++;
-	csize--;
 	if ( (word != NULL) &&
 	     (strlen(word) > 0) ) {
 	  prev = addKeyword(prev,
