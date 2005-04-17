@@ -10,7 +10,7 @@ Core:
 
 Incomplete code (missing features):
 * RIFF (idx1 attribute)
-* IDv2{3,4} (some attributes)
+* IDv2{3,4} (some attributes, make testcases in test/id3v2/ work)
 * StarOffice sdw (some attributes, see doc/)
 * man pages (interpret sections for authors, brief description)
 * pdf: full-text extraction!
