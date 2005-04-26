@@ -1,6 +1,6 @@
 # Process this file with autoconf to produce a configure script.
 AC_PREREQ(2.57)
-AC_INIT([libextractor], [0.4.2], [libextractor@cs.purdue.edu])
+AC_INIT([libextractor], [0.4.2], [bug-libextractor@gnu.org])
 AC_REVISION($Revision: 1.67 $)
 AM_INIT_AUTOMAKE([libextractor], [0.4.2])
 AM_CONFIG_HEADER(src/include/config.h)
