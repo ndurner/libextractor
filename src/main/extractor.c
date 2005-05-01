@@ -227,8 +227,8 @@ void __attribute__ ((destructor)) le_ltdl_fini(void) {
 /**
  * Open a file
  */
-static int OPEN(const char *filename,
-		int oflag, ...) {
+int fileopen(const char *filename, int oflag, ...)
+{
   int mode;
   char *fn;
 
@@ -236,7 +236,7 @@ static int OPEN(const char *filename,
   char szFile[_MAX_PATH + 1];
   long lRet;
 
-  if ((lRet = conv_to_win_path(filename, szFile)) != ERROR_SUCCESS)
+  if ((lRet = plibc_conv_to_win_path(filename, szFile)) != ERROR_SUCCESS)
   {
     errno = ENOENT;
     SetLastError(lRet);
@@ -552,9 +552,9 @@ EXTRACTOR_getKeywords (EXTRACTOR_ExtractorList * extractor,
   size_t size;
 
 #ifdef O_LARGEFILE
-  file = OPEN(filename, O_RDONLY | O_LARGEFILE);
+  file = fileopen(filename, O_RDONLY | O_LARGEFILE);
 #else
-  file = OPEN(filename, O_RDONLY);
+  file = fileopen(filename, O_RDONLY);
 #endif
   if (-1 == file)
     return NULL;

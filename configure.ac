@@ -58,7 +58,7 @@ mingw*)
      AC_DEFINE_UNQUOTED(MINGW,1,[This is a MinGW system])
      AC_DEFINE_UNQUOTED(WINDOWS,1,[This is a Windows system])
      AC_CHECK_LIB(intl, gettext)
-     LDFLAGS="$LDFLAGS -no-undefined -Wl,--export-all-symbols -lws2_32"
+     LDFLAGS="$LDFLAGS -no-undefined -Wl,--export-all-symbols -lws2_32 -lplibc"
      ;;
 *)
      AC_MSG_RESULT(Unrecognised OS $host_os)
