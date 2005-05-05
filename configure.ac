@@ -102,7 +102,7 @@ AC_CHECK_LIB(stdc++, fclose)
 XTRA_CPPLIBS=$LIBS $XTRA_CPPLIBS
 
 AC_CHECK_HEADERS(langinfo.h)
-
+AC_CHECK_LIB(dl, dlopen)
 LIBS=$LIBSOLD
 # FIXME: allow --with-oggvorbis=PFX
 
