@@ -65,8 +65,12 @@ static PyObject * EXTRACTOR_PY_extract(PyObject * self,
 		   &filename,
 		   &py_clzz);
   ex = PyCObject_AsVoidPtr(py_exts);
+
+  Py_BEGIN_ALLOW_THREADS;
   keys = EXTRACTOR_getKeywords(ex,
 			       filename);
+  Py_END_ALLOW_THREADS;
+
   ret = PyList_New(0);
   pos = keys;
   while (pos != NULL) {

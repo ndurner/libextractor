@@ -16,19 +16,19 @@ class Extractor(object):
     """
     
     def __init__(self):
-        self.plugins = _extractor.loadDefaultLibraries()
+        self.__plugins = _extractor.loadDefaultLibraries()
     def __del__(self):
-        _extractor.removeAll(self.plugins)
+        _extractor.removeAll(self.__plugins)
 #    def load(plugs):
-#        self.plugins = _extractor.load(self.plugins, plugs)
+#        self.__plugins = _extractor.load(self.__plugins, plugs)
 #        return None
 #    def unload(plugs):
-#        self.plugins = _extractor.unload(self.plugins, plugs)
+#        self.__plugins = _extractor.unload(self.__plugins, plugs)
 #        return None
     def extract(self,filename):
         """Pass a filename to extract keywords.
         """
-        return _extractor.extract(self.plugins, filename, Keyword)
+        return _extractor.extract(self.__plugins, filename, Keyword)
 
 class Keyword(object):
     def __init__(self,type,value):
