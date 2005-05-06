@@ -16,8 +16,8 @@
      along with libextractor; see the file COPYING.  If not, write to the
      Free Software Foundation, Inc., 59 Temple Place - Suite 330,
      Boston, MA 02111-1307, USA.
- **/
-package org.ovmj.libextractor;
+ */
+package org.gnunet.libextractor;
 
 import java.util.Vector;
 
