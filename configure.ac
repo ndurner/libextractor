@@ -227,6 +227,26 @@ else
 fi
         
 
+
+printable=1
+AC_MSG_CHECKING([whether to enable printable extractors])
+AC_ARG_ENABLE(printable,
+ [AC_HELP_STRING([--enable-printable],[Enable printable support])
+  AC_HELP_STRING([--disable-printable],[Disable printable support])],
+ [case "$enableval" in
+  no)	AC_MSG_RESULT(no)
+        printable=0
+	;;
+  *)    AC_MSG_RESULT(yes)
+        printable=1
+	;;
+  esac],
+  [     AC_MSG_RESULT(yes)
+        printable=1])
+AM_CONDITIONAL(HAVE_PRINTABLE, test x$printable != x0)
+
+
+
 AC_SUBST(CPPFLAGS)
 AC_SUBST(LDFLAGS)
 AC_SUBST(XTRA_CPPLIBS)

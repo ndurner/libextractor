@@ -14,7 +14,11 @@ if HAVE_WAND
  thumbdir=thumbnail
 endif
 
-SUBDIRS = . oo printable hash $(oledir) rpm pdf $(thumbdir)
+if HAVE_PRINTABLE
+ printdir=printable
+endif
+
+SUBDIRS = . oo $(printdir) hash $(oledir) rpm pdf $(thumbdir)
 
 PLUGINFLAGS = -export-dynamic -avoid-version -module
 
