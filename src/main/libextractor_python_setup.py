@@ -1,11 +1,13 @@
 from distutils.core import Extension, setup
 
-cmod = Extension(sources=["libextractor_python.c"],
-                 module="_extractor")
+cmod = Extension("_extractor",["libextractor_python.c"],
+                 libraries=["extractor"],
+                 include_dirs=["../include"])
 
 setup(name="Extractor",
-      version="0.1",
-      extension=[cmod]
-      sources=["Extractor.py"],
-      author="Christian Grothoff, Heiko Wundram")
+      version="0.5.0",
+      ext_modules=[cmod],
+      py_modules=["Extractor"],
+      author="Christian Grothoff, Heiko Wundram",
+      author_email="libextractor@gnu.org")
 

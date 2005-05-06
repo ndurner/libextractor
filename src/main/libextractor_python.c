@@ -18,8 +18,8 @@
      Boston, MA 02111-1307, USA.
  */
 
-#include "extractor.h"
 #include <Python.h>
+#include "extractor.h"
 
 static PyObject * EXTRACTOR_PY_loadDefaultLibraries(PyObject * self,
 						    PyObject * args) {

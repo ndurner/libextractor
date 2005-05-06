@@ -58,4 +58,4 @@ extract_SOURCES = \
 all-local:
 	python libextractor_python_setup.py build
 install-exec-local:
-	python libextractor_python_setup.py --prefix=$(DESTDIR) install
+	python libextractor_python_setup.py install --prefix=$(PYTHON_PREFIX)

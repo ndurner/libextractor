@@ -1,28 +1,49 @@
+"""Extractor.py
+
+Modul docstring...
+"""
+
 import _extractor
 
+__all__ = ["Extractor","Keyword"]
+__author__ = "Christian Grothoff, Heiko Wundram"
+__version__ = "0.5.0"
+__license__ = "GPL"
+__date__ = "5/5/2005"
+
 class Extractor(object):
+    """
+    """
+    
     def __init__(self):
-        self.plugins = _extractor.EXTRACTOR_PY_loadDefaultLibraries()
+        self.plugins = _extractor.loadDefaultLibraries()
     def __del__(self):
-        extractor.EXTRACTOR_PY_removeAll(self.plugins)
+        _extractor.removeAll(self.plugins)
 #    def load(plugs):
-#        self.plugins = _extractor.EXTRACTOR_PY_load(self.plugins, plugs)
+#        self.plugins = _extractor.load(self.plugins, plugs)
 #        return None
 #    def unload(plugs):
-#        self.plugins = _extractor.EXTRACTOR_PY_unload(self.plugins, plugs)
+#        self.plugins = _extractor.unload(self.plugins, plugs)
 #        return None
     def extract(self,filename):
-        return _extractor.EXTRACTOR_PY_extract(self.plugins, filename, Keyword)
+        """Pass a filename to extract keywords.
+        """
+        return _extractor.extract(self.plugins, filename, Keyword)
 
 class Keyword(object):
     def __init__(self,type,value):
-        self.type = type
-        self.value = value.decode("utf-8")
+        self.__type = type
+        self.__value = value.decode("utf-8")
     def __repr__(self):
-        return u"%s(%i,%s)" % (self.__class__.__name__,self.type,self.value)
+        return u"%s(%i,%r)" % (self.__class__.__name__,self.__type,self.__value)
     def __str__(self):
-        return u"%s: %s" % (self.getType(), self.getValue())
-    def getType(self):
-        return _extractor.EXTRACTOR_PY_getKeywordTypeAsStringType(self.type).decode("utf-8")
-    def getValue(self):
-        return self.value
+        return u"%s: %s" % (self.__getType(), self.__getValue())
+    def __getType(self):
+        return _extractor.getKeywordTypeAsString(self.__type).decode("utf-8")
+    def __getValue(self):
+        return self.__value
+    def __hash__(self):
+        return hash(self.__value)+self.__type
+
+    type = property(__getType,None,None,"Type of the Keyword (i.e. author, title)")
+    value = property(__getValue,None,None,"Value of the Keyword (i.e. 'The GNU GPL')")

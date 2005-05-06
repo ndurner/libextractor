@@ -849,35 +849,35 @@ EXTRACTOR_countKeywords (EXTRACTOR_KeywordList * keywords)
 #define JNICALL
 #endif
 
-#include "org_ovmj_libextractor_Extractor.h"
+#include "org_gnunet_libextractor_Extractor.h"
 
 /*
- * Class:     org_ovmj_libextractor_Extractor
+ * Class:     org_gnunet_libextractor_Extractor
  * Method:    loadDefaultInternal
  * Signature: ()J
  */
-JNIEXPORT jlong JNICALL Java_org_ovmj_libextractor_Extractor_loadDefaultInternal(JNIEnv * env,
+JNIEXPORT jlong JNICALL Java_org_gnunet_libextractor_Extractor_loadDefaultInternal(JNIEnv * env,
 										 jclass c) {
   return (jlong) (long) EXTRACTOR_loadDefaultLibraries();
 }
 
 /*
- * Class:     org_ovmj_libextractor_Extractor
+ * Class:     org_gnunet_libextractor_Extractor
  * Method:    unloadInternal
  * Signature: (J)V
  */
-JNIEXPORT void JNICALL Java_org_ovmj_libextractor_Extractor_unloadInternal(JNIEnv * env,
+JNIEXPORT void JNICALL Java_org_gnunet_libextractor_Extractor_unloadInternal(JNIEnv * env,
 									   jclass c,
 									   jlong arg) {
   EXTRACTOR_removeAll((EXTRACTOR_ExtractorList*) (long) arg);
 }
 
 /*
- * Class:     org_ovmj_libextractor_Extractor
+ * Class:     org_gnunet_libextractor_Extractor
  * Method:    extractInternal
  * Signature: (JLjava/lang/String;)J
  */
-JNIEXPORT jlong JNICALL Java_org_ovmj_libextractor_Extractor_extractInternal(JNIEnv * env,
+JNIEXPORT jlong JNICALL Java_org_gnunet_libextractor_Extractor_extractInternal(JNIEnv * env,
 									     jclass c,
 									     jlong arg,
 									     jstring f) {
@@ -894,22 +894,22 @@ JNIEXPORT jlong JNICALL Java_org_ovmj_libextractor_Extractor_extractInternal(JNI
 }
 
 /*
- * Class:     org_ovmj_libextractor_Extractor
+ * Class:     org_gnunet_libextractor_Extractor
  * Method:    freeInternal
  * Signature: (J)V
  */
-JNIEXPORT void JNICALL Java_org_ovmj_libextractor_Extractor_freeInternal(JNIEnv * env,
+JNIEXPORT void JNICALL Java_org_gnunet_libextractor_Extractor_freeInternal(JNIEnv * env,
 									 jclass c,
 									 jlong list) {
   EXTRACTOR_freeKeywords( (EXTRACTOR_KeywordList*) (long) list);
 }
 
 /*
- * Class:     org_ovmj_libextractor_Extractor
+ * Class:     org_gnunet_libextractor_Extractor
  * Method:    typeInternal
  * Signature: (J)I
  */
-JNIEXPORT jint JNICALL Java_org_ovmj_libextractor_Extractor_typeInternal(JNIEnv * env,
+JNIEXPORT jint JNICALL Java_org_gnunet_libextractor_Extractor_typeInternal(JNIEnv * env,
 									 jclass c,
 									 jlong list) {
   if (list == 0)
@@ -918,11 +918,11 @@ JNIEXPORT jint JNICALL Java_org_ovmj_libextractor_Extractor_typeInternal(JNIEnv 
 }
 
 /*
- * Class:     org_ovmj_libextractor_Extractor
+ * Class:     org_gnunet_libextractor_Extractor
  * Method:    keywordInternal
  * Signature: (J)Ljava/lang/String;
  */
-JNIEXPORT jstring JNICALL Java_org_ovmj_libextractor_Extractor_keywordInternal(JNIEnv * env,
+JNIEXPORT jstring JNICALL Java_org_gnunet_libextractor_Extractor_keywordInternal(JNIEnv * env,
 									       jclass c,
 									       jlong list) {
   char * str;
@@ -933,11 +933,11 @@ JNIEXPORT jstring JNICALL Java_org_ovmj_libextractor_Extractor_keywordInternal(J
 }
 
 /*
- * Class:     org_ovmj_libextractor_Extractor
+ * Class:     org_gnunet_libextractor_Extractor
  * Method:    nextInternal
  * Signature: (J)J
  */
-JNIEXPORT jlong JNICALL Java_org_ovmj_libextractor_Extractor_nextInternal(JNIEnv * env,
+JNIEXPORT jlong JNICALL Java_org_gnunet_libextractor_Extractor_nextInternal(JNIEnv * env,
 									  jclass j,
 									  jlong list) {
   if (list == 0)
@@ -946,11 +946,11 @@ JNIEXPORT jlong JNICALL Java_org_ovmj_libextractor_Extractor_nextInternal(JNIEnv
 }
 
 /*
- * Class:     org_ovmj_libextractor_Extractor
+ * Class:     org_gnunet_libextractor_Extractor
  * Method:    getTypeAsStringInternal
  * Signature: (I)Ljava/lang/String;
  */
-JNIEXPORT jstring JNICALL Java_org_ovmj_libextractor_Extractor_getTypeAsStringInternal(JNIEnv * env,
+JNIEXPORT jstring JNICALL Java_org_gnunet_libextractor_Extractor_getTypeAsStringInternal(JNIEnv * env,
 										       jclass c,
 										       jint type) {
   const char * str;
@@ -965,31 +965,31 @@ JNIEXPORT jstring JNICALL Java_org_ovmj_libextractor_Extractor_getTypeAsStringIn
 
 
 /*
- * Class:     org_ovmj_libextractor_Extractor
+ * Class:     org_gnunet_libextractor_Extractor
  * Method:    getVersionInternal
  * Signature: ()I
  */
-JNIEXPORT jint JNICALL Java_org_ovmj_libextractor_Extractor_getVersionInternal(JNIEnv * env,
+JNIEXPORT jint JNICALL Java_org_gnunet_libextractor_Extractor_getVersionInternal(JNIEnv * env,
 									       jclass c) {
   return EXTRACTOR_VERSION;
 }
 
 /*
- * Class:     org_ovmj_libextractor_Extractor
+ * Class:     org_gnunet_libextractor_Extractor
  * Method:    getMaxTypeInternal
  * Signature: ()I
  */
-JNIEXPORT jint JNICALL Java_org_ovmj_libextractor_Extractor_getMaxTypeInternal(JNIEnv * env,
+JNIEXPORT jint JNICALL Java_org_gnunet_libextractor_Extractor_getMaxTypeInternal(JNIEnv * env,
 									       jclass c) {
   return HIGHEST_TYPE_NUMBER;
 }
 
 /*
- * Class:     org_ovmj_libextractor_Extractor
+ * Class:     org_gnunet_libextractor_Extractor
  * Method:    unloadPlugin
  * Signature: (JLjava/lang/String;)J
  */
-JNIEXPORT jlong JNICALL Java_org_ovmj_libextractor_Extractor_unloadPlugin(JNIEnv * env,
+JNIEXPORT jlong JNICALL Java_org_gnunet_libextractor_Extractor_unloadPlugin(JNIEnv * env,
 									  jclass c,
 									  jlong handle,
 									  jstring name) {
@@ -1006,11 +1006,11 @@ JNIEXPORT jlong JNICALL Java_org_ovmj_libextractor_Extractor_unloadPlugin(JNIEnv
 }
 
 /*
- * Class:     org_ovmj_libextractor_Extractor
+ * Class:     org_gnunet_libextractor_Extractor
  * Method:    loadPlugin
  * Signature: (JLjava/lang/String;Z)J
  */
-JNIEXPORT jlong JNICALL Java_org_ovmj_libextractor_Extractor_loadPlugin(JNIEnv * env,
+JNIEXPORT jlong JNICALL Java_org_gnunet_libextractor_Extractor_loadPlugin(JNIEnv * env,
 									jclass c,
 									jlong handle,
 									jstring name,
