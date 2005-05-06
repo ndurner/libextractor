@@ -18,8 +18,8 @@
      Boston, MA 02111-1307, USA.
  */
 
-
-#include <python/Python.h>
+#include "extractor.h"
+#include <Python.h>
 
 static PyObject * EXTRACTOR_PY_loadDefaultLibraries(PyObject * self,
 						    PyObject * args) {
@@ -51,23 +51,33 @@ static PyObject * EXTRACTOR_PY_getKeywordTypeAsString(PyObject * self,
 static PyObject * EXTRACTOR_PY_extract(PyObject * self,
 				       PyObject * args) {
   PyObject * py_exts;
+  PyObject * py_clzz;
+  PyObject * py_elem;
   char * filename;
   EXTRACTOR_ExtractorList * ex;
   EXTRACTOR_KeywordList * keys;
   EXTRACTOR_KeywordList * pos;
   PyObject * ret;
 
-  PyArg_ParseTuple(args, "Os", &py_exts, &filename);
+  PyArg_ParseTuple(args, 
+		   "OsO", 
+		   &py_exts, 
+		   &filename,
+		   &py_clzz);
   ex = PyCObject_AsVoidPtr(py_exts);
   keys = EXTRACTOR_getKeywords(ex,
 			       filename);
   ret = PyList_New(0);
   pos = keys;
   while (pos != NULL) {
+    py_elem = PyObject_Call(py_clzz, 
+ 		            Py_BuildValue("(OO)",
+				          PyInt_FromLong((long)pos->keywordType),
+			                  PyString_FromString(pos->keyword)),
+                            NULL);
     PyList_Append(ret,
-		  Py_BuildValue("(OO)",
-				PyInt_FromLong((long)pos->keywordType),
-				PyString_FromString(pos->keyword)));
+                  py_elem);
+    Py_DECREF(py_elem);
     pos = pos->next;
   }
   EXTRACTOR_freeKeywords(keys);
@@ -75,19 +85,27 @@ static PyObject * EXTRACTOR_PY_extract(PyObject * self,
 }
 
 static PyMethodDef ExtractorMethods[] = {
-  { "getKeywordTypeAsString", EXTRACTOR_PY_getKeywordTypeAsString,  METH_VARARGS,
+  { "getKeywordTypeAsString", 
+    EXTRACTOR_PY_getKeywordTypeAsString,  
+    METH_VARARGS,
     "convert a keyword type (int) to the string describing the type" },
-  { "loadDefaultLibraries", EXTRACTOR_PY_loadDefaultLibraries,  METH_VARARGS,
+  { "loadDefaultLibraries", 
+    EXTRACTOR_PY_loadDefaultLibraries,  
+    METH_VARARGS,
     "load the default set of libextractor plugins (returns the plugins)" },
-  { "removeAll", EXTRACTOR_PY_removeAll,  METH_VARARGS,
+  { "removeAll", 
+    EXTRACTOR_PY_removeAll,  
+    METH_VARARGS,
     "unload the given set of libextractor plugins (pass plugins as argument)" },
-  { "extract", EXTRACTOR_PY_extract,  METH_VARARGS,
+  { "extract", 
+    EXTRACTOR_PY_extract,  
+    METH_VARARGS,
     "extract meta data from a file (pass plugins and filename as arguments, returns vector of meta-data)" },
   { NULL, NULL, 0, NULL }
 };
 
 PyMODINIT_FUNC
-initextractor() {
-  Py_InitModule("extractor", ExtractorMethods);
+init_extractor() {
+  Py_InitModule("_extractor", ExtractorMethods);
 }
 

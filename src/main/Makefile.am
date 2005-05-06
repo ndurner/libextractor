@@ -34,6 +34,8 @@ libextractor_la_DEPENDENCIES = \
 EXTRA_DIST = \
   winproc.c \
   libextractor_python.c \
+  Extractor.py \
+  libextractor_python_setup.py \
   extract.py \
   iconv.c
 
@@ -51,3 +53,9 @@ extract_SOURCES = \
   getopt.c \
   getopt.h \
   getopt1.c 
+
+
+all-local:
+	python libextractor_python_setup.py build
+install-exec-local:
+	python libextractor_python_setup.py --prefix=$(DESTDIR) install
