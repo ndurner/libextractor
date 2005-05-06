@@ -37,6 +37,42 @@ static PyObject * EXTRACTOR_PY_removeAll(PyObject * self,
   return Py_None;
 }
 
+static PyObject * EXTRACTOR_PY_load(PyObject * self,
+				    PyObject * args) {
+  PyObject * py_exts;
+  char * name;
+  EXTRACTOR_ExtractorList * plugins;
+
+  PyArg_ParseTuple(args, 
+		   "Os", 
+		   &py_exts,
+		   &name);
+
+  plugins = 
+    EXTRACTOR_loadConfigLibraries((EXTRACTOR_ExtractorList*) PyCObject_AsVoidPtr(py_exts),
+				  name);
+  return PyCObject_FromVoidPtr(plugins, NULL);
+}
+
+
+static PyObject * EXTRACTOR_PY_unload(PyObject * self,
+				      PyObject * args) {
+  PyObject * py_exts;
+  char * name;
+  EXTRACTOR_ExtractorList * plugins;
+
+  PyArg_ParseTuple(args, 
+		   "Os", 
+		   &py_exts,
+		   &name);
+
+  plugins = 
+    EXTRACTOR_removeLibrary((EXTRACTOR_ExtractorList*) PyCObject_AsVoidPtr(py_exts),
+			    name);
+  return PyCObject_FromVoidPtr(plugins, NULL);
+}
+
+
 static PyObject * EXTRACTOR_PY_getKeywordTypeAsString(PyObject * self,
 						      PyObject * args) {
   unsigned int type;
@@ -101,6 +137,14 @@ static PyMethodDef ExtractorMethods[] = {
     EXTRACTOR_PY_removeAll,  
     METH_VARARGS,
     "unload the given set of libextractor plugins (pass plugins as argument)" },
+  { "load", 
+    EXTRACTOR_PY_load,  
+    METH_VARARGS,
+    "load the given set of libextractor plugins (pass plugins names as argument)" },
+  { "unload", 
+    EXTRACTOR_PY_unload,  
+    METH_VARARGS,
+    "unload the given libextractor plugin (pass plugin name as argument)" },
   { "extract", 
     EXTRACTOR_PY_extract,  
     METH_VARARGS,
