@@ -2,8 +2,8 @@ SUBDIRS  = m4 po libltdl src doc .
 EXTRA_DIST = config.rpath \
   ABOUT-NLS \
   PLATFORMS \
-  src/org/ovmj/libextractor/Extractor.java \
-  src/org/ovmj/libextractor/Xtract.java
+  src/org/gnunet/libextractor/Extractor.java \
+  src/org/gnunet/libextractor/Xtract.java
 # yayh: automake hacks!
 dist-hook:
 	rm -f $(distdir)/src/plugins/printable/??.c
