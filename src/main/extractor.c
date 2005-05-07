@@ -398,7 +398,10 @@ EXTRACTOR_addLibrary2 (EXTRACTOR_ExtractorList * prev,
   result->libraryHandle = handle;
   result->extractMethod = method;
   result->libname = strdup (library);
-  result->options = strdup (options);
+  if( options )
+    result->options = strdup (options);
+  else
+    result->options = NULL;
   return result;
 }
 
@@ -432,7 +435,10 @@ EXTRACTOR_addLibraryLast2 (EXTRACTOR_ExtractorList * prev,
   result->libraryHandle = handle;
   result->extractMethod = method;
   result->libname = strdup (library);
-  result->options = strdup (options);
+  if( options )
+    result->options = strdup (options);
+  else
+    result->options = NULL;
   if (prev == NULL)
     return result;
   pos = prev;
@@ -506,16 +512,23 @@ EXTRACTOR_loadConfigLibraries (EXTRACTOR_ExtractorList * prev,
 	  cpy[pos++] = '\0'; /* end of string. */
 	}
       } else {
-	lastconf = pos;         /* start config from here = "". */
+	lastconf = -1;         /* NULL config when no (). */
 	cpy[pos++] = '\0';	/* replace ':' by termination */
       }
       if (cpy[last] == '-')
 	{
 	  last++;
-	  prev = EXTRACTOR_addLibraryLast2 (prev, &cpy[last], &cpy[lastconf]);
+	  if( lastconf != -1 )
+	    prev = EXTRACTOR_addLibraryLast2 (prev, &cpy[last],
+					      &cpy[lastconf]);
+	  else
+	    prev = EXTRACTOR_addLibraryLast2 (prev, &cpy[last], NULL);
 	}
       else
-	prev = EXTRACTOR_addLibrary2 (prev, &cpy[last], &cpy[lastconf]);
+	if( lastconf != -1 )
+	  prev = EXTRACTOR_addLibrary2 (prev, &cpy[last], &cpy[lastconf]);
+	else
+	  prev = EXTRACTOR_addLibrary2 (prev, &cpy[last], NULL);
 
       last = pos;
     }
@@ -551,7 +564,8 @@ EXTRACTOR_removeLibrary(EXTRACTOR_ExtractorList * prev,
 	prev->next = pos->next;
       /* found */
       free (pos->libname);
-      free (pos->options);
+      if( pos->options )
+	free (pos->options);
       if( pos->libraryHandle )
 	lt_dlclose (pos->libraryHandle);
       free (pos);
