@@ -314,52 +314,6 @@ EXTRACTOR_getKeywordTypeAsString(const EXTRACTOR_KeywordType type)
     return NULL;
 }
 
-/**
- * Load multiple libraries as specified by the user.
- * @param config a string given by the user that defines which
- *        libraries should be loaded. Has the format
- *        "[[-]LIBRARYNAME[:[-]LIBRARYNAME]*]". For example,
- *        libextractor_mp3.so:libextractor_ogg.so loads the
- *        mp3 and the ogg library. The '-' before the LIBRARYNAME
- *        indicates that the library should be added to the end
- *        of the library list (addLibraryLast).
- * @param prev the  previous list of libraries, may be NULL
- * @return the new list of libraries, equal to prev iff an error occured
- *         or if config was empty (or NULL).
- */
-EXTRACTOR_ExtractorList *
-EXTRACTOR_loadConfigLibraries (EXTRACTOR_ExtractorList * prev,
-			       const char *config)
-{
-  char *cpy;
-  int pos;
-  int last;
-  int len;
-
-  if (config == NULL)
-    return prev;
-  len = strlen(config);
-  cpy = strdup(config);
-  pos = 0;
-  last = 0;
-  while (pos < len)
-    {
-      while ((cpy[pos] != ':') && (cpy[pos] != '\0'))
-	pos++;
-      cpy[pos++] = '\0';	/* replace ':' by termination */
-      if (cpy[last] == '-')
-	{
-	  last++;
-	  prev = EXTRACTOR_addLibraryLast (prev, &cpy[last]);
-	}
-      else
-	prev = EXTRACTOR_addLibrary (prev, &cpy[last]);
-      last = pos;
-    }
-  free (cpy);
-  return prev;
-}
-
 static void *getSymbolWithPrefix(void *lib_handle,
                                  const char *lib_name,
                                  const char *sym_name)
@@ -428,15 +382,10 @@ loadLibrary (const char *name,
   return 1;
 }
 
-/**
- * Add a library for keyword extraction.
- * @param prev the previous list of libraries, may be NULL
- * @param library the name of the library
- * @return the new list of libraries, equal to prev iff an error occured
- */
-EXTRACTOR_ExtractorList *
-EXTRACTOR_addLibrary (EXTRACTOR_ExtractorList * prev,
-		      const char *library)
+/* Internal function that accepts options. */
+static EXTRACTOR_ExtractorList *
+EXTRACTOR_addLibrary2 (EXTRACTOR_ExtractorList * prev,
+		       const char *library, const char *options)
 {
   EXTRACTOR_ExtractorList *result;
   void *handle;
@@ -449,19 +398,27 @@ EXTRACTOR_addLibrary (EXTRACTOR_ExtractorList * prev,
   result->libraryHandle = handle;
   result->extractMethod = method;
   result->libname = strdup (library);
+  result->options = strdup (options);
   return result;
 }
 
 /**
- * Add a library for keyword extraction at the END of the list.
+ * Add a library for keyword extraction.
  * @param prev the previous list of libraries, may be NULL
  * @param library the name of the library
- * @return the new list of libraries, always equal to prev
- *         except if prev was NULL and no error occurs
+ * @return the new list of libraries, equal to prev iff an error occured
  */
 EXTRACTOR_ExtractorList *
-EXTRACTOR_addLibraryLast(EXTRACTOR_ExtractorList * prev,
-			 const char *library)
+EXTRACTOR_addLibrary (EXTRACTOR_ExtractorList * prev,
+		      const char *library)
+{
+  return EXTRACTOR_addLibrary2(prev, library, "");
+}
+
+/* Internal function which takes options. */
+static EXTRACTOR_ExtractorList *
+EXTRACTOR_addLibraryLast2 (EXTRACTOR_ExtractorList * prev,
+			   const char *library, const char *options)
 {
   EXTRACTOR_ExtractorList *result;
   EXTRACTOR_ExtractorList *pos;
@@ -475,12 +432,94 @@ EXTRACTOR_addLibraryLast(EXTRACTOR_ExtractorList * prev,
   result->libraryHandle = handle;
   result->extractMethod = method;
   result->libname = strdup (library);
+  result->options = strdup (options);
   if (prev == NULL)
     return result;
   pos = prev;
   while (pos->next != NULL)
     pos = pos->next;
   pos->next = result;
+  return prev;
+}
+
+/**
+ * Add a library for keyword extraction at the END of the list.
+ * @param prev the previous list of libraries, may be NULL
+ * @param library the name of the library
+ * @return the new list of libraries, always equal to prev
+ *         except if prev was NULL and no error occurs
+ */
+EXTRACTOR_ExtractorList *
+EXTRACTOR_addLibraryLast (EXTRACTOR_ExtractorList * prev,
+			  const char *library)
+{
+  return EXTRACTOR_addLibraryLast2(prev, library, "");
+}
+
+/**
+ * Load multiple libraries as specified by the user.
+ * @param config a string given by the user that defines which
+ *        libraries should be loaded. Has the format
+ *        "[[-]LIBRARYNAME[:[-]LIBRARYNAME]*]". For example,
+ *        libextractor_mp3.so:libextractor_ogg.so loads the
+ *        mp3 and the ogg library. The '-' before the LIBRARYNAME
+ *        indicates that the library should be added to the end
+ *        of the library list (addLibraryLast).
+ * @param prev the  previous list of libraries, may be NULL
+ * @return the new list of libraries, equal to prev iff an error occured
+ *         or if config was empty (or NULL).
+ */
+EXTRACTOR_ExtractorList *
+EXTRACTOR_loadConfigLibraries (EXTRACTOR_ExtractorList * prev,
+			       const char *config)
+{
+  EXTRACTOR_ExtractorList * exlast;
+  char *cpy;
+  int pos;
+  int last;
+  int lastconf;
+  int len;
+
+  if (config == NULL)
+    return prev;
+  len = strlen(config);
+  cpy = strdup(config);
+  pos = 0;
+  last = 0;
+  lastconf = 0;
+  while (pos < len)
+    {
+      while ((cpy[pos] != ':') && (cpy[pos] != '\0') &&
+	     (cpy[pos] != '('))
+	pos++;
+      if( cpy[pos] == '(' ) {
+ 	cpy[pos++] = '\0';	/* replace '(' by termination */
+	lastconf = pos;         /* start config from here, after (. */
+	while ((cpy[pos] != '\0') && (cpy[pos] != ')'))
+	  pos++; /* config until ) or EOS. */
+	if( cpy[pos] == ')' ) {
+	  cpy[pos++] = '\0'; /* write end of config here. */
+	  while ((cpy[pos] != ':') && (cpy[pos] != '\0'))
+	    pos++; /* forward until real end of string found. */
+	  cpy[pos++] = '\0';
+	} else {
+	  cpy[pos++] = '\0'; /* end of string. */
+	}
+      } else {
+	lastconf = pos;         /* start config from here = "". */
+	cpy[pos++] = '\0';	/* replace ':' by termination */
+      }
+      if (cpy[last] == '-')
+	{
+	  last++;
+	  prev = EXTRACTOR_addLibraryLast2 (prev, &cpy[last], &cpy[lastconf]);
+	}
+      else
+	prev = EXTRACTOR_addLibrary2 (prev, &cpy[last], &cpy[lastconf]);
+
+      last = pos;
+    }
+  free (cpy);
   return prev;
 }
 
@@ -512,7 +551,9 @@ EXTRACTOR_removeLibrary(EXTRACTOR_ExtractorList * prev,
 	prev->next = pos->next;
       /* found */
       free (pos->libname);
-      lt_dlclose (pos->libraryHandle);
+      free (pos->options);
+      if( pos->libraryHandle )
+	lt_dlclose (pos->libraryHandle);
       free (pos);
     }
 #if DEBUG
@@ -576,7 +617,8 @@ EXTRACTOR_getKeywords (EXTRACTOR_ExtractorList * extractor,
     return NULL;
   result = NULL;
   while (extractor != NULL) {
-    result = extractor->extractMethod (filename, buffer, size, result);
+    result = extractor->extractMethod (filename, buffer, size, result,
+				       extractor->options);
     extractor = extractor->next;
   }
   if (size > 0)
