@@ -1,6 +1,6 @@
 /*
      This file is part of libextractor.
-     (C) 2002, 2003 Vidyut Samanta and Christian Grothoff
+     (C) 2002, 2003, 2005 Vidyut Samanta and Christian Grothoff
 
      libextractor is free software; you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published
@@ -25,8 +25,8 @@ static char * TOKENIZERS = "._ ,%@-\n_[](){}";
 static int MINIMUM_KEYWORD_LENGTH = 4;
 
 static void addKeyword(struct EXTRACTOR_Keywords ** list,
-		       char * keyword,
-		       EXTRACTOR_KeywordType type) {
+																							char * keyword,
+																							EXTRACTOR_KeywordType type) {
   EXTRACTOR_KeywordList * next;
   next = malloc(sizeof(EXTRACTOR_KeywordList));
   next->next = *list;
@@ -35,8 +35,12 @@ static void addKeyword(struct EXTRACTOR_Keywords ** list,
   *list = next;
 }
 
-static int token(char letter) {
+static int token(char letter,
+																	const char * options) {
   int i;
+
+		if (options == NULL)
+				options = TOKENIZERS;
   for (i=0;i<strlen(TOKENIZERS);i++)
     if (letter == TOKENIZERS[i])
       return 1;
@@ -44,8 +48,9 @@ static int token(char letter) {
 }
 
 static void splitKeywords(char * keyword,
-			  EXTRACTOR_KeywordType type,
-			  struct EXTRACTOR_Keywords ** list) {
+																										EXTRACTOR_KeywordType type,
+																										struct EXTRACTOR_Keywords ** list,
+																										const char * options) {
   char * dp;
   int pos;
   int last;
@@ -56,7 +61,8 @@ static void splitKeywords(char * keyword,
   pos = 0;
   last = 0;
   while (pos < len) {
-    while ((!token(dp[pos])) && (pos < len))
+    while ((!token(dp[pos], 
+																			options)) && (pos < len))
       pos++;
     dp[pos++] = 0;
     if (strlen(&dp[last]) >= MINIMUM_KEYWORD_LENGTH) {
@@ -68,19 +74,21 @@ static void splitKeywords(char * keyword,
 }
 
 /* split other keywords into multiple keywords */
-struct EXTRACTOR_Keywords * libextractor_split_extract(char * filename,
-                                                       char * data,
-                                                       size_t size,
-                                                       struct EXTRACTOR_Keywords * prev) {
+struct EXTRACTOR_Keywords * 
+libextractor_split_extract(char * filename,
+																											char * data,
+																											size_t size,
+																											struct EXTRACTOR_Keywords * prev,
+																											const char * options) {
   struct EXTRACTOR_Keywords * pos;
 
   pos = prev;
   while (pos != NULL) {
     splitKeywords(pos->keyword,
-		  EXTRACTOR_UNKNOWN,
-		  &prev);
+																		EXTRACTOR_UNKNOWN,
+																		&prev,
+																		options);
     pos = pos->next;
   }
-
   return prev;
 }

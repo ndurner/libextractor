@@ -146,11 +146,12 @@ typedef struct EXTRACTOR_Keywords {
  * Signature of the extract method that each plugin
  * must provide.
  */
-typedef EXTRACTOR_KeywordList * (*ExtractMethod)(const char * filename,
-						 char * data,
-						 size_t filesize,
-						 EXTRACTOR_KeywordList * next,
-						 const char * options);
+typedef EXTRACTOR_KeywordList * 
+(*ExtractMethod)(const char * filename,
+																	char * data,
+																	size_t filesize,
+																	EXTRACTOR_KeywordList * next,
+																	const char * options);
 
 /**
  * Linked list of extractor helper-libraries. An application
@@ -179,12 +180,14 @@ EXTRACTOR_ExtractorList * EXTRACTOR_loadDefaultLibraries();
  * Get the textual name of the keyword.
  * @return NULL if the type is not known
  */
-const char * EXTRACTOR_getKeywordTypeAsString(const EXTRACTOR_KeywordType type);
+const char * 
+EXTRACTOR_getKeywordTypeAsString(const EXTRACTOR_KeywordType type);
 
 /**
  * Return the highest type number, exclusive as in [0,highest).
  */
-EXTRACTOR_KeywordType EXTRACTOR_getHighestKeywordTypeNumber();
+EXTRACTOR_KeywordType 
+EXTRACTOR_getHighestKeywordTypeNumber();
 
 /**
  * Load multiple libraries as specified by the user.
@@ -202,7 +205,7 @@ EXTRACTOR_KeywordType EXTRACTOR_getHighestKeywordTypeNumber();
  */
 EXTRACTOR_ExtractorList *
 EXTRACTOR_loadConfigLibraries(EXTRACTOR_ExtractorList * prev,
-			      const char * config);
+																														const char * config);
 
 /**
  * Add a library for keyword extraction.
@@ -212,7 +215,7 @@ EXTRACTOR_loadConfigLibraries(EXTRACTOR_ExtractorList * prev,
  */
 EXTRACTOR_ExtractorList *
 EXTRACTOR_addLibrary(EXTRACTOR_ExtractorList * prev,
-		     const char * library);
+																					const char * library);
 
 /**
  * Add a library for keyword extraction at the END of the list.
@@ -223,8 +226,8 @@ EXTRACTOR_addLibrary(EXTRACTOR_ExtractorList * prev,
  */
 EXTRACTOR_ExtractorList *
 EXTRACTOR_addLibraryLast(EXTRACTOR_ExtractorList * prev,
-			 const char * library);
-
+																									const char * library);
+		
 /**
  * Remove a library for keyword extraction.
  * @param prev the current list of libraries
@@ -233,7 +236,7 @@ EXTRACTOR_addLibraryLast(EXTRACTOR_ExtractorList * prev,
  */
 EXTRACTOR_ExtractorList *
 EXTRACTOR_removeLibrary(EXTRACTOR_ExtractorList * prev,
-			const char * library);
+																								const char * library);
 
 /**
  * Remove all extractors.
@@ -250,7 +253,7 @@ void EXTRACTOR_removeAll(EXTRACTOR_ExtractorList * libraries);
  */
 EXTRACTOR_KeywordList *
 EXTRACTOR_getKeywords(EXTRACTOR_ExtractorList * extractor,
-		      const char * filename);
+																						const char * filename);
 
 
 /**
@@ -261,7 +264,7 @@ EXTRACTOR_getKeywords(EXTRACTOR_ExtractorList * extractor,
  */
 EXTRACTOR_KeywordList *
 EXTRACTOR_removeDuplicateKeywords(EXTRACTOR_KeywordList * list,
-				  const unsigned int options);
+																																		const unsigned int options);
 
 
 /**
@@ -279,7 +282,7 @@ EXTRACTOR_removeEmptyKeywords (EXTRACTOR_KeywordList * list);
  * @param keywords the list of keywords to print, may be NULL
  */
 void EXTRACTOR_printKeywords(FILE * handle,
-			     EXTRACTOR_KeywordList * keywords);
+																													EXTRACTOR_KeywordList * keywords);
 
 /**
  * Free the memory occupied by the keyword list (and the
@@ -298,7 +301,7 @@ void EXTRACTOR_freeKeywords(EXTRACTOR_KeywordList * keywords);
  *  invalid once the keyword list is freed.
  */
 const char * EXTRACTOR_extractLast(const EXTRACTOR_KeywordType type,
-				   EXTRACTOR_KeywordList * keywords);
+																																			EXTRACTOR_KeywordList * keywords);
 
 /**
  * Extract the last keyword of the given string from the keyword list.
@@ -309,8 +312,8 @@ const char * EXTRACTOR_extractLast(const EXTRACTOR_KeywordType type,
  *  not be freed or manipulated by the client.  It will become
  *  invalid once the keyword list is freed.
  */
-const char * EXTRACTOR_extractLastByString (const char * type,
-					    EXTRACTOR_KeywordList * keywords);
+const char * EXTRACTOR_extractLastByString(const char * type,
+																																											EXTRACTOR_KeywordList * keywords);
 
 /**
  * Count the number of keywords in the keyword list.
