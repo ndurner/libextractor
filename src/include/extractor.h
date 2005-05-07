@@ -149,7 +149,8 @@ typedef struct EXTRACTOR_Keywords {
 typedef EXTRACTOR_KeywordList * (*ExtractMethod)(const char * filename,
 						 char * data,
 						 size_t filesize,
-						 EXTRACTOR_KeywordList * next);
+						 EXTRACTOR_KeywordList * next,
+						 const char * options);
 
 /**
  * Linked list of extractor helper-libraries. An application
@@ -165,6 +166,7 @@ typedef struct EXTRACTOR_Extractor {
   char * libname;
   ExtractMethod extractMethod;
   struct EXTRACTOR_Extractor * next;
+  char * options;
 } EXTRACTOR_ExtractorList;
 
 /**
@@ -188,7 +190,8 @@ EXTRACTOR_KeywordType EXTRACTOR_getHighestKeywordTypeNumber();
  * Load multiple libraries as specified by the user.
  * @param config a string given by the user that defines which
  *        libraries should be loaded. Has the format
- *        "[[-]LIBRARYNAME[:[-]LIBRARYNAME]]*". For example,
+ *        "[[-]LIBRARYNAME[(options)][:[-]LIBRARYNAME[(options)]]]*".
+ *        For example,
  *        libextractor_mp3.so:libextractor_ogg.so loads the
  *        mp3 and the ogg library. The '-' before the LIBRARYNAME
  *        indicates that the library should be added to the end

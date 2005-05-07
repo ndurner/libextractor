@@ -575,7 +575,6 @@ main (int argc, char *argv[])
     extractors = EXTRACTOR_addLibraryLast(extractors,
 					  "libextractor_split");
 
-
   if (verbose == YES)
     {
       /* print list of all used extractors */
