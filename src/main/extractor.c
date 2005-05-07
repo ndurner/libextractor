@@ -415,7 +415,7 @@ EXTRACTOR_ExtractorList *
 EXTRACTOR_addLibrary (EXTRACTOR_ExtractorList * prev,
 		      const char *library)
 {
-  return EXTRACTOR_addLibrary2(prev, library, "");
+  return EXTRACTOR_addLibrary2(prev, library, NULL);
 }
 
 /* Internal function which takes options. */
@@ -459,7 +459,7 @@ EXTRACTOR_ExtractorList *
 EXTRACTOR_addLibraryLast (EXTRACTOR_ExtractorList * prev,
 			  const char *library)
 {
-  return EXTRACTOR_addLibraryLast2(prev, library, "");
+  return EXTRACTOR_addLibraryLast2(prev, library, NULL);
 }
 
 /**
