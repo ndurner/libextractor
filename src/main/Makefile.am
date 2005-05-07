@@ -24,7 +24,7 @@ extract_LDADD = \
   $(top_builddir)/src/main/libextractor.la 
 
 libextractor_la_LDFLAGS = \
-  -export-dynamic -version-info 1:0:0 $(LIBICONV)
+  -export-dynamic -version-info 1:1:0 $(LIBICONV)
 libextractor_la_LIBADD = \
   $(LIBLTDL)
 libextractor_la_DEPENDENCIES = \
