@@ -55,5 +55,5 @@ extract_SOURCES = \
   getopt1.c 
 
 install-exec-local:
-	python libextractor_python_setup.py build
-	python libextractor_python_setup.py install --prefix=$(PYTHON_PREFIX)
+	python libextractor_python_setup.py $(libdir) build
+	python libextractor_python_setup.py $(libdir) install --prefix=$(PYTHON_PREFIX)
