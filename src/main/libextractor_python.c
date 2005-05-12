@@ -225,13 +225,17 @@ static PyObject *ModuleList_repr(ModuleList *self)
 
 static int ModuleList_traverse(ModuleList *self, visitproc visit, void *arg)
 {
+#ifdef Py_VISIT
   Py_VISIT(self->mlist);
+#endif
   return 0;
 }
 
 static int ModuleList_clear(ModuleList *self)
 {
+#ifdef Py_CLEAR
   Py_CLEAR(self->mlist);
+#endif
   return 0;
 }
 
@@ -427,14 +431,18 @@ static long Module_hash(Module *self)
 
 static int Module_traverse(Module *self, visitproc visit, void *arg)
 {
+#ifdef Py_VISIT
   Py_VISIT((PyObject*)self->mlist);
+#endif
   return 0;
 }
 
 static int Module_clear(Module *self)
 {
   printf("Removing module in clear: %s.\n",self->module->libname);
+#ifdef Py_CLEAR
   Py_CLEAR(self->mlist);
+#endif
   return 0;
 }
 
@@ -499,7 +507,7 @@ static PyMethodDef Extractor_Module_methods[] = {
   {NULL}  /* Sentinel */
 };
 
-PyMODINIT_FUNC initextractor()
+PyMODINIT_FUNC initextractor(void)
 {
   PyObject *m;
 

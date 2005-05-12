@@ -4,7 +4,7 @@ import sys
 path=sys.argv[0]
 sys.argv = sys.argv[1:]
 
-cmod = Extension("extractor",["libextractor_python3.c"],
+cmod = Extension("extractor",["libextractor_python.c"],
                  libraries=["extractor"],
                  include_dirs=["../include"],
                  library_dirs=[path])
