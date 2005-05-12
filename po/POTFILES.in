@@ -3,7 +3,6 @@ src/main/extract.c
 src/main/extractor.c
 src/main/getopt.c
 src/main/getopt1.c
-src/main/io.c
 src/main/winproc.c
 src/plugins/rpm/rpmextractor.c
 src/plugins/manextractor.c
