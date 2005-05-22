@@ -8,8 +8,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.4.2\n"
-"Report-Msgid-Bugs-To: libextractor@cs.purdue.edu\n"
-"POT-Creation-Date: 2005-04-05 17:09-0500\n"
+"Report-Msgid-Bugs-To: libextractor@gnu.org\n"
+"POT-Creation-Date: 2005-05-21 13:21-0500\n"
 "PO-Revision-Date: 2005-02-25 12:00-0500\n"
 "Last-Translator: Laurentiu Buzdugan <lbuz@rolix.org>\n"
 "Language-Team: Romanian <translation-team-ro@lists.sourceforge.net>\n"
@@ -18,1027 +18,24 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/main/extract.c:49
+#: doc/demux_nsf.c:320
 #, c-format
-msgid ""
-"Usage: %s\n"
-"%s\n"
-"\n"
+msgid "demux_nsf.c: input not seekable, can not handle!\n"
 msgstr ""
-"Folosire: %s\n"
-"%s\n"
-"\n"
 
-#: src/main/extract.c:52
+#: doc/demux_wc3movie.c:210
 #, c-format
-msgid ""
-"Arguments mandatory for long options are also mandatory for short options.\n"
+msgid "demux_wc3movie: SHOT chunk referenced invalid palette (%d >= %d)\n"
 msgstr ""
-"Argumentele obligatorii pentru opþiunile lungi sunt obligatorii ºi pentru "
-"opþiunile scurte.\n"
 
-#: src/main/extract.c:126
-msgid "do not remove any duplicates"
-msgstr "nu îndepãrta nici un duplicat"
-
-#: src/main/extract.c:128
-msgid "print output in bibtex format"
-msgstr "afiºeazã ieºirea în format bibtex"
-
-#: src/main/extract.c:130
-msgid ""
-"use the generic plaintext extractor for the language with the 2-letter "
-"language code LANG"
+#: doc/demux_wc3movie.c:300 doc/demux_wc3movie.c:538
+#, c-format
+msgid "demux_wc3movie: encountered unknown chunk: %c%c%c%c\n"
 msgstr ""
-"foloseºte extractorul text-simplu generic pentru limba cu codul de limbã din "
-"2 litere LANG"
 
-#: src/main/extract.c:132
-msgid "remove duplicates only if types match"
-msgstr "îndepãrteazã duplicatele numai dacã tipul este acelaºi"
-
-#: src/main/extract.c:134
-msgid "use the filename as a keyword (loads filename-extractor plugin)"
+#: doc/demux_wc3movie.c:449
+msgid "demux_wc3movie: There was a problem while loading palette chunks\n"
 msgstr ""
-"foloseºte numele de fiºier ca ºi cuvânt cheie (încarcã plugin nume_fiºier-"
-"extractor)"
-
-#: src/main/extract.c:136
-msgid "print this help"
-msgstr "afiºeazã acest mesaj de ajutor"
-
-#: src/main/extract.c:138
-msgid "compute hash using the given ALGORITHM (currently sha1 or md5)"
-msgstr ""
-"calculeazã tabela de dispersie (hash) folosind ALGORITM-ul dat (curent sha1 "
-"sau md5)"
-
-#: src/main/extract.c:140
-msgid "load an extractor plugin named LIBRARY"
-msgstr "încarcã un plugin extractor numit LIBRÃRIE"
-
-#: src/main/extract.c:142
-msgid "list all keyword types"
-msgstr "listeazã toate tipurile de cuvinte cheie"
-
-#: src/main/extract.c:144
-msgid "do not use the default set of extractor plugins"
-msgstr "nu folosi setul implicit de plugin-uri extractor"
-
-#: src/main/extract.c:146
-msgid "print only keywords of the given TYPE (use -L to get a list)"
-msgstr ""
-"afiºeazã numai cuvintele cheie pentru TIP-ul dat (foloseºte -L pentru a "
-"obþine o listã"
-
-#: src/main/extract.c:148
-msgid "remove duplicates even if keyword types do not match"
-msgstr ""
-"îndepãrteazã duplicatele chiar dacã tipurile cuvintelor cheie nu sunt "
-"aceleaºi"
-
-#: src/main/extract.c:150
-msgid "use keyword splitting (loads split-extractor plugin)"
-msgstr ""
-"foloseºte spargere dupã cuvinte cheie (încarcã plugin-ul split-extractor)"
-
-#: src/main/extract.c:152
-msgid "print the version number"
-msgstr "afiºeazã numãrul versiunii"
-
-#: src/main/extract.c:154
-msgid "be verbose"
-msgstr "fi vorbãreþ"
-
-#: src/main/extract.c:156
-msgid "do not print keywords of the given TYPE"
-msgstr "nu afiºa cuvinte cheie de TIP-ul dat"
-
-#: src/main/extract.c:159
-msgid "extract [OPTIONS] [FILENAME]*"
-msgstr "extract [OPÞIUNI] [NUME_FIªIER]*"
-
-#: src/main/extract.c:160
-msgid "Extract metadata from files."
-msgstr "Extrage metadata din fiºiere."
-
-#: src/main/extract.c:198 src/main/extractor.c:728
-#, c-format
-msgid "%s - (binary)\n"
-msgstr "%s - (binar)\n"
-
-#: src/main/extract.c:204 src/main/extractor.c:733
-#, c-format
-msgid "INVALID TYPE - %s\n"
-msgstr "TIP INVALID - %s\n"
-
-#: src/main/extract.c:270 src/main/extractor.c:40
-msgid "title"
-msgstr "titlu"
-
-#: src/main/extract.c:272 src/main/extractor.c:38
-msgid "filename"
-msgstr "nume_fiºier"
-
-#: src/main/extract.c:277 src/main/extractor.c:41
-msgid "author"
-msgstr "autor"
-
-#: src/main/extract.c:281 src/main/extractor.c:43
-msgid "description"
-msgstr "descriere"
-
-#: src/main/extract.c:283 src/main/extractor.c:55
-msgid "keywords"
-msgstr "cuvinte cheie"
-
-#: src/main/extract.c:285 src/main/extractor.c:44
-msgid "comment"
-msgstr "comentariu"
-
-#: src/main/extract.c:289 src/main/extractor.c:45
-msgid "date"
-msgstr "data"
-
-#: src/main/extract.c:291 src/main/extractor.c:67
-msgid "creation date"
-msgstr "data creãrii"
-
-#: src/main/extract.c:319 src/main/extractor.c:46
-msgid "publisher"
-msgstr "publicist"
-
-#: src/main/extract.c:323 src/main/extractor.c:52
-msgid "organization"
-msgstr "organizaþie"
-
-#: src/main/extract.c:327 src/main/extractor.c:54
-msgid "subject"
-msgstr "subiect"
-
-#: src/main/extract.c:331 src/main/extractor.c:71
-msgid "page count"
-msgstr "numãr de pagini"
-
-#: src/main/extract.c:468
-#, c-format
-msgid "You must specify an argument for the '%s' option (option ignored).\n"
-msgstr ""
-"Trebuie sã specificaþi un argument pentru opþiunea '%s' (opþiune ignoratã).\n"
-
-#: src/main/extract.c:532
-#, c-format
-msgid "Use --help to get a list of options.\n"
-msgstr "Folosiþi --help pentru a obþine o listã de opþiuni.\n"
-
-#: src/main/extract.c:586
-#, c-format
-msgid "%% BiBTeX file\n"
-msgstr "%% BiBTeX file\n"
-
-#: src/main/extract.c:593
-#, c-format
-msgid "Keywords for file %s:\n"
-msgstr "Cuvinte cheie pentru fiºier %s:\n"
-
-#: src/main/extractor.c:37
-msgid "unknown"
-msgstr "necunoscut"
-
-#: src/main/extractor.c:39
-msgid "mimetype"
-msgstr "mimetype"
-
-#: src/main/extractor.c:42
-msgid "artist"
-msgstr "artist"
-
-#: src/main/extractor.c:47
-msgid "language"
-msgstr "limbã"
-
-#: src/main/extractor.c:48
-msgid "album"
-msgstr "album"
-
-#: src/main/extractor.c:49
-msgid "genre"
-msgstr "gen"
-
-#: src/main/extractor.c:50
-msgid "location"
-msgstr "locaþie"
-
-#: src/main/extractor.c:51
-msgid "version"
-msgstr "versiune"
-
-#: src/main/extractor.c:53
-msgid "copyright"
-msgstr "copyright"
-
-#: src/main/extractor.c:56
-msgid "contributor"
-msgstr "contribuitor"
-
-#: src/main/extractor.c:57
-msgid "resource-type"
-msgstr "tip-resursã"
-
-#: src/main/extractor.c:58
-msgid "format"
-msgstr "format"
-
-#: src/main/extractor.c:59
-msgid "resource-identifier"
-msgstr "identificator-resursã"
-
-#: src/main/extractor.c:60
-msgid "source"
-msgstr "sursã"
-
-#: src/main/extractor.c:61
-msgid "relation"
-msgstr "relaþie"
-
-#: src/main/extractor.c:62
-msgid "coverage"
-msgstr "acoperire"
-
-#: src/main/extractor.c:63
-msgid "software"
-msgstr "software"
-
-#: src/main/extractor.c:64
-msgid "disclaimer"
-msgstr "repudiere"
-
-#: src/main/extractor.c:65
-msgid "warning"
-msgstr "avertisment"
-
-#: src/main/extractor.c:66
-msgid "translated"
-msgstr "tradus"
-
-#: src/main/extractor.c:68
-msgid "modification date"
-msgstr "data modificãrii"
-
-#: src/main/extractor.c:69
-msgid "creator"
-msgstr "creator"
-
-#: src/main/extractor.c:70
-msgid "producer"
-msgstr "producãtor"
-
-#: src/main/extractor.c:72
-msgid "page orientation"
-msgstr "orientare paginã"
-
-#: src/main/extractor.c:73
-msgid "paper size"
-msgstr "dimensiune pagina"
-
-#: src/main/extractor.c:74
-msgid "used fonts"
-msgstr "fonturi folosite"
-
-#: src/main/extractor.c:75
-msgid "page order"
-msgstr "ordine pagini"
-
-#: src/main/extractor.c:76
-msgid "created for"
-msgstr "creat pentru"
-
-#: src/main/extractor.c:77
-msgid "magnification"
-msgstr "mãrire"
-
-#: src/main/extractor.c:78
-msgid "release"
-msgstr "release"
-
-#: src/main/extractor.c:79
-msgid "group"
-msgstr "grup"
-
-#: src/main/extractor.c:80
-msgid "size"
-msgstr "mãrime"
-
-#: src/main/extractor.c:81
-msgid "summary"
-msgstr "cuprins"
-
-#: src/main/extractor.c:82
-msgid "packager"
-msgstr "împachetator"
-
-#: src/main/extractor.c:83
-msgid "vendor"
-msgstr "vânzãtor"
-
-#: src/main/extractor.c:84
-msgid "license"
-msgstr "licenþã"
-
-#: src/main/extractor.c:85
-msgid "distribution"
-msgstr "distribuþie"
-
-#: src/main/extractor.c:86
-msgid "build-host"
-msgstr "gazdã-contruit"
-
-#: src/main/extractor.c:87
-msgid "os"
-msgstr "sistem operare"
-
-#: src/main/extractor.c:88
-msgid "dependency"
-msgstr "dependinþe"
-
-#: src/main/extractor.c:89
-msgid "MD4"
-msgstr "MD4"
-
-#: src/main/extractor.c:90
-msgid "MD5"
-msgstr "MD5"
-
-#: src/main/extractor.c:91
-msgid "SHA-0"
-msgstr "SHA-0"
-
-#: src/main/extractor.c:92
-msgid "SHA-1"
-msgstr "SHA-1"
-
-#: src/main/extractor.c:93
-msgid "RipeMD160"
-msgstr "RipeMD160"
-
-#: src/main/extractor.c:94
-msgid "resolution"
-msgstr "rezoluþie"
-
-#: src/main/extractor.c:95
-msgid "category"
-msgstr "categorie"
-
-#: src/main/extractor.c:96
-msgid "book title"
-msgstr "titlu de carte"
-
-#: src/main/extractor.c:97
-msgid "priority"
-msgstr "prioritate"
-
-#: src/main/extractor.c:98
-msgid "conflicts"
-msgstr "conflicte"
-
-#: src/main/extractor.c:99
-msgid "replaces"
-msgstr "înlocuieºte"
-
-#: src/main/extractor.c:100
-msgid "provides"
-msgstr "furnizeazã"
-
-#: src/main/extractor.c:101
-msgid "conductor"
-msgstr "conducãtor"
-
-#: src/main/extractor.c:102
-msgid "interpreter"
-msgstr "interpret(ã)"
-
-#: src/main/extractor.c:103
-msgid "owner"
-msgstr "proprietar"
-
-#: src/main/extractor.c:104
-msgid "lyrics"
-msgstr "versuri"
-
-#: src/main/extractor.c:105
-msgid "media type"
-msgstr "tipul media"
-
-#: src/main/extractor.c:106
-msgid "contact"
-msgstr "contact"
-
-#: src/main/extractor.c:107
-msgid "binary thumbnail data"
-msgstr "data thumbnail binar"
-
-#: src/main/extractor.c:108
-#, fuzzy
-msgid "publication date"
-msgstr "data creãrii"
-
-#: src/main/extractor.c:194
-#, c-format
-msgid "Initialization of plugin mechanism failed: %s!\n"
-msgstr "iniþializare mecanismului de plugin a eºuat: %s!\n"
-
-#: src/main/extractor.c:387
-#, c-format
-msgid ""
-"Resolving symbol '%s' in library '%s' failed, so I tried '%s', but that "
-"failed also.  Errors are: '%s' and '%s'.\n"
-msgstr ""
-"Rezolvarea simbolului '%s' în biblioteca '%s' a eºuat, aºa cã am încercat '%"
-"s', dar ºi acesta a eºuat.  Erorile sunt: '%s' ºi '%s'.\n"
-
-#: src/main/extractor.c:416
-#, c-format
-msgid "Loading '%s' plugin failed: %s\n"
-msgstr "Încãrcarea plugin-ului '%s' a eºuat: %s\n"
-
-#: src/main/extractor.c:521
-#, c-format
-msgid "Unloading plugin '%s' failed!\n"
-msgstr "Descãrcarea plugin-ului '%s' a eºuat!\n"
-
-#: src/main/getopt.c:681
-#, c-format
-msgid "%s: option `%s' is ambiguous\n"
-msgstr "%s: opþiunea `%s' este ambiguã\n"
-
-#: src/main/getopt.c:706
-#, c-format
-msgid "%s: option `--%s' doesn't allow an argument\n"
-msgstr "%s: opþiunea `--%s' nu permite un argument\n"
-
-#: src/main/getopt.c:712
-#, c-format
-msgid "%s: option `%c%s' doesn't allow an argument\n"
-msgstr "%s: opþiunea `%c%s' nu permite un argument\n"
-
-#: src/main/getopt.c:729 src/main/getopt.c:900
-#, c-format
-msgid "%s: option `%s' requires an argument\n"
-msgstr "%s: opþiunea `%s' necesitã un argument\n"
-
-#: src/main/getopt.c:758
-#, c-format
-msgid "%s: unrecognized option `--%s'\n"
-msgstr "%s: opþiune nerecunoscutã `--%s'\n"
-
-#: src/main/getopt.c:762
-#, c-format
-msgid "%s: unrecognized option `%c%s'\n"
-msgstr "%s: opþiune nerecunoscutã `%c%s'\n"
-
-#: src/main/getopt.c:788
-#, c-format
-msgid "%s: illegal option -- %c\n"
-msgstr "%s: opþiune ilegalã -- %c\n"
-
-#: src/main/getopt.c:790
-#, c-format
-msgid "%s: invalid option -- %c\n"
-msgstr "%s: opþiune ilegalã -- %c\n"
-
-#: src/main/getopt.c:819 src/main/getopt.c:949
-#, c-format
-msgid "%s: option requires an argument -- %c\n"
-msgstr "%s: opþiunea necesitã un argument -- %c\n"
-
-#: src/main/getopt.c:867
-#, c-format
-msgid "%s: option `-W %s' is ambiguous\n"
-msgstr "%s: opþiunea `-W %s' este ambiguã\n"
-
-#: src/main/getopt.c:885
-#, c-format
-msgid "%s: option `-W %s' doesn't allow an argument\n"
-msgstr "%s: opþiunea `-W %s' nu permite un argument\n"
-
-#: src/main/winproc.c:36 src/main/winproc.c:2061
-msgid "No error"
-msgstr "Ni o eroare"
-
-#: src/main/winproc.c:37
-msgid "Unknown host"
-msgstr "Gazdã necunoscutã"
-
-#: src/main/winproc.c:38
-msgid "Host name lookup failure"
-msgstr "Cãutarea (lookup) numelui gazdei a eºuat"
-
-#: src/main/winproc.c:39
-msgid "Unknown server error"
-msgstr "Eroare server necunoscutã"
-
-#: src/main/winproc.c:40
-msgid "No address associated with name"
-msgstr "Nici o adresã asociatã cu numele"
-
-#: src/main/winproc.c:41
-msgid "Internal resolver error"
-msgstr "Eroare resolver intern"
-
-#: src/main/winproc.c:42
-msgid "Unknown resolver error"
-msgstr "Eroare resolver necunoscutã"
-
-#: src/main/winproc.c:430
-#, c-format
-msgid "Cannot determine root directory (%s)\n"
-msgstr "Nu pot determina directorul root (%s)\n"
-
-#: src/main/winproc.c:431
-#, c-format
-msgid "Cannot determine home directory (%s)\n"
-msgstr "Nu pot determina directorul acasã (%s)\n"
-
-#: src/main/winproc.c:1467
-msgid "Not super-user"
-msgstr "Nu sunteþi super-utilizator"
-
-#: src/main/winproc.c:1472
-msgid "No such file or directory"
-msgstr "Nici un asemenea fiºier sau director"
-
-#: src/main/winproc.c:1477
-msgid "No such process"
-msgstr "Nici un asemenea proces"
-
-#: src/main/winproc.c:1482
-msgid "Interrupted system call"
-msgstr "Apel sistem întrerupt"
-
-#: src/main/winproc.c:1487
-msgid "I/O error"
-msgstr "Eroare I/O"
-
-#: src/main/winproc.c:1492
-msgid "No such device or address"
-msgstr "Nici un asemenea dispozitiv sau adresã"
-
-#: src/main/winproc.c:1497
-msgid "Arg list too long"
-msgstr "Listã de argumente prea lungã"
-
-#: src/main/winproc.c:1502
-msgid "Exec format error"
-msgstr "Eroare format exec"
-
-#: src/main/winproc.c:1507
-msgid "Bad file number"
-msgstr "Numãr de fiºier incorect"
-
-#: src/main/winproc.c:1512
-msgid "No children"
-msgstr "Nici un copil"
-
-#: src/main/winproc.c:1517
-msgid "Resource unavailable or operation would block, try again"
-msgstr "Resursã indisponibilã sau operaþia s-ar bloca, încercaþi din nou"
-
-#: src/main/winproc.c:1522
-msgid "Not enough memory"
-msgstr "Memorie insuficientã"
-
-#: src/main/winproc.c:1527
-msgid "Permission denied"
-msgstr "Permisiune refuzatã"
-
-#: src/main/winproc.c:1532
-msgid "Bad address"
-msgstr "Adresa incorectã"
-
-#: src/main/winproc.c:1537
-msgid "Block device required"
-msgstr "Dispozitiv bloc necesar"
-
-#: src/main/winproc.c:1542
-msgid "Mount device busy"
-msgstr "Dispozitiv montare ocupat"
-
-#: src/main/winproc.c:1547
-msgid "File exists"
-msgstr "Fiºierul existã"
-
-#: src/main/winproc.c:1552
-msgid "Cross-device link"
-msgstr "Legãturã (link) între-dispozitive"
-
-#: src/main/winproc.c:1557
-msgid "No such device"
-msgstr "Nici un asemenea dispozitiv"
-
-#: src/main/winproc.c:1562
-msgid "Not a directory"
-msgstr "Nu este un director"
-
-#: src/main/winproc.c:1567
-msgid "Is a directory"
-msgstr "Este un director"
-
-#: src/main/winproc.c:1572
-msgid "Invalid argument"
-msgstr "Argument invalide"
-
-#: src/main/winproc.c:1577
-msgid "Too many open files in system"
-msgstr "Prea multe fiºiere deschise în sistem"
-
-#: src/main/winproc.c:1582
-msgid "Too many open files"
-msgstr "Prea multe fiºiere deschise"
-
-#: src/main/winproc.c:1587
-msgid "Not a typewriter"
-msgstr "Nu este o maºinã de scris (typewriter)"
-
-#: src/main/winproc.c:1592
-msgid "Text file busy"
-msgstr "Fiºier text ocupat"
-
-#: src/main/winproc.c:1597
-msgid "File too large"
-msgstr "Fiºier prea mare"
-
-#: src/main/winproc.c:1602
-msgid "No space left on device"
-msgstr "Spaþiu indisponibil pe dispozitiv"
-
-#: src/main/winproc.c:1607
-msgid "Illegal seek"
-msgstr "Cãutare ilegalã"
-
-#: src/main/winproc.c:1612
-msgid "Read only file system"
-msgstr "Citeºte numai sistemul de fiºiere"
-
-#: src/main/winproc.c:1617
-msgid "Too many links"
-msgstr "Prea multe legãturi (links)"
-
-#: src/main/winproc.c:1622
-msgid "Broken pipe"
-msgstr "Pipe spart(ã)"
-
-#: src/main/winproc.c:1627
-msgid "Math arg out of domain of func"
-msgstr "Argument matematic în afara domeniului funcþiei"
-
-#: src/main/winproc.c:1632
-msgid "Math result not representable"
-msgstr "Rezultatul matematic nu este reprezentabil"
-
-#: src/main/winproc.c:1637
-msgid "No message of desired type"
-msgstr "Nici un mesaj de tipul dorit"
-
-#: src/main/winproc.c:1642
-msgid "Identifier removed"
-msgstr "Identificator îndepãrtat"
-
-#: src/main/winproc.c:1647
-msgid "Channel number out of range"
-msgstr "Numãr canal în afara domeniului"
-
-#: src/main/winproc.c:1652
-msgid "Level 2 not synchronized"
-msgstr "Nivelul 2 nesincronizat"
-
-#: src/main/winproc.c:1657
-msgid "Level 3 halted"
-msgstr "Nivelul 3 oprit"
-
-#: src/main/winproc.c:1662
-msgid "Level 3 reset"
-msgstr "Nivelul 3 resetat"
-
-#: src/main/winproc.c:1667
-msgid "Link number out of range"
-msgstr "Numãr legãturi în afara domeniului"
-
-#: src/main/winproc.c:1672
-msgid "Protocol driver not attached"
-msgstr "Driver-ul de protocol nu este ataºat"
-
-#: src/main/winproc.c:1677
-msgid "No CSI structure available"
-msgstr "Nici o structurã CSI disponibilã"
-
-#: src/main/winproc.c:1682
-msgid "Level 2 halted"
-msgstr "Nivelul 2 oprit"
-
-#: src/main/winproc.c:1687
-msgid "Deadlock condition"
-msgstr "Condiþie blocare (Deadlock)"
-
-#: src/main/winproc.c:1692
-msgid "No record locks available"
-msgstr "Nici o încuietoare de articol (record lock) disponibilã"
-
-#: src/main/winproc.c:1697
-msgid "Invalid exchange"
-msgstr "Schimbare invalidã"
-
-#: src/main/winproc.c:1702
-msgid "Invalid request descriptor"
-msgstr "Descriptor de cerere invalid"
-
-#: src/main/winproc.c:1707
-msgid "Exchange full"
-msgstr "Schimbare întreagã"
-
-#: src/main/winproc.c:1712
-msgid "No anode"
-msgstr "Nici un anode"
-
-#: src/main/winproc.c:1717
-msgid "Invalid request code"
-msgstr "Cod de cerere invalid"
-
-#: src/main/winproc.c:1722
-msgid "Invalid slot"
-msgstr "Loc (slot) invalid"
-
-#: src/main/winproc.c:1727
-msgid "File locking deadlock error"
-msgstr "Eroare la descuierea (locking deadlock) fiºierului"
-
-#: src/main/winproc.c:1732
-msgid "Bad font file fmt"
-msgstr "Format fiºier font incorect"
-
-#: src/main/winproc.c:1737
-msgid "Device not a stream"
-msgstr "Dispozitivul nu este un flux (stream)"
-
-#: src/main/winproc.c:1742
-msgid "No data (for no delay io)"
-msgstr "Nici o datã (pentru intrare/ieºire fãrã întârziere)"
-
-#: src/main/winproc.c:1747
-msgid "Timer expired"
-msgstr "Cronometru expirat"
-
-#: src/main/winproc.c:1752
-msgid "Out of streams resources"
-msgstr "Resurse în afara fluxurilor"
-
-#: src/main/winproc.c:1757
-msgid "Machine is not on the network"
-msgstr "Maºina nu este pe reþea"
-
-#: src/main/winproc.c:1762
-msgid "Package not installed"
-msgstr "Pachet neinstalat"
-
-#: src/main/winproc.c:1767
-msgid "The object is remote"
-msgstr "Obiectul este îndepãrtat (remote)"
-
-#: src/main/winproc.c:1772
-msgid "The link has been severed"
-msgstr "Legãtura a fost întreruptã"
-
-#: src/main/winproc.c:1777
-msgid "Advertise error"
-msgstr "Eroare reclamare"
-
-#: src/main/winproc.c:1782
-msgid "Srmount error"
-msgstr "Eroare Srmount"
-
-#: src/main/winproc.c:1787
-msgid "Communication error on send"
-msgstr "Eroare de comunicare la trimitere"
-
-#: src/main/winproc.c:1792
-msgid "Protocol error"
-msgstr "Eroare protocol"
-
-#: src/main/winproc.c:1797
-msgid "Multihop attempted"
-msgstr "A fost încercat multihop"
-
-#: src/main/winproc.c:1802
-msgid "Inode is remote (not really error)"
-msgstr "Inode este îndepãrtat (în realitate nu este o eroare)"
-
-#: src/main/winproc.c:1807
-msgid "Cross mount point (not really error)"
-msgstr "Punct de montare încruciºat (în realitate nu este o eroare)"
-
-#: src/main/winproc.c:1812
-msgid "Trying to read unreadable message"
-msgstr "Încercare de citire a unui mesaj de necitit"
-
-#: src/main/winproc.c:1817
-msgid "Given log. name not unique"
-msgstr "Numele de jurnal (log) furnizat nu este unic"
-
-#: src/main/winproc.c:1822
-msgid "f.d. invalid for this operation"
-msgstr "f.d. invalid pentru aceastã operaþie"
-
-#: src/main/winproc.c:1827
-msgid "Remote address changed"
-msgstr "Adresa îndepãrtatã (remote) schimbatã"
-
-#: src/main/winproc.c:1832
-msgid "Can't access a needed shared lib"
-msgstr "Nu pot accesa o bibliotecã shared necesarã"
-
-#: src/main/winproc.c:1837
-msgid "Accessing a corrupted shared lib"
-msgstr "Accesez o bibliotecã shared coruptã"
-
-#: src/main/winproc.c:1842
-msgid ".lib section in a.out corrupted"
-msgstr "seciunea .lib în a.out este coruptã"
-
-#: src/main/winproc.c:1847
-msgid "Attempting to link in too many libs"
-msgstr "Încercare de legare (link) în prea multe biblioteci"
-
-#: src/main/winproc.c:1852
-msgid "Attempting to exec a shared library"
-msgstr "Încercare de executare a unei biblioteci shared"
-
-#: src/main/winproc.c:1857
-msgid "Function not implemented"
-msgstr "Funcþia nu este implematatã"
-
-#: src/main/winproc.c:1862
-msgid "No more files"
-msgstr "Nici un alt fiºier"
-
-#: src/main/winproc.c:1867
-msgid "Directory not empty"
-msgstr "Directorul nu este gol"
-
-#: src/main/winproc.c:1872
-msgid "File or path name too long"
-msgstr "Numele fiºierului sau cãii este prea lung"
-
-#: src/main/winproc.c:1877
-msgid "Too many symbolic links"
-msgstr "Pre multe legãturi simbolice"
-
-#: src/main/winproc.c:1882
-msgid "Operation not supported on transport endpoint"
-msgstr "Operaþia nu este suportatã pe transport endpoint"
-
-#: src/main/winproc.c:1887
-msgid "Protocol family not supported"
-msgstr "Familie de protocoale nesuportatã"
-
-#: src/main/winproc.c:1892
-msgid "Connection reset by peer"
-msgstr "Conectare resetatã de pereche"
-
-#: src/main/winproc.c:1897
-msgid "No buffer space available"
-msgstr "Nici un spaþiu de buffer disponibil"
-
-#: src/main/winproc.c:1902
-msgid "Address family not supported by protocol family"
-msgstr "Familia de adrese nu este suportatã de familia de protocoale"
-
-#: src/main/winproc.c:1907
-msgid "Protocol wrong type for socket"
-msgstr "Tip greºit de protocol pentru socket"
-
-#: src/main/winproc.c:1912
-msgid "Socket operation on non-socket"
-msgstr "Operaþiune socket pe non-socket"
-
-#: src/main/winproc.c:1917
-msgid "Protocol not available"
-msgstr "Protocol indisponibil"
-
-#: src/main/winproc.c:1922
-msgid "Can't send after socket shutdown"
-msgstr "Nu pot trimite dupã închiderea (shutdown) socket-ului"
-
-#: src/main/winproc.c:1927
-msgid "Connection refused"
-msgstr "Conectare refuzatã"
-
-#: src/main/winproc.c:1932
-msgid "Address already in use"
-msgstr "Adresa este deja în uz"
-
-#: src/main/winproc.c:1937
-msgid "Connection aborted"
-msgstr "Conectare abandonatã"
-
-#: src/main/winproc.c:1942
-msgid "Network is unreachable"
-msgstr "Reþeaua nu poate fi atinsã"
-
-#: src/main/winproc.c:1947
-msgid "Network interface is not configured"
-msgstr "Interfaþa de reþea nu este configuratã"
-
-#: src/main/winproc.c:1952
-msgid "Connection timed out"
-msgstr "Conectare expiratã (timed out)"
-
-#: src/main/winproc.c:1957
-msgid "Host is down"
-msgstr "Gazda este indisponibilã (down)"
-
-#: src/main/winproc.c:1962
-msgid "Host is unreachable"
-msgstr "Gazda este de neatins (unreachable)"
-
-#: src/main/winproc.c:1967
-msgid "Connection already in progress"
-msgstr "Conectare deja în progres"
-
-#: src/main/winproc.c:1972
-msgid "Socket already connected"
-msgstr "Socket deja conectat"
-
-#: src/main/winproc.c:1977
-msgid "Destination address required"
-msgstr "Adresa destinaþie necesarã"
-
-#: src/main/winproc.c:1982
-msgid "Message too long"
-msgstr "Mesaj prea lung"
-
-#: src/main/winproc.c:1987
-msgid "Unknown protocol"
-msgstr "Protocol necunoscut"
-
-#: src/main/winproc.c:1992
-msgid "Socket type not supported"
-msgstr "Tip de socket nesuportat"
-
-#: src/main/winproc.c:1997
-msgid "Address not available"
-msgstr "Adresa nu este disponibilã"
-
-#: src/main/winproc.c:2002
-msgid "Connection aborted by network"
-msgstr "Conectare abandonatã de reþea"
-
-#: src/main/winproc.c:2007
-msgid "Socket is already connected"
-msgstr "Socket-ul este deja conectat"
-
-#: src/main/winproc.c:2012
-msgid "Socket is not connected"
-msgstr "Socket-ul nu este conectat"
-
-#: src/main/winproc.c:2017
-msgid "Too many references: cannot splice"
-msgstr "Prea multe referinþe: nu le pot îmbina"
-
-#: src/main/winproc.c:2022
-msgid "Too many processes"
-msgstr "Prea multe procese"
-
-#: src/main/winproc.c:2027
-msgid "Too many users"
-msgstr "Prea mulþi utilizatori"
-
-#: src/main/winproc.c:2032
-msgid "Disk quota exceeded"
-msgstr "Cota de disc depãºitã"
-
-#: src/main/winproc.c:2037 src/main/winproc.c:2064
-msgid "Unknown error"
-msgstr "Eroare necunoscutã"
-
-#: src/main/winproc.c:2042
-msgid "Not supported"
-msgstr "NU este suportat(ã)"
-
-#: src/main/winproc.c:2047
-msgid "No medium (in tape drive)"
-msgstr "Nici un mediu (în unitatea de bandã)"
-
-#: src/main/winproc.c:2052
-msgid "No such host or network path"
-msgstr "Nici o asemenea gazdã sau cale de reþea"
-
-#: src/main/winproc.c:2057
-msgid "Filename exists with different case"
-msgstr "Numele de fiºier existã cu cazul caracterelor diferit"
-
-#: src/main/winproc.c:2066
-#, c-format
-msgid "ERROR: Unknown error %i in %s\n"
-msgstr "EROARE: Eroare necunoscutã %i în %s\n"
 
 #: src/plugins/rpm/rpmextractor.c:3048
 #, c-format
@@ -1049,6 +46,34 @@ msgstr "Sursã RPM %d.%d"
 #, c-format
 msgid "Binary RPM %d.%d"
 msgstr "Binar RPM %d.%d"
+
+#: src/plugins/printable/dictionary-builder.c:53
+#, c-format
+msgid ""
+"Please provide the name of the language you are building\n"
+"a dictionary for.  For example:\n"
+msgstr ""
+"Vã rugãm furnizaþi numele limbii pentru care contruiþi\n"
+"un dicþionar.  De exemplu:\n"
+
+#: src/plugins/printable/dictionary-builder.c:66
+#, c-format
+msgid "Error opening file '%s': %s\n"
+msgstr "Eroare deschidere fiºier '%s': %s\n"
+
+#: src/plugins/printable/dictionary-builder.c:74
+#, c-format
+msgid ""
+"Error allocating: %s\n"
+"."
+msgstr ""
+"Eroare de alocare: %s\n"
+"."
+
+#: src/plugins/printable/dictionary-builder.c:86
+#, c-format
+msgid "Increase ALLOCSIZE (in %s).\n"
+msgstr "Creºteþi ALLOCSIZE (în %s).\n"
 
 #: src/plugins/manextractor.c:128
 msgid "Commands"
@@ -1086,6 +111,14 @@ msgstr "Comenzi pentru managementul sistemului"
 msgid "Kernel routines"
 msgstr "Proceduri kernel"
 
+#: src/plugins/wavextractor.c:114 src/plugins/mp3extractor.c:438
+msgid "mono"
+msgstr "mono"
+
+#: src/plugins/wavextractor.c:114 src/plugins/mp3extractor.c:438
+msgid "stereo"
+msgstr "stereo"
+
 #: src/plugins/htmlextractor.c:130 src/plugins/htmlextractor.c:928
 #, c-format
 msgid "Fatal: could not allocate (%s at %s:%d).\n"
@@ -1105,6 +138,11 @@ msgstr "%ux%u puncte pe cm"
 #, c-format
 msgid "%ux%u dots per inch?"
 msgstr "%ux%u puncte pe inci?"
+
+#: src/plugins/riffextractor.c:167
+#, c-format
+msgid "codec: %s, %u fps, %u ms"
+msgstr "codec: %s, %u fps, %u ms"
 
 #: src/plugins/mp3extractor.c:49
 msgid "Blues"
@@ -1698,47 +736,896 @@ msgstr "JPop"
 msgid "Synthpop"
 msgstr "Synthpop"
 
-#: src/plugins/mp3extractor.c:438 src/plugins/wavextractor.c:114
-msgid "stereo"
-msgstr "stereo"
-
-#: src/plugins/mp3extractor.c:438 src/plugins/wavextractor.c:114
-msgid "mono"
-msgstr "mono"
-
 #: src/plugins/mp3extractor.c:439
 msgid "(variable bps)"
 msgstr "(bps variabil)"
 
-#: src/plugins/riffextractor.c:167
+#: src/main/getopt.c:681
 #, c-format
-msgid "codec: %s, %u fps, %u ms"
-msgstr "codec: %s, %u fps, %u ms"
+msgid "%s: option `%s' is ambiguous\n"
+msgstr "%s: opþiunea `%s' este ambiguã\n"
 
-#: src/plugins/printable/dictionary-builder.c:29
+#: src/main/getopt.c:706
+#, c-format
+msgid "%s: option `--%s' doesn't allow an argument\n"
+msgstr "%s: opþiunea `--%s' nu permite un argument\n"
+
+#: src/main/getopt.c:712
+#, c-format
+msgid "%s: option `%c%s' doesn't allow an argument\n"
+msgstr "%s: opþiunea `%c%s' nu permite un argument\n"
+
+#: src/main/getopt.c:729 src/main/getopt.c:900
+#, c-format
+msgid "%s: option `%s' requires an argument\n"
+msgstr "%s: opþiunea `%s' necesitã un argument\n"
+
+#: src/main/getopt.c:758
+#, c-format
+msgid "%s: unrecognized option `--%s'\n"
+msgstr "%s: opþiune nerecunoscutã `--%s'\n"
+
+#: src/main/getopt.c:762
+#, c-format
+msgid "%s: unrecognized option `%c%s'\n"
+msgstr "%s: opþiune nerecunoscutã `%c%s'\n"
+
+#: src/main/getopt.c:788
+#, c-format
+msgid "%s: illegal option -- %c\n"
+msgstr "%s: opþiune ilegalã -- %c\n"
+
+#: src/main/getopt.c:790
+#, c-format
+msgid "%s: invalid option -- %c\n"
+msgstr "%s: opþiune ilegalã -- %c\n"
+
+#: src/main/getopt.c:819 src/main/getopt.c:949
+#, c-format
+msgid "%s: option requires an argument -- %c\n"
+msgstr "%s: opþiunea necesitã un argument -- %c\n"
+
+#: src/main/getopt.c:867
+#, c-format
+msgid "%s: option `-W %s' is ambiguous\n"
+msgstr "%s: opþiunea `-W %s' este ambiguã\n"
+
+#: src/main/getopt.c:885
+#, c-format
+msgid "%s: option `-W %s' doesn't allow an argument\n"
+msgstr "%s: opþiunea `-W %s' nu permite un argument\n"
+
+#: src/main/extract.c:49
 #, c-format
 msgid ""
-"Please provide the name of the language you are building\n"
-"a dictionary for.  For example:\n"
+"Usage: %s\n"
+"%s\n"
+"\n"
 msgstr ""
-"Vã rugãm furnizaþi numele limbii pentru care contruiþi\n"
-"un dicþionar.  De exemplu:\n"
+"Folosire: %s\n"
+"%s\n"
+"\n"
 
-#: src/plugins/printable/dictionary-builder.c:42
-#, c-format
-msgid "Error opening file '%s': %s\n"
-msgstr "Eroare deschidere fiºier '%s': %s\n"
-
-#: src/plugins/printable/dictionary-builder.c:50
+#: src/main/extract.c:52
 #, c-format
 msgid ""
-"Error allocating: %s\n"
-"."
+"Arguments mandatory for long options are also mandatory for short options.\n"
 msgstr ""
-"Eroare de alocare: %s\n"
-"."
+"Argumentele obligatorii pentru opþiunile lungi sunt obligatorii ºi pentru "
+"opþiunile scurte.\n"
 
-#: src/plugins/printable/dictionary-builder.c:62
+#: src/main/extract.c:126
+msgid "do not remove any duplicates"
+msgstr "nu îndepãrta nici un duplicat"
+
+#: src/main/extract.c:128
+msgid "print output in bibtex format"
+msgstr "afiºeazã ieºirea în format bibtex"
+
+#: src/main/extract.c:130
+msgid ""
+"use the generic plaintext extractor for the language with the 2-letter "
+"language code LANG"
+msgstr ""
+"foloseºte extractorul text-simplu generic pentru limba cu codul de limbã din "
+"2 litere LANG"
+
+#: src/main/extract.c:132
+msgid "remove duplicates only if types match"
+msgstr "îndepãrteazã duplicatele numai dacã tipul este acelaºi"
+
+#: src/main/extract.c:134
+msgid "use the filename as a keyword (loads filename-extractor plugin)"
+msgstr ""
+"foloseºte numele de fiºier ca ºi cuvânt cheie (încarcã plugin nume_fiºier-"
+"extractor)"
+
+#: src/main/extract.c:136
+msgid "print this help"
+msgstr "afiºeazã acest mesaj de ajutor"
+
+#: src/main/extract.c:138
+msgid "compute hash using the given ALGORITHM (currently sha1 or md5)"
+msgstr ""
+"calculeazã tabela de dispersie (hash) folosind ALGORITM-ul dat (curent sha1 "
+"sau md5)"
+
+#: src/main/extract.c:140
+msgid "load an extractor plugin named LIBRARY"
+msgstr "încarcã un plugin extractor numit LIBRÃRIE"
+
+#: src/main/extract.c:142
+msgid "list all keyword types"
+msgstr "listeazã toate tipurile de cuvinte cheie"
+
+#: src/main/extract.c:144
+msgid "do not use the default set of extractor plugins"
+msgstr "nu folosi setul implicit de plugin-uri extractor"
+
+#: src/main/extract.c:146
+msgid "print only keywords of the given TYPE (use -L to get a list)"
+msgstr ""
+"afiºeazã numai cuvintele cheie pentru TIP-ul dat (foloseºte -L pentru a "
+"obþine o listã"
+
+#: src/main/extract.c:148
+msgid "remove duplicates even if keyword types do not match"
+msgstr ""
+"îndepãrteazã duplicatele chiar dacã tipurile cuvintelor cheie nu sunt "
+"aceleaºi"
+
+#: src/main/extract.c:150
+msgid "use keyword splitting (loads split-extractor plugin)"
+msgstr ""
+"foloseºte spargere dupã cuvinte cheie (încarcã plugin-ul split-extractor)"
+
+#: src/main/extract.c:152
+msgid "print the version number"
+msgstr "afiºeazã numãrul versiunii"
+
+#: src/main/extract.c:154
+msgid "be verbose"
+msgstr "fi vorbãreþ"
+
+#: src/main/extract.c:156
+msgid "do not print keywords of the given TYPE"
+msgstr "nu afiºa cuvinte cheie de TIP-ul dat"
+
+#: src/main/extract.c:159
+msgid "extract [OPTIONS] [FILENAME]*"
+msgstr "extract [OPÞIUNI] [NUME_FIªIER]*"
+
+#: src/main/extract.c:160
+msgid "Extract metadata from files."
+msgstr "Extrage metadata din fiºiere."
+
+#: src/main/extract.c:198 src/main/extractor.c:784
 #, c-format
-msgid "Increase ALLOCSIZE (in %s).\n"
-msgstr "Creºteþi ALLOCSIZE (în %s).\n"
+msgid "%s - (binary)\n"
+msgstr "%s - (binar)\n"
+
+#: src/main/extract.c:204 src/main/extractor.c:789
+#, c-format
+msgid "INVALID TYPE - %s\n"
+msgstr "TIP INVALID - %s\n"
+
+#: src/main/extract.c:270 src/main/extractor.c:40
+msgid "title"
+msgstr "titlu"
+
+#: src/main/extract.c:272 src/main/extractor.c:38
+msgid "filename"
+msgstr "nume_fiºier"
+
+#: src/main/extract.c:277 src/main/extractor.c:41
+msgid "author"
+msgstr "autor"
+
+#: src/main/extract.c:281 src/main/extractor.c:43
+msgid "description"
+msgstr "descriere"
+
+#: src/main/extract.c:283 src/main/extractor.c:55
+msgid "keywords"
+msgstr "cuvinte cheie"
+
+#: src/main/extract.c:285 src/main/extractor.c:44
+msgid "comment"
+msgstr "comentariu"
+
+#: src/main/extract.c:289 src/main/extractor.c:45
+msgid "date"
+msgstr "data"
+
+#: src/main/extract.c:291 src/main/extractor.c:67
+msgid "creation date"
+msgstr "data creãrii"
+
+#: src/main/extract.c:319 src/main/extractor.c:46
+msgid "publisher"
+msgstr "publicist"
+
+#: src/main/extract.c:323 src/main/extractor.c:52
+msgid "organization"
+msgstr "organizaþie"
+
+#: src/main/extract.c:327 src/main/extractor.c:54
+msgid "subject"
+msgstr "subiect"
+
+#: src/main/extract.c:331 src/main/extractor.c:71
+msgid "page count"
+msgstr "numãr de pagini"
+
+#: src/main/extract.c:468
+#, c-format
+msgid "You must specify an argument for the '%s' option (option ignored).\n"
+msgstr ""
+"Trebuie sã specificaþi un argument pentru opþiunea '%s' (opþiune ignoratã).\n"
+
+#: src/main/extract.c:532
+#, c-format
+msgid "Use --help to get a list of options.\n"
+msgstr "Folosiþi --help pentru a obþine o listã de opþiuni.\n"
+
+#: src/main/extract.c:585
+#, c-format
+msgid "%% BiBTeX file\n"
+msgstr "%% BiBTeX file\n"
+
+#: src/main/extract.c:592
+#, c-format
+msgid "Keywords for file %s:\n"
+msgstr "Cuvinte cheie pentru fiºier %s:\n"
+
+#: src/main/extractor.c:37
+msgid "unknown"
+msgstr "necunoscut"
+
+#: src/main/extractor.c:39
+msgid "mimetype"
+msgstr "mimetype"
+
+#: src/main/extractor.c:42
+msgid "artist"
+msgstr "artist"
+
+#: src/main/extractor.c:47
+msgid "language"
+msgstr "limbã"
+
+#: src/main/extractor.c:48
+msgid "album"
+msgstr "album"
+
+#: src/main/extractor.c:49
+msgid "genre"
+msgstr "gen"
+
+#: src/main/extractor.c:50
+msgid "location"
+msgstr "locaþie"
+
+#: src/main/extractor.c:51
+msgid "version"
+msgstr "versiune"
+
+#: src/main/extractor.c:53
+msgid "copyright"
+msgstr "copyright"
+
+#: src/main/extractor.c:56
+msgid "contributor"
+msgstr "contribuitor"
+
+#: src/main/extractor.c:57
+msgid "resource-type"
+msgstr "tip-resursã"
+
+#: src/main/extractor.c:58
+msgid "format"
+msgstr "format"
+
+#: src/main/extractor.c:59
+msgid "resource-identifier"
+msgstr "identificator-resursã"
+
+#: src/main/extractor.c:60
+msgid "source"
+msgstr "sursã"
+
+#: src/main/extractor.c:61
+msgid "relation"
+msgstr "relaþie"
+
+#: src/main/extractor.c:62
+msgid "coverage"
+msgstr "acoperire"
+
+#: src/main/extractor.c:63
+msgid "software"
+msgstr "software"
+
+#: src/main/extractor.c:64
+msgid "disclaimer"
+msgstr "repudiere"
+
+#: src/main/extractor.c:65
+msgid "warning"
+msgstr "avertisment"
+
+#: src/main/extractor.c:66
+msgid "translated"
+msgstr "tradus"
+
+#: src/main/extractor.c:68
+msgid "modification date"
+msgstr "data modificãrii"
+
+#: src/main/extractor.c:69
+msgid "creator"
+msgstr "creator"
+
+#: src/main/extractor.c:70
+msgid "producer"
+msgstr "producãtor"
+
+#: src/main/extractor.c:72
+msgid "page orientation"
+msgstr "orientare paginã"
+
+#: src/main/extractor.c:73
+msgid "paper size"
+msgstr "dimensiune pagina"
+
+#: src/main/extractor.c:74
+msgid "used fonts"
+msgstr "fonturi folosite"
+
+#: src/main/extractor.c:75
+msgid "page order"
+msgstr "ordine pagini"
+
+#: src/main/extractor.c:76
+msgid "created for"
+msgstr "creat pentru"
+
+#: src/main/extractor.c:77
+msgid "magnification"
+msgstr "mãrire"
+
+#: src/main/extractor.c:78
+msgid "release"
+msgstr "release"
+
+#: src/main/extractor.c:79
+msgid "group"
+msgstr "grup"
+
+#: src/main/extractor.c:80
+msgid "size"
+msgstr "mãrime"
+
+#: src/main/extractor.c:81
+msgid "summary"
+msgstr "cuprins"
+
+#: src/main/extractor.c:82
+msgid "packager"
+msgstr "împachetator"
+
+#: src/main/extractor.c:83
+msgid "vendor"
+msgstr "vânzãtor"
+
+#: src/main/extractor.c:84
+msgid "license"
+msgstr "licenþã"
+
+#: src/main/extractor.c:85
+msgid "distribution"
+msgstr "distribuþie"
+
+#: src/main/extractor.c:86
+msgid "build-host"
+msgstr "gazdã-contruit"
+
+#: src/main/extractor.c:87
+msgid "os"
+msgstr "sistem operare"
+
+#: src/main/extractor.c:88
+msgid "dependency"
+msgstr "dependinþe"
+
+#: src/main/extractor.c:89
+msgid "MD4"
+msgstr "MD4"
+
+#: src/main/extractor.c:90
+msgid "MD5"
+msgstr "MD5"
+
+#: src/main/extractor.c:91
+msgid "SHA-0"
+msgstr "SHA-0"
+
+#: src/main/extractor.c:92
+msgid "SHA-1"
+msgstr "SHA-1"
+
+#: src/main/extractor.c:93
+msgid "RipeMD160"
+msgstr "RipeMD160"
+
+#: src/main/extractor.c:94
+msgid "resolution"
+msgstr "rezoluþie"
+
+#: src/main/extractor.c:95
+msgid "category"
+msgstr "categorie"
+
+#: src/main/extractor.c:96
+msgid "book title"
+msgstr "titlu de carte"
+
+#: src/main/extractor.c:97
+msgid "priority"
+msgstr "prioritate"
+
+#: src/main/extractor.c:98
+msgid "conflicts"
+msgstr "conflicte"
+
+#: src/main/extractor.c:99
+msgid "replaces"
+msgstr "înlocuieºte"
+
+#: src/main/extractor.c:100
+msgid "provides"
+msgstr "furnizeazã"
+
+#: src/main/extractor.c:101
+msgid "conductor"
+msgstr "conducãtor"
+
+#: src/main/extractor.c:102
+msgid "interpreter"
+msgstr "interpret(ã)"
+
+#: src/main/extractor.c:103
+msgid "owner"
+msgstr "proprietar"
+
+#: src/main/extractor.c:104
+msgid "lyrics"
+msgstr "versuri"
+
+#: src/main/extractor.c:105
+msgid "media type"
+msgstr "tipul media"
+
+#: src/main/extractor.c:106
+msgid "contact"
+msgstr "contact"
+
+#: src/main/extractor.c:107
+msgid "binary thumbnail data"
+msgstr "data thumbnail binar"
+
+#: src/main/extractor.c:108
+#, fuzzy
+msgid "publication date"
+msgstr "data creãrii"
+
+#: src/main/extractor.c:194
+#, c-format
+msgid "Initialization of plugin mechanism failed: %s!\n"
+msgstr "iniþializare mecanismului de plugin a eºuat: %s!\n"
+
+#: src/main/extractor.c:341
+#, c-format
+msgid ""
+"Resolving symbol '%s' in library '%s' failed, so I tried '%s', but that "
+"failed also.  Errors are: '%s' and '%s'.\n"
+msgstr ""
+"Rezolvarea simbolului '%s' în biblioteca '%s' a eºuat, aºa cã am încercat '%"
+"s', dar ºi acesta a eºuat.  Erorile sunt: '%s' ºi '%s'.\n"
+
+#: src/main/extractor.c:370
+#, c-format
+msgid "Loading '%s' plugin failed: %s\n"
+msgstr "Încãrcarea plugin-ului '%s' a eºuat: %s\n"
+
+#: src/main/extractor.c:576
+#, c-format
+msgid "Unloading plugin '%s' failed!\n"
+msgstr "Descãrcarea plugin-ului '%s' a eºuat!\n"
+
+#~ msgid "No error"
+#~ msgstr "Ni o eroare"
+
+#~ msgid "Unknown host"
+#~ msgstr "Gazdã necunoscutã"
+
+#~ msgid "Host name lookup failure"
+#~ msgstr "Cãutarea (lookup) numelui gazdei a eºuat"
+
+#~ msgid "Unknown server error"
+#~ msgstr "Eroare server necunoscutã"
+
+#~ msgid "No address associated with name"
+#~ msgstr "Nici o adresã asociatã cu numele"
+
+#~ msgid "Internal resolver error"
+#~ msgstr "Eroare resolver intern"
+
+#~ msgid "Unknown resolver error"
+#~ msgstr "Eroare resolver necunoscutã"
+
+#~ msgid "Cannot determine root directory (%s)\n"
+#~ msgstr "Nu pot determina directorul root (%s)\n"
+
+#~ msgid "Cannot determine home directory (%s)\n"
+#~ msgstr "Nu pot determina directorul acasã (%s)\n"
+
+#~ msgid "Not super-user"
+#~ msgstr "Nu sunteþi super-utilizator"
+
+#~ msgid "No such file or directory"
+#~ msgstr "Nici un asemenea fiºier sau director"
+
+#~ msgid "No such process"
+#~ msgstr "Nici un asemenea proces"
+
+#~ msgid "Interrupted system call"
+#~ msgstr "Apel sistem întrerupt"
+
+#~ msgid "I/O error"
+#~ msgstr "Eroare I/O"
+
+#~ msgid "No such device or address"
+#~ msgstr "Nici un asemenea dispozitiv sau adresã"
+
+#~ msgid "Arg list too long"
+#~ msgstr "Listã de argumente prea lungã"
+
+#~ msgid "Exec format error"
+#~ msgstr "Eroare format exec"
+
+#~ msgid "Bad file number"
+#~ msgstr "Numãr de fiºier incorect"
+
+#~ msgid "No children"
+#~ msgstr "Nici un copil"
+
+#~ msgid "Resource unavailable or operation would block, try again"
+#~ msgstr "Resursã indisponibilã sau operaþia s-ar bloca, încercaþi din nou"
+
+#~ msgid "Not enough memory"
+#~ msgstr "Memorie insuficientã"
+
+#~ msgid "Permission denied"
+#~ msgstr "Permisiune refuzatã"
+
+#~ msgid "Bad address"
+#~ msgstr "Adresa incorectã"
+
+#~ msgid "Block device required"
+#~ msgstr "Dispozitiv bloc necesar"
+
+#~ msgid "Mount device busy"
+#~ msgstr "Dispozitiv montare ocupat"
+
+#~ msgid "File exists"
+#~ msgstr "Fiºierul existã"
+
+#~ msgid "Cross-device link"
+#~ msgstr "Legãturã (link) între-dispozitive"
+
+#~ msgid "No such device"
+#~ msgstr "Nici un asemenea dispozitiv"
+
+#~ msgid "Not a directory"
+#~ msgstr "Nu este un director"
+
+#~ msgid "Is a directory"
+#~ msgstr "Este un director"
+
+#~ msgid "Invalid argument"
+#~ msgstr "Argument invalide"
+
+#~ msgid "Too many open files in system"
+#~ msgstr "Prea multe fiºiere deschise în sistem"
+
+#~ msgid "Too many open files"
+#~ msgstr "Prea multe fiºiere deschise"
+
+#~ msgid "Not a typewriter"
+#~ msgstr "Nu este o maºinã de scris (typewriter)"
+
+#~ msgid "Text file busy"
+#~ msgstr "Fiºier text ocupat"
+
+#~ msgid "File too large"
+#~ msgstr "Fiºier prea mare"
+
+#~ msgid "No space left on device"
+#~ msgstr "Spaþiu indisponibil pe dispozitiv"
+
+#~ msgid "Illegal seek"
+#~ msgstr "Cãutare ilegalã"
+
+#~ msgid "Read only file system"
+#~ msgstr "Citeºte numai sistemul de fiºiere"
+
+#~ msgid "Too many links"
+#~ msgstr "Prea multe legãturi (links)"
+
+#~ msgid "Broken pipe"
+#~ msgstr "Pipe spart(ã)"
+
+#~ msgid "Math arg out of domain of func"
+#~ msgstr "Argument matematic în afara domeniului funcþiei"
+
+#~ msgid "Math result not representable"
+#~ msgstr "Rezultatul matematic nu este reprezentabil"
+
+#~ msgid "No message of desired type"
+#~ msgstr "Nici un mesaj de tipul dorit"
+
+#~ msgid "Identifier removed"
+#~ msgstr "Identificator îndepãrtat"
+
+#~ msgid "Channel number out of range"
+#~ msgstr "Numãr canal în afara domeniului"
+
+#~ msgid "Level 2 not synchronized"
+#~ msgstr "Nivelul 2 nesincronizat"
+
+#~ msgid "Level 3 halted"
+#~ msgstr "Nivelul 3 oprit"
+
+#~ msgid "Level 3 reset"
+#~ msgstr "Nivelul 3 resetat"
+
+#~ msgid "Link number out of range"
+#~ msgstr "Numãr legãturi în afara domeniului"
+
+#~ msgid "Protocol driver not attached"
+#~ msgstr "Driver-ul de protocol nu este ataºat"
+
+#~ msgid "No CSI structure available"
+#~ msgstr "Nici o structurã CSI disponibilã"
+
+#~ msgid "Level 2 halted"
+#~ msgstr "Nivelul 2 oprit"
+
+#~ msgid "Deadlock condition"
+#~ msgstr "Condiþie blocare (Deadlock)"
+
+#~ msgid "No record locks available"
+#~ msgstr "Nici o încuietoare de articol (record lock) disponibilã"
+
+#~ msgid "Invalid exchange"
+#~ msgstr "Schimbare invalidã"
+
+#~ msgid "Invalid request descriptor"
+#~ msgstr "Descriptor de cerere invalid"
+
+#~ msgid "Exchange full"
+#~ msgstr "Schimbare întreagã"
+
+#~ msgid "No anode"
+#~ msgstr "Nici un anode"
+
+#~ msgid "Invalid request code"
+#~ msgstr "Cod de cerere invalid"
+
+#~ msgid "Invalid slot"
+#~ msgstr "Loc (slot) invalid"
+
+#~ msgid "File locking deadlock error"
+#~ msgstr "Eroare la descuierea (locking deadlock) fiºierului"
+
+#~ msgid "Bad font file fmt"
+#~ msgstr "Format fiºier font incorect"
+
+#~ msgid "Device not a stream"
+#~ msgstr "Dispozitivul nu este un flux (stream)"
+
+#~ msgid "No data (for no delay io)"
+#~ msgstr "Nici o datã (pentru intrare/ieºire fãrã întârziere)"
+
+#~ msgid "Timer expired"
+#~ msgstr "Cronometru expirat"
+
+#~ msgid "Out of streams resources"
+#~ msgstr "Resurse în afara fluxurilor"
+
+#~ msgid "Machine is not on the network"
+#~ msgstr "Maºina nu este pe reþea"
+
+#~ msgid "Package not installed"
+#~ msgstr "Pachet neinstalat"
+
+#~ msgid "The object is remote"
+#~ msgstr "Obiectul este îndepãrtat (remote)"
+
+#~ msgid "The link has been severed"
+#~ msgstr "Legãtura a fost întreruptã"
+
+#~ msgid "Advertise error"
+#~ msgstr "Eroare reclamare"
+
+#~ msgid "Srmount error"
+#~ msgstr "Eroare Srmount"
+
+#~ msgid "Communication error on send"
+#~ msgstr "Eroare de comunicare la trimitere"
+
+#~ msgid "Protocol error"
+#~ msgstr "Eroare protocol"
+
+#~ msgid "Multihop attempted"
+#~ msgstr "A fost încercat multihop"
+
+#~ msgid "Inode is remote (not really error)"
+#~ msgstr "Inode este îndepãrtat (în realitate nu este o eroare)"
+
+#~ msgid "Cross mount point (not really error)"
+#~ msgstr "Punct de montare încruciºat (în realitate nu este o eroare)"
+
+#~ msgid "Trying to read unreadable message"
+#~ msgstr "Încercare de citire a unui mesaj de necitit"
+
+#~ msgid "Given log. name not unique"
+#~ msgstr "Numele de jurnal (log) furnizat nu este unic"
+
+#~ msgid "f.d. invalid for this operation"
+#~ msgstr "f.d. invalid pentru aceastã operaþie"
+
+#~ msgid "Remote address changed"
+#~ msgstr "Adresa îndepãrtatã (remote) schimbatã"
+
+#~ msgid "Can't access a needed shared lib"
+#~ msgstr "Nu pot accesa o bibliotecã shared necesarã"
+
+#~ msgid "Accessing a corrupted shared lib"
+#~ msgstr "Accesez o bibliotecã shared coruptã"
+
+#~ msgid ".lib section in a.out corrupted"
+#~ msgstr "seciunea .lib în a.out este coruptã"
+
+#~ msgid "Attempting to link in too many libs"
+#~ msgstr "Încercare de legare (link) în prea multe biblioteci"
+
+#~ msgid "Attempting to exec a shared library"
+#~ msgstr "Încercare de executare a unei biblioteci shared"
+
+#~ msgid "Function not implemented"
+#~ msgstr "Funcþia nu este implematatã"
+
+#~ msgid "No more files"
+#~ msgstr "Nici un alt fiºier"
+
+#~ msgid "Directory not empty"
+#~ msgstr "Directorul nu este gol"
+
+#~ msgid "File or path name too long"
+#~ msgstr "Numele fiºierului sau cãii este prea lung"
+
+#~ msgid "Too many symbolic links"
+#~ msgstr "Pre multe legãturi simbolice"
+
+#~ msgid "Operation not supported on transport endpoint"
+#~ msgstr "Operaþia nu este suportatã pe transport endpoint"
+
+#~ msgid "Protocol family not supported"
+#~ msgstr "Familie de protocoale nesuportatã"
+
+#~ msgid "Connection reset by peer"
+#~ msgstr "Conectare resetatã de pereche"
+
+#~ msgid "No buffer space available"
+#~ msgstr "Nici un spaþiu de buffer disponibil"
+
+#~ msgid "Address family not supported by protocol family"
+#~ msgstr "Familia de adrese nu este suportatã de familia de protocoale"
+
+#~ msgid "Protocol wrong type for socket"
+#~ msgstr "Tip greºit de protocol pentru socket"
+
+#~ msgid "Socket operation on non-socket"
+#~ msgstr "Operaþiune socket pe non-socket"
+
+#~ msgid "Protocol not available"
+#~ msgstr "Protocol indisponibil"
+
+#~ msgid "Can't send after socket shutdown"
+#~ msgstr "Nu pot trimite dupã închiderea (shutdown) socket-ului"
+
+#~ msgid "Connection refused"
+#~ msgstr "Conectare refuzatã"
+
+#~ msgid "Address already in use"
+#~ msgstr "Adresa este deja în uz"
+
+#~ msgid "Connection aborted"
+#~ msgstr "Conectare abandonatã"
+
+#~ msgid "Network is unreachable"
+#~ msgstr "Reþeaua nu poate fi atinsã"
+
+#~ msgid "Network interface is not configured"
+#~ msgstr "Interfaþa de reþea nu este configuratã"
+
+#~ msgid "Connection timed out"
+#~ msgstr "Conectare expiratã (timed out)"
+
+#~ msgid "Host is down"
+#~ msgstr "Gazda este indisponibilã (down)"
+
+#~ msgid "Host is unreachable"
+#~ msgstr "Gazda este de neatins (unreachable)"
+
+#~ msgid "Connection already in progress"
+#~ msgstr "Conectare deja în progres"
+
+#~ msgid "Socket already connected"
+#~ msgstr "Socket deja conectat"
+
+#~ msgid "Destination address required"
+#~ msgstr "Adresa destinaþie necesarã"
+
+#~ msgid "Message too long"
+#~ msgstr "Mesaj prea lung"
+
+#~ msgid "Unknown protocol"
+#~ msgstr "Protocol necunoscut"
+
+#~ msgid "Socket type not supported"
+#~ msgstr "Tip de socket nesuportat"
+
+#~ msgid "Address not available"
+#~ msgstr "Adresa nu este disponibilã"
+
+#~ msgid "Connection aborted by network"
+#~ msgstr "Conectare abandonatã de reþea"
+
+#~ msgid "Socket is already connected"
+#~ msgstr "Socket-ul este deja conectat"
+
+#~ msgid "Socket is not connected"
+#~ msgstr "Socket-ul nu este conectat"
+
+#~ msgid "Too many references: cannot splice"
+#~ msgstr "Prea multe referinþe: nu le pot îmbina"
+
+#~ msgid "Too many processes"
+#~ msgstr "Prea multe procese"
+
+#~ msgid "Too many users"
+#~ msgstr "Prea mulþi utilizatori"
+
+#~ msgid "Disk quota exceeded"
+#~ msgstr "Cota de disc depãºitã"
+
+#~ msgid "Unknown error"
+#~ msgstr "Eroare necunoscutã"
+
+#~ msgid "Not supported"
+#~ msgstr "NU este suportat(ã)"
+
+#~ msgid "No medium (in tape drive)"
+#~ msgstr "Nici un mediu (în unitatea de bandã)"
+
+#~ msgid "No such host or network path"
+#~ msgstr "Nici o asemenea gazdã sau cale de reþea"
+
+#~ msgid "Filename exists with different case"
+#~ msgstr "Numele de fiºier existã cu cazul caracterelor diferit"
+
+#~ msgid "ERROR: Unknown error %i in %s\n"
+#~ msgstr "EROARE: Eroare necunoscutã %i în %s\n"

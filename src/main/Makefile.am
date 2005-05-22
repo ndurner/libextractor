@@ -46,7 +46,7 @@ endif
 libextractor_la_SOURCES = \
   extractor.c \
   $(winproc) \
-  org_ovmj_libextractor_Extractor.h
+  org_gnunet_libextractor_Extractor.h
 
 extract_SOURCES = \
   extract.c \

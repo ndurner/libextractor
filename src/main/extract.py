@@ -25,7 +25,7 @@ import Extractor
 import sys
 
 xtract = Extractor.Extractor()
-for arg in sys.argv:
+for arg in sys.argv[1:]:
     print "Keywords from " + arg
     keys = xtract.extract(arg);
     for i in keys:

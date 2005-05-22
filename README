@@ -12,11 +12,30 @@ libextractor is a part of the GNU project (http://www.gnu.org/).
 
 
 
-
 extract
 =======
 
 extract is a simple command-line interface to libextractor.
+
+
+
+Dependencies
+============
+
+libextractor requires Python (2.3, better 2.4 including development
+files) and a JNI header file (jni.h) for Java.  Further requirements
+include:
+* libvorbisfile
+* zlib (compression library)
+* glib 2.2
+* c++ compiler
+* libltdl (from GNU libtool)
+* libwand (from ImageMagick)
+* GNU gettext
+
+When building libextractor binaries, please make sure all of these
+dependencies are available.  Otherwise the build system may
+automatically build only a subset of libextractor.
 
 
 
