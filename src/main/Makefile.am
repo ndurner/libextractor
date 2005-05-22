@@ -26,7 +26,7 @@ extract_LDADD = \
 libextractor_la_LDFLAGS = \
   -export-dynamic -version-info 1:1:0 $(LIBICONV)
 libextractor_la_LIBADD = \
-  $(LIBLTDL)
+  $(LIBLTDL) -ldl
 libextractor_la_DEPENDENCIES = \
   $(LIBLTDL) 
 
