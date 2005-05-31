@@ -22,23 +22,16 @@
  * @file thumbnailextractor.c
  * @author Christian Grothoff
  * @brief this extractor produces a binary (!) encoded
- * thumbnail of images (using gdk pixbuf).  The bottom
+ * thumbnail of images (using imagemagick).  The bottom
  * of the file includes a decoder method that can be used
  * to reproduce the 128x128 PNG thumbnails.
  */
 
 #include "platform.h"
 #include "extractor.h"
-#include <gdk-pixbuf/gdk-pixbuf.h>
+#include <wand/magick_wand.h>
 
 #define THUMBSIZE 128
-
-
-/* using libgobject, needs init! */
-void __attribute__ ((constructor)) ole_gobject_init(void) {
-  g_type_init();
-}
-
 
 static EXTRACTOR_KeywordList * addKeyword(EXTRACTOR_KeywordType type,
 					  char * keyword,
@@ -79,8 +72,8 @@ struct EXTRACTOR_Keywords * libextractor_thumbnail_extract(const char * filename
 							   const char * data,
 							   size_t size,
 							   struct EXTRACTOR_Keywords * prev) {
-  GdkPixbuf * in;
-  GdkPixbuf * out;
+  MagickBooleanType status;
+  MagickWand * magick_wand;
   size_t length;
   char * thumb;
   unsigned long width;
@@ -94,7 +87,6 @@ struct EXTRACTOR_Keywords * libextractor_thumbnail_extract(const char * filename
   unsigned char marker;
   const char * mime;
   int j;
-  char * format;
 
   /* if the mime-type of the file is not whitelisted
      do not run the thumbnail extactor! */
@@ -111,31 +103,29 @@ struct EXTRACTOR_Keywords * libextractor_thumbnail_extract(const char * filename
   if (whitelist[j] == NULL)
     return prev;
 
-  in = gdk_pixbuf_new_from_file(filename,
-				NULL);
-  if (in == NULL)
+  magick_wand = NewMagickWand();
+  status = MagickReadImageBlob(magick_wand, data, size);
+  if (status == MagickFalse) {
+    DestroyMagickWand(magick_wand);
     return prev;
-  height = gdk_pixbuf_get_height(in);
-  width = gdk_pixbuf_get_width(in);
-  format = malloc(64);
-  snprintf(format,
-	   64,
-	   "%ux%u",
-	   (unsigned int) width,
-	   (unsigned int) height);
-  prev
-    = addKeyword(EXTRACTOR_SIZE,
-		 format,
-		 prev);
+  }
+  MagickResetIterator(magick_wand);
+  if (MagickNextImage(magick_wand) == MagickFalse)
+    return prev;
+
+  height = MagickGetImageHeight(magick_wand);
+  width = MagickGetImageWidth(magick_wand);
   if (height == 0)
     height = 1;
   if (width == 0)
     width = 1;
   if ( (height <= THUMBSIZE) &&
        (width <= THUMBSIZE) ) {
-    g_object_unref(in);
+    DestroyMagickWand(magick_wand);
     return prev;
   }
+
+
   if (height > THUMBSIZE) {
     width = width * THUMBSIZE / height;
     height = THUMBSIZE;
@@ -144,22 +134,31 @@ struct EXTRACTOR_Keywords * libextractor_thumbnail_extract(const char * filename
     height = height * THUMBSIZE / width;
     width = THUMBSIZE;
   }
-  out = gdk_pixbuf_scale_simple(in,
-				width,
-				height,
-				GDK_INTERP_BILINEAR);
-  g_object_unref(in);
-  thumb = NULL;
-  if (! gdk_pixbuf_save_to_buffer(out,
-				  &thumb,
-				  &length,
-				  "png",
-				  NULL,
-				  NULL)) {
-    g_object_unref(out);
+  MagickResizeImage(magick_wand, height, width, LanczosFilter, 1.0);
+  MagickSetImageDepth(magick_wand,
+		      8);
+  MagickSetImageChannelDepth(magick_wand,
+			     RedChannel,
+			     2);
+  MagickCommentImage(magick_wand, "");
+  MagickSetImageChannelDepth(magick_wand,
+			     GreenChannel,
+			     2);
+  MagickSetImageChannelDepth(magick_wand,
+			     BlueChannel,
+			     2);
+  MagickSetImageChannelDepth(magick_wand,
+			     OpacityChannel,
+			     2);
+  MagickSetImageInterlaceScheme(magick_wand,
+				NoInterlace);
+
+  if (MagickFalse == MagickSetImageFormat(magick_wand, "png")) {
+    DestroyMagickWand(magick_wand);
     return prev;
   }
-  g_object_unref(out);
+  thumb = MagickGetImageBlob(magick_wand, &length);
+  DestroyMagickWand(magick_wand);
   if (thumb == NULL)
     return prev;
 

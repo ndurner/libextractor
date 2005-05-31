@@ -243,21 +243,10 @@ int freq_table[4][3]={
 #define SYSERR     1
 #define INVALID_ID3 2
 
-/**
- * Remove trailing whitespace from the end of a string
- */
-static char * unpad(char * string) {
-  char * end = &string[strlen(string) - 1];
-  while ( (end >= string) &&
-	  (' ' == end[0]) )
-    (end--)[0]='\0';
-  return string;
-}
-
 static int get_id3(unsigned char * data,
 		   size_t size,
 		   id3tag * id3) {
-  char * pos;
+  unsigned char * pos;
 
   if (size < 128)
     return INVALID_ID3;
@@ -312,7 +301,6 @@ mp3parse(char * data,
   int counter=0;
   char mpeg_ver=0;
   char layer_ver=0;
-  char tag[128];
   int idx_num=0;	
   int bitrate=0; /*used for each frame*/
   int avg_bps=0; /*average bitrate*/

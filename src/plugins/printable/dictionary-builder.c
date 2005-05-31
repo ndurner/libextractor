@@ -38,7 +38,6 @@ int main(int argc,
 	 char ** argv) {
   Bloomfilter bf;
   HashCode160 hc;
-  int val=1; /* for endianness */
   int i;
   int cnt;
   char * fn;

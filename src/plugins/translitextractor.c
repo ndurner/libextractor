@@ -552,7 +552,7 @@ struct EXTRACTOR_Keywords * libextractor_translit_extract(char * filename,
 						       size_t size,
 						       struct EXTRACTOR_Keywords * prev) {
   struct EXTRACTOR_Keywords * pos;
-  unsigned int mem, src, dest, len, i;
+  unsigned int mem, src, dest, len;
   unsigned char *transl;
 
   pos = prev;

@@ -41,7 +41,7 @@
 
 /* using libgobject, needs init! */
 void __attribute__ ((constructor)) ole_gobject_init(void) {
-  g_type_init(); /* really needed??? */
+  g_type_init(); 
 }
 
 static struct EXTRACTOR_Keywords * addKeyword(EXTRACTOR_KeywordList *oldhead,

@@ -30,6 +30,7 @@
 #include "platform.h"
 #include "extractor.h"
 #include "pack.h"
+#include <math.h>
 
 static void addKeyword(struct EXTRACTOR_Keywords ** list,
 		       char * keyword,
@@ -67,7 +68,6 @@ struct EXTRACTOR_Keywords * libextractor_mpeg_extract(char * filename,
 						      struct EXTRACTOR_Keywords * prev) {
   unsigned int version = 0;
   unsigned int bitrate = 0;
-  unsigned int fps = 0;
   unsigned int height = 0;
   unsigned int width = 0;
   unsigned int temp;

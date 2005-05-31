@@ -1,8 +1,8 @@
 # Process this file with autoconf to produce a configure script.
 AC_PREREQ(2.57)
-AC_INIT([libextractor], [0.5.0], [bug-libextractor@gnu.org])
+AC_INIT([libextractor], [0.5.1], [bug-libextractor@gnu.org])
 AC_REVISION($Revision: 1.67 $)
-AM_INIT_AUTOMAKE([libextractor], [0.5.0])
+AM_INIT_AUTOMAKE([libextractor], [0.5.1])
 AM_CONFIG_HEADER(src/include/config.h)
 
 # Checks for programs.
@@ -149,25 +149,6 @@ AC_CHECK_HEADERS([ltdl.h iconv.h])
 AC_CHECK_HEADERS([jni.h])
 # jni.h is purely optional!  But if not present => no Java support!
 
-AC_CHECK_HEADERS([wand/magick-wand.h])
-
-AC_PATH_PROG(WAND_CONFIG, Wand-config, no)
-if test "$WAND_CONFIG" = "no" ; then
-  AC_MSG_RESULT([*** All Imagemagick dependent parts will be disabled, Wand-config not found. ***])
-else
-  WAND_CFLAGS=`$WAND_CONFIG --cflags`
-  WAND_LDFLAGS=`$WAND_CONFIG --ldflags`
-  WAND_LIBS=`$WAND_CONFIG --libs`
-  have_imagemagick="yes"
-  AC_DEFINE(HAVE_WAND,1,[Define this if you have Imagemagick])
-fi
-
-AM_CONDITIONAL(HAVE_WAND, test x"$have_imagemagick" = "xyes" )
-AC_SUBST(WAND_CFLAGS)
-AC_SUBST(WAND_LDFLAGS)
-AC_SUBST(WAND_LIBS)
-
-
 AC_PYTHON_DEVEL
 
 AC_CHECK_HEADERS([vorbis/vorbisfile.h])
@@ -226,6 +207,18 @@ else
  AC_DEFINE(HAVE_GLIB, 0, [Have glib])
 fi
         
+
+# check for gtk >= 2.6.0
+AC_MSG_CHECKING(for gtk)
+AM_PATH_GTK_2_0(2.6.0,without_gtk=false,without_gtk=true)
+AM_CONDITIONAL(HAVE_GTK, test x$without_gtk != xtrue)
+if test $without_gtk != true
+then
+ AC_DEFINE_UNQUOTED([HAVE_GTK], 1, [We have GTK])
+else
+ AM_CONDITIONAL(HAVE_GTK,false)
+fi
+
 
 
 printable=1

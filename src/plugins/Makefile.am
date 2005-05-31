@@ -10,7 +10,7 @@ if HAVE_GLIB
  oledir=ole2
 endif
 
-if HAVE_WAND
+if HAVE_GTK
  thumbdir=thumbnail
 endif
 
