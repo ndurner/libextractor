@@ -30,7 +30,7 @@ include:
 * glib 2.2
 * c++ compiler
 * libltdl (from GNU libtool)
-* libwand (from ImageMagick)
+* gtk 2.6 (for thumbnails, gdk-pixbuf)
 * GNU gettext
 
 When building libextractor binaries, please make sure all of these

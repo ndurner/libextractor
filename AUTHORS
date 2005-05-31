@@ -55,8 +55,8 @@ md5         - Ulrich Drepper <drepper@gnu.ai.mit.edu>
 sha1        - Scott G. Miller and Robert Klep <robert@ilse.nl>
 
 Libraries used:
-libz       -
-ogg-vorbis - 
-glib       - 
-libltdl    - 
-ImageMagick- 
+libz        -
+ogg-vorbis  - 
+glib        - 
+libltdl     - 
+gtk (pixbuf)- 
