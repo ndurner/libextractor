@@ -58,6 +58,7 @@
 #endif
 #include <locale.h>
 #include <iconv.h>
+#include <langinfo.h>
 
 #ifdef OSX
  #define socklen_t unsigned int

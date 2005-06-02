@@ -20,6 +20,7 @@ libextractor_thumbnail_la_SOURCES = \
 
 # Ok, linking this one is complicated, see Mantis #787.
 libextractor_thumbnail_la_LDFLAGS = \
+  $(top_builddir)/src/main/libextractor.la \
   -Wl,-Bstatic -Wl,-lgobject-2.0 -Wl,-lglib-2.0 -Wl,-Bdynamic \
   -Wl,-Bsymbolic -avoid-version -module
 
