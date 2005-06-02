@@ -830,7 +830,7 @@ public:
 	     (stack[sp+1].type == psInt || stack[sp+1].type == psReal); }
   void copy(int n);
   void roll(int n, int j);
-  void index(int i);
+  void idx(int i);
   void pop();
 
 private:
@@ -949,7 +949,7 @@ void PSStack::roll(int n, int j) {
   }
 }
 
-void PSStack::index(int i) {
+void PSStack::idx(int i) {
   if (!checkOverflow()) {
     return;
   }
@@ -1354,7 +1354,7 @@ void PostScriptFunction::exec(PSStack *stack, int codePtr) {
 	stack->pushInt(i1 / i2);
 	break;
       case psOpIndex:
-	stack->index(stack->popInt());
+	stack->idx(stack->popInt());
 	break;
       case psOpLe:
 	if (stack->topTwoAreInts()) {
