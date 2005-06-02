@@ -151,6 +151,16 @@ AC_CHECK_HEADERS([jni.h])
 
 AC_PYTHON_DEVEL
 
+AC_MSG_CHECKING(for python)
+if test -z "$python_path";
+then
+  AC_MSG_RESULT(yes)
+  AM_CONDITIONAL(HAVE_PYTHON,false)
+else
+  AC_MSG_RESULT(no)
+  AM_CONDITIONAL(HAVE_PYTHON,true)
+fi
+
 AC_CHECK_HEADERS([vorbis/vorbisfile.h])
 
 # Checks for typedefs, structures, and compiler characteristics.

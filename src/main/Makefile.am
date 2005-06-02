@@ -26,7 +26,7 @@ extract_LDADD = \
 libextractor_la_LDFLAGS = \
   -export-dynamic -version-info 1:1:0 $(LIBICONV)
 libextractor_la_LIBADD = \
-  $(LIBLTDL) -ldl
+  $(LIBLTDL)
 libextractor_la_DEPENDENCIES = \
   $(LIBLTDL) 
 
@@ -54,6 +54,8 @@ extract_SOURCES = \
   getopt.h \
   getopt1.c 
 
+if HAVE_PYTHON
 install-exec-local:
 	python libextractor_python_setup.py $(libdir) build
 	python libextractor_python_setup.py $(libdir) install --prefix=$(PYTHON_PREFIX)
+endif
