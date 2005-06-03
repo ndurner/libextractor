@@ -77,6 +77,13 @@ AC_CONFIG_SUBDIRS(libltdl)
 
 AM_ICONV
 
+# We define the paths here, because MinGW/GCC expands paths
+# passed through the command line ("-DLOCALEDIR=..."). This would
+# lead to hard-coded paths ("C:\mingw\mingw\bin...") that do
+# not contain the actual installation.
+AC_DEFINE_DIR([LOCALEDIR], [datadir/locale], [gettext catalogs])
+
+
 # large file support
 AC_SYS_LARGEFILE
 AC_FUNC_FSEEKO

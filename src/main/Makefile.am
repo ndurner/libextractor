@@ -8,10 +8,6 @@ plugindir = $(libdir)/libextractor
 LIBS = \
  @LTLIBINTL@ @LIBS@
 
-# Define a C macro LOCALEDIR indicating where catalogs will be installed.
-localedir = $(datadir)/locale
-DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
-
 lib_LTLIBRARIES = \
   libextractor.la 
 
@@ -23,10 +19,14 @@ AM_CFLAGS = \
 extract_LDADD = \
   $(top_builddir)/src/main/libextractor.la 
 
+if !MINGW
+  dlflag=-ldl
+endif
+
 libextractor_la_LDFLAGS = \
   -export-dynamic -version-info 1:1:0 $(LIBICONV)
 libextractor_la_LIBADD = \
-  $(LIBLTDL)
+  $(LIBLTDL) $(dlflag)
 libextractor_la_DEPENDENCIES = \
   $(LIBLTDL) 
 

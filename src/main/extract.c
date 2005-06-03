@@ -392,9 +392,13 @@ main (int argc, char *argv[])
   int bibtex = NO;
   char * binary = NULL;
 
+#ifdef MINGW
+  InitWinEnv();
+#endif
+
   setlocale(LC_ALL, "");
   textdomain(PACKAGE);
-  bindtextdomain(PACKAGE, LOCALEDIR);
+  BINDTEXTDOMAIN(PACKAGE, LOCALEDIR);
   print = malloc (sizeof (int) * EXTRACTOR_getHighestKeywordTypeNumber ());
   for (i = 0; i < EXTRACTOR_getHighestKeywordTypeNumber (); i++)
     print[i] = YES;		/* default: print everything */
@@ -524,12 +528,18 @@ main (int argc, char *argv[])
 		       "Unknown keyword type '%s', use option '%s' to get a list.\n",
 		       optarg,
 		       "-L");
+#ifdef MINGW
+  			ShutdownWinEnv();
+#endif
 	      return -1;
 	    }
 	  break;
 	default:
 	  fprintf (stderr,
 		   _("Use --help to get a list of options.\n"));
+#ifdef MINGW
+  	ShutdownWinEnv();
+#endif
 	  return -1;
 	}			/* end of parsing commandline */
     }				/* while (1) */
@@ -538,6 +548,9 @@ main (int argc, char *argv[])
     {
       fprintf (stderr,
 	       "Invoke with list of filenames to extract keywords form!\n");
+#ifdef MINGW
+  		ShutdownWinEnv();
+#endif
       return -1;
     }
 
@@ -600,6 +613,10 @@ main (int argc, char *argv[])
     }
   free (print);
   EXTRACTOR_removeAll (extractors);
+
+#ifdef MINGW
+  ShutdownWinEnv();
+#endif
 
   return 0;
 }

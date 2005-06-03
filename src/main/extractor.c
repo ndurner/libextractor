@@ -185,7 +185,7 @@ void __attribute__ ((constructor)) le_ltdl_init(void) {
   int err;
 
   setlocale(LC_ALL, "");
-  bindtextdomain(PACKAGE, LOCALEDIR);
+  BINDTEXTDOMAIN(PACKAGE, LOCALEDIR);
   err = lt_dlinit ();
   if (err > 0)
     {
