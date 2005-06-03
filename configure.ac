@@ -119,7 +119,9 @@ AC_CHECK_LIB(vorbisfile, ov_open_callbacks,
         [AM_CONDITIONAL(HAVE_VORBISFILE, true)
          AC_DEFINE(HAVE_VORBISFILE,1,[Have vorbisfile])],
         [AM_CONDITIONAL(HAVE_VORBISFILE, false)])
-
+AC_CHECK_LIB(vorbisfile, vorbis_comment_query,
+        [AM_CONDITIONAL(NEED_VORBIS, false)],
+        [AM_CONDITIONAL(NEED_VORBIS, true)])
 
 AC_CHECK_LIB(z, inflate,
         [AM_CONDITIONAL(HAVE_ZLIB, true)

@@ -27,6 +27,10 @@ if HAVE_VORBISFILE
  extraogg = libextractor_ogg.la
 endif
 
+if NEED_VORBIS
+ vorbisflag = -lvorbis
+endif
+
 if HAVE_ZLIB
 extraqt = libextractor_qt.la
 endif
@@ -65,7 +69,7 @@ if HAVE_VORBISFILE
 libextractor_ogg_la_SOURCES = \
   oggextractor.c
 libextractor_ogg_la_LDFLAGS = \
- -lvorbisfile -lvorbis $(PLUGINFLAGS)
+ -lvorbisfile $(vorbisflag) $(PLUGINFLAGS)
 endif
 
 noinst_LTLIBRARIES = \
