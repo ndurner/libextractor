@@ -95,6 +95,7 @@ struct EXTRACTOR_Keywords * libextractor_thumbnail_extract(const char * filename
   const char * mime;
   int j;
   char * format;
+  GError *err = NULL;
 
   /* if the mime-type of the file is not whitelisted
      do not run the thumbnail extactor! */
@@ -112,7 +113,7 @@ struct EXTRACTOR_Keywords * libextractor_thumbnail_extract(const char * filename
     return prev;
 
   in = gdk_pixbuf_new_from_file(filename,
-				NULL);
+				&err);
   if (in == NULL)
     return prev;
   height = gdk_pixbuf_get_height(in);
