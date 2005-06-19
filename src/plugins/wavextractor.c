@@ -71,7 +71,6 @@ struct EXTRACTOR_Keywords * libextractor_wav_extract(char * filename,
   unsigned int sampleRate;
   unsigned int dataLen;
   unsigned int samples;
-  int bytesProcessed;
   char * scratch;
 
 

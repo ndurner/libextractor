@@ -32,6 +32,20 @@ static char * stndup(const char * str,
   return tmp;
 }
 
+/**
+ * strnlen is GNU specific, let's redo it here to be
+ * POSIX compliant.
+ */
+static size_t stnlen(const char * str,
+		     size_t maxlen) {
+  size_t ret;
+  ret = 0;
+  while ( (ret < maxlen) &&
+	  (str[ret] != '\0') )
+    ret++;
+  return ret;
+}
+
 static struct EXTRACTOR_Keywords * addKeyword(EXTRACTOR_KeywordType type,
 					      char * keyword,
 					      struct EXTRACTOR_Keywords * next) {
@@ -80,7 +94,7 @@ static struct EXTRACTOR_Keywords * processtEXt(const unsigned char * data,
   int i;
 
   data += 4;
-  off = strnlen(data, length) + 1;
+  off = stnlen(data, length) + 1;
   if (off >= length)
     return prev; /* failed to find '\0' */
   keyword = convertToUtf8(&data[off],
@@ -113,26 +127,26 @@ static struct EXTRACTOR_Keywords * processiTXt(const unsigned char * data,
   uLongf bufLen;
   int ret;
 
-  pos = strnlen(data, length)+1;
+  pos = stnlen(data, length)+1;
   if (pos+3 >= length)
     return prev;
   compressed = data[pos++];
   if (compressed && (data[pos++] != 0))
     return prev; /* bad compression method */
   language = &data[pos];
-  if (strnlen(language, length-pos) > 0)
+  if (stnlen(language, length-pos) > 0)
     prev = addKeyword(EXTRACTOR_LANGUAGE,
 		      stndup(language, length-pos),
 		      prev);
-  pos += strnlen(language, length-pos)+1;
+  pos += stnlen(language, length-pos)+1;
   if (pos+1 >= length)
     return prev;
   translated = &data[pos]; /* already in utf-8! */
-  if (strnlen(translated, length-pos) > 0)
+  if (stnlen(translated, length-pos) > 0)
     prev = addKeyword(EXTRACTOR_TRANSLATED,
 		      stndup(translated, length-pos),
 		      prev);
-  pos += strnlen(translated, length-pos)+1;
+  pos += stnlen(translated, length-pos)+1;
   if (pos >= length)
     return prev;
 
@@ -213,7 +227,7 @@ static struct EXTRACTOR_Keywords * processzTXt(const unsigned char * data,
   int ret;
 
   data += 4;
-  off = strnlen(data, length) + 1;
+  off = stnlen(data, length) + 1;
   if (off >= length)
     return prev; /* failed to find '\0' */
   if (data[off] != 0)

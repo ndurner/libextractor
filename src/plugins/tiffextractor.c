@@ -109,7 +109,6 @@ struct EXTRACTOR_Keywords * libextractor_tiff_extract(char * filename,
 						      size_t size,
 						      struct EXTRACTOR_Keywords * prev) {
   TIFF_HEADER hdr;
-  struct EXTRACTOR_Keywords * pos;
   int byteOrder; /* 0: do not convert;
 		    1: do convert */
   int current_ifd;

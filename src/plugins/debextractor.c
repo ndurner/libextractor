@@ -115,9 +115,9 @@ static struct EXTRACTOR_Keywords * processControl(const char * data,
       colon++;
     eol = colon;
     while ( (eol < size) &&
-	    (data[eol] != '\n') ||
-	    ( (eol+1 < size) &&
-	      (data[eol+1] == ' ') ) )
+	    ( (data[eol] != '\n') ||
+	      ( (eol+1 < size) &&
+	        (data[eol+1] == ' ') ) ) )
       eol++;
     if ( (eol == colon) || (eol > size) )
       return prev;
@@ -211,7 +211,7 @@ processControlTar(const char * data,
 			    prev);
     }
     if ( (fsize & 511) != 0)
-      fsize = (fsize |= 511)+1; /* round up! */
+      fsize = (fsize | 511)+1; /* round up! */
     if (pos + fsize < pos)
       return prev;
     pos += fsize;
@@ -259,8 +259,6 @@ processControlTGZ(const unsigned char * data,
   gzFile gzf;
   int fdes[2];
   char * buf;
-  int flags;
-  size_t ret;
   WTC wtc;
   pthread_t pt;
   void * error;

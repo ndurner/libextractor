@@ -20,6 +20,7 @@
 
 #include "platform.h"
 #include "extractor.h"
+#include "pack.h"
 
 static void addKeyword(struct EXTRACTOR_Keywords ** list,
 		       const char * keyword,

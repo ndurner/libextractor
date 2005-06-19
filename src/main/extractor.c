@@ -479,7 +479,6 @@ EXTRACTOR_ExtractorList *
 EXTRACTOR_loadConfigLibraries (EXTRACTOR_ExtractorList * prev,
 			       const char *config)
 {
-  EXTRACTOR_ExtractorList * exlast;
   char *cpy;
   int pos;
   int last;

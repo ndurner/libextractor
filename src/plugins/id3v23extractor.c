@@ -151,7 +151,7 @@ libextractor_id3v23_extract(const char * filename,
 	 (csize > tsize) ||
 	 (csize == 0) )
       break;
-    flags = data[pos+8]<<8 + data[pos+9];
+    flags = (data[pos+8]<<8) + data[pos+9];
     if ( ( (flags & 0x80) > 0) /* compressed, not yet supported */ ||
 	 ( (flags & 0x40) > 0) /* encrypted, not supported */ ) {
       pos += 10 + csize;

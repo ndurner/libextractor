@@ -923,8 +923,6 @@ struct EXTRACTOR_Keywords * libextractor_ole2_extract(const char * filename,
 						      struct EXTRACTOR_Keywords * prev) {
   GsfInput   *input;
   GsfInfile  *infile;
-  guint8 const *data;
-  size_t len;
   int i;
 
   input = gsf_input_memory_new((guint8 const *) date,

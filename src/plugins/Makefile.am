@@ -20,7 +20,7 @@ endif
 
 SUBDIRS = . oo $(printdir) hash $(oledir) rpm pdf $(thumbdir)
 
-PLUGINFLAGS = -export-dynamic -avoid-version -module
+PLUGINFLAGS = -export-dynamic -avoid-version -module 
 
 
 if HAVE_VORBISFILE

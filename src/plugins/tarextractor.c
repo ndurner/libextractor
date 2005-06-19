@@ -128,7 +128,7 @@ tar_extract(const char * data,
 			     100),
 		      prev);
     if ( (fsize & 511) != 0)
-      fsize = (fsize |= 511)+1; /* round up! */
+      fsize = (fsize | 511)+1; /* round up! */
     if (pos + fsize < pos)
       return prev;
     pos += fsize;
