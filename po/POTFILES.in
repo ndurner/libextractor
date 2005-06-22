@@ -7,11 +7,6 @@ doc/demux_nsf.c
 doc/demux_wc3movie.c
 doc/demux_qt.c
 libltdl/ltdl.c
-notes/cbag.c
-src/test/trivialtest.c
-src/test/plugintest.c
-src/test/keywordlisttest.c
-src/test/multiload.c
 src/plugins/hash/rmd160extractor.c
 src/plugins/hash/md5extractor.c
 src/plugins/hash/md5.c

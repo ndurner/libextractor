@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.3.11\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2005-05-21 13:21-0500\n"
+"POT-Creation-Date: 2005-06-22 15:51+0200\n"
 "PO-Revision-Date: 2005-04-04 10:55-0700\n"
 "Last-Translator: Steven Michael Murphy <murf@e-tools.com>\n"
 "Language-Team: Kinyarwanda <translation-team-rw@lists.sourceforge.net>\n"
@@ -53,7 +53,7 @@ msgstr ""
 msgid "Binary RPM %d.%d"
 msgstr ""
 
-#: src/plugins/printable/dictionary-builder.c:53
+#: src/plugins/printable/dictionary-builder.c:52
 #, fuzzy, c-format
 msgid ""
 "Please provide the name of the language you are building\n"
@@ -61,19 +61,19 @@ msgid ""
 msgstr "i Izina: Bya i Ururimi Inkoranyamagambo kugirango Urugero"
 
 # basctl/source\basicide\basidesh.src:RID_STR_ERROROPENSTORAGE.text
-#: src/plugins/printable/dictionary-builder.c:66
+#: src/plugins/printable/dictionary-builder.c:65
 #, fuzzy, c-format
 msgid "Error opening file '%s': %s\n"
 msgstr "Hari ikibazo mu gufungura dosiye"
 
-#: src/plugins/printable/dictionary-builder.c:74
+#: src/plugins/printable/dictionary-builder.c:73
 #, c-format
 msgid ""
 "Error allocating: %s\n"
 "."
 msgstr ""
 
-#: src/plugins/printable/dictionary-builder.c:86
+#: src/plugins/printable/dictionary-builder.c:85
 #, fuzzy, c-format
 msgid "Increase ALLOCSIZE (in %s).\n"
 msgstr "in"
@@ -120,11 +120,11 @@ msgstr "Amabwiriza"
 msgid "Kernel routines"
 msgstr ""
 
-#: src/plugins/wavextractor.c:114 src/plugins/mp3extractor.c:438
+#: src/plugins/wavextractor.c:113 src/plugins/mp3extractor.c:426
 msgid "mono"
 msgstr ""
 
-#: src/plugins/wavextractor.c:114 src/plugins/mp3extractor.c:438
+#: src/plugins/wavextractor.c:113 src/plugins/mp3extractor.c:426
 msgid "stereo"
 msgstr ""
 
@@ -752,7 +752,7 @@ msgstr ""
 msgid "Synthpop"
 msgstr ""
 
-#: src/plugins/mp3extractor.c:439
+#: src/plugins/mp3extractor.c:427
 #, fuzzy
 msgid "(variable bps)"
 msgstr "(IMPINDURAGACIRO"
@@ -918,12 +918,12 @@ msgstr ""
 msgid "Extract metadata from files."
 msgstr "Bivuye Idosiye"
 
-#: src/main/extract.c:198 src/main/extractor.c:784
+#: src/main/extract.c:198 src/main/extractor.c:783
 #, c-format
 msgid "%s - (binary)\n"
 msgstr ""
 
-#: src/main/extract.c:204 src/main/extractor.c:789
+#: src/main/extract.c:204 src/main/extractor.c:788
 #, c-format
 msgid "INVALID TYPE - %s\n"
 msgstr ""
@@ -999,22 +999,22 @@ msgstr "Ikivugwaho"
 msgid "page count"
 msgstr "Kubara amapaje"
 
-#: src/main/extract.c:468
+#: src/main/extract.c:472
 #, fuzzy, c-format
 msgid "You must specify an argument for the '%s' option (option ignored).\n"
 msgstr "kugirango i Ihitamo Ihitamo"
 
-#: src/main/extract.c:532
+#: src/main/extract.c:539
 #, fuzzy, c-format
 msgid "Use --help to get a list of options.\n"
 msgstr "Ifashayobora Kuri Kubona a Urutonde Bya Amahitamo"
 
-#: src/main/extract.c:585
+#: src/main/extract.c:598
 #, c-format
 msgid "%% BiBTeX file\n"
 msgstr ""
 
-#: src/main/extract.c:592
+#: src/main/extract.c:605
 #, fuzzy, c-format
 msgid "Keywords for file %s:\n"
 msgstr "kugirango IDOSIYE"
@@ -1339,7 +1339,7 @@ msgstr "IKIMENYETSO in Isomero Byanze Byanze Na"
 msgid "Loading '%s' plugin failed: %s\n"
 msgstr "Byanze"
 
-#: src/main/extractor.c:576
+#: src/main/extractor.c:575
 #, fuzzy, c-format
 msgid "Unloading plugin '%s' failed!\n"
 msgstr "Byanze"

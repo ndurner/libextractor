@@ -1,16 +1,16 @@
 # German translations for libextractor package
-# Copyright © 2004 Free Software Foundation, Inc.
+# Copyright © 2004, 2005 Free Software Foundation, Inc.
 # Copyright © 2004 Christian Grothoff
 # This file is distributed under the same license as the libextractor package.
-# Karl Eichwalder <ke@gnu.franken.de>, 2004.
+# Karl Eichwalder <ke@gnu.franken.de>, 2004, 2005.
 # Christian Grothoff <christian@grothoff.org>, 2004.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: libextractor 0.4.0\n"
+"Project-Id-Version: libextractor 0.5.0\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2005-05-21 13:21-0500\n"
-"PO-Revision-Date: 2004-12-29 15:40+0100\n"
+"POT-Creation-Date: 2005-06-22 15:51+0200\n"
+"PO-Revision-Date: 2005-06-22 15:05+0200\n"
 "Last-Translator: Karl Eichwalder <ke@gnu.franken.de>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -47,7 +47,7 @@ msgstr "Quell-RPM %d.%d"
 msgid "Binary RPM %d.%d"
 msgstr "Binäres RPM %d.%d"
 
-#: src/plugins/printable/dictionary-builder.c:53
+#: src/plugins/printable/dictionary-builder.c:52
 #, c-format
 msgid ""
 "Please provide the name of the language you are building\n"
@@ -56,12 +56,12 @@ msgstr ""
 "Bitte geben Sie den Namen der Sprache an, für die Sie ein Wörterbuch\n"
 "erstellen.  Zum Beispiel:\n"
 
-#: src/plugins/printable/dictionary-builder.c:66
+#: src/plugins/printable/dictionary-builder.c:65
 #, c-format
 msgid "Error opening file '%s': %s\n"
 msgstr "Fehler beim Öffnen der Datei »%s«: %s\n"
 
-#: src/plugins/printable/dictionary-builder.c:74
+#: src/plugins/printable/dictionary-builder.c:73
 #, c-format
 msgid ""
 "Error allocating: %s\n"
@@ -70,7 +70,7 @@ msgstr ""
 "Fehler beim Allokieren: %s\n"
 "."
 
-#: src/plugins/printable/dictionary-builder.c:86
+#: src/plugins/printable/dictionary-builder.c:85
 #, c-format
 msgid "Increase ALLOCSIZE (in %s).\n"
 msgstr "ALLOCSIZE vergrößern (in %s).\n"
@@ -89,7 +89,7 @@ msgstr "Bibliotheksaufrufe"
 
 #: src/plugins/manextractor.c:143
 msgid "Special files"
-msgstr ""
+msgstr "Spezialdateien"
 
 #: src/plugins/manextractor.c:148
 msgid "File formats and conventions"
@@ -111,11 +111,11 @@ msgstr ""
 msgid "Kernel routines"
 msgstr "Kernelroutinen"
 
-#: src/plugins/wavextractor.c:114 src/plugins/mp3extractor.c:438
+#: src/plugins/wavextractor.c:113 src/plugins/mp3extractor.c:426
 msgid "mono"
 msgstr "Mono"
 
-#: src/plugins/wavextractor.c:114 src/plugins/mp3extractor.c:438
+#: src/plugins/wavextractor.c:113 src/plugins/mp3extractor.c:426
 msgid "stereo"
 msgstr "Stereo"
 
@@ -230,7 +230,7 @@ msgstr ""
 
 #: src/plugins/mp3extractor.c:70
 msgid "Ska"
-msgstr ""
+msgstr "Ska"
 
 #: src/plugins/mp3extractor.c:71
 msgid "Death Metal"
@@ -258,7 +258,7 @@ msgstr ""
 
 #: src/plugins/mp3extractor.c:77
 msgid "Vocal"
-msgstr ""
+msgstr "Vokal"
 
 #: src/plugins/mp3extractor.c:78
 msgid "Jazz+Funk"
@@ -274,11 +274,11 @@ msgstr ""
 
 #: src/plugins/mp3extractor.c:81
 msgid "Classical"
-msgstr ""
+msgstr "Klassik"
 
 #: src/plugins/mp3extractor.c:82
 msgid "Instrumental"
-msgstr ""
+msgstr "Instrumental"
 
 #: src/plugins/mp3extractor.c:83
 msgid "Acid"
@@ -299,7 +299,7 @@ msgstr "Soundclip"
 
 #: src/plugins/mp3extractor.c:87
 msgid "Gospel"
-msgstr ""
+msgstr "Gospel"
 
 #: src/plugins/mp3extractor.c:88
 msgid "Noise"
@@ -737,7 +737,7 @@ msgstr ""
 msgid "Synthpop"
 msgstr ""
 
-#: src/plugins/mp3extractor.c:439
+#: src/plugins/mp3extractor.c:427
 msgid "(variable bps)"
 msgstr "(variable BPS)"
 
@@ -896,12 +896,12 @@ msgstr "extract [OPTIONEN] [DATEINAME]*"
 msgid "Extract metadata from files."
 msgstr "Metadaten aus den Dateien extrahieren."
 
-#: src/main/extract.c:198 src/main/extractor.c:784
+#: src/main/extract.c:198 src/main/extractor.c:783
 #, c-format
 msgid "%s - (binary)\n"
-msgstr ""
+msgstr "%s - (binär)\n"
 
-#: src/main/extract.c:204 src/main/extractor.c:789
+#: src/main/extract.c:204 src/main/extractor.c:788
 #, c-format
 msgid "INVALID TYPE - %s\n"
 msgstr "UNGÜLTIGE ART - %s\n"
@@ -954,24 +954,24 @@ msgstr "Gegenstand"
 msgid "page count"
 msgstr "Seitenanzahl"
 
-#: src/main/extract.c:468
+#: src/main/extract.c:472
 #, c-format
 msgid "You must specify an argument for the '%s' option (option ignored).\n"
 msgstr ""
 "Sie müssen ein Argument für die Option »%s« angeben (Option wird "
 "ignoriert).\n"
 
-#: src/main/extract.c:532
+#: src/main/extract.c:539
 #, c-format
 msgid "Use --help to get a list of options.\n"
 msgstr "Verwenden Sie --help, um eine Liste aller Optionen zu sehen.\n"
 
-#: src/main/extract.c:585
+#: src/main/extract.c:598
 #, c-format
 msgid "%% BiBTeX file\n"
 msgstr "%% BibTeX Datei\n"
 
-#: src/main/extract.c:592
+#: src/main/extract.c:605
 #, c-format
 msgid "Keywords for file %s:\n"
 msgstr "Schlüsserwörter für die Datei %s:\n"
@@ -1234,7 +1234,7 @@ msgstr ""
 msgid "Loading '%s' plugin failed: %s\n"
 msgstr "Laden des »%s«-Plugins ist fehlgeschlagen: %s\n"
 
-#: src/main/extractor.c:576
+#: src/main/extractor.c:575
 #, c-format
 msgid "Unloading plugin '%s' failed!\n"
 msgstr "Entladen des »%s«-Erweiterung ist fehlgeschlagen.\n"

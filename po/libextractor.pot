@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2005-05-21 13:21-0500\n"
+"POT-Creation-Date: 2005-06-22 15:51+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -45,26 +45,26 @@ msgstr ""
 msgid "Binary RPM %d.%d"
 msgstr ""
 
-#: src/plugins/printable/dictionary-builder.c:53
+#: src/plugins/printable/dictionary-builder.c:52
 #, c-format
 msgid ""
 "Please provide the name of the language you are building\n"
 "a dictionary for.  For example:\n"
 msgstr ""
 
-#: src/plugins/printable/dictionary-builder.c:66
+#: src/plugins/printable/dictionary-builder.c:65
 #, c-format
 msgid "Error opening file '%s': %s\n"
 msgstr ""
 
-#: src/plugins/printable/dictionary-builder.c:74
+#: src/plugins/printable/dictionary-builder.c:73
 #, c-format
 msgid ""
 "Error allocating: %s\n"
 "."
 msgstr ""
 
-#: src/plugins/printable/dictionary-builder.c:86
+#: src/plugins/printable/dictionary-builder.c:85
 #, c-format
 msgid "Increase ALLOCSIZE (in %s).\n"
 msgstr ""
@@ -105,11 +105,11 @@ msgstr ""
 msgid "Kernel routines"
 msgstr ""
 
-#: src/plugins/wavextractor.c:114 src/plugins/mp3extractor.c:438
+#: src/plugins/wavextractor.c:113 src/plugins/mp3extractor.c:426
 msgid "mono"
 msgstr ""
 
-#: src/plugins/wavextractor.c:114 src/plugins/mp3extractor.c:438
+#: src/plugins/wavextractor.c:113 src/plugins/mp3extractor.c:426
 msgid "stereo"
 msgstr ""
 
@@ -730,7 +730,7 @@ msgstr ""
 msgid "Synthpop"
 msgstr ""
 
-#: src/plugins/mp3extractor.c:439
+#: src/plugins/mp3extractor.c:427
 msgid "(variable bps)"
 msgstr ""
 
@@ -877,12 +877,12 @@ msgstr ""
 msgid "Extract metadata from files."
 msgstr ""
 
-#: src/main/extract.c:198 src/main/extractor.c:784
+#: src/main/extract.c:198 src/main/extractor.c:783
 #, c-format
 msgid "%s - (binary)\n"
 msgstr ""
 
-#: src/main/extract.c:204 src/main/extractor.c:789
+#: src/main/extract.c:204 src/main/extractor.c:788
 #, c-format
 msgid "INVALID TYPE - %s\n"
 msgstr ""
@@ -935,22 +935,22 @@ msgstr ""
 msgid "page count"
 msgstr ""
 
-#: src/main/extract.c:468
+#: src/main/extract.c:472
 #, c-format
 msgid "You must specify an argument for the '%s' option (option ignored).\n"
 msgstr ""
 
-#: src/main/extract.c:532
+#: src/main/extract.c:539
 #, c-format
 msgid "Use --help to get a list of options.\n"
 msgstr ""
 
-#: src/main/extract.c:585
+#: src/main/extract.c:598
 #, c-format
 msgid "%% BiBTeX file\n"
 msgstr ""
 
-#: src/main/extract.c:592
+#: src/main/extract.c:605
 #, c-format
 msgid "Keywords for file %s:\n"
 msgstr ""
@@ -1212,7 +1212,7 @@ msgstr ""
 msgid "Loading '%s' plugin failed: %s\n"
 msgstr ""
 
-#: src/main/extractor.c:576
+#: src/main/extractor.c:575
 #, c-format
 msgid "Unloading plugin '%s' failed!\n"
 msgstr ""

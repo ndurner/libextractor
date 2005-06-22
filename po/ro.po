@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.4.2\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2005-05-21 13:21-0500\n"
+"POT-Creation-Date: 2005-06-22 15:51+0200\n"
 "PO-Revision-Date: 2005-02-25 12:00-0500\n"
 "Last-Translator: Laurentiu Buzdugan <lbuz@rolix.org>\n"
 "Language-Team: Romanian <translation-team-ro@lists.sourceforge.net>\n"
@@ -47,7 +47,7 @@ msgstr "Sursã RPM %d.%d"
 msgid "Binary RPM %d.%d"
 msgstr "Binar RPM %d.%d"
 
-#: src/plugins/printable/dictionary-builder.c:53
+#: src/plugins/printable/dictionary-builder.c:52
 #, c-format
 msgid ""
 "Please provide the name of the language you are building\n"
@@ -56,12 +56,12 @@ msgstr ""
 "Vã rugãm furnizaþi numele limbii pentru care contruiþi\n"
 "un dicþionar.  De exemplu:\n"
 
-#: src/plugins/printable/dictionary-builder.c:66
+#: src/plugins/printable/dictionary-builder.c:65
 #, c-format
 msgid "Error opening file '%s': %s\n"
 msgstr "Eroare deschidere fiºier '%s': %s\n"
 
-#: src/plugins/printable/dictionary-builder.c:74
+#: src/plugins/printable/dictionary-builder.c:73
 #, c-format
 msgid ""
 "Error allocating: %s\n"
@@ -70,7 +70,7 @@ msgstr ""
 "Eroare de alocare: %s\n"
 "."
 
-#: src/plugins/printable/dictionary-builder.c:86
+#: src/plugins/printable/dictionary-builder.c:85
 #, c-format
 msgid "Increase ALLOCSIZE (in %s).\n"
 msgstr "Creºteþi ALLOCSIZE (în %s).\n"
@@ -111,11 +111,11 @@ msgstr "Comenzi pentru managementul sistemului"
 msgid "Kernel routines"
 msgstr "Proceduri kernel"
 
-#: src/plugins/wavextractor.c:114 src/plugins/mp3extractor.c:438
+#: src/plugins/wavextractor.c:113 src/plugins/mp3extractor.c:426
 msgid "mono"
 msgstr "mono"
 
-#: src/plugins/wavextractor.c:114 src/plugins/mp3extractor.c:438
+#: src/plugins/wavextractor.c:113 src/plugins/mp3extractor.c:426
 msgid "stereo"
 msgstr "stereo"
 
@@ -736,7 +736,7 @@ msgstr "JPop"
 msgid "Synthpop"
 msgstr "Synthpop"
 
-#: src/plugins/mp3extractor.c:439
+#: src/plugins/mp3extractor.c:427
 msgid "(variable bps)"
 msgstr "(bps variabil)"
 
@@ -899,12 +899,12 @@ msgstr "extract [OPÞIUNI] [NUME_FIªIER]*"
 msgid "Extract metadata from files."
 msgstr "Extrage metadata din fiºiere."
 
-#: src/main/extract.c:198 src/main/extractor.c:784
+#: src/main/extract.c:198 src/main/extractor.c:783
 #, c-format
 msgid "%s - (binary)\n"
 msgstr "%s - (binar)\n"
 
-#: src/main/extract.c:204 src/main/extractor.c:789
+#: src/main/extract.c:204 src/main/extractor.c:788
 #, c-format
 msgid "INVALID TYPE - %s\n"
 msgstr "TIP INVALID - %s\n"
@@ -957,23 +957,23 @@ msgstr "subiect"
 msgid "page count"
 msgstr "numãr de pagini"
 
-#: src/main/extract.c:468
+#: src/main/extract.c:472
 #, c-format
 msgid "You must specify an argument for the '%s' option (option ignored).\n"
 msgstr ""
 "Trebuie sã specificaþi un argument pentru opþiunea '%s' (opþiune ignoratã).\n"
 
-#: src/main/extract.c:532
+#: src/main/extract.c:539
 #, c-format
 msgid "Use --help to get a list of options.\n"
 msgstr "Folosiþi --help pentru a obþine o listã de opþiuni.\n"
 
-#: src/main/extract.c:585
+#: src/main/extract.c:598
 #, c-format
 msgid "%% BiBTeX file\n"
 msgstr "%% BiBTeX file\n"
 
-#: src/main/extract.c:592
+#: src/main/extract.c:605
 #, c-format
 msgid "Keywords for file %s:\n"
 msgstr "Cuvinte cheie pentru fiºier %s:\n"
@@ -1238,7 +1238,7 @@ msgstr ""
 msgid "Loading '%s' plugin failed: %s\n"
 msgstr "Încãrcarea plugin-ului '%s' a eºuat: %s\n"
 
-#: src/main/extractor.c:576
+#: src/main/extractor.c:575
 #, c-format
 msgid "Unloading plugin '%s' failed!\n"
 msgstr "Descãrcarea plugin-ului '%s' a eºuat!\n"
