@@ -74,4 +74,8 @@ void	    gsf_iconv_close (GIConv handle);
 
 G_END_DECLS
 
+#undef g_return_val_if_fail
+#define g_return_val_if_fail(cond,ret) do{if (cond) return ret;}while(0)
+
+
 #endif /* GSF_UTILS_H */

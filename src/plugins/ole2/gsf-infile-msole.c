@@ -32,6 +32,7 @@
 #undef G_LOG_DOMAIN
 #define G_LOG_DOMAIN "libgsf:msole"
 
+
 static GObjectClass *parent_class;
 
 typedef struct {
@@ -160,10 +161,12 @@ ole_make_bat (MSOleBAT const *metabat, size_t size_guess, guint32 block,
 	res->block = (guint32 *) (gpointer) g_array_free (bat, FALSE);
 
 	if (block != BAT_MAGIC_END_OF_CHAIN) {
+#if 0
 		g_warning ("This OLE2 file is invalid.\n"
 			   "The Block Allocation  Table for one of the streams had %x instead of a terminator (%x).\n"
 			   "We might still be able to extract some data, but you'll want to check the file.",
 			   block, BAT_MAGIC_END_OF_CHAIN);
+#endif
 	}
 
 	return FALSE;
@@ -360,18 +363,24 @@ ole_dirent_new (GsfInfileMSOle *ole, guint32 entry, MSOleDirent *parent)
 
 	/* NOTE : These links are a tree, not a linked list */
 	if (prev == entry) {
+#if 0
 		g_warning ("Invalid OLE file with a cycle in its directory tree");
+#endif
 	} else
 		ole_dirent_new (ole, prev, parent);
 	if (next == entry) {
+#if 0
 		g_warning ("Invalid OLE file with a cycle in its directory tree");
+#endif
 	} else
 		ole_dirent_new (ole, next, parent);
 
 	if (dirent->is_directory)
 		ole_dirent_new (ole, child, dirent);
+#if 0
 	else if (child != DIRENT_MAGIC_END)
 		g_warning ("A non directory stream with children ?");
+#endif
 
 	return dirent;
 }
@@ -520,7 +529,9 @@ ole_init_info (GsfInfileMSOle *ole, GError **err)
 	info->sb_file	     = NULL;
 
 	if (info->num_sbat == 0 && info->sbat_start != BAT_MAGIC_END_OF_CHAIN) {
+#if 0
 		g_warning ("There is are not supposed to be any blocks in the small block allocation table, yet there is a link to some.  Ignoring it.");
+#endif
 	}
 
 	/* very rough heuristic, just in case */
@@ -779,7 +790,9 @@ gsf_infile_msole_new_child (GsfInfileMSOle *parent,
 				info->sb.size,
 				child->stream.buf + (i << info->sb.shift))) == NULL) {
 
+#if 0
 				g_warning ("failure reading block %d", i);
+#endif
 
 				g_object_unref (G_OBJECT (child));
 				return NULL;
