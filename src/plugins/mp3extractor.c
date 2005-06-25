@@ -419,7 +419,7 @@ mp3parse(char * data,
   format = malloc(512);
   snprintf(format,
 	   512,
-	   "%d bps, %d hz, %dm%02d %s %s",
+	   "%d kbps, %d hz, %dm%02d %s %s",
 	   avg_bps,
 	   sample_rate,
 	   length/60, length % 60, /* minutes / seconds */
