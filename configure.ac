@@ -5,6 +5,8 @@ AC_REVISION($Revision: 1.67 $)
 AM_INIT_AUTOMAKE([libextractor], [0.5.1])
 AM_CONFIG_HEADER(src/include/config.h)
 
+AH_TOP([#define _GNU_SOURCE  1])
+
 # Checks for programs.
 AC_CANONICAL_HOST
 
@@ -25,6 +27,7 @@ AC_PROG_CXX(g++-3.3 g++2 g++ c++ gpp aCC CC cxx cc++ cl FCC KCC RCC xlC_r xlC)
 AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_PROG_MAKE_SET
+AC_DISABLE_STATIC
 
 case "$host_os" in
 linux*)
