@@ -1,3 +1,9 @@
+Wed Jun 29 15:37:51 CEST 2005
+	Finally found out how to disable building static libs.
+	This should cut down compile time and installed size
+	by about a factor of 2 -- especially good since the
+	static version of the plugins is pretty, well, useless.
+
 Sat Jun 18 14:56:38 EST 2005
 	Fixed a score of compiler warnings and some minor bugs,
 	none of which should have been observable.
