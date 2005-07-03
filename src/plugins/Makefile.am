@@ -62,7 +62,6 @@ plugin_LTLIBRARIES = \
   libextractor_zip.la \
   libextractor_lower.la \
   libextractor_translit.la \
-  libextractor_exiv2.la \
   $(extraqt) \
   $(extraogg) 
 
@@ -253,7 +252,3 @@ libextractor_translit_la_SOURCES = \
 libextractor_translit_la_LDFLAGS = \
   $(PLUGINFLAGS)
 
-libextractor_exiv2_la_SOURCES = \
-  exiv2extractor.cc
-libextractor_exiv2_la_LDFLAGS = \
-  -lexiv2 $(PLUGINFLAGS)

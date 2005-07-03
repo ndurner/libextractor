@@ -279,6 +279,7 @@ src/plugins/rpm/Makefile
 src/plugins/printable/Makefile
 src/plugins/hash/Makefile
 src/plugins/thumbnail/Makefile
+src/plugins/exiv2/Makefile
 src/test/Makefile
 ])
 
