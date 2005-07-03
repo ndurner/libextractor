@@ -7,6 +7,7 @@ Core:
 * QT
 * ASF
 * RPM
+* EXIF
 
 Incomplete code (missing features):
 * RIFF (idx1 attribute)
@@ -19,7 +20,6 @@ Desirable missing formats:
 * mbox / various e-mail formats
 * info pages (scan for 'Node: %s^?ID' - see end of .info files!)
 * sources (Java, C, C++, see doxygen!)
-* EXIF (www.exif.org)
 * a.out (== ar?)
 * rtf 
 * EXE
