@@ -1,0 +1,74 @@
+INCLUDES = -I$(top_srcdir)/src/include
+
+# install plugins under:
+plugindir = $(libdir)/libextractor
+
+SUBDIRS = .
+
+LIBS = \
+ @LTLIBINTL@ @LIBS@
+
+plugin_LTLIBRARIES = \
+ libextractor_exiv2.la
+
+PLUGINFLAGS = -export-dynamic -avoid-version -module -no-undefined
+
+libextractor_exiv2_la_LINK = \
+  /bin/sh ../../../libtool --mode=link $(CXXLD) -o libextractor_exiv2.la
+libextractor_exiv2_la_LDFLAGS = \
+  $(PLUGINFLAGS) $(XTRA_CPPLIBS)
+libextractor_exiv2_la_LIBADD = \
+  $(top_builddir)/src/main/libextractor.la
+
+libextractor_exiv2_la_SOURCES = \
+exiv2extractor.cc \
+basicio.cpp \
+basicio.hpp \
+canonmn.cpp \
+canonmn.hpp \
+datasets.cpp \
+datasets.hpp \
+doxygen.hpp \
+error.cpp \
+error.hpp \
+exif.cpp \
+exif.hpp \
+fujimn.cpp \
+fujimn.hpp \
+futils.cpp \
+futils.hpp \
+ifd.cpp \
+ifd.hpp \
+image.cpp \
+image.hpp \
+iptc.cpp \
+iptc.hpp \
+jpgimage.cpp \
+jpgimage.hpp \
+makernote.cpp \
+makernote.hpp \
+metacopy.cpp \
+metacopy.hpp \
+metadatum.cpp \
+metadatum.hpp \
+mn.hpp \
+nikonmn.cpp \
+nikonmn.hpp \
+olympusmn.cpp \
+olympusmn.hpp \
+panasonicmn.cpp \
+panasonicmn.hpp \
+rcsid.hpp \
+sigmamn.cpp \
+sigmamn.hpp \
+sonymn.cpp \
+sonymn.hpp \
+tags.cpp \
+tags.hpp \
+types.cpp \
+types.hpp \
+utils.cpp \
+utils.hpp \
+value.cpp \
+value.hpp 
+
