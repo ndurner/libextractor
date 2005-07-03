@@ -106,11 +106,28 @@ static const char *keywordTypes[] = {
   gettext_noop("contact"),
   gettext_noop("binary thumbnail data"),
   gettext_noop("publication date"),
+  gettext_noop("camera make"),
+  gettext_noop("camera model"),
+  gettext_noop("exposure"),
+  gettext_noop("aperture"),
+  gettext_noop("exposure bias"),
+  gettext_noop("flash"),
+  gettext_noop("flash bias"),
+  gettext_noop("focal length"),
+  gettext_noop("focal length (35mm equivalent)"),
+  gettext_noop("iso speed"),
+  gettext_noop("exposure mode"),
+  gettext_noop("metering mode"),
+  gettext_noop("macro mode"),
+  gettext_noop("image quality"),
+  gettext_noop("white balance"),
+  gettext_noop("filesize"),
+  gettext_noop("orientation"),
   NULL,
 };
 
 /* the number of keyword types (for bounds-checking) */
-#define HIGHEST_TYPE_NUMBER 72
+#define HIGHEST_TYPE_NUMBER 89
 
 #ifdef HAVE_LIBOGG
 #if HAVE_VORBIS

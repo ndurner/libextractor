@@ -29,6 +29,7 @@ id3v2     - core team with Milan <milan@skoid.org>
 hash      - core team using GNU coreutils/textutils and GPL'ed RMD160 code.
 translit  - Nils Durner <n.durner@t-online.de>
 thumbnail - core team using ImageMagick
+exiv2     - Andreas Huggel <ahuggel@gmx.net>
 
 General contributors:
 Yuri N. Sedunov <aris@altlinux.ru>
