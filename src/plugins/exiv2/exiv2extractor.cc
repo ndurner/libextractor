@@ -25,11 +25,10 @@
 
 #include "platform.h"
 #include "extractor.h"
-#include "convert.h"
 
-#include "exiv2/exif.hpp"
-#include "exiv2/image.hpp"
-#include "exiv2/futils.hpp"
+#include "exif.hpp"
+#include "image.hpp"
+#include "futils.hpp"
 
 #include <iostream>
 #include <iomanip>
@@ -65,11 +64,16 @@ struct EXTRACTOR_Keywords * addExiv2Tag(const Exiv2::ExifData& exifData,
                                         EXTRACTOR_KeywordType type,
                                         struct EXTRACTOR_Keywords * result)
 {
+    const char * str;
+	 
     Exiv2::ExifKey ek(key);
     Exiv2::ExifData::const_iterator md = exifData.findKey(ek);
     if (md != exifData.end()) {
+	str = Exiv2::toString(*md).c_str();
+        while (isspace(str[0]) && (strlen(str) > 0)) str++;
+	if (strlen(str) > 0)
         result = addKeyword(type, 
-                            strdup(Exiv2::toString(*md).c_str()), 
+                            strdup(str),
                             result);
     }
     return result;
@@ -87,16 +91,7 @@ extern "C" {
         try {
             if (!Exiv2::fileExists(filename, true)) return result;
 
-            // Filename
-            result = addKeyword(EXTRACTOR_FILENAME, strdup(filename), result);
 
-            // Filesize
-            struct stat buf;
-            if (0 == stat(filename, &buf)) {
-                result = addKeyword(EXTRACTOR_FILESIZE,
-                                    strdup(Exiv2::toString(buf.st_size).c_str()), 
-                                    result);
-        }
 
         Exiv2::Image::AutoPtr image = Exiv2::ImageFactory::open(filename);
         assert(image.get() != 0);
