@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.4.2\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2005-06-22 15:51+0200\n"
+"POT-Creation-Date: 2005-07-04 18:44+0200\n"
 "PO-Revision-Date: 2005-02-25 12:00-0500\n"
 "Last-Translator: Laurentiu Buzdugan <lbuz@rolix.org>\n"
 "Language-Team: Romanian <translation-team-ro@lists.sourceforge.net>\n"
@@ -17,25 +17,6 @@ msgstr ""
 "Content-Type: text/plain; charset=ISO-8859-2\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-
-#: doc/demux_nsf.c:320
-#, c-format
-msgid "demux_nsf.c: input not seekable, can not handle!\n"
-msgstr ""
-
-#: doc/demux_wc3movie.c:210
-#, c-format
-msgid "demux_wc3movie: SHOT chunk referenced invalid palette (%d >= %d)\n"
-msgstr ""
-
-#: doc/demux_wc3movie.c:300 doc/demux_wc3movie.c:538
-#, c-format
-msgid "demux_wc3movie: encountered unknown chunk: %c%c%c%c\n"
-msgstr ""
-
-#: doc/demux_wc3movie.c:449
-msgid "demux_wc3movie: There was a problem while loading palette chunks\n"
-msgstr ""
 
 #: src/plugins/rpm/rpmextractor.c:3048
 #, c-format
@@ -899,12 +880,12 @@ msgstr "extract [OPÞIUNI] [NUME_FIªIER]*"
 msgid "Extract metadata from files."
 msgstr "Extrage metadata din fiºiere."
 
-#: src/main/extract.c:198 src/main/extractor.c:783
+#: src/main/extract.c:198 src/main/extractor.c:799
 #, c-format
 msgid "%s - (binary)\n"
 msgstr "%s - (binar)\n"
 
-#: src/main/extract.c:204 src/main/extractor.c:788
+#: src/main/extract.c:204 src/main/extractor.c:804
 #, c-format
 msgid "INVALID TYPE - %s\n"
 msgstr "TIP INVALID - %s\n"
@@ -1219,12 +1200,77 @@ msgstr "data thumbnail binar"
 msgid "publication date"
 msgstr "data creãrii"
 
-#: src/main/extractor.c:194
+#: src/main/extractor.c:109
+msgid "camera make"
+msgstr ""
+
+#: src/main/extractor.c:110
+msgid "camera model"
+msgstr ""
+
+#: src/main/extractor.c:111
+msgid "exposure"
+msgstr ""
+
+#: src/main/extractor.c:112
+msgid "aperture"
+msgstr ""
+
+#: src/main/extractor.c:113
+msgid "exposure bias"
+msgstr ""
+
+#: src/main/extractor.c:114
+msgid "flash"
+msgstr ""
+
+#: src/main/extractor.c:115
+msgid "flash bias"
+msgstr ""
+
+#: src/main/extractor.c:116
+msgid "focal length"
+msgstr ""
+
+#: src/main/extractor.c:117
+msgid "focal length (35mm equivalent)"
+msgstr ""
+
+#: src/main/extractor.c:118
+msgid "iso speed"
+msgstr ""
+
+#: src/main/extractor.c:119
+msgid "exposure mode"
+msgstr ""
+
+#: src/main/extractor.c:120
+msgid "metering mode"
+msgstr ""
+
+#: src/main/extractor.c:121
+msgid "macro mode"
+msgstr ""
+
+#: src/main/extractor.c:122
+msgid "image quality"
+msgstr ""
+
+#: src/main/extractor.c:123
+msgid "white balance"
+msgstr ""
+
+#: src/main/extractor.c:124
+#, fuzzy
+msgid "orientation"
+msgstr "orientare paginã"
+
+#: src/main/extractor.c:210
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "iniþializare mecanismului de plugin a eºuat: %s!\n"
 
-#: src/main/extractor.c:341
+#: src/main/extractor.c:357
 #, c-format
 msgid ""
 "Resolving symbol '%s' in library '%s' failed, so I tried '%s', but that "
@@ -1233,12 +1279,12 @@ msgstr ""
 "Rezolvarea simbolului '%s' în biblioteca '%s' a eºuat, aºa cã am încercat '%"
 "s', dar ºi acesta a eºuat.  Erorile sunt: '%s' ºi '%s'.\n"
 
-#: src/main/extractor.c:370
+#: src/main/extractor.c:386
 #, c-format
 msgid "Loading '%s' plugin failed: %s\n"
 msgstr "Încãrcarea plugin-ului '%s' a eºuat: %s\n"
 
-#: src/main/extractor.c:575
+#: src/main/extractor.c:591
 #, c-format
 msgid "Unloading plugin '%s' failed!\n"
 msgstr "Descãrcarea plugin-ului '%s' a eºuat!\n"
