@@ -18,7 +18,7 @@ if HAVE_PRINTABLE
  printdir=printable
 endif
 
-SUBDIRS = . oo $(printdir) hash $(oledir) rpm pdf $(thumbdir)
+SUBDIRS = . oo $(printdir) hash $(oledir) rpm pdf $(thumbdir) exiv2
 
 PLUGINFLAGS = -export-dynamic -avoid-version -module 
 
