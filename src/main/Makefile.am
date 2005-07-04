@@ -33,10 +33,6 @@ libextractor_la_DEPENDENCIES = \
 
 EXTRA_DIST = \
   winproc.c \
-  libextractor_python.c \
-  Extractor.py \
-  libextractor_python_setup.py \
-  extract.py \
   iconv.c
 
 if MINGW
@@ -45,8 +41,7 @@ endif
 
 libextractor_la_SOURCES = \
   extractor.c \
-  $(winproc) \
-  org_gnunet_libextractor_Extractor.h
+  $(winproc) 
 
 extract_SOURCES = \
   extract.c \
@@ -54,8 +49,3 @@ extract_SOURCES = \
   getopt.h \
   getopt1.c 
 
-if HAVE_PYTHON
-install-exec-local:
-	python libextractor_python_setup.py $(libdir) build
-	python libextractor_python_setup.py $(libdir) install --prefix=$(PYTHON_PREFIX)
-endif

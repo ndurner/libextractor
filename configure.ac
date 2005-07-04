@@ -158,21 +158,6 @@ AC_CHECK_HEADERS([fcntl.h netinet/in.h stdlib.h string.h unistd.h libintl.h limi
 AC_CHECK_HEADERS([ltdl.h iconv.h])
 # fixme, we need to die here if a header is not found!
 
-AC_CHECK_HEADERS([jni.h])
-# jni.h is purely optional!  But if not present => no Java support!
-
-AC_PYTHON_DEVEL
-
-AC_MSG_CHECKING(for python)
-if test -z "$python_path";
-then
-  AC_MSG_RESULT(yes)
-  AM_CONDITIONAL(HAVE_PYTHON,false)
-else
-  AC_MSG_RESULT(no)
-  AM_CONDITIONAL(HAVE_PYTHON,true)
-fi
-
 AC_CHECK_HEADERS([vorbis/vorbisfile.h])
 
 # Checks for typedefs, structures, and compiler characteristics.

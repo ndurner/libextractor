@@ -1,3 +1,9 @@
+Mon Jul  4 18:10:14 CEST 2005
+	Preliminary integration of exiv2 support (not enabled
+	by default due to bugs).  Moved Python and Java
+	bindings into seperate packages.  
+	Releasing libextractor 0.5.1.
+	
 Wed Jun 29 15:37:51 CEST 2005
 	Finally found out how to disable building static libs.
 	This should cut down compile time and installed size
