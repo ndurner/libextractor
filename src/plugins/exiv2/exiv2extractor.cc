@@ -256,6 +256,7 @@ extern "C" {
                                     EXTRACTOR_EXPOSURE_MODE,
                                     result);
         }
+	result = newResult;
 
         // Metering mode
         result = addExiv2Tag(exifData, 
@@ -418,7 +419,9 @@ extern "C" {
                              result);
         }
         catch (const Exiv2::AnyError& e) {
+#ifndef SUPPRESS_WARNINGS
             std::cout << "Caught Exiv2 exception '" << e << "'\n";
+#endif
         }
 
         return result;
