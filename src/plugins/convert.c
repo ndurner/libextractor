@@ -43,7 +43,7 @@ char * convertToUtf8(const char * input,
 
   i = input;
   cd = iconv_open("UTF-8", charset);
-  if (cd == (iconv_t) -1)
+  if (cd == (iconv_t) -1) 
     return strdup(i);
   tmpSize = 3 * len + 4;
   tmp = malloc(tmpSize);
