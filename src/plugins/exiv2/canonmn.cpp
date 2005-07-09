@@ -20,7 +20,7 @@
  */
 /*
   File:      canonmn.cpp
-  Version:   $Rev: 569 $
+  Version:   $Rev: 600 $
   Author(s): Andreas Huggel (ahu) <ahuggel@gmx.net>
   History:   18-Feb-04, ahu: created
              07-Mar-04, ahu: isolated as a separate component
@@ -30,7 +30,7 @@
  */
 // *****************************************************************************
 #include "rcsid.hpp"
-EXIV2_RCSID("@(#) $Id: canonmn.cpp 569 2005-05-28 05:48:43Z ahuggel $");
+EXIV2_RCSID("@(#) $Id: canonmn.cpp 600 2005-07-09 10:38:09Z ahuggel $");
 
 // *****************************************************************************
 // included header files
@@ -48,9 +48,6 @@ EXIV2_RCSID("@(#) $Id: canonmn.cpp 569 2005-05-28 05:48:43Z ahuggel $");
 #include <cassert>
 #include <cstring>
 #include <cmath>
-
-// Define DEBUG_MAKERNOTE to output debug information to std::cerr
-#undef DEBUG_MAKERNOTE
 
 // *****************************************************************************
 // local declarations
@@ -90,7 +87,7 @@ namespace Exiv2 {
             canonCs2IfdId, MakerNote::AutoPtr(new CanonMakerNote));
         MakerNoteFactory::registerMakerNote(
             canonCfIfdId, MakerNote::AutoPtr(new CanonMakerNote));
-        
+
         ExifTags::registerMakerTagInfo(canonIfdId, tagInfo_);
         ExifTags::registerMakerTagInfo(canonCs1IfdId, tagInfoCs1_);
         ExifTags::registerMakerTagInfo(canonCs2IfdId, tagInfoCs2_);

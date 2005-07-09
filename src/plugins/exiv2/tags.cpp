@@ -20,14 +20,14 @@
  */
 /*
   File:      tags.cpp
-  Version:   $Rev: 581 $
+  Version:   $Rev: 596 $
   Author(s): Andreas Huggel (ahu) <ahuggel@gmx.net>
   History:   15-Jan-04, ahu: created
              21-Jan-05, ahu: added MakerNote TagInfo registry and related code
  */
 // *****************************************************************************
 #include "rcsid.hpp"
-EXIV2_RCSID("@(#) $Id: tags.cpp 581 2005-06-12 05:54:57Z ahuggel $");
+EXIV2_RCSID("@(#) $Id: tags.cpp 596 2005-06-26 11:04:27Z ahuggel $");
 
 // *****************************************************************************
 // included header files
@@ -507,6 +507,7 @@ namespace Exiv2 {
                                      IfdId ifdId,
                                      const Value& value)
     {
+        if (value.count() == 0) return os;
         PrintFct fct = printValue;
         if (isExifIfd(ifdId)) { 
             int idx = tagInfoIdx(tag, ifdId);
@@ -734,8 +735,10 @@ namespace Exiv2 {
 
     std::ostream& printLong(std::ostream& os, const Value& value)
     {
-        return os << value.toLong();
-    }
+        Rational r = value.toRational();
+        if (r.second != 0) return os << static_cast<long>(r.first) / r.second;
+        return os << "(" << value << ")";
+    } // printLong
 
     std::ostream& printFloat(std::ostream& os, const Value& value)
     {

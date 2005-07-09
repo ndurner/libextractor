@@ -20,7 +20,7 @@
  */
 /*
   File:      image.cpp
-  Version:   $Rev: 563 $
+  Version:   $Rev: 598 $
   Author(s): Andreas Huggel (ahu) <ahuggel@gmx.net>
              Brad Schick (brad) <brad@robotbattle.com>
   History:   26-Jan-04, ahu: created
@@ -30,7 +30,7 @@
  */
 // *****************************************************************************
 #include "rcsid.hpp"
-EXIV2_RCSID("@(#) $Id: image.cpp 563 2005-04-21 07:21:53Z ahuggel $");
+EXIV2_RCSID("@(#) $Id: image.cpp 598 2005-07-08 15:29:11Z ahuggel $");
 
 // *****************************************************************************
 // included header files
@@ -66,7 +66,27 @@ EXIV2_RCSID("@(#) $Id: image.cpp 563 2005-04-21 07:21:53Z ahuggel $");
 // class member definitions
 namespace Exiv2 {
 
+    int ImageFactory::Init::count = 0;
+
+    ImageFactory::Init::Init()
+    {
+        ++count;
+    }
+
+    ImageFactory::Init::~Init()
+    {
+        if (--count == 0) {
+            Exiv2::ImageFactory::cleanup();
+        }
+    }
+
     ImageFactory::Registry* ImageFactory::registry_ = 0;
+
+    void ImageFactory::cleanup()
+    {
+        delete registry_;
+        registry_ = 0;
+    }
 
     void ImageFactory::init()
     {

@@ -20,13 +20,13 @@
  */
 /*
   File:      sonymn.cpp
-  Version:   $Rev: 569 $
+  Version:   $Rev: 600 $
   Author(s): Andreas Huggel (ahu) <ahuggel@gmx.net>
   History:   18-Apr-05, ahu: created
  */
 // *****************************************************************************
 #include "rcsid.hpp"
-EXIV2_RCSID("@(#) $Id: sonymn.cpp 569 2005-05-28 05:48:43Z ahuggel $");
+EXIV2_RCSID("@(#) $Id: sonymn.cpp 600 2005-07-09 10:38:09Z ahuggel $");
 
 // *****************************************************************************
 // included header files
@@ -40,9 +40,6 @@ EXIV2_RCSID("@(#) $Id: sonymn.cpp 569 2005-05-28 05:48:43Z ahuggel $");
 #include <sstream>
 #include <iomanip>
 #include <cassert>
-
-// Define DEBUG_MAKERNOTE to output debug information to std::cerr
-#undef DEBUG_MAKERNOTE
 
 // *****************************************************************************
 // class member definitions

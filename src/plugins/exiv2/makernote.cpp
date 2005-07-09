@@ -20,13 +20,13 @@
  */
 /*
   File:      makernote.cpp
-  Version:   $Rev: 579 $
+  Version:   $Rev: 600 $
   Author(s): Andreas Huggel (ahu) <ahuggel@gmx.net>
   History:   18-Feb-04, ahu: created
  */
 // *****************************************************************************
 #include "rcsid.hpp"
-EXIV2_RCSID("@(#) $Id: makernote.cpp 579 2005-06-11 04:11:23Z ahuggel $");
+EXIV2_RCSID("@(#) $Id: makernote.cpp 600 2005-07-09 10:38:09Z ahuggel $");
 
 // Define DEBUG_* to output debug information to std::cerr, e.g, by calling
 // make like this: make DEFS=-DDEBUG_MAKERNOTE makernote.o 
@@ -103,9 +103,11 @@ namespace Exiv2 {
         if (rc == 0) {
             // IfdMakerNote currently does not support multiple IFDs
             if (ifd_.next() != 0) {
+#ifndef SUPPRESS_WARNINGS
                 std::cerr << "Warning: Makernote IFD has a next pointer != 0 ("
                           << ifd_.next()
                           << "). Ignored.\n";
+#endif
             }
         }
 #ifdef DEBUG_MAKERNOTE
@@ -184,8 +186,41 @@ namespace Exiv2 {
         return AutoPtr(clone_());
     }
 
+    int MakerNoteFactory::Init::count = 0;
+
+    MakerNoteFactory::Init::Init()
+    {
+        ++count;
+    }
+
+    MakerNoteFactory::Init::~Init()
+    {
+        if (--count == 0) {
+            Exiv2::MakerNoteFactory::cleanup();
+        }
+    }
+
     MakerNoteFactory::Registry* MakerNoteFactory::pRegistry_ = 0;
     MakerNoteFactory::IfdIdRegistry* MakerNoteFactory::pIfdIdRegistry_ = 0;
+
+    void MakerNoteFactory::cleanup()
+    {
+        if (pRegistry_ != 0) {
+            Registry::iterator e = pRegistry_->end();
+            for (Registry::iterator i = pRegistry_->begin(); i != e; ++i) {
+                delete i->second;
+            }
+            delete pRegistry_;
+        }
+
+        if (pIfdIdRegistry_ != 0) {
+            IfdIdRegistry::iterator e = pIfdIdRegistry_->end();
+            for (IfdIdRegistry::iterator i = pIfdIdRegistry_->begin(); i != e; ++i) {
+                delete i->second;
+            }
+            delete pIfdIdRegistry_;
+        }
+    }
 
     void MakerNoteFactory::init()
     {
@@ -203,6 +238,11 @@ namespace Exiv2 {
         init();
         MakerNote* pMakerNote = makerNote.release();
         assert(pMakerNote);
+        IfdIdRegistry::iterator pos = pIfdIdRegistry_->find(ifdId);
+        if (pos != pIfdIdRegistry_->end()) {
+            delete pos->second;
+            pos->second = 0;
+        }
         (*pIfdIdRegistry_)[ifdId] = pMakerNote;
     } // MakerNoteFactory::registerMakerNote
 

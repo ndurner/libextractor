@@ -9,6 +9,8 @@
 /* Define to 1 if using `alloca.c'. */
 /* #undef EXV_C_ALLOCA */
 
+#define SUPPRESS_WARNINGS 1
+
 /* Define to 1 if you have the `alarm' function. */
 #define EXV_HAVE_ALARM 1
 

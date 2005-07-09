@@ -37,7 +37,6 @@
 #include <fstream>
 #include <cassert>
 
-#if 0
 // *****************************************************************************
 // Main
 int main(int argc, char* const argv[])
@@ -92,7 +91,6 @@ catch (Exiv2::AnyError& e) {
     return 10;
 }
 }
-#endif
 
 int Params::option(int opt, const std::string& optarg, int optopt)
 {

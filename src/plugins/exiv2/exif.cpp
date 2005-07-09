@@ -20,14 +20,14 @@
  */
 /*
   File:      exif.cpp
-  Version:   $Rev: 569 $
+  Version:   $Rev: 600 $
   Author(s): Andreas Huggel (ahu) <ahuggel@gmx.net>
   History:   26-Jan-04, ahu: created
              11-Feb-04, ahu: isolated as a component
  */
 // *****************************************************************************
 #include "rcsid.hpp"
-EXIV2_RCSID("@(#) $Id: exif.cpp 569 2005-05-28 05:48:43Z ahuggel $");
+EXIV2_RCSID("@(#) $Id: exif.cpp 600 2005-07-09 10:38:09Z ahuggel $");
 
 // Define DEBUG_MAKERNOTE to output debug information to std::cerr, e.g, by 
 // calling make like this: make DEFS=-DDEBUG_MAKERNOTE exif.o 
@@ -112,6 +112,12 @@ namespace Exiv2 {
     {
         if (rhs.key_.get() != 0) key_ = rhs.key_->clone(); // deep copy
         if (rhs.value_.get() != 0) value_ = rhs.value_->clone(); // deep copy
+    }
+
+    const Value& Exifdatum::value() const 
+    {
+        if (value_.get() == 0) throw Error(8);        
+        return *value_; 
     }
 
     Exifdatum& Exifdatum::operator=(const Exifdatum& rhs)
@@ -497,9 +503,10 @@ namespace Exiv2 {
                                    byteOrder(),
                                    pExifIfd_->offset() + pos->offset());
             if (rc) {
-                // Todo: How to handle debug output like this
+#ifndef SUPPRESS_WARNINGS
                 std::cerr << "Warning: Failed to read Makernote, rc = "
                           << rc << "\n";
+#endif
                 delete pMakerNote_;
                 pMakerNote_ = 0;
             }

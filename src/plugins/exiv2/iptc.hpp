@@ -21,7 +21,7 @@
 /*!
   @file    iptc.hpp
   @brief   Encoding and decoding of Iptc data
-  @version $Rev: 560 $
+  @version $Rev: 599 $
   @author  Brad Schick (brad) 
            <a href="mailto:brad@robotbattle.com">brad@robotbattle.com</a>
   @date    31-Jul-04, brad: created
@@ -226,8 +226,7 @@ namespace Exiv2 {
           @return A constant reference to the value.
           @throw Error If the value is not set.
          */
-        const Value& value() const
-            { if (value_.get() != 0) return *value_; throw Error(8); }
+        const Value& value() const;
         //@}
 
     private:

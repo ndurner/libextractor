@@ -20,16 +20,13 @@
  */
 /*
   File:      iptc.cpp
-  Version:   $Rev: 560 $
+  Version:   $Rev: 600 $
   Author(s): Brad Schick (brad) <brad@robotbattle.com>
   History:   31-July-04, brad: created
  */
 // *****************************************************************************
 #include "rcsid.hpp"
-EXIV2_RCSID("@(#) $Id: iptc.cpp 560 2005-04-17 11:51:32Z ahuggel $");
-
-// Define DEBUG_MAKERNOTE to output debug information to std::cerr
-#undef DEBUG_MAKERNOTE
+EXIV2_RCSID("@(#) $Id: iptc.cpp 600 2005-07-09 10:38:09Z ahuggel $");
 
 // *****************************************************************************
 // included header files
@@ -64,6 +61,12 @@ namespace Exiv2 {
 
     Iptcdatum::~Iptcdatum()
     {
+    }
+
+    const Value& Iptcdatum::value() const
+    {
+        if (value_.get() == 0) throw Error(8);
+        return *value_; 
     }
 
     Iptcdatum& Iptcdatum::operator=(const Iptcdatum& rhs)

@@ -20,7 +20,7 @@
  */
 /*
   File:      olympusmn.cpp
-  Version:   $Rev: 581 $
+  Version:   $Rev: 600 $
   Author(s): Will Stokes (wuz) <wstokes@gmail.com>
              Andreas Huggel (ahu) <ahuggel@gmx.net>
   History:   10-Mar-05, wuz: created
@@ -29,7 +29,7 @@
 
 // *****************************************************************************
 #include "rcsid.hpp"
-EXIV2_RCSID("@(#) $Id: olympusmn.cpp 581 2005-06-12 05:54:57Z ahuggel $");
+EXIV2_RCSID("@(#) $Id: olympusmn.cpp 600 2005-07-09 10:38:09Z ahuggel $");
 
 // *****************************************************************************
 // included header files
@@ -43,9 +43,6 @@ EXIV2_RCSID("@(#) $Id: olympusmn.cpp 581 2005-06-12 05:54:57Z ahuggel $");
 #include <sstream>
 #include <iomanip>
 #include <cassert>
-
-// Define DEBUG_MAKERNOTE to output debug information to std::cerr
-#undef DEBUG_MAKERNOTE
 
 // *****************************************************************************
 // class member definitions

@@ -21,7 +21,7 @@
 /*!
   @file    exif.hpp
   @brief   Encoding and decoding of Exif data
-  @version $Rev: 560 $
+  @version $Rev: 599 $
   @author  Andreas Huggel (ahu)
            <a href="mailto:ahuggel@gmx.net">ahuggel@gmx.net</a>
   @date    09-Jan-04, ahu: created
@@ -283,8 +283,7 @@ namespace Exiv2 {
           @return A constant reference to the value.
           @throw Error if the value is not set.
          */
-        const Value& value() const 
-            { if (value_.get() != 0) return *value_; throw Error(8); }
+        const Value& value() const; 
         //! Return the size of the data area.
         long sizeDataArea() const 
             { return value_.get() == 0 ? 0 : value_->sizeDataArea(); }
