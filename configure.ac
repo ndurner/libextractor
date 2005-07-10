@@ -173,7 +173,7 @@ AC_FUNC_VPRINTF
 AC_FUNC_MMAP
 AC_FUNC_STAT
 AC_FUNC_ERROR_AT_LINE
-AC_CHECK_FUNCS([mkstemp strndup munmap strcasecmp strdup strncasecmp memmove memset strtoul floor getcwd pow setenv sqrt strchr strcspn strrchr strnlen strndup])
+AC_CHECK_FUNCS([mkstemp strndup munmap strcasecmp strdup strncasecmp memmove memset strtoul floor getcwd pow setenv sqrt strchr strcspn strrchr strnlen strndup ftruncate])
 
 AM_GNU_GETTEXT_VERSION(0.14)
 AM_GNU_GETTEXT([external])
