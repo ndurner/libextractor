@@ -39,6 +39,7 @@
 #ifdef HAVE_UNISTD_H
 # include <unistd.h>                    // for stat()
 #endif
+#include <math.h>
 
 extern "C" {
 
