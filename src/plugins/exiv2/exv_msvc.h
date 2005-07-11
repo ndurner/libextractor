@@ -1,41 +1,24 @@
-/* ***************************************************************** -*- C -*- */
-/*!
-  @file    exv_msvc.h
-  @brief   Configuration settings for MSVC
-  @version $Rev$
-  @author  Andreas Huggel (ahu)
-           <a href="mailto:ahuggel@gmx.net">ahuggel@gmx.net</a>
-  @date    07-Feb-04, ahu: created
-           26-Feb-05, ahu: renamed and moved to src directory
- */
-
-/* Todo: The PACKAGE_* defines should be generated */
+#include "config.h"
+#include "plibc.h"
 
 #ifdef _MSC_VER
 
-/* Define to 1 if you have the <process.h> header file. */
-#define EXV_HAVE_PROCESS_H 1
+#define SUPPRESS_WARNINGS 1
 
 /* Define to the address where bug reports for this package should be sent. */
-#define EXV_PACKAGE_BUGREPORT "ahuggel@gmx.net"
+#define EXV_PACKAGE_BUGREPORT PACKAGE_BUGREPORT
 
 /* Define to the full name of this package. */
-#define EXV_PACKAGE_NAME "Exiv2"
+#define EXV_PACKAGE_NAME PACKAGE_NAME
 
 /* Define to the full name and version of this package. */
-#define EXV_PACKAGE_STRING "Exiv2 0.7"
-
-/* Define to the one symbol short name of this package. */
-#define EXV_PACKAGE_TARNAME "exiv2"
+#define EXV_PACKAGE_STRING PACKAGE_STRING
 
 /* Define to the version of this package. */
-#define EXV_PACKAGE_VERSION "0.7"
-
-/* Define to `int' if <sys/types.h> does not define pid_t. */
-#define pid_t int
+#define EXV_PACKAGE_VERSION PACKAGE_VERSION
 
 /* File path seperator */
-#define EXV_SEPERATOR_STR "\\"
-#define EXV_SEPERATOR_CHR '\\'
+#define EXV_SEPERATOR_STR DIR_SEPARATOR_STR
+#define EXV_SEPERATOR_CHR DIR_SEPARATOR
 
 #endif /* _MSC_VER */
