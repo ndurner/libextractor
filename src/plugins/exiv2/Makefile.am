@@ -21,7 +21,7 @@ libextractor_exiv2_la_LIBADD = \
   $(top_builddir)/src/main/libextractor.la
 
 libextractor_exiv2_la_SOURCES = \
-exiv2extractor.cc exv_conf.h \
+exiv2extractor.cc exv_conf.h exv_msvc.h \
 basicio.cpp \
 basicio.hpp \
 canonmn.cpp \

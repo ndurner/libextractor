@@ -1,11 +1,12 @@
 #include "config.h"
-#include "plibc.h"
-
-#ifdef _MSC_VER
 
 #define SUPPRESS_WARNINGS 1
 
-/* Define to the address where bug reports for this package should be sent. */
+/* Define to 1 if you have the <unistd.h> header file. */
+#define EXV_HAVE_UNISTD_H HAVE_UNISTD_H
+
+/* Define to the address where bug reports for this package should be
+   sent. */
 #define EXV_PACKAGE_BUGREPORT PACKAGE_BUGREPORT
 
 /* Define to the full name of this package. */
@@ -21,4 +22,9 @@
 #define EXV_SEPERATOR_STR DIR_SEPARATOR_STR
 #define EXV_SEPERATOR_CHR DIR_SEPARATOR
 
-#endif /* _MSC_VER */
+#if defined __CYGWIN32__ && !defined __CYGWIN__
+   /* For backwards compatibility with Cygwin b19 and
+      earlier, we define __CYGWIN__ here, so that
+      we can rely on checking just for that macro. */
+#define __CYGWIN__  __CYGWIN32__
+#endif
