@@ -195,13 +195,14 @@ extern "C" {
     return result;
   }
 
-  struct EXTRACTOR_Keywords * libextractor_pdf_extract(char * filename,
-                                                       unsigned char * data,
+  struct EXTRACTOR_Keywords * libextractor_pdf_extract(const char * filename,
+						       char * data,
                                                        size_t size,
                                                        struct EXTRACTOR_Keywords * prev) {
     PDFDoc * doc;
-    GString * fileName;
     Object info;
+    Object obj;
+    BaseStream * stream;
     struct EXTRACTOR_Keywords * result;
     const char * mime;
 
@@ -220,13 +221,12 @@ extern "C" {
       }
     }
 
-    fileName = new GString(filename);
     /* errorInit();   -- keep commented out, otherwise errors are printed to stderr for non-pdf files! */
-    initParams(".xpdfrc", ".xpdfrc");
-    doc = new PDFDoc(fileName, NULL, NULL);
+    obj.initNull();
+    stream = new MemStream(data, 0, size, &obj);
+    doc = new PDFDoc(stream, NULL, NULL);
     if (! doc->isOk()) {
       delete doc;
-      freeParams();
       return prev;
     }
 
@@ -285,8 +285,17 @@ extern "C" {
 
     info.free();
     delete doc;
-    freeParams();
 
     return result;
   }
+}
+
+
+
+void __attribute__ ((constructor)) xpdf_init(void) {
+  initParams(".xpdfrc", ".xpdfrc");
+}
+
+void __attribute__ ((destructor)) xpdf_done(void) {
+  freeParams();
 }
