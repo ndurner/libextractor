@@ -182,7 +182,9 @@ libextractor_tar_extract(const char * filename,
       return prev;
     }
 
-    memset(&strm, 0, sizeof(z_stream));
+    memset(&strm, 
+	   0, 
+	   sizeof(z_stream));
     strm.next_in = (char*) data;
     strm.avail_in = size;
     strm.total_in = 0;
