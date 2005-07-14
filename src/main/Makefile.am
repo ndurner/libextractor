@@ -24,7 +24,7 @@ if !MINGW
 endif
 
 libextractor_la_LDFLAGS = \
-  -export-dynamic -version-info 1:1:0 $(LIBICONV)
+  -export-dynamic -version-info 2:0:1 $(LIBICONV)
 libextractor_la_LIBADD = \
   $(LIBLTDL) $(dlflag)
 libextractor_la_DEPENDENCIES = \
