@@ -1,3 +1,12 @@
+Thu Jul 14 18:52:17 CEST 2005
+	Bugfixes in exiv2 extractor fixing remaining issues.
+	Changed plugins to not use filename but always only
+	rely on mmapped memory.  Extended API with function
+	that allows running getKeywords on data in memory
+	(instead of filename).  Extended API with encode
+	and decode functions for binary metadata.
+	Releasing libextractor 0.5.2.
+
 Mon Jul  4 18:10:14 CEST 2005
 	Preliminary integration of exiv2 support (not enabled
 	by default due to bugs).  Moved Python and Java
