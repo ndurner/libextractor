@@ -177,6 +177,7 @@ libextractor_gif:\
 libextractor_wav:\
 libextractor_real:\
 libextractor_jpeg:\
+libextractor_exiv2:\
 libextractor_tiff:\
 libextractor_zip:\
 libextractor_rpm:\
