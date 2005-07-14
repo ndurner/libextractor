@@ -5,6 +5,8 @@
 /* Define to 1 if you have the <unistd.h> header file. */
 #define EXV_HAVE_UNISTD_H HAVE_UNISTD_H
 
+#define EXV_HAVE_STDINT_H HAVE_STDINT_H
+
 /* Define to the address where bug reports for this package should be
    sent. */
 #define EXV_PACKAGE_BUGREPORT PACKAGE_BUGREPORT
