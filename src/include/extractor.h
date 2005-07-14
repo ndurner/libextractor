@@ -141,6 +141,11 @@ typedef enum {
 } EXTRACTOR_KeywordType;
 
 /**
+ * Test if a given LE type contains binary data.
+ */
+#define EXTRACTOR_isBinaryType(type) (type == EXTRACTOR_THUMBNAIL_DATA)
+
+/**
  * A linked list of keywords. This structure is passed around
  * in libExtractor and is typically the result of any keyword
  * extraction operation.
