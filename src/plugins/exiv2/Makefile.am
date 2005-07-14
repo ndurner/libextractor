@@ -28,7 +28,6 @@ canonmn.cpp \
 canonmn.hpp \
 datasets.cpp \
 datasets.hpp \
-doxygen.hpp \
 error.cpp \
 error.hpp \
 exif.cpp \
@@ -47,8 +46,6 @@ jpgimage.cpp \
 jpgimage.hpp \
 makernote.cpp \
 makernote.hpp \
-metacopy.cpp \
-metacopy.hpp \
 metadatum.cpp \
 metadatum.hpp \
 mn.hpp \
@@ -67,8 +64,6 @@ tags.cpp \
 tags.hpp \
 types.cpp \
 types.hpp \
-utils.cpp \
-utils.hpp \
 value.cpp \
 value.hpp 
 
