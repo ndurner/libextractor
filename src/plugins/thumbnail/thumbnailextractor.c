@@ -174,7 +174,7 @@ struct EXTRACTOR_Keywords * libextractor_thumbnail_extract(const char * filename
   binary
     = EXTRACTOR_binaryEncode(thumb,
 			     length);
-  FREE(thumb);
+  free(thumb);
   if (binary == NULL)
     return prev;
   return addKeyword(EXTRACTOR_THUMBNAIL_DATA,
