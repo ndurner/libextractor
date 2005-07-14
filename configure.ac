@@ -61,7 +61,9 @@ mingw*)
      AC_DEFINE_UNQUOTED(MINGW,1,[This is a MinGW system])
      AC_DEFINE_UNQUOTED(WINDOWS,1,[This is a Windows system])
      AC_CHECK_LIB(intl, gettext)
-     LDFLAGS="$LDFLAGS -no-undefined -Wl,--export-all-symbols -lws2_32 -lplibc"
+     AC_CHECK_LIB(ws2_32, _head_libws2_32_a,,[AC_MSG_ERROR([libextractor requires Winsock2])])
+     AC_CHECK_LIB(plibc, plibc_init,,[AC_MSG_ERROR([libextractor requires PlibC])])
+     LDFLAGS="$LDFLAGS -no-undefined -Wl,--export-all-symbols"
      ;;
 *)
      AC_MSG_RESULT(Unrecognised OS $host_os)
@@ -175,7 +177,7 @@ AC_FUNC_STAT
 AC_FUNC_ERROR_AT_LINE
 AC_CHECK_FUNCS([mkstemp strndup munmap strcasecmp strdup strncasecmp memmove memset strtoul floor getcwd pow setenv sqrt strchr strcspn strrchr strnlen strndup ftruncate])
 
-AM_GNU_GETTEXT_VERSION(0.14)
+AM_GNU_GETTEXT_VERSION(0.13)
 AM_GNU_GETTEXT([external])
 
 # check for GNU LD
