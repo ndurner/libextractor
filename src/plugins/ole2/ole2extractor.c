@@ -44,9 +44,10 @@ void __attribute__ ((constructor)) ole_gobject_init(void) {
   g_type_init(); 
 }
 
-static struct EXTRACTOR_Keywords * addKeyword(EXTRACTOR_KeywordList *oldhead,
-					      const char *phrase,
-					      EXTRACTOR_KeywordType type) {
+static struct EXTRACTOR_Keywords * 
+addKeyword(EXTRACTOR_KeywordList *oldhead,
+	   const char *phrase,
+	   EXTRACTOR_KeywordType type) {
 
    EXTRACTOR_KeywordList * keyword;
    if (strlen(phrase) == 0)
@@ -917,10 +918,11 @@ static struct EXTRACTOR_Keywords * processSO(GsfInput * src,
   return prev;
 }
 
-struct EXTRACTOR_Keywords * libextractor_ole2_extract(const char * filename,
-						      char * date,
-						      size_t size,
-						      struct EXTRACTOR_Keywords * prev) {
+struct EXTRACTOR_Keywords * 
+libextractor_ole2_extract(const char * filename,
+			  char * date,
+			  size_t size,
+			  struct EXTRACTOR_Keywords * prev) {
   GsfInput   *input;
   GsfInfile  *infile;
   int i;

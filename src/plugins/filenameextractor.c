@@ -24,14 +24,17 @@
 
 
 /* "extract" the 'filename' as a keyword */
-struct EXTRACTOR_Keywords * libextractor_filename_extract(const char * filename,
-                                                          char * date,
-                                                          size_t size,
-                                                          struct EXTRACTOR_Keywords * prev) {
+struct EXTRACTOR_Keywords * 
+libextractor_filename_extract(const char * filename,
+			      char * date,
+			      size_t size,
+			      struct EXTRACTOR_Keywords * prev) {
   EXTRACTOR_KeywordList * keyword;
   const char * filenameRoot = filename;
   int res;
 
+  if (filename == NULL)
+    return prev;
   for (res=strlen(filename)-1;res>=0;res--)
     if (filename[res] == DIR_SEPARATOR) {
       filenameRoot = &filename[res+1];
@@ -41,8 +44,7 @@ struct EXTRACTOR_Keywords * libextractor_filename_extract(const char * filename,
   keyword->next = prev;
   keyword->keyword = convertToUtf8(filenameRoot,
 				   strlen(filenameRoot),
-				   nl_langinfo(CODESET)
-           );
+				   nl_langinfo(CODESET));
   keyword->keywordType = EXTRACTOR_FILENAME;
   return keyword;
 }

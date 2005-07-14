@@ -1,6 +1,6 @@
-.TH LIBEXTRACTOR 3 "Apr 5, 2005"
+.TH LIBEXTRACTOR 3 "Jul 14, 2005"
 .SH NAME
-libextractor \- meta\-information extraction library 0.5.0
+libextractor \- meta\-information extraction library 0.5.2
 .SH SYNOPSIS
 
 \fB#include <extractor.h>
@@ -27,6 +27,8 @@ libextractor \- meta\-information extraction library 0.5.0
  \fBvoid EXTRACTOR_removeAll (EXTRACTOR_ExtractorList * \fIprev\fB);
 
  \fBEXTRACTOR_KeywordList * EXTRACTOR_getKeywords (EXTRACTOR_ExtractorList * \fIextractor\fB, const char * \fIfilename\fB);
+
+ \fBEXTRACTOR_KeywordList * EXTRACTOR_getKeywords (EXTRACTOR_ExtractorList * \fIextractor\fB, const char * \fIdata\fB, size_t \fIsize\fB);
 
  \fBEXTRACTOR_KeywordList * EXTRACTOR_removeEmptyKeywords (EXTRACTOR_KeywordList * \fIlist\fB);
 

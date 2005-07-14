@@ -74,7 +74,7 @@ static long tellError(void * datasource) {
 }
 
 /* mimetype = application/ogg */
-struct EXTRACTOR_Keywords * libextractor_ogg_extract(char * filename,
+struct EXTRACTOR_Keywords * libextractor_ogg_extract(const char * filename,
                                                      char * data,
                                                      size_t size,
                                                      struct EXTRACTOR_Keywords * prev) {
@@ -94,20 +94,12 @@ struct EXTRACTOR_Keywords * libextractor_ogg_extract(char * filename,
   callbacks.close_func = &closeOk;
   callbacks.tell_func = &tellError;
   if (0 != ov_open_callbacks(NULL, &vf, data, size, callbacks)) {
-#if DEBUG_EXTRACT_OGG
-    fprintf(stderr,"\nError opening file %s as ogg\n",filename);
-#endif
     ov_clear(&vf);
     return prev;
   }
   comments = ov_comment(&vf, -1);
 
   if (NULL == comments) {
-#if DEBUG_EXTRACT_OGG
-    fprintf(stderr,
-	    "\nError decoding ogg information of %s, ignoring.\n",
-	    filename);
-#endif
     ov_clear(&vf);
     return prev;
   }

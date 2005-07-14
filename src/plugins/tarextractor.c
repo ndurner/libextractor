@@ -1,6 +1,6 @@
 /*
      This file is part of libextractor.
-     (C) 2002, 2003, 2004 Vidyut Samanta and Christian Grothoff
+     (C) 2002, 2003, 2004, 2005 Vidyut Samanta and Christian Grothoff
 
      libextractor is free software; you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published
@@ -136,20 +136,29 @@ tar_extract(const char * data,
   return prev;
 }
 
+static voidpf Emalloc(voidpf opaque, uInt items, uInt size) {
+  return malloc(size * items);
+}
+
+static void Efree(voidpf opaque, voidpf ptr) {
+  free(ptr);
+}
+
 /* do not decompress tar.gz files > 16 MB */
 #define MAX_TGZ_SIZE 16 * 1024 * 1024
 
-struct EXTRACTOR_Keywords * libextractor_tar_extract(const char * filename,
-						     const unsigned char * data,
-						     size_t size,
-						     struct EXTRACTOR_Keywords * prev) {
+struct EXTRACTOR_Keywords * 
+libextractor_tar_extract(const char * filename,
+			 const unsigned char * data,
+			 size_t size,
+			 struct EXTRACTOR_Keywords * prev) {  
   if ( (data[0] == 0x1f) &&
        (data[1] == 0x8b) &&
        (data[2] == 0x08) ) {
     time_t ctime;
     char * buf;
     size_t bufSize;
-    gzFile gzf;
+    z_stream strm;
 
     /* Creation time */
     ctime = ((((((  (unsigned int)data[7] << 8)
@@ -172,21 +181,33 @@ struct EXTRACTOR_Keywords * libextractor_tar_extract(const char * filename,
     if (bufSize > MAX_TGZ_SIZE) {
       return prev;
     }
-    gzf = gzopen(filename, "rb");
-    if (gzf == NULL) {
+
+    memset(&strm, 0, sizeof(z_stream));
+    strm.next_in = (char*) data;
+    strm.avail_in = size;
+    strm.total_in = 0;
+    strm.zalloc = &Emalloc;
+    strm.zfree = &Efree;
+    strm.opaque = NULL;
+    if (Z_OK != inflateInit2(&strm,
+			     15 + 32))
       return prev;
-    }
     buf = malloc(bufSize);
     if (buf == NULL) {
-      gzclose(gzf);
+      inflateEnd(&strm);
       return prev;
     }
-    if (bufSize != gzread(gzf, buf, bufSize)) {
+    strm.next_out = buf;
+    strm.avail_out = bufSize;
+    inflate(&strm,
+	    Z_FINISH);
+    if (strm.total_out == 0) {
+      inflateEnd(&strm);
       free(buf);
-      gzclose(gzf);
       return prev;
     }
-    gzclose(gzf);
+    bufSize = strm.total_out;
+    inflateEnd(&strm);
     prev = tar_extract(buf, bufSize, prev);
     free(buf);
     return prev;

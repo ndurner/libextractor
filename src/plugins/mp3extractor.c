@@ -435,7 +435,7 @@ mp3parse(char * data,
 
 /* mimetype = audio/mpeg */
 struct EXTRACTOR_Keywords *
-libextractor_mp3_extract(char * filename,
+libextractor_mp3_extract(const char * filename,
 			 char * data,
 			 size_t size,
 			 struct EXTRACTOR_Keywords * klist) {

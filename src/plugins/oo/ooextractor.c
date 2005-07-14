@@ -21,6 +21,7 @@
 #include "platform.h"
 #include "extractor.h"
 #include "unzip.h"
+#include "ioapi.h"
 
 #define CASESENSITIVITY (0)
 #define MAXFILENAME (256)
@@ -68,11 +69,85 @@ static Matches tmap[] = {
   { NULL, 0 },
 };
 
+typedef struct Ecls {
+  char * data;
+  size_t size;
+  size_t pos;
+} Ecls;
 
-struct EXTRACTOR_Keywords * libextractor_oo_extract(const char * filename,
-						    char * data,
-						    size_t size,
-						    struct EXTRACTOR_Keywords * prev) {
+static voidpf Eopen_file_func (voidpf opaque,
+			       const char* filename,
+			       int mode) {
+  if (0 == strcmp(filename,
+		  "ERROR"))
+    return opaque;
+  else
+    return NULL;
+}
+static uLong Eread_file_func(voidpf opaque, 
+			     voidpf stream, 
+			     void* buf,
+			     uLong size) {
+  Ecls * e = opaque;
+  uLong ret;
+
+  ret = e->size - e->pos;
+  if (ret > size)
+    ret = size;
+  memcpy(buf, 
+	 e->data,
+	 ret);
+  return ret;
+}
+
+static long Etell_file_func(voidpf opaque,
+			    voidpf stream) {
+  Ecls * e = opaque;
+  return e->pos;
+}
+
+static long Eseek_file_func(voidpf opaque,
+			    voidpf stream, 
+			    uLong offset, 
+			    int origin) {
+  Ecls * e = opaque;
+
+  switch (origin) {
+  case ZLIB_FILEFUNC_SEEK_SET:
+    e->pos = offset;    
+    break;
+  case ZLIB_FILEFUNC_SEEK_END:
+    if (offset > e->size)
+      return -1;
+    e->pos = e->size - offset;
+    break;
+  case ZLIB_FILEFUNC_SEEK_CUR:
+    if (offset < - e->pos)
+      return -1;
+    e->pos += offset;
+    break;
+  default:
+    return -1;
+  }
+  return e->pos;
+}
+
+static int Eclose_file_func(voidpf opaque, 
+			    voidpf stream) {
+  Ecls * e = opaque;
+  return 0;
+}
+static int Etesterror_file_func(voidpf opaque, 
+				voidpf stream) {
+  return 0;
+}
+
+
+struct EXTRACTOR_Keywords * 
+libextractor_oo_extract(const char * filename,
+			char * data,
+			size_t size,
+			struct EXTRACTOR_Keywords * prev) {
   char filename_inzip[MAXFILENAME];
   unzFile uf;
   unz_file_info file_info;
@@ -80,13 +155,27 @@ struct EXTRACTOR_Keywords * libextractor_oo_extract(const char * filename,
   char * pbuf;
   size_t buf_size;
   int i;
+  zlib_filefunc_def io;
+  Ecls cls;
 
   if (size < 100)
     return prev;
   if ( !( ('P'==data[0]) && ('K'==data[1]) && (0x03==data[2]) && (0x04==data[3])) )
     return prev;
 
-  uf = unzOpen(filename);
+  cls.data = data;
+  cls.size = size;
+  cls.pos = 0;
+  io.zopen_file = &Eopen_file_func;
+  io.zread_file = &Eread_file_func;
+  io.zwrite_file = NULL;
+  io.ztell_file = &Etell_file_func;
+  io.zseek_file = &Eseek_file_func;
+  io.zclose_file = &Eclose_file_func;
+  io.zerror_file = &Etesterror_file_func;
+  io.opaque = &cls;
+
+  uf = unzOpen2("ERROR", &io);
   if (uf == NULL)
     return prev;
 

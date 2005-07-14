@@ -83,7 +83,7 @@ struct EXTRACTOR_Keywords * addExiv2Tag(const Exiv2::ExifData& exifData,
 
 extern "C" {
 
-    struct EXTRACTOR_Keywords * libextractor_exiv2_extract(char * filename,
+    struct EXTRACTOR_Keywords * libextractor_exiv2_extract(const char * filename,
                                                            unsigned char * data,
                                                            size_t size,
                                                            struct EXTRACTOR_Keywords * prev) 
@@ -91,11 +91,8 @@ extern "C" {
         struct EXTRACTOR_Keywords * result = 0;
 
         try {
-            if (!Exiv2::fileExists(filename, true)) return result;
 
-
-
-        Exiv2::Image::AutoPtr image = Exiv2::ImageFactory::open(filename);
+	    Exiv2::Image::AutoPtr image = Exiv2::ImageFactory::open(data, size);
         assert(image.get() != 0);
         image->readMetadata();
         Exiv2::ExifData &exifData = image->exifData();

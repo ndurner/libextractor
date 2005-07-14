@@ -647,8 +647,11 @@ EXTRACTOR_getKeywords (EXTRACTOR_ExtractorList * extractor,
     return NULL;
   result = NULL;
   while (extractor != NULL) {
-    result = extractor->extractMethod (filename, buffer, size, result,
-				       extractor->options);
+    result = extractor->extractMethod(filename,
+				      buffer, 
+				      size,
+				      result,
+				      extractor->options);
     extractor = extractor->next;
   }
   if (size > 0)
@@ -902,5 +905,111 @@ EXTRACTOR_countKeywords (EXTRACTOR_KeywordList * keywords)
     }
   return count;
 }
+
+/**
+ * Encode the given binary data object
+ * as a 0-terminated C-string according
+ * to the LE binary data encoding standard.
+ *
+ * @return NULL on error, the 0-terminated
+ *  encoding otherwise
+ */
+char * EXTRACTOR_binaryEncode(const char * data,
+			      size_t size) {
+
+  char * binary;
+  size_t pos;
+  size_t end;
+  size_t wpos;
+  size_t i;
+  unsigned int markers[8]; /* 256 bits */
+  unsigned char marker;
+  char * format;
+
+ /* encode! */
+  binary = malloc(2 + size + (size+256) / 254);
+  if (binary == NULL)
+    return NULL;
+
+  pos = 0;
+  wpos = 0;
+  while (pos < size) {
+    /* find unused value between 1 and 255 in
+       the next 254 bytes */
+    end = pos + 254;
+    if (end < pos)
+      break; /* integer overflow! */
+    if (end > size)
+      end = size;
+    memset(markers, 
+	   0, 
+	   sizeof(markers));
+    for (i=pos;i<end;i++)
+      markers[data[i]&7] |= 1 << (data[i] >> 3);
+    marker = 1;
+    while (markers[marker&7] & (1 << (marker >> 3))) {
+      marker++;
+      if (marker == 0) {
+	/* assertion failed... */
+	free(binary);
+	return NULL;
+      }
+    }
+    /* recode */
+    binary[wpos++] = marker;
+    for (i=pos;i<end;i++)
+      binary[wpos++] = data[i] == 0 ? marker : data[i];
+    pos = end;
+  }
+  binary[wpos++] = 0; /* 0-termination! */
+  return binary;
+}
+
+
+/**
+ * This function can be used to decode the binary data
+ * encoded in the libextractor metadata (i.e. for
+ * the  thumbnails).
+ *
+ * @param in 0-terminated string from the meta-data
+ * @return 1 on error, 0 on success
+ */
+int EXTRACTOR_binaryDecode(const unsigned char * in,
+			   unsigned char ** out,
+			   size_t * outSize) {
+  unsigned char * buf;
+  size_t pos;
+  size_t wpos;
+  unsigned char marker;
+  size_t i;
+  size_t end;
+  size_t inSize;
+
+  inSize = strlen(in);
+  if (inSize == 0) {
+    *out = NULL;
+    *outSize = 0;
+    return 1;
+  }
+
+  buf = malloc(inSize); /* slightly more than needed ;-) */
+  *out = buf;
+
+  pos = 0;
+  wpos = 0;
+  while (pos < inSize) {
+    end = pos + 255; /* 255 here: count the marker! */
+    if (end > inSize)
+      end = inSize;
+    marker = in[pos++];
+    for (i=pos;i<end;i++)
+      buf[wpos++] = (in[i] == marker) ? 0 : in[i];
+    pos = end;
+  }
+  *outSize = wpos;
+  return 0;
+}
+
+
 
 /* end of extractor.c */

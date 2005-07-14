@@ -161,6 +161,9 @@ typedef struct EXTRACTOR_Keywords {
 /**
  * Signature of the extract method that each plugin
  * must provide.
+ * 
+ * @param filename MAYBE NULL (!)
+ * @param data must not be modified (!)
  */
 typedef EXTRACTOR_KeywordList * 
 (*ExtractMethod)(const char * filename,
@@ -273,6 +276,22 @@ EXTRACTOR_getKeywords(EXTRACTOR_ExtractorList * extractor,
 
 
 /**
+ * Extract keywords from a buffer in memory
+ * using the available extractors.
+ *
+ * @param extractor the list of extractor libraries
+ * @param data the data of the file
+ * @param size the number of bytes in data
+ * @return the list of keywords found in the file, NULL if none
+ *         were found (or other errors)
+ */
+EXTRACTOR_KeywordList *
+EXTRACTOR_getKeywords2(EXTRACTOR_ExtractorList * extractor,
+		       const char * data,
+		       size_t size);
+
+
+/**
  * Remove duplicate keywords from the list.
  * @param list the original keyword list (destroyed in the process!)
  * @param options a set of options (DUPLICATES_XXXX)
@@ -338,6 +357,31 @@ const char * EXTRACTOR_extractLastByString(const char * type,
  */
 unsigned int EXTRACTOR_countKeywords(EXTRACTOR_KeywordList * keywords);
   
+
+/**
+ * This function can be used to decode the binary data
+ * encoded in the libextractor metadata (i.e. for
+ * the  thumbnails).
+ *
+ * @param in 0-terminated string from the meta-data
+ * @return 1 on error, 0 on success
+ */
+int EXTRACTOR_binaryDecode(const unsigned char * in,
+			   unsigned char ** out,
+			   size_t * outSize);
+
+
+/**
+ * Encode the given binary data object
+ * as a 0-terminated C-string according
+ * to the LE binary data encoding standard.
+ *
+ * @return NULL on error, the 0-terminated
+ *  encoding otherwise
+ */
+char * EXTRACTOR_binaryEncode(const char * data,
+			      size_t size);
+
 
 #ifdef __cplusplus
 }

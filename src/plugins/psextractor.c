@@ -142,7 +142,7 @@ static char * blacklist[] = {
 };
 
 /* mimetype = application/postscript */
-struct EXTRACTOR_Keywords * libextractor_ps_extract(char * filename,
+struct EXTRACTOR_Keywords * libextractor_ps_extract(const char * filename,
                                                     char * data,
                                                     size_t size,
                                                     struct EXTRACTOR_Keywords * prev) {

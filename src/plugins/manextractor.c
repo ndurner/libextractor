@@ -203,31 +203,63 @@ static struct EXTRACTOR_Keywords * tryParse(const char * buf,
   return prev;
 }
 
+static voidpf Emalloc(voidpf opaque, uInt items, uInt size) {
+  return malloc(size * items);
+}
+
+static void Efree(voidpf opaque, voidpf ptr) {
+  free(ptr);
+}
+
 /**
  * How many bytes do we actually try to scan? (from the beginning
  * of the file).
  */
 #define MAX_READ 2048
 
-struct EXTRACTOR_Keywords * libextractor_man_extract(const char * filename,
-						     char * data,
-						     size_t size,
-						     struct EXTRACTOR_Keywords * prev) {
-  gzFile gz;
+struct EXTRACTOR_Keywords * 
+libextractor_man_extract(const char * filename,
+			 char * data,
+			 size_t size,
+			 struct EXTRACTOR_Keywords * prev) {
+  z_stream strm;
   char * buf;
   int len;
 
-  gz = gzopen(filename, "rb");
-  buf = malloc(MAX_READ);
-  len = gzread(gz, buf, MAX_READ);
-  if (len < 0) {
+  memset(&strm, 
+	 0, 
+	 sizeof(z_stream));
+  strm.next_in = (char*) data;
+  strm.avail_in = size;
+  strm.total_in = 0;
+  strm.zalloc = &Emalloc;
+  strm.zfree = &Efree;
+  strm.opaque = NULL;
+  if (Z_OK == inflateInit2(&strm,
+			   15 + 32)) {
+    buf = malloc(MAX_READ);
+    if (buf == NULL) {
+      inflateEnd(&strm);
+      return prev;
+    }
+    strm.next_out = buf;
+    strm.avail_out = MAX_READ;
+    inflate(&strm,
+	    Z_FINISH);
+    if (strm.total_out > 0) {
+      prev = tryParse(buf,
+		      strm.total_out, 
+		      prev);
+      inflateEnd(&strm);
+      free(buf);
+      return prev;
+    }
     free(buf);
-    gzclose(gz);
-    return prev;
-  }
-  gzclose(gz);
-  prev = tryParse(buf, len, prev);
-  free(buf);
-  return prev;
+    inflateEnd(&strm);
+  } 
+  return tryParse(data, 
+		  size,
+		  prev);
 }
 
+/* end of manextractor.c */

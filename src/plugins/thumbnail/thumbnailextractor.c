@@ -79,6 +79,7 @@ struct EXTRACTOR_Keywords * libextractor_thumbnail_extract(const char * filename
 							   const char * data,
 							   size_t size,
 							   struct EXTRACTOR_Keywords * prev) {
+  GdkPixbufLoader * loader;
   GdkPixbuf * in;
   GdkPixbuf * out;
   size_t length;
@@ -112,8 +113,14 @@ struct EXTRACTOR_Keywords * libextractor_thumbnail_extract(const char * filename
   if (whitelist[j] == NULL)
     return prev;
 
-  in = gdk_pixbuf_new_from_file(filename,
-				&err);
+  loader = gdk_pixbuf_loader_new();
+  gdk_pixbuf_loader_write(loader,
+			  data,
+			  size,
+			  NULL);    
+  in = gdk_pixbuf_loader_get_pixbuf(loader);
+  gdk_pixbuf_loader_close(loader,
+			  NULL);
   if (in == NULL)
     return prev;
   height = gdk_pixbuf_get_height(in);
@@ -164,92 +171,15 @@ struct EXTRACTOR_Keywords * libextractor_thumbnail_extract(const char * filename
   if (thumb == NULL)
     return prev;
 
-
-  /* encode! */
-  binary = malloc(2 + length + (length+256) / 254);
+  binary
+    = EXTRACTOR_binaryEncode(thumb,
+			     length);
+  FREE(thumb);
   if (binary == NULL)
     return prev;
-
-  pos = 0;
-  wpos = 0;
-  while (pos < length) {
-    /* find unused value between 1 and 255 in
-       the next 254 bytes */
-    end = pos + 254;
-    if (end < pos)
-      break; /* integer overflow! */
-    if (end > length)
-      end = length;
-    memset(markers, 0, sizeof(markers));
-    for (i=pos;i<end;i++)
-      markers[thumb[i]&7] |= 1 << (thumb[i] >> 3);
-    marker = 1;
-    while (markers[marker&7] & (1 << (marker >> 3))) {
-      marker++;
-      if (marker == 0) {
-	/* assertion failed... */
-	free(binary);
-	free(thumb);
-	return prev;
-      }
-    }
-    /* recode */
-    binary[wpos++] = marker;
-    for (i=pos;i<end;i++)
-      binary[wpos++] = thumb[i] == 0 ? marker : thumb[i];
-    pos = end;
-  }
-  binary[wpos++] = 0; /* 0-termination! */
-  free(thumb);
   return addKeyword(EXTRACTOR_THUMBNAIL_DATA,
 		    binary,
 		    prev);
 }
 
-#if 0
-
-/**
- * This function can be used to decode the binary data
- * stream produced by the thumbnailextractor.
- *
- * @param in 0-terminated string from the meta-data
- * @return 1 on error, 0 on success
- */
-int decodeThumbnail(const unsigned char * in,
-		    unsigned char ** out,
-		    size_t * outSize) {
-  unsigned char * buf;
-  size_t pos;
-  size_t wpos;
-  unsigned char marker;
-  size_t i;
-  size_t end;
-  size_t inSize;
-
-  inSize = strlen(in);
-  if (inSize == 0) {
-    *out = NULL;
-    *outSize = 0;
-    return 1;
-  }
-
-  buf = malloc(inSize); /* slightly more than needed ;-) */
-  *out = buf;
-
-  pos = 0;
-  wpos = 0;
-  while (pos < inSize) {
-    end = pos + 255; /* 255 here: count the marker! */
-    if (end > inSize)
-      end = inSize;
-    marker = in[pos++];
-    for (i=pos;i<end;i++)
-      buf[wpos++] = (in[i] == marker) ? 0 : in[i];
-    pos = end;
-  }
-  *outSize = wpos;
-  return 0;
-}
-
-
-#endif
+/* end of thumbnailextractor.c */
