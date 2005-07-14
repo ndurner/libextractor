@@ -70,8 +70,9 @@ struct EXTRACTOR_Keywords * addExiv2Tag(const Exiv2::ExifData& exifData,
     Exiv2::ExifKey ek(key);
     Exiv2::ExifData::const_iterator md = exifData.findKey(ek);
     if (md != exifData.end()) {
-	str = Exiv2::toString(*md).c_str();
-        while (isspace(str[0]) && (strlen(str) > 0)) str++;
+	std::string ccstr = Exiv2::toString(*md);
+	str = ccstr.c_str();
+        while ( (strlen(str) > 0) && isspace(str[0])) str++;
 	if (strlen(str) > 0)
         result = addKeyword(type, 
                             strdup(str),
