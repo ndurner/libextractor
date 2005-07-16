@@ -395,10 +395,11 @@ main (int argc, char *argv[])
 #ifdef MINGW
   InitWinEnv();
 #endif
-
+#if ENABLE_NLS
   setlocale(LC_ALL, "");
   textdomain(PACKAGE);
   BINDTEXTDOMAIN(PACKAGE, LOCALEDIR);
+#endif
   print = malloc (sizeof (int) * EXTRACTOR_getHighestKeywordTypeNumber ());
   for (i = 0; i < EXTRACTOR_getHighestKeywordTypeNumber (); i++)
     print[i] = YES;		/* default: print everything */

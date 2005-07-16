@@ -201,8 +201,10 @@ static char * old_dlsearchpath = NULL;
 void __attribute__ ((constructor)) le_ltdl_init(void) {
   int err;
 
+#if ENABLE_NLS  
   setlocale(LC_ALL, "");
   BINDTEXTDOMAIN(PACKAGE, LOCALEDIR);
+#endif
   err = lt_dlinit ();
   if (err > 0)
     {
@@ -244,7 +246,7 @@ void __attribute__ ((destructor)) le_ltdl_fini(void) {
 /**
  * Open a file
  */
-int fileopen(const char *filename, int oflag, ...)
+static int fileopen(const char *filename, int oflag, ...)
 {
   int mode;
   char *fn;
