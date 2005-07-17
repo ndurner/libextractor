@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.5.0\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2005-07-14 21:56+0200\n"
+"POT-Creation-Date: 2005-07-16 23:06+0200\n"
 "PO-Revision-Date: 2005-06-22 15:05+0200\n"
 "Last-Translator: Karl Eichwalder <ke@gnu.franken.de>\n"
 "Language-Team: German <de@li.org>\n"
@@ -877,12 +877,12 @@ msgstr "extract [OPTIONEN] [DATEINAME]*"
 msgid "Extract metadata from files."
 msgstr "Metadaten aus den Dateien extrahieren."
 
-#: src/main/extract.c:198 src/main/extractor.c:803
+#: src/main/extract.c:198 src/main/extractor.c:805
 #, c-format
 msgid "%s - (binary)\n"
 msgstr "%s - (binär)\n"
 
-#: src/main/extract.c:204 src/main/extractor.c:808
+#: src/main/extract.c:204 src/main/extractor.c:810
 #, c-format
 msgid "INVALID TYPE - %s\n"
 msgstr "UNGÜLTIGE ART - %s\n"
@@ -935,24 +935,24 @@ msgstr "Gegenstand"
 msgid "page count"
 msgstr "Seitenanzahl"
 
-#: src/main/extract.c:472
+#: src/main/extract.c:473
 #, c-format
 msgid "You must specify an argument for the '%s' option (option ignored).\n"
 msgstr ""
 "Sie müssen ein Argument für die Option »%s« angeben (Option wird "
 "ignoriert).\n"
 
-#: src/main/extract.c:539
+#: src/main/extract.c:540
 #, c-format
 msgid "Use --help to get a list of options.\n"
 msgstr "Verwenden Sie --help, um eine Liste aller Optionen zu sehen.\n"
 
-#: src/main/extract.c:598
+#: src/main/extract.c:599
 #, c-format
 msgid "%% BiBTeX file\n"
 msgstr "%% BibTeX Datei\n"
 
-#: src/main/extract.c:605
+#: src/main/extract.c:606
 #, c-format
 msgid "Keywords for file %s:\n"
 msgstr "Schlüsselwörter für die Datei %s:\n"
@@ -1263,24 +1263,24 @@ msgstr ""
 msgid "orientation"
 msgstr "Seitenausrichtung"
 
-#: src/main/extractor.c:211
+#: src/main/extractor.c:213
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "Initialisierung des Plugin-Mechanismus' ist fehlgeschlagen: %s.\n"
 
-#: src/main/extractor.c:358
+#: src/main/extractor.c:360
 #, c-format
 msgid ""
 "Resolving symbol '%s' in library '%s' failed, so I tried '%s', but that "
 "failed also.  Errors are: '%s' and '%s'.\n"
 msgstr ""
 
-#: src/main/extractor.c:387
+#: src/main/extractor.c:389
 #, c-format
 msgid "Loading '%s' plugin failed: %s\n"
 msgstr "Laden des »%s«-Plugins ist fehlgeschlagen: %s\n"
 
-#: src/main/extractor.c:592
+#: src/main/extractor.c:594
 #, c-format
 msgid "Unloading plugin '%s' failed!\n"
 msgstr "Entladen des »%s«-Erweiterung ist fehlgeschlagen.\n"

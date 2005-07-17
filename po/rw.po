@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.3.11\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2005-07-14 21:56+0200\n"
+"POT-Creation-Date: 2005-07-16 23:06+0200\n"
 "PO-Revision-Date: 2005-04-04 10:55-0700\n"
 "Last-Translator: Steven Michael Murphy <murf@e-tools.com>\n"
 "Language-Team: Kinyarwanda <translation-team-rw@lists.sourceforge.net>\n"
@@ -899,12 +899,12 @@ msgstr ""
 msgid "Extract metadata from files."
 msgstr "Bivuye Idosiye"
 
-#: src/main/extract.c:198 src/main/extractor.c:803
+#: src/main/extract.c:198 src/main/extractor.c:805
 #, c-format
 msgid "%s - (binary)\n"
 msgstr ""
 
-#: src/main/extract.c:204 src/main/extractor.c:808
+#: src/main/extract.c:204 src/main/extractor.c:810
 #, c-format
 msgid "INVALID TYPE - %s\n"
 msgstr ""
@@ -980,22 +980,22 @@ msgstr "Ikivugwaho"
 msgid "page count"
 msgstr "Kubara amapaje"
 
-#: src/main/extract.c:472
+#: src/main/extract.c:473
 #, fuzzy, c-format
 msgid "You must specify an argument for the '%s' option (option ignored).\n"
 msgstr "kugirango i Ihitamo Ihitamo"
 
-#: src/main/extract.c:539
+#: src/main/extract.c:540
 #, fuzzy, c-format
 msgid "Use --help to get a list of options.\n"
 msgstr "Ifashayobora Kuri Kubona a Urutonde Bya Amahitamo"
 
-#: src/main/extract.c:598
+#: src/main/extract.c:599
 #, c-format
 msgid "%% BiBTeX file\n"
 msgstr ""
 
-#: src/main/extract.c:605
+#: src/main/extract.c:606
 #, fuzzy, c-format
 msgid "Keywords for file %s:\n"
 msgstr "kugirango IDOSIYE"
@@ -1368,24 +1368,24 @@ msgstr ""
 msgid "orientation"
 msgstr "Ipaji Icyerekezo"
 
-#: src/main/extractor.c:211
+#: src/main/extractor.c:213
 #, fuzzy, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "Bya Byanze"
 
-#: src/main/extractor.c:358
+#: src/main/extractor.c:360
 #, fuzzy, c-format
 msgid ""
 "Resolving symbol '%s' in library '%s' failed, so I tried '%s', but that "
 "failed also.  Errors are: '%s' and '%s'.\n"
 msgstr "IKIMENYETSO in Isomero Byanze Byanze Na"
 
-#: src/main/extractor.c:387
+#: src/main/extractor.c:389
 #, fuzzy, c-format
 msgid "Loading '%s' plugin failed: %s\n"
 msgstr "Byanze"
 
-#: src/main/extractor.c:592
+#: src/main/extractor.c:594
 #, fuzzy, c-format
 msgid "Unloading plugin '%s' failed!\n"
 msgstr "Byanze"
