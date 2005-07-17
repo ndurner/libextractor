@@ -4,27 +4,23 @@ platforms.  Let us know if you know more about it than we do.
 GNU/Linux (x86):
 - perfect
 
-FreeBSD (x86):
-- perfect
-
-OpenBSD/NetBSD:
-- unknown
-
 GNU/Linux (Ultra Sparc):
 - perfect 
 
 GNU/Linux (Alpha):
 - perfect
 
-Solaris 8 (SunOS 5.8, Sparc SunFire 880):
-- possibly with small libltdl compile problem
-  (add #define LT_USE_POSIX_DIRENT in line 88 of ltdl.c).
+FreeBSD (x86):
+- perfect
+
+OpenBSD/NetBSD:
+- unknown
 
 OS X (10.3, PowerPC):
-- MacOS X users must bootstrap the configuration system using
-  libtool 1.5.10 or later (in the root libextractor directory):
-  autoreconf -f -i; cd libltdl; autoreconf -f -i; cd ..
-  After this, configure & make should work properly.
+- perfect
+
+Solaris 8 (SunOS 5.8, Sparc SunFire 880):
+- unknown
 
 MinGW:
 - linking against libstdc++ fails
