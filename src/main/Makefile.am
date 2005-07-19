@@ -49,3 +49,14 @@ extract_SOURCES = \
   getopt.h \
   getopt1.c 
 
+
+check_PROGRAMS = \
+  test_binary
+
+TESTS = $(check_PROGRAMS)
+
+test_binary_SOURCES = \
+  test_binary.c
+test_binary_LDADD = \
+  $(top_builddir)/src/main/libextractor.la
+

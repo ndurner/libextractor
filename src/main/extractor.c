@@ -991,7 +991,7 @@ int EXTRACTOR_binaryDecode(const unsigned char * in,
   if (inSize == 0) {
     *out = NULL;
     *outSize = 0;
-    return 1;
+    return 0;
   }
 
   buf = malloc(inSize); /* slightly more than needed ;-) */
