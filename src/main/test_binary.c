@@ -50,17 +50,17 @@ static int test(const char * buf,
   return 1;
 }
 
+#define MAX 1024
+
 int main(int argc,
 	 char * argv[]) {
   unsigned int i;
-  char buf[2048];
+  char buf[MAX];
 
-  for (i=0;i<2048;i++) {
+  for (i=0;i<MAX;i++) {
     buf[i] = (char) rand();
-    if (! test(buf, i)) {
-      printf("Failed: %u\n", i);
+    if (! test(buf, i)) 
       return -1;
-    }
   }
   return 0;
 }
