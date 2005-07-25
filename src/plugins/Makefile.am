@@ -7,11 +7,10 @@ LIBS = \
  @LTLIBINTL@ @LIBS@
 
 if HAVE_GLIB
- oledir=ole2
-endif
-
+oledir=ole2
 if HAVE_GTK
- thumbdir=thumbnail
+thumbdir=thumbnail
+endif
 endif
 
 if HAVE_PRINTABLE
