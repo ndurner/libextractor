@@ -27,16 +27,23 @@ files) and a JNI header file (jni.h) for Java.  Further requirements
 include:
 * libvorbisfile
 * zlib (compression library)
-* glib 2.2
 * c++ compiler
 * libltdl (from GNU libtool)
-* gtk 2.6 (for thumbnails, gdk-pixbuf)
 * GNU gettext
+* glib 2.6
+* gtk 2.6 (for thumbnails, gdk-pixbuf)
+
+You need the _static_, relocatable version of glib and gtk
+here, so make sure you have a libgobject-2.0.a installed.
+Alternatively, compile with --without-glib (disables some
+plugins)
 
 When building libextractor binaries, please make sure all of these
 dependencies are available.  Otherwise the build system may
 automatically build only a subset of libextractor.
 
+Note however that the build will fail at compile time if only the 
+shared library of glib/gtk is installed.
 
 
 Writing plugins
