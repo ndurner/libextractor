@@ -1,3 +1,6 @@
+Mon Aug  8 12:18:44 PDT 2005
+	Somehow addKeyword2 got lost.  Added (again?).
+
 Thu Jul 14 18:52:17 CEST 2005
 	Bugfixes in exiv2 extractor fixing remaining issues.
 	Changed plugins to not use filename but always only

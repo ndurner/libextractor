@@ -663,6 +663,38 @@ EXTRACTOR_getKeywords (EXTRACTOR_ExtractorList * extractor,
   return result;
 }
 
+
+
+/**
+ * Extract keywords from a buffer in memory
+ * using the available extractors.
+ *
+ * @param extractor the list of extractor libraries
+ * @param data the data of the file
+ * @param size the number of bytes in data
+ * @return the list of keywords found in the file, NULL if none
+ *         were found (or other errors)
+ */
+EXTRACTOR_KeywordList *
+EXTRACTOR_getKeywords2(EXTRACTOR_ExtractorList * extractor,
+		       const char * data,
+		       size_t size) {
+  EXTRACTOR_KeywordList * result;
+
+  if (data == NULL) 
+    return NULL;
+  result = NULL;
+  while (extractor != NULL) {
+    result = extractor->extractMethod(NULL,
+				      (char*)data, 
+				      size,
+				      result,
+				      extractor->options);
+    extractor = extractor->next;
+  }
+  return result;
+}
+
 static void
 removeKeyword (const char *keyword,
 	       const EXTRACTOR_KeywordType type,
@@ -926,7 +958,6 @@ char * EXTRACTOR_binaryEncode(const char * data,
   size_t i;
   unsigned int markers[8]; /* 256 bits */
   unsigned char marker;
-  char * format;
 
  /* encode! */
   binary = malloc(2 + size + (size+256) / 254);
