@@ -183,7 +183,7 @@ static long Eseek_file_func(voidpf opaque,
   default:
     return -1;
   }
-  return e->pos;
+  return 0;
 }
 
 static int Eclose_file_func(voidpf opaque, 

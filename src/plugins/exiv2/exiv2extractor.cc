@@ -88,7 +88,7 @@ extern "C" {
                                                            size_t size,
                                                            struct EXTRACTOR_Keywords * prev) 
     {
-        struct EXTRACTOR_Keywords * result = 0;
+        struct EXTRACTOR_Keywords * result = prev;
 
         try {
 

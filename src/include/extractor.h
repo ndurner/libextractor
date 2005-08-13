@@ -29,7 +29,7 @@ extern "C" {
  * 0.2.6-1 => 0x00020601
  * 4.5.2-0 => 0x04050200
  */
-#define EXTRACTOR_VERSION 0x00050201
+#define EXTRACTOR_VERSION 0x00050202
 
 #include <stdio.h>
 
@@ -205,7 +205,7 @@ EXTRACTOR_ExtractorList * EXTRACTOR_loadDefaultLibraries(void);
  * @return NULL if the type is not known
  */
 const char * 
-EXTRACTOR_getKeywordTypeAsString(const EXTRACTOR_KeywordType type);
+EXTRACTOR_getKeywordTypeAsString(EXTRACTOR_KeywordType type);
 
 /**
  * Return the highest type number, exclusive as in [0,highest).
@@ -304,7 +304,7 @@ EXTRACTOR_getKeywords2(EXTRACTOR_ExtractorList * extractor,
  */
 EXTRACTOR_KeywordList *
 EXTRACTOR_removeDuplicateKeywords(EXTRACTOR_KeywordList * list,
-				  const unsigned int options);
+				  unsigned int options);
 
 
 /**
@@ -314,6 +314,16 @@ EXTRACTOR_removeDuplicateKeywords(EXTRACTOR_KeywordList * list,
  */
 EXTRACTOR_KeywordList *
 EXTRACTOR_removeEmptyKeywords (EXTRACTOR_KeywordList * list);
+
+/**
+ * Remove keywords of a particular type from the list.
+ * @param list the original keyword list (altered in the process!)
+ * @param type the type to remove
+ * @return a list of keywords without entries of given type
+ */
+EXTRACTOR_KeywordList *
+EXTRACTOR_removeKeywordsOfType(EXTRACTOR_KeywordList * list,
+			       EXTRACTOR_KeywordType type);
   
 /**
  * Print a keyword list to a file.
@@ -340,7 +350,7 @@ void EXTRACTOR_freeKeywords(EXTRACTOR_KeywordList * keywords);
  *  not be freed or manipulated by the client.  It will become
  *  invalid once the keyword list is freed.
  */
-const char * EXTRACTOR_extractLast(const EXTRACTOR_KeywordType type,
+const char * EXTRACTOR_extractLast(EXTRACTOR_KeywordType type,
 				   EXTRACTOR_KeywordList * keywords);
 
 /**

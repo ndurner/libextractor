@@ -94,6 +94,18 @@ struct EXTRACTOR_Keywords * libextractor_zip_extract(char * filename,
   unsigned int filecomment_length;
   unsigned int entry_total, entry_count; 
   EXTRACTOR_KeywordList * keyword;
+  const char * mimetype;
+
+  mimetype = EXTRACTOR_extractLast(EXTRACTOR_MIMETYPE, 
+				   prev);
+  if (NULL != mimetype) {
+    if ( (0 != strcmp(mimetype, "application/x-zip")) &&
+	 (0 != strcmp(mimetype, "application/zip")) ) {
+      /* we think we already know what's in here,
+	 and it is not a zip */
+      return prev;
+    }
+  }
 
   /* I think the smallest zipfile you can have is about 120 bytes */
   if ( (NULL==data) || (size < 100) )

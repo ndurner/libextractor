@@ -807,6 +807,39 @@ EXTRACTOR_removeEmptyKeywords (EXTRACTOR_KeywordList * list)
   return list;
 }
 
+/**
+ * Remove keywords of a particular type from the list.
+ * @param list the original keyword list (altered in the process!)
+ * @param type the type to remove
+ * @return a list of keywords without entries of given type
+ */
+EXTRACTOR_KeywordList *
+EXTRACTOR_removeKeywordsOfType(EXTRACTOR_KeywordList * list,
+			       EXTRACTOR_KeywordType type) {
+  EXTRACTOR_KeywordList * pos;
+  EXTRACTOR_KeywordList * last;
+
+  last = NULL;
+  pos = list;
+  while (pos != NULL) {
+    if (pos->keywordType == type) {
+      EXTRACTOR_KeywordList * next;
+      next = pos->next;
+      if (last == NULL)
+	list = next;
+      else
+	last->next = next;
+      free(pos->keyword);
+      free(pos);
+      pos = next;
+    } else {
+      last = pos;
+      pos = pos->next;
+    }
+  }
+  return list;
+}
+
 #include "iconv.c"
 
 /**
