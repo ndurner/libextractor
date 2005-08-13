@@ -19,6 +19,7 @@
 */
 
 #include "platform.h"
+#include <ctype.h>
 #include "extractor.h"
 #include "unzip.h"
 #include "ioapi.h"
@@ -69,6 +70,57 @@ static Matches tmap[] = {
   { NULL, 0 },
 };
 
+
+/**
+ * returns either zero when mimetype info is missing
+ * or an already malloc'ed string containing the mimetype info.
+ */
+static char *libextractor_oo_getmimetype(unzFile uf) {
+  char filename_inzip[MAXFILENAME];
+  unz_file_info file_info;
+  char * buf = NULL;
+  size_t buf_size = 0;
+  size_t ziperror = 0;
+
+  if (UNZ_OK == unzLocateFile(uf, 
+			      "mimetype", 
+			      CASESENSITIVITY)) {
+    if ( (UNZ_OK == unzGetCurrentFileInfo(uf,
+					  &file_info, 
+					  filename_inzip,
+					  sizeof(filename_inzip),
+					  NULL,
+					  0,
+					  NULL,
+					  0) && 
+	  (UNZ_OK == unzOpenCurrentFilePassword(uf,NULL)) ) ) {
+      buf_size = file_info.uncompressed_size;
+
+      if (buf_size > 1024) {
+	/* way too large! */
+      } else if (NULL == (buf = malloc(1 + buf_size))) {
+	/* memory exhausted! */
+      } else if (buf_size != (size_t) unzReadCurrentFile(uf,buf,buf_size)) {
+        free(buf);
+        buf = NULL;
+      } else {
+	/* found something */      
+        buf[buf_size] = '\0';
+        while ( (0 > buf_size) && 
+		isspace(buf[buf_size - 1])) 
+          buf[--buf_size] = '\0';        
+        if('\0' == buf[0]) {
+          free(buf);
+          buf = NULL;
+        }
+      }
+    }
+    unzCloseCurrentFile(uf);
+  }
+  return buf;
+}
+
+
 typedef struct Ecls {
   char * data;
   size_t size;
@@ -84,6 +136,7 @@ static voidpf Eopen_file_func (voidpf opaque,
   else
     return NULL;
 }
+
 static uLong Eread_file_func(voidpf opaque, 
 			     voidpf stream, 
 			     void* buf,
@@ -95,8 +148,9 @@ static uLong Eread_file_func(voidpf opaque,
   if (ret > size)
     ret = size;
   memcpy(buf, 
-	 e->data,
+	 &e->data[e->pos],
 	 ret);
+  e->pos += ret;
   return ret;
 }
 
@@ -137,6 +191,7 @@ static int Eclose_file_func(voidpf opaque,
   Ecls * e = opaque;
   return 0;
 }
+
 static int Etesterror_file_func(voidpf opaque, 
 				voidpf stream) {
   return 0;
@@ -157,6 +212,7 @@ libextractor_oo_extract(const char * filename,
   int i;
   zlib_filefunc_def io;
   Ecls cls;
+  char * mimetype;
 
   if (size < 100)
     return prev;
@@ -178,6 +234,13 @@ libextractor_oo_extract(const char * filename,
   uf = unzOpen2("ERROR", &io);
   if (uf == NULL)
     return prev;
+  mimetype = libextractor_oo_getmimetype(uf);
+  if (NULL != mimetype)
+    prev = addKeyword(EXTRACTOR_MIMETYPE, 
+		      mimetype, 
+		      EXTRACTOR_removeKeywordsOfType(prev,
+						     EXTRACTOR_MIMETYPE));
+  
 
   if (unzLocateFile(uf,
 		    METAFILE,
