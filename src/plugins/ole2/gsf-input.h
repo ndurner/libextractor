@@ -22,38 +22,40 @@
 #ifndef GSF_INPUT_H
 #define GSF_INPUT_H
 
-#include "gsf.h"
-#include <glib-object.h>
 #include <sys/types.h>
+#include <unistd.h>
 
-G_BEGIN_DECLS
+struct GsfInput;
 
-#define GSF_INPUT_TYPE        (gsf_input_get_type ())
-#define GSF_INPUT(o)          (G_TYPE_CHECK_INSTANCE_CAST ((o), GSF_INPUT_TYPE, GsfInput))
-#define GSF_IS_INPUT(o)       (G_TYPE_CHECK_INSTANCE_TYPE ((o), GSF_INPUT_TYPE))
+/**
+ * gsf_input_memory_new:
+ * @buf: The input bytes
+ * @length: The length of @buf
+ * @needs_free: Whether you want this memory to be free'd at object destruction
+ *
+ * Returns: A new #GsfInputMemory
+ */
+struct GsfInput *
+gsf_input_new (const unsigned char *buf, 
+	       off_t length, 
+	       int needs_free);
 
-GType gsf_input_get_type (void);
+char const   *    gsf_input_name      (struct GsfInput *input);
+struct GsfInput * gsf_input_dup	      (struct GsfInput *input);
+void              gsf_input_finalize  (struct GsfInput *input);
+struct GsfInput * gsf_input_sibling   (const struct GsfInput *input, char const *name);
+off_t             gsf_input_size      (struct GsfInput *input);
+int               gsf_input_eof	      (struct GsfInput *input);
+const unsigned char * gsf_input_read  (struct GsfInput *input, 
+                                       size_t num_bytes,
+				       unsigned char * optional_buffer);
+off_t             gsf_input_remaining (struct GsfInput *input);
+off_t             gsf_input_tell      (struct GsfInput *input);
+int               gsf_input_seek      (struct GsfInput *input,
+				       off_t offset, 
+                                       int whence);
+int               gsf_input_set_name	(struct GsfInput *input, char const *name);
+int               gsf_input_set_size	(struct GsfInput *input, off_t size);
 
-char const   *gsf_input_name	  (GsfInput *input);
-GsfInfile    *gsf_input_container (GsfInput *input);
-
-GsfInput     *gsf_input_dup	  (GsfInput *input, GError **err);
-GsfInput     *gsf_input_sibling	  (GsfInput const *input, char const *name, GError **err);
-gsf_off_t     gsf_input_size	  (GsfInput *input);
-gboolean      gsf_input_eof	  (GsfInput *input);
-guint8 const *gsf_input_read	  (GsfInput *input, size_t num_bytes,
-				   guint8 *optional_buffer);
-gsf_off_t     gsf_input_remaining (GsfInput *input);
-gsf_off_t     gsf_input_tell	  (GsfInput *input);
-gboolean      gsf_input_seek	  (GsfInput *input,
-				   gsf_off_t offset, GSeekType whence);
-
-/* Utilities */
-gboolean  gsf_input_copy       (GsfInput *input, GsfOutput *output);
-GsfInput *gsf_input_uncompress (GsfInput *src);
-
-GQuark gsf_input_error (void);
-
-G_END_DECLS
 
 #endif /* GSF_INPUT_H */

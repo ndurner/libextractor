@@ -20,143 +20,96 @@
  */
 
 #include "platform.h"
-#include "gsf-input-impl.h"
-#include "gsf-impl-utils.h"
+#include "gsf-input.h"
+#include "gsf-utils.h"
 #include <string.h>
 
-#ifdef HAVE_BZIP
-#include <gsf/gsf-input-bzip.h>
-#endif
+typedef struct GsfInput {
+	off_t size;
+	off_t cur_offset;
+	char * name;
+	const unsigned char * buf;
+	int needs_free;
+} GsfInput;
 
-#define GET_CLASS(instance) G_TYPE_INSTANCE_GET_CLASS (instance, GSF_INPUT_TYPE, GsfInputClass)
-
-static GObjectClass *parent_class;
-
-enum {
-	PROP_0,
-	PROP_NAME,
-	PROP_SIZE,
-	PROP_EOF,
-	PROP_REMAINING,
-	PROP_POS
-};
-
-#if 0
-static void
-gsf_input_set_property (GObject      *object,
-			guint         property_id,
-			GValue const *value,
-			GParamSpec   *pspec)
-{
-	switch (property_id)
-		{
-		default:
-			G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-			break;
-		}
-}
-#endif
 
 static void
-gsf_input_get_property (GObject     *object,
-			guint        property_id,
-			GValue      *value,
-			GParamSpec  *pspec)
+gsf_input_init (GsfInput * input)
 {
-	/* gsf_off_t is typedef'd to gint64 */
-	switch (property_id) {
-	case PROP_NAME:
-		g_value_set_string (value, gsf_input_name (GSF_INPUT (object)));
-		break;
-	case PROP_SIZE:
-		g_value_set_int64 (value, gsf_input_size (GSF_INPUT (object)));
-		break;
-	case PROP_EOF:
-		g_value_set_boolean (value, gsf_input_eof (GSF_INPUT (object)));
-		break;
-	case PROP_REMAINING:
-		g_value_set_int64 (value, gsf_input_remaining (GSF_INPUT (object)));
-		break;
-	case PROP_POS:
-		g_value_set_int64 (value, gsf_input_tell (GSF_INPUT (object)));
-		break;
-	default:
-		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-		break;
-	}
-}
-
-static void
-gsf_input_finalize (GObject *obj)
-{
-	GsfInput *input = GSF_INPUT (obj);
-
-	if (input->name != NULL) {
-		g_free (input->name);
-		input->name = NULL;
-	}
-	if (input->container != NULL) {
-		g_object_unref (G_OBJECT (input->container));
-		input->container = NULL;
-	}
-	parent_class->finalize (obj);
-}
-
-static void
-gsf_input_init (GObject *obj)
-{
-	GsfInput *input = GSF_INPUT (obj);
-
 	input->size = 0;
 	input->cur_offset = 0;
 	input->name = NULL;
-	input->container = NULL;
+	input->buf = NULL;
 }
 
-static void
-gsf_input_class_init (GObjectClass *gobject_class)
+/**
+ * gsf_input_memory_new:
+ * @buf: The input bytes
+ * @length: The length of @buf
+ * @needs_free: Whether you want this memory to be free'd at object destruction
+ *
+ * Returns: A new #GsfInputMemory
+ */
+GsfInput *
+gsf_input_new (const unsigned char * buf, 
+	       off_t length, 
+	       int needs_free) 
 {
-	parent_class = g_type_class_peek_parent (gobject_class);
-
-	gobject_class->finalize     = gsf_input_finalize;
-	/* gobject_class->set_property = gsf_input_set_property; */
-	gobject_class->get_property = gsf_input_get_property;
-
-	g_object_class_install_property (gobject_class,
-					 PROP_NAME,
-					 g_param_spec_string ("name", "Name",
-							      "The Input's Name",
-							      NULL,
-							      G_PARAM_READABLE));
-	g_object_class_install_property (gobject_class,
-					 PROP_SIZE,
-					 g_param_spec_int64 ("size", "Size",
-							     "The Input's Size",
-							     0, G_MAXINT64, 0,
-							     G_PARAM_READABLE));
-	g_object_class_install_property (gobject_class,
-					 PROP_EOF,
-					 g_param_spec_boolean ("eof", "OEF",
-							       "End Of File",
-							       FALSE,
-							       G_PARAM_READABLE));
-	g_object_class_install_property (gobject_class,
-					 PROP_REMAINING,
-					 g_param_spec_int64 ("remaining", "Remaining",
-							     "Amount of Data Remaining",
-							     0, G_MAXINT64, 0,
-							     G_PARAM_READABLE));
-	g_object_class_install_property (gobject_class,
-					 PROP_POS,
-					 g_param_spec_int64 ("position", "Position",
-							     "The Output's Current Position",
-							     0, G_MAXINT64, 0,
-							     G_PARAM_READABLE));
+	GsfInput *mem = malloc(sizeof(GsfInput));
+	if (mem == NULL)
+		return NULL;
+	gsf_input_init(mem);
+	mem->buf = buf;
+	mem->size = length;
+	mem->needs_free = needs_free;
+	return mem;
 }
 
-GSF_CLASS_ABSTRACT (GsfInput, gsf_input,
-		    gsf_input_class_init, gsf_input_init,
-		    G_TYPE_OBJECT)
+void
+gsf_input_finalize (GsfInput * input)
+{
+	if (input->name != NULL) {
+		free (input->name);
+		input->name = NULL;
+	}
+	if ( (input->buf) && input->needs_free)
+		free((void*) input->buf);
+	free(input);
+}
+
+GsfInput *
+gsf_input_dup (GsfInput *src)
+{
+	GsfInput * dst = malloc(sizeof(GsfInput));
+	if (dst == NULL)
+		return NULL; 
+        gsf_input_init(dst);
+	dst->buf = src->buf;
+	dst->needs_free = 0;
+	dst->size = src->size;
+	if (src->name != NULL)
+		gsf_input_set_name (dst, src->name);
+	dst->cur_offset = src->cur_offset;
+	return dst;
+}
+
+const unsigned char *
+gsf_input_read (GsfInput * mem, size_t num_bytes, unsigned char * optional_buffer)
+{
+	const unsigned char *src = mem->buf;
+	if (src == NULL)
+		return NULL;
+	if (optional_buffer) {
+		memcpy (optional_buffer, src + mem->cur_offset, num_bytes);
+		mem->cur_offset += num_bytes;
+
+		return optional_buffer;
+	} else {
+		const unsigned char * ret = src + mem->cur_offset;
+		mem->cur_offset += num_bytes;
+		return ret;
+	}
+}
 
 /**
  * gsf_input_name :
@@ -164,54 +117,10 @@ GSF_CLASS_ABSTRACT (GsfInput, gsf_input,
  *
  * Returns @input's name in utf8 form, DO NOT FREE THIS STRING
  **/
-char const *
+const char *
 gsf_input_name (GsfInput *input)
 {
-	g_return_val_if_fail (GSF_IS_INPUT (input), NULL);
 	return input->name;
-}
-
-/**
- * gsf_input_container :
- * @input :
- *
- * Returns, but does not add a reference to @input's container.
- * Potentially NULL
- **/
-GsfInfile *
-gsf_input_container (GsfInput *input)
-{
-	g_return_val_if_fail (GSF_IS_INPUT (input), NULL);
-	return input->container;
-}
-
-/**
- * gsf_input_dup :
- * @input : The input to duplicate
- * @err : optionally NULL
- *
- * Duplicates input @src leaving the new one at the same offset.
- *
- * Returns : the duplicate, or NULL on error
- **/
-GsfInput *
-gsf_input_dup (GsfInput *input, GError **err)
-{
-	GsfInput *dst;
-
-	g_return_val_if_fail (input != NULL, NULL);
-
-	dst = GET_CLASS (input)->Dup (input, err);
-	if (dst != NULL) {
-		dst->size = input->size;
-		if (input->name != NULL)
-			gsf_input_set_name (dst, input->name);
-		dst->container = input->container;
-		if (dst->container != NULL)
-			g_object_ref (G_OBJECT (dst->container));
-		gsf_input_seek (dst, (gsf_off_t)input->cur_offset, G_SEEK_SET);
-	}
-	return dst;
 }
 
 /**
@@ -222,7 +131,7 @@ gsf_input_dup (GsfInput *input, GError **err)
  *
  * Returns :  the size or -1 on error
  **/
-gsf_off_t
+off_t
 gsf_input_size (GsfInput *input)
 {
 	g_return_val_if_fail (input != NULL, -1);
@@ -237,43 +146,12 @@ gsf_input_size (GsfInput *input)
  *
  * Returns : TRUE if the input is at the eof.
  **/
-gboolean
+int
 gsf_input_eof (GsfInput *input)
 {
-	g_return_val_if_fail (input != NULL, FALSE);
+	g_return_val_if_fail (input != NULL, 0);
 
 	return input->cur_offset >= input->size;
-}
-
-/**
- * gsf_input_read :
- * @input :
- * @num_bytes :
- * @optional_buffer : If supplied copy the data into it
- *
- * Read at at least @num_bytes.  Does not change the current position if there
- * is an error.  Will only read if the entire amount can be read.  Invalidates
- * the buffer associated with previous calls to gsf_input_read.
- *
- * Returns : pointer to the buffer or NULL if there is an error or 0 bytes are
- * 	requested.
- **/
-guint8 const *
-gsf_input_read (GsfInput *input, size_t num_bytes, guint8 *optional_buffer)
-{
-	guint8 const *res;
-
-	g_return_val_if_fail (input != NULL, NULL);
-
-	if (num_bytes == 0 || (input->cur_offset + num_bytes) > input->size)
-		return NULL;
-	res = GET_CLASS (input)->Read (input, num_bytes, optional_buffer);
-	if (res == NULL)
-		return NULL;
-
-	input->cur_offset += num_bytes;
-	return res;
-
 }
 
 /**
@@ -282,7 +160,7 @@ gsf_input_read (GsfInput *input, size_t num_bytes, guint8 *optional_buffer)
  *
  * Returns the number of bytes left in the file.
  **/
-gsf_off_t
+off_t
 gsf_input_remaining (GsfInput *input)
 {
 	g_return_val_if_fail (input != NULL, 0);
@@ -296,7 +174,7 @@ gsf_input_remaining (GsfInput *input)
  *
  * Returns the current offset in the file.
  **/
-gsf_off_t
+off_t
 gsf_input_tell (GsfInput *input)
 {
 	g_return_val_if_fail (input != NULL, 0);
@@ -312,34 +190,32 @@ gsf_input_tell (GsfInput *input)
  *
  * Returns TRUE on error.
  **/
-gboolean
-gsf_input_seek (GsfInput *input, gsf_off_t offset, GSeekType whence)
+int
+gsf_input_seek (GsfInput *input, off_t offset, int whence)
 {
-	gsf_off_t pos = offset;
+	off_t pos = offset;
 
-	g_return_val_if_fail (input != NULL, TRUE);
+	g_return_val_if_fail (input != NULL, 1);
 
 	switch (whence) {
-	case G_SEEK_SET : break;
-	case G_SEEK_CUR : pos += input->cur_offset;	break;
-	case G_SEEK_END : pos += input->size;		break;
-	default : return TRUE;
+	case SEEK_SET : break;
+	case SEEK_CUR : pos += input->cur_offset;	break;
+	case SEEK_END : pos += input->size;		break;
+	default : return 1;
 	}
 
 	if (pos < 0 || pos > input->size)
-		return TRUE;
+		return 1;
 
 	/*
 	 * If we go nowhere, just return.  This in particular handles null
 	 * seeks for streams with no seek method.
 	 */
 	if (pos == input->cur_offset)
-		return FALSE;
+		return 0;
 
-	if (GET_CLASS (input)->Seek (input, offset, whence))
-		return TRUE;
 	input->cur_offset = pos;
-	return FALSE;
+	return 0;
 }
 
 /**
@@ -351,38 +227,18 @@ gsf_input_seek (GsfInput *input, gsf_off_t offset, GSeekType whence)
  *
  * Returns : TRUE if the assignment was ok.
  **/
-gboolean
+int
 gsf_input_set_name (GsfInput *input, char const *name)
 {
 	char *buf;
 
-	g_return_val_if_fail (input != NULL, FALSE);
+	g_return_val_if_fail (input != NULL, 0);
 
-	buf = g_strdup (name);
+	buf = strdup (name);
 	if (input->name != NULL)
-		g_free (input->name);
+		free (input->name);
 	input->name = buf;
-	return TRUE;
-}
-
-/**
- * gsf_input_set_container :
- * @input :
- * @container :
- *
- * Returns : TRUE if the assignment was ok.
- */
-gboolean
-gsf_input_set_container (GsfInput *input, GsfInfile *container)
-{
-	g_return_val_if_fail (input != NULL, FALSE);
-
-	if (container != NULL)
-		g_object_ref (G_OBJECT (container));
-	if (input->container != NULL)
-		g_object_unref (G_OBJECT (input->container));
-	input->container = container;
-	return TRUE;
+	return 1;
 }
 
 /**
@@ -392,156 +248,12 @@ gsf_input_set_container (GsfInput *input, GsfInfile *container)
  *
  * Returns : TRUE if the assignment was ok.
  */
-gboolean
-gsf_input_set_size (GsfInput *input, gsf_off_t size)
+int
+gsf_input_set_size (GsfInput *input, off_t size)
 {
-	g_return_val_if_fail (input != NULL, FALSE);
+	g_return_val_if_fail (input != NULL, 0);
 
 	input->size = size;
-	return TRUE;
+	return 1;
 }
 
-/**
- * gsf_input_seek_emulate: Emulate forward seeks by reading.
- * @input :
- * @pos :
- *
- * Returns : TRUE if the emulation worked.
- */
-gboolean
-gsf_input_seek_emulate (GsfInput *input, gsf_off_t pos)
-{
-	if (pos < input->cur_offset)
-		return TRUE;
-
-	while (pos > input->cur_offset) {
-		gsf_off_t readcount = MIN (pos - input->cur_offset, 8192);
-		if (!gsf_input_read (input, readcount, NULL))
-			return TRUE;
-	}
-	return FALSE;
-}
-
-/****************************************************************************/
-
-/**
- * gsf_input_error :
- *
- * Returns : A utility quark to flag a GError as being an input problem.
- */
-GQuark
-gsf_input_error (void)
-{
-	static GQuark quark;
-	if (!quark)
-		quark = g_quark_from_static_string ("gsf_input_error");
-	return quark;
-}
-
-/****************************************************************************/
-
-#define GSF_READ_BUFSIZE (1024 * 4)
-
-
-/****************************************************************************/
-
-/**
- * gsf_input_uncompress: maybe uncompress stream.
- * @src: stream to be uncompressed.
- *
- * Returns: A stream equivalent to the source stream, but uncompressed if
- * the source was compressed.
- *
- * This functions takes ownership of the incoming reference and yields a
- * new one as its output.
- */
-GsfInput *
-gsf_input_uncompress (GsfInput *src)
-{
-	gsf_off_t cur_offset = src->cur_offset;
-	const guint8 *data;
-
-	if (gsf_input_seek (src, (gsf_off_t) 0, G_SEEK_SET))
-		goto error;
-
-	/* Read header up front, so we avoid extra seeks in tests.  */
-	data = gsf_input_read (src, 4, NULL);
-	if (!data)
-		goto error;
-
-#if 0
-	/* Let's try gzip.  */
-	{
-		const unsigned char gzip_sig[2] = { 0x1f, 0x8b };
-
-		if (memcmp (gzip_sig, data, sizeof (gzip_sig)) == 0) {
-			GsfInput *res = gsf_input_gzip_new (src, NULL);
-			if (res) {
-				g_object_unref (G_OBJECT (src));
-				return gsf_input_uncompress (res);
-			}
-		}
-	}
-#endif
-
-#ifdef HAVE_BZIP
-	/* Let's try bzip.  */
-	{
-		guint8 const *bzip_sig = "BZh";
-
-		if (memcmp (gzip_sig, data, strlen (bzip_sig)) == 0) {
-			GsfInput *res = gsf_input_memory_new_from_bzip (src, NULL);
-			if (res) {
-				g_object_unref (G_OBJECT (src));
-				return gsf_input_uncompress (res);
-			}
-		}
-	}
-#endif
-
-	/* Other methods go here.  */
-
- error:
-	(void)gsf_input_seek (src, cur_offset, G_SEEK_SET);
-	return src;
-}
-
-#if 0
-
-#include <gsf/gsf-input-stdio.h>
-
-#ifdef HAVE_GNOME
-#include <gsf-gnome/gsf-input-gnomevfs.h>
-#endif
-
-GsfInput *
-gsf_input_new_for_uri (char const * uri, GError ** err)
-{
-	GsfInput * input = NULL;
-	size_t len;
-
-	g_return_val_if_fail (uri, NULL);
-
-	len = strlen (uri);
-	g_return_val_if_fail (len, NULL);
-
-	if (len > 3 && !strstr (uri, ":/")) {
-		/* assume plain file */
-		input = gsf_input_stdio_new (uri, err);
-	} else {
-#if HAVE_GNOME
-		/* have gnome, let GnomeVFS deal with this */
-		input = gsf_input_gnomevfs_new (uri, err);
-#else		
-		if (len > 7 && !strncmp (uri, "file:/", 6)) {
-			/* dumb attempt to translate this into a local path */
-			input = gsf_input_stdio_new (uri+7, err);
-		}
-		/* else: unknown or unhandled protocol - bail */
-#endif
-	}
-
-	return input;
-}
-
-#endif

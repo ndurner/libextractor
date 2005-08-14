@@ -22,9 +22,7 @@
 #ifndef GSF_UTILS_H
 #define GSF_UTILS_H
 
-#include "gsf.h"
-
-G_BEGIN_DECLS
+#include <glib-object.h>
 
 /* Do this the ugly way so that we don't have to worry about alignment */
 #define GSF_LE_GET_GUINT8(p) (*(guint8 const *)(p))
@@ -64,18 +62,12 @@ double  gsf_le_get_double  (void const *p);
 void gsf_le_set_float  (void *p, float f);
 void gsf_le_set_double (void *p, double d);
 
-/* Debugging utilities */
-void gsf_mem_dump   (guint8 const *ptr, size_t len);
-void gsf_input_dump (GsfInput *input, gboolean dump_as_hex);
-
 
 char const *gsf_extension_pointer (char const * path);
 void	    gsf_iconv_close (GIConv handle);
 
-G_END_DECLS
-
 #undef g_return_val_if_fail
-#define g_return_val_if_fail(cond,ret) do{if (cond) return ret;}while(0)
+#define g_return_val_if_fail(cond,ret) do{if (!(cond)) return ret;}while(0)
 
 
 #endif /* GSF_UTILS_H */

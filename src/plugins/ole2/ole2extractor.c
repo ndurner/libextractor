@@ -20,10 +20,7 @@
 
 #include "platform.h"
 #include "extractor.h"
-
-#include "gsf-utils.h"
-#include "gsf-input-memory.h"
-#include "gsf-infile.h"
+#include <glib-object.h>
 #include "gsf-infile-msole.h"
 #include "gsf-input.h"
 #include "gsf-utils.h"
@@ -41,7 +38,7 @@
 
 /* using libgobject, needs init! */
 void __attribute__ ((constructor)) ole_gobject_init(void) {
-  g_type_init(); 
+ g_type_init(); 
 }
 
 static struct EXTRACTOR_Keywords * 
@@ -139,12 +136,12 @@ typedef struct {
 
 typedef struct {
 	guint32		id;
-	gsf_off_t	offset;
+	off_t	offset;
 } GsfMSOleMetaDataProp;
 
 typedef struct {
 	GsfMSOleMetaDataType type;
-	gsf_off_t   offset;
+	off_t   offset;
 	guint32	    size, num_props;
 	GIConv	    iconv_handle;
 	unsigned    char_size;
@@ -295,8 +292,7 @@ msole_prop_parse(GsfMSOleMetaDataSection *section,
     n = GSF_LE_GET_GUINT32 (*data);
     *data += 4;
 
-    d (printf (" array with %d elem\n", n);
-       gsf_mem_dump (*data, (unsigned)(data_end - *data)););
+    d (printf (" array with %d elem\n", n););
     for (i = 0 ; i < n ; i++) {
       GValue *v;
       d (printf ("\t[%d] ", i););
@@ -523,7 +519,7 @@ msole_prop_parse(GsfMSOleMetaDataSection *section,
 }
 
 static GValue *
-msole_prop_read (GsfInput *in,
+msole_prop_read (struct GsfInput *in,
 		 GsfMSOleMetaDataSection *section,
 		 GsfMSOleMetaDataProp    *props,
 		 unsigned i)
@@ -531,7 +527,7 @@ msole_prop_read (GsfInput *in,
   guint32 type;
   guint8 const *data;
   /* TODO : why size-4 ? I must be missing something */
-  gsf_off_t size = ((i+1) >= section->num_props)
+  off_t size = ((i+1) >= section->num_props)
     ? section->size-4 : props[i+1].offset;
   char const *prop_name;
 
@@ -539,7 +535,7 @@ msole_prop_read (GsfInput *in,
   g_return_val_if_fail (size >= props[i].offset + 4, NULL);
 
   size -= props[i].offset; /* includes the type id */
-  if (gsf_input_seek (in, section->offset+props[i].offset, G_SEEK_SET) ||
+  if (gsf_input_seek (in, section->offset+props[i].offset, SEEK_SET) ||
       NULL == (data = gsf_input_read (in, size, NULL))) {
     warning ("failed to read prop #%d", i);
     return NULL;
@@ -561,7 +557,6 @@ msole_prop_read (GsfInput *in,
 					   g_direct_hash, g_direct_equal,
 					   NULL, g_free);
 
-    d (gsf_mem_dump (data-4, size););
     n = type;
     for (i = 0 ; i < n ; i++) {
       id = GSF_LE_GET_GUINT32 (data);
@@ -675,7 +670,7 @@ gsf_msole_iconv_open_for_import (int codepage)
 
 
 
-static struct EXTRACTOR_Keywords * process(GsfInput * in,
+static struct EXTRACTOR_Keywords * process(struct GsfInput * in,
 					   struct EXTRACTOR_Keywords * prev) {
   guint8 const *data = gsf_input_read (in, 28, NULL);
   guint16 version;
@@ -720,7 +715,6 @@ static struct EXTRACTOR_Keywords * process(GsfInput * in,
     else {
       sections [i].type = GSF_MSOLE_META_DATA_USER;
       warning ("Unknown property section type, treating it as USER");
-      d(gsf_mem_dump (data, 16););
     }
 
     sections [i].offset = GSF_LE_GET_GUINT32 (data + 16);
@@ -729,7 +723,7 @@ static struct EXTRACTOR_Keywords * process(GsfInput * in,
 #endif
   }
   for (i = 0 ; i < num_sections ; i++) {
-    if (gsf_input_seek (in, sections[i].offset, G_SEEK_SET) ||
+    if (gsf_input_seek (in, sections[i].offset, SEEK_SET) ||
 	NULL == (data = gsf_input_read (in, 8, NULL))) {
       return prev;
     }
@@ -870,9 +864,9 @@ static struct EXTRACTOR_Keywords * process(GsfInput * in,
   return prev;
 }
 
-static struct EXTRACTOR_Keywords * processSO(GsfInput * src,
+static struct EXTRACTOR_Keywords * processSO(struct GsfInput * src,
 					     struct EXTRACTOR_Keywords * prev) {
-  gsf_off_t size;
+  off_t size;
   char * buf;
 
   size = gsf_input_size(src);
@@ -923,46 +917,45 @@ libextractor_ole2_extract(const char * filename,
 			  char * date,
 			  size_t size,
 			  struct EXTRACTOR_Keywords * prev) {
-  GsfInput   *input;
-  GsfInfile  *infile;
+  struct GsfInput   *input;
+  struct GsfInfileMSOle * infile;
+  struct GsfInput * src;
+  const char * name;
   int i;
 
-  input = gsf_input_memory_new((guint8 const *) date,
-			       (gsf_off_t) size,
-			       FALSE);
+  input = gsf_input_new((const unsigned char*) date,
+			(off_t) size,
+			0);
   if (input == NULL)
     return prev;
 
-  infile = gsf_infile_msole_new(input, NULL);
-  g_object_unref(G_OBJECT(input));
-
+  infile = gsf_infile_msole_new(input);
   if (infile == NULL)
     return prev;
 
-  if (GSF_IS_INFILE(infile) &&
-      gsf_infile_num_children (GSF_INFILE (infile)) > 0) {
-    GsfInfile * in = GSF_INFILE (infile);
-    GsfInput * src;
-    const char * name;
-
-    for (i=0;i<gsf_infile_num_children(in);i++) {
-      src = gsf_infile_child_by_index (in, i);
-      name = gsf_infile_name_by_index (in, i);
-
-      if ( (0 == strcmp(name, "\005SummaryInformation"))
-	   || (0 == strcmp(name, "\005DocumentSummaryInformation")) ) {
+  for (i=0;i<gsf_infile_msole_num_children(infile);i++) {
+    name = gsf_infile_msole_name_by_index (infile, i);
+    src = NULL;
+    if (name == NULL) 
+      continue;
+    if ( (0 == strcmp(name, "\005SummaryInformation"))
+	 || (0 == strcmp(name, "\005DocumentSummaryInformation")) ) {
+      src = gsf_infile_msole_child_by_index (infile, i);
+      if (src != NULL)
 	prev = process(src,
-		       prev);
-      }
-      if (0 == strcmp(name, "SfxDocumentInfo")) {
+		       prev);    
+    }
+    if (0 == strcmp(name, "SfxDocumentInfo")) {
+      src = gsf_infile_msole_child_by_index (infile, i);
+      if (src != NULL)
 	prev = processSO(src,
 			 prev);
-      }
-      g_object_unref(src);
     }
-  }
-  g_object_unref(G_OBJECT(infile));
+    if (src != NULL)
+      gsf_input_finalize(src);
+  }  
+  gsf_infile_msole_finalize(infile);
   return prev;
 }
 
-
+/* end of ole2extractor.c */

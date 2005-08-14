@@ -22,21 +22,39 @@
 #ifndef GSF_INFILE_MSOLE_H
 #define GSF_INFILE_MSOLE_H
 
-#include "gsf.h"
+#include "gsf-input.h"
 
-G_BEGIN_DECLS
+struct GsfInfileMSOle;
 
-typedef struct _GsfInfileMSOle GsfInfileMSOle;
+struct GsfInfileMSOle * gsf_infile_msole_new (struct GsfInput *source);
+int gsf_infile_msole_get_class_id (const struct GsfInfileMSOle * ole,
+				   unsigned char * res);
 
-#define GSF_INFILE_MSOLE_TYPE        (gsf_infile_msole_get_type ())
-#define GSF_INFILE_MSOLE(o)          (G_TYPE_CHECK_INSTANCE_CAST ((o), GSF_INFILE_MSOLE_TYPE, GsfInfileMSOle))
-#define GSF_IS_INFILE_MSOLE(o)       (G_TYPE_CHECK_INSTANCE_TYPE ((o), GSF_INFILE_MSOLE_TYPE))
+int
+gsf_infile_msole_num_children (struct GsfInfileMSOle *infile);
 
-GType	   gsf_infile_msole_get_type	 (void);
-GsfInfile *gsf_infile_msole_new		 (GsfInput *source, GError **err);
-gboolean   gsf_infile_msole_get_class_id (GsfInfileMSOle const *ole,
-					  guint8 *res);
+struct GsfInput *
+gsf_infile_msole_child_by_index (struct GsfInfileMSOle *infile, int target);
 
-G_END_DECLS
+char const *
+gsf_infile_msole_name_by_index (struct GsfInfileMSOle *infile, int target);
+
+
+void
+gsf_infile_msole_finalize (struct GsfInfileMSOle * ole);
+
+/**
+ * gsf_infile_msole_get_class_id :
+ * @ole: a #GsfInfileMSOle
+ * @res: 16 byte identifier (often a GUID in MS Windows apps)
+ *
+ * Retrieves the 16 byte indentifier (often a GUID in MS Windows apps)
+ * stored within the directory associated with @ole and stores it in @res.
+ *
+ * Returns TRUE on success
+ **/
+int
+gsf_infile_msole_get_class_id (const struct GsfInfileMSOle *ole,   
+                               unsigned char *res);
 
 #endif /* GSF_INFILE_MSOLE_H */
