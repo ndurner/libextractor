@@ -1,6 +1,6 @@
 /*
      This file is part of libextractor.
-     (C) 2004 Vidyut Samanta and Christian Grothoff
+     (C) 2004,2005 Vidyut Samanta and Christian Grothoff
 
      libextractor is free software; you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published
@@ -568,6 +568,7 @@ msole_prop_read (struct GsfInput *in,
       name = g_convert_with_iconv (data + 8,
 				   len * section->char_size,
 				   section->iconv_handle, &gslen, NULL, NULL);
+
       len = (guint32)gslen;
       data += 8 + len;
 
@@ -614,8 +615,8 @@ gsf_msole_iconv_open_codepage_for_import(char const *to,
 					 int codepage)
 {
   GIConv iconv_handle;
-  g_return_val_if_fail (to != NULL, (GIConv)(-1));
 
+  g_return_val_if_fail (to != NULL, (GIConv)(-1));
   /* sometimes it is stored as signed short */
   if (codepage == 65001 || codepage == -535) {
     iconv_handle = g_iconv_open (to, "UTF-8");

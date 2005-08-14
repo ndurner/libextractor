@@ -1,5 +1,8 @@
 /* vim: set sw=8: -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /*
+ *   This file is part of libextractor.
+ *   (C) 2004,2005 Vidyut Samanta and Christian Grothoff
+ *
  * gsf-infile-msole.c :
  *
  * Copyright (C) 2002-2004 Jody Goldberg (jody@gnome.org)
