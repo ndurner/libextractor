@@ -138,6 +138,12 @@ static const char *keywordTypes[] = {
 #define WITH_OGG 1
 #endif
 
+#if HAVE_EXIV2
+#define EXSO "libextractor_exiv2:"
+#else
+#define EXSO ""
+#endif
+
 #if WITH_OGG
 #define OGGSO "libextractor_ogg:"
 #else
@@ -187,7 +193,7 @@ libextractor_elf:\
 libextractor_oo:\
 libextractor_asf"
 
-#define DEFAULT_LIBRARIES OLESO OGGSO QTSO DEFSO
+#define DEFAULT_LIBRARIES EXSO OLESO OGGSO QTSO DEFSO
 
 const char * EXTRACTOR_getDefaultLibraries() {
   return DEFAULT_LIBRARIES;

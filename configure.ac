@@ -1,8 +1,8 @@
 # Process this file with autoconf to produce a configure script.
 AC_PREREQ(2.57)
-AC_INIT([libextractor], [0.5.2], [bug-libextractor@gnu.org])
+AC_INIT([libextractor], [0.5.3], [bug-libextractor@gnu.org])
 AC_REVISION($Revision: 1.67 $)
-AM_INIT_AUTOMAKE([libextractor], [0.5.2])
+AM_INIT_AUTOMAKE([libextractor], [0.5.3])
 AM_CONFIG_HEADER(src/include/config.h)
 
 AH_TOP([#define _GNU_SOURCE  1])
@@ -247,6 +247,23 @@ AC_ARG_ENABLE(printable,
         printable=1])
 AM_CONDITIONAL(HAVE_PRINTABLE, test x$printable != x0)
 
+exiv2=1
+AC_MSG_CHECKING([whether to enable exiv2 extractor])
+AC_ARG_ENABLE(printable,
+ [AC_HELP_STRING([--enable-exiv2],[Enable exiv2 support])
+  AC_HELP_STRING([--disable-exiv2],[Disable exiv2 support])],
+ [case "$enableval" in
+  no)	AC_MSG_RESULT(no)
+        exiv2=0
+	;;
+  *)    AC_MSG_RESULT(yes)
+        exiv2=1
+	;;
+  esac],
+  [     AC_MSG_RESULT(yes)
+        exiv2=1])
+AM_CONDITIONAL(HAVE_EXIV2, test x$exiv2 != x0)
+AC_DEFINE_UNQUOTED([HAVE_EXIV2], $exiv2, [We use EXIV2])
 
 
 AC_SUBST(CPPFLAGS)

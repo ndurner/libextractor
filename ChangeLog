@@ -1,3 +1,8 @@
+Sat Aug 13 18:41:02 PDT 2005
+        Fixed problems with ole2 extractor.  Also removed
+	requirement for static version of glib (!).  
+	Releasing libextractor 0.5.3.
+
 Fri Aug 12 23:53:54 PDT 2005
 	Fixed bug in OO extractor that made it not work.
 	Fixed bug in exiv2 extractor that killed keywords

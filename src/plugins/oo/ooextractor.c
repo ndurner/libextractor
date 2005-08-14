@@ -80,7 +80,6 @@ static char *libextractor_oo_getmimetype(unzFile uf) {
   unz_file_info file_info;
   char * buf = NULL;
   size_t buf_size = 0;
-  size_t ziperror = 0;
 
   if (UNZ_OK == unzLocateFile(uf, 
 			      "mimetype", 
@@ -188,7 +187,6 @@ static long Eseek_file_func(voidpf opaque,
 
 static int Eclose_file_func(voidpf opaque, 
 			    voidpf stream) {
-  Ecls * e = opaque;
   return 0;
 }
 

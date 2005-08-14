@@ -8,24 +8,19 @@ LIBS = \
 # install plugins under:
 plugindir = $(libdir)/libextractor
 
-SUBDIRS = .
-
-AM_CFLAGS = $(GLIB_CFLAGS)
+PLUGINFLAGS = -export-dynamic -avoid-version -module
 
 plugin_LTLIBRARIES = \
  libextractor_thumbnail.la
 
+AM_CFLAGS = $(GLIB_CFLAGS)
+
+libextractor_thumbnail_la_CFLAGS = \
+  $(GLIB_CFLAGS)
+libextractor_thumbnail_la_LIBADD = \
+  $(LIBADD) -lgobject-2.0 @GTK_LIBS@ \
+  $(top_builddir)/src/main/libextractor.la 
+libextractor_thumbnail_la_LDFLAGS = \
+  $(PLUGINFLAGS) 
 libextractor_thumbnail_la_SOURCES = \
   thumbnailextractor.c
-
-# Ok, linking this one is complicated, see Mantis #787.
-libextractor_thumbnail_la_LDFLAGS = \
-  $(top_builddir)/src/main/libextractor.la \
-  -Wl,-Bstatic -Wl,-lgobject-2.0 -Wl,-lglib-2.0 -Wl,-Bdynamic \
-  -Wl,-Bsymbolic -avoid-version -module
-
-libextractor_thumbnail_la_LIBADD = \
- @GTK_LIBS@ 
-
-
-

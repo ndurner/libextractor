@@ -1,4 +1,6 @@
-INCLUDES = -I$(top_srcdir)/src/include
+INCLUDES = \
+  -I$(top_srcdir)/src/include
+
 
 LIBS = \
  @LTLIBINTL@ @LIBS@
@@ -19,8 +21,7 @@ libextractor_ole2_la_LIBADD = \
   $(LIBADD) $(GLIB_LIBS) -lgobject-2.0 \
   $(top_builddir)/src/main/libextractor.la
 libextractor_ole2_la_LDFLAGS = \
-  -export-dynamic -avoid-version -module
-# Note that we're NOT using PLUGINFLAGS here to avoid -export-dynamic!
+  $(PLUGINFLAGS)
 libextractor_ole2_la_SOURCES =  \
         ole2extractor.c         \
 	gsf-utils.c		\

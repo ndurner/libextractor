@@ -87,16 +87,9 @@ struct EXTRACTOR_Keywords * libextractor_thumbnail_extract(const char * filename
   unsigned long width;
   unsigned long height;
   char * binary;
-  size_t pos;
-  size_t end;
-  size_t wpos;
-  size_t i;
-  unsigned int markers[8]; /* 256 bits */
-  unsigned char marker;
   const char * mime;
   int j;
   char * format;
-  GError *err = NULL;
 
   /* if the mime-type of the file is not whitelisted
      do not run the thumbnail extactor! */

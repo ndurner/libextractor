@@ -224,7 +224,6 @@ libextractor_man_extract(const char * filename,
 			 struct EXTRACTOR_Keywords * prev) {
   z_stream strm;
   char * buf;
-  int len;
 
   memset(&strm, 
 	 0, 

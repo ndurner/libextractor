@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.5.0\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2005-07-16 23:06+0200\n"
+"POT-Creation-Date: 2005-08-13 18:55-0700\n"
 "PO-Revision-Date: 2005-06-22 15:05+0200\n"
 "Last-Translator: Karl Eichwalder <ke@gnu.franken.de>\n"
 "Language-Team: German <de@li.org>\n"
@@ -877,12 +877,12 @@ msgstr "extract [OPTIONEN] [DATEINAME]*"
 msgid "Extract metadata from files."
 msgstr "Metadaten aus den Dateien extrahieren."
 
-#: src/main/extract.c:198 src/main/extractor.c:805
+#: src/main/extract.c:198 src/main/extractor.c:876
 #, c-format
 msgid "%s - (binary)\n"
 msgstr "%s - (binär)\n"
 
-#: src/main/extract.c:204 src/main/extractor.c:810
+#: src/main/extract.c:204 src/main/extractor.c:881
 #, c-format
 msgid "INVALID TYPE - %s\n"
 msgstr "UNGÜLTIGE ART - %s\n"
@@ -1263,24 +1263,24 @@ msgstr ""
 msgid "orientation"
 msgstr "Seitenausrichtung"
 
-#: src/main/extractor.c:213
+#: src/main/extractor.c:219
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "Initialisierung des Plugin-Mechanismus' ist fehlgeschlagen: %s.\n"
 
-#: src/main/extractor.c:360
+#: src/main/extractor.c:366
 #, c-format
 msgid ""
 "Resolving symbol '%s' in library '%s' failed, so I tried '%s', but that "
 "failed also.  Errors are: '%s' and '%s'.\n"
 msgstr ""
 
-#: src/main/extractor.c:389
+#: src/main/extractor.c:395
 #, c-format
 msgid "Loading '%s' plugin failed: %s\n"
 msgstr "Laden des »%s«-Plugins ist fehlgeschlagen: %s\n"
 
-#: src/main/extractor.c:594
+#: src/main/extractor.c:600
 #, c-format
 msgid "Unloading plugin '%s' failed!\n"
 msgstr "Entladen des »%s«-Erweiterung ist fehlgeschlagen.\n"
