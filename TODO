@@ -7,7 +7,6 @@ Core:
 * QT
 * ASF
 * RPM
-* EXIF
 
 Incomplete code (missing features):
 * RIFF (idx1 attribute)
@@ -15,6 +14,7 @@ Incomplete code (missing features):
 * StarOffice sdw (some attributes, see doc/)
 * man pages (interpret sections for authors, brief description)
 * pdf: full-text extraction!
+* EXIV2
 
 Desirable missing formats:
 * mbox / various e-mail formats
@@ -43,5 +43,5 @@ UTF-8 conversion (only listing what is left to do):
 * DEB: to be done
 * ASF: ?
 * HTML: to be done
-* OLE2: to be done
+* OLE2: done, but buggy
 * OO: to be done
