@@ -955,7 +955,7 @@ msgstr "%% BibTeX Datei\n"
 #: src/main/extract.c:606
 #, c-format
 msgid "Keywords for file %s:\n"
-msgstr "Schlüsselwörter für die Datei %s:\n"
+msgstr "Schlüsserwörter für die Datei %s:\n"
 
 #: src/main/extractor.c:37
 msgid "unknown"

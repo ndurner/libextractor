@@ -14,7 +14,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: libextractor 0.3.11\n"
+"Project-Id-Version: libextractor 0.4.2\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
 "POT-Creation-Date: 2005-08-13 18:55-0700\n"
 "PO-Revision-Date: 2005-04-04 10:55-0700\n"
@@ -144,7 +144,7 @@ msgstr ""
 
 #: src/plugins/mp3extractor.c:51
 msgid "Country"
-msgstr ""
+msgstr "Igihugu"
 
 #: src/plugins/mp3extractor.c:52
 msgid "Dance"
@@ -172,7 +172,7 @@ msgstr ""
 
 #: src/plugins/mp3extractor.c:58
 msgid "Metal"
-msgstr ""
+msgstr "Icyuma"
 
 #: src/plugins/mp3extractor.c:59
 msgid "New Age"
@@ -184,7 +184,7 @@ msgstr ""
 
 #: src/plugins/mp3extractor.c:61
 msgid "Other"
-msgstr ""
+msgstr "Ikindi"
 
 #: src/plugins/mp3extractor.c:62
 msgid "Pop"
@@ -254,11 +254,9 @@ msgstr ""
 msgid "Jazz+Funk"
 msgstr ""
 
-# goodies/source\filter.vcl\eps\dlgeps.src:DLG_EXPORT_EPS.GRP_VERSION.text
 #: src/plugins/mp3extractor.c:79
-#, fuzzy
 msgid "Fusion"
-msgstr "Verisiyo"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:80
 msgid "Trance"
@@ -314,12 +312,11 @@ msgstr ""
 
 #: src/plugins/mp3extractor.c:93
 msgid "Space"
-msgstr ""
+msgstr "Umwanya"
 
 #: src/plugins/mp3extractor.c:94
-#, fuzzy
 msgid "Meditative"
-msgstr "Ibitangazamakuru Ubwoko"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:95
 msgid "Instrumental Pop"
@@ -335,7 +332,7 @@ msgstr ""
 
 #: src/plugins/mp3extractor.c:98
 msgid "Gothic"
-msgstr ""
+msgstr "Ikinyagotike"
 
 #: src/plugins/mp3extractor.c:99
 msgid "Darkwave"
@@ -347,7 +344,7 @@ msgstr ""
 
 #: src/plugins/mp3extractor.c:101
 msgid "Electronic"
-msgstr ""
+msgstr "elegitoroniki"
 
 #: src/plugins/mp3extractor.c:102
 msgid "Pop-Folk"
@@ -470,9 +467,8 @@ msgid "National Folk"
 msgstr ""
 
 #: src/plugins/mp3extractor.c:132
-#, fuzzy
 msgid "Swing"
-msgstr "Iburira"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:133
 msgid "Fast-Fusion"
@@ -483,9 +479,8 @@ msgid "Bebob"
 msgstr ""
 
 #: src/plugins/mp3extractor.c:135
-#, fuzzy
 msgid "Latin"
-msgstr "Inturo"
+msgstr "Ikiratini"
 
 #: src/plugins/mp3extractor.c:136
 msgid "Revival"
@@ -580,9 +575,8 @@ msgid "Porn Groove"
 msgstr ""
 
 #: src/plugins/mp3extractor.c:159
-#, fuzzy
 msgid "Satire"
-msgstr "Itariki"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:160
 msgid "Slow Jam"
@@ -633,8 +627,9 @@ msgid "Drum Solo"
 msgstr ""
 
 #: src/plugins/mp3extractor.c:172
+#, fuzzy
 msgid "A Cappella"
-msgstr ""
+msgstr "A"
 
 #: src/plugins/mp3extractor.c:173
 msgid "Euro-House"
@@ -661,9 +656,8 @@ msgid "Hardcore"
 msgstr ""
 
 #: src/plugins/mp3extractor.c:179
-#, fuzzy
 msgid "Terror"
-msgstr "Nta kosa"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:180
 msgid "Indie"
@@ -900,9 +894,9 @@ msgid "Extract metadata from files."
 msgstr "Bivuye Idosiye"
 
 #: src/main/extract.c:198 src/main/extractor.c:876
-#, c-format
+#, fuzzy, c-format
 msgid "%s - (binary)\n"
-msgstr ""
+msgstr "%s-(Nyabibiri"
 
 #: src/main/extract.c:204 src/main/extractor.c:881
 #, c-format
@@ -1289,13 +1283,52 @@ msgstr ""
 msgid "media type"
 msgstr "Ibitangazamakuru Ubwoko"
 
+# ***** BEGIN LICENSE BLOCK *****
+# Version: MPL 1.1/GPL 2.0/LGPL 2.1
+#
+# The contents of this file are subject to the Mozilla Public License Version
+# 1.1 (the "License"); you may not use this file except in compliance with
+# the License. You may obtain a copy of the License at
+# http://www.mozilla.org/MPL/
+#
+# Software distributed under the License is distributed on an "AS IS" basis,
+# WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+# for the specific language governing rights and limitations under the
+# License.
+#
+# The Original Code is Mozilla Communicator client code, released
+# March 31, 1998.
+#
+# The Initial Developer of the Original Code is
+# Netscape Communications Corporation.
+# Portions created by the Initial Developer are Copyright (C) 1998-1999
+# the Initial Developer. All Rights Reserved.
+#
+# Contributor(s):
+#
+# Alternatively, the contents of this file may be used under the terms of
+# either of the GNU General Public License Version 2 or later (the "GPL"),
+# or the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
+# in which case the provisions of the GPL or the LGPL are applicable instead
+# of those above. If you wish to allow use of your version of this file only
+# under the terms of either the GPL or the LGPL, and not to allow others to
+# use your version of this file under the terms of the MPL, indicate your
+# decision by deleting the provisions above and replace them with the notice
+# and other provisions required by the GPL or the LGPL. If you do not delete
+# the provisions above, a recipient may use your version of this file under
+# the terms of any one of the MPL, the GPL or the LGPL.
+#
+# ***** END LICENSE BLOCK *****
+# Box Headings
 #: src/main/extractor.c:106
+#, fuzzy
 msgid "contact"
-msgstr ""
+msgstr "Umuntu"
 
 #: src/main/extractor.c:107
+#, fuzzy
 msgid "binary thumbnail data"
-msgstr ""
+msgstr "Nyabibiri Ibyatanzwe"
 
 # setup2/source\ui\app.src:FT_INSTINFO_MKDIR.text
 #: src/main/extractor.c:108
