@@ -181,6 +181,7 @@ libconvert_la_LDFLAGS = \
 libextractor_zip_la_SOURCES = \
   zipextractor.c
 libextractor_zip_la_LDFLAGS = \
+  $(top_builddir)/src/main/libextractor.la \
   $(PLUGINFLAGS)
 
 libextractor_jpeg_la_SOURCES = \
