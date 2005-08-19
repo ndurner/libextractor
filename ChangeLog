@@ -1,3 +1,6 @@
+Thu Aug 18 21:18:28 PDT 2005
+	Made quotations match GNU standards.
+	
 Sat Aug 13 18:41:02 PDT 2005
         Fixed problems with ole2 extractor.  Also removed
 	requirement for static version of glib (!).  
