@@ -39,7 +39,7 @@ msgstr ""
 
 #: src/plugins/printable/dictionary-builder.c:65
 #, c-format
-msgid "Error opening file '%s': %s\n"
+msgid "Error opening file `%s': %s\n"
 msgstr "Fehler beim Öffnen der Datei »%s«: %s\n"
 
 #: src/plugins/printable/dictionary-builder.c:73
@@ -937,7 +937,7 @@ msgstr "Seitenanzahl"
 
 #: src/main/extract.c:473
 #, c-format
-msgid "You must specify an argument for the '%s' option (option ignored).\n"
+msgid "You must specify an argument for the `%s' option (option ignored).\n"
 msgstr ""
 "Sie müssen ein Argument für die Option »%s« angeben (Option wird "
 "ignoriert).\n"
@@ -1271,18 +1271,18 @@ msgstr "Initialisierung des Plugin-Mechanismus' ist fehlgeschlagen: %s.\n"
 #: src/main/extractor.c:366
 #, c-format
 msgid ""
-"Resolving symbol '%s' in library '%s' failed, so I tried '%s', but that "
-"failed also.  Errors are: '%s' and '%s'.\n"
+"Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
+"failed also.  Errors are: `%s' and `%s'.\n"
 msgstr ""
 
 #: src/main/extractor.c:395
 #, c-format
-msgid "Loading '%s' plugin failed: %s\n"
+msgid "Loading `%s' plugin failed: %s\n"
 msgstr "Laden des »%s«-Plugins ist fehlgeschlagen: %s\n"
 
 #: src/main/extractor.c:600
 #, c-format
-msgid "Unloading plugin '%s' failed!\n"
+msgid "Unloading plugin `%s' failed!\n"
 msgstr "Entladen des »%s«-Erweiterung ist fehlgeschlagen.\n"
 
 #~ msgid "No error"

@@ -363,9 +363,9 @@ static void *getSymbolWithPrefix(void *lib_handle,
     symbol=lt_dlsym(lib_handle,name /* now try with the '_' */);
 #if DEBUG
     fprintf(stderr,
-	    _("Resolving symbol '%s' in library '%s' failed, "
-	      "so I tried '%s', but that failed also.  Errors are: "
-	      "'%s' and '%s'.\n"),
+	    _("Resolving symbol `%s' in library `%s' failed, "
+	      "so I tried `%s', but that failed also.  Errors are: "
+	      "`%s' and `%s'.\n"),
              name+1,
              lib_name,
              name,
@@ -392,7 +392,7 @@ loadLibrary (const char *name,
     {
 #if DEBUG
       fprintf (stderr,
-	       _("Loading '%s' plugin failed: %s\n"),
+	       _("Loading `%s' plugin failed: %s\n"),
 	       name,
 	       lt_dlerror ());
 #endif
@@ -597,7 +597,7 @@ EXTRACTOR_removeLibrary(EXTRACTOR_ExtractorList * prev,
 #if DEBUG
   else
     fprintf(stderr,
-	    _("Unloading plugin '%s' failed!\n"),
+	    _("Unloading plugin `%s' failed!\n"),
 	    library);
 #endif
   return first;

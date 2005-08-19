@@ -39,8 +39,8 @@ msgstr ""
 
 #: src/plugins/printable/dictionary-builder.c:65
 #, c-format
-msgid "Error opening file '%s': %s\n"
-msgstr "Eroare deschidere fiºier '%s': %s\n"
+msgid "Error opening file `%s': %s\n"
+msgstr "Eroare deschidere fiºier `%s': %s\n"
 
 #: src/plugins/printable/dictionary-builder.c:73
 #, c-format
@@ -940,9 +940,9 @@ msgstr "numãr de pagini"
 
 #: src/main/extract.c:473
 #, c-format
-msgid "You must specify an argument for the '%s' option (option ignored).\n"
+msgid "You must specify an argument for the `%s' option (option ignored).\n"
 msgstr ""
-"Trebuie sã specificaþi un argument pentru opþiunea '%s' (opþiune ignoratã).\n"
+"Trebuie sã specificaþi un argument pentru opþiunea `%s' (opþiune ignoratã).\n"
 
 #: src/main/extract.c:540
 #, c-format
@@ -1273,21 +1273,21 @@ msgstr "iniþializare mecanismului de plugin a eºuat: %s!\n"
 #: src/main/extractor.c:366
 #, c-format
 msgid ""
-"Resolving symbol '%s' in library '%s' failed, so I tried '%s', but that "
-"failed also.  Errors are: '%s' and '%s'.\n"
+"Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
+"failed also.  Errors are: `%s' and `%s'.\n"
 msgstr ""
-"Rezolvarea simbolului '%s' în biblioteca '%s' a eºuat, aºa cã am încercat '%"
-"s', dar ºi acesta a eºuat.  Erorile sunt: '%s' ºi '%s'.\n"
+"Rezolvarea simbolului `%s' în biblioteca `%s' a eºuat, aºa cã am încercat '%"
+"s', dar ºi acesta a eºuat.  Erorile sunt: `%s' ºi `%s'.\n"
 
 #: src/main/extractor.c:395
 #, c-format
-msgid "Loading '%s' plugin failed: %s\n"
-msgstr "Încãrcarea plugin-ului '%s' a eºuat: %s\n"
+msgid "Loading `%s' plugin failed: %s\n"
+msgstr "Încãrcarea plugin-ului `%s' a eºuat: %s\n"
 
 #: src/main/extractor.c:600
 #, c-format
-msgid "Unloading plugin '%s' failed!\n"
-msgstr "Descãrcarea plugin-ului '%s' a eºuat!\n"
+msgid "Unloading plugin `%s' failed!\n"
+msgstr "Descãrcarea plugin-ului `%s' a eºuat!\n"
 
 #~ msgid "No error"
 #~ msgstr "Ni o eroare"

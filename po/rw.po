@@ -44,7 +44,7 @@ msgstr "i Izina: Bya i Ururimi Inkoranyamagambo kugirango Urugero"
 # basctl/source\basicide\basidesh.src:RID_STR_ERROROPENSTORAGE.text
 #: src/plugins/printable/dictionary-builder.c:65
 #, fuzzy, c-format
-msgid "Error opening file '%s': %s\n"
+msgid "Error opening file `%s': %s\n"
 msgstr "Hari ikibazo mu gufungura dosiye"
 
 #: src/plugins/printable/dictionary-builder.c:73
@@ -976,7 +976,7 @@ msgstr "Kubara amapaje"
 
 #: src/main/extract.c:473
 #, fuzzy, c-format
-msgid "You must specify an argument for the '%s' option (option ignored).\n"
+msgid "You must specify an argument for the `%s' option (option ignored).\n"
 msgstr "kugirango i Ihitamo Ihitamo"
 
 #: src/main/extract.c:540
@@ -1409,18 +1409,18 @@ msgstr "Bya Byanze"
 #: src/main/extractor.c:366
 #, fuzzy, c-format
 msgid ""
-"Resolving symbol '%s' in library '%s' failed, so I tried '%s', but that "
-"failed also.  Errors are: '%s' and '%s'.\n"
+"Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
+"failed also.  Errors are: `%s' and `%s'.\n"
 msgstr "IKIMENYETSO in Isomero Byanze Byanze Na"
 
 #: src/main/extractor.c:395
 #, fuzzy, c-format
-msgid "Loading '%s' plugin failed: %s\n"
+msgid "Loading `%s' plugin failed: %s\n"
 msgstr "Byanze"
 
 #: src/main/extractor.c:600
 #, fuzzy, c-format
-msgid "Unloading plugin '%s' failed!\n"
+msgid "Unloading plugin `%s' failed!\n"
 msgstr "Byanze"
 
 #~ msgid "No error"

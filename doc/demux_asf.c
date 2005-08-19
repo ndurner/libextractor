@@ -1495,7 +1495,7 @@ static int demux_asf_parse_asx_references( demux_asf_t *this) {
       printf("demux_asf: Unable to find VERSION tag from ASX.\n");
   }
   else
-    printf("demux_asf: Unsupported XML type: '%s'.\n", xml_tree->name);
+    printf("demux_asf: Unsupported XML type: `%s'.\n", xml_tree->name);
 
   xml_parser_free_tree(xml_tree);
 __failure:

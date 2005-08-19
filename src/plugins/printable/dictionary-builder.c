@@ -62,7 +62,7 @@ int main(int argc,
   free(fn);
   if (dictin==NULL) {
     fprintf(stderr,
-	    _("Error opening file '%s': %s\n"),
+	    _("Error opening file `%s': %s\n"),
 	    argv[1],strerror(errno));
     exit(-1);
   }

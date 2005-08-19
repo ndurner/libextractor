@@ -470,7 +470,7 @@ main (int argc, char *argv[])
 	case 'p':
 	  if (optarg == NULL) {
 	    fprintf(stderr,
-		    _("You must specify an argument for the '%s' option (option ignored).\n"),
+		    _("You must specify an argument for the `%s' option (option ignored).\n"),
 		    "-p");
 	    break;
 	  }
@@ -494,7 +494,7 @@ main (int argc, char *argv[])
 	  if (NULL == EXTRACTOR_getKeywordTypeAsString (i))
 	    {
 	      fprintf(stderr,
-		      "Unknown keyword type '%s', use option '%s' to get a list.\n",
+		      "Unknown keyword type `%s', use option `%s' to get a list.\n",
 		      optarg,
 		       "-L");
 	      return -1;
@@ -526,7 +526,7 @@ main (int argc, char *argv[])
 	  if (NULL == EXTRACTOR_getKeywordTypeAsString (i))
 	    {
 	      fprintf (stderr,
-		       "Unknown keyword type '%s', use option '%s' to get a list.\n",
+		       "Unknown keyword type `%s', use option `%s' to get a list.\n",
 		       optarg,
 		       "-L");
 #ifdef MINGW
