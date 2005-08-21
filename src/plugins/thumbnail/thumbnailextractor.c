@@ -114,8 +114,12 @@ struct EXTRACTOR_Keywords * libextractor_thumbnail_extract(const char * filename
   in = gdk_pixbuf_loader_get_pixbuf(loader);
   gdk_pixbuf_loader_close(loader,
 			  NULL);
-  if (in == NULL)
+  if (in == NULL) {
+    g_object_unref(loader);
     return prev;
+  }
+  g_object_ref(in);
+  g_object_unref(loader);
   height = gdk_pixbuf_get_height(in);
   width = gdk_pixbuf_get_width(in);
   format = malloc(64);
