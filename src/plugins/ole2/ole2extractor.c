@@ -798,7 +798,7 @@ static struct EXTRACTOR_Keywords * process(struct GsfInput * in,
 	  int ipc;
 	
 	  if (G_VALUE_TYPE(v) == G_TYPE_STRING) {
-	    contents = g_strdup_value_contents(v);
+	    contents = strdup(g_value_get_string(v));
 	  } else {
 	    /* convert other formats? */
 	    contents = g_strdup_value_contents(v);
@@ -809,9 +809,9 @@ static struct EXTRACTOR_Keywords * process(struct GsfInput * in,
 	      if ( (isprint(contents[ipc])) &&
 		   (! isspace(contents[ipc])) )
 		pc++;
-	    if (NULL != strstr(contents,
-			       "\\n"))
-	      strstr(contents, "\\n")[0] = '\0'; /* kill '\n' */
+	    if ( (strlen(contents) > 0) &&
+		 (contents[strlen(contents)-1] == '\n') )
+		 contents[strlen(contents)-1] = '\0';
 	  }
 	  if (pc > 0) {
 	    int pos = 0;
