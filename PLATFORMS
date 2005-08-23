@@ -17,7 +17,7 @@ OpenBSD/NetBSD:
 - unknown
 
 OS X (10.3, PowerPC):
-- perfect
+- PDF extractor does not work properly
 
 Solaris 8 (SunOS 5.8, Sparc SunFire 880):
 - unknown
