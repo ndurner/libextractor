@@ -32,6 +32,7 @@ AC_DISABLE_STATIC
 case "$host_os" in
 linux*)
      AC_DEFINE(LINUX,1,[This is a Linux system])
+     XTRA_CPPLIBS=-lstdc++
      ;;
 freebsd*)
      AC_DEFINE_UNQUOTED(SOMEBSD,1,[This is a BSD system])
@@ -110,8 +111,6 @@ LIBSOLD=$LIBS
 
 # Redhat 9, gcc 3.2, libextractor_pdf barfs if we don't check for this
 AC_CHECK_LIB(stdc++, fclose)
-# but: only use for the PDF extractor and NOT for everything else!
-XTRA_CPPLIBS=$LIBS $XTRA_CPPLIBS
 
 AC_CHECK_HEADERS(langinfo.h)
 AC_CHECK_LIB(dl, dlopen)
