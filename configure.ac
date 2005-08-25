@@ -248,7 +248,7 @@ AM_CONDITIONAL(HAVE_PRINTABLE, test x$printable != x0)
 
 exiv2=1
 AC_MSG_CHECKING([whether to enable exiv2 extractor])
-AC_ARG_ENABLE(printable,
+AC_ARG_ENABLE(exiv2,
  [AC_HELP_STRING([--enable-exiv2],[Enable exiv2 support])
   AC_HELP_STRING([--disable-exiv2],[Disable exiv2 support])],
  [case "$enableval" in
