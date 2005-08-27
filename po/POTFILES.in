@@ -174,7 +174,6 @@ src/plugins/exiv2/metadatum.cpp
 src/plugins/exiv2/error.cpp
 src/plugins/exiv2/tags.cpp
 src/plugins/exiv2/nikonmn.cpp
-src/plugins/exiv2/addmoddel.cpp
 src/plugins/exiv2/jpgimage.cpp
 src/plugins/exiv2/panasonicmn.cpp
 src/plugins/exiv2/fujimn.cpp
