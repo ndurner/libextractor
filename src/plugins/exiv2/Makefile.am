@@ -16,9 +16,9 @@ PLUGINFLAGS = -export-dynamic -avoid-version -module -no-undefined
 libextractor_exiv2_la_LINK = \
   /bin/sh ../../../libtool --mode=link $(CXXLD) -o libextractor_exiv2.la
 libextractor_exiv2_la_LDFLAGS = \
-  $(PLUGINFLAGS) $(XTRA_CPPLIBS)
+  $(PLUGINFLAGS) $(XTRA_CPPLIBS) -lpthread
 libextractor_exiv2_la_LIBADD = \
-  $(top_builddir)/src/main/libextractor.la
+  $(top_builddir)/src/main/libextractor.la -lpthread
 
 libextractor_exiv2_la_SOURCES = \
 exiv2extractor.cc exv_conf.h exv_msvc.h \

@@ -34,12 +34,13 @@
 #include <iomanip>
 #include <cassert>
 #include <cstring>
-#include <sys/types.h>                  // for stat()
-#include <sys/stat.h>                   // for stat()
-#ifdef HAVE_UNISTD_H
-# include <unistd.h>                    // for stat()
-#endif
 #include <math.h>
+
+
+#define WORKAROUND_905 1
+#if WORKAROUND_905
+#include <pthread.h>
+#endif
 
 extern "C" {
 
@@ -83,10 +84,17 @@ struct EXTRACTOR_Keywords * addExiv2Tag(const Exiv2::ExifData& exifData,
 
 extern "C" {
 
+#if WORKAROUND_905
+    static struct EXTRACTOR_Keywords * extract(const char * filename,
+					       unsigned char * data,
+					       size_t size,
+					       struct EXTRACTOR_Keywords * prev) 
+#else
     struct EXTRACTOR_Keywords * libextractor_exiv2_extract(const char * filename,
                                                            unsigned char * data,
                                                            size_t size,
                                                            struct EXTRACTOR_Keywords * prev) 
+#endif
     {
         struct EXTRACTOR_Keywords * result = prev;
 
@@ -425,5 +433,39 @@ extern "C" {
 
         return result;
     }
+
+
+
+#if WORKAROUND_905
+  
+  struct X {
+    unsigned char * data;
+    size_t size;
+    struct EXTRACTOR_Keywords * prev;
+  };
+  
+  
+  static void * run(void * arg) {
+    struct X * x = (struct X*) arg;
+    return extract(NULL, x->data, x->size, x->prev);
+  }
+
+    struct EXTRACTOR_Keywords * libextractor_exiv2_extract(const char * filename,
+                                                           unsigned char * data,
+                                                           size_t size,
+                                                           struct EXTRACTOR_Keywords * prev) {      
+      pthread_t pt;
+      struct X cls;
+      void * ret;
+      cls.data = data;
+      cls.size = size;
+      cls.prev = prev;
+      if (0 == pthread_create(&pt, NULL, &run, &cls))
+	if (0 == pthread_join(pt, &ret))
+	return (struct EXTRACTOR_Keywords*) ret;
+      return prev;
+    }
+
+#endif
 
 }
