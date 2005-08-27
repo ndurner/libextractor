@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.5.0\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2005-08-13 18:55-0700\n"
+"POT-Creation-Date: 2005-08-26 22:35-0700\n"
 "PO-Revision-Date: 2005-06-22 15:05+0200\n"
 "Last-Translator: Karl Eichwalder <ke@gnu.franken.de>\n"
 "Language-Team: German <de@li.org>\n"
@@ -270,9 +270,8 @@ msgid "House"
 msgstr "House"
 
 #: src/plugins/mp3extractor.c:85
-#, fuzzy
 msgid "Game"
-msgstr "Spiele"
+msgstr "Spiel"
 
 #: src/plugins/mp3extractor.c:86
 msgid "Sound Clip"
@@ -877,12 +876,12 @@ msgstr "extract [OPTIONEN] [DATEINAME]*"
 msgid "Extract metadata from files."
 msgstr "Metadaten aus den Dateien extrahieren."
 
-#: src/main/extract.c:198 src/main/extractor.c:876
+#: src/main/extract.c:198 src/main/extractor.c:875
 #, c-format
 msgid "%s - (binary)\n"
 msgstr "%s - (binär)\n"
 
-#: src/main/extract.c:204 src/main/extractor.c:881
+#: src/main/extract.c:204 src/main/extractor.c:880
 #, c-format
 msgid "INVALID TYPE - %s\n"
 msgstr "UNGÜLTIGE ART - %s\n"
@@ -1015,7 +1014,7 @@ msgstr "Quelle"
 
 #: src/main/extractor.c:61
 msgid "relation"
-msgstr ""
+msgstr "Beziehung"
 
 #: src/main/extractor.c:62
 msgid "coverage"
@@ -1194,9 +1193,8 @@ msgid "binary thumbnail data"
 msgstr ""
 
 #: src/main/extractor.c:108
-#, fuzzy
 msgid "publication date"
-msgstr "Datum der Erstellung"
+msgstr "Erstellungsdatum"
 
 #: src/main/extractor.c:109
 msgid "camera make"
@@ -1204,7 +1202,7 @@ msgstr ""
 
 #: src/main/extractor.c:110
 msgid "camera model"
-msgstr ""
+msgstr "Kamera Modell"
 
 #: src/main/extractor.c:111
 msgid "exposure"
@@ -1220,7 +1218,7 @@ msgstr ""
 
 #: src/main/extractor.c:114
 msgid "flash"
-msgstr ""
+msgstr "Blitz"
 
 #: src/main/extractor.c:115
 msgid "flash bias"
@@ -1259,28 +1257,27 @@ msgid "white balance"
 msgstr ""
 
 #: src/main/extractor.c:124
-#, fuzzy
 msgid "orientation"
-msgstr "Seitenausrichtung"
+msgstr "Ausrichtung"
 
-#: src/main/extractor.c:219
+#: src/main/extractor.c:218
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "Initialisierung des Plugin-Mechanismus' ist fehlgeschlagen: %s.\n"
 
-#: src/main/extractor.c:366
+#: src/main/extractor.c:365
 #, c-format
 msgid ""
 "Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
 "failed also.  Errors are: `%s' and `%s'.\n"
 msgstr ""
 
-#: src/main/extractor.c:395
+#: src/main/extractor.c:394
 #, c-format
 msgid "Loading `%s' plugin failed: %s\n"
 msgstr "Laden des »%s«-Plugins ist fehlgeschlagen: %s\n"
 
-#: src/main/extractor.c:600
+#: src/main/extractor.c:599
 #, c-format
 msgid "Unloading plugin `%s' failed!\n"
 msgstr "Entladen des »%s«-Erweiterung ist fehlgeschlagen.\n"

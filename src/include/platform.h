@@ -30,7 +30,7 @@
 
 #include "config.h"
 #include "gettext.h"
-#define _(a) dgettext(PACKAGE, a)
+#define _(a) dgettext("libextractor", a)
 
 #include "plibc.h"
 

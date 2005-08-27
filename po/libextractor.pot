@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2005-08-13 18:55-0700\n"
+"POT-Creation-Date: 2005-08-26 22:35-0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -35,7 +35,7 @@ msgstr ""
 
 #: src/plugins/printable/dictionary-builder.c:65
 #, c-format
-msgid "Error opening file '%s': %s\n"
+msgid "Error opening file `%s': %s\n"
 msgstr ""
 
 #: src/plugins/printable/dictionary-builder.c:73
@@ -858,12 +858,12 @@ msgstr ""
 msgid "Extract metadata from files."
 msgstr ""
 
-#: src/main/extract.c:198 src/main/extractor.c:876
+#: src/main/extract.c:198 src/main/extractor.c:875
 #, c-format
 msgid "%s - (binary)\n"
 msgstr ""
 
-#: src/main/extract.c:204 src/main/extractor.c:881
+#: src/main/extract.c:204 src/main/extractor.c:880
 #, c-format
 msgid "INVALID TYPE - %s\n"
 msgstr ""
@@ -918,7 +918,7 @@ msgstr ""
 
 #: src/main/extract.c:473
 #, c-format
-msgid "You must specify an argument for the '%s' option (option ignored).\n"
+msgid "You must specify an argument for the `%s' option (option ignored).\n"
 msgstr ""
 
 #: src/main/extract.c:540
@@ -1240,24 +1240,24 @@ msgstr ""
 msgid "orientation"
 msgstr ""
 
-#: src/main/extractor.c:219
+#: src/main/extractor.c:218
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr ""
 
-#: src/main/extractor.c:366
+#: src/main/extractor.c:365
 #, c-format
 msgid ""
-"Resolving symbol '%s' in library '%s' failed, so I tried '%s', but that "
-"failed also.  Errors are: '%s' and '%s'.\n"
+"Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
+"failed also.  Errors are: `%s' and `%s'.\n"
 msgstr ""
 
-#: src/main/extractor.c:395
+#: src/main/extractor.c:394
 #, c-format
-msgid "Loading '%s' plugin failed: %s\n"
+msgid "Loading `%s' plugin failed: %s\n"
 msgstr ""
 
-#: src/main/extractor.c:600
+#: src/main/extractor.c:599
 #, c-format
-msgid "Unloading plugin '%s' failed!\n"
+msgid "Unloading plugin `%s' failed!\n"
 msgstr ""

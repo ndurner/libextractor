@@ -1,3 +1,6 @@
+Fri Aug 26 22:32:06 PDT 2005
+	Added workaround libstdc++ bug #23591 (Mantis bug #907).
+
 Tue Aug 23 15:39:37 PDT 2005
 	Fixed build on OS X.
 
