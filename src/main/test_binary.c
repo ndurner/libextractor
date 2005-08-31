@@ -59,7 +59,7 @@ int main(int argc,
 
   for (i=0;i<MAX;i++) {
     buf[i] = (char) rand();
-    if (! test(buf, i)) 
+    if (! test(buf, i))
       return -1;
   }
   return 0;

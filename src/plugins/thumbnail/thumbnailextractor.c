@@ -110,7 +110,7 @@ struct EXTRACTOR_Keywords * libextractor_thumbnail_extract(const char * filename
   gdk_pixbuf_loader_write(loader,
 			  data,
 			  size,
-			  NULL);    
+			  NULL);
   in = gdk_pixbuf_loader_get_pixbuf(loader);
   gdk_pixbuf_loader_close(loader,
 			  NULL);

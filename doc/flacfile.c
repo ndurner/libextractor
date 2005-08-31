@@ -208,7 +208,7 @@ int extract(FLAC__Metadata_SimpleIterator *iter, char *description, char *filena
 			continue;
 		}
 
-		if (mime != NULL && 
+		if (mime != NULL &&
 				(meta->data.application.data[pos] != strlen(mime) || memcmp(&meta->data.application.data[pos+1],mime,meta->data.application.data[pos]) != 0)) {
 			if (FLAC__metadata_simple_iterator_next(iter) == false)
 				return 1;
@@ -272,7 +272,7 @@ int my_remove(FLAC__Metadata_SimpleIterator *iter, char *description, char *mime
 			continue;
 		}
 
-		if (mime != NULL && 
+		if (mime != NULL &&
 				(meta->data.application.data[pos] != strlen(mime) || memcmp(&meta->data.application.data[pos+1],mime,meta->data.application.data[pos]) != 0)) {
 			if (FLAC__metadata_simple_iterator_next(iter) == false)
 				return 1;

@@ -206,7 +206,7 @@ static char * old_dlsearchpath = NULL;
 void __attribute__ ((constructor)) le_ltdl_init(void) {
   int err;
 
-#if ENABLE_NLS  
+#if ENABLE_NLS
   setlocale(LC_ALL, "");
   BINDTEXTDOMAIN(PACKAGE, LOCALEDIR);
 #endif
@@ -655,7 +655,7 @@ EXTRACTOR_getKeywords (EXTRACTOR_ExtractorList * extractor,
   result = NULL;
   while (extractor != NULL) {
     result = extractor->extractMethod(filename,
-				      buffer, 
+				      buffer,
 				      size,
 				      result,
 				      extractor->options);
@@ -686,12 +686,12 @@ EXTRACTOR_getKeywords2(EXTRACTOR_ExtractorList * extractor,
 		       size_t size) {
   EXTRACTOR_KeywordList * result;
 
-  if (data == NULL) 
+  if (data == NULL)
     return NULL;
   result = NULL;
   while (extractor != NULL) {
     result = extractor->extractMethod(NULL,
-				      (char*)data, 
+				      (char*)data,
 				      size,
 				      result,
 				      extractor->options);
@@ -1012,8 +1012,8 @@ char * EXTRACTOR_binaryEncode(const char * data,
       break; /* integer overflow! */
     if (end > size)
       end = size;
-    memset(markers, 
-	   0, 
+    memset(markers,
+	   0,
 	   sizeof(markers));
     for (i=pos;i<end;i++)
       markers[data[i]&7] |= 1 << (data[i] >> 3);

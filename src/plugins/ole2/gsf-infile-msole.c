@@ -288,8 +288,8 @@ ole_info_get_sb_file (GsfInfileMSOle *parent)
 	g_return_val_if_fail (parent->info->sb.bat.block == NULL, NULL);
 
 	if (ole_make_bat (&parent->info->bb.bat,
-			  parent->info->num_sbat, 
-                          parent->info->sbat_start, 
+			  parent->info->num_sbat,
+                          parent->info->sbat_start,
                           &meta_sbat)) {
 		return NULL;
 	}
@@ -405,9 +405,9 @@ ole_dirent_new (GsfInfileMSOle *ole, guint32 entry, MSOleDirent *parent)
 			dirent, (GCompareFunc)ole_dirent_cmp);
 
 	/* NOTE : These links are a tree, not a linked list */
-	if (prev != entry) 
+	if (prev != entry)
 		ole_dirent_new (ole, prev, parent);
-	if (next != entry) 
+	if (next != entry)
 		ole_dirent_new (ole, next, parent);
 
 	if (dirent->is_directory)
@@ -513,7 +513,7 @@ ole_dup (GsfInfileMSOle const * src)
  * Read an OLE header and do some sanity checking
  * along the way.
  *
- * Return value: TRUE on error 
+ * Return value: TRUE on error
  **/
 static gboolean
 ole_init_info (GsfInfileMSOle *ole)
@@ -746,7 +746,7 @@ gsf_infile_msole_new_child (GsfInfileMSOle *parent,
 				     0);
 	}
 	child = ole_dup (parent);
-	if (child == NULL) 
+	if (child == NULL)
 		return NULL;	
 	child->dirent = dirent;
 	child->size = (off_t) dirent->size;
@@ -880,7 +880,7 @@ gsf_infile_msole_new (struct GsfInput *source)
  * Returns TRUE on success
  **/
 int
-gsf_infile_msole_get_class_id (const GsfInfileMSOle *ole, 
+gsf_infile_msole_get_class_id (const GsfInfileMSOle *ole,
                                unsigned char * res)
 {
 	g_return_val_if_fail (ole != NULL && ole->dirent != NULL, 0);

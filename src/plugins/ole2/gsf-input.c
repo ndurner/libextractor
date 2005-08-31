@@ -51,9 +51,9 @@ gsf_input_init (GsfInput * input)
  * Returns: A new #GsfInputMemory
  */
 GsfInput *
-gsf_input_new (const unsigned char * buf, 
-	       off_t length, 
-	       int needs_free) 
+gsf_input_new (const unsigned char * buf,
+	       off_t length,
+	       int needs_free)
 {
 	GsfInput *mem = malloc(sizeof(GsfInput));
 	if (mem == NULL)
@@ -82,7 +82,7 @@ gsf_input_dup (GsfInput *src)
 {
 	GsfInput * dst = malloc(sizeof(GsfInput));
 	if (dst == NULL)
-		return NULL; 
+		return NULL;
         gsf_input_init(dst);
 	dst->buf = src->buf;
 	dst->needs_free = 0;

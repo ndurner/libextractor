@@ -1,19 +1,19 @@
 // ***************************************************************** -*- C++ -*-
 /*
  * Copyright (C) 2004, 2005 Andreas Huggel <ahuggel@gmx.net>
- * 
+ *
  * This program is part of the Exiv2 distribution.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
@@ -45,7 +45,7 @@ EXIV2_RCSID("@(#) $Id: iptc.cpp 600 2005-07-09 10:38:09Z ahuggel $");
 // class member definitions
 namespace Exiv2 {
 
-    Iptcdatum::Iptcdatum(const IptcKey& key, 
+    Iptcdatum::Iptcdatum(const IptcKey& key,
                          const Value* pValue)
         : key_(key.clone())
     {
@@ -66,7 +66,7 @@ namespace Exiv2 {
     const Value& Iptcdatum::value() const
     {
         if (value_.get() == 0) throw Error(8);
-        return *value_; 
+        return *value_;
     }
 
     Iptcdatum& Iptcdatum::operator=(const Iptcdatum& rhs)
@@ -82,7 +82,7 @@ namespace Exiv2 {
 
         return *this;
     } // Iptcdatum::operator=
-    
+
     Iptcdatum& Iptcdatum::operator=(const uint16_t& value)
     {
         UShortValue::AutoPtr v = UShortValue::AutoPtr(new UShortValue);
@@ -146,7 +146,7 @@ namespace Exiv2 {
             if (*pRead++ != marker_) return 5;
             record = *pRead++;
             dataSet = *pRead++;
-            
+
             extTest = *pRead;
             if (extTest & 0x80) {
                 // extended dataset
@@ -171,7 +171,7 @@ namespace Exiv2 {
         return rc;
     } // IptcData::read
 
-    int IptcData::readData(uint16_t dataSet, uint16_t record, 
+    int IptcData::readData(uint16_t dataSet, uint16_t record,
                            const byte* data, uint32_t sizeData)
     {
         Value::AutoPtr value;
@@ -243,7 +243,7 @@ namespace Exiv2 {
     int IptcData::add(const Iptcdatum& iptcDatum)
     {
         if (!IptcDataSets::dataSetRepeatable(
-               iptcDatum.tag(), iptcDatum.record()) && 
+               iptcDatum.tag(), iptcDatum.record()) &&
                findId(iptcDatum.tag(), iptcDatum.record()) != end()) {
              return 6;
         }

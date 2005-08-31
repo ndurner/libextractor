@@ -81,17 +81,17 @@ static char *libextractor_oo_getmimetype(unzFile uf) {
   char * buf = NULL;
   size_t buf_size = 0;
 
-  if (UNZ_OK == unzLocateFile(uf, 
-			      "mimetype", 
+  if (UNZ_OK == unzLocateFile(uf,
+			      "mimetype",
 			      CASESENSITIVITY)) {
     if ( (UNZ_OK == unzGetCurrentFileInfo(uf,
-					  &file_info, 
+					  &file_info,
 					  filename_inzip,
 					  sizeof(filename_inzip),
 					  NULL,
 					  0,
 					  NULL,
-					  0) && 
+					  0) &&
 	  (UNZ_OK == unzOpenCurrentFilePassword(uf,NULL)) ) ) {
       buf_size = file_info.uncompressed_size;
 
@@ -103,11 +103,11 @@ static char *libextractor_oo_getmimetype(unzFile uf) {
         free(buf);
         buf = NULL;
       } else {
-	/* found something */      
+	/* found something */
         buf[buf_size] = '\0';
-        while ( (0 > buf_size) && 
-		isspace(buf[buf_size - 1])) 
-          buf[--buf_size] = '\0';        
+        while ( (0 > buf_size) &&
+		isspace(buf[buf_size - 1]))
+          buf[--buf_size] = '\0';
         if('\0' == buf[0]) {
           free(buf);
           buf = NULL;
@@ -136,8 +136,8 @@ static voidpf Eopen_file_func (voidpf opaque,
     return NULL;
 }
 
-static uLong Eread_file_func(voidpf opaque, 
-			     voidpf stream, 
+static uLong Eread_file_func(voidpf opaque,
+			     voidpf stream,
 			     void* buf,
 			     uLong size) {
   Ecls * e = opaque;
@@ -146,7 +146,7 @@ static uLong Eread_file_func(voidpf opaque,
   ret = e->size - e->pos;
   if (ret > size)
     ret = size;
-  memcpy(buf, 
+  memcpy(buf,
 	 &e->data[e->pos],
 	 ret);
   e->pos += ret;
@@ -160,14 +160,14 @@ static long Etell_file_func(voidpf opaque,
 }
 
 static long Eseek_file_func(voidpf opaque,
-			    voidpf stream, 
-			    uLong offset, 
+			    voidpf stream,
+			    uLong offset,
 			    int origin) {
   Ecls * e = opaque;
 
   switch (origin) {
   case ZLIB_FILEFUNC_SEEK_SET:
-    e->pos = offset;    
+    e->pos = offset;
     break;
   case ZLIB_FILEFUNC_SEEK_END:
     if (offset > e->size)
@@ -185,18 +185,18 @@ static long Eseek_file_func(voidpf opaque,
   return 0;
 }
 
-static int Eclose_file_func(voidpf opaque, 
+static int Eclose_file_func(voidpf opaque,
 			    voidpf stream) {
   return 0;
 }
 
-static int Etesterror_file_func(voidpf opaque, 
+static int Etesterror_file_func(voidpf opaque,
 				voidpf stream) {
   return 0;
 }
 
 
-struct EXTRACTOR_Keywords * 
+struct EXTRACTOR_Keywords *
 libextractor_oo_extract(const char * filename,
 			char * data,
 			size_t size,
@@ -234,11 +234,11 @@ libextractor_oo_extract(const char * filename,
     return prev;
   mimetype = libextractor_oo_getmimetype(uf);
   if (NULL != mimetype)
-    prev = addKeyword(EXTRACTOR_MIMETYPE, 
-		      mimetype, 
+    prev = addKeyword(EXTRACTOR_MIMETYPE,
+		      mimetype,
 		      EXTRACTOR_removeKeywordsOfType(prev,
 						     EXTRACTOR_MIMETYPE));
-  
+
 
   if (unzLocateFile(uf,
 		    METAFILE,

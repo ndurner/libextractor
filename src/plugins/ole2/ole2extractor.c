@@ -38,10 +38,10 @@
 
 /* using libgobject, needs init! */
 void __attribute__ ((constructor)) ole_gobject_init(void) {
- g_type_init(); 
+ g_type_init();
 }
 
-static struct EXTRACTOR_Keywords * 
+static struct EXTRACTOR_Keywords *
 addKeyword(EXTRACTOR_KeywordList *oldhead,
 	   const char *phrase,
 	   EXTRACTOR_KeywordType type) {
@@ -913,7 +913,7 @@ static struct EXTRACTOR_Keywords * processSO(struct GsfInput * src,
   return prev;
 }
 
-struct EXTRACTOR_Keywords * 
+struct EXTRACTOR_Keywords *
 libextractor_ole2_extract(const char * filename,
 			  char * date,
 			  size_t size,
@@ -937,14 +937,14 @@ libextractor_ole2_extract(const char * filename,
   for (i=0;i<gsf_infile_msole_num_children(infile);i++) {
     name = gsf_infile_msole_name_by_index (infile, i);
     src = NULL;
-    if (name == NULL) 
+    if (name == NULL)
       continue;
     if ( (0 == strcmp(name, "\005SummaryInformation"))
 	 || (0 == strcmp(name, "\005DocumentSummaryInformation")) ) {
       src = gsf_infile_msole_child_by_index (infile, i);
       if (src != NULL)
 	prev = process(src,
-		       prev);    
+		       prev);
     }
     if (0 == strcmp(name, "SfxDocumentInfo")) {
       src = gsf_infile_msole_child_by_index (infile, i);
@@ -954,7 +954,7 @@ libextractor_ole2_extract(const char * filename,
     }
     if (src != NULL)
       gsf_input_finalize(src);
-  }  
+  }
   gsf_infile_msole_finalize(infile);
   return prev;
 }

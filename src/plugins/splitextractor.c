@@ -61,7 +61,7 @@ static void splitKeywords(char * keyword,
   pos = 0;
   last = 0;
   while (pos < len) {
-    while ((!token(dp[pos], 
+    while ((!token(dp[pos],
 																			options)) && (pos < len))
       pos++;
     dp[pos++] = 0;
@@ -74,7 +74,7 @@ static void splitKeywords(char * keyword,
 }
 
 /* split other keywords into multiple keywords */
-struct EXTRACTOR_Keywords * 
+struct EXTRACTOR_Keywords *
 libextractor_split_extract(char * filename,
 																											char * data,
 																											size_t size,

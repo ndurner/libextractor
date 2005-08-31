@@ -147,11 +147,11 @@ static void Efree(voidpf opaque, voidpf ptr) {
 /* do not decompress tar.gz files > 16 MB */
 #define MAX_TGZ_SIZE 16 * 1024 * 1024
 
-struct EXTRACTOR_Keywords * 
+struct EXTRACTOR_Keywords *
 libextractor_tar_extract(const char * filename,
 			 const unsigned char * data,
 			 size_t size,
-			 struct EXTRACTOR_Keywords * prev) {  
+			 struct EXTRACTOR_Keywords * prev) {
   if ( (data[0] == 0x1f) &&
        (data[1] == 0x8b) &&
        (data[2] == 0x08) ) {
@@ -182,8 +182,8 @@ libextractor_tar_extract(const char * filename,
       return prev;
     }
 
-    memset(&strm, 
-	   0, 
+    memset(&strm,
+	   0,
 	   sizeof(z_stream));
     strm.next_in = (char*) data;
     strm.avail_in = size;

@@ -1,19 +1,19 @@
 // ***************************************************************** -*- C++ -*-
 /*
  * Copyright (C) 2004, 2005 Andreas Huggel <ahuggel@gmx.net>
- * 
+ *
  * This program is part of the Exiv2 distribution.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
@@ -95,7 +95,7 @@ namespace Exiv2 {
         }
     }
 
-    void ImageFactory::registerImage(Image::Type type, 
+    void ImageFactory::registerImage(Image::Type type,
                 NewInstanceFct newInst, IsThisTypeFct isType)
     {
         init();
@@ -117,7 +117,7 @@ namespace Exiv2 {
 
     Image::Type ImageFactory::getType(BasicIo& io)
     {
-        if (io.open() != 0) return Image::none; 
+        if (io.open() != 0) return Image::none;
         IoCloser closer(io);
         Image::Type type = Image::none;
         Registry::const_iterator b = registry_->begin();
@@ -165,7 +165,7 @@ namespace Exiv2 {
         return image;
     } // ImageFactory::open
 
-    Image::AutoPtr ImageFactory::create(Image::Type type, 
+    Image::AutoPtr ImageFactory::create(Image::Type type,
                                         const std::string& path)
     {
         std::auto_ptr<FileIo> fileIo(new FileIo(path));
@@ -188,7 +188,7 @@ namespace Exiv2 {
         return image;
     }
 
-    Image::AutoPtr ImageFactory::create(Image::Type type, 
+    Image::AutoPtr ImageFactory::create(Image::Type type,
                                         BasicIo::AutoPtr io)
     {
         // BasicIo instance does not need to be open
@@ -199,7 +199,7 @@ namespace Exiv2 {
         return Image::AutoPtr();
     } // ImageFactory::create
 
-    TiffHeader::TiffHeader(ByteOrder byteOrder) 
+    TiffHeader::TiffHeader(ByteOrder byteOrder)
         : byteOrder_(byteOrder), tag_(0x002a), offset_(0x00000008)
     {
     }

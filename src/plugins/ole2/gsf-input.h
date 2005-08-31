@@ -36,8 +36,8 @@ struct GsfInput;
  * Returns: A new #GsfInputMemory
  */
 struct GsfInput *
-gsf_input_new (const unsigned char *buf, 
-	       off_t length, 
+gsf_input_new (const unsigned char *buf,
+	       off_t length,
 	       int needs_free);
 
 char const   *    gsf_input_name      (struct GsfInput *input);
@@ -46,13 +46,13 @@ void              gsf_input_finalize  (struct GsfInput *input);
 struct GsfInput * gsf_input_sibling   (const struct GsfInput *input, char const *name);
 off_t             gsf_input_size      (struct GsfInput *input);
 int               gsf_input_eof	      (struct GsfInput *input);
-const unsigned char * gsf_input_read  (struct GsfInput *input, 
+const unsigned char * gsf_input_read  (struct GsfInput *input,
                                        size_t num_bytes,
 				       unsigned char * optional_buffer);
 off_t             gsf_input_remaining (struct GsfInput *input);
 off_t             gsf_input_tell      (struct GsfInput *input);
 int               gsf_input_seek      (struct GsfInput *input,
-				       off_t offset, 
+				       off_t offset,
                                        int whence);
 int               gsf_input_set_name	(struct GsfInput *input, char const *name);
 int               gsf_input_set_size	(struct GsfInput *input, off_t size);

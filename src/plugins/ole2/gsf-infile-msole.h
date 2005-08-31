@@ -54,7 +54,7 @@ gsf_infile_msole_finalize (struct GsfInfileMSOle * ole);
  * Returns TRUE on success
  **/
 int
-gsf_infile_msole_get_class_id (const struct GsfInfileMSOle *ole,   
+gsf_infile_msole_get_class_id (const struct GsfInfileMSOle *ole,
                                unsigned char *res);
 
 #endif /* GSF_INFILE_MSOLE_H */

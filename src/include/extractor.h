@@ -166,17 +166,17 @@ typedef struct EXTRACTOR_Keywords {
 /**
  * Signature of the extract method that each plugin
  * must provide.
- * 
+ *
  * @param filename MAYBE NULL (!)
  * @param data must not be modified (!)
  */
-typedef EXTRACTOR_KeywordList * 
+typedef EXTRACTOR_KeywordList *
 (*ExtractMethod)(const char * filename,
 		 char * data,
 		 size_t filesize,
 		 EXTRACTOR_KeywordList * next,
 		 const char * options);
-  
+
 /**
  * Linked list of extractor helper-libraries. An application
  * builds this list by telling libextractor to load various
@@ -204,13 +204,13 @@ EXTRACTOR_ExtractorList * EXTRACTOR_loadDefaultLibraries(void);
  * Get the textual name of the keyword.
  * @return NULL if the type is not known
  */
-const char * 
+const char *
 EXTRACTOR_getKeywordTypeAsString(EXTRACTOR_KeywordType type);
 
 /**
  * Return the highest type number, exclusive as in [0,highest).
  */
-EXTRACTOR_KeywordType 
+EXTRACTOR_KeywordType
 EXTRACTOR_getHighestKeywordTypeNumber(void);
 
 /**
@@ -324,7 +324,7 @@ EXTRACTOR_removeEmptyKeywords (EXTRACTOR_KeywordList * list);
 EXTRACTOR_KeywordList *
 EXTRACTOR_removeKeywordsOfType(EXTRACTOR_KeywordList * list,
 			       EXTRACTOR_KeywordType type);
-  
+
 /**
  * Print a keyword list to a file.
  * For debugging.
@@ -371,7 +371,7 @@ const char * EXTRACTOR_extractLastByString(const char * type,
  * @return the number of keywords in the list
  */
 unsigned int EXTRACTOR_countKeywords(EXTRACTOR_KeywordList * keywords);
-  
+
 
 /**
  * This function can be used to decode the binary data

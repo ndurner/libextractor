@@ -217,7 +217,7 @@ static void Efree(voidpf opaque, voidpf ptr) {
  */
 #define MAX_READ 2048
 
-struct EXTRACTOR_Keywords * 
+struct EXTRACTOR_Keywords *
 libextractor_man_extract(const char * filename,
 			 char * data,
 			 size_t size,
@@ -225,8 +225,8 @@ libextractor_man_extract(const char * filename,
   z_stream strm;
   char * buf;
 
-  memset(&strm, 
-	 0, 
+  memset(&strm,
+	 0,
 	 sizeof(z_stream));
   strm.next_in = (char*) data;
   strm.avail_in = size;
@@ -247,7 +247,7 @@ libextractor_man_extract(const char * filename,
 	    Z_FINISH);
     if (strm.total_out > 0) {
       prev = tryParse(buf,
-		      strm.total_out, 
+		      strm.total_out,
 		      prev);
       inflateEnd(&strm);
       free(buf);
@@ -255,8 +255,8 @@ libextractor_man_extract(const char * filename,
     }
     free(buf);
     inflateEnd(&strm);
-  } 
-  return tryParse(data, 
+  }
+  return tryParse(data,
 		  size,
 		  prev);
 }

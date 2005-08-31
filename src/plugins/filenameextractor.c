@@ -24,7 +24,7 @@
 
 
 /* "extract" the 'filename' as a keyword */
-struct EXTRACTOR_Keywords * 
+struct EXTRACTOR_Keywords *
 libextractor_filename_extract(const char * filename,
 			      char * date,
 			      size_t size,

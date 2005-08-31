@@ -1,19 +1,19 @@
 // ***************************************************************** -*- C++ -*-
 /*
  * Copyright (C) 2004, 2005 Andreas Huggel <ahuggel@gmx.net>
- * 
+ *
  * This program is part of the Exiv2 distribution.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
@@ -77,19 +77,19 @@ namespace Exiv2 {
     enum ByteOrder { invalidByteOrder, littleEndian, bigEndian };
 
     //! Type identifiers for IFD format types
-    enum TypeId { invalidTypeId, unsignedByte, asciiString, unsignedShort, 
-                  unsignedLong, unsignedRational, invalid6, undefined, 
-                  signedShort, signedLong, signedRational, 
-                  string, date, time, 
+    enum TypeId { invalidTypeId, unsignedByte, asciiString, unsignedShort,
+                  unsignedLong, unsignedRational, invalid6, undefined,
+                  signedShort, signedLong, signedRational,
+                  string, date, time,
                   comment,
                   lastTypeId };
 
     // Todo: decentralize IfdId, so that new ids can be defined elsewhere
     //! Type to specify the IFD to which a metadata belongs
-    enum IfdId { ifdIdNotSet, 
-                 ifd0Id, exifIfdId, gpsIfdId, iopIfdId, ifd1Id, 
+    enum IfdId { ifdIdNotSet,
+                 ifd0Id, exifIfdId, gpsIfdId, iopIfdId, ifd1Id,
                  canonIfdId, canonCs1IfdId, canonCs2IfdId, canonCfIfdId,
-                 fujiIfdId, nikon1IfdId, nikon2IfdId, nikon3IfdId, 
+                 fujiIfdId, nikon1IfdId, nikon2IfdId, nikon3IfdId,
                  olympusIfdId, panasonicIfdId, sigmaIfdId, sonyIfdId,
                  lastIfdId };
 
@@ -102,7 +102,7 @@ namespace Exiv2 {
         TypeInfoTable(TypeId typeId, const char* name, long size);
         TypeId typeId_;                         //!< Type id
         const char* name_;                      //!< Name of the type
-        long size_;                             //!< Bytes per data entry 
+        long size_;                             //!< Bytes per data entry
     }; // struct TypeInfoTable
 
     //! Type information lookup functions. Implemented as a static class.
@@ -151,12 +151,12 @@ namespace Exiv2 {
         //@{
         //! Default constructor
         DataBuf() : pData_(0), size_(0) {}
-        //! Constructor with an initial buffer size 
+        //! Constructor with an initial buffer size
         explicit DataBuf(long size) : pData_(new byte[size]), size_(size) {}
         //! Constructor, copies an existing buffer
         DataBuf(byte* pData, long size);
-        /*! 
-          @brief Copy constructor. Transfers the buffer to the newly created 
+        /*!
+          @brief Copy constructor. Transfers the buffer to the newly created
                  object similar to std::auto_ptr, i.e., the original object is
                  modified.
          */
@@ -169,14 +169,14 @@ namespace Exiv2 {
         //@{
         /*!
           @brief Assignment operator. Transfers the buffer and releases the
-                 buffer at the original object similar to std::auto_ptr, i.e., 
+                 buffer at the original object similar to std::auto_ptr, i.e.,
                  the original object is modified.
          */
         DataBuf& operator=(DataBuf& rhs);
         //! Allocate a data buffer of the given size
         void alloc(long size);
         /*!
-          @brief Release ownership of the buffer to the caller. Returns the 
+          @brief Release ownership of the buffer to the caller. Returns the
                  buffer as a data pointer and size pair, resets the internal
                  buffer.
          */
@@ -188,7 +188,7 @@ namespace Exiv2 {
         /*!
           @name Conversions
 
-          Special conversions with auxiliary type to enable copies 
+          Special conversions with auxiliary type to enable copies
           and assignments, similar to those used for std::auto_ptr.
           See http://www.josuttis.com/libbook/auto_ptr.html for a discussion.
          */
@@ -202,7 +202,7 @@ namespace Exiv2 {
         //! Pointer to the buffer, 0 if none has been allocated
         byte* pData_;
         //! The current size of the buffer
-        long size_; 
+        long size_;
     }; // class DataBuf
 
 
@@ -232,7 +232,7 @@ namespace Exiv2 {
     std::istream& operator>>(std::istream& is, URational& r);
 
     /*!
-      @brief Convert an unsigned short to data, write the data to the buffer, 
+      @brief Convert an unsigned short to data, write the data to the buffer,
              return number of bytes written.
      */
     long us2Data(byte* buf, uint16_t s, ByteOrder byteOrder);
@@ -247,7 +247,7 @@ namespace Exiv2 {
      */
     long ur2Data(byte* buf, URational l, ByteOrder byteOrder);
     /*!
-      @brief Convert a signed short to data, write the data to the buffer, 
+      @brief Convert a signed short to data, write the data to the buffer,
              return number of bytes written.
      */
     long s2Data(byte* buf, int16_t s, ByteOrder byteOrder);
@@ -276,17 +276,17 @@ namespace Exiv2 {
     int gcd(int a, int b);
 
     /*!
-      @brief Return the greatest common denominator of long values a and b. 
+      @brief Return the greatest common denominator of long values a and b.
              Both parameters must be greater than 0.
      */
     long lgcd(long a, long b);
 
     /*!
       @brief Return true if str is a hex number starting with prefix followed
-             by size hex digits, false otherwise. If size is 0, any number of 
+             by size hex digits, false otherwise. If size is 0, any number of
              digits is allowed and all are checked.
      */
-    bool isHex(const std::string& str, 
+    bool isHex(const std::string& str,
                size_t size =0,
                const std::string& prefix ="");
 
@@ -294,7 +294,7 @@ namespace Exiv2 {
 // template and inline definitions
 
     //! Utility function to convert the argument of any type to a string
-    template<typename T> 
+    template<typename T>
     std::string toString(const T& arg)
     {
         std::ostringstream os;

@@ -1,19 +1,19 @@
 // ***************************************************************** -*- C++ -*-
 /*
  * Copyright (C) 2004, 2005 Andreas Huggel <ahuggel@gmx.net>
- * 
+ *
  * This program is part of the Exiv2 distribution.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
@@ -29,7 +29,7 @@
 EXIV2_RCSID("@(#) $Id: makernote.cpp 600 2005-07-09 10:38:09Z ahuggel $");
 
 // Define DEBUG_* to output debug information to std::cerr, e.g, by calling
-// make like this: make DEFS=-DDEBUG_MAKERNOTE makernote.o 
+// make like this: make DEFS=-DDEBUG_MAKERNOTE makernote.o
 //#define DEBUG_MAKERNOTE
 //#define DEBUG_REGISTRY
 
@@ -49,7 +49,7 @@ EXIV2_RCSID("@(#) $Id: makernote.cpp 600 2005-07-09 10:38:09Z ahuggel $");
 // class member definitions
 namespace Exiv2 {
 
-    MakerNote::MakerNote(bool alloc) 
+    MakerNote::MakerNote(bool alloc)
         : alloc_(alloc), offset_(0), byteOrder_(invalidByteOrder)
     {
     }
@@ -65,7 +65,7 @@ namespace Exiv2 {
     }
 
     IfdMakerNote::IfdMakerNote(IfdId ifdId, bool alloc, bool hasNext)
-        : MakerNote(alloc), 
+        : MakerNote(alloc),
           absOffset_(true), adjOffset_(0), ifd_(ifdId, 0, alloc, hasNext)
     {
     }
@@ -78,8 +78,8 @@ namespace Exiv2 {
     }
 
     int IfdMakerNote::read(const byte* buf,
-                           long len, 
-                           ByteOrder byteOrder, 
+                           long len,
+                           ByteOrder byteOrder,
                            long offset)
     {
         // Remember the offset
@@ -95,7 +95,7 @@ namespace Exiv2 {
         offset = absOffset_ ? offset + adjOffset_ : adjOffset_;
         // Read the makernote IFD
         if (rc == 0) {
-            rc = ifd_.read(buf + headerSize(), 
+            rc = ifd_.read(buf + headerSize(),
                            len - headerSize(),
                            byteOrder_,
                            offset);
@@ -134,7 +134,7 @@ namespace Exiv2 {
         return len;
     } // IfdMakerNote::copy
 
-    int IfdMakerNote::readHeader(const byte* buf, 
+    int IfdMakerNote::readHeader(const byte* buf,
                                  long len,
                                  ByteOrder byteOrder)
     {
@@ -143,7 +143,7 @@ namespace Exiv2 {
     }
 
     void IfdMakerNote::updateBase(byte* pNewBase)
-    { 
+    {
         if (absOffset_) {
             ifd_.updateBase(pNewBase);
         }
@@ -166,9 +166,9 @@ namespace Exiv2 {
         return header_.size_;
     }
 
-    Entries::const_iterator IfdMakerNote::findIdx(int idx) const 
+    Entries::const_iterator IfdMakerNote::findIdx(int idx) const
     {
-        return ifd_.findIdx(idx); 
+        return ifd_.findIdx(idx);
     }
 
     long IfdMakerNote::size() const
@@ -255,12 +255,12 @@ namespace Exiv2 {
         return i->second->create(alloc);
     } // MakerNoteFactory::create
 
-    void MakerNoteFactory::registerMakerNote(const std::string& make, 
-                                             const std::string& model, 
+    void MakerNoteFactory::registerMakerNote(const std::string& make,
+                                             const std::string& model,
                                              CreateFct createMakerNote)
     {
 #ifdef DEBUG_REGISTRY
-        std::cerr << "Registering MakerNote create function for \"" 
+        std::cerr << "Registering MakerNote create function for \""
                   << make << "\" and \"" << model << "\".\n";
 #endif
         init();
@@ -295,16 +295,16 @@ namespace Exiv2 {
         }
     } // MakerNoteFactory::registerMakerNote
 
-    MakerNote::AutoPtr MakerNoteFactory::create(const std::string& make, 
+    MakerNote::AutoPtr MakerNoteFactory::create(const std::string& make,
                                                 const std::string& model,
                                                 bool alloc,
-                                                const byte* buf, 
-                                                long len, 
-                                                ByteOrder byteOrder, 
+                                                const byte* buf,
+                                                long len,
+                                                ByteOrder byteOrder,
                                                 long offset)
     {
 #ifdef DEBUG_REGISTRY
-        std::cerr << "Entering MakerNoteFactory::create(\"" 
+        std::cerr << "Entering MakerNoteFactory::create(\""
                   << make << "\", \"" << model << "\", "
                   << (alloc == true ? "true" : "false") << ")\n";
 #endif
@@ -313,7 +313,7 @@ namespace Exiv2 {
         ModelRegistry* pModelRegistry = 0;
 #ifdef DEBUG_REGISTRY
         std::string makeMatch;
-        std::cerr << "Searching make registry...\n"; 
+        std::cerr << "Searching make registry...\n";
 #endif
         assert(pRegistry_ != 0);
         Registry::const_iterator end1 = pRegistry_->end();
@@ -364,7 +364,7 @@ namespace Exiv2 {
                                 const std::string& key)
     {
 #ifdef DEBUG_REGISTRY
-        std::cerr << "   Matching registry entry \"" << regEntry << "\" (" 
+        std::cerr << "   Matching registry entry \"" << regEntry << "\" ("
                   << (int)regEntry.size() << ") with key \"" << key << "\" ("
                   << (int)key.size() << "): ";
 #endif
@@ -400,11 +400,11 @@ namespace Exiv2 {
                 }
 
                 bool found = false;
-                // Find the substr ss in the key starting from index ki. 
+                // Find the substr ss in the key starting from index ki.
                 // Take care of the special cases
                 //   + where the substr must match the key from beg to end,
                 //   + from beg,
-                //   + to end 
+                //   + to end
                 //   + and where it can be anywhere in the key.
                 // If found, ki is adjusted to the position in the key after ss.
                 if (ei == 0 && pos == std::string::npos) { // ei == 0 => ki == 0
@@ -420,7 +420,7 @@ namespace Exiv2 {
                     }
                 }
                 else if (pos == std::string::npos) {
-                    if (   ss.size() <= uKey.size() 
+                    if (   ss.size() <= uKey.size()
                         && ki <= uKey.size() - ss.size()) {
                         if (0 == uKey.compare(
                                 uKey.size() - ss.size(), ss.size(), ss)) {
@@ -430,7 +430,7 @@ namespace Exiv2 {
                     }
                 }
                 else {
-                    std::string::size_type idx = uKey.find(ss, ki); 
+                    std::string::size_type idx = uKey.find(ss, ki);
                     if (idx != std::string::npos) {
                         found = true;
                         ki = idx + ss.size();
@@ -456,7 +456,7 @@ namespace Exiv2 {
         std::cerr << "Match (score: " << count + 1 << ")\n";
 #endif
         return count + 1;
-        
+
     } // MakerNoteFactory::match
 
 }                                       // namespace Exiv2
