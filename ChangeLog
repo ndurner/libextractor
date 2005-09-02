@@ -1,3 +1,6 @@
+Fri Sep  2 03:17:10 PDT 2005
+	Added support for Mime-types for Microsoft Office formats.
+
 Fri Aug 26 22:32:06 PDT 2005
 	Added workaround libstdc++ bug #23591 (Mantis bug #907).
 	Releasing libextractor 0.5.4.
