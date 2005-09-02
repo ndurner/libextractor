@@ -922,6 +922,7 @@ libextractor_ole2_extract(const char * filename,
   struct GsfInfileMSOle * infile;
   struct GsfInput * src;
   const char * name;
+  const char * software = 0;
   int i;
 
   input = gsf_input_new((const unsigned char*) date,
@@ -956,6 +957,24 @@ libextractor_ole2_extract(const char * filename,
       gsf_input_finalize(src);
   }
   gsf_infile_msole_finalize(infile);
+
+  /*
+   * Hack to return an appropriate mimetype
+   */
+  software = EXTRACTOR_extractLast(EXTRACTOR_SOFTWARE, prev);
+  if(NULL != software) {
+    const char * mimetype = "application/vnd.ms-files";
+ 
+    if(0 == strncmp(software, "Microsoft Word", 14))
+      mimetype = "application/msword";
+    else if(0 == strncmp(software, "Microsoft Excel", 15))
+      mimetype = "application/vnd.ms-excel";
+    else if(0 == strncmp(software, "Microsoft PowerPoint", 19))
+      mimetype = "application/vnd.ms-powerpoint";
+
+    prev = addKeyword(prev, mimetype, EXTRACTOR_MIMETYPE);
+  }
+
   return prev;
 }
 
