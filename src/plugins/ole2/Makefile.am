@@ -1,6 +1,7 @@
 INCLUDES = \
   -I$(top_srcdir)/src/include
 
+EXTRA_DIST = SYMBOLS
 
 LIBS = \
  @LTLIBINTL@ @LIBS@
@@ -8,7 +9,8 @@ LIBS = \
 # install plugins under:
 plugindir = $(libdir)/libextractor
 
-PLUGINFLAGS = -export-dynamic -avoid-version -module
+PLUGINFLAGS = -Wl,-Bsymbolic -avoid-version -module -no-undefined
+
 
 plugin_LTLIBRARIES = \
   libextractor_ole2.la
@@ -16,17 +18,11 @@ plugin_LTLIBRARIES = \
 AM_CFLAGS = $(GLIB_CFLAGS)
 
 libextractor_ole2_la_CFLAGS = \
-  $(GLIB_CFLAGS)
+  $(GLIB_CFLAGS) 
 libextractor_ole2_la_LIBADD = \
   $(LIBADD) $(GLIB_LIBS) -lgobject-2.0 \
   $(top_builddir)/src/main/libextractor.la
 libextractor_ole2_la_LDFLAGS = \
-  $(PLUGINFLAGS)
+  $(PLUGINFLAGS) -Wl,--retain-symbols-file -Wl,SYMBOLS 
 libextractor_ole2_la_SOURCES =  \
-        ole2extractor.c         \
-	gsf-utils.c		\
-	gsf-utils.h		\
-	gsf-input.c		\
-	gsf-input.h		\
-	gsf-infile-msole.c 	\
-	gsf-infile-msole.h 	
+        ole2extractor.c

@@ -27,8 +27,6 @@
 struct GsfInfileMSOle;
 
 struct GsfInfileMSOle * gsf_infile_msole_new (struct GsfInput *source);
-int gsf_infile_msole_get_class_id (const struct GsfInfileMSOle * ole,
-				   unsigned char * res);
 
 int
 gsf_infile_msole_num_children (struct GsfInfileMSOle *infile);
