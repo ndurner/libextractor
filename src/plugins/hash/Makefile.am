@@ -26,8 +26,6 @@ libextractor_hash_md5_la_LDFLAGS = \
   $(PLUGINFLAGS)  -Wl,--retain-symbols-file -Wl,MD5_SYMBOLS
 
 libextractor_hash_sha1_la_SOURCES = \
-  sha1.h \
-  sha1.c \
   sha1extractor.c
 libextractor_hash_sha1_la_LDFLAGS = \
   $(PLUGINFLAGS)  -Wl,--retain-symbols-file -Wl,SHA1_SYMBOLS
