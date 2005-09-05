@@ -1,12 +1,12 @@
 Core:
 * error reporting facilities
 * add support for different character sets (to 'all' extractors)
-* add support for passing options to extractors
 
 'Unclean' code:
 * QT
 * ASF
 * RPM
+* REMOVE pthread requirement from debextractor!
 
 Incomplete code (missing features):
 * RIFF (idx1 attribute)

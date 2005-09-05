@@ -21,10 +21,6 @@
 #ifndef SHA1_H
 #define SHA1_H
 
-typedef struct {
-  char data[20];
-} HashCode160;
-
 void hash(void * data,
 	  int size,
 	  HashCode160 * hc);

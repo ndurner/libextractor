@@ -219,33 +219,14 @@ processControlTar(const char * data,
   return prev;
 }
 
-
 #define MAX_CONTROL_SIZE (1024 * 1024)
 
-typedef struct {
-  int fd;
-  const char * buf;
-  size_t size;
-} WTC;
+static voidpf Emalloc(voidpf opaque, uInt items, uInt size) {
+  return malloc(size * items);
+}
 
-void * writeThread(void * arg) {
-  size_t pos;
-  int ret;
-  WTC * wtc = (WTC*) arg;
-
-  pos = 0;
-  while (pos < wtc->size) {
-    ret = write(wtc->fd,
-		&wtc->buf[pos],
-		wtc->size - pos);
-    if (ret == -1) {
-      close(wtc->fd);
-      return strerror(errno);
-    }
-    pos += ret;
-  }
-  close(wtc->fd);
-  return NULL;
+static void Efree(voidpf opaque, voidpf ptr) {
+  free(ptr);
 }
 
 /**
@@ -259,52 +240,46 @@ processControlTGZ(const unsigned char * data,
   gzFile gzf;
   int fdes[2];
   char * buf;
-  WTC wtc;
-  pthread_t pt;
   void * error;
+  z_stream strm;
 
   bufSize = data[size-4] + 256 * data[size-3] + 65536 * data[size-2] + 256*65536 * data[size-1];
   if (bufSize > MAX_CONTROL_SIZE)
     return prev;
 
-  if (0 != PIPE(fdes))
-    return prev;
-  wtc.fd = fdes[1];
-  wtc.size = size;
-  wtc.buf = data;
-  if (0 != pthread_create(&pt, NULL, &writeThread, &wtc)) {
-    close(fdes[0]);
-    close(fdes[1]);
-    return prev;
-  }
-  gzf = gzdopen(fdes[0], "rb");
-  if (gzf == NULL) {
-    close(fdes[0]);
-    close(fdes[1]);
-    pthread_join(pt, &error);
-    return prev;
-  }
-  buf = malloc(bufSize);
-  if (buf == NULL) {
-    gzclose(gzf);
-    close(fdes[1]);
-    pthread_join(pt, &error);
-    return prev;
-  }
-  if (bufSize != gzread(gzf, buf, bufSize)) {
+  memset(&strm,
+	 0,
+	 sizeof(z_stream));
+
+  strm.next_in = (char*) data;
+  strm.avail_in = size;
+  strm.total_in = 0;
+  strm.zalloc = &Emalloc;
+  strm.zfree = &Efree;
+  strm.opaque = NULL;
+
+  if (Z_OK == inflateInit2(&strm,
+			   15 + 32)) {
+    buf = malloc(bufSize);
+    if (buf == NULL) {
+      inflateEnd(&strm);
+      return prev;
+    }
+    strm.next_out = buf;
+    strm.avail_out = bufSize;
+    inflate(&strm,
+	    Z_FINISH);
+    if (strm.total_out > 0) {
+      prev = processControlTar(buf,
+			       strm.total_out,
+			       prev);
+      inflateEnd(&strm);
+      free(buf);
+      return prev;
+    }
     free(buf);
-    gzclose(gzf);
-    close(fdes[1]);
-    pthread_join(pt, &error);
-    return prev;
+    inflateEnd(&strm);
   }
-  close(fdes[1]);
-  pthread_join(pt, &error);
-  gzclose(gzf);
-  prev = processControlTar(buf,
-			   bufSize,
-			   prev);
-  free(buf);
   return prev;
 }
 

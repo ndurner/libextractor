@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.4.2\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2005-08-26 22:35-0700\n"
+"POT-Creation-Date: 2005-09-04 02:59-0700\n"
 "PO-Revision-Date: 2005-04-04 10:55-0700\n"
 "Last-Translator: Steven Michael Murphy <murf@e-tools.com>\n"
 "Language-Team: Kinyarwanda <translation-team-rw@lists.sourceforge.net>\n"
@@ -34,7 +34,7 @@ msgstr ""
 msgid "Binary RPM %d.%d"
 msgstr ""
 
-#: src/plugins/printable/dictionary-builder.c:52
+#: src/plugins/printable/dictionary-builder.c:50
 #, fuzzy, c-format
 msgid ""
 "Please provide the name of the language you are building\n"
@@ -42,19 +42,19 @@ msgid ""
 msgstr "i Izina: Bya i Ururimi Inkoranyamagambo kugirango Urugero"
 
 # basctl/source\basicide\basidesh.src:RID_STR_ERROROPENSTORAGE.text
-#: src/plugins/printable/dictionary-builder.c:65
+#: src/plugins/printable/dictionary-builder.c:63
 #, fuzzy, c-format
 msgid "Error opening file `%s': %s\n"
 msgstr "Hari ikibazo mu gufungura dosiye"
 
-#: src/plugins/printable/dictionary-builder.c:73
+#: src/plugins/printable/dictionary-builder.c:71
 #, c-format
 msgid ""
 "Error allocating: %s\n"
 "."
 msgstr ""
 
-#: src/plugins/printable/dictionary-builder.c:85
+#: src/plugins/printable/dictionary-builder.c:83
 #, fuzzy, c-format
 msgid "Increase ALLOCSIZE (in %s).\n"
 msgstr "in"
@@ -101,11 +101,11 @@ msgstr "Amabwiriza"
 msgid "Kernel routines"
 msgstr ""
 
-#: src/plugins/wavextractor.c:113 src/plugins/mp3extractor.c:426
+#: src/plugins/wavextractor.c:113
 msgid "mono"
 msgstr ""
 
-#: src/plugins/wavextractor.c:113 src/plugins/mp3extractor.c:426
+#: src/plugins/wavextractor.c:113
 msgid "stereo"
 msgstr ""
 
@@ -114,845 +114,216 @@ msgstr ""
 msgid "Fatal: could not allocate (%s at %s:%d).\n"
 msgstr "OYA ku"
 
-#: src/plugins/jpegextractor.c:178
-#, fuzzy, c-format
-msgid "%ux%u dots per inch"
-msgstr "%ux%uUtudomo Inci"
-
-#: src/plugins/jpegextractor.c:188
-#, fuzzy, c-format
-msgid "%ux%u dots per cm"
-msgstr "%ux%uUtudomo cm"
-
-#: src/plugins/jpegextractor.c:198
-#, fuzzy, c-format
-msgid "%ux%u dots per inch?"
-msgstr "%ux%uUtudomo Inci"
-
-#: src/plugins/riffextractor.c:167
-#, c-format
-msgid "codec: %s, %u fps, %u ms"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:49
-msgid "Blues"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:50
-msgid "Classic Rock"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:51
-msgid "Country"
-msgstr "Igihugu"
-
-#: src/plugins/mp3extractor.c:52
-msgid "Dance"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:53
-msgid "Disco"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:54
-msgid "Funk"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:55
-msgid "Grunge"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:56
-msgid "Hip-Hop"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:57
-msgid "Jazz"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:58
-msgid "Metal"
-msgstr "Icyuma"
-
-#: src/plugins/mp3extractor.c:59
-msgid "New Age"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:60
-msgid "Oldies"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:61
-msgid "Other"
-msgstr "Ikindi"
-
-#: src/plugins/mp3extractor.c:62
-msgid "Pop"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:63
-msgid "R&B"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:64
-msgid "Rap"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:65
-msgid "Reggae"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:66
-msgid "Rock"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:67
-msgid "Techno"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:68
-msgid "Industrial"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:69
-msgid "Alternative"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:70
-msgid "Ska"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:71
-msgid "Death Metal"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:72
-msgid "Pranks"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:73
-msgid "Soundtrack"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:74
-msgid "Euro-Techno"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:75
-msgid "Ambient"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:76
-msgid "Trip-Hop"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:77
-msgid "Vocal"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:78
-msgid "Jazz+Funk"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:79
-msgid "Fusion"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:80
-msgid "Trance"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:81
-msgid "Classical"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:82
-msgid "Instrumental"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:83
-msgid "Acid"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:84
-msgid "House"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:85
-msgid "Game"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:86
-msgid "Sound Clip"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:87
-msgid "Gospel"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:88
-msgid "Noise"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:89
-msgid "Alt. Rock"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:90
-msgid "Bass"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:91
-msgid "Soul"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:92
-msgid "Punk"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:93
-msgid "Space"
-msgstr "Umwanya"
-
-#: src/plugins/mp3extractor.c:94
-msgid "Meditative"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:95
-msgid "Instrumental Pop"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:96
-msgid "Instrumental Rock"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:97
-msgid "Ethnic"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:98
-msgid "Gothic"
-msgstr "Ikinyagotike"
-
-#: src/plugins/mp3extractor.c:99
-msgid "Darkwave"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:100
-msgid "Techno-Industrial"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:101
-msgid "Electronic"
-msgstr "elegitoroniki"
-
-#: src/plugins/mp3extractor.c:102
-msgid "Pop-Folk"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:103
-msgid "Eurodance"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:104
-msgid "Dream"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:105
-msgid "Southern Rock"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:106
-msgid "Comedy"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:107
-msgid "Cult"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:108
-msgid "Gangsta Rap"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:109
-msgid "Top 40"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:110
-msgid "Christian Rap"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:111
-msgid "Pop/Funk"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:112
-msgid "Jungle"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:113
-msgid "Native American"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:114
-msgid "Cabaret"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:115
-msgid "New Wave"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:116
-msgid "Psychedelic"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:117
-msgid "Rave"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:118
-msgid "Showtunes"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:119
-msgid "Trailer"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:120
-msgid "Lo-Fi"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:121
-msgid "Tribal"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:122
-msgid "Acid Punk"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:123
-msgid "Acid Jazz"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:124
-msgid "Polka"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:125
-msgid "Retro"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:126
-msgid "Musical"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:127
-msgid "Rock & Roll"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:128
-msgid "Hard Rock"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:129
-msgid "Folk"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:130
-msgid "Folk/Rock"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:131
-msgid "National Folk"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:132
-msgid "Swing"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:133
-msgid "Fast-Fusion"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:134
-msgid "Bebob"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:135
-msgid "Latin"
-msgstr "Ikiratini"
-
-#: src/plugins/mp3extractor.c:136
-msgid "Revival"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:137
-msgid "Celtic"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:138
-msgid "Bluegrass"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:139
-msgid "Avantgarde"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:140
-msgid "Gothic Rock"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:141
-msgid "Progressive Rock"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:142
-msgid "Psychedelic Rock"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:143
-msgid "Symphonic Rock"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:144
-msgid "Slow Rock"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:145
-msgid "Big Band"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:146
-msgid "Chorus"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:147
-msgid "Easy Listening"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:148
-msgid "Acoustic"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:149
-msgid "Humour"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:150
-msgid "Speech"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:151
-msgid "Chanson"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:152
-msgid "Opera"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:153
-msgid "Chamber Music"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:154
-msgid "Sonata"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:155
-msgid "Symphony"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:156
-msgid "Booty Bass"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:157
-msgid "Primus"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:158
-msgid "Porn Groove"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:159
-msgid "Satire"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:160
-msgid "Slow Jam"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:161
-msgid "Club"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:162
-msgid "Tango"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:163
-msgid "Samba"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:164
-msgid "Folklore"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:165
-msgid "Ballad"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:166
-msgid "Power Ballad"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:167
-msgid "Rhythmic Soul"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:168
-msgid "Freestyle"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:169
-msgid "Duet"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:170
-msgid "Punk Rock"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:171
-msgid "Drum Solo"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:172
 #, fuzzy
-msgid "A Cappella"
-msgstr "A"
+#~ msgid "%ux%u dots per inch"
+#~ msgstr "%ux%uUtudomo Inci"
 
-#: src/plugins/mp3extractor.c:173
-msgid "Euro-House"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:174
-msgid "Dance Hall"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:175
-msgid "Goa"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:176
-msgid "Drum & Bass"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:177
-msgid "Club-House"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:178
-msgid "Hardcore"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:179
-msgid "Terror"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:180
-msgid "Indie"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:181
-msgid "BritPop"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:182
-msgid "Negerpunk"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:183
-msgid "Polsk Punk"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:184
-msgid "Beat"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:185
-msgid "Christian Gangsta Rap"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:186
-msgid "Heavy Metal"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:187
-msgid "Black Metal"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:188
-msgid "Crossover"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:189
-msgid "Contemporary Christian"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:190
-msgid "Christian Rock"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:191
-msgid "Merengue"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:192
-msgid "Salsa"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:193
-msgid "Thrash Metal"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:194
-msgid "Anime"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:195
-msgid "JPop"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:196
-msgid "Synthpop"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:427
 #, fuzzy
-msgid "(variable bps)"
-msgstr "(IMPINDURAGACIRO"
+#~ msgid "%ux%u dots per cm"
+#~ msgstr "%ux%uUtudomo cm"
 
-#: src/main/getopt.c:681
-#, fuzzy, c-format
-msgid "%s: option `%s' is ambiguous\n"
-msgstr "%s:Ihitamo ni"
-
-#: src/main/getopt.c:706
-#, fuzzy, c-format
-msgid "%s: option `--%s' doesn't allow an argument\n"
-msgstr "%s:Ihitamo Kwemerera"
-
-#: src/main/getopt.c:712
-#, fuzzy, c-format
-msgid "%s: option `%c%s' doesn't allow an argument\n"
-msgstr "%s:Ihitamo Kwemerera"
-
-#: src/main/getopt.c:729 src/main/getopt.c:900
-#, fuzzy, c-format
-msgid "%s: option `%s' requires an argument\n"
-msgstr "%s:Ihitamo"
-
-#: src/main/getopt.c:758
-#, fuzzy, c-format
-msgid "%s: unrecognized option `--%s'\n"
-msgstr "%s:Ihitamo"
-
-#: src/main/getopt.c:762
-#, fuzzy, c-format
-msgid "%s: unrecognized option `%c%s'\n"
-msgstr "%s:Ihitamo"
-
-#: src/main/getopt.c:788
-#, fuzzy, c-format
-msgid "%s: illegal option -- %c\n"
-msgstr "%s:Ihitamo"
-
-#: src/main/getopt.c:790
-#, fuzzy, c-format
-msgid "%s: invalid option -- %c\n"
-msgstr "%s:Sibyo Ihitamo"
-
-#: src/main/getopt.c:819 src/main/getopt.c:949
-#, fuzzy, c-format
-msgid "%s: option requires an argument -- %c\n"
-msgstr "%s:Ihitamo"
-
-#: src/main/getopt.c:867
-#, fuzzy, c-format
-msgid "%s: option `-W %s' is ambiguous\n"
-msgstr "%s:Ihitamo ni"
-
-#: src/main/getopt.c:885
-#, fuzzy, c-format
-msgid "%s: option `-W %s' doesn't allow an argument\n"
-msgstr "%s:Ihitamo Kwemerera"
-
-#: src/main/extract.c:49
-#, fuzzy, c-format
-msgid ""
-"Usage: %s\n"
-"%s\n"
-"\n"
-msgstr "Ikoresha:"
-
-#: src/main/extract.c:52
-#, fuzzy, c-format
-msgid ""
-"Arguments mandatory for long options are also mandatory for short options.\n"
-msgstr "kugirango Amahitamo kugirango Amahitamo"
-
-#: src/main/extract.c:126
 #, fuzzy
-msgid "do not remove any duplicates"
-msgstr "OYA Gukuraho..."
+#~ msgid "%ux%u dots per inch?"
+#~ msgstr "%ux%uUtudomo Inci"
 
-#: src/main/extract.c:128
+#~ msgid "Country"
+#~ msgstr "Igihugu"
+
+#~ msgid "Metal"
+#~ msgstr "Icyuma"
+
+#~ msgid "Other"
+#~ msgstr "Ikindi"
+
+#~ msgid "Space"
+#~ msgstr "Umwanya"
+
+#~ msgid "Gothic"
+#~ msgstr "Ikinyagotike"
+
+#~ msgid "Electronic"
+#~ msgstr "elegitoroniki"
+
+#~ msgid "Latin"
+#~ msgstr "Ikiratini"
+
 #, fuzzy
-msgid "print output in bibtex format"
-msgstr "Gucapa Ibisohoka in Imiterere"
+#~ msgid "A Cappella"
+#~ msgstr "A"
 
-#: src/main/extract.c:130
 #, fuzzy
-msgid ""
-"use the generic plaintext extractor for the language with the 2-letter "
-"language code LANG"
-msgstr ""
-"Gukoresha i Gifitanye isano kugirango i Ururimi Na: i 2. Ibaruwa... Ururimi "
-"ITEGEKONGENGA"
+#~ msgid "(variable bps)"
+#~ msgstr "(IMPINDURAGACIRO"
 
-#: src/main/extract.c:132
 #, fuzzy
-msgid "remove duplicates only if types match"
-msgstr "Gukuraho... NIBA BIHUYE"
+#~ msgid "%s: option `%s' is ambiguous\n"
+#~ msgstr "%s:Ihitamo ni"
 
-#: src/main/extract.c:134
 #, fuzzy
-msgid "use the filename as a keyword (loads filename-extractor plugin)"
-msgstr "Gukoresha i Izina ry'idosiye: Nka a Ijambo- banze Izina ry'idosiye:"
+#~ msgid "%s: option `--%s' doesn't allow an argument\n"
+#~ msgstr "%s:Ihitamo Kwemerera"
 
-#: src/main/extract.c:136
 #, fuzzy
-msgid "print this help"
-msgstr "Gucapa iyi Ifashayobora"
+#~ msgid "%s: option `%c%s' doesn't allow an argument\n"
+#~ msgstr "%s:Ihitamo Kwemerera"
 
-#: src/main/extract.c:138
 #, fuzzy
-msgid "compute hash using the given ALGORITHM (currently sha1 or md5)"
-msgstr "ikoresha i Cyangwa"
+#~ msgid "%s: option `%s' requires an argument\n"
+#~ msgstr "%s:Ihitamo"
 
-#: src/main/extract.c:140
 #, fuzzy
-msgid "load an extractor plugin named LIBRARY"
-msgstr "Ibirimo"
+#~ msgid "%s: unrecognized option `--%s'\n"
+#~ msgstr "%s:Ihitamo"
 
-#: src/main/extract.c:142
 #, fuzzy
-msgid "list all keyword types"
-msgstr "Urutonde Byose Ijambo- banze"
+#~ msgid "%s: unrecognized option `%c%s'\n"
+#~ msgstr "%s:Ihitamo"
 
-#: src/main/extract.c:144
 #, fuzzy
-msgid "do not use the default set of extractor plugins"
-msgstr "OYA Gukoresha i Mburabuzi Gushyiraho Bya"
+#~ msgid "%s: illegal option -- %c\n"
+#~ msgstr "%s:Ihitamo"
 
-#: src/main/extract.c:146
 #, fuzzy
-msgid "print only keywords of the given TYPE (use -L to get a list)"
-msgstr "Gucapa Amagambo fatizo Bya i Gukoresha Kuri Kubona a Urutonde"
+#~ msgid "%s: invalid option -- %c\n"
+#~ msgstr "%s:Sibyo Ihitamo"
 
-#: src/main/extract.c:148
 #, fuzzy
-msgid "remove duplicates even if keyword types do not match"
-msgstr "Gukuraho... ATARIIGIHARWE NIBA Ijambo- banze OYA BIHUYE"
+#~ msgid "%s: option requires an argument -- %c\n"
+#~ msgstr "%s:Ihitamo"
 
-#: src/main/extract.c:150
 #, fuzzy
-msgid "use keyword splitting (loads split-extractor plugin)"
-msgstr "Gukoresha Ijambo- banze Gutandukanya"
+#~ msgid "%s: option `-W %s' is ambiguous\n"
+#~ msgstr "%s:Ihitamo ni"
 
-#: src/main/extract.c:152
 #, fuzzy
-msgid "print the version number"
-msgstr "Gucapa i Verisiyo Umubare"
+#~ msgid "%s: option `-W %s' doesn't allow an argument\n"
+#~ msgstr "%s:Ihitamo Kwemerera"
 
-#: src/main/extract.c:154
-msgid "be verbose"
-msgstr ""
-
-#: src/main/extract.c:156
 #, fuzzy
-msgid "do not print keywords of the given TYPE"
-msgstr "OYA Gucapa Amagambo fatizo Bya i"
+#~ msgid ""
+#~ "Usage: %s\n"
+#~ "%s\n"
+#~ "\n"
+#~ msgstr "Ikoresha:"
 
-#: src/main/extract.c:159
-msgid "extract [OPTIONS] [FILENAME]*"
-msgstr ""
-
-#: src/main/extract.c:160
 #, fuzzy
-msgid "Extract metadata from files."
-msgstr "Bivuye Idosiye"
+#~ msgid ""
+#~ "Arguments mandatory for long options are also mandatory for short "
+#~ "options.\n"
+#~ msgstr "kugirango Amahitamo kugirango Amahitamo"
 
-#: src/main/extract.c:198 src/main/extractor.c:875
-#, fuzzy, c-format
-msgid "%s - (binary)\n"
-msgstr "%s-(Nyabibiri"
-
-#: src/main/extract.c:204 src/main/extractor.c:880
-#, c-format
-msgid "INVALID TYPE - %s\n"
-msgstr ""
-
-#: src/main/extract.c:270 src/main/extractor.c:40
-msgid "title"
-msgstr "umutwe"
-
-#: src/main/extract.c:272 src/main/extractor.c:38
 #, fuzzy
-msgid "filename"
-msgstr "Izina ry'idosiye"
+#~ msgid "do not remove any duplicates"
+#~ msgstr "OYA Gukuraho..."
+
+#, fuzzy
+#~ msgid "print output in bibtex format"
+#~ msgstr "Gucapa Ibisohoka in Imiterere"
+
+#, fuzzy
+#~ msgid ""
+#~ "use the generic plaintext extractor for the language with the 2-letter "
+#~ "language code LANG"
+#~ msgstr ""
+#~ "Gukoresha i Gifitanye isano kugirango i Ururimi Na: i 2. Ibaruwa... "
+#~ "Ururimi ITEGEKONGENGA"
+
+#, fuzzy
+#~ msgid "remove duplicates only if types match"
+#~ msgstr "Gukuraho... NIBA BIHUYE"
+
+#, fuzzy
+#~ msgid "use the filename as a keyword (loads filename-extractor plugin)"
+#~ msgstr "Gukoresha i Izina ry'idosiye: Nka a Ijambo- banze Izina ry'idosiye:"
+
+#, fuzzy
+#~ msgid "print this help"
+#~ msgstr "Gucapa iyi Ifashayobora"
+
+#, fuzzy
+#~ msgid "compute hash using the given ALGORITHM (currently sha1 or md5)"
+#~ msgstr "ikoresha i Cyangwa"
+
+#, fuzzy
+#~ msgid "load an extractor plugin named LIBRARY"
+#~ msgstr "Ibirimo"
+
+#, fuzzy
+#~ msgid "list all keyword types"
+#~ msgstr "Urutonde Byose Ijambo- banze"
+
+#, fuzzy
+#~ msgid "do not use the default set of extractor plugins"
+#~ msgstr "OYA Gukoresha i Mburabuzi Gushyiraho Bya"
+
+#, fuzzy
+#~ msgid "print only keywords of the given TYPE (use -L to get a list)"
+#~ msgstr "Gucapa Amagambo fatizo Bya i Gukoresha Kuri Kubona a Urutonde"
+
+#, fuzzy
+#~ msgid "remove duplicates even if keyword types do not match"
+#~ msgstr "Gukuraho... ATARIIGIHARWE NIBA Ijambo- banze OYA BIHUYE"
+
+#, fuzzy
+#~ msgid "use keyword splitting (loads split-extractor plugin)"
+#~ msgstr "Gukoresha Ijambo- banze Gutandukanya"
+
+#, fuzzy
+#~ msgid "print the version number"
+#~ msgstr "Gucapa i Verisiyo Umubare"
+
+#, fuzzy
+#~ msgid "do not print keywords of the given TYPE"
+#~ msgstr "OYA Gucapa Amagambo fatizo Bya i"
+
+#, fuzzy
+#~ msgid "Extract metadata from files."
+#~ msgstr "Bivuye Idosiye"
+
+#, fuzzy
+#~ msgid "%s - (binary)\n"
+#~ msgstr "%s-(Nyabibiri"
+
+#~ msgid "title"
+#~ msgstr "umutwe"
+
+#, fuzzy
+#~ msgid "filename"
+#~ msgstr "Izina ry'idosiye"
 
 # sc/source\ui\miscdlgs\acredlin.src:RID_POPUP_CHANGES.SC_SUB_SORT.SC_SORT_AUTHOR.text
-#: src/main/extract.c:277 src/main/extractor.c:41
 #, fuzzy
-msgid "author"
-msgstr "Umwanditsi"
+#~ msgid "author"
+#~ msgstr "Umwanditsi"
 
-#: src/main/extract.c:281 src/main/extractor.c:43
-msgid "description"
-msgstr "Isobanuramiterere"
+#~ msgid "description"
+#~ msgstr "Isobanuramiterere"
 
 # sfx2/source\dialog\dinfdlg.src:TP_DOCINFODESC.FT_KEYWORDS.text
-#: src/main/extract.c:283 src/main/extractor.c:55
 #, fuzzy
-msgid "keywords"
-msgstr "Amagambo fatizo"
+#~ msgid "keywords"
+#~ msgstr "Amagambo fatizo"
 
 # padmin/source\padialog.src:RID_TXT_TESTPAGE_COMMENT.text
-#: src/main/extract.c:285 src/main/extractor.c:44
 #, fuzzy
-msgid "comment"
-msgstr "Icyo wongeraho"
+#~ msgid "comment"
+#~ msgstr "Icyo wongeraho"
 
-#: src/main/extract.c:289 src/main/extractor.c:45
-msgid "date"
-msgstr "Itariki"
+#~ msgid "date"
+#~ msgstr "Itariki"
 
 # setup2/source\ui\app.src:FT_INSTINFO_MKDIR.text
-#: src/main/extract.c:291 src/main/extractor.c:67
 #, fuzzy
-msgid "creation date"
-msgstr "Irema ry'itariki"
+#~ msgid "creation date"
+#~ msgstr "Irema ry'itariki"
 
-#: src/main/extract.c:319 src/main/extractor.c:46
 #, fuzzy
-msgid "publisher"
-msgstr "Uwasohoye inyandiko"
+#~ msgid "publisher"
+#~ msgstr "Uwasohoye inyandiko"
 
-#: src/main/extract.c:323 src/main/extractor.c:52
 #, fuzzy
-msgid "organization"
-msgstr "Ihuzagahunda"
+#~ msgid "organization"
+#~ msgstr "Ihuzagahunda"
 
 # #-#-#-#-#  officecfg.pot (PACKAGE VERSION)  #-#-#-#-#
 # officecfg/registry\schema\org\openoffice\Office\Writer.xcs:....Wizard.Agenda.Save.DocInfoSubject.text
@@ -964,256 +335,146 @@ msgstr "Ihuzagahunda"
 # officecfg/registry\schema\org\openoffice\Office\Writer.xcs:....Wizard.Fax.Save.DocInfoSubject.text
 # #-#-#-#-#  officecfg.pot (PACKAGE VERSION)  #-#-#-#-#
 # officecfg/registry\schema\org\openoffice\Office\Writer.xcs:....Wizard.Memo.Save.DocInfoSubject.text
-#: src/main/extract.c:327 src/main/extractor.c:54
-msgid "subject"
-msgstr "Ikivugwaho"
+#~ msgid "subject"
+#~ msgstr "Ikivugwaho"
 
 # sw/source\ui\inc\swmn.hrc:_MN_INS.MN_SUB_FIELD.FN_INSERT_FLD_PGCOUNT.text
-#: src/main/extract.c:331 src/main/extractor.c:71
 #, fuzzy
-msgid "page count"
-msgstr "Kubara amapaje"
+#~ msgid "page count"
+#~ msgstr "Kubara amapaje"
 
-#: src/main/extract.c:473
-#, fuzzy, c-format
-msgid "You must specify an argument for the `%s' option (option ignored).\n"
-msgstr "kugirango i Ihitamo Ihitamo"
-
-#: src/main/extract.c:540
-#, fuzzy, c-format
-msgid "Use --help to get a list of options.\n"
-msgstr "Ifashayobora Kuri Kubona a Urutonde Bya Amahitamo"
-
-#: src/main/extract.c:599
-#, c-format
-msgid "%% BiBTeX file\n"
-msgstr ""
-
-#: src/main/extract.c:606
-#, fuzzy, c-format
-msgid "Keywords for file %s:\n"
-msgstr "kugirango IDOSIYE"
-
-#: src/main/extractor.c:37
-msgid "unknown"
-msgstr "itazwi"
-
-#: src/main/extractor.c:39
-msgid "mimetype"
-msgstr ""
-
-#: src/main/extractor.c:42
 #, fuzzy
-msgid "artist"
-msgstr "Umuhanzi"
+#~ msgid "You must specify an argument for the `%s' option (option ignored).\n"
+#~ msgstr "kugirango i Ihitamo Ihitamo"
+
+#, fuzzy
+#~ msgid "Use --help to get a list of options.\n"
+#~ msgstr "Ifashayobora Kuri Kubona a Urutonde Bya Amahitamo"
+
+#, fuzzy
+#~ msgid "Keywords for file %s:\n"
+#~ msgstr "kugirango IDOSIYE"
+
+#~ msgid "unknown"
+#~ msgstr "itazwi"
+
+#, fuzzy
+#~ msgid "artist"
+#~ msgstr "Umuhanzi"
 
 # sc/source\ui\src\sortdlg.src:RID_SCPAGE_SORT_OPTIONS.FT_LANGUAGE.text
-#: src/main/extractor.c:47
 #, fuzzy
-msgid "language"
-msgstr "Ururimi"
+#~ msgid "language"
+#~ msgstr "Ururimi"
 
-#: src/main/extractor.c:48
-msgid "album"
-msgstr ""
-
-#: src/main/extractor.c:49
-msgid "genre"
-msgstr ""
-
-#: src/main/extractor.c:50
-msgid "location"
-msgstr "Inturo"
+#~ msgid "location"
+#~ msgstr "Inturo"
 
 # goodies/source\filter.vcl\eps\dlgeps.src:DLG_EXPORT_EPS.GRP_VERSION.text
-#: src/main/extractor.c:51
 #, fuzzy
-msgid "version"
-msgstr "Verisiyo"
+#~ msgid "version"
+#~ msgstr "Verisiyo"
 
-#: src/main/extractor.c:53
 #, fuzzy
-msgid "copyright"
-msgstr "Uburenganzira bw'umuhimbyi"
+#~ msgid "copyright"
+#~ msgstr "Uburenganzira bw'umuhimbyi"
 
-#: src/main/extractor.c:56
-msgid "contributor"
-msgstr ""
-
-#: src/main/extractor.c:57
 #, fuzzy
-msgid "resource-type"
-msgstr "Ubwoko"
+#~ msgid "resource-type"
+#~ msgstr "Ubwoko"
 
-#: src/main/extractor.c:58
 #, fuzzy
-msgid "format"
-msgstr "Imiterere"
+#~ msgid "format"
+#~ msgstr "Imiterere"
 
-#: src/main/extractor.c:59
 #, fuzzy
-msgid "resource-identifier"
-msgstr "Ikiranga"
+#~ msgid "resource-identifier"
+#~ msgstr "Ikiranga"
 
-#: src/main/extractor.c:60
 #, fuzzy
-msgid "source"
-msgstr "Inkomoko"
+#~ msgid "source"
+#~ msgstr "Inkomoko"
 
 # 5033
-#: src/main/extractor.c:61
 #, fuzzy
-msgid "relation"
-msgstr "Isano"
+#~ msgid "relation"
+#~ msgstr "Isano"
 
-#: src/main/extractor.c:62
-msgid "coverage"
-msgstr ""
-
-#: src/main/extractor.c:63
-msgid "software"
-msgstr ""
-
-#: src/main/extractor.c:64
-msgid "disclaimer"
-msgstr ""
-
-#: src/main/extractor.c:65
 #, fuzzy
-msgid "warning"
-msgstr "Iburira"
-
-#: src/main/extractor.c:66
-msgid "translated"
-msgstr ""
+#~ msgid "warning"
+#~ msgstr "Iburira"
 
 # 3880
-#: src/main/extractor.c:68
 #, fuzzy
-msgid "modification date"
-msgstr "itariki y'ihindura"
+#~ msgid "modification date"
+#~ msgstr "itariki y'ihindura"
 
-#: src/main/extractor.c:69
-msgid "creator"
-msgstr ""
-
-#: src/main/extractor.c:70
 #, fuzzy
-msgid "producer"
-msgstr "Umwanditsi"
+#~ msgid "producer"
+#~ msgstr "Umwanditsi"
 
-#: src/main/extractor.c:72
 #, fuzzy
-msgid "page orientation"
-msgstr "Ipaji Icyerekezo"
+#~ msgid "page orientation"
+#~ msgstr "Ipaji Icyerekezo"
 
 # padmin/source\rtsetup.src:RID_RTS_PAPERPAGE.RID_RTS_PAPER_PAPER_TXT.text
-#: src/main/extractor.c:73
 #, fuzzy
-msgid "paper size"
-msgstr "Ingano y'urupapuro"
+#~ msgid "paper size"
+#~ msgstr "Ingano y'urupapuro"
 
-#: src/main/extractor.c:74
 #, fuzzy
-msgid "used fonts"
-msgstr "Imyandikire"
+#~ msgid "used fonts"
+#~ msgstr "Imyandikire"
 
 # sc/source\ui\pagedlg\pagedlg.src:RID_SCPAGE_TABLE.FL_PAGEDIR.text
-#: src/main/extractor.c:75
 #, fuzzy
-msgid "page order"
-msgstr "Ikurikirana rya paji"
+#~ msgid "page order"
+#~ msgstr "Ikurikirana rya paji"
 
-#: src/main/extractor.c:76
 #, fuzzy
-msgid "created for"
-msgstr "Byaremwe kugirango"
-
-#: src/main/extractor.c:77
-msgid "magnification"
-msgstr ""
-
-#: src/main/extractor.c:78
-msgid "release"
-msgstr ""
+#~ msgid "created for"
+#~ msgstr "Byaremwe kugirango"
 
 # #-#-#-#-#  sc.pot (PACKAGE VERSION)  #-#-#-#-#
 # sc/source\ui\src\globstr.src:RID_GLOBSTR.STR_UNDO_MAKEOUTLINE.text
 # #-#-#-#-#  sc.pot (PACKAGE VERSION)  #-#-#-#-#
 # sc/source\ui\src\miscdlgs.src:RID_SCDLG_GROUP.text
-#: src/main/extractor.c:79
 #, fuzzy
-msgid "group"
-msgstr "Itsinda"
+#~ msgid "group"
+#~ msgstr "Itsinda"
 
-#: src/main/extractor.c:80
-msgid "size"
-msgstr "ingano"
+#~ msgid "size"
+#~ msgstr "ingano"
 
-#: src/main/extractor.c:81
 #, fuzzy
-msgid "summary"
-msgstr "Inshamake"
+#~ msgid "summary"
+#~ msgstr "Inshamake"
 
-#: src/main/extractor.c:82
-msgid "packager"
-msgstr ""
-
-#: src/main/extractor.c:83
 #, fuzzy
-msgid "vendor"
-msgstr "Umucuruzi"
-
-#: src/main/extractor.c:84
-msgid "license"
-msgstr ""
+#~ msgid "vendor"
+#~ msgstr "Umucuruzi"
 
 # svx/source\dialog\dstribut.src:RID_SVXPAGE_DISTRIBUTE.text
-#: src/main/extractor.c:85
 #, fuzzy
-msgid "distribution"
-msgstr "Ikwirakwiza"
+#~ msgid "distribution"
+#~ msgstr "Ikwirakwiza"
 
-#: src/main/extractor.c:86
 #, fuzzy
-msgid "build-host"
-msgstr "Ubuturo"
+#~ msgid "build-host"
+#~ msgstr "Ubuturo"
 
-#: src/main/extractor.c:87
-msgid "os"
-msgstr ""
-
-#: src/main/extractor.c:88
-msgid "dependency"
-msgstr ""
-
-#: src/main/extractor.c:89
-msgid "MD4"
-msgstr ""
-
-#: src/main/extractor.c:90
-msgid "MD5"
-msgstr ""
-
-#: src/main/extractor.c:91
 #, fuzzy
-msgid "SHA-0"
-msgstr "0"
+#~ msgid "SHA-0"
+#~ msgstr "0"
 
-#: src/main/extractor.c:92
 #, fuzzy
-msgid "SHA-1"
-msgstr "1."
-
-#: src/main/extractor.c:93
-msgid "RipeMD160"
-msgstr ""
+#~ msgid "SHA-1"
+#~ msgstr "1."
 
 # officecfg/registry\schema\org\openoffice\Office\Common.xcs:....Filter.Graphic.Export.BMP.Resolution.text
-#: src/main/extractor.c:94
 #, fuzzy
-msgid "resolution"
-msgstr "Imikemurire"
+#~ msgid "resolution"
+#~ msgstr "Imikemurire"
 
 # #-#-#-#-#  officecfg.pot (PACKAGE VERSION)  #-#-#-#-#
 # officecfg/registry\schema\org\openoffice\Office\Writer.xcs:....Insert.Caption.WriterObject.Table.Settings.Category.text
@@ -1235,53 +496,21 @@ msgstr "Imikemurire"
 # officecfg/registry\schema\org\openoffice\Office\Writer.xcs:....Insert.Caption.OfficeObject.Impress.Settings.Category.text
 # #-#-#-#-#  officecfg.pot (PACKAGE VERSION)  #-#-#-#-#
 # officecfg/registry\schema\org\openoffice\Office\Writer.xcs:....Insert.Caption.OfficeObject.OLEMisc.Settings.Category.text
-#: src/main/extractor.c:95
 #, fuzzy
-msgid "category"
-msgstr "Icyiciro"
+#~ msgid "category"
+#~ msgstr "Icyiciro"
 
-#: src/main/extractor.c:96
 #, fuzzy
-msgid "book title"
-msgstr "Umutwe w'igitabo"
+#~ msgid "book title"
+#~ msgstr "Umutwe w'igitabo"
 
 # sw/source\ui\wizard\wizmmdlg.src:DLG_WIZARD_MM.DLG_MM2_Edit_Elem1.text
-#: src/main/extractor.c:97
-msgid "priority"
-msgstr "Icyihutirwa"
+#~ msgid "priority"
+#~ msgstr "Icyihutirwa"
 
-#: src/main/extractor.c:98
-msgid "conflicts"
-msgstr ""
-
-#: src/main/extractor.c:99
-msgid "replaces"
-msgstr ""
-
-#: src/main/extractor.c:100
-msgid "provides"
-msgstr ""
-
-#: src/main/extractor.c:101
-msgid "conductor"
-msgstr ""
-
-#: src/main/extractor.c:102
-msgid "interpreter"
-msgstr ""
-
-#: src/main/extractor.c:103
-msgid "owner"
-msgstr ""
-
-#: src/main/extractor.c:104
-msgid "lyrics"
-msgstr ""
-
-#: src/main/extractor.c:105
 #, fuzzy
-msgid "media type"
-msgstr "Ibitangazamakuru Ubwoko"
+#~ msgid "media type"
+#~ msgstr "Ibitangazamakuru Ubwoko"
 
 # ***** BEGIN LICENSE BLOCK *****
 # Version: MPL 1.1/GPL 2.0/LGPL 2.1
@@ -1320,108 +549,40 @@ msgstr "Ibitangazamakuru Ubwoko"
 #
 # ***** END LICENSE BLOCK *****
 # Box Headings
-#: src/main/extractor.c:106
 #, fuzzy
-msgid "contact"
-msgstr "Umuntu"
+#~ msgid "contact"
+#~ msgstr "Umuntu"
 
-#: src/main/extractor.c:107
 #, fuzzy
-msgid "binary thumbnail data"
-msgstr "Nyabibiri Ibyatanzwe"
+#~ msgid "binary thumbnail data"
+#~ msgstr "Nyabibiri Ibyatanzwe"
 
 # setup2/source\ui\app.src:FT_INSTINFO_MKDIR.text
-#: src/main/extractor.c:108
 #, fuzzy
-msgid "publication date"
-msgstr "Irema ry'itariki"
+#~ msgid "publication date"
+#~ msgstr "Irema ry'itariki"
 
-#: src/main/extractor.c:109
-msgid "camera make"
-msgstr ""
-
-#: src/main/extractor.c:110
-msgid "camera model"
-msgstr ""
-
-#: src/main/extractor.c:111
-msgid "exposure"
-msgstr ""
-
-#: src/main/extractor.c:112
-msgid "aperture"
-msgstr ""
-
-#: src/main/extractor.c:113
-msgid "exposure bias"
-msgstr ""
-
-#: src/main/extractor.c:114
-msgid "flash"
-msgstr ""
-
-#: src/main/extractor.c:115
-msgid "flash bias"
-msgstr ""
-
-#: src/main/extractor.c:116
-msgid "focal length"
-msgstr ""
-
-#: src/main/extractor.c:117
-msgid "focal length (35mm equivalent)"
-msgstr ""
-
-#: src/main/extractor.c:118
-msgid "iso speed"
-msgstr ""
-
-#: src/main/extractor.c:119
-msgid "exposure mode"
-msgstr ""
-
-#: src/main/extractor.c:120
-msgid "metering mode"
-msgstr ""
-
-#: src/main/extractor.c:121
-msgid "macro mode"
-msgstr ""
-
-#: src/main/extractor.c:122
-msgid "image quality"
-msgstr ""
-
-#: src/main/extractor.c:123
-msgid "white balance"
-msgstr ""
-
-#: src/main/extractor.c:124
 #, fuzzy
-msgid "orientation"
-msgstr "Ipaji Icyerekezo"
+#~ msgid "orientation"
+#~ msgstr "Ipaji Icyerekezo"
 
-#: src/main/extractor.c:218
-#, fuzzy, c-format
-msgid "Initialization of plugin mechanism failed: %s!\n"
-msgstr "Bya Byanze"
+#, fuzzy
+#~ msgid "Initialization of plugin mechanism failed: %s!\n"
+#~ msgstr "Bya Byanze"
 
-#: src/main/extractor.c:365
-#, fuzzy, c-format
-msgid ""
-"Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
-"failed also.  Errors are: `%s' and `%s'.\n"
-msgstr "IKIMENYETSO in Isomero Byanze Byanze Na"
+#, fuzzy
+#~ msgid ""
+#~ "Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
+#~ "failed also.  Errors are: `%s' and `%s'.\n"
+#~ msgstr "IKIMENYETSO in Isomero Byanze Byanze Na"
 
-#: src/main/extractor.c:394
-#, fuzzy, c-format
-msgid "Loading `%s' plugin failed: %s\n"
-msgstr "Byanze"
+#, fuzzy
+#~ msgid "Loading `%s' plugin failed: %s\n"
+#~ msgstr "Byanze"
 
-#: src/main/extractor.c:599
-#, fuzzy, c-format
-msgid "Unloading plugin `%s' failed!\n"
-msgstr "Byanze"
+#, fuzzy
+#~ msgid "Unloading plugin `%s' failed!\n"
+#~ msgstr "Byanze"
 
 #~ msgid "No error"
 #~ msgstr "Nta kosa"

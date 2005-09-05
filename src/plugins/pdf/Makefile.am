@@ -11,12 +11,13 @@ LIBS = \
 plugin_LTLIBRARIES = \
  libextractor_pdf.la
 
-PLUGINFLAGS = -export-dynamic -avoid-version -module -no-undefined
+PLUGINFLAGS = -Wl,-Bsymbolic -avoid-version -module -no-undefined
 
 libextractor_pdf_la_LINK = \
   /bin/sh ../../../libtool --mode=link $(CXXLD) -o libextractor_pdf.la
 libextractor_pdf_la_LDFLAGS = \
-  $(PLUGINFLAGS) $(XTRA_CPPLIBS)
+  $(PLUGINFLAGS)  -Wl,--retain-symbols-file -Wl,SYMBOLS \
+  $(XTRA_CPPLIBS)
 libextractor_pdf_la_LIBADD = \
   $(top_builddir)/src/main/libextractor.la \
   $(top_builddir)/src/plugins/libconvert.la \
@@ -53,6 +54,7 @@ libextractor_pdf_la_SOURCES = \
 CXXFLAGS = -O0
 
 EXTRA_DIST = \
+ SYMBOLS \
  darwin.lt.rb \
  aconf.h \
  aconf2.h \

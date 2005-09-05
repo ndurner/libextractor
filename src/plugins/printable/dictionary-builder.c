@@ -28,8 +28,6 @@
 
 #include "platform.h"
 #include "bloomfilter.h"
-
-#include "sha1.c"
 #include "bloomfilter.c"
 
 #define ADDR_PER_ELEMENT 46

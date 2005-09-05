@@ -2,6 +2,8 @@ INCLUDES = \
   -I$(top_srcdir)/src/include \
   @GTK_CFLAGS@ 
 
+EXTRA_DIST = SYMBOLS
+
 LIBS = \
  @LTLIBINTL@ @LIBS@
 
@@ -21,6 +23,6 @@ libextractor_thumbnail_la_LIBADD = \
   $(LIBADD) -lgobject-2.0 @GTK_LIBS@ \
   $(top_builddir)/src/main/libextractor.la 
 libextractor_thumbnail_la_LDFLAGS = \
-  $(PLUGINFLAGS) 
+  $(PLUGINFLAGS)  -Wl,--retain-symbols-file -Wl,SYMBOLS 
 libextractor_thumbnail_la_SOURCES = \
   thumbnailextractor.c

@@ -1,3 +1,9 @@
+Sun Sep  4 02:08:56 PDT 2005
+	Changed code to export fewer symbols (refactoring plus linker options,
+	goal is to address Mantis #925.  Changed debian extractor to no longer
+	require threads.  Dead code elimination in OO and OLE2 extractors.
+	Minor bugfixes ported from libgsf 1.12.2 to OLE2 extractor.
+
 Fri Sep  2 03:17:10 PDT 2005
 	Added support for Mime-types for Microsoft Office formats.
 

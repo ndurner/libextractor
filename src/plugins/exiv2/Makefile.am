@@ -1,5 +1,7 @@
 INCLUDES = -I$(top_srcdir)/src/include
 
+EXTRA_DIST = SYMBOLS
+
 # install plugins under:
 plugindir = $(libdir)/libextractor
 
@@ -11,12 +13,14 @@ LIBS = \
 plugin_LTLIBRARIES = \
  libextractor_exiv2.la
 
-PLUGINFLAGS = -export-dynamic -avoid-version -module -no-undefined
+PLUGINFLAGS = -Wl,-Bsymbolic -avoid-version -module -no-undefined 
+
 
 libextractor_exiv2_la_LINK = \
   /bin/sh ../../../libtool --mode=link $(CXXLD) -o libextractor_exiv2.la
 libextractor_exiv2_la_LDFLAGS = \
-  $(PLUGINFLAGS) $(XTRA_CPPLIBS) -lpthread
+  $(PLUGINFLAGS) -Wl,--retain-symbols-file -Wl,SYMBOLS  \
+  $(XTRA_CPPLIBS) -lpthread
 libextractor_exiv2_la_LIBADD = \
   $(top_builddir)/src/main/libextractor.la -lpthread
 

@@ -30,7 +30,7 @@
 
 #include "platform.h"
 #include "extractor.h"
-#include "bloomfilter.h"
+#include "bloomfilter.c"
 
 extern Bloomfilter FILTER_NAME;
 
@@ -358,6 +358,7 @@ static char * blacklist[] = {
   "image/png",
   "image/x-png",
   "audio/real",
+  "audio/mp3",
   "audio/mpeg",
   "application/x-gzip",
   "application/x-dpkg",
@@ -377,6 +378,7 @@ static char * blacklist[] = {
   "application/ogg",
   "video/real",
   "video/asf",
+  "video/mpeg",
   "video/quicktime",
   NULL,
 };

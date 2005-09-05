@@ -25,7 +25,9 @@
 #ifndef BLOOMFILTER_H
 #define BLOOMFILTER_H
 
-#include "sha1.h"
+typedef struct {
+  char data[20];
+} HashCode160;
 
 typedef struct {
   /** How many bits we set for each stored element */
@@ -35,22 +37,5 @@ typedef struct {
   /** Size of bitArray in bytes */
   unsigned int bitArraySize;
 } Bloomfilter;
-
-/**
- * Test if an element is in the filter.
- * @param e the element
- * @param bf the filter
- * @return YES if the element is in the filter, NO if not
- */
-int testBloomfilter(Bloomfilter * bf,
-		    HashCode160 * e);
-
-/**
- * Add an element to the filter
- * @param bf the filter
- * @param e the element
- */
-void addToBloomfilter(Bloomfilter * bf,
-		      HashCode160 * e);
 
 #endif

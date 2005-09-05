@@ -1,5 +1,7 @@
 INCLUDES = -I$(top_srcdir)/src/include
 
+EXTRA_DIST = SYMBOLS
+
 # install plugins under:
 plugindir = $(libdir)/libextractor
 
@@ -15,9 +17,10 @@ endif
 plugin_LTLIBRARIES = \
  libextractor_rpm.la
 
-PLUGINFLAGS = -export-dynamic -avoid-version -module
+PLUGINFLAGS = -Wl,-Bsymbolic -avoid-version -module -no-undefined
 
 libextractor_rpm_la_SOURCES = \
  rpmextractor.c
 libextractor_rpm_la_LDFLAGS = \
- $(PLUGINFLAGS) $(WINFLAGS)
+ $(PLUGINFLAGS)  -Wl,--retain-symbols-file -Wl,SYMBOLS \
+ $(WINFLAGS)
