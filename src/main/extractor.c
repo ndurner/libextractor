@@ -27,6 +27,13 @@
 #include <../../libltdl/ltdl.h>
 #endif
 
+#if HAVE_LIBBZ2
+#include <bzlib.h>
+#endif
+
+#if HAVE_ZLIB
+#include <zlib.h>
+#endif
 
 #define DEBUG 1
 
@@ -613,6 +620,179 @@ EXTRACTOR_removeAll (EXTRACTOR_ExtractorList * libraries)
     libraries = EXTRACTOR_removeLibrary (libraries, libraries->libname);
 }
 
+
+
+/**
+ * How many bytes do we actually try to scan? (from the beginning
+ * of the file).  Limit to 1 GB.
+ */
+#define MAX_READ 1024 * 1024 * 1024
+
+/**
+ * How many bytes do we actually try to decompress? (from the beginning
+ * of the file).  Limit to 16 MB.
+ */
+#define MAX_DECOMPRESS 16 * 1024 * 1024
+
+
+static EXTRACTOR_KeywordList *
+getKeywords (EXTRACTOR_ExtractorList * extractor,
+	     const char * filename,
+	     const unsigned char * data,
+	     size_t size) {
+  EXTRACTOR_KeywordList *result;
+  char * buf;
+  size_t dsize;
+#if HAVE_ZLIB
+  z_stream strm;
+  int ret;
+  size_t pos;
+#endif
+#if HAVE_LIBBZ2
+  bz_stream bstrm;
+  int bret;
+  size_t bpos;
+#endif
+
+  buf = NULL;
+  dsize = 0;
+#if HAVE_ZLIB
+  /* try gzip decompression first */
+  if ( (data[0] == 0x1f) &&
+       (data[1] == 0x8b) &&
+       (data[2] == 0x08) ) {
+    memset(&strm,
+	   0,
+	   sizeof(z_stream));
+    strm.next_in = (char*) data;
+    strm.avail_in = size;
+    strm.total_in = 0;
+    strm.zalloc = NULL;
+    strm.zfree = NULL;
+    strm.opaque = NULL;
+    
+    if (Z_OK == inflateInit2(&strm,
+			     15 + 32)) {
+      dsize = 2 * size;
+      if (dsize > MAX_DECOMPRESS)
+	dsize = MAX_DECOMPRESS;
+      buf = malloc(dsize);
+      pos = 0;
+      if (buf == NULL) {
+	inflateEnd(&strm);
+      } else {
+	strm.next_out = buf;
+	strm.avail_out = dsize;
+	do {
+	  ret = inflate(&strm,
+			Z_SYNC_FLUSH);
+	  if (ret == Z_OK) {
+	    if (dsize == MAX_DECOMPRESS) 
+	      break;
+	    pos += strm.total_out;
+	    dsize *= 2;
+	    if (dsize > MAX_DECOMPRESS)
+	      dsize = MAX_DECOMPRESS;
+	    buf = realloc(buf, dsize);
+	    strm.next_out = &buf[pos];
+	    strm.avail_out = dsize - pos;
+	  } else if (ret != Z_STREAM_END) {
+	    /* error */
+	    free(buf);
+	    buf = NULL;
+	  }
+	} while ( (buf != NULL) &&		  
+		  (ret != Z_STREAM_END) );      
+	dsize = pos + strm.total_out; 
+	inflateEnd(&strm);
+	if (dsize == 0) {
+	  free(buf);
+	  buf = NULL;
+	}
+      }
+    }
+  }
+#endif
+
+#if HAVE_LIBBZ2
+  if ( (data[0] == 'B') &&
+       (data[1] == 'Z') &&
+       (data[2] == 'h') ) {
+    /* now try bz2 decompression */
+    memset(&bstrm,
+	   0,
+	   sizeof(bz_stream));
+    bstrm.next_in = (char*) data;
+    bstrm.avail_in = size;
+    bstrm.total_in_lo32 = 0;
+    bstrm.total_in_hi32 = 0;
+    bstrm.bzalloc = NULL;
+    bstrm.bzfree = NULL;
+    bstrm.opaque = NULL;
+    if ( (buf == NULL) &&
+	 (BZ_OK == BZ2_bzDecompressInit(&bstrm,
+					0,
+					0)) ) {
+      dsize = 2 * size;
+      if (dsize > MAX_DECOMPRESS)
+	dsize = MAX_DECOMPRESS;
+      buf = malloc(dsize);
+      bpos = 0;
+      if (buf == NULL) {
+	BZ2_bzDecompressEnd(&bstrm);
+      } else {
+	bstrm.next_out = buf;
+	bstrm.avail_out = dsize;
+	do {
+	  bret = BZ2_bzDecompress(&bstrm);
+	  if (bret == Z_OK) {
+	    if (dsize == MAX_DECOMPRESS) 
+	      break;
+	    bpos += bstrm.total_out_lo32;
+	    dsize *= 2;
+	    if (dsize > MAX_DECOMPRESS)
+	      dsize = MAX_DECOMPRESS;
+	    buf = realloc(buf, dsize);
+	    bstrm.next_out = &buf[bpos];
+	    bstrm.avail_out = dsize - pos;
+	  } else if (bret != BZ_STREAM_END) {
+	    /* error */
+	    free(buf);
+	    buf = NULL;
+	  }
+	} while ( (buf != NULL) &&
+		  (bret != BZ_STREAM_END) );      
+	dsize = bpos + bstrm.total_out_lo32; 
+	BZ2_bzDecompressEnd(&bstrm);
+	if (dsize == 0) {
+	  free(buf);
+	  buf = NULL;
+	}
+      }
+    }
+  }
+#endif
+
+
+  /* finally, call plugins */
+  if (buf != NULL) {
+    data = buf;
+    size = dsize;
+  }
+  result = NULL;
+  while (extractor != NULL) {
+    result = extractor->extractMethod(filename,
+				      (char*) data,
+				      size,
+				      result,
+				      extractor->options);
+    extractor = extractor->next;
+  }
+  if (buf != NULL)
+    free(buf);
+  return result;
+}
+
 /**
  * Extract keywords from a file using the available extractors.
  * @param extractor the list of extractor libraries
@@ -646,21 +826,16 @@ EXTRACTOR_getKeywords (EXTRACTOR_ExtractorList * extractor,
     return NULL;
   }
 
-  if (size > 1* 1024 * 1024 * 1024)
-    size = 1 * 1024 * 1024 * 1024; /* do not mmap/read more than 1 GB! */
+  if (size > MAX_READ)
+    size = MAX_READ; /* do not mmap/read more than 1 GB! */
   buffer = MMAP(NULL, size, PROT_READ | PROT_WRITE, MAP_PRIVATE, file, 0);
   close(file);
   if ( (buffer == NULL) || (buffer == (void *) -1) )
     return NULL;
-  result = NULL;
-  while (extractor != NULL) {
-    result = extractor->extractMethod(filename,
-				      buffer,
-				      size,
-				      result,
-				      extractor->options);
-    extractor = extractor->next;
-  }
+  result = getKeywords(extractor,
+		       filename,
+		       buffer,
+		       size);
   if (size > 0)
     MUNMAP (buffer, size);
   else
@@ -684,20 +859,12 @@ EXTRACTOR_KeywordList *
 EXTRACTOR_getKeywords2(EXTRACTOR_ExtractorList * extractor,
 		       const char * data,
 		       size_t size) {
-  EXTRACTOR_KeywordList * result;
-
   if (data == NULL)
     return NULL;
-  result = NULL;
-  while (extractor != NULL) {
-    result = extractor->extractMethod(NULL,
-				      (char*)data,
-				      size,
-				      result,
-				      extractor->options);
-    extractor = extractor->next;
-  }
-  return result;
+  return getKeywords(extractor,
+		     NULL,
+		     data,
+		     size);
 }
 
 static void

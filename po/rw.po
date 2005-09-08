@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.4.2\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2005-09-04 02:59-0700\n"
+"POT-Creation-Date: 2005-09-07 21:46-0700\n"
 "PO-Revision-Date: 2005-04-04 10:55-0700\n"
 "Last-Translator: Steven Michael Murphy <murf@e-tools.com>\n"
 "Language-Team: Kinyarwanda <translation-team-rw@lists.sourceforge.net>\n"
@@ -34,7 +34,7 @@ msgstr ""
 msgid "Binary RPM %d.%d"
 msgstr ""
 
-#: src/plugins/printable/dictionary-builder.c:50
+#: src/plugins/printable/dictionary-builder.c:69
 #, fuzzy, c-format
 msgid ""
 "Please provide the name of the language you are building\n"
@@ -42,62 +42,62 @@ msgid ""
 msgstr "i Izina: Bya i Ururimi Inkoranyamagambo kugirango Urugero"
 
 # basctl/source\basicide\basidesh.src:RID_STR_ERROROPENSTORAGE.text
-#: src/plugins/printable/dictionary-builder.c:63
+#: src/plugins/printable/dictionary-builder.c:82
 #, fuzzy, c-format
 msgid "Error opening file `%s': %s\n"
 msgstr "Hari ikibazo mu gufungura dosiye"
 
-#: src/plugins/printable/dictionary-builder.c:71
+#: src/plugins/printable/dictionary-builder.c:90
 #, c-format
 msgid ""
 "Error allocating: %s\n"
 "."
 msgstr ""
 
-#: src/plugins/printable/dictionary-builder.c:83
+#: src/plugins/printable/dictionary-builder.c:102
 #, fuzzy, c-format
 msgid "Increase ALLOCSIZE (in %s).\n"
 msgstr "in"
 
-#: src/plugins/manextractor.c:128
+#: src/plugins/manextractor.c:140
 msgid "Commands"
 msgstr "amabwiriza"
 
-#: src/plugins/manextractor.c:133
+#: src/plugins/manextractor.c:145
 #, fuzzy
 msgid "System calls"
 msgstr "Amahamagara:"
 
-#: src/plugins/manextractor.c:138
+#: src/plugins/manextractor.c:150
 #, fuzzy
 msgid "Library calls"
 msgstr "Amahamagara:"
 
-#: src/plugins/manextractor.c:143
+#: src/plugins/manextractor.c:155
 #, fuzzy
 msgid "Special files"
 msgstr "Idosiye"
 
-#: src/plugins/manextractor.c:148
+#: src/plugins/manextractor.c:160
 #, fuzzy
 msgid "File formats and conventions"
 msgstr "Idosiye Imiterere Na"
 
-#: src/plugins/manextractor.c:153
+#: src/plugins/manextractor.c:165
 msgid "Games"
 msgstr ""
 
-#: src/plugins/manextractor.c:158
+#: src/plugins/manextractor.c:170
 #, fuzzy
 msgid "Conventions and miscellaneous"
 msgstr "Na Binyuranye"
 
-#: src/plugins/manextractor.c:163
+#: src/plugins/manextractor.c:175
 #, fuzzy
 msgid "System management commands"
 msgstr "Amabwiriza"
 
-#: src/plugins/manextractor.c:168
+#: src/plugins/manextractor.c:180
 msgid "Kernel routines"
 msgstr ""
 

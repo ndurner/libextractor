@@ -30,6 +30,25 @@
 #include "bloomfilter.h"
 #include "bloomfilter.c"
 
+
+/**
+ * Add an element to the filter
+ *
+ * @param bf the filter
+ * @param e the element
+ */
+static void addToBloomfilter(Bloomfilter * bf,
+		      HashCode160 * e) {
+
+  if (NULL == bf)
+    return;
+  iterateBits(bf,
+	      &setBitCallback,
+	      NULL,
+	      e);
+}
+
+
 #define ADDR_PER_ELEMENT 46
 
 int main(int argc,

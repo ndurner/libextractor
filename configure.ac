@@ -1,8 +1,8 @@
 # Process this file with autoconf to produce a configure script.
 AC_PREREQ(2.57)
-AC_INIT([libextractor], [0.5.4a], [bug-libextractor@gnu.org])
+AC_INIT([libextractor], [0.5.5], [bug-libextractor@gnu.org])
 AC_REVISION($Revision: 1.67 $)
-AM_INIT_AUTOMAKE([libextractor], [0.5.4a])
+AM_INIT_AUTOMAKE([libextractor], [0.5.5])
 AM_CONFIG_HEADER(src/include/config.h)
 
 AH_TOP([#define _GNU_SOURCE  1])
@@ -132,6 +132,11 @@ AC_CHECK_LIB(z, inflate,
         AC_DEFINE(HAVE_ZLIB,1,[Have zlib])],
         [AM_CONDITIONAL(HAVE_ZLIB, false)])
 
+AC_CHECK_LIB(bz2, BZ2_decompress,
+        [AM_CONDITIONAL(HAVE_BZ2, true)
+        AC_DEFINE(HAVE_LIBBZ2,1,[Have libbz2])],
+        [AM_CONDITIONAL(HAVE_BZ2, false)])
+
 # restore LIBS
 LIBS=$LIBSOLD
 
@@ -156,7 +161,7 @@ AC_HEADER_STDC
 AC_HEADER_DIRENT
 AC_HEADER_STDBOOL
 AC_CHECK_HEADERS([fcntl.h netinet/in.h stdlib.h string.h unistd.h libintl.h limits.h stddef.h zlib.h])
-AC_CHECK_HEADERS([ltdl.h iconv.h])
+AC_CHECK_HEADERS([ltdl.h iconv.h bzlib.h])
 # fixme, we need to die here if a header is not found!
 
 AC_CHECK_HEADERS([vorbis/vorbisfile.h])

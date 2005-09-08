@@ -32,6 +32,28 @@
 #include "extractor.h"
 #include "bloomfilter.c"
 
+/**
+ * Test if an element is in the filter.
+ *
+ * @param e the element
+ * @param bf the filter
+ * @return 1 if the element is in the filter, 0 if not
+ */
+static int testBloomfilter(Bloomfilter * bf,
+		    HashCode160 * e) {
+  int res;
+
+  if (NULL == bf)
+    return 1;
+  res = 1;
+  iterateBits(bf,
+	      (BitIterator)&testBitCallback,
+	      &res,
+	      e);
+  return res;
+}
+
+
 extern Bloomfilter FILTER_NAME;
 
 static char * xstrndup(const char * s, size_t n){

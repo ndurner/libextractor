@@ -1,3 +1,10 @@
+Wed Sep  7 21:41:35 PDT 2005
+	Added decompression of gz and bz2 streams to the LE core library
+	(avoids need to do this, possibly repeatedly, in plugins and makes
+	sure that all plugins work with compressed files).  Eliminated gz
+	decompression from man and tar extractors.
+	Releasing libextractor 0.5.5.
+
 Sun Sep  4 02:08:56 PDT 2005
 	Changed code to export fewer symbols (refactoring plus linker options,
 	goal is to address Mantis #925.  Changed debian extractor to no longer

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.5.0\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2005-09-04 02:59-0700\n"
+"POT-Creation-Date: 2005-09-07 21:46-0700\n"
 "PO-Revision-Date: 2005-06-22 15:05+0200\n"
 "Last-Translator: Karl Eichwalder <ke@gnu.franken.de>\n"
 "Language-Team: German <de@li.org>\n"
@@ -28,7 +28,7 @@ msgstr "Quell-RPM %d.%d"
 msgid "Binary RPM %d.%d"
 msgstr "Binäres RPM %d.%d"
 
-#: src/plugins/printable/dictionary-builder.c:50
+#: src/plugins/printable/dictionary-builder.c:69
 #, c-format
 msgid ""
 "Please provide the name of the language you are building\n"
@@ -37,12 +37,12 @@ msgstr ""
 "Bitte geben Sie den Namen der Sprache an, für die Sie ein Wörterbuch\n"
 "erstellen.  Zum Beispiel:\n"
 
-#: src/plugins/printable/dictionary-builder.c:63
+#: src/plugins/printable/dictionary-builder.c:82
 #, c-format
 msgid "Error opening file `%s': %s\n"
 msgstr "Fehler beim Öffnen der Datei »%s«: %s\n"
 
-#: src/plugins/printable/dictionary-builder.c:71
+#: src/plugins/printable/dictionary-builder.c:90
 #, c-format
 msgid ""
 "Error allocating: %s\n"
@@ -51,44 +51,44 @@ msgstr ""
 "Fehler beim Allokieren: %s\n"
 "."
 
-#: src/plugins/printable/dictionary-builder.c:83
+#: src/plugins/printable/dictionary-builder.c:102
 #, c-format
 msgid "Increase ALLOCSIZE (in %s).\n"
 msgstr "ALLOCSIZE vergrößern (in %s).\n"
 
-#: src/plugins/manextractor.c:128
+#: src/plugins/manextractor.c:140
 msgid "Commands"
 msgstr "Befehle"
 
-#: src/plugins/manextractor.c:133
+#: src/plugins/manextractor.c:145
 msgid "System calls"
 msgstr "Systemaufrufe"
 
-#: src/plugins/manextractor.c:138
+#: src/plugins/manextractor.c:150
 msgid "Library calls"
 msgstr "Bibliotheksaufrufe"
 
-#: src/plugins/manextractor.c:143
+#: src/plugins/manextractor.c:155
 msgid "Special files"
 msgstr "Spezialdateien"
 
-#: src/plugins/manextractor.c:148
+#: src/plugins/manextractor.c:160
 msgid "File formats and conventions"
 msgstr ""
 
-#: src/plugins/manextractor.c:153
+#: src/plugins/manextractor.c:165
 msgid "Games"
 msgstr "Spiele"
 
-#: src/plugins/manextractor.c:158
+#: src/plugins/manextractor.c:170
 msgid "Conventions and miscellaneous"
 msgstr ""
 
-#: src/plugins/manextractor.c:163
+#: src/plugins/manextractor.c:175
 msgid "System management commands"
 msgstr ""
 
-#: src/plugins/manextractor.c:168
+#: src/plugins/manextractor.c:180
 msgid "Kernel routines"
 msgstr "Kernelroutinen"
 

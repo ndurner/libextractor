@@ -435,44 +435,4 @@ static void testBitCallback(Bloomfilter * bf,
     *arg = 0;
 }
 
-/* *********************** INTERFACE **************** */
-
-/**
- * Test if an element is in the filter.
- *
- * @param e the element
- * @param bf the filter
- * @return 1 if the element is in the filter, 0 if not
- */
-static int testBloomfilter(Bloomfilter * bf,
-		    HashCode160 * e) {
-  int res;
-
-  if (NULL == bf)
-    return 1;
-  res = 1;
-  iterateBits(bf,
-	      (BitIterator)&testBitCallback,
-	      &res,
-	      e);
-  return res;
-}
-
-/**
- * Add an element to the filter
- *
- * @param bf the filter
- * @param e the element
- */
-static void addToBloomfilter(Bloomfilter * bf,
-		      HashCode160 * e) {
-
-  if (NULL == bf)
-    return;
-  iterateBits(bf,
-	      &setBitCallback,
-	      NULL,
-	      e);
-}
-
 /* ******************** end of bloomfilter.c *********** */

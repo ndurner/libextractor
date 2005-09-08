@@ -81,10 +81,11 @@ typedef struct {
 } USTarHeader;
 
 
-static struct EXTRACTOR_Keywords *
-tar_extract(const char * data,
-	    size_t size,
-	    struct EXTRACTOR_Keywords * prev) {
+struct EXTRACTOR_Keywords *
+libextractor_tar_extract(const char * filename,
+			 const char * data,
+			 size_t size,
+			 struct EXTRACTOR_Keywords * prev) {
   TarHeader * tar;
   USTarHeader * ustar;
   size_t pos;
@@ -135,87 +136,3 @@ tar_extract(const char * data,
   }
   return prev;
 }
-
-static voidpf Emalloc(voidpf opaque, uInt items, uInt size) {
-  return malloc(size * items);
-}
-
-static void Efree(voidpf opaque, voidpf ptr) {
-  free(ptr);
-}
-
-/* do not decompress tar.gz files > 16 MB */
-#define MAX_TGZ_SIZE 16 * 1024 * 1024
-
-struct EXTRACTOR_Keywords *
-libextractor_tar_extract(const char * filename,
-			 const unsigned char * data,
-			 size_t size,
-			 struct EXTRACTOR_Keywords * prev) {
-  if ( (data[0] == 0x1f) &&
-       (data[1] == 0x8b) &&
-       (data[2] == 0x08) ) {
-    time_t ctime;
-    char * buf;
-    size_t bufSize;
-    z_stream strm;
-
-    /* Creation time */
-    ctime = ((((((  (unsigned int)data[7] << 8)
-                  | (unsigned int)data[6]) << 8)
-                  | (unsigned int)data[5]) << 8)
-                  | (unsigned int)data[4]);
-    if (ctime) {
-      struct tm ctm;
-      char tmbuf[60];
-
-      ctm = *gmtime(&ctime);
-      if (strftime(tmbuf, sizeof(tmbuf),
-       nl_langinfo(D_FMT),
-       &ctm))
-        prev = addKeyword(EXTRACTOR_CREATION_DATE, strdup(tmbuf), prev);
-    }
-
-    /* try for tar.gz */
-    bufSize = data[size-4] + 256 * data[size-3] + 65536 * data[size-2] + 256*65536 * data[size-1];
-    if (bufSize > MAX_TGZ_SIZE) {
-      return prev;
-    }
-
-    memset(&strm,
-	   0,
-	   sizeof(z_stream));
-    strm.next_in = (char*) data;
-    strm.avail_in = size;
-    strm.total_in = 0;
-    strm.zalloc = &Emalloc;
-    strm.zfree = &Efree;
-    strm.opaque = NULL;
-    if (Z_OK != inflateInit2(&strm,
-			     15 + 32))
-      return prev;
-    buf = malloc(bufSize);
-    if (buf == NULL) {
-      inflateEnd(&strm);
-      return prev;
-    }
-    strm.next_out = buf;
-    strm.avail_out = bufSize;
-    inflate(&strm,
-	    Z_FINISH);
-    if (strm.total_out == 0) {
-      inflateEnd(&strm);
-      free(buf);
-      return prev;
-    }
-    bufSize = strm.total_out;
-    inflateEnd(&strm);
-    prev = tar_extract(buf, bufSize, prev);
-    free(buf);
-    return prev;
-  } else {
-    /* try for uncompressed tar */
-    return tar_extract(data, size, prev);
-  }
-}
-

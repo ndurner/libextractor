@@ -173,7 +173,6 @@ libextractor_tar_la_SOURCES = \
 libextractor_tar_la_LDFLAGS = \
   $(PLUGINFLAGS)  -Wl,--retain-symbols-file -Wl,TAR_SYMBOLS
 libextractor_tar_la_LIBADD = \
-  -lz \
   $(top_builddir)/src/main/libextractor.la
 
 libextractor_lower_la_SOURCES = \
@@ -253,8 +252,6 @@ libextractor_man_la_SOURCES = \
 libextractor_man_la_LDFLAGS = \
   $(top_builddir)/src/main/libextractor.la \
   $(PLUGINFLAGS) -Wl,--retain-symbols-file -Wl,MAN_SYMBOLS 
-libextractor_man_la_LIBADD = \
-  -lz 
 
 libextractor_deb_la_SOURCES = \
   debextractor.c 
