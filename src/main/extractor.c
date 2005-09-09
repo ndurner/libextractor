@@ -690,6 +690,7 @@ getKeywords (EXTRACTOR_ExtractorList * extractor,
 	    if (dsize == MAX_DECOMPRESS) 
 	      break;
 	    pos += strm.total_out;
+	    strm.total_out = 0;
 	    dsize *= 2;
 	    if (dsize > MAX_DECOMPRESS)
 	      dsize = MAX_DECOMPRESS;
@@ -749,6 +750,7 @@ getKeywords (EXTRACTOR_ExtractorList * extractor,
 	    if (dsize == MAX_DECOMPRESS) 
 	      break;
 	    bpos += bstrm.total_out_lo32;
+	    bstrm.total_out_lo32 = 0;
 	    dsize *= 2;
 	    if (dsize > MAX_DECOMPRESS)
 	      dsize = MAX_DECOMPRESS;
