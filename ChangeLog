@@ -1,3 +1,7 @@
+Fri Sep  9 14:57:10 PDT 2005
+	Fixed bug in decompression code that occured if the compressed file
+	expanded to more than twice its original size.
+
 Wed Sep  7 21:41:35 PDT 2005
 	Added decompression of gz and bz2 streams to the LE core library
 	(avoids need to do this, possibly repeatedly, in plugins and makes
