@@ -1,7 +1,5 @@
 include ../Makefile-plugins.am
 
-EXTRA_DIST = SYMBOLS
-
 SUBDIRS = .
 
 plugin_LTLIBRARIES = \

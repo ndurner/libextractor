@@ -1,14 +1,4 @@
-INCLUDES = -I$(top_srcdir)/src/include
-
-EXTRA_DIST = SYMBOLS
-
-LIBS = \
- @LTLIBINTL@ @LIBS@
-
-# install plugins under:
-plugindir = $(libdir)/libextractor
-
-PLUGINFLAGS = -Wl,-Bsymbolic -avoid-version -module -no-undefined
+include ../Makefile-plugins.am
 
 SUBDIRS = .
 
@@ -19,7 +9,7 @@ libextractor_oo_la_SOURCES = \
   ooextractor.c
 
 libextractor_oo_la_LDFLAGS = \
- $(PLUGINFLAGS) -Wl,--retain-symbols-file -Wl,SYMBOLS
+ $(PLUGINFLAGS) $(retaincommand)
 
 libextractor_oo_la_LIBADD = \
  $(top_builddir)/src/main/libextractor.la \

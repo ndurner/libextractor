@@ -1,15 +1,4 @@
-INCLUDES = \
-  -I$(top_srcdir)/src/include
-
-EXTRA_DIST = SYMBOLS
-
-LIBS = \
- @LTLIBINTL@ @LIBS@
-
-# install plugins under:
-plugindir = $(libdir)/libextractor
-
-PLUGINFLAGS = -Wl,-Bsymbolic -avoid-version -module -no-undefined
+include ../Makefile-plugins.am
 
 
 plugin_LTLIBRARIES = \
@@ -23,6 +12,6 @@ libextractor_ole2_la_LIBADD = \
   $(LIBADD) $(GLIB_LIBS) -lgobject-2.0 \
   $(top_builddir)/src/main/libextractor.la
 libextractor_ole2_la_LDFLAGS = \
-  $(PLUGINFLAGS) -Wl,--retain-symbols-file -Wl,SYMBOLS 
+  $(PLUGINFLAGS) $(retaincommand) 
 libextractor_ole2_la_SOURCES =  \
         ole2extractor.c

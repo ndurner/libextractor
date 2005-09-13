@@ -27,8 +27,8 @@
  */
 
 #include "platform.h"
+#include <string.h>
 #include "bloomfilter.h"
-#include "bloomfilter.c"
 
 /**
  * Sets a bit active in the bitArray. Increment bit-specific
@@ -149,7 +149,7 @@ int main(int argc,
   }
 
   fprintf(stdout,
-	  "#include \"bloomfilter.h\"\n");
+	  "#include \"bloomfilter-def.h\"\n");
 
   /* use int[] instead of char[] since it cuts the memory use of
      gcc down to a quarter; don't use long long since various

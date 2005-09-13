@@ -30,7 +30,8 @@
 
 #include "platform.h"
 #include "extractor.h"
-#include "bloomfilter.c"
+#include <string.h>
+#include "bloomfilter.h"
 
 /**
  * Checks if a bit is active in the bitArray

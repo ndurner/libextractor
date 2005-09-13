@@ -1,24 +1,6 @@
-INCLUDES = -I$(top_srcdir)/src/include
-
-LIBS = \
- @LTLIBINTL@ @LIBS@
-
-# install plugins under:
-plugindir = $(libdir)/libextractor
+include ../Makefile-plugins.am
 
 noinst_PROGRAMS = dictionary-builder
-
-EXTRA_DIST = \
- en.txt de.txt es.txt da.txt no.txt it.txt \
- peXX.c \
- printableextractor.c \
- bloomfilter.c bloomfilter.h \
- DA_SYMBOLS \
- DE_SYMBOLS \
- EN_SYMBOLS \
- ES_SYMBOLS \
- IT_SYMBOLS \
- NO_SYMBOLS 
 
 CLEANFILES = en.c de.c es.c da.c no.c it.c peen.c pede.c pees.c peda.c peit.c
 
@@ -61,8 +43,6 @@ plugin_LTLIBRARIES = \
  libextractor_printable_no.la 
 
 
-PLUGINFLAGS = \
-  -Wl,-Bsymbolic -avoid-version -module -no-undefined
 libextractor_printable_en_la_LIBADD = \
   $(top_builddir)/src/main/libextractor.la
 libextractor_printable_it_la_LIBADD = \
@@ -77,31 +57,31 @@ libextractor_printable_no_la_LIBADD = \
   $(top_builddir)/src/main/libextractor.la
 
 libextractor_printable_en_la_SOURCES = \
-  en.c peen.c
+  en.c peen.c bloomfilter.h printableextractor.h
 libextractor_printable_en_la_LDFLAGS = \
- $(PLUGINFLAGS) -Wl,--retain-symbols-file -Wl,EN_SYMBOLS 
+ $(PLUGINFLAGS) $(retaincommand)
 
 libextractor_printable_es_la_SOURCES = \
-  es.c pees.c
+  es.c pees.c bloomfilter.h printableextractor.h
 libextractor_printable_es_la_LDFLAGS = \
- $(PLUGINFLAGS) -Wl,--retain-symbols-file -Wl,ES_SYMBOLS 
+ $(PLUGINFLAGS) $(retaincommand)
 
 libextractor_printable_de_la_SOURCES = \
-  de.c pede.c
+  de.c pede.c bloomfilter.h printableextractor.h
 libextractor_printable_de_la_LDFLAGS = \
- $(PLUGINFLAGS) -Wl,--retain-symbols-file -Wl,DE_SYMBOLS 
+ $(PLUGINFLAGS) $(retaincommand)
 
 libextractor_printable_it_la_SOURCES = \
-  it.c peit.c
+  it.c peit.c bloomfilter.h printableextractor.h
 libextractor_printable_it_la_LDFLAGS = \
- $(PLUGINFLAGS) -Wl,--retain-symbols-file -Wl,IT_SYMBOLS 
+ $(PLUGINFLAGS) $(retaincommand)
 
 libextractor_printable_da_la_SOURCES = \
-  da.c peda.c
+  da.c peda.c bloomfilter.h printableextractor.h
 libextractor_printable_da_la_LDFLAGS = \
- $(PLUGINFLAGS) -Wl,--retain-symbols-file -Wl,DA_SYMBOLS 
+ $(PLUGINFLAGS) $(retaincommand)
 
 libextractor_printable_no_la_SOURCES = \
-  no.c peno.c
+  no.c peno.c bloomfilter.h printableextractor.h
 libextractor_printable_no_la_LDFLAGS = \
- $(PLUGINFLAGS) -Wl,--retain-symbols-file -Wl,NO_SYMBOLS 
+ $(PLUGINFLAGS) $(retaincommand)
