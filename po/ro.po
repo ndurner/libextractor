@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.4.2\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2005-09-07 21:46-0700\n"
+"POT-Creation-Date: 2005-09-13 08:34-0700\n"
 "PO-Revision-Date: 2005-02-25 12:00-0500\n"
 "Last-Translator: Laurentiu Buzdugan <lbuz@rolix.org>\n"
 "Language-Team: Romanian <translation-team-ro@lists.sourceforge.net>\n"
@@ -28,7 +28,7 @@ msgstr "Sursã RPM %d.%d"
 msgid "Binary RPM %d.%d"
 msgstr "Binar RPM %d.%d"
 
-#: src/plugins/printable/dictionary-builder.c:69
+#: src/plugins/printable/dictionary-builder.c:99
 #, c-format
 msgid ""
 "Please provide the name of the language you are building\n"
@@ -37,12 +37,12 @@ msgstr ""
 "Vã rugãm furnizaþi numele limbii pentru care contruiþi\n"
 "un dicþionar.  De exemplu:\n"
 
-#: src/plugins/printable/dictionary-builder.c:82
+#: src/plugins/printable/dictionary-builder.c:112
 #, c-format
 msgid "Error opening file `%s': %s\n"
 msgstr "Eroare deschidere fiºier `%s': %s\n"
 
-#: src/plugins/printable/dictionary-builder.c:90
+#: src/plugins/printable/dictionary-builder.c:120
 #, c-format
 msgid ""
 "Error allocating: %s\n"
@@ -51,7 +51,7 @@ msgstr ""
 "Eroare de alocare: %s\n"
 "."
 
-#: src/plugins/printable/dictionary-builder.c:102
+#: src/plugins/printable/dictionary-builder.c:132
 #, c-format
 msgid "Increase ALLOCSIZE (in %s).\n"
 msgstr "Creºteþi ALLOCSIZE (în %s).\n"

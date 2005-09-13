@@ -57,31 +57,31 @@ libextractor_printable_no_la_LIBADD = \
   $(top_builddir)/src/main/libextractor.la
 
 libextractor_printable_en_la_SOURCES = \
-  en.c peen.c bloomfilter.h printableextractor.h
+  en.c peen.c bloomfilter.h printableextractor.h bloomfilter-def.h
 libextractor_printable_en_la_LDFLAGS = \
  $(PLUGINFLAGS) $(retaincommand)
 
 libextractor_printable_es_la_SOURCES = \
-  es.c pees.c bloomfilter.h printableextractor.h
+  es.c pees.c bloomfilter.h printableextractor.h bloomfilter-def.h
 libextractor_printable_es_la_LDFLAGS = \
  $(PLUGINFLAGS) $(retaincommand)
 
 libextractor_printable_de_la_SOURCES = \
-  de.c pede.c bloomfilter.h printableextractor.h
+  de.c pede.c bloomfilter.h printableextractor.h bloomfilter-def.h
 libextractor_printable_de_la_LDFLAGS = \
  $(PLUGINFLAGS) $(retaincommand)
 
 libextractor_printable_it_la_SOURCES = \
-  it.c peit.c bloomfilter.h printableextractor.h
+  it.c peit.c bloomfilter.h printableextractor.h bloomfilter-def.h
 libextractor_printable_it_la_LDFLAGS = \
  $(PLUGINFLAGS) $(retaincommand)
 
 libextractor_printable_da_la_SOURCES = \
-  da.c peda.c bloomfilter.h printableextractor.h
+  da.c peda.c bloomfilter.h printableextractor.h bloomfilter-def.h
 libextractor_printable_da_la_LDFLAGS = \
  $(PLUGINFLAGS) $(retaincommand)
 
 libextractor_printable_no_la_SOURCES = \
-  no.c peno.c bloomfilter.h printableextractor.h
+  no.c peno.c bloomfilter.h printableextractor.h bloomfilter-def.h
 libextractor_printable_no_la_LDFLAGS = \
  $(PLUGINFLAGS) $(retaincommand)

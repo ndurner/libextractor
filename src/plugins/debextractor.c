@@ -237,10 +237,7 @@ processControlTGZ(const unsigned char * data,
 		  size_t size,
 		  struct EXTRACTOR_Keywords * prev) {
   size_t bufSize;
-  gzFile gzf;
-  int fdes[2];
   char * buf;
-  void * error;
   z_stream strm;
 
   bufSize = data[size-4] + 256 * data[size-3] + 65536 * data[size-2] + 256*65536 * data[size-1];

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2005-09-07 21:46-0700\n"
+"POT-Creation-Date: 2005-09-13 08:34-0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,26 +26,26 @@ msgstr ""
 msgid "Binary RPM %d.%d"
 msgstr ""
 
-#: src/plugins/printable/dictionary-builder.c:69
+#: src/plugins/printable/dictionary-builder.c:99
 #, c-format
 msgid ""
 "Please provide the name of the language you are building\n"
 "a dictionary for.  For example:\n"
 msgstr ""
 
-#: src/plugins/printable/dictionary-builder.c:82
+#: src/plugins/printable/dictionary-builder.c:112
 #, c-format
 msgid "Error opening file `%s': %s\n"
 msgstr ""
 
-#: src/plugins/printable/dictionary-builder.c:90
+#: src/plugins/printable/dictionary-builder.c:120
 #, c-format
 msgid ""
 "Error allocating: %s\n"
 "."
 msgstr ""
 
-#: src/plugins/printable/dictionary-builder.c:102
+#: src/plugins/printable/dictionary-builder.c:132
 #, c-format
 msgid "Increase ALLOCSIZE (in %s).\n"
 msgstr ""

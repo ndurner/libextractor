@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.4.2\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2005-09-07 21:46-0700\n"
+"POT-Creation-Date: 2005-09-13 08:34-0700\n"
 "PO-Revision-Date: 2005-04-04 10:55-0700\n"
 "Last-Translator: Steven Michael Murphy <murf@e-tools.com>\n"
 "Language-Team: Kinyarwanda <translation-team-rw@lists.sourceforge.net>\n"
@@ -34,7 +34,7 @@ msgstr ""
 msgid "Binary RPM %d.%d"
 msgstr ""
 
-#: src/plugins/printable/dictionary-builder.c:69
+#: src/plugins/printable/dictionary-builder.c:99
 #, fuzzy, c-format
 msgid ""
 "Please provide the name of the language you are building\n"
@@ -42,19 +42,19 @@ msgid ""
 msgstr "i Izina: Bya i Ururimi Inkoranyamagambo kugirango Urugero"
 
 # basctl/source\basicide\basidesh.src:RID_STR_ERROROPENSTORAGE.text
-#: src/plugins/printable/dictionary-builder.c:82
+#: src/plugins/printable/dictionary-builder.c:112
 #, fuzzy, c-format
 msgid "Error opening file `%s': %s\n"
 msgstr "Hari ikibazo mu gufungura dosiye"
 
-#: src/plugins/printable/dictionary-builder.c:90
+#: src/plugins/printable/dictionary-builder.c:120
 #, c-format
 msgid ""
 "Error allocating: %s\n"
 "."
 msgstr ""
 
-#: src/plugins/printable/dictionary-builder.c:102
+#: src/plugins/printable/dictionary-builder.c:132
 #, fuzzy, c-format
 msgid "Increase ALLOCSIZE (in %s).\n"
 msgstr "in"
