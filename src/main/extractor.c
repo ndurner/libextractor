@@ -756,7 +756,7 @@ getKeywords (EXTRACTOR_ExtractorList * extractor,
 	      dsize = MAX_DECOMPRESS;
 	    buf = realloc(buf, dsize);
 	    bstrm.next_out = &buf[bpos];
-	    bstrm.avail_out = dsize - pos;
+	    bstrm.avail_out = dsize - bpos;
 	  } else if (bret != BZ_STREAM_END) {
 	    /* error */
 	    free(buf);
