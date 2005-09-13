@@ -309,44 +309,6 @@ void static hash(const void * data,
 
 
 
-
-
-
-
-/**
- * Sets a bit active in the bitArray. Increment bit-specific
- * usage counter on disk only if below 4bit max (==15).
- *
- * @param bitArray memory area to set the bit in
- * @param bitIdx which bit to set
- */
-static void setBit(unsigned char * bitArray,
-		   unsigned int bitIdx) {
-  unsigned int arraySlot;
-  unsigned int targetBit;
-
-  arraySlot = bitIdx / 8;
-  targetBit = (1L << (bitIdx % 8));
-  bitArray[arraySlot] |= targetBit;
-}
-
-/**
- * Checks if a bit is active in the bitArray
- *
- * @param bitArray memory area to set the bit in
- * @param bitIdx which bit to test
- * @return 1 if the bit is set, 0 if not.
- */
-static int testBit(unsigned char * bitArray,
-		   unsigned int bitIdx) {
-  unsigned int slot;
-  unsigned int targetBit;
-
-  slot = bitIdx / 8;
-  targetBit = (1L << (bitIdx % 8));
-  return (bitArray[slot] & targetBit) != 0;
-}
-
 /* ************** Bloomfilter hash iterator ********* */
 
 /**
@@ -374,7 +336,7 @@ typedef void (*BitIterator)(Bloomfilter * bf,
 static void iterateBits(Bloomfilter * bf,
 			BitIterator callback,
 			void * arg,
-			HashCode160 * key) {
+			const HashCode160 * key) {
   HashCode160 tmp[2];
   int bitCount;
   int round;
@@ -406,33 +368,5 @@ static void iterateBits(Bloomfilter * bf,
   }
 }
 
-/**
- * Callback: increment bit
- *
- * @param bf the filter to manipulate
- * @param bit the bit to increment
- * @param arg not used
- */
-static void setBitCallback(Bloomfilter * bf,
-			   unsigned int bit,
-			   void * arg) {
-  setBit(bf->bitArray,
-	 bit);
-}
-
-/**
- * Callback: test if all bits are set
- *
- * @param bf the filter
- * @param bit the bit to test
- * @param arg pointer set to NO if bit is not set
- */
-static void testBitCallback(Bloomfilter * bf,
-			    unsigned int bit,
-			    int * arg) {
-  if (! testBit(bf->bitArray,
-		bit))
-    *arg = 0;
-}
 
 /* ******************** end of bloomfilter.c *********** */

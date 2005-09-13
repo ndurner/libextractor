@@ -1,0 +1,19 @@
+INCLUDES = -I$(top_srcdir)/src/include
+
+# install plugins under:
+plugindir = $(libdir)/libextractor
+
+
+LIBS = \
+ @LTLIBINTL@ @LIBS@
+
+if HAVE_GNU_LD
+ makesymbolic="-Wl,-s -Wl,-Bsymbolic"
+ retaincommand="\#"
+else
+ retaincommand="-Wl,--retain-symbols-file -Wl,"
+endif
+
+PLUGINFLAGS = $(makesymbolic) -avoid-version -module -no-undefined
+
+

@@ -30,6 +30,36 @@
 #include "bloomfilter.h"
 #include "bloomfilter.c"
 
+/**
+ * Sets a bit active in the bitArray. Increment bit-specific
+ * usage counter on disk only if below 4bit max (==15).
+ *
+ * @param bitArray memory area to set the bit in
+ * @param bitIdx which bit to set
+ */
+static void setBit(unsigned char * bitArray,
+		   unsigned int bitIdx) {
+  unsigned int arraySlot;
+  unsigned int targetBit;
+
+  arraySlot = bitIdx / 8;
+  targetBit = (1L << (bitIdx % 8));
+  bitArray[arraySlot] |= targetBit;
+}
+
+/**
+ * Callback: increment bit
+ *
+ * @param bf the filter to manipulate
+ * @param bit the bit to increment
+ * @param arg not used
+ */
+static void setBitCallback(Bloomfilter * bf,
+			   unsigned int bit,
+			   void * arg) {
+  setBit(bf->bitArray,
+	 bit);
+}
 
 /**
  * Add an element to the filter
@@ -38,7 +68,7 @@
  * @param e the element
  */
 static void addToBloomfilter(Bloomfilter * bf,
-		      HashCode160 * e) {
+		             const HashCode160 * e) {
 
   if (NULL == bf)
     return;

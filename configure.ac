@@ -32,27 +32,34 @@ AC_DISABLE_STATIC
 case "$host_os" in
 linux*)
      AC_DEFINE(LINUX,1,[This is a Linux system])
+     AC_DEFINE_UNQUOTED(LINUX,1,[This is a LINUX system])
+     AM_CONDITIONAL(HAVE_GNU_LD, 1)    
      XTRA_CPPLIBS=-lstdc++
      ;;
 freebsd*)
      AC_DEFINE_UNQUOTED(SOMEBSD,1,[This is a BSD system])
      AC_CHECK_LIB(c_r, pthread_create)
+     AM_CONDITIONAL(HAVE_GNU_LD, 1)
      ;;
 openbsd*)
      AC_DEFINE_UNQUOTED(SOMEBSD,1,[This is a BSD system])
      AC_CHECK_LIB(c_r, pthread_create)
+     AM_CONDITIONAL(HAVE_GNU_LD, 1)
      ;;
 netbsd*)
      AC_DEFINE_UNQUOTED(SOMEBSD,1,[This is a BSD system])
      AC_CHECK_LIB(c_r, pthread_create)
+     AM_CONDITIONAL(HAVE_GNU_LD, 1)
      ;;
 *solaris*)
      AC_DEFINE_UNQUOTED(SOLARIS,1,[This is a Solaris system])
      AC_CHECK_LIB(resolv, res_init)
      XTRA_CPPLIBS=-lstdc++
+     AM_CONDITIONAL(HAVE_GNU_LD, 0)
      ;;
 darwin*)
      AC_DEFINE_UNQUOTED(DARWIN,1,[This is a Darwin system])
+     AM_CONDITIONAL(HAVE_GNU_LD, 0)
      ;;
 cygwin*)
      AC_DEFINE_UNQUOTED(CYGWIN,1,[This is a CYGWIN system])
@@ -65,11 +72,13 @@ mingw*)
      AC_CHECK_LIB(ws2_32, _head_libws2_32_a,,[AC_MSG_ERROR([libextractor requires Winsock2])])
      AC_CHECK_LIB(plibc, plibc_init,,[AC_MSG_ERROR([libextractor requires PlibC])])
      LDFLAGS="$LDFLAGS -no-undefined -Wl,--export-all-symbols"
+     AM_CONDITIONAL(HAVE_GNU_LD, 1)
      ;;
 *)
      AC_MSG_RESULT(Unrecognised OS $host_os)
      AC_DEFINE_UNQUOTED(OTHEROS,1,[Some strange OS])
      AC_MSG_RESULT(otheros)
+     AM_CONDITIONAL(HAVE_GNU_LD, 0)
      ;;
 esac
 

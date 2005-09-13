@@ -33,6 +33,39 @@
 #include "bloomfilter.c"
 
 /**
+ * Checks if a bit is active in the bitArray
+ *
+ * @param bitArray memory area to set the bit in
+ * @param bitIdx which bit to test
+ * @return 1 if the bit is set, 0 if not.
+ */
+static int testBit(unsigned char * bitArray,
+		   unsigned int bitIdx) {
+  unsigned int slot;
+  unsigned int targetBit;
+
+  slot = bitIdx / 8;
+  targetBit = (1L << (bitIdx % 8));
+  return (bitArray[slot] & targetBit) != 0;
+}
+
+
+/**
+ * Callback: test if all bits are set
+ *
+ * @param bf the filter
+ * @param bit the bit to test
+ * @param arg pointer set to NO if bit is not set
+ */
+static void testBitCallback(Bloomfilter * bf,
+			    unsigned int bit,
+			    void * cls) {
+  int * arg = cls;
+  if (! testBit(bf->bitArray,
+		bit))
+    *arg = 0;
+}
+/**
  * Test if an element is in the filter.
  *
  * @param e the element
@@ -40,14 +73,14 @@
  * @return 1 if the element is in the filter, 0 if not
  */
 static int testBloomfilter(Bloomfilter * bf,
-		    HashCode160 * e) {
+			   const HashCode160 * e) {
   int res;
 
   if (NULL == bf)
     return 1;
   res = 1;
   iterateBits(bf,
-	      (BitIterator)&testBitCallback,
+	      &testBitCallback,
 	      &res,
 	      e);
   return res;
