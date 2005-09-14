@@ -476,7 +476,7 @@ namespace Exiv2 {
         //! @name Creators
         //@{
         //! Default constructor that results in an empty object
-        MemIo() { idx_ = 0; }
+        MemIo() { idx_ = 0; isMalloced = false; data_ = NULL;}
         /*!
           @brief Constructor that accepts a block of memory to be copied.
               IO operations are performed on the copied memory.
@@ -486,7 +486,10 @@ namespace Exiv2 {
          */
         MemIo(const byte* data, long size);
         //! Destructor. Releases all managed memory
-        virtual ~MemIo() {}
+        ~MemIo() {if (isMalloced) free(data_);}
+
+		void MemIo::wrap(const byte *data, long size);
+
         //@}
 
         //! @name Manipulators
@@ -631,8 +634,11 @@ namespace Exiv2 {
         typedef std::vector<byte> ByteVector;
 
         // DATA
-        ByteVector data_;
-        ByteVector::size_type idx_;
+        byte *data_;
+        ByteVector::size_type idx_, size_;
+        
+        // Was the buffer allocated?
+        bool isMalloced;
 
         // METHODS
         void checkSize(long wcount);

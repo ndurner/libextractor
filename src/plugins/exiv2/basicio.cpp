@@ -339,10 +339,27 @@ namespace Exiv2 {
     {
         // If copying data is too slow it might be worth
         // creating a readonly MemIo variant
-        data_.reserve(size);
-        data_.assign(data, data+size);
-        idx_ = 0;
+ 		idx_ = 0;
+        data_ = (byte *) malloc(size);
+        if (data_)
+        {
+        	memcpy(data_, data, size);
+        	size_ = size;
+        	isMalloced = true;
+        }
+        else
+        {
+        	size = 0;
+        	isMalloced = false;
+        }
     }
+    
+	void MemIo::wrap(const byte *data, long size)
+	{
+		data_ = (byte *) data;
+		size_ = size;
+		isMalloced = false;
+	}
 
     BasicIo::AutoPtr MemIo::temporary() const
     {
@@ -352,15 +369,17 @@ namespace Exiv2 {
     void MemIo::checkSize(long wcount)
     {
         ByteVector::size_type need = wcount + idx_;
-        if (need > data_.size()) {
-            data_.resize(need);
+        if (need > size_) {
+        	if (size_ > 0)
+        		data_ = (byte *) realloc(data_, need);
+        	else
+        		data_ = (byte *) malloc(need);
         }
     }
 
     long MemIo::write(const byte* data, long wcount)
     {
         checkSize(wcount);
-        // According to Josuttis 6.2.3 this is safe
         memcpy(&data_[idx_], data, wcount);
         idx_ += wcount;
         return wcount;
@@ -371,12 +390,20 @@ namespace Exiv2 {
         MemIo *memIo = dynamic_cast<MemIo*>(&src);
         if (memIo) {
             // Optimization if this is another instance of MemIo
-            data_.swap(memIo->data_);
+            if (memIo->isMalloced)
+            {
+            	isMalloced = true;
+            	memIo->isMalloced = false;
+            }
+            else
+            	isMalloced = false;
+
+        	data_ = memIo->data_;            
             idx_ = 0;
         }
         else{
             // Generic reopen to reset position to start
-            data_.clear();
+            free(data_);
             idx_ = 0;
             if (src.open() != 0) {
                 throw Error(9, src.path(), strError());
@@ -422,10 +449,10 @@ namespace Exiv2 {
         }
         else {
             assert(pos == BasicIo::end);
-            newIdx = data_.size() + offset;
+            newIdx = size_ + offset;
         }
 
-        if (newIdx < 0 || newIdx > data_.size()) return 1;
+        if (newIdx < 0 || newIdx > size_) return 1;
         idx_ = newIdx;
         return 0;
     }
@@ -437,7 +464,7 @@ namespace Exiv2 {
 
     long MemIo::size() const
     {
-        return (long)data_.size();
+        return (long) size_;
     }
 
     int MemIo::open()
@@ -466,10 +493,9 @@ namespace Exiv2 {
 
     long MemIo::read(byte* buf, long rcount)
     {
-        long avail = (long)(data_.size() - idx_);
+        long avail = (long)(size_ - idx_);
         long allow = std::min(rcount, avail);
 
-        // According to Josuttis 6.2.3 this is safe
         memcpy(buf, &data_[idx_], allow);
         idx_ += allow;
         return allow;
@@ -477,7 +503,7 @@ namespace Exiv2 {
 
     int MemIo::getb()
     {
-        if (idx_ == data_.size())
+        if (idx_ == size_)
             return EOF;
         return data_[idx_++];
     }
@@ -489,7 +515,7 @@ namespace Exiv2 {
 
     bool MemIo::eof() const
     {
-        return idx_ == data_.size();
+        return idx_ == size_;
     }
 
     std::string MemIo::path() const

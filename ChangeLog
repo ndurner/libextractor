@@ -1,3 +1,7 @@
+Wed Sep 14 15:02:49 PDT 2005
+	Avoid malloc/memcpy of file in exiv2 extractor (optimization, avoids
+	problems with very large files where malloc may run into problems).
+
 Wed Sep 14 13:50:15 PDT 2005
 	Changed code for backwards-compatibility with zlib 1.1 
 	(thanks to Ronan Melennec).
