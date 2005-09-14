@@ -658,21 +658,93 @@ getKeywords (EXTRACTOR_ExtractorList * extractor,
   dsize = 0;
 #if HAVE_ZLIB
   /* try gzip decompression first */
-  if ( (data[0] == 0x1f) &&
+  if ( (size >= 11) &&
+       (data[0] == 0x1f) &&
        (data[1] == 0x8b) &&
        (data[2] == 0x08) ) {
+
+    /*
+     * Skip gzip header - we might want to retrieve parts of it as keywords
+     */
+    unsigned gzip_header_length = 10;
+
+    if(data[3] & 0x4) /* FEXTRA  set */
+      gzip_header_length += 2 + (unsigned) (data[10] & 0xff)
+                              + (((unsigned) (data[10] & 0xff)) * 256);
+
+    if(data[3] & 0x8) /* FNAME set */
+    {
+      const unsigned char * cptr = data + gzip_header_length;
+
+      /*
+       * stored file name is here
+       * extremely long file names might break the following code.
+       */
+
+      while(cptr < data + size)
+      {
+        if('\0' == *cptr)
+          break;
+
+        cptr += 1;
+      }
+
+      gzip_header_length = (cptr - data) + 1;
+    }
+
+    if(data[3] & 0x16) /* FCOMMENT set */
+    {
+      const unsigned char * cptr = data + gzip_header_length;
+
+      /*
+       * stored comment is here
+       * extremely long comments might break the following code.
+       */
+
+      while(cptr < data + size)
+      {
+        if('\0' == *cptr)
+          break;
+
+        cptr += 1;
+      }
+
+      gzip_header_length = (cptr - data) + 1;
+    }
+
+    if(data[3] & 0x2) /* FCHRC set */
+      gzip_header_length += 2;
+
     memset(&strm,
 	   0,
 	   sizeof(z_stream));
-    strm.next_in = (char*) data;
-    strm.avail_in = size;
+
+    if(size > gzip_header_length) {
+      strm.next_in = (char*) data + gzip_header_length;
+      strm.avail_in = size - gzip_header_length;
+    } else {
+      strm.next_in = (char*) data;
+      strm.avail_in = 0;
+    }
     strm.total_in = 0;
     strm.zalloc = NULL;
     strm.zfree = NULL;
     strm.opaque = NULL;
     
+    /*
+     * note: maybe plain inflateInit(&strm) is adequate,
+     * it looks more backward-compatible also ;
+     *
+     * ZLIB_VERNUM isn't defined by zlib version 1.1.4 ;
+     * there might be a better check.
+     */ 
+#ifdef ZLIB_VERNUM
     if (Z_OK == inflateInit2(&strm,
 			     15 + 32)) {
+#else
+    if (Z_OK == inflateInit2(&strm,
+			     -MAX_WBITS)) {
+#endif
       dsize = 2 * size;
       if (dsize > MAX_DECOMPRESS)
 	dsize = MAX_DECOMPRESS;
@@ -687,7 +759,7 @@ getKeywords (EXTRACTOR_ExtractorList * extractor,
 	  ret = inflate(&strm,
 			Z_SYNC_FLUSH);
 	  if (ret == Z_OK) {
-	    if (dsize == MAX_DECOMPRESS) 
+	    if (dsize == MAX_DECOMPRESS)
 	      break;
 	    pos += strm.total_out;
 	    strm.total_out = 0;

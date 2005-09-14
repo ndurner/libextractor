@@ -1,3 +1,7 @@
+Wed Sep 14 13:50:15 PDT 2005
+	Changed code for backwards-compatibility with zlib 1.1 
+	(thanks to Ronan Melennec).
+
 Tue Sep 13 04:49:43 PDT 2005
         Fixed segmentation fault in bz2 processing.
 
