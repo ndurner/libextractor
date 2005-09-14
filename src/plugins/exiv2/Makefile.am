@@ -9,7 +9,7 @@ libextractor_exiv2_la_LINK = \
   /bin/sh ../../../libtool --mode=link $(CXXLD) -o libextractor_exiv2.la
 libextractor_exiv2_la_LDFLAGS = \
   $(XTRA_CPPLIBS) -lpthread \
-  $(PLUGINFLAGS) $(retaincommand)SYMBOLS
+  $(PLUGINFLAGS) $(retaincommand)
 libextractor_exiv2_la_LIBADD = \
   $(top_builddir)/src/main/libextractor.la -lpthread
 
