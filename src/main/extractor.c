@@ -654,6 +654,7 @@ getKeywords (EXTRACTOR_ExtractorList * extractor,
   size_t bpos;
 #endif
 
+  result = NULL;
   buf = NULL;
   dsize = 0;
 #if HAVE_ZLIB
@@ -688,7 +689,6 @@ getKeywords (EXTRACTOR_ExtractorList * extractor,
 
         cptr += 1;
       }
-
       gzip_header_length = (cptr - data) + 1;
     }
 
@@ -698,7 +698,6 @@ getKeywords (EXTRACTOR_ExtractorList * extractor,
 
       /*
        * stored comment is here
-       * extremely long comments might break the following code.
        */
 
       while(cptr < data + size)
@@ -706,7 +705,7 @@ getKeywords (EXTRACTOR_ExtractorList * extractor,
         if('\0' == *cptr)
           break;
 
-        cptr += 1;
+        cptr ++;
       }
 
       gzip_header_length = (cptr - data) + 1;
@@ -718,8 +717,10 @@ getKeywords (EXTRACTOR_ExtractorList * extractor,
     memset(&strm,
 	   0,
 	   sizeof(z_stream));
-
-    if(size > gzip_header_length) {
+#ifdef ZLIB_VERNUM
+    gzip_header_length = 0;
+#endif
+    if (size > gzip_header_length) {
       strm.next_in = (char*) data + gzip_header_length;
       strm.avail_in = size - gzip_header_length;
     } else {
@@ -853,7 +854,6 @@ getKeywords (EXTRACTOR_ExtractorList * extractor,
     data = buf;
     size = dsize;
   }
-  result = NULL;
   while (extractor != NULL) {
     result = extractor->extractMethod(filename,
 				      (char*) data,
