@@ -1,3 +1,6 @@
+Thu Sep 15 00:56:51 PDT 2005
+	Fixed incorrectly handled integer overflow in png extractor.
+
 Wed Sep 14 15:02:49 PDT 2005
 	Avoid malloc/memcpy of file in exiv2 extractor (optimization, avoids
 	problems with very large files where malloc may run into problems).
