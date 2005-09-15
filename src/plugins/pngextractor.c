@@ -307,7 +307,7 @@ struct EXTRACTOR_Keywords * libextractor_png_extract(char * filename,
     length = htonl(getIntAt(pos));  pos+=4;
     /* printf("Length: %u, pos %u\n", length, pos - data); */
     if ( (pos+4+length+4 > end) ||
-	 (pos+4+length+4 < pos + 4 + length) )
+	 (pos+4+length+4 < pos + 8) )
       break;
 
     if (0 == strncmp(pos, "IHDR", 4))
