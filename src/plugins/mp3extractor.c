@@ -243,48 +243,56 @@ int freq_table[4][3]={
 #define SYSERR     1
 #define INVALID_ID3 2
 
-static int get_id3(unsigned char * data,
+static int get_id3(const char * data,
 		   size_t size,
 		   id3tag * id3) {
-  unsigned char * pos;
+  const char * pos;
 
   if (size < 128)
     return INVALID_ID3;
 
   pos = &data[size - 128];
-  if (0 != strncmp((const char *)"TAG",(const char *)pos, 3))
+  if (0 != strncmp("TAG",
+		   pos, 
+		   3))
     return INVALID_ID3;
   pos += 3;
 
   id3->title = convertToUtf8(pos,
 			     30,
-			     "ISO-8859-1"); pos += 30;
+			     "ISO-8859-1"); 
+  pos += 30;
   id3->artist = convertToUtf8(pos,
 			      30,
-			      "ISO-8859-1"); pos += 30;
+			      "ISO-8859-1"); 
+  pos += 30;
   id3->album = convertToUtf8(pos,
 			      30,
-			      "ISO-8859-1"); pos += 30;
+			      "ISO-8859-1");
+  pos += 30;
   id3->year = convertToUtf8(pos,
 			    4,
-			    "ISO-8859-1"); pos += 4;
+			    "ISO-8859-1"); 
+  pos += 4;
   id3->comment = convertToUtf8(pos,
 			       30,
-			       "ISO-8859-1"); pos += 30;
+			       "ISO-8859-1");
+  pos += 30;
   id3->genre = "";
   if (pos[0] < GENRE_NAME_COUNT)
-    id3->genre = dgettext(PACKAGE, genre_names[pos[0]]);
+    id3->genre = dgettext(PACKAGE,
+			  genre_names[(unsigned) pos[0]]);
   return OK;
 }
 
 static struct EXTRACTOR_Keywords *
 addkword(EXTRACTOR_KeywordList *oldhead,
-	 char *phrase,
+	 const char * phrase,
 	 EXTRACTOR_KeywordType type) {
 
    EXTRACTOR_KeywordList * keyword;
 
-   keyword = (EXTRACTOR_KeywordList*) malloc(sizeof(EXTRACTOR_KeywordList));
+   keyword = malloc(sizeof(EXTRACTOR_KeywordList));
    keyword->next = oldhead;
    keyword->keyword = strdup(phrase);
    keyword->keywordType = type;
@@ -294,7 +302,7 @@ addkword(EXTRACTOR_KeywordList *oldhead,
 
 
 static struct EXTRACTOR_Keywords *
-mp3parse(char * data,
+mp3parse(const char * data,
 	 size_t size,
 	 struct EXTRACTOR_Keywords * prev) {
   unsigned int header;
@@ -436,7 +444,7 @@ mp3parse(char * data,
 /* mimetype = audio/mpeg */
 struct EXTRACTOR_Keywords *
 libextractor_mp3_extract(const char * filename,
-			 char * data,
+			 const char * data,
 			 size_t size,
 			 struct EXTRACTOR_Keywords * klist) {
   id3tag info;

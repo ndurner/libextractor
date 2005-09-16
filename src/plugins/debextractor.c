@@ -248,7 +248,7 @@ processControlTGZ(const unsigned char * data,
 	 0,
 	 sizeof(z_stream));
 
-  strm.next_in = (char*) data;
+  strm.next_in = (Bytef*) data;
   strm.avail_in = size;
   strm.total_in = 0;
   strm.zalloc = &Emalloc;
@@ -262,7 +262,7 @@ processControlTGZ(const unsigned char * data,
       inflateEnd(&strm);
       return prev;
     }
-    strm.next_out = buf;
+    strm.next_out = (Bytef*) buf;
     strm.avail_out = bufSize;
     inflate(&strm,
 	    Z_FINISH);
@@ -328,7 +328,7 @@ libextractor_deb_extract(const char * filename,
     if (0 == strncmp(&hdr->name[0],
 		     "control.tar.gz",
 		     strlen("control.tar.gz"))) {
-      prev = processControlTGZ(&data[pos],
+      prev = processControlTGZ((const unsigned char*) &data[pos],
 			       fsize,
 			       prev);
       done++;

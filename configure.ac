@@ -20,9 +20,9 @@ AC_CANONICAL_HOST
 # So, instead, we do this crazyness globally.  The list of compilers that
 # you see below is taken right out of the autoconf (version 2.57) sources,
 # so it should not impede our portability.
-AC_PROG_CC(gcc-3.3 gcc2 gcc cc /usr/ucb/cc cl)
+AC_PROG_CC(gcc-4.0 gcc-3.3 gcc2 gcc cc /usr/ucb/cc cl)
 AC_PROG_CPP
-AC_PROG_CXX(g++-3.3 g++2 g++ c++ gpp aCC CC cxx cc++ cl FCC KCC RCC xlC_r xlC)
+AC_PROG_CXX(g++-4.0 g++-3.3 g++2 g++ c++ gpp aCC CC cxx cc++ cl FCC KCC RCC xlC_r xlC)
 
 AC_PROG_INSTALL
 AC_PROG_LN_S

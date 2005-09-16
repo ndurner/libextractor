@@ -641,7 +641,7 @@ getKeywords (EXTRACTOR_ExtractorList * extractor,
 	     const unsigned char * data,
 	     size_t size) {
   EXTRACTOR_KeywordList *result;
-  char * buf;
+  unsigned char * buf;
   size_t dsize;
 #if HAVE_ZLIB
   z_stream strm;
@@ -721,10 +721,10 @@ getKeywords (EXTRACTOR_ExtractorList * extractor,
     gzip_header_length = 0;
 #endif
     if (size > gzip_header_length) {
-      strm.next_in = (char*) data + gzip_header_length;
+      strm.next_in = (Bytef*) data + gzip_header_length;
       strm.avail_in = size - gzip_header_length;
     } else {
-      strm.next_in = (char*) data;
+      strm.next_in = (Bytef*) data;
       strm.avail_in = 0;
     }
     strm.total_in = 0;
@@ -754,7 +754,7 @@ getKeywords (EXTRACTOR_ExtractorList * extractor,
       if (buf == NULL) {
 	inflateEnd(&strm);
       } else {
-	strm.next_out = buf;
+	strm.next_out = (Bytef*) buf;
 	strm.avail_out = dsize;
 	do {
 	  ret = inflate(&strm,
@@ -768,7 +768,7 @@ getKeywords (EXTRACTOR_ExtractorList * extractor,
 	    if (dsize > MAX_DECOMPRESS)
 	      dsize = MAX_DECOMPRESS;
 	    buf = realloc(buf, dsize);
-	    strm.next_out = &buf[pos];
+	    strm.next_out = (Bytef*) &buf[pos];
 	    strm.avail_out = dsize - pos;
 	  } else if (ret != Z_STREAM_END) {
 	    /* error */
@@ -815,7 +815,7 @@ getKeywords (EXTRACTOR_ExtractorList * extractor,
       if (buf == NULL) {
 	BZ2_bzDecompressEnd(&bstrm);
       } else {
-	bstrm.next_out = buf;
+	bstrm.next_out = (char*) buf;
 	bstrm.avail_out = dsize;
 	do {
 	  bret = BZ2_bzDecompress(&bstrm);
@@ -828,7 +828,7 @@ getKeywords (EXTRACTOR_ExtractorList * extractor,
 	    if (dsize > MAX_DECOMPRESS)
 	      dsize = MAX_DECOMPRESS;
 	    buf = realloc(buf, dsize);
-	    bstrm.next_out = &buf[bpos];
+	    bstrm.next_out = (char*) &buf[bpos];
 	    bstrm.avail_out = dsize - bpos;
 	  } else if (bret != BZ_STREAM_END) {
 	    /* error */
@@ -876,10 +876,10 @@ getKeywords (EXTRACTOR_ExtractorList * extractor,
  */
 EXTRACTOR_KeywordList *
 EXTRACTOR_getKeywords (EXTRACTOR_ExtractorList * extractor,
-		       const char *filename) {
+		       const char * filename) {
   EXTRACTOR_KeywordList *result;
   int file;
-  char * buffer;
+  void * buffer;
   struct stat fstatbuf;
   size_t size;
 
@@ -931,7 +931,7 @@ EXTRACTOR_getKeywords (EXTRACTOR_ExtractorList * extractor,
  */
 EXTRACTOR_KeywordList *
 EXTRACTOR_getKeywords2(EXTRACTOR_ExtractorList * extractor,
-		       const char * data,
+		       const void * data,
 		       size_t size) {
   if (data == NULL)
     return NULL;
@@ -1227,7 +1227,7 @@ EXTRACTOR_countKeywords (EXTRACTOR_KeywordList * keywords)
  * @return NULL on error, the 0-terminated
  *  encoding otherwise
  */
-char * EXTRACTOR_binaryEncode(const char * data,
+char * EXTRACTOR_binaryEncode(const unsigned char * data,
 			      size_t size) {
 
   char * binary;
@@ -1286,7 +1286,7 @@ char * EXTRACTOR_binaryEncode(const char * data,
  * @param in 0-terminated string from the meta-data
  * @return 1 on error, 0 on success
  */
-int EXTRACTOR_binaryDecode(const unsigned char * in,
+int EXTRACTOR_binaryDecode(const char * in,
 			   unsigned char ** out,
 			   size_t * outSize) {
   unsigned char * buf;

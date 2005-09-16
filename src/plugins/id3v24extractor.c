@@ -36,9 +36,10 @@
 #include "convert.h"
 
 
-static struct EXTRACTOR_Keywords * addKeyword(EXTRACTOR_KeywordList *oldhead,
-					      char *phrase,
-					      EXTRACTOR_KeywordType type) {
+static struct EXTRACTOR_Keywords * 
+addKeyword(EXTRACTOR_KeywordList *oldhead,
+	   char *phrase,
+	   EXTRACTOR_KeywordType type) {
   EXTRACTOR_KeywordList * keyword;
 
   keyword = (EXTRACTOR_KeywordList*) malloc(sizeof(EXTRACTOR_KeywordList));
@@ -157,7 +158,7 @@ libextractor_id3v24_extract(const char * filename,
     i = 0;
     while (tmap[i].text != NULL) {
       if (0 == strncmp(tmap[i].text,
-		       &data[pos],
+		       (const char*) &data[pos],
 		       4)) {
 	char * word;
 	if ( (flags & 0x20) > 0) {
@@ -171,17 +172,17 @@ libextractor_id3v24_extract(const char * filename,
 	   if it fails, then forget it */
 	switch (data[pos+10]) {
 	case 0x00 :
-	  word = convertToUtf8(&data[pos+11],
+	  word = convertToUtf8((const char*) &data[pos+11],
 			       csize,
 			       "ISO-8859-1");
 	  break;
 	case 0x01 :
-	  word = convertToUtf8(&data[pos+11],
+	  word = convertToUtf8((const char*) &data[pos+11],
 			       csize,
 			       "UTF-16");
 	  break;
 	case 0x02 :
-	  word = convertToUtf8(&data[pos+11],
+	  word = convertToUtf8((const char*) &data[pos+11],
 			       csize,
 			       "UTF-16BE");
 	  break;
@@ -195,7 +196,7 @@ libextractor_id3v24_extract(const char * filename,
 	default:
 	  /* bad encoding byte,
 	     try to convert from iso-8859-1 */
-	  word = convertToUtf8(&data[pos+11],
+	  word = convertToUtf8((const char*) &data[pos+11],
 			       csize,
 			       "ISO-8859-1");
 	  break;

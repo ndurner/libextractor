@@ -116,11 +116,13 @@ libextractor_man_extract(const char * filename,
   if (0 == strncmp(".TH ",
 		   &buf[pos],
 		   xlen)) {
-    int end;
+    size_t end;
 
     pos += xlen;
     end = pos;
-    NEXT(&end, buf, size); if (end > size) return prev;
+    NEXT(&end, buf, size); 
+    if (end > size) 
+      return prev;
     if (end - pos > 0) {
       prev = addKeyword(EXTRACTOR_TITLE,
 			stndup(&buf[pos],

@@ -30,7 +30,7 @@
 #include "bloomfilter-def.h"
 
 typedef struct {
-  char data[20];
+  unsigned char data[20];
 } HashCode160;
 
 struct sha1_context
@@ -269,7 +269,8 @@ static unsigned char sha1_padding[64] =
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 };
 
-static void sha1_finish( struct sha1_context *ctx, unsigned char digest[20] )
+static void sha1_finish(struct sha1_context *ctx, 
+			unsigned char digest[20] )
 {
     unsigned int last, padn;
     unsigned char msglen[8];
@@ -291,7 +292,7 @@ static void sha1_finish( struct sha1_context *ctx, unsigned char digest[20] )
 }
 
 void static hash(const void * data,
-		 int size,
+		 unsigned int size,
 		 HashCode160 * hc) {
   struct sha1_context ctx;
 

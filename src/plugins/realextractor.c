@@ -294,22 +294,22 @@ struct EXTRACTOR_Keywords * libextractor_real_extract(unsigned char * filename,
 
     if (tlen > 0)
       prev = addKeyword(EXTRACTOR_TITLE,
-			stndup(&data[17 + RAFF4_HDR_SIZE],
+			stndup((const char*) &data[17 + RAFF4_HDR_SIZE],
 			       tlen),
 			prev);
     if (alen > 0)
       prev = addKeyword(EXTRACTOR_AUTHOR,
-			stndup(&data[18 + RAFF4_HDR_SIZE + tlen],
+			stndup((const char*) &data[18 + RAFF4_HDR_SIZE + tlen],
 			       alen),
 			prev);
     if (clen > 0)
       prev = addKeyword(EXTRACTOR_COPYRIGHT,
-			stndup(&data[19 + RAFF4_HDR_SIZE + tlen + alen],
+			stndup((const char*) &data[19 + RAFF4_HDR_SIZE + tlen + alen],
 			       clen),
 			prev);
     if (aplen > 0)
       prev = addKeyword(EXTRACTOR_SOFTWARE,
-			stndup(&data[20 + RAFF4_HDR_SIZE + tlen + alen + clen],
+			stndup((const char*) &data[20 + RAFF4_HDR_SIZE + tlen + alen + clen],
 			       aplen),
 			prev);
     return prev;

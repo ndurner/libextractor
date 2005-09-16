@@ -160,7 +160,7 @@ libextractor_id3v23_extract(const char * filename,
     i = 0;
     while (tmap[i].text != NULL) {
       if (0 == strncmp(tmap[i].text,
-		       &data[pos],
+		       (const char*) &data[pos],
 		       4)) {
 	char * word;
 	if ( (flags & 0x20) > 0) {
@@ -174,19 +174,19 @@ libextractor_id3v23_extract(const char * filename,
 	   if it fails, then forget it */
 	switch (data[pos+10]) {
 	case 0x00 :
-	  word = convertToUtf8(&data[pos+11],
+	  word = convertToUtf8((const char*) &data[pos+11],
 			       csize,
 			       "ISO-8859-1");
 	  break;
 	case 0x01 :
-	  word = convertToUtf8(&data[pos+11],
+	  word = convertToUtf8((const char*) &data[pos+11],
 			       csize,
 			       "UCS-2");
 	  break;
 	default:
 	  /* bad encoding byte,
 	     try to convert from iso-8859-1 */
-	  word = convertToUtf8(&data[pos+11],
+	  word = convertToUtf8((const char*) &data[pos+11],
 			       csize,
 			       "ISO-8859-1");
 	  break;

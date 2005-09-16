@@ -166,7 +166,7 @@ struct EXTRACTOR_Keywords * libextractor_jpeg_extract(const char * filename,
       int len = readLength(&data, end);
       if (len < 0x8)
 	goto RETURN;
-      if (0 == strncmp(data,
+      if (0 == strncmp((char*)data,
 		       "JFIF",
 		       4)) {
 	char * val;

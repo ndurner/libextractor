@@ -205,7 +205,7 @@ typedef struct {
 } time_to_sample_table_t;
 
 typedef struct {
-  unsigned char *url;
+  char *url;
   int64_t data_rate;
   int qtim_version;
 } reference_t;
@@ -1237,14 +1237,13 @@ static qt_error parse_reference_atom (reference_t *ref,
       break;
     current_atom = BE_32(&ref_atom[i]);
 
-    if (current_atom == RDRF_ATOM) {
-
+    if (current_atom == RDRF_ATOM) {     
       /* if the URL starts with "http://", copy it */
-      if (strncmp(&ref_atom[i + 12], "http://", 7) == 0) {
+      if (strncmp((char*) &ref_atom[i + 12], "http://", 7) == 0) {
 
         /* URL is spec'd to terminate with a NULL; don't trust it */
-        ref->url = malloc(BE_32(&ref_atom[i + 12]) + 1);
-        strncpy(ref->url, &ref_atom[i + 16], BE_32(&ref_atom[i + 12]));
+        ref->url = malloc(BE_32((char*) &ref_atom[i + 12]) + 1);
+        strncpy(ref->url, (char*) &ref_atom[i + 16], BE_32(&ref_atom[i + 12]));
         ref->url[BE_32(&ref_atom[i + 12]) - 1] = '\0';
 
       } else {
@@ -1253,7 +1252,7 @@ static qt_error parse_reference_atom (reference_t *ref,
 
         /* otherwise, append relative URL to base MRL */
         ref->url = malloc(string_size);
-        strncpy(ref->url, &ref_atom[i + 16], BE_32(&ref_atom[i + 12]));
+        strncpy(ref->url, (char*) &ref_atom[i + 16], BE_32(&ref_atom[i + 12]));
         ref->url[string_size - 1] = '\0';
       }
 
@@ -1290,11 +1289,12 @@ static qt_error parse_reference_atom (reference_t *ref,
 /* This is a little support function used to process the edit list when
  * building a frame table. */
 #define MAX_DURATION 0x7FFFFFFF
-static void get_next_edit_list_entry(qt_trak *trak,
-  int *edit_list_index,
-  unsigned int *edit_list_media_time,
-  int64_t *edit_list_duration,
-  unsigned int global_timescale) {
+static void 
+get_next_edit_list_entry(qt_trak *trak,
+			 unsigned int *edit_list_index,
+			 unsigned int *edit_list_media_time,
+			 int64_t *edit_list_duration,
+			 unsigned int global_timescale) {
 
   /* if there is no edit list, set to max duration and get out */
   if (!trak->edit_list_table) {
@@ -1439,8 +1439,11 @@ static qt_error build_frame_table(qt_trak *trak,
 
     /* initialize edit list considerations */
     edit_list_index = 0;
-    get_next_edit_list_entry(trak, &edit_list_index,
-      &edit_list_media_time, &edit_list_duration, global_timescale);
+    get_next_edit_list_entry(trak,
+			     &edit_list_index,
+			     &edit_list_media_time, 
+			     &edit_list_duration, 
+			     global_timescale);
 
     /* fix up pts information w.r.t. the edit list table */
     edit_list_pts_counter = 0;
@@ -1588,28 +1591,36 @@ static void parse_moov_atom(qt_info *info, unsigned char *moov_atom) {
 
       string_size = BE_16(&moov_atom[i + 4]) + 1;
       info->copyright = realloc (info->copyright, string_size);
-      strncpy(info->copyright, &moov_atom[i + 8], string_size - 1);
+      strncpy(info->copyright, 
+	      (char*) &moov_atom[i + 8], 
+	      string_size - 1);
       info->copyright[string_size - 1] = 0;
 
     } else if (current_atom == NAM_ATOM) {
 
       string_size = BE_16(&moov_atom[i + 4]) + 1;
       info->name = realloc (info->name, string_size);
-      strncpy(info->name, &moov_atom[i + 8], string_size - 1);
+      strncpy(info->name, 
+	      (char*) &moov_atom[i + 8], 
+	      string_size - 1);
       info->name[string_size - 1] = 0;
 
     } else if (current_atom == DES_ATOM) {
 
       string_size = BE_16(&moov_atom[i + 4]) + 1;
       info->description = realloc (info->description, string_size);
-      strncpy(info->description, &moov_atom[i + 8], string_size - 1);
+      strncpy(info->description,
+	      (char*) &moov_atom[i + 8], 
+	      string_size - 1);
       info->description[string_size - 1] = 0;
 
     } else if (current_atom == CMT_ATOM) {
 
       string_size = BE_16(&moov_atom[i + 4]) + 1;
       info->comment = realloc (info->comment, string_size);
-      strncpy(info->comment, &moov_atom[i + 8], string_size - 1);
+      strncpy(info->comment, 
+	      (char*) &moov_atom[i + 8],
+	      string_size - 1);
       info->comment[string_size - 1] = 0;
 
     } else if (current_atom == RMDA_ATOM) {

@@ -60,7 +60,7 @@ static struct EXTRACTOR_Keywords * addKeyword(EXTRACTOR_KeywordType type,
   return result;
 }
 
-static int getIntAt(const char * pos) {
+static int getIntAt(const void * pos) {
   char p[4];
 
   memcpy(p, pos, 4); /* ensure alignment! */
@@ -86,7 +86,7 @@ static struct {
    { NULL, EXTRACTOR_UNKNOWN},
 };
 
-static struct EXTRACTOR_Keywords * processtEXt(const unsigned char * data,
+static struct EXTRACTOR_Keywords * processtEXt(const char * data,
 					       unsigned int length,
 					       struct EXTRACTOR_Keywords * prev) {
   char * keyword;
@@ -114,7 +114,7 @@ static struct EXTRACTOR_Keywords * processtEXt(const unsigned char * data,
 		    prev);
 }
 
-static struct EXTRACTOR_Keywords * processiTXt(const unsigned char * data,
+static struct EXTRACTOR_Keywords * processiTXt(const char * data,
 					       unsigned int length,
 					       struct EXTRACTOR_Keywords * prev) {
   unsigned int pos;
@@ -165,9 +165,9 @@ static struct EXTRACTOR_Keywords * processiTXt(const unsigned char * data,
 	/* printf("out of memory"); */
 	return prev; /* out of memory */
       }
-      ret = uncompress(buf,
+      ret = uncompress((Bytef*) buf,
 		       &bufLen,
-		       &data[pos],
+		       (const Bytef*) &data[pos],
 		       length - pos);
       if (ret == Z_OK) {
 	/* printf("zlib ok"); */
@@ -196,7 +196,7 @@ static struct EXTRACTOR_Keywords * processiTXt(const unsigned char * data,
 		    prev);
 }
 
-static struct EXTRACTOR_Keywords * processIHDR(const unsigned char * data,
+static struct EXTRACTOR_Keywords * processIHDR(const char * data,
 					       unsigned int length,
 					       struct EXTRACTOR_Keywords * prev) {
   char * tmp;
@@ -216,7 +216,7 @@ static struct EXTRACTOR_Keywords * processIHDR(const unsigned char * data,
 }
 
 /* not supported... */
-static struct EXTRACTOR_Keywords * processzTXt(const unsigned char * data,
+static struct EXTRACTOR_Keywords * processzTXt(const char * data,
 					       unsigned int length,
 					       struct EXTRACTOR_Keywords * prev) {
   char * keyword;
@@ -248,9 +248,9 @@ static struct EXTRACTOR_Keywords * processzTXt(const unsigned char * data,
       /* printf("out of memory"); */
       return prev; /* out of memory */
     }
-    ret = uncompress(buf,
+    ret = uncompress((Bytef*) buf,
 		     &bufLen,
-		     &data[off],
+		     (const Bytef*) &data[off],
 		     length - off);
     if (ret == Z_OK) {
       /* printf("zlib ok"); */
@@ -283,11 +283,11 @@ static struct EXTRACTOR_Keywords * processzTXt(const unsigned char * data,
 
 
 struct EXTRACTOR_Keywords * libextractor_png_extract(char * filename,
-                                                     const unsigned char * data,
+                                                     const char * data,
                                                      size_t size,
                                                      struct EXTRACTOR_Keywords * prev) {
-  const unsigned char * pos;
-  const unsigned char * end;
+  const char * pos;
+  const char * end;
   struct EXTRACTOR_Keywords * result;
   unsigned int length;
 

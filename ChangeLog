@@ -1,3 +1,6 @@
+Thu Sep 15 21:55:19 PDT 2005
+	Fixing compiler warnings given by gcc 4.0.
+	
 Thu Sep 15 00:56:51 PDT 2005
 	Fixed incorrectly handled integer overflow in png extractor.
 

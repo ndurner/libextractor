@@ -29,7 +29,7 @@ extern "C" {
  * 0.2.6-1 => 0x00020601
  * 4.5.2-0 => 0x04050200
  */
-#define EXTRACTOR_VERSION 0x00050502
+#define EXTRACTOR_VERSION 0x00050503
 
 #include <stdio.h>
 
@@ -292,7 +292,7 @@ EXTRACTOR_getKeywords(EXTRACTOR_ExtractorList * extractor,
  */
 EXTRACTOR_KeywordList *
 EXTRACTOR_getKeywords2(EXTRACTOR_ExtractorList * extractor,
-		       const char * data,
+		       const void * data,
 		       size_t size);
 
 
@@ -381,7 +381,7 @@ unsigned int EXTRACTOR_countKeywords(EXTRACTOR_KeywordList * keywords);
  * @param in 0-terminated string from the meta-data
  * @return 1 on error, 0 on success
  */
-int EXTRACTOR_binaryDecode(const unsigned char * in,
+int EXTRACTOR_binaryDecode(const char * in,
 			   unsigned char ** out,
 			   size_t * outSize);
 
@@ -394,7 +394,7 @@ int EXTRACTOR_binaryDecode(const unsigned char * in,
  * @return NULL on error, the 0-terminated
  *  encoding otherwise
  */
-char * EXTRACTOR_binaryEncode(const char * data,
+char * EXTRACTOR_binaryEncode(const unsigned char * data,
 			      size_t size);
 
 

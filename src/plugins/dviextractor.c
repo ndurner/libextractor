@@ -50,7 +50,7 @@ static Matches tmap[] = {
   { NULL, 0 },
 };
 
-static struct EXTRACTOR_Keywords * parseZZZ(unsigned char * data,
+static struct EXTRACTOR_Keywords * parseZZZ(const char * data,
 					    size_t pos,
 					    size_t len,
 					    struct EXTRACTOR_Keywords * prev) {
@@ -99,14 +99,14 @@ static struct EXTRACTOR_Keywords * parseZZZ(unsigned char * data,
   return prev;
 }
 
-static unsigned int getIntAt(char * data) {
+static unsigned int getIntAt(const void * data) {
   char p[4];
 
   memcpy(p, data, 4); /* ensure alignment! */
   return *(unsigned int*)&p[0];
 }
 
-static unsigned int getShortAt(char * data) {
+static unsigned int getShortAt(const void * data) {
   char p[2];
 
   memcpy(p, data, 2); /* ensure alignment! */
@@ -114,7 +114,7 @@ static unsigned int getShortAt(char * data) {
 }
 
 struct EXTRACTOR_Keywords * libextractor_dvi_extract(const char * filename,
-						     unsigned char * data,
+						     const unsigned char * data,
 						     size_t size,
 						     struct EXTRACTOR_Keywords * prev) {
   unsigned int klen;
@@ -197,7 +197,7 @@ struct EXTRACTOR_Keywords * libextractor_dvi_extract(const char * filename,
     case 239: /* zzz1 */
       len = data[pos+1];
       if (pos + 2 + len < size)
-	prev = parseZZZ(data,
+	prev = parseZZZ((const char*) data,
 			pos+2,
 			len,
 			prev);
@@ -206,7 +206,7 @@ struct EXTRACTOR_Keywords * libextractor_dvi_extract(const char * filename,
     case 240: /* zzz2 */
       len = ntohs(getShortAt(&data[pos+1]));
       if (pos + 3 + len < size)
-	prev = parseZZZ(data,
+	prev = parseZZZ((const char*) data,
 			pos+3,
 			len,
 			prev);
@@ -215,7 +215,7 @@ struct EXTRACTOR_Keywords * libextractor_dvi_extract(const char * filename,
     case 241: /* zzz3, who uses that? */
       len = (ntohs(getShortAt(&data[pos+1]))) + 65536 * data[pos+3];
       if (pos + 4 + len < size)
-	prev = parseZZZ(data,
+	prev = parseZZZ((const char*) data,
 			pos+4,
 			len,
 			prev);
@@ -224,7 +224,7 @@ struct EXTRACTOR_Keywords * libextractor_dvi_extract(const char * filename,
     case 242: /* zzz4, hurray! */
       len = ntohl(getIntAt(&data[pos+1]));
       if (pos + 1 + len < size)
-	prev = parseZZZ(data,
+	prev = parseZZZ((const char*) data,
 			pos+5,
 			len,
 			prev);

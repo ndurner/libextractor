@@ -547,18 +547,19 @@ static void addKeyword(struct EXTRACTOR_Keywords ** list,
   *list = next;
 }
 
-struct EXTRACTOR_Keywords * libextractor_translit_extract(char * filename,
-						       char * data,
-						       size_t size,
-						       struct EXTRACTOR_Keywords * prev) {
+struct EXTRACTOR_Keywords * 
+libextractor_translit_extract(const char * filename,
+			      const char * data,
+			      size_t size,
+			      struct EXTRACTOR_Keywords * prev) {
   struct EXTRACTOR_Keywords * pos;
   unsigned int mem, src, dest, len;
-  unsigned char *transl;
+  char * transl;
 
   pos = prev;
 
   mem = 256;
-  transl = (char *) malloc(mem + 1);
+  transl = malloc(mem + 1);
 
   
   while (pos != NULL)

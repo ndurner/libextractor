@@ -84,10 +84,11 @@ static Matches tmap[] = {
 
 
 /* mimetype = audio/mpeg */
-struct EXTRACTOR_Keywords * libextractor_id3v2_extract(char * filename,
-						       unsigned char * data,
-						       size_t size,
-						       struct EXTRACTOR_Keywords * prev) {
+struct EXTRACTOR_Keywords * 
+libextractor_id3v2_extract(const char * filename,
+			   const unsigned char * data,
+			   size_t size,
+			   struct EXTRACTOR_Keywords * prev) {
   int unsync;
   unsigned int tsize;
   unsigned int pos;
@@ -122,7 +123,7 @@ struct EXTRACTOR_Keywords * libextractor_id3v2_extract(char * filename,
     i = 0;
     while (tmap[i].text != NULL) {
       if (0 == strncmp(tmap[i].text,
-		       &data[pos],
+		       (const char*) &data[pos],
 		       3)) {
 	char * word;
 	/* this byte describes the encoding
@@ -130,19 +131,19 @@ struct EXTRACTOR_Keywords * libextractor_id3v2_extract(char * filename,
 	   if it fails, then forget it */
 	switch (data[pos+6]) {
 	case 0x00:
-	  word = convertToUtf8(&data[pos+7],
+	  word = convertToUtf8((const char*) &data[pos+7],
 			       csize,
 			       "ISO-8859-1");
 	  break;
 	case 0x01:
-	  word = convertToUtf8(&data[pos+7],
+	  word = convertToUtf8((const char*) &data[pos+7],
 			       csize,
 			       "UCS-2");
 	  break;
 	default:
 	  /* bad encoding byte,
 	     try to convert from iso-8859-1 */
-	  word = convertToUtf8(&data[pos+7],
+	  word = convertToUtf8((const char*) &data[pos+7],
 			       csize,
 			       "ISO-8859-1");
 	  break;

@@ -76,7 +76,7 @@ static char * whitelist[] = {
 };
 
 struct EXTRACTOR_Keywords * libextractor_thumbnail_extract(const char * filename,
-							   const char * data,
+							   const unsigned char * data,
 							   size_t size,
 							   struct EXTRACTOR_Keywords * prev) {
   GdkPixbufLoader * loader;
@@ -169,7 +169,7 @@ struct EXTRACTOR_Keywords * libextractor_thumbnail_extract(const char * filename
     return prev;
 
   binary
-    = EXTRACTOR_binaryEncode(thumb,
+    = EXTRACTOR_binaryEncode((const unsigned char*) thumb,
 			     length);
   free(thumb);
   if (binary == NULL)

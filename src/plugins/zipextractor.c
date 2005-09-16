@@ -80,15 +80,16 @@ typedef struct {
 
 
 /* mimetype = application/zip */
-struct EXTRACTOR_Keywords * libextractor_zip_extract(char * filename,
-                                                     char * data,
-                                                     size_t size,
-                                                     struct EXTRACTOR_Keywords * prev) {
+struct EXTRACTOR_Keywords * 
+libextractor_zip_extract(const char * filename,
+			 const char * data,
+			 size_t size,
+			 struct EXTRACTOR_Keywords * prev) {
   void * tmp;
   zip_entry * info;
   zip_entry * start;
   char *filecomment = NULL;
-  unsigned char * pos;
+  const char * pos;
   unsigned int offset, stop;
   unsigned int name_length, extra_length, comment_length;
   unsigned int filecomment_length;

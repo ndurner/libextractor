@@ -150,18 +150,6 @@ gsf_input_read (GsfInput * mem, size_t num_bytes, unsigned char * optional_buffe
 }
 
 /**
- * gsf_input_name :
- * @input :
- *
- * Returns @input's name in utf8 form, DO NOT FREE THIS STRING
- **/
-static const char *
-gsf_input_name (GsfInput *input)
-{
-	return input->name;
-}
-
-/**
  * gsf_input_size :
  * @input : The input
  *
@@ -174,50 +162,6 @@ gsf_input_size (GsfInput *input)
 {
 	g_return_val_if_fail (input != NULL, -1);
 	return input->size;
-}
-
-/**
- * gsf_input_eof :
- * @input : the input
- *
- * Are we at the end of the file ?
- *
- * Returns : TRUE if the input is at the eof.
- **/
-static int
-gsf_input_eof (GsfInput *input)
-{
-	g_return_val_if_fail (input != NULL, 0);
-
-	return input->cur_offset >= input->size;
-}
-
-/**
- * gsf_input_remaining :
- * @input :
- *
- * Returns the number of bytes left in the file.
- **/
-static off_t
-gsf_input_remaining (GsfInput *input)
-{
-	g_return_val_if_fail (input != NULL, 0);
-
-	return input->size - input->cur_offset;
-}
-
-/**
- * gsf_input_tell :
- * @input :
- *
- * Returns the current offset in the file.
- **/
-static off_t
-gsf_input_tell (GsfInput *input)
-{
-	g_return_val_if_fail (input != NULL, 0);
-
-	return input->cur_offset;
 }
 
 /**
@@ -254,22 +198,6 @@ gsf_input_seek (GsfInput *input, off_t offset, int whence)
 
 	input->cur_offset = pos;
 	return 0;
-}
-
-/**
- * gsf_input_set_size :
- * @input :
- * @size :
- *
- * Returns : TRUE if the assignment was ok.
- */
-static int
-gsf_input_set_size (GsfInput *input, off_t size)
-{
-	g_return_val_if_fail (input != NULL, 0);
-
-	input->size = size;
-	return 1;
 }
 
 
@@ -309,8 +237,6 @@ gsf_input_set_size (GsfInput *input, off_t size)
 #define GSF_LE_SET_GINT8(p,dat) GSF_LE_SET_GUINT8((p),(dat))
 #define GSF_LE_SET_GINT16(p,dat) GSF_LE_SET_GUINT16((p),(dat))
 #define GSF_LE_SET_GINT32(p,dat) GSF_LE_SET_GUINT32((p),(dat))
-#define GSF_LE_SET_FLOAT(p,dat) gsf_le_set_float((p),(dat))
-#define GSF_LE_SET_DOUBLE(p,dat) gsf_le_set_double((p),(dat))
 
 
 /*
@@ -394,36 +320,6 @@ gsf_le_get_float (void const *p)
 #endif
 }
 
-static void
-gsf_le_set_float (void *p, float d)
-{
-#if G_FLOAT_BYTE_ORDER == G_BIG_ENDIAN
-	if (sizeof (float) == 4) {
-		int     i;
-		guint8 *t  = (guint8 *)&d;
-		guint8 *p2 = (guint8 *)p;
-		int     sd = sizeof (d);
-
-		for (i = 0; i < sd; i++)
-			p2[sd - 1 - i] = t[i];
-	} else {
-		g_error ("Big endian machine, but weird size of floats");
-	}
-#elif (G_FLOAT_BYTE_ORDER == G_LITTLE_ENDIAN) || (G_FLOAT_BYTE_ORDER == G_ARMFLOAT_ENDIAN)
-	if (sizeof (float) == 4) {
-		/*
-		 * On i86, we could access directly, but Alphas require
-		 * aligned access.
-		 */
-		memcpy (p, &d, sizeof (d));
-	} else {
-		g_error ("Little endian machine, but weird size of floats");
-	}
-#else
-#error "Floating-point byte order not recognised -- out of luck"
-#endif
-}
-
 static double
 gsf_le_get_double (void const *p)
 {
@@ -462,64 +358,6 @@ gsf_le_get_double (void const *p)
 #else
 #error "Floating-point byte order not recognised -- out of luck"
 #endif
-}
-
-static void
-gsf_le_set_double (void *p, double d)
-{
-#if G_FLOAT_BYTE_ORDER == G_ARMFLOAT_ENDIAN
-	memcpy (p, (const char *)&d + 4, 4);
-	memcpy ((char *)p + 4, &d, 4);
-#elif G_FLOAT_BYTE_ORDER == G_BIG_ENDIAN
-	if (sizeof (double) == 8) {
-		int     i;
-		guint8 *t  = (guint8 *)&d;
-		guint8 *p2 = (guint8 *)p;
-		int     sd = sizeof (d);
-
-		for (i = 0; i < sd; i++)
-			p2[sd - 1 - i] = t[i];
-	} else {
-		g_error ("Big endian machine, but weird size of doubles");
-	}
-#elif G_FLOAT_BYTE_ORDER == G_LITTLE_ENDIAN
-	if (sizeof (double) == 8) {
-		/*
-		 * On i86, we could access directly, but Alphas require
-		 * aligned access.
-		 */
-		memcpy (p, &d, sizeof (d));
-	} else {
-		g_error ("Little endian machine, but weird size of doubles");
-	}
-#else
-#error "Floating-point byte order not recognised -- out of luck"
-#endif
-}
-
-/**
- * gsf_extension_pointer:
- * @path: A filename or file path.
- *
- * Extracts the extension from the end of a filename (the part after the final
- * '.' in the filename).
- *
- * Returns: A pointer to the extension part of the filename, or a
- * pointer to the end of the string if the filename does not
- * have an extension.
- */
-static char const *
-gsf_extension_pointer (char const *path)
-{
-	char *s, *t;
-	
-	g_return_val_if_fail (path != NULL, NULL);
-
-	t = strrchr (path, G_DIR_SEPARATOR);
-	s = strrchr ((t != NULL) ? t : path, '.');
-	if (s != NULL)
-		return s + 1;
-	return path + strlen(path);
 }
 
 /**
@@ -889,7 +727,7 @@ ole_dirent_new (GsfInfileMSOle *ole, guint32 entry, MSOleDirent *parent)
 		 * Sometimes, rarely, people store the stream name as ascii
 		 * rather than utf16.  Do a validation first just in case.
 		 */
-		if (!g_utf8_validate (data, -1, &end) ||
+		if (!g_utf8_validate ((const char*) data, -1, &end) ||
 		    ((guint8 const *)end - data + 1) != name_len) {
 			/* be wary about endianness */
 			for (i = 0 ; i < name_len ; i += 2)
@@ -1198,7 +1036,9 @@ gsf_infile_msole_read (GsfInfileMSOle *ole, size_t num_bytes, guint8 *buffer)
 				return NULL;
 		}
 		ole->cur_block = last_block;
-		return gsf_input_read (ole->input, num_bytes, buffer);
+		return gsf_input_read (ole->input, 
+				       num_bytes,
+				       (unsigned char*) buffer);
 	}
 
 	/* damn, we need to copy it block by block */
@@ -1246,9 +1086,9 @@ gsf_infile_msole_new_child (GsfInfileMSOle *parent,
 	     (dirent->is_directory) ) {
 		/* be wary.  It seems as if some implementations pretend that the
 		 * directories contain data */
-		return gsf_input_new("",
-				     (off_t) 0,
-				     0);
+	  return gsf_input_new((const unsigned char*) "",
+			       (off_t) 0,
+			       0);
 	}
 	child = ole_dup (parent);
 	if (child == NULL)
@@ -1300,12 +1140,12 @@ gsf_infile_msole_new_child (GsfInfileMSOle *parent,
 	}
 	if (NULL == gsf_infile_msole_read(child,
 					  child->size,
-					  buf)) {
+					  (guint8*) buf)) {
 		gsf_infile_msole_finalize(child);	
 		return NULL;
 	}
 	gsf_infile_msole_finalize(child);
-	return gsf_input_new(buf,
+	return gsf_input_new((const unsigned char*) buf,
 			     (off_t) dirent->size,
 			     1);
 }
@@ -1622,7 +1462,6 @@ msole_prop_parse(GsfMSOleMetaDataSection *section,
   GValue *res;
   char *str;
   guint32 len;
-  gsize gslen;
   gboolean const is_vector = type & LE_VT_VECTOR;
   GError * error;
 
@@ -1773,7 +1612,7 @@ msole_prop_parse(GsfMSOleMetaDataSection *section,
     
     error = NULL;
     d (gsf_mem_dump (*data + 4, len * section->char_size););
-    str = g_convert_with_iconv (*data + 4,
+    str = g_convert_with_iconv ((char*) *data + 4,
 				len * section->char_size,
 				section->iconv_handle, NULL, NULL, &error);
     
@@ -1807,8 +1646,13 @@ msole_prop_parse(GsfMSOleMetaDataSection *section,
     
     error = NULL;
     d (gsf_mem_dump (*data + 4, len*2););
-    str = g_convert (*data + 4, len*2,
-		     "UTF-8", "UTF-16LE", NULL, NULL, &error);
+    str = g_convert ((char*) *data + 4, 
+		     len*2,
+		     "UTF-8", 
+		     "UTF-16LE",
+		     NULL, 
+		     NULL, 
+		     &error);
     
     g_value_init (res, G_TYPE_STRING);
     if (NULL != str) {
@@ -1959,7 +1803,7 @@ msole_prop_read (struct GsfInput *in,
       g_return_val_if_fail (len < 0x10000, NULL);
 
       gslen = 0;
-      name = g_convert_with_iconv (data + 8,
+      name = g_convert_with_iconv ((char*) data + 8,
 				   len * section->char_size,
 				   section->iconv_handle, &gslen, NULL, NULL);
 
@@ -2268,7 +2112,7 @@ static struct EXTRACTOR_Keywords * processSO(struct GsfInput * src,
   if (size < 0x374) /* == 0x375?? */
     return prev;
   buf = malloc(size);
-  gsf_input_read(src, size, buf);
+  gsf_input_read(src, size, (unsigned char*) buf);
   if ( (buf[0] != 0x0F) ||
        (buf[1] != 0x0) ||
        (0 != strncmp(&buf[2],
@@ -2309,7 +2153,7 @@ static struct EXTRACTOR_Keywords * processSO(struct GsfInput * src,
 
 struct EXTRACTOR_Keywords *
 libextractor_ole2_extract(const char * filename,
-			  char * date,
+			  const char * date,
 			  size_t size,
 			  struct EXTRACTOR_Keywords * prev) {
   struct GsfInput   *input;
