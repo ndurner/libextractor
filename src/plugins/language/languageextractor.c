@@ -1,3 +1,23 @@
+/*
+     This file is part of libextractor.
+     (C) 2005 Vidyut Samanta and Christian Grothoff
+
+     libextractor is free software; you can redistribute it and/or modify
+     it under the terms of the GNU General Public License as published
+     by the Free Software Foundation; either version 2, or (at your
+     option) any later version.
+
+     libextractor is distributed in the hope that it will be useful, but
+     WITHOUT ANY WARRANTY; without even the implied warranty of
+     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+     General Public License for more details.
+
+     You should have received a copy of the GNU General Public License
+     along with libextractor; see the file COPYING.  If not, write to the
+     Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+     Boston, MA 02111-1307, USA.
+ */
+/* this code was adopted from Kat, original copyright below: */
 /***************************************************************************
  *   Copyright (C) 2005 by Roberto Cappuccio and the Kat team              *
  *   Roberto Cappuccio : roberto.cappuccio@gmail.com                       *
@@ -18,16 +38,15 @@
  *   51 Franklin Steet, Fifth Floor, Boston, MA 02110-1301, USA.           *
  ***************************************************************************/
 
-#include <cstdlib>
-#include <kdebug.h>
-#include <kstandarddirs.h>
-#include <kio/job.h>
-#include <kio/jobclasses.h>
-#include <qregexp.h>
-#include <qdir.h>
-#include <qdom.h>
+/**
+ * @file languageextractor.c
+ * @author Christian Grothoff
+ * @brief try to identify the language of the document using 
+ *        letter and letter-pair statistics 
+ */
 
-#include "katlanguagemanager.h"
+#include "platform.h"
+#include "extractor.h"
 
 int NGramsList::compareItems( QCollection::Item item1, QCollection::Item item2 )
 {
@@ -45,13 +64,6 @@ int LanguageList::compareItems( QCollection::Item item1, QCollection::Item item2
     return n2->distance - n1->distance;
 }
 
-KatLanguageManager::KatLanguageManager()
-{
-}
-
-KatLanguageManager::~KatLanguageManager()
-{
-}
 
 void KatLanguageManager::extractNGrams( const QString& str, QStringList& ngrams, int size )
 {
@@ -308,3 +320,12 @@ LanguageProfileMap* KatLanguageManager::loadAllLanguageProfiles()
     return lp;
 }
 
+
+
+struct EXTRACTOR_Keywords * 
+libextractor_language_extract(const char * filename,
+			      const char * buf,
+			      size_t size,
+			      struct EXTRACTOR_Keywords * prev) {
+  return prev;
+}
