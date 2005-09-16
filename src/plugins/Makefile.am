@@ -134,7 +134,7 @@ libextractor_tar_la_SOURCES = \
 libextractor_tar_la_LDFLAGS = \
   $(PLUGINFLAGS)  $(retaincommand)
 libextractor_tar_la_LIBADD = \
-  $(top_builddir)/src/main/libextractor.la
+  $(top_builddir)/src/main/libextractor.la -lz
 
 libextractor_lower_la_SOURCES = \
   lowerextractor.c
