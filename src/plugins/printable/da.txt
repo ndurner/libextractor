@@ -1,3 +1,4 @@
+ISO-8859-1
 a
 a's
 a-aktie

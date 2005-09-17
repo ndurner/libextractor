@@ -412,10 +412,11 @@ md5_buffer (const char *buffer, size_t len, void *resblock)
 
 
 
-static struct EXTRACTOR_Keywords * addKeyword(EXTRACTOR_KeywordList *oldhead,
-					      const char *phrase,
-					      EXTRACTOR_KeywordType type) {
-
+static struct EXTRACTOR_Keywords * 
+addKeyword(EXTRACTOR_KeywordList *oldhead,
+	   const char *phrase,
+	   EXTRACTOR_KeywordType type) {
+  
    EXTRACTOR_KeywordList * keyword;
    keyword = (EXTRACTOR_KeywordList*) malloc(sizeof(EXTRACTOR_KeywordList));
    keyword->next = oldhead;
@@ -431,10 +432,11 @@ static struct EXTRACTOR_Keywords * addKeyword(EXTRACTOR_KeywordList *oldhead,
 #define DIGEST_BIN_BYTES (DIGEST_BITS / 8)
 #define MAX_DIGEST_BIN_BYTES DIGEST_BIN_BYTES
 
-struct EXTRACTOR_Keywords * libextractor_hash_md5_extract(const char * filename,
-							  char * data,
-							  size_t size,
-							  struct EXTRACTOR_Keywords * prev) {
+struct EXTRACTOR_Keywords * 
+libextractor_hash_md5_extract(const char * filename,
+			      const char * data,
+			      size_t size,
+			      struct EXTRACTOR_Keywords * prev) {
   unsigned char bin_buffer[MAX_DIGEST_BIN_BYTES];
   char hash[8 * MAX_DIGEST_BIN_BYTES];
   char buf[16];

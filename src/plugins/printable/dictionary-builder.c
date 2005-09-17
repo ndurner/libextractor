@@ -1,6 +1,6 @@
 /*
      This file is part of libextractor.
-     (C) 2002, 2003, 2004 Vidyut Samanta and Christian Grothoff
+     (C) 2002, 2003, 2004, 2005 Vidyut Samanta and Christian Grothoff
 
      libextractor is free software; you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published
@@ -92,6 +92,7 @@ int main(int argc,
   char line[2048]; /* buffer overflow, here we go */
   FILE *dictin;
   char * bn;
+  char * charset = NULL;
 #define ALLOCSIZE 1024*1024
 
   if (argc<2) {
@@ -123,7 +124,9 @@ int main(int argc,
   }
   cnt = 0;
   memset(&line[0], 0, 2048);
-  while (1 == fscanf(dictin, "%s", (char*)&line)) {
+  fscanf(dictin, "%s", (char*)&line);
+  charset = strdup(line); /* not used (yet) */
+  while (1 == fscanf(dictin, "%s", (char*)&line)) {    
     words[cnt] = strdup(line);
     cnt++;
     memset(&line[0], 0, 2048);
@@ -133,7 +136,6 @@ int main(int argc,
 	      __FILE__);
       exit(-1);
     }
-
   }
 
   bf.addressesPerElement = ADDR_PER_ELEMENT;

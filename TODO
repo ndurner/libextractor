@@ -1,3 +1,11 @@
+FIX:
+* HTML-extractor now broken (!) Also crappy code. FIX?!
+* check exiv2 memory consumption on very large files
+* integrate pt dictionary -- address charset issues!
+* complete language plugin
+
+
+
 Core:
 * error reporting facilities
 * add support for different character sets (to 'all' extractors)

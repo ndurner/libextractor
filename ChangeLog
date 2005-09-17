@@ -1,3 +1,7 @@
+Fri Sep 16 16:41:04 PDT 2005
+	Made LE malloc file READ-ONLY.  This should help the VM conserve
+	memory, however this breaks the HTML extractor.
+
 Thu Sep 15 21:55:19 PDT 2005
 	Fixing compiler warnings given by gcc 4.0.
 	

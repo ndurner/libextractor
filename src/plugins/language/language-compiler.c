@@ -72,10 +72,6 @@ int main(int argc,
 
   }
 
-  bf.addressesPerElement = ADDR_PER_ELEMENT;
-  bf.bitArraySize = cnt*4;
-  bf.bitArray = malloc(bf.bitArraySize);
-  memset(bf.bitArray, 0, bf.bitArraySize);
 
   fprintf(stdout,
 	  "#include \"somefile.h\"\n");

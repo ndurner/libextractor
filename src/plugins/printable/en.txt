@@ -1,5 +1,4 @@
-
-
+ISO-8859-1
 "abitur"
 "googol"
 "sie"

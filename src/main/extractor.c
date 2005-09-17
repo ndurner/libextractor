@@ -902,7 +902,7 @@ EXTRACTOR_getKeywords (EXTRACTOR_ExtractorList * extractor,
 
   if (size > MAX_READ)
     size = MAX_READ; /* do not mmap/read more than 1 GB! */
-  buffer = MMAP(NULL, size, PROT_READ | PROT_WRITE, MAP_PRIVATE, file, 0);
+  buffer = MMAP(NULL, size, PROT_READ, MAP_PRIVATE, file, 0);
   close(file);
   if ( (buffer == NULL) || (buffer == (void *) -1) )
     return NULL;

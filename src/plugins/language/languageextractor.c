@@ -65,34 +65,18 @@ int LanguageList::compareItems( QCollection::Item item1, QCollection::Item item2
 }
 
 
-void KatLanguageManager::extractNGrams( const QString& str, QStringList& ngrams, int size )
-{
-    QString paddedString( str );
-
-    paddedString = paddedString.replace( QRegExp( " " ), "_" );
-    paddedString = '_' + paddedString + '_';
-
-    for( int i = 0; i < paddedString.length() - size + 1; i++ )
-        ngrams.append( paddedString.mid( i, size ) );
+static void extractNGrams(const char * str, 
+			  QStringList& ngrams) {
+  QString paddedString( str );
+  
+  paddedString = paddedString.replace( QRegExp( " " ), "_" );
+  paddedString = '_' + paddedString + '_';
+  
+  for( int i = 0; i < paddedString.length() - size + 1; i++ )
+    ngrams.append( paddedString.mid( i, size ) );
 }
 
-NGramsList KatLanguageManager::createFingerprintFromFile( const QString& fileName )
-{
-    QFile m_file( fileName );
-    QTextStream m_stream( &m_file );
-    bool m_open = m_file.open( IO_ReadOnly );
-    QString buffer = m_stream.read();
-    m_file.close();
-
-    buffer = buffer.lower();
-    buffer = buffer.replace( QRegExp( "[\\W]" ), " " );
-    buffer = buffer.replace( QRegExp( "[0-9]" ), " " );
-    buffer = buffer.simplifyWhiteSpace();
-
-    return createFingerprintFromQString( buffer );
-}
-
-NGramsList KatLanguageManager::createFingerprintFromQString( const QString& buf )
+static NGramsList createFingerprintFromQString(const char * buf )
 {
     QStringList ngrams;
     NGramsList wngrams;
@@ -136,7 +120,8 @@ NGramsList KatLanguageManager::createFingerprintFromQString( const QString& buf 
     return wngrams;
 }
 
-QString KatLanguageManager::identifyLanguage( const QString& buffer, LanguageProfileMap lp )
+static const char * identifyLanguage(const QString& buffer, 
+				     LanguageProfileMap lp )
 {
     long distance;
     long minscore = MAXSCORE;
@@ -206,118 +191,36 @@ QString KatLanguageManager::identifyLanguage( const QString& buffer, LanguagePro
     }
 }
 
-long KatLanguageManager::calculateDistance( NGramsList& file_ngrams, LanguageProfile& langNG )
-{
-    long fileNGPos = 0L;
-    long langNGPos = 0L;
-    long distance = 0L;
-
-    NGramsList::Iterator file_ngram = file_ngrams.begin();
-    while ( file_ngram != file_ngrams.end() )
+static unsigned long long calculateDistance(NGramsList & file_ngrams, 
+					    LanguageProfile & langNG) {
+  unsigned long long fileNGPos = 0L;
+  unsigned long long langNGPos = 0L;
+  unsigned long long distance = 0L;
+  
+  NGramsList::Iterator file_ngram = file_ngrams.begin();
+  while ( file_ngram != file_ngrams.end() )
     {
-        NGram* currentFileNGram = *file_ngram;
+      NGram* currentFileNGram = *file_ngram;
+      
+      QMap<QString, unsigned long long>::iterator ng = langNG.find( currentFileNGram->ngram );
 
-        // search the currentFileNGram in language_ngrams
-        // and calculate the distance
-        QMap<QString, long>::iterator ng = langNG.find( currentFileNGram->ngram );
-
-        if ( ng == langNG.end() )
+      if ( ng == langNG.end() )
         {
-            // not found
-            distance = distance + MAXOUTOFPLACE;
+	  // not found
+	  distance = distance + MAXOUTOFPLACE;
         }
-        else
+      else
         {
-            //found
-            langNGPos = ng.data();
-            distance = distance + labs( langNGPos - fileNGPos );
+	  //found
+	  langNGPos = ng.data();
+	  distance = distance + labs( langNGPos - fileNGPos );
         }
-
-        fileNGPos++;
-        file_ngram++;
+      
+      fileNGPos++;
+      file_ngram++;
     }
-
-    return distance;
-}
-
-LanguageProfileMap* KatLanguageManager::loadAllLanguageProfiles()
-{
-    LanguageProfileMap* lp = new LanguageProfileMap();
-
-    // clear the language profile
-    lp->clear();
-
-    // find the Kat application data path
-    QStringList m_languageFiles = KGlobal::dirs()->findAllResources( "data", "kat/language/*.klp", false, true );
-
-    //delete files have .klpd extension
-    QStringList deletedLanguageList = KGlobal::dirs()->findAllResources( "data", "kat/language/*.klpd", false, true );
-    QStringList deletedFileLanguage;
-    QStringList::Iterator end( deletedLanguageList.end() );
-    for ( QStringList::Iterator it = deletedLanguageList.begin(); it != end; ++it )
-    {
-        KURL file( *it );
-        QString tmp = file.filename().mid( 0, file.filename().length() - 5 );
-        kdDebug() << "loadAllLanguageProfiles tmp :" << tmp << endl;
-        deletedFileLanguage.append( tmp );
-    }
-    // load the language profiles
-    QStringList::Iterator endLang( m_languageFiles.end() );
-    for ( QStringList::Iterator it = m_languageFiles.begin(); it != endLang; ++it )
-    {
-        QString lname = (*it).mid( 0, (*it).length()-4 );
-        KURL tmpFile( *it );
-        QString tmp = tmpFile.filename().mid( 0, tmpFile.filename().length() - 4 );
-        //it was removed => don't load it
-        if ( deletedFileLanguage.contains( tmp ) )
-            continue;
-
-        QString profilePath = *it ;
-        QDomDocument doc( profilePath );
-
-        QFile file( profilePath );
-        if ( !file.exists() )
-            return lp;
-
-        if ( !file.open( IO_ReadOnly ) )
-        {
-            kdDebug() << "Impossible to open " << profilePath << endl;
-            return lp;
-        }
-        QByteArray m_data = file.readAll();
-
-        QString qs;
-        if ( !doc.setContent( QString( m_data ).utf8(), &qs ) )
-        {
-            kdDebug() << "Impossible to set content from " << profilePath << " ERROR: " << qs << endl;
-            file.close();
-            return lp;
-        }
-        file.close();
-
-        // create the list of ngrams of the language profile
-        LanguageProfile lprofile;
-        lprofile.clear();
-        QDomElement docElem = doc.documentElement();
-        QDomNode n = docElem.firstChild();
-        long index = 0L;
-
-        while( !n.isNull() )
-        {
-            QDomElement e = n.toElement();
-            if( !e.isNull() )
-                lprofile.insert( QString( e.attribute( "value" ) ), index );
-
-            index++;
-            n = n.nextSibling();
-        }
-
-        QString tmpLang = tmpFile.filename().mid( 0, tmpFile.filename().length() - 4 );
-        //kdDebug() << " language insert :" << tmpLang << endl;
-        lp->insert( tmpLang , lprofile );
-    }
-
-    return lp;
+  
+  return distance;
 }
 
 
