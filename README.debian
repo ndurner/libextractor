@@ -19,7 +19,6 @@ For Subversion access and compilation:
 subversion
 autoconf
 automake1.8
-autoconf-archive
 
 ==============================================
 
