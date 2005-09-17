@@ -336,29 +336,19 @@ namespace Exiv2 {
     }
 
     MemIo::MemIo(const byte* data, long size)
-    {
-        // If copying data is too slow it might be worth
-        // creating a readonly MemIo variant
- 		idx_ = 0;
-        data_ = (byte *) malloc(size);
-        if (data_)
-        {
-        	memcpy(data_, data, size);
-        	size_ = size;
-        	isMalloced = true;
-        }
-        else
-        {
-        	size = 0;
-        	isMalloced = false;
-        }
-    }
+        : data_(const_cast<byte*>(data)),
+          idx_(0),
+          size_(size),
+          sizeAlloced_(0),
+          isMalloced_(false)
+     {
+     }
     
 	void MemIo::wrap(const byte *data, long size)
 	{
 		data_ = (byte *) data;
 		size_ = size;
-		isMalloced = false;
+		isMalloced_ = false;
 	}
 
     BasicIo::AutoPtr MemIo::temporary() const
@@ -368,21 +358,30 @@ namespace Exiv2 {
 
     void MemIo::checkSize(long wcount)
     {
-        ByteVector::size_type need = wcount + idx_;
+        long need = wcount + idx_;
         if (need > size_) {
-        	if (size_ > 0)
-        		data_ = (byte *) realloc(data_, need);
-        	else
-        		data_ = (byte *) malloc(need);
-        }
-    }
-
-    long MemIo::write(const byte* data, long wcount)
-    {
-        checkSize(wcount);
-        memcpy(&data_[idx_], data, wcount);
-        idx_ += wcount;
-        return wcount;
+            if (need > sizeAlloced_) {
+                // Allocate in blocks of 32kB
+                long want = 32768 * (1 + need / 32768);             
+                if (size_ > 0) {
+                    if (!isMalloced_) {
+                        // "copy-on-expand"
+                        byte* data = (byte*)malloc(want);
+                        memcpy(data, data_, size_);
+                        data_ = data;
+                    }
+                    else {
+                        data_ = (byte*)realloc(data_, want);
+                    }
+                }
+                else {
+                    data_ = (byte*)malloc(want);
+                }
+                sizeAlloced_ = want;
+                isMalloced_ = true;
+            }
+            size_ = need;
+         }
     }
 
     void MemIo::transfer(BasicIo& src)
@@ -390,13 +389,13 @@ namespace Exiv2 {
         MemIo *memIo = dynamic_cast<MemIo*>(&src);
         if (memIo) {
             // Optimization if this is another instance of MemIo
-            if (memIo->isMalloced)
+            if (memIo->isMalloced_)
             {
-            	isMalloced = true;
-            	memIo->isMalloced = false;
+            	isMalloced_ = true;
+            	memIo->isMalloced_ = false;
             }
             else
-            	isMalloced = false;
+            	isMalloced_ = false;
 
         	data_ = memIo->data_;            
             idx_ = 0;
@@ -414,32 +413,9 @@ namespace Exiv2 {
         if (error() || src.error()) throw Error(19, strError());
     }
 
-    long MemIo::write(BasicIo& src)
-    {
-        if (static_cast<BasicIo*>(this)==&src) return 0;
-        if (!src.isopen()) return 0;
-
-        byte buf[4096];
-        long readCount = 0;
-        long writeTotal = 0;
-        while ((readCount = src.read(buf, sizeof(buf)))) {
-            write(buf, readCount);
-            writeTotal += readCount;
-        }
-
-        return writeTotal;
-    }
-
-    int MemIo::putb(byte data)
-    {
-        checkSize(1);
-        data_[idx_++] = data;
-        return data;
-    }
-
     int MemIo::seek(long offset, Position pos)
     {
-        ByteVector::size_type newIdx;
+      long newIdx;
 
         if (pos == BasicIo::cur ) {
             newIdx = idx_ + offset;
@@ -459,12 +435,12 @@ namespace Exiv2 {
 
     long MemIo::tell() const
     {
-        return (long)idx_;
+        return idx_;
     }
 
     long MemIo::size() const
     {
-        return (long) size_;
+        return size_;
     }
 
     int MemIo::open()
@@ -493,7 +469,7 @@ namespace Exiv2 {
 
     long MemIo::read(byte* buf, long rcount)
     {
-        long avail = (long)(size_ - idx_);
+        long avail = size_ - idx_;
         long allow = std::min(rcount, avail);
 
         memcpy(buf, &data_[idx_], allow);

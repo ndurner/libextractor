@@ -476,7 +476,7 @@ namespace Exiv2 {
         //! @name Creators
         //@{
         //! Default constructor that results in an empty object
-        MemIo() { idx_ = 0; isMalloced = false; data_ = NULL;}
+      MemIo() : data_(0), idx_(0), size_(0), sizeAlloced_(0), isMalloced_(false) {}
         /*!
           @brief Constructor that accepts a block of memory to be copied.
               IO operations are performed on the copied memory.
@@ -486,7 +486,7 @@ namespace Exiv2 {
          */
         MemIo(const byte* data, long size);
         //! Destructor. Releases all managed memory
-        ~MemIo() {if (isMalloced) free(data_);}
+        ~MemIo() {if (isMalloced_) free(data_);}
 
 		void MemIo::wrap(const byte *data, long size);
 
@@ -516,7 +516,7 @@ namespace Exiv2 {
           @return Number of bytes written to the memory block successfully;<BR>
                  0 if failure;
          */
-        virtual long write(const byte* data, long wcount);
+      virtual long write(const byte* data, long wcount) { return 0; }
         /*!
           @brief Write data that is read from another BasicIo instance to
               the memory block. If needed, the size of the internal memory
@@ -527,7 +527,7 @@ namespace Exiv2 {
           @return Number of bytes written to the memory block successfully;<BR>
                  0 if failure;
          */
-        virtual long write(BasicIo& src);
+      virtual long write(BasicIo& src) { return 0; }
         /*!
           @brief Write one byte to the memory block. The IO position is
               advanced by one byte.
@@ -535,7 +535,7 @@ namespace Exiv2 {
           @return The value of the byte written if successful;<BR>
                  EOF if failure;
          */
-        virtual int putb(byte data);
+      virtual int putb(byte data) { return EOF; }
         /*!
           @brief Read data from the memory block. Reading starts at the current
               IO position and the position is advanced by the number of
@@ -630,16 +630,12 @@ namespace Exiv2 {
         //! Assignment operator
         MemIo& operator=(const MemIo& rhs);
 
-        // Typedefs
-        typedef std::vector<byte> ByteVector;
-
-        // DATA
         byte *data_;
-        ByteVector::size_type idx_, size_;
+        long idx_;
+        long size_;
+        long sizeAlloced_;              //!< Size of the allocated buffer
+        bool isMalloced_;               //!< Was the buffer allocated?
         
-        // Was the buffer allocated?
-        bool isMalloced;
-
         // METHODS
         void checkSize(long wcount);
     }; // class MemIo
