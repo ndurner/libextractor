@@ -186,8 +186,10 @@ libextractor_jpeg_la_LDFLAGS = \
 libextractor_html_la_SOURCES = \
   htmlextractor.c 
 libextractor_html_la_LDFLAGS = \
-  $(top_builddir)/src/main/libextractor.la \
   $(PLUGINFLAGS)   $(retaincommand)
+libextractor_html_la_LIBADD = \
+  $(top_builddir)/src/main/libextractor.la \
+  libconvert.la 
 
 libextractor_real_la_SOURCES = \
   realextractor.c 

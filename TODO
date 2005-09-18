@@ -1,9 +1,9 @@
 FIX:
 * HTML-extractor now broken (!) Also crappy code. FIX?!
-* check exiv2 memory consumption on very large files
-* integrate pt dictionary -- address charset issues!
-* complete language plugin
-
+* check exiv2 memory consumption on very large files; 
+  also investigate 500kb (!) allocation/leak in exiv2 on test/test.html
+  (reported by valgrind)
+* 500 kb leak for each load/unload of exiv2 plugin (glibc?)
 
 
 Core:

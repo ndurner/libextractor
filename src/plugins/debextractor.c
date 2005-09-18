@@ -21,7 +21,6 @@
 #include "platform.h"
 #include "extractor.h"
 #include <zlib.h>
-#include <pthread.h>
 
 /*
  * The .deb is an ar-chive file.  It contains a tar.gz file
