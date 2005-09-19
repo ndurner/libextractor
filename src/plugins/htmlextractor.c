@@ -137,11 +137,10 @@ static int lookFor(char c,
 		   size_t size) {
   size_t p = *pos;
 
-  if (data[p] == '\0') return 0;
   while ( (p < size) &&
 	  (data[p] != c) ) {
-    p++;
     if (data[p] == '\0') return 0;
+    p++;
   }
   *pos = p;
   return p < size;
@@ -152,11 +151,10 @@ static int skipWhitespace(size_t * pos,
 			  size_t size) {
   size_t p = *pos;
 
-  if (data[p] == '\0') return 0;
   while ( (p < size) &&
 	  (isspace(data[p])) ) {
-    p++;
     if (data[p] == '\0') return 0;
+    p++;
   }
   *pos = p;
   return p < size;
@@ -167,11 +165,10 @@ static int skipLetters(size_t * pos,
 		       size_t size) {
   size_t p = *pos;
   
-  if (data[p] == '\0') return 0;
   while ( (p < size) &&
 	  (isalpha(data[p])) ) {
-    p++;
     if (data[p] == '\0') return 0;
+    p++;
   }
   *pos = p;
   return p < size;
@@ -183,11 +180,10 @@ static int lookForMultiple(const char * c,
 			   size_t size) {
   size_t p = *pos;
 
-  if (data[p] == '\0') return 0;
   while ( (p < size) &&
 	  (strchr(c, data[p]) == NULL) ) {
-    p++;
     if (data[p] == '\0') return 0;
+    p++;
   }
   *pos = p;
   return p < size;
@@ -389,11 +385,12 @@ libextractor_html_extract(const char * filename,
 			prev);
     
     charset = strstr(tmp, "charset=");
+
+    if (charset != NULL)
+      charset = strdup(&charset[strlen("charset=")]);
     free(tmp);
   }
-  if (charset != NULL)
-    charset = strdup(&charset[strlen("charset=")]);
-  else
+  if (charset == NULL)
     charset = strdup("ISO-8859-1"); /* try a sensible default */
   
   
