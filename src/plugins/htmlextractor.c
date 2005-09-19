@@ -1,6 +1,6 @@
 /*
      This file is part of libextractor.
-     (C) 2002, 2003, 2004 Vidyut Samanta and Christian Grothoff
+     (C) 2002, 2003, 2004, 2005 Vidyut Samanta and Christian Grothoff
 
      libextractor is free software; you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published
@@ -124,6 +124,13 @@ addKeyword(EXTRACTOR_KeywordType type,
 
 /* ******************** parser helper functions ************** */
 
+static int tagMatch(const char * tag,
+		    const char * s,
+		    const char * e) {
+  return ( ( (e - s) == strlen(tag)) &&
+	   (0 == strncasecmp(tag, s, e-s)) );
+}
+
 static int lookFor(char c, 
 		   size_t * pos, 
 		   const char * data,
@@ -186,6 +193,43 @@ static int lookForMultiple(const char * c,
   return p < size;
 }
 
+static void findEntry(const char * key,
+		      const char * start,
+		      const char * end,
+		      const char ** mstart,
+		      const char ** mend) {
+  size_t len;
+
+  *mstart = NULL;
+  *mend = NULL;
+  len =  strlen(key);
+  while (start < end - len - 1) {
+    start++;
+    if (start[len] != '=') 
+      continue;         
+    if (0 == strncmp(start, 
+		     key,
+		     len)) {
+      start += len+1;
+      *mstart = start;
+      if ( (*start == '\"') ||
+	   (*start == '\'') ) {
+	start++;
+	while ( (start < end) &&
+		(*start != **mstart) )
+	  start++;	
+	(*mstart)++; /* skip quote */
+      } else {
+	while ( (start < end) &&
+		(! isspace(*start)) )
+	  start++;
+      }
+      *mend = start;
+      return;
+    }
+  }
+}
+
 /**
  * Search all tags that correspond to "tagname".  Example:
  * If the tag is <meta name="foo" desc="bar">, and
@@ -200,6 +244,39 @@ static char * findInTags(TagInfo * t,
 			 const char * keyname,
 			 const char * keyvalue,
 			 const char * searchname) {
+  const char * pstart;
+  const char * pend;
+
+  while (t != NULL) {
+    if (tagMatch(tagname,
+		 t->tagStart,
+		 t->tagEnd)) {
+      findEntry(keyname,
+		t->tagEnd,
+		t->dataStart,
+		&pstart,
+		&pend);
+      if ( ( pstart != NULL) &&
+	   (tagMatch(keyvalue,
+		     pstart,
+		     pend)) ) {
+	findEntry(searchname,
+		  t->tagEnd,
+		  t->dataStart,
+		  &pstart,
+		  &pend);
+	if (pstart != NULL) {
+	  char * ret = malloc(pend - pstart + 1);
+	  memcpy(ret, 
+		 pstart,
+		 pend - pstart);
+	  ret[pend-pstart] = '\0';
+	  return ret;
+	}
+      } 
+    }
+    t = t->next;
+  }
   return NULL;
 }
 
@@ -283,10 +360,9 @@ libextractor_html_extract(const char * filename,
       i++;
     } 
     /* abort early if we hit the body tag */
-    if ( (tag.tagEnd - tag.tagStart == strlen("body")) &&
-	 0 == strncasecmp("body",
-			  tag.tagStart,
-			  tag.tagEnd - tag.tagStart))
+    if (tagMatch("body",
+		 tag.tagStart,
+		 tag.tagEnd))
       break; 
   }
 
@@ -341,10 +417,9 @@ libextractor_html_extract(const char * filename,
   
   while (tags != NULL) {
     t = tags;
-    if ( (t->tagEnd - t->tagStart == strlen("title")) &&
-	 0 == strncasecmp("title",
-			  t->tagStart,
-			  t->tagEnd - t->tagStart))
+    if (tagMatch("title",
+		 t->tagStart,
+		 t->tagEnd)) 
       prev = addKeyword(EXTRACTOR_TITLE,
 			convertToUtf8(t->dataStart,
 				      t->dataEnd - t->dataStart,
