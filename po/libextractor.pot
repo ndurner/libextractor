@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2005-09-13 08:34-0700\n"
+"POT-Creation-Date: 2005-09-18 21:28-0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,63 +26,63 @@ msgstr ""
 msgid "Binary RPM %d.%d"
 msgstr ""
 
-#: src/plugins/printable/dictionary-builder.c:99
+#: src/plugins/printable/dictionary-builder.c:100
 #, c-format
 msgid ""
 "Please provide the name of the language you are building\n"
 "a dictionary for.  For example:\n"
 msgstr ""
 
-#: src/plugins/printable/dictionary-builder.c:112
+#: src/plugins/printable/dictionary-builder.c:113
 #, c-format
 msgid "Error opening file `%s': %s\n"
 msgstr ""
 
-#: src/plugins/printable/dictionary-builder.c:120
+#: src/plugins/printable/dictionary-builder.c:121
 #, c-format
 msgid ""
 "Error allocating: %s\n"
 "."
 msgstr ""
 
-#: src/plugins/printable/dictionary-builder.c:132
+#: src/plugins/printable/dictionary-builder.c:135
 #, c-format
 msgid "Increase ALLOCSIZE (in %s).\n"
 msgstr ""
 
-#: src/plugins/manextractor.c:140
+#: src/plugins/manextractor.c:142
 msgid "Commands"
 msgstr ""
 
-#: src/plugins/manextractor.c:145
+#: src/plugins/manextractor.c:147
 msgid "System calls"
 msgstr ""
 
-#: src/plugins/manextractor.c:150
+#: src/plugins/manextractor.c:152
 msgid "Library calls"
 msgstr ""
 
-#: src/plugins/manextractor.c:155
+#: src/plugins/manextractor.c:157
 msgid "Special files"
 msgstr ""
 
-#: src/plugins/manextractor.c:160
+#: src/plugins/manextractor.c:162
 msgid "File formats and conventions"
 msgstr ""
 
-#: src/plugins/manextractor.c:165
+#: src/plugins/manextractor.c:167
 msgid "Games"
 msgstr ""
 
-#: src/plugins/manextractor.c:170
+#: src/plugins/manextractor.c:172
 msgid "Conventions and miscellaneous"
 msgstr ""
 
-#: src/plugins/manextractor.c:175
+#: src/plugins/manextractor.c:177
 msgid "System management commands"
 msgstr ""
 
-#: src/plugins/manextractor.c:180
+#: src/plugins/manextractor.c:182
 msgid "Kernel routines"
 msgstr ""
 
@@ -92,9 +92,4 @@ msgstr ""
 
 #: src/plugins/wavextractor.c:113
 msgid "stereo"
-msgstr ""
-
-#: src/plugins/htmlextractor.c:130 src/plugins/htmlextractor.c:928
-#, c-format
-msgid "Fatal: could not allocate (%s at %s:%d).\n"
 msgstr ""

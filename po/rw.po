@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.4.2\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2005-09-13 08:34-0700\n"
+"POT-Creation-Date: 2005-09-18 21:28-0700\n"
 "PO-Revision-Date: 2005-04-04 10:55-0700\n"
 "Last-Translator: Steven Michael Murphy <murf@e-tools.com>\n"
 "Language-Team: Kinyarwanda <translation-team-rw@lists.sourceforge.net>\n"
@@ -34,7 +34,7 @@ msgstr ""
 msgid "Binary RPM %d.%d"
 msgstr ""
 
-#: src/plugins/printable/dictionary-builder.c:99
+#: src/plugins/printable/dictionary-builder.c:100
 #, fuzzy, c-format
 msgid ""
 "Please provide the name of the language you are building\n"
@@ -42,62 +42,62 @@ msgid ""
 msgstr "i Izina: Bya i Ururimi Inkoranyamagambo kugirango Urugero"
 
 # basctl/source\basicide\basidesh.src:RID_STR_ERROROPENSTORAGE.text
-#: src/plugins/printable/dictionary-builder.c:112
+#: src/plugins/printable/dictionary-builder.c:113
 #, fuzzy, c-format
 msgid "Error opening file `%s': %s\n"
 msgstr "Hari ikibazo mu gufungura dosiye"
 
-#: src/plugins/printable/dictionary-builder.c:120
+#: src/plugins/printable/dictionary-builder.c:121
 #, c-format
 msgid ""
 "Error allocating: %s\n"
 "."
 msgstr ""
 
-#: src/plugins/printable/dictionary-builder.c:132
+#: src/plugins/printable/dictionary-builder.c:135
 #, fuzzy, c-format
 msgid "Increase ALLOCSIZE (in %s).\n"
 msgstr "in"
 
-#: src/plugins/manextractor.c:140
+#: src/plugins/manextractor.c:142
 msgid "Commands"
 msgstr "amabwiriza"
 
-#: src/plugins/manextractor.c:145
+#: src/plugins/manextractor.c:147
 #, fuzzy
 msgid "System calls"
 msgstr "Amahamagara:"
 
-#: src/plugins/manextractor.c:150
+#: src/plugins/manextractor.c:152
 #, fuzzy
 msgid "Library calls"
 msgstr "Amahamagara:"
 
-#: src/plugins/manextractor.c:155
+#: src/plugins/manextractor.c:157
 #, fuzzy
 msgid "Special files"
 msgstr "Idosiye"
 
-#: src/plugins/manextractor.c:160
+#: src/plugins/manextractor.c:162
 #, fuzzy
 msgid "File formats and conventions"
 msgstr "Idosiye Imiterere Na"
 
-#: src/plugins/manextractor.c:165
+#: src/plugins/manextractor.c:167
 msgid "Games"
 msgstr ""
 
-#: src/plugins/manextractor.c:170
+#: src/plugins/manextractor.c:172
 #, fuzzy
 msgid "Conventions and miscellaneous"
 msgstr "Na Binyuranye"
 
-#: src/plugins/manextractor.c:175
+#: src/plugins/manextractor.c:177
 #, fuzzy
 msgid "System management commands"
 msgstr "Amabwiriza"
 
-#: src/plugins/manextractor.c:180
+#: src/plugins/manextractor.c:182
 msgid "Kernel routines"
 msgstr ""
 
@@ -109,10 +109,9 @@ msgstr ""
 msgid "stereo"
 msgstr ""
 
-#: src/plugins/htmlextractor.c:130 src/plugins/htmlextractor.c:928
-#, fuzzy, c-format
-msgid "Fatal: could not allocate (%s at %s:%d).\n"
-msgstr "OYA ku"
+#, fuzzy
+#~ msgid "Fatal: could not allocate (%s at %s:%d).\n"
+#~ msgstr "OYA ku"
 
 #, fuzzy
 #~ msgid "%ux%u dots per inch"

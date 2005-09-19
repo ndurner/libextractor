@@ -1,3 +1,8 @@
+Sun Sep 18 19:34:48 PDT 2005
+	Major rewrite of the HTML extractor.  Should extract more, is
+	simpler and probably more robust.
+	Releasing libextractor 0.5.6.
+
 Fri Sep 16 16:41:04 PDT 2005
 	Made LE malloc file READ-ONLY.  This should help the VM conserve
 	memory, however this breaks the HTML extractor.
