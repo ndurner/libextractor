@@ -35,6 +35,9 @@
  static void warning(const char * format, ...) {}
 #endif
 
+#undef g_return_val_if_fail
+#define g_return_val_if_fail(a,b) if (! (a)) return (b);
+ 
 /* *********************** formerly gsf-input.c ************* */
 
 typedef struct GsfInput {
