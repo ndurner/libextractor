@@ -1,3 +1,6 @@
+Wed Sep 21 13:54:19 PDT 2005
+	Added Irish translation.
+
 Wed Sep 21 00:01:01 PDT 2005
 	Fixed gettext build problem.
 	Removed warning that the OLE2 extractor was printing.
