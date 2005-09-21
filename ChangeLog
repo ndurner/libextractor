@@ -1,3 +1,7 @@
+Wed Sep 21 00:01:01 PDT 2005
+	Fixed gettext build problem.
+	Removed warning that the OLE2 extractor was printing.
+
 Sun Sep 18 19:34:48 PDT 2005
 	Major rewrite of the HTML extractor.  Should extract more, is
 	simpler and probably more robust.
