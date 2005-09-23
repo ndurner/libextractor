@@ -33,6 +33,29 @@
  *  by GNU tar 1.13 when very long filenames are met.)
  */
 
+static EXTRACTOR_KeywordList * addKeyword(EXTRACTOR_KeywordType type,
+                                          char * keyword,
+                                          EXTRACTOR_KeywordList * next) {
+  EXTRACTOR_KeywordList * result = next;
+
+  if (NULL != keyword) {
+    if (0 == strlen(keyword)) {
+      free(keyword);
+    } else {
+      result = malloc(sizeof(EXTRACTOR_KeywordList));
+      if(NULL == result) {
+        free(keyword);
+      } else {
+        result->next = next;
+        result->keyword = keyword;
+        result->keywordType = type;
+      }
+    }
+  }
+
+  return result;
+}
+
 static EXTRACTOR_KeywordList * appendKeyword(EXTRACTOR_KeywordType type,
 					     char * keyword,
 					     EXTRACTOR_KeywordList * last) {
@@ -48,7 +71,7 @@ static EXTRACTOR_KeywordList * appendKeyword(EXTRACTOR_KeywordType type,
     return last;
   }
   result = malloc(sizeof(EXTRACTOR_KeywordList));
-  result->next = last;
+  result->next = NULL;
   result->keywordType = type;
   result->keyword = keyword;
   if (last != NULL)
@@ -88,6 +111,7 @@ libextractor_tar_extract(const char * filename,
   const TarHeader * tar;
   const USTarHeader * ustar;
   size_t pos;
+  int contents_are_empty = 1;
   const char * mimetype = NULL;
   struct EXTRACTOR_Keywords * last;
   
@@ -113,7 +137,7 @@ libextractor_tar_extract(const char * filename,
     int header_is_empty = 1;
 
     if (pos + 1024 < size) {
-      const int * idata = (const int*) data;
+      const int * idata = (const int*) (data + pos);
       for (zeropos = 0; zeropos < 1024 / sizeof(int); zeropos++) {
 	if(0 != idata[zeropos]) {
 	  header_is_empty = 0;
@@ -138,7 +162,7 @@ libextractor_tar_extract(const char * filename,
 
       ustar = (const USTarHeader*) &data[pos];
 
-      if(0 == mimetype) {
+      if (NULL == mimetype) {
         if(0 == memcmp(ustar->magic, "ustar  ", 7))
           mimetype = "application/x-gtar";
         else
@@ -174,13 +198,14 @@ libextractor_tar_extract(const char * filename,
     if (0 < ustar_prefix_length + tar_name_length) {
       char * fname = malloc(1 + ustar_prefix_length + tar_name_length);
 
-      if(0 != fname) {
+      if (NULL != fname) {
          if(0 < ustar_prefix_length)
            memcpy(fname, ustar_prefix, ustar_prefix_length);
          if(0 < tar_name_length)
            memcpy(fname + ustar_prefix_length, tar->name, tar_name_length);
          fname[ustar_prefix_length + tar_name_length]= '\0';
          last = appendKeyword(EXTRACTOR_FILENAME, fname, last);
+         contents_are_empty = 0;
 	 if (prev == NULL)
 	   prev = last;
       }
@@ -194,15 +219,11 @@ libextractor_tar_extract(const char * filename,
   }
 
   /*
-   * a simple guard would be to clobber mimetype to NULL
-   * whenever something bad happens while reading
-   * (check break instructions just above).
+   * we only report mimetype when at least one archive member was found;
+   * this should avoid most magic number ambiguities (more checks needed).
    */
-  if (NULL != mimetype) {
-    last = appendKeyword(EXTRACTOR_MIMETYPE, strdup(mimetype), last);
-    if (prev == NULL)
-      prev = last;
-  }
+  if ( (NULL != mimetype) && (0 == contents_are_empty) )
+    prev = addKeyword(EXTRACTOR_MIMETYPE, strdup(mimetype), prev);
 
   return prev;
 }
