@@ -20,41 +20,40 @@
 
 #include "platform.h"
 #include "extractor.h"
-#include <zlib.h>
 
 /*
  * Note that this code is not complete!
+ * It will not report correct results for very long member filenames
+ * (> 99 octets) when the archive was made with GNU tar or Solaris tar.
  *
  * References:
  * http://www.mkssoftware.com/docs/man4/tar.4.asp
+ * (does document USTAR format common nowadays,
+ *  but not other extended formats such as the one produced
+ *  by GNU tar 1.13 when very long filenames are met.)
  */
 
-
-static EXTRACTOR_KeywordList * addKeyword(EXTRACTOR_KeywordType type,
-					  char * keyword,
-					  EXTRACTOR_KeywordList * next) {
+static EXTRACTOR_KeywordList * appendKeyword(EXTRACTOR_KeywordType type,
+					     char * keyword,
+					     EXTRACTOR_KeywordList * last) {
   EXTRACTOR_KeywordList * result;
 
+  if ( (last != NULL) &&
+       (last->next != NULL) )
+    abort();
   if (keyword == NULL)
-    return next;
+    return last;
   if (strlen(keyword) == 0) {
     free(keyword);
-    return next;
+    return last;
   }
   result = malloc(sizeof(EXTRACTOR_KeywordList));
-  result->next = next;
-  result->keyword = keyword;
+  result->next = last;
   result->keywordType = type;
+  result->keyword = keyword;
+  if (last != NULL)
+    last->next = result;
   return result;
-}
-
-static char * stndup(const char * str,
-                     size_t n) {
-  char * tmp;
-  tmp = malloc(n+1);
-  tmp[n] = '\0';
-  memcpy(tmp, str, n);
-  return tmp;
 }
 
 typedef struct {
@@ -86,53 +85,124 @@ libextractor_tar_extract(const char * filename,
 			 const char * data,
 			 size_t size,
 			 struct EXTRACTOR_Keywords * prev) {
-  TarHeader * tar;
-  USTarHeader * ustar;
+  const TarHeader * tar;
+  const USTarHeader * ustar;
   size_t pos;
+  const char * mimetype = NULL;
+  struct EXTRACTOR_Keywords * last;
+  
+  last = prev;
+  if (last != NULL)
+    while (last->next != NULL)
+      last = last->next;
 
   if (0 != (size % 512) )
     return prev; /* cannot be tar! */
   if (size < 1024)
-    return prev;
-  size -= 1024; /* last 2 blocks are all zeros */
-  /* fixme: we may want to check that the last
-     1024 bytes are all zeros here... */
+    return prev; /* too short, or somehow truncated */
 
   pos = 0;
   while (pos + sizeof(TarHeader) < size) {
     unsigned long long fsize;
     char buf[13];
+    const char * nul_pos;
+    const char * ustar_prefix = NULL;
+    unsigned int ustar_prefix_length = 0;
+    unsigned int tar_name_length;
+    unsigned int zeropos;
+    int header_is_empty = 1;
 
-    tar = (TarHeader*) &data[pos];
+    if (pos + 1024 < size) {
+      const int * idata = (const int*) data;
+      for (zeropos = 0; zeropos < 1024 / sizeof(int); zeropos++) {
+	if(0 != idata[zeropos]) {
+	  header_is_empty = 0;
+	  break;
+	}
+      }
+    }
+
+    if (header_is_empty) /* assume the EOF mark was reached */
+      break;
+
+    tar = (const TarHeader*) &data[pos];
     /* fixme: we may want to check the header checksum here... */
+    /* fixme: we attempt to follow MKS document for long file names,
+       but no TAR file was found yet which matched what we understood ! */
     if (pos + sizeof(USTarHeader) < size) {
-      ustar = (USTarHeader*) &data[pos];
+
+      nul_pos = memchr(data + pos, 0, sizeof tar->name);
+      tar_name_length = (0 == nul_pos)
+         	      ? sizeof(tar->name)
+                      : (nul_pos - (data + pos));
+
+      ustar = (const USTarHeader*) &data[pos];
+
+      if(0 == mimetype) {
+        if(0 == memcmp(ustar->magic, "ustar  ", 7))
+          mimetype = "application/x-gtar";
+        else
+          mimetype = "application/x-tar";
+      }
+
       if (0 == strncmp("ustar",
-		       &ustar->magic[0],
-		       strlen("ustar")))
-	pos += 512; /* sizeof(USTarHeader); */
-      else
-	pos += 257; /* sizeof(TarHeader); minus gcc alignment... */
+                       &ustar->magic[0],
+                       strlen("ustar"))) {
+        if(0 != *ustar->prefix) {
+           nul_pos = memchr(ustar->prefix, 0, sizeof ustar->prefix);
+
+           ustar_prefix_length = (0 == nul_pos)
+                               ? sizeof ustar->prefix
+                               : nul_pos - ustar->prefix;
+           ustar_prefix = ustar->prefix;
+        }
+      }
+
+      pos += 512; /* V7 Tar, USTar and GNU Tar usual headers take 512 octets */
     } else {
       pos += 257; /* sizeof(TarHeader); minus gcc alignment... */
     }
     memcpy(buf, &tar->filesize[0], 12);
     buf[12] = '\0';
     if (1 != sscanf(buf, "%12llo", &fsize)) /* octal! Yuck yuck! */
-      return prev;
+      break;
     if ( (pos + fsize > size) ||
 	 (fsize > size) ||
 	 (pos + fsize < pos) )
-      return prev;
-    prev = addKeyword(EXTRACTOR_FILENAME,
-		      stndup(&tar->name[0],
-			     100),
-		      prev);
+      break;
+
+    if (0 < ustar_prefix_length + tar_name_length) {
+      char * fname = malloc(1 + ustar_prefix_length + tar_name_length);
+
+      if(0 != fname) {
+         if(0 < ustar_prefix_length)
+           memcpy(fname, ustar_prefix, ustar_prefix_length);
+         if(0 < tar_name_length)
+           memcpy(fname + ustar_prefix_length, tar->name, tar_name_length);
+         fname[ustar_prefix_length + tar_name_length]= '\0';
+         last = appendKeyword(EXTRACTOR_FILENAME, fname, last);
+	 if (prev == NULL)
+	   prev = last;
+      }
+    }
+
     if ( (fsize & 511) != 0)
       fsize = (fsize | 511)+1; /* round up! */
     if (pos + fsize < pos)
-      return prev;
+      break;
     pos += fsize;
   }
+
+  /*
+   * a simple guard would be to clobber mimetype to NULL
+   * whenever something bad happens while reading
+   * (check break instructions just above).
+   */
+  if (NULL != mimetype) {
+    last = appendKeyword(EXTRACTOR_MIMETYPE, strdup(mimetype), last);
+    if (prev == NULL)
+      prev = last;
+  }
+
   return prev;
 }

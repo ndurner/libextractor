@@ -21,7 +21,7 @@ printable - core team based in part on code from GNUnet (bloom filters)
 avi       - core team based in part on code from avinfo 1.0.0 alpha 11 and bitcollider 0.6.0
 mpeg      - core team based in part on code from avinfo 1.0.0 alpha 11 and bitcollider 0.6.0
 ole2      - core team based on code from libgsf
-tar       - core team
+tar       - core team and Ronan MELENNEC <ronan.melennec@cena.fr>
 tar.gz    - core team using zlib
 deb       - core team using zlib
 man       - core team using zlib (for man.gz)

@@ -7,10 +7,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: libextractor 0.5.6\n"
+"Project-Id-Version: libextractor 0.5.6a\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
 "POT-Creation-Date: 2005-09-20 23:59-0700\n"
-"PO-Revision-Date: 2005-09-21 07:27+0200\n"
+"PO-Revision-Date: 2005-09-22 10:07+0200\n"
 "Last-Translator: Karl Eichwalder <ke@suse.de>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -21,7 +21,7 @@ msgstr ""
 #: src/plugins/language/language-compiler.c:37
 #, c-format
 msgid "Please provide a list of klp files as arguments.\n"
-msgstr ""
+msgstr "Geben Sie eine Liste der klp-Dateien als Argument an.\n"
 
 #: src/plugins/language/language-compiler.c:48
 #: src/plugins/printable/dictionary-builder.c:113
@@ -228,9 +228,8 @@ msgid "Pranks"
 msgstr "Punk"
 
 #: src/plugins/mp3extractor.c:73
-#, fuzzy
 msgid "Soundtrack"
-msgstr "Sonate"
+msgstr "Filmmusik (Soundtrack)"
 
 #: src/plugins/mp3extractor.c:74
 #, fuzzy
@@ -272,7 +271,7 @@ msgstr "Instrumental"
 
 #: src/plugins/mp3extractor.c:83
 msgid "Acid"
-msgstr ""
+msgstr "Acid"
 
 #: src/plugins/mp3extractor.c:84
 msgid "House"
@@ -390,9 +389,8 @@ msgid "Christian Rap"
 msgstr ""
 
 #: src/plugins/mp3extractor.c:111
-#, fuzzy
 msgid "Pop/Funk"
-msgstr "Punk"
+msgstr "Pop/Funk"
 
 #: src/plugins/mp3extractor.c:112
 msgid "Jungle"
@@ -415,9 +413,8 @@ msgid "Psychedelic"
 msgstr ""
 
 #: src/plugins/mp3extractor.c:117
-#, fuzzy
 msgid "Rave"
-msgstr "Reggae"
+msgstr "Rave"
 
 #: src/plugins/mp3extractor.c:118
 msgid "Showtunes"
@@ -446,27 +443,24 @@ msgid "Acid Jazz"
 msgstr "Jazz"
 
 #: src/plugins/mp3extractor.c:124
-#, fuzzy
 msgid "Polka"
-msgstr "Folk"
+msgstr "Polka"
 
 #: src/plugins/mp3extractor.c:125
 msgid "Retro"
 msgstr ""
 
 #: src/plugins/mp3extractor.c:126
-#, fuzzy
 msgid "Musical"
-msgstr "Klassik"
+msgstr "Musical"
 
 #: src/plugins/mp3extractor.c:127
 msgid "Rock & Roll"
 msgstr "Rock & Roll"
 
 #: src/plugins/mp3extractor.c:128
-#, fuzzy
 msgid "Hard Rock"
-msgstr "Rock"
+msgstr "Hard Rock"
 
 #: src/plugins/mp3extractor.c:129
 msgid "Folk"
@@ -491,12 +485,11 @@ msgstr "Fusion"
 
 #: src/plugins/mp3extractor.c:134
 msgid "Bebob"
-msgstr ""
+msgstr "Bebob"
 
 #: src/plugins/mp3extractor.c:135
-#, fuzzy
 msgid "Latin"
-msgstr "Ort"
+msgstr "Latin"
 
 #: src/plugins/mp3extractor.c:136
 msgid "Revival"
@@ -513,7 +506,7 @@ msgstr "Blues"
 
 #: src/plugins/mp3extractor.c:139
 msgid "Avantgarde"
-msgstr ""
+msgstr "Avantgarde"
 
 #: src/plugins/mp3extractor.c:140
 #, fuzzy
@@ -540,11 +533,11 @@ msgstr "Rock"
 
 #: src/plugins/mp3extractor.c:145
 msgid "Big Band"
-msgstr ""
+msgstr "Big Band"
 
 #: src/plugins/mp3extractor.c:146
 msgid "Chorus"
-msgstr ""
+msgstr "Chor"
 
 #: src/plugins/mp3extractor.c:147
 msgid "Easy Listening"
@@ -595,9 +588,8 @@ msgid "Porn Groove"
 msgstr ""
 
 #: src/plugins/mp3extractor.c:159
-#, fuzzy
 msgid "Satire"
-msgstr "Datum"
+msgstr "Satire"
 
 #: src/plugins/mp3extractor.c:160
 msgid "Slow Jam"
@@ -616,9 +608,8 @@ msgid "Samba"
 msgstr "Samba"
 
 #: src/plugins/mp3extractor.c:164
-#, fuzzy
 msgid "Folklore"
-msgstr "Folk"
+msgstr "Folklore"
 
 #: src/plugins/mp3extractor.c:165
 msgid "Ballad"
@@ -704,7 +695,7 @@ msgstr ""
 
 #: src/plugins/mp3extractor.c:184
 msgid "Beat"
-msgstr ""
+msgstr "Beat"
 
 #: src/plugins/mp3extractor.c:185
 msgid "Christian Gangsta Rap"
@@ -729,9 +720,8 @@ msgid "Contemporary Christian"
 msgstr ""
 
 #: src/plugins/mp3extractor.c:190
-#, fuzzy
 msgid "Christian Rock"
-msgstr "Klassischer Rock"
+msgstr "Christlicher Rock"
 
 #: src/plugins/mp3extractor.c:191
 msgid "Merengue"
@@ -830,8 +820,7 @@ msgstr ""
 
 #: src/main/extract.c:52
 #, c-format
-msgid ""
-"Arguments mandatory for long options are also mandatory for short options.\n"
+msgid "Arguments mandatory for long options are also mandatory for short options.\n"
 msgstr ""
 "Argumente, die für lange Optionen notwendig sind, sind ebenfalls für die\n"
 "Optionen in Kurzform notwendig.\n"
@@ -845,12 +834,8 @@ msgid "print output in bibtex format"
 msgstr "Ausgabe im BibTeX format"
 
 #: src/main/extract.c:130
-msgid ""
-"use the generic plaintext extractor for the language with the 2-letter "
-"language code LANG"
-msgstr ""
-"generischen Klartext-extractor für die Sprache mit dem 2-Buchstabenkürzel "
-"LANG verwenden"
+msgid "use the generic plaintext extractor for the language with the 2-letter language code LANG"
+msgstr "generischen Klartext-extractor für die Sprache mit dem 2-Buchstabenkürzel LANG verwenden"
 
 #: src/main/extract.c:132
 msgid "remove duplicates only if types match"
@@ -858,9 +843,7 @@ msgstr "doppelte Einträge nur entfernen, wenn die Art übereinstimmt"
 
 #: src/main/extract.c:134
 msgid "use the filename as a keyword (loads filename-extractor plugin)"
-msgstr ""
-"Dateinamen als Schlüsselwort verwenden (filename-extractor-Erweiterung wird "
-"geladen)"
+msgstr "Dateinamen als Schlüsselwort verwenden (filename-extractor-Erweiterung wird geladen)"
 
 #: src/main/extract.c:136
 msgid "print this help"
@@ -868,8 +851,7 @@ msgstr "diese Hilfe anzeigen"
 
 #: src/main/extract.c:138
 msgid "compute hash using the given ALGORITHM (currently sha1 or md5)"
-msgstr ""
-"Hash gemäß dem angegebenen ALGORITHMUS errechnen (z.Zt. »sha1« oder »md5«)"
+msgstr "Hash gemäß dem angegebenen ALGORITHMUS errechnen (z.Zt. »sha1« oder »md5«)"
 
 #: src/main/extract.c:140
 msgid "load an extractor plugin named LIBRARY"
@@ -885,9 +867,7 @@ msgstr "Standardsatz der extractor-Erweiterungen nicht verwenden"
 
 #: src/main/extract.c:146
 msgid "print only keywords of the given TYPE (use -L to get a list)"
-msgstr ""
-"nur Schlüsselwörter einer bestimmten ART ausgeben (mit -L die Liste anzeigen "
-"lassen)"
+msgstr "nur Schlüsselwörter einer bestimmten ART ausgeben (mit -L die Liste anzeigen lassen)"
 
 #: src/main/extract.c:148
 msgid "remove duplicates even if keyword types do not match"
@@ -976,11 +956,9 @@ msgid "page count"
 msgstr "Seitenanzahl"
 
 #: src/main/extract.c:473
-#, fuzzy, c-format
+#, c-format
 msgid "You must specify an argument for the `%s' option (option ignored).\n"
-msgstr ""
-"Sie müssen ein Argument für die Option »%s« angeben (Option wird "
-"ignoriert).\n"
+msgstr "Sie müssen ein Argument für die Option »%s« angeben (Option wird ignoriert).\n"
 
 #: src/main/extract.c:540
 #, c-format
@@ -1239,9 +1217,8 @@ msgid "binary thumbnail data"
 msgstr ""
 
 #: src/main/extractor.c:115
-#, fuzzy
 msgid "publication date"
-msgstr "Datum der Erstellung"
+msgstr "Datum der Veröffentlichung"
 
 #: src/main/extractor.c:116
 msgid "camera make"
@@ -1265,7 +1242,7 @@ msgstr ""
 
 #: src/main/extractor.c:121
 msgid "flash"
-msgstr ""
+msgstr "Blitz"
 
 #: src/main/extractor.c:122
 msgid "flash bias"
@@ -1297,7 +1274,7 @@ msgstr ""
 
 #: src/main/extractor.c:129
 msgid "image quality"
-msgstr ""
+msgstr "Bildqualität"
 
 #: src/main/extractor.c:130
 msgid "white balance"
@@ -1315,20 +1292,18 @@ msgstr "Initialisierung des Plugin-Mechanismus' ist fehlgeschlagen: %s.\n"
 
 #: src/main/extractor.c:372
 #, c-format
-msgid ""
-"Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
-"failed also.  Errors are: `%s' and `%s'.\n"
+msgid "Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that failed also.  Errors are: `%s' and `%s'.\n"
 msgstr ""
 
 #: src/main/extractor.c:401
-#, fuzzy, c-format
+#, c-format
 msgid "Loading `%s' plugin failed: %s\n"
 msgstr "Laden des »%s«-Plugins ist fehlgeschlagen: %s\n"
 
 #: src/main/extractor.c:606
-#, fuzzy, c-format
+#, c-format
 msgid "Unloading plugin `%s' failed!\n"
-msgstr "Entladen des »%s«-Erweiterung ist fehlgeschlagen.\n"
+msgstr "Entladen des »%s«-Plugins ist fehlgeschlagen!\n"
 
 #~ msgid "Fatal: could not allocate (%s at %s:%d).\n"
 #~ msgstr "Fatal: Allokieren nicht möglich (%s bei %s:%d).\n"
