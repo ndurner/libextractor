@@ -4,6 +4,7 @@ Thu Sep 22 21:05:53 PDT 2005
 	- it produces a mimetype for old-style archives
 	- it outputs the file names in the same order as in the TAR file
 	- its end-of-file mark detection is more robust
+	Updated German translation.
 
 Wed Sep 21 13:54:19 PDT 2005
 	Added Irish translation.
