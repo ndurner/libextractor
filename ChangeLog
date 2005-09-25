@@ -1,3 +1,7 @@
+Sun Sep 25 11:31:51 PDT 2005
+	Made sure extract returns error code (1) if some files could not
+	be accessed.
+
 Thu Sep 22 21:05:53 PDT 2005
 	Improved TAR extractor:
 	- it now accepts old-style (UNIX V7) archives
