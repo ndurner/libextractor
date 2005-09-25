@@ -1,6 +1,6 @@
 /*
      This file is part of libextractor.
-     (C) 2002, 2003, 2004 Vidyut Samanta and Christian Grothoff
+     (C) 2002, 2003, 2004, 2005 Vidyut Samanta and Christian Grothoff
 
      libextractor is free software; you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published
@@ -391,6 +391,7 @@ main (int argc, char *argv[])
   int duplicates = EXTRACTOR_DUPLICATES_REMOVE_UNKNOWN;
   int bibtex = NO;
   char * binary = NULL;
+  int ret = 0;
 
 #ifdef MINGW
   InitWinEnv();
@@ -599,6 +600,10 @@ main (int argc, char *argv[])
 	    _("%% BiBTeX file\n"));
   for (i = optind; i < argc; i++)
     {
+      if (0 != ACCESS(argv[i], R_OK)) {
+	ret = 1;
+	continue;
+      }
       keywords = EXTRACTOR_getKeywords (extractors, argv[i]);
       if (duplicates != -1 || bibtex == YES)
 	keywords = EXTRACTOR_removeDuplicateKeywords (keywords, duplicates);
@@ -619,5 +624,5 @@ main (int argc, char *argv[])
   ShutdownWinEnv();
 #endif
 
-  return 0;
+  return ret;
 }
