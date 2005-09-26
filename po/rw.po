@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.4.2\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2005-09-20 23:59-0700\n"
+"POT-Creation-Date: 2005-09-26 07:05-0700\n"
 "PO-Revision-Date: 2005-04-04 10:55-0700\n"
 "Last-Translator: Steven Michael Murphy <murf@e-tools.com>\n"
 "Language-Team: Kinyarwanda <translation-team-rw@lists.sourceforge.net>\n"
@@ -947,12 +947,12 @@ msgstr ""
 msgid "Extract metadata from files."
 msgstr "Bivuye Idosiye"
 
-#: src/main/extract.c:198 src/main/extractor.c:1116
+#: src/main/extract.c:198 src/main/extractor.c:1117
 #, fuzzy, c-format
 msgid "%s - (binary)\n"
 msgstr "%s-(Nyabibiri"
 
-#: src/main/extract.c:204 src/main/extractor.c:1121
+#: src/main/extract.c:204 src/main/extractor.c:1122
 #, c-format
 msgid "INVALID TYPE - %s\n"
 msgstr ""
@@ -1028,22 +1028,22 @@ msgstr "Ikivugwaho"
 msgid "page count"
 msgstr "Kubara amapaje"
 
-#: src/main/extract.c:473
+#: src/main/extract.c:474
 #, fuzzy, c-format
 msgid "You must specify an argument for the `%s' option (option ignored).\n"
 msgstr "kugirango i Ihitamo Ihitamo"
 
-#: src/main/extract.c:540
+#: src/main/extract.c:541
 #, fuzzy, c-format
 msgid "Use --help to get a list of options.\n"
 msgstr "Ifashayobora Kuri Kubona a Urutonde Bya Amahitamo"
 
-#: src/main/extract.c:599
+#: src/main/extract.c:600
 #, c-format
 msgid "%% BiBTeX file\n"
 msgstr ""
 
-#: src/main/extract.c:606
+#: src/main/extract.c:611
 #, fuzzy, c-format
 msgid "Keywords for file %s:\n"
 msgstr "kugirango IDOSIYE"
@@ -1540,24 +1540,29 @@ msgstr ""
 msgid "orientation"
 msgstr "Ipaji Icyerekezo"
 
-#: src/main/extractor.c:225
+#: src/main/extractor.c:132
+#, fuzzy
+msgid "template"
+msgstr "Umwanya"
+
+#: src/main/extractor.c:226
 #, fuzzy, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "Bya Byanze"
 
-#: src/main/extractor.c:372
+#: src/main/extractor.c:373
 #, fuzzy, c-format
 msgid ""
 "Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
 "failed also.  Errors are: `%s' and `%s'.\n"
 msgstr "IKIMENYETSO in Isomero Byanze Byanze Na"
 
-#: src/main/extractor.c:401
+#: src/main/extractor.c:402
 #, fuzzy, c-format
 msgid "Loading `%s' plugin failed: %s\n"
 msgstr "Byanze"
 
-#: src/main/extractor.c:606
+#: src/main/extractor.c:607
 #, fuzzy, c-format
 msgid "Unloading plugin `%s' failed!\n"
 msgstr "Byanze"

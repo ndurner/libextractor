@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.5.6a\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2005-09-20 23:59-0700\n"
+"POT-Creation-Date: 2005-09-26 07:05-0700\n"
 "PO-Revision-Date: 2005-09-22 10:07+0200\n"
 "Last-Translator: Karl Eichwalder <ke@suse.de>\n"
 "Language-Team: German <de@li.org>\n"
@@ -820,7 +820,8 @@ msgstr ""
 
 #: src/main/extract.c:52
 #, c-format
-msgid "Arguments mandatory for long options are also mandatory for short options.\n"
+msgid ""
+"Arguments mandatory for long options are also mandatory for short options.\n"
 msgstr ""
 "Argumente, die für lange Optionen notwendig sind, sind ebenfalls für die\n"
 "Optionen in Kurzform notwendig.\n"
@@ -834,8 +835,12 @@ msgid "print output in bibtex format"
 msgstr "Ausgabe im BibTeX format"
 
 #: src/main/extract.c:130
-msgid "use the generic plaintext extractor for the language with the 2-letter language code LANG"
-msgstr "generischen Klartext-extractor für die Sprache mit dem 2-Buchstabenkürzel LANG verwenden"
+msgid ""
+"use the generic plaintext extractor for the language with the 2-letter "
+"language code LANG"
+msgstr ""
+"generischen Klartext-extractor für die Sprache mit dem 2-Buchstabenkürzel "
+"LANG verwenden"
 
 #: src/main/extract.c:132
 msgid "remove duplicates only if types match"
@@ -843,7 +848,9 @@ msgstr "doppelte Einträge nur entfernen, wenn die Art übereinstimmt"
 
 #: src/main/extract.c:134
 msgid "use the filename as a keyword (loads filename-extractor plugin)"
-msgstr "Dateinamen als Schlüsselwort verwenden (filename-extractor-Erweiterung wird geladen)"
+msgstr ""
+"Dateinamen als Schlüsselwort verwenden (filename-extractor-Erweiterung wird "
+"geladen)"
 
 #: src/main/extract.c:136
 msgid "print this help"
@@ -851,7 +858,8 @@ msgstr "diese Hilfe anzeigen"
 
 #: src/main/extract.c:138
 msgid "compute hash using the given ALGORITHM (currently sha1 or md5)"
-msgstr "Hash gemäß dem angegebenen ALGORITHMUS errechnen (z.Zt. »sha1« oder »md5«)"
+msgstr ""
+"Hash gemäß dem angegebenen ALGORITHMUS errechnen (z.Zt. »sha1« oder »md5«)"
 
 #: src/main/extract.c:140
 msgid "load an extractor plugin named LIBRARY"
@@ -867,7 +875,9 @@ msgstr "Standardsatz der extractor-Erweiterungen nicht verwenden"
 
 #: src/main/extract.c:146
 msgid "print only keywords of the given TYPE (use -L to get a list)"
-msgstr "nur Schlüsselwörter einer bestimmten ART ausgeben (mit -L die Liste anzeigen lassen)"
+msgstr ""
+"nur Schlüsselwörter einer bestimmten ART ausgeben (mit -L die Liste anzeigen "
+"lassen)"
 
 #: src/main/extract.c:148
 msgid "remove duplicates even if keyword types do not match"
@@ -897,12 +907,12 @@ msgstr "extract [OPTIONEN] [DATEINAME]*"
 msgid "Extract metadata from files."
 msgstr "Metadaten aus den Dateien extrahieren."
 
-#: src/main/extract.c:198 src/main/extractor.c:1116
+#: src/main/extract.c:198 src/main/extractor.c:1117
 #, c-format
 msgid "%s - (binary)\n"
 msgstr "%s - (binär)\n"
 
-#: src/main/extract.c:204 src/main/extractor.c:1121
+#: src/main/extract.c:204 src/main/extractor.c:1122
 #, c-format
 msgid "INVALID TYPE - %s\n"
 msgstr "UNGÜLTIGE ART - %s\n"
@@ -955,22 +965,24 @@ msgstr "Gegenstand"
 msgid "page count"
 msgstr "Seitenanzahl"
 
-#: src/main/extract.c:473
+#: src/main/extract.c:474
 #, c-format
 msgid "You must specify an argument for the `%s' option (option ignored).\n"
-msgstr "Sie müssen ein Argument für die Option »%s« angeben (Option wird ignoriert).\n"
+msgstr ""
+"Sie müssen ein Argument für die Option »%s« angeben (Option wird "
+"ignoriert).\n"
 
-#: src/main/extract.c:540
+#: src/main/extract.c:541
 #, c-format
 msgid "Use --help to get a list of options.\n"
 msgstr "Verwenden Sie --help, um eine Liste aller Optionen zu sehen.\n"
 
-#: src/main/extract.c:599
+#: src/main/extract.c:600
 #, c-format
 msgid "%% BiBTeX file\n"
 msgstr "%% BibTeX Datei\n"
 
-#: src/main/extract.c:606
+#: src/main/extract.c:611
 #, c-format
 msgid "Keywords for file %s:\n"
 msgstr "Schlüsserwörter für die Datei %s:\n"
@@ -1285,22 +1297,28 @@ msgstr ""
 msgid "orientation"
 msgstr "Seitenausrichtung"
 
-#: src/main/extractor.c:225
+#: src/main/extractor.c:132
+msgid "template"
+msgstr "Vorlage"
+
+#: src/main/extractor.c:226
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "Initialisierung des Plugin-Mechanismus' ist fehlgeschlagen: %s.\n"
 
-#: src/main/extractor.c:372
+#: src/main/extractor.c:373
 #, c-format
-msgid "Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that failed also.  Errors are: `%s' and `%s'.\n"
+msgid ""
+"Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
+"failed also.  Errors are: `%s' and `%s'.\n"
 msgstr ""
 
-#: src/main/extractor.c:401
+#: src/main/extractor.c:402
 #, c-format
 msgid "Loading `%s' plugin failed: %s\n"
 msgstr "Laden des »%s«-Plugins ist fehlgeschlagen: %s\n"
 
-#: src/main/extractor.c:606
+#: src/main/extractor.c:607
 #, c-format
 msgid "Unloading plugin `%s' failed!\n"
 msgstr "Entladen des »%s«-Plugins ist fehlgeschlagen!\n"

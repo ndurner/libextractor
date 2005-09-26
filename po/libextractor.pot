@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2005-09-20 23:59-0700\n"
+"POT-Creation-Date: 2005-09-26 07:05-0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -861,12 +861,12 @@ msgstr ""
 msgid "Extract metadata from files."
 msgstr ""
 
-#: src/main/extract.c:198 src/main/extractor.c:1116
+#: src/main/extract.c:198 src/main/extractor.c:1117
 #, c-format
 msgid "%s - (binary)\n"
 msgstr ""
 
-#: src/main/extract.c:204 src/main/extractor.c:1121
+#: src/main/extract.c:204 src/main/extractor.c:1122
 #, c-format
 msgid "INVALID TYPE - %s\n"
 msgstr ""
@@ -919,22 +919,22 @@ msgstr ""
 msgid "page count"
 msgstr ""
 
-#: src/main/extract.c:473
+#: src/main/extract.c:474
 #, c-format
 msgid "You must specify an argument for the `%s' option (option ignored).\n"
 msgstr ""
 
-#: src/main/extract.c:540
+#: src/main/extract.c:541
 #, c-format
 msgid "Use --help to get a list of options.\n"
 msgstr ""
 
-#: src/main/extract.c:599
+#: src/main/extract.c:600
 #, c-format
 msgid "%% BiBTeX file\n"
 msgstr ""
 
-#: src/main/extract.c:606
+#: src/main/extract.c:611
 #, c-format
 msgid "Keywords for file %s:\n"
 msgstr ""
@@ -1243,24 +1243,28 @@ msgstr ""
 msgid "orientation"
 msgstr ""
 
-#: src/main/extractor.c:225
+#: src/main/extractor.c:132
+msgid "template"
+msgstr ""
+
+#: src/main/extractor.c:226
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr ""
 
-#: src/main/extractor.c:372
+#: src/main/extractor.c:373
 #, c-format
 msgid ""
 "Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
 "failed also.  Errors are: `%s' and `%s'.\n"
 msgstr ""
 
-#: src/main/extractor.c:401
+#: src/main/extractor.c:402
 #, c-format
 msgid "Loading `%s' plugin failed: %s\n"
 msgstr ""
 
-#: src/main/extractor.c:606
+#: src/main/extractor.c:607
 #, c-format
 msgid "Unloading plugin `%s' failed!\n"
 msgstr ""

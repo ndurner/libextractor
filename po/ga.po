@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.5.6a\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2005-09-20 23:59-0700\n"
+"POT-Creation-Date: 2005-09-26 07:05-0700\n"
 "PO-Revision-Date: 2005-09-21 00:46-0700\n"
 "Last-Translator: Kevin Patrick Scannell <scannell@SLU.EDU>\n"
 "Language-Team: Irish <gaeilge-gnulinux@lists.sourceforge.net>\n"
@@ -876,12 +876,12 @@ msgstr "extract [ROGHANNA] [COMHADAINM]*"
 msgid "Extract metadata from files."
 msgstr "Bain meiteashonraí as comhaid."
 
-#: src/main/extract.c:198 src/main/extractor.c:1116
+#: src/main/extract.c:198 src/main/extractor.c:1117
 #, c-format
 msgid "%s - (binary)\n"
 msgstr "%s - (dénártha)\n"
 
-#: src/main/extract.c:204 src/main/extractor.c:1121
+#: src/main/extract.c:204 src/main/extractor.c:1122
 #, c-format
 msgid "INVALID TYPE - %s\n"
 msgstr "CINEÁL NEAMHBHAILÍ - %s\n"
@@ -934,23 +934,23 @@ msgstr "ábhar"
 msgid "page count"
 msgstr "líon na leathanach"
 
-#: src/main/extract.c:473
+#: src/main/extract.c:474
 #, c-format
 msgid "You must specify an argument for the `%s' option (option ignored).\n"
 msgstr ""
 "Ní mór duit argóint a thabhairt i ndiaidh na rogha `%s' (á ligean thart).\n"
 
-#: src/main/extract.c:540
+#: src/main/extract.c:541
 #, c-format
 msgid "Use --help to get a list of options.\n"
 msgstr "Bain úsáid as '--help' le haghaidh níos mó roghanna.\n"
 
-#: src/main/extract.c:599
+#: src/main/extract.c:600
 #, c-format
 msgid "%% BiBTeX file\n"
 msgstr "%% Comhad BiBTeX\n"
 
-#: src/main/extract.c:606
+#: src/main/extract.c:611
 #, c-format
 msgid "Keywords for file %s:\n"
 msgstr "Lorgfhocail do chomhad %s:\n"
@@ -1259,12 +1259,17 @@ msgstr "cothromaíocht bhán"
 msgid "orientation"
 msgstr "treoshuíomh"
 
-#: src/main/extractor.c:225
+#: src/main/extractor.c:132
+#, fuzzy
+msgid "template"
+msgstr "ionadaíonn"
+
+#: src/main/extractor.c:226
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "Theip ar thúsú meicníocht na mbreiseán: %s!\n"
 
-#: src/main/extractor.c:372
+#: src/main/extractor.c:373
 #, c-format
 msgid ""
 "Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
@@ -1274,12 +1279,12 @@ msgstr ""
 "bhain mé triail as `%s', ach theip ar an cheann sin freisin.  Na hearráidí: `"
 "%s' agus `%s'.\n"
 
-#: src/main/extractor.c:401
+#: src/main/extractor.c:402
 #, c-format
 msgid "Loading `%s' plugin failed: %s\n"
 msgstr "Theip ar luchtú an bhreiseáin `%s': %s\n"
 
-#: src/main/extractor.c:606
+#: src/main/extractor.c:607
 #, c-format
 msgid "Unloading plugin `%s' failed!\n"
 msgstr "Theip ar dhíluchtú an bhreiseáin `%s'!\n"
