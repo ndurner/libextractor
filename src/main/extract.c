@@ -600,11 +600,17 @@ main (int argc, char *argv[])
 	    _("%% BiBTeX file\n"));
   for (i = optind; i < argc; i++)
     {
-      if (0 != ACCESS(argv[i], R_OK)) {
+      errno = 0;
+      keywords = EXTRACTOR_getKeywords (extractors, argv[i]);
+      if (0 != errno) {
+	if (verbose == YES) {
+	  fprintf(stderr, 
+		  "%s: %s: %s\n",
+		  argv[0], argv[i], strerror(errno));
+	}
 	ret = 1;
 	continue;
       }
-      keywords = EXTRACTOR_getKeywords (extractors, argv[i]);
       if (duplicates != -1 || bibtex == YES)
 	keywords = EXTRACTOR_removeDuplicateKeywords (keywords, duplicates);
       if (verbose == YES && bibtex == NO)

@@ -883,6 +883,7 @@ EXTRACTOR_getKeywords (EXTRACTOR_ExtractorList * extractor,
   void * buffer;
   struct stat fstatbuf;
   size_t size;
+  int eno;
 
 #ifdef O_LARGEFILE
   file = fileopen(filename, O_RDONLY | O_LARGEFILE);
@@ -904,17 +905,18 @@ EXTRACTOR_getKeywords (EXTRACTOR_ExtractorList * extractor,
   if (size > MAX_READ)
     size = MAX_READ; /* do not mmap/read more than 1 GB! */
   buffer = MMAP(NULL, size, PROT_READ, MAP_PRIVATE, file, 0);
-  close(file);
-  if ( (buffer == NULL) || (buffer == (void *) -1) )
+  if ( (buffer == NULL) || (buffer == (void *) -1) ) {
+    eno = errno;
+    close(file);
+    errno = eno;
     return NULL;
+  }
   result = getKeywords(extractor,
 		       filename,
 		       buffer,
 		       size);
-  if (size > 0)
-    MUNMAP (buffer, size);
-  else
-    free(buffer);
+  MUNMAP (buffer, size);
+  close(file);
   return result;
 }
 
