@@ -1397,7 +1397,7 @@ static Matches tmap[] = {
   { "Author", EXTRACTOR_AUTHOR },
   { "Keywords", EXTRACTOR_KEYWORDS },
   { "Comments", EXTRACTOR_COMMENT },
-  { "Template", EXTRACTOR_FORMAT },
+  { "Template", EXTRACTOR_TEMPLATE },
   { "NumPages", EXTRACTOR_PAGE_COUNT },
   { "AppName", EXTRACTOR_SOFTWARE },
   { "RevisionNumber", EXTRACTOR_VERSIONNUMBER },
