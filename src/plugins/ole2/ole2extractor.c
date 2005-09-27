@@ -2206,13 +2206,18 @@ libextractor_ole2_extract(const char * filename,
   if(NULL != software) {
     const char * mimetype = "application/vnd.ms-files";
  
-    if(0 == strncmp(software, "Microsoft Word", 14))
+    if((0 == strncmp(software, "Microsoft Word", 14)) ||
+       (0 == strncmp(software, "Microsoft Office Word", 21)))
       mimetype = "application/msword";
-    else if(0 == strncmp(software, "Microsoft Excel", 15))
+    else if((0 == strncmp(software, "Microsoft Excel", 15)) ||
+            (0 == strncmp(software, "Microsoft Office Excel", 22)))
       mimetype = "application/vnd.ms-excel";
-    else if(0 == strncmp(software, "Microsoft PowerPoint", 19))
+    else if((0 == strncmp(software, "Microsoft PowerPoint", 20)) ||
+            (0 == strncmp(software, "Microsoft Office PowerPoint", 27)))
       mimetype = "application/vnd.ms-powerpoint";
-
+    else if(0 == strncmp(software, "Microsoft Office", 16))
+      mimetype = "application/vnd.ms-office";
+  
     prev = addKeyword(prev, mimetype, EXTRACTOR_MIMETYPE);
   }
 
