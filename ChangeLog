@@ -1,3 +1,12 @@
+Mon Sep 26 20:44:10 PDT 2005
+	Minor improvements to the PDF extractor:
+	- first change is to avoid outputting keywords with empty values
+  	  (for now the new check is only effective when the value is seen
+	  as a string of 8-bit characters; I'm not sure how to rewrite it
+	  for the Unicode case in the if branch just above.)
+        - second change is to remap PDF Creator as 'software' keyword
+          instead of 'creator'.
+
 Sun Sep 25 11:31:51 PDT 2005
 	Made sure extract returns error code (1) if some files could not
 	be accessed.

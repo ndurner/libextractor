@@ -87,17 +87,45 @@ extern "C" {
 	  con = (char*) convertToUtf8((const char*) u, 2, "UNICODE");
 	  strcat(result, con);
 	  free(con);
-	}		
+	}
 	next = addKeyword(type,
 			  strdup(result),
 			  next);
 	free(result);
       } else {
-	next = addKeyword(type,
-			  convertToUtf8(s,
-					strlen(s),
+        unsigned int len = (NULL == s) ? 0 : strlen(s);
+
+        while(0 < len) {
+        /*
+         * Avoid outputting trailing spaces.
+         *
+         * The following expression might be rewritten as
+         * (! isspace(s[len - 1]) && 0xA0 != s[len - 1]).
+         * There seem to exist isspace() implementations 
+         * which do return non-zero from NBSP (maybe locale-dependent).
+         * Remove ISO-8859 non-breaking space (NBSP, hex value 0xA0) from
+         * the expression if it looks suspicious (locale issues for instance).
+         *
+         * Squeezing out all non-printable characters might also be useful.
+         */
+          if ( (' '  != s[len - 1]) && ((char)0xA0 != s[len - 1]) &&
+               ('\r' != s[len - 1]) && ('\n' != s[len - 1]) &&
+               ('\t' != s[len - 1]) && ('\v' != s[len - 1]) &&
+               ('\f' != s[len - 1]) )
+             break;
+
+          else
+            len --;
+        }
+
+        /* there should be a check to truncate preposterously long values. */
+
+        if (0 < len) {
+	  next = addKeyword(type,
+	  		  convertToUtf8(s, len,
 					"ISO-8859-1"),
 			  next);
+        }
       }
     }
     obj.free();
@@ -251,9 +279,14 @@ extern "C" {
 			       "Author",
 			       EXTRACTOR_AUTHOR,
 			       result);
+      /*
+       * we now believe that Adobe's Creator
+       * is not a person nor an organisation,
+       * but just a piece of software.
+       */
       result = printInfoString(info.getDict(),
 			       "Creator",
-			       EXTRACTOR_CREATOR,
+			       EXTRACTOR_SOFTWARE,
 			       result);
       result = printInfoString(info.getDict(),
 			       "Producer",
