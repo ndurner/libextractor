@@ -660,7 +660,7 @@ getKeywords (EXTRACTOR_ExtractorList * extractor,
   dsize = 0;
 #if HAVE_ZLIB
   /* try gzip decompression first */
-  if ( (size >= 11) &&
+  if ( (size >= 12) &&
        (data[0] == 0x1f) &&
        (data[1] == 0x8b) &&
        (data[2] == 0x08) ) {
@@ -670,9 +670,9 @@ getKeywords (EXTRACTOR_ExtractorList * extractor,
      */
     unsigned gzip_header_length = 10;
 
-    if(data[3] & 0x4) /* FEXTRA  set */
+    if (data[3] & 0x4) /* FEXTRA  set */
       gzip_header_length += 2 + (unsigned) (data[10] & 0xff)
-                              + (((unsigned) (data[10] & 0xff)) * 256);
+                              + (((unsigned) (data[11] & 0xff)) * 256);
 
     if(data[3] & 0x8) /* FNAME set */
     {
@@ -688,7 +688,7 @@ getKeywords (EXTRACTOR_ExtractorList * extractor,
         if('\0' == *cptr)
           break;
 
-        cptr += 1;
+        cptr++;
       }
       gzip_header_length = (cptr - data) + 1;
     }
@@ -718,7 +718,7 @@ getKeywords (EXTRACTOR_ExtractorList * extractor,
     memset(&strm,
 	   0,
 	   sizeof(z_stream));
-#ifdef ZLIB_VERNUM
+#ifdef ZLIB_VERNUM 
     gzip_header_length = 0;
 #endif
     if (size > gzip_header_length) {
