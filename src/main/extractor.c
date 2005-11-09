@@ -247,8 +247,10 @@ void __attribute__ ((constructor)) le_ltdl_init(void) {
 
 void __attribute__ ((destructor)) le_ltdl_fini(void) {
   lt_dlsetsearchpath(old_dlsearchpath);
-  if (old_dlsearchpath != NULL)
+  if (old_dlsearchpath != NULL) {
     free(old_dlsearchpath);
+    old_dlsearchpath = NULL;
+  }
 #ifdef MINGW
   ShutdownWinEnv();
 #endif
