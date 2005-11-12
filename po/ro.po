@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.4.2\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2005-09-26 07:05-0700\n"
+"POT-Creation-Date: 2005-11-12 11:11-0800\n"
 "PO-Revision-Date: 2005-02-25 12:00-0500\n"
 "Last-Translator: Laurentiu Buzdugan <lbuz@rolix.org>\n"
 "Language-Team: Romanian <translation-team-ro@lists.sourceforge.net>\n"
@@ -883,12 +883,12 @@ msgstr "extract [OPÞIUNI] [NUME_FIªIER]*"
 msgid "Extract metadata from files."
 msgstr "Extrage metadata din fiºiere."
 
-#: src/main/extract.c:198 src/main/extractor.c:1117
+#: src/main/extract.c:198 src/main/extractor.c:1121
 #, c-format
 msgid "%s - (binary)\n"
 msgstr "%s - (binar)\n"
 
-#: src/main/extract.c:204 src/main/extractor.c:1122
+#: src/main/extract.c:204 src/main/extractor.c:1126
 #, c-format
 msgid "INVALID TYPE - %s\n"
 msgstr "TIP INVALID - %s\n"
@@ -957,7 +957,7 @@ msgstr "Folosiþi --help pentru a obþine o listã de opþiuni.\n"
 msgid "%% BiBTeX file\n"
 msgstr "%% BiBTeX file\n"
 
-#: src/main/extract.c:611
+#: src/main/extract.c:617
 #, c-format
 msgid "Keywords for file %s:\n"
 msgstr "Cuvinte cheie pentru fiºier %s:\n"
@@ -1278,7 +1278,7 @@ msgstr "înlocuieºte"
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "iniþializare mecanismului de plugin a eºuat: %s!\n"
 
-#: src/main/extractor.c:373
+#: src/main/extractor.c:375
 #, c-format
 msgid ""
 "Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
@@ -1287,12 +1287,12 @@ msgstr ""
 "Rezolvarea simbolului `%s' în biblioteca `%s' a eºuat, aºa cã am încercat '%"
 "s', dar ºi acesta a eºuat.  Erorile sunt: `%s' ºi `%s'.\n"
 
-#: src/main/extractor.c:402
+#: src/main/extractor.c:404
 #, c-format
 msgid "Loading `%s' plugin failed: %s\n"
 msgstr "Încãrcarea plugin-ului `%s' a eºuat: %s\n"
 
-#: src/main/extractor.c:607
+#: src/main/extractor.c:609
 #, c-format
 msgid "Unloading plugin `%s' failed!\n"
 msgstr "Descãrcarea plugin-ului `%s' a eºuat!\n"

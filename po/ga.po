@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.5.6a\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2005-09-26 07:05-0700\n"
+"POT-Creation-Date: 2005-11-12 11:11-0800\n"
 "PO-Revision-Date: 2005-09-21 00:46-0700\n"
 "Last-Translator: Kevin Patrick Scannell <scannell@SLU.EDU>\n"
 "Language-Team: Irish <gaeilge-gnulinux@lists.sourceforge.net>\n"
@@ -876,12 +876,12 @@ msgstr "extract [ROGHANNA] [COMHADAINM]*"
 msgid "Extract metadata from files."
 msgstr "Bain meiteashonraí as comhaid."
 
-#: src/main/extract.c:198 src/main/extractor.c:1117
+#: src/main/extract.c:198 src/main/extractor.c:1121
 #, c-format
 msgid "%s - (binary)\n"
 msgstr "%s - (dénártha)\n"
 
-#: src/main/extract.c:204 src/main/extractor.c:1122
+#: src/main/extract.c:204 src/main/extractor.c:1126
 #, c-format
 msgid "INVALID TYPE - %s\n"
 msgstr "CINEÁL NEAMHBHAILÍ - %s\n"
@@ -950,7 +950,7 @@ msgstr "Bain úsáid as '--help' le haghaidh níos mó roghanna.\n"
 msgid "%% BiBTeX file\n"
 msgstr "%% Comhad BiBTeX\n"
 
-#: src/main/extract.c:611
+#: src/main/extract.c:617
 #, c-format
 msgid "Keywords for file %s:\n"
 msgstr "Lorgfhocail do chomhad %s:\n"
@@ -1269,7 +1269,7 @@ msgstr "ionadaíonn"
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "Theip ar thúsú meicníocht na mbreiseán: %s!\n"
 
-#: src/main/extractor.c:373
+#: src/main/extractor.c:375
 #, c-format
 msgid ""
 "Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
@@ -1279,12 +1279,12 @@ msgstr ""
 "bhain mé triail as `%s', ach theip ar an cheann sin freisin.  Na hearráidí: `"
 "%s' agus `%s'.\n"
 
-#: src/main/extractor.c:402
+#: src/main/extractor.c:404
 #, c-format
 msgid "Loading `%s' plugin failed: %s\n"
 msgstr "Theip ar luchtú an bhreiseáin `%s': %s\n"
 
-#: src/main/extractor.c:607
+#: src/main/extractor.c:609
 #, c-format
 msgid "Unloading plugin `%s' failed!\n"
 msgstr "Theip ar dhíluchtú an bhreiseáin `%s'!\n"
