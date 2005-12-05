@@ -179,9 +179,9 @@ static Pattern patterns[] = {
   { "%PDF", 4, "application/pdf", DEFAULT},
   { "%!PS-Adobe-", 11, "application/postscript", DEFAULT},
   { "\004%!PS-Adobe-", 12, "application/postscript, DEFAULT"}, /* DOS? :-) */
-  { "RIFF", 4, "video/avi", XPATTERN(AVI_XPATTERN)},
+  { "RIFF", 4, "video/x-msvideo", XPATTERN(AVI_XPATTERN)},
   { "RIFF", 4, "audio/x-wav", XPATTERN(WAVE_XPATTERN)},
-  { "RIFX", 4, "video/avi", XPATTERN(AVI_XPATTERN)},
+  { "RIFX", 4, "video/x-msvideo", XPATTERN(AVI_XPATTERN)},
   { "RIFX", 4, "audio/x-wav", XPATTERN(WAVE_XPATTERN)},
   { "RIFF", 4, "audio/midi", XPATTERN(RMID_XPATTERN)},
   { "RIFX", 4, "audio/midi", XPATTERN(RMID_XPATTERN)},

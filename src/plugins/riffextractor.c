@@ -90,7 +90,7 @@ static double round_double(double num) {
    return floor(num + 0.5);
 }
 
-/* video/avi */
+/* video/x-msvideo */
 struct EXTRACTOR_Keywords * libextractor_riff_extract(char * filename,
 						      char * xdata,
 						      size_t xsize,
@@ -181,7 +181,7 @@ struct EXTRACTOR_Keywords * libextractor_riff_extract(char * filename,
 	     format,
 	     EXTRACTOR_SIZE);
   addKeyword(&prev,
-	     strdup("video/avi"),
+	     strdup("video/x-msvideo"),
 	     EXTRACTOR_MIMETYPE);
   return prev;
 }
