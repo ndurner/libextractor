@@ -231,6 +231,8 @@ public:
   StreamPredictor(Stream *strA, int predictorA,
 		  int widthA, int nCompsA, int nBitsA);
 
+  GBool isOk() { return ok; }
+  
   ~StreamPredictor();
 
   int lookChar();
@@ -250,6 +252,7 @@ private:
   int rowBytes;			// bytes per line
   Guchar *predLine;		// line buffer
   int predIdx;			// current index in predLine
+  GBool ok;
 };
 
 //------------------------------------------------------------------------
