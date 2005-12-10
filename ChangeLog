@@ -1,3 +1,6 @@
+Fri Dec  9 23:17:21 PST 2005
+        Fixing crash in MIME-extractor due to typo in the code.
+
 Tue Dec  6 13:25:56 PST 2005
 	Fixed security problems in PDF extractor
 	(http://www.idefense.com/application/poi/display?id=344&type=vulnerabilities)

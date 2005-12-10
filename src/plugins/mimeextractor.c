@@ -178,7 +178,7 @@ static Pattern patterns[] = {
   { "II\x2a\x00", 4, "image/tiff", DEFAULT}, /* little-endian */
   { "%PDF", 4, "application/pdf", DEFAULT},
   { "%!PS-Adobe-", 11, "application/postscript", DEFAULT},
-  { "\004%!PS-Adobe-", 12, "application/postscript, DEFAULT"}, /* DOS? :-) */
+  { "\004%!PS-Adobe-", 12, "application/postscript", DEFAULT }, 
   { "RIFF", 4, "video/x-msvideo", XPATTERN(AVI_XPATTERN)},
   { "RIFF", 4, "audio/x-wav", XPATTERN(WAVE_XPATTERN)},
   { "RIFX", 4, "video/x-msvideo", XPATTERN(AVI_XPATTERN)},
