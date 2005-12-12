@@ -1,3 +1,6 @@
+Sun Dec 11 23:52:50 PST 2005
+	Made TAR extractor parsing more robust.
+
 Fri Dec  9 23:17:21 PST 2005
         Fixing crash in MIME-extractor due to typo in the code.
 
