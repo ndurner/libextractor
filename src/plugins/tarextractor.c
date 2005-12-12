@@ -102,6 +102,48 @@ typedef struct {
   char prefix[155];
 } USTarHeader;
 
+static unsigned
+taroctalvalue(const char *data,
+              size_t size,
+              unsigned long long *valueptr)
+{
+   unsigned result = 0;
+
+   if(NULL != data && 0 < size)
+   {
+     const char *p = data;
+     int found = 0;
+     unsigned long long value = 0;
+
+     while( (p < data + size) && (' ' == *p))
+       p += 1;
+
+     while( (p < data + size) && ('0' <= *p) && (*p < '8') )
+     {
+       found = 1;
+       value *= 8;
+       value += (*p - '0');
+       p += 1;
+     }
+
+     if(0 != found)
+     {
+       while( (p < data + size) && (' ' == *p) )
+         p += 1;
+
+       while( (p < data + size) && (0 == *p) )
+         p += 1;
+
+       result = (p - data);
+     }
+
+     if( (0 < result) && (NULL != valueptr) )
+       *valueptr = value;
+   }
+
+   return result;
+}
+
 
 struct EXTRACTOR_Keywords *
 libextractor_tar_extract(const char * filename,
@@ -114,7 +156,7 @@ libextractor_tar_extract(const char * filename,
   int contents_are_empty = 1;
   const char * mimetype = NULL;
   struct EXTRACTOR_Keywords * last;
-  
+
   last = prev;
   if (last != NULL)
     while (last->next != NULL)
@@ -128,7 +170,6 @@ libextractor_tar_extract(const char * filename,
   pos = 0;
   while (pos + sizeof(TarHeader) < size) {
     unsigned long long fsize;
-    char buf[13];
     const char * nul_pos;
     const char * ustar_prefix = NULL;
     unsigned int ustar_prefix_length = 0;
@@ -150,6 +191,19 @@ libextractor_tar_extract(const char * filename,
       break;
 
     tar = (const TarHeader*) &data[pos];
+
+    /*
+     * checking all octal fields helps reduce
+     * the possibility of false positives ;
+     * only the file size is used for now.
+     */
+    if( (12 > taroctalvalue(tar->filesize, 12, &fsize))
+     || (12 > taroctalvalue(tar->lastModTime, 12, NULL))
+     || (8  > taroctalvalue(tar->mode, 8, NULL))
+     || (8  > taroctalvalue(tar->userId, 8, NULL))
+     || (8  > taroctalvalue(tar->groupId, 8, NULL)) )
+      break;
+
     /* fixme: we may want to check the header checksum here... */
     /* fixme: we attempt to follow MKS document for long file names,
        but no TAR file was found yet which matched what we understood ! */
@@ -186,10 +240,7 @@ libextractor_tar_extract(const char * filename,
     } else {
       pos += 257; /* sizeof(TarHeader); minus gcc alignment... */
     }
-    memcpy(buf, &tar->filesize[0], 12);
-    buf[12] = '\0';
-    if (1 != sscanf(buf, "%12llo", &fsize)) /* octal! Yuck yuck! */
-      break;
+
     if ( (pos + fsize > size) ||
 	 (fsize > size) ||
 	 (pos + fsize < pos) )
