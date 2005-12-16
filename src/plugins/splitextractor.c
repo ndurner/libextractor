@@ -25,8 +25,8 @@ static char * TOKENIZERS = "._ ,%@-\n_[](){}";
 static int MINIMUM_KEYWORD_LENGTH = 4;
 
 static void addKeyword(struct EXTRACTOR_Keywords ** list,
-																							char * keyword,
-																							EXTRACTOR_KeywordType type) {
+		       const char * keyword,
+		       EXTRACTOR_KeywordType type) {
   EXTRACTOR_KeywordList * next;
   next = malloc(sizeof(EXTRACTOR_KeywordList));
   next->next = *list;
@@ -36,21 +36,21 @@ static void addKeyword(struct EXTRACTOR_Keywords ** list,
 }
 
 static int token(char letter,
-																	const char * options) {
+		 const char * options) {
   int i;
-
-		if (options == NULL)
-				options = TOKENIZERS;
+  
+  if (options == NULL)
+    options = TOKENIZERS;
   for (i=0;i<strlen(TOKENIZERS);i++)
     if (letter == TOKENIZERS[i])
       return 1;
   return 0;
 }
 
-static void splitKeywords(char * keyword,
-																										EXTRACTOR_KeywordType type,
-																										struct EXTRACTOR_Keywords ** list,
-																										const char * options) {
+static void splitKeywords(const char * keyword,
+			  EXTRACTOR_KeywordType type,
+			  struct EXTRACTOR_Keywords ** list,
+			  const char * options) {
   char * dp;
   int pos;
   int last;
@@ -75,19 +75,19 @@ static void splitKeywords(char * keyword,
 
 /* split other keywords into multiple keywords */
 struct EXTRACTOR_Keywords *
-libextractor_split_extract(char * filename,
-																											char * data,
-																											size_t size,
-																											struct EXTRACTOR_Keywords * prev,
-																											const char * options) {
+libextractor_split_extract(const char * filename,
+			   const char * data,
+			   size_t size,
+			   struct EXTRACTOR_Keywords * prev,
+			   const char * options) {
   struct EXTRACTOR_Keywords * pos;
 
   pos = prev;
   while (pos != NULL) {
     splitKeywords(pos->keyword,
-																		EXTRACTOR_UNKNOWN,
-																		&prev,
-																		options);
+		  EXTRACTOR_SPLIT,
+		  &prev,
+		  options);
     pos = pos->next;
   }
   return prev;

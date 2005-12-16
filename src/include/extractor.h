@@ -29,7 +29,7 @@ extern "C" {
  * 0.2.6-1 => 0x00020601
  * 4.5.2-0 => 0x04050200
  */
-#define EXTRACTOR_VERSION 0x00050600
+#define EXTRACTOR_VERSION 0x00050801
 
 #include <stdio.h>
 
@@ -139,6 +139,7 @@ typedef enum {
   EXTRACTOR_WHITE_BALANCE = 86,
   EXTRACTOR_ORIENTATION = 87,
   EXTRACTOR_TEMPLATE = 88,
+  EXTRACTOR_SPLIT = 89,
 } EXTRACTOR_KeywordType;
 
 /**

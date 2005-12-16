@@ -130,11 +130,12 @@ static const char *keywordTypes[] = {
   gettext_noop("white balance"),
   gettext_noop("orientation"),
   gettext_noop("template"),
+  gettext_noop("split"),
   NULL,
 };
 
 /* the number of keyword types (for bounds-checking) */
-#define HIGHEST_TYPE_NUMBER 89
+#define HIGHEST_TYPE_NUMBER 90
 
 #ifdef HAVE_LIBOGG
 #if HAVE_VORBIS
