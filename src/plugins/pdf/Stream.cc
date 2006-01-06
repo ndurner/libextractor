@@ -420,7 +420,16 @@ StreamPredictor::StreamPredictor(Stream *strA, int predictorA,
   predLine = NULL;
   ok = gFalse;
 
+  if (width <= 0 || nComps <= 0 || nBits <= 0 ||
+      nComps >= INT_MAX/nBits ||
+      width >= INT_MAX/nComps/nBits) {
+    return;
+  }
   nVals = width * nComps;
+  if (nVals + 7 <= 0) {
+    return;
+  }
+
   totalBits = nVals * nBits;
   if (totalBits == 0 ||
        (totalBits / nBits) / nComps != width ||
@@ -1276,16 +1285,15 @@ GBool RunLengthStream::fillBuf() {
 CCITTFaxStream::CCITTFaxStream(Stream *strA, int encodingA, GBool endOfLineA,
 			       GBool byteAlignA, int columnsA, int rowsA,
 			       GBool endOfBlockA, GBool blackA):
-    FilterStream(strA) {
+  FilterStream(strA) {
   encoding = encodingA;
   endOfLine = endOfLineA;
   byteAlign = byteAlignA;
   columns = columnsA;
+
   rows = rowsA;
   endOfBlock = endOfBlockA;
   black = blackA;
-  refLine = (short *)gmalloc((columns + 3) * sizeof(short));
-  codingLine = (short *)gmalloc((columns + 2) * sizeof(short));
 
   eof = gFalse;
   row = 0;
@@ -1294,8 +1302,14 @@ CCITTFaxStream::CCITTFaxStream(Stream *strA, int encodingA, GBool endOfLineA,
   codingLine[0] = 0;
   codingLine[1] = refLine[2] = columns;
   a0 = 1;
-
   buf = EOF;
+  if (columns + 4 < 1 || (columns + 4) >= INT_MAX / sizeof(short)) {
+    /* illegal value, bail out */
+    eof = gTrue;
+    columns = 0;
+  }
+  refLine = (short *)gmalloc((columns + 3) * sizeof(short));
+  codingLine = (short *)gmalloc((columns + 2) * sizeof(short));  
 }
 
 CCITTFaxStream::~CCITTFaxStream() {
@@ -2974,6 +2988,7 @@ GBool DCTStream::readScanInfo() {
   length = read16() - 2;
   scanInfo.numComps = str->getChar();
   if (scanInfo.numComps <= 0 || scanInfo.numComps > 4) {
+    scanInfo.numComps = 0;
     error(getPos(), "Bad number of components in DCT stream");
     return gFalse;
   }
@@ -3051,12 +3066,12 @@ GBool DCTStream::readHuffmanTables() {
   while (length > 0) {
     index = str->getChar();
     --length;
-    if ((index & 0x0f) >= 4) {
+    if (((index & 0x0f) >= 4) || ((index & ~0x10) < 0)) {
       error(getPos(), "Bad DCT Huffman table");
       return gFalse;
     }
     if (index & 0x10) {
-      index &= 0x0f;
+      index &= 0x03;
       if (index >= numACHuffTables)
 	numACHuffTables = index+1;
       tbl = &acHuffTables[index];
