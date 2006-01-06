@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.4.2\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2005-11-12 11:11-0800\n"
+"POT-Creation-Date: 2005-12-23 12:22-0800\n"
 "PO-Revision-Date: 2005-04-04 10:55-0700\n"
 "Last-Translator: Steven Michael Murphy <murf@e-tools.com>\n"
 "Language-Team: Kinyarwanda <translation-team-rw@lists.sourceforge.net>\n"
@@ -947,12 +947,12 @@ msgstr ""
 msgid "Extract metadata from files."
 msgstr "Bivuye Idosiye"
 
-#: src/main/extract.c:198 src/main/extractor.c:1121
+#: src/main/extract.c:198 src/main/extractor.c:1122
 #, fuzzy, c-format
 msgid "%s - (binary)\n"
 msgstr "%s-(Nyabibiri"
 
-#: src/main/extract.c:204 src/main/extractor.c:1126
+#: src/main/extract.c:204 src/main/extractor.c:1127
 #, c-format
 msgid "INVALID TYPE - %s\n"
 msgstr ""
@@ -1545,24 +1545,28 @@ msgstr "Ipaji Icyerekezo"
 msgid "template"
 msgstr "Umwanya"
 
-#: src/main/extractor.c:226
+#: src/main/extractor.c:133
+msgid "split"
+msgstr ""
+
+#: src/main/extractor.c:227
 #, fuzzy, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "Bya Byanze"
 
-#: src/main/extractor.c:375
+#: src/main/extractor.c:376
 #, fuzzy, c-format
 msgid ""
 "Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
 "failed also.  Errors are: `%s' and `%s'.\n"
 msgstr "IKIMENYETSO in Isomero Byanze Byanze Na"
 
-#: src/main/extractor.c:404
+#: src/main/extractor.c:405
 #, fuzzy, c-format
 msgid "Loading `%s' plugin failed: %s\n"
 msgstr "Byanze"
 
-#: src/main/extractor.c:609
+#: src/main/extractor.c:610
 #, fuzzy, c-format
 msgid "Unloading plugin `%s' failed!\n"
 msgstr "Byanze"

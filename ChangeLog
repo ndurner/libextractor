@@ -1,3 +1,12 @@
+Thu Jan  5 16:51:36 PST 2006
+	More TAR improvements: keywords 'date' and 'format' are 
+	extracted. More checksums variants were added. Long filenames
+	as produced by GNU and Schilling tar (possibly Solaris pax also) 
+	are extracted.
+
+Fri Dec 23 11:28:23 PST 2005
+	Releasing libextractor 0.5.9.
+
 Sun Dec 11 23:52:50 PST 2005
 	Made TAR extractor parsing more robust.
 
