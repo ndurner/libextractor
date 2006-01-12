@@ -1,3 +1,7 @@
+Wed Jan 11 11:33:46 PST 2006
+	More Mime-types for the OLE2 extractor.  Also ignore (harmless) 
+	libc errors in plugins when extracting.
+
 Thu Jan  5 16:51:36 PST 2006
 	More TAR improvements: keywords 'date' and 'format' are 
 	extracted. More checksums variants were added. Long filenames

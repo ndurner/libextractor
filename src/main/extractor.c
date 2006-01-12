@@ -868,6 +868,7 @@ getKeywords (EXTRACTOR_ExtractorList * extractor,
   }
   if (buf != NULL)
     free(buf);
+  errno = 0; /* kill transient errors */
   return result;
 }
 

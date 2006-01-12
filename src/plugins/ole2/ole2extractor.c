@@ -2156,7 +2156,7 @@ static struct EXTRACTOR_Keywords * processSO(struct GsfInput * src,
 
 struct EXTRACTOR_Keywords *
 libextractor_ole2_extract(const char * filename,
-			  const char * date,
+			  const char * data,
 			  size_t size,
 			  struct EXTRACTOR_Keywords * prev) {
   struct GsfInput   *input;
@@ -2166,7 +2166,7 @@ libextractor_ole2_extract(const char * filename,
   const char * software = 0;
   int i;
 
-  input = gsf_input_new((const unsigned char*) date,
+  input = gsf_input_new((const unsigned char*) data,
 			(off_t) size,
 			0);
   if (input == NULL)
@@ -2203,6 +2203,15 @@ libextractor_ole2_extract(const char * filename,
    * Hack to return an appropriate mimetype
    */
   software = EXTRACTOR_extractLast(EXTRACTOR_SOFTWARE, prev);
+  if(NULL == software) {
+     /*
+      * when very puzzled, just look at file magic number
+      */
+    if( (8 < size)
+     && (0 == memcmp(data, "\xd0\xcf\x11\xe0\xa1\xb1\x1a\xe1", 8)) )
+      software = "Microsoft Office";
+  }
+
   if(NULL != software) {
     const char * mimetype = "application/vnd.ms-files";
  
@@ -2215,6 +2224,10 @@ libextractor_ole2_extract(const char * filename,
     else if((0 == strncmp(software, "Microsoft PowerPoint", 20)) ||
             (0 == strncmp(software, "Microsoft Office PowerPoint", 27)))
       mimetype = "application/vnd.ms-powerpoint";
+    else if(0 == strncmp(software, "Microsoft Project", 17))
+      mimetype = "application/vnd.ms-project";
+    else if(0 == strncmp(software, "Microsoft Visio", 15))
+      mimetype = "application/vnd.visio";
     else if(0 == strncmp(software, "Microsoft Office", 16))
       mimetype = "application/vnd.ms-office";
   
@@ -2225,3 +2238,4 @@ libextractor_ole2_extract(const char * filename,
 }
 
 /* end of ole2extractor.c */
+
