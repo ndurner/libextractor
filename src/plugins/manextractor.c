@@ -20,7 +20,7 @@
 
 #include "platform.h"
 #include "extractor.h"
-#include <zlib.h>
+#include <ctype.h>
 
 static char * stndup(const char * str,
                      size_t n) {
@@ -105,8 +105,11 @@ libextractor_man_extract(const char * filename,
 			  &buf[pos],
 			  xlen)) ||
 	    ( (pos != 0) &&
-	      (buf[pos-1] != '\n') ) ) )
+	      (buf[pos-1] != '\n') ) ) ) {
+    if ( !isgraph(buf[pos]) && !isspace(buf[pos]) )
+      return prev;
     pos++;
+  }
   xsize = pos;
   while ( (xsize < size) &&
 	  (buf[xsize] != '\n') )

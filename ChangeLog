@@ -1,3 +1,6 @@
+Tue Jan 31 12:51:55 PST 2006
+	Mis-detection of man pages as part of TAR archives fixed.
+
 Wed Jan 11 11:33:46 PST 2006
 	More Mime-types for the OLE2 extractor.  Also ignore (harmless) 
 	libc errors in plugins when extracting.
