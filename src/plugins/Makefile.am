@@ -15,7 +15,7 @@ if HAVE_EXIV2
  exiv2dir=exiv2
 endif
 
-SUBDIRS = . oo $(printdir) hash $(oledir) rpm pdf $(thumbdir) $(exiv2dir)
+SUBDIRS = . $(oodir) $(printdir) hash $(oledir) rpm pdf $(thumbdir) $(exiv2dir)
 
 if HAVE_VORBISFILE
  extraogg = libextractor_ogg.la
@@ -27,6 +27,7 @@ endif
 
 if HAVE_ZLIB
 extraqt = libextractor_qt.la
+oodir = oo
 endif
 
 plugin_LTLIBRARIES = \
@@ -129,12 +130,14 @@ libextractor_asf_la_SOURCES = \
 libextractor_asf_la_LDFLAGS = \
   $(PLUGINFLAGS) $(retaincommand)
 
+if HAVE_ZLIB
 libextractor_tar_la_SOURCES = \
   tarextractor.c 
 libextractor_tar_la_LDFLAGS = \
   $(PLUGINFLAGS)  $(retaincommand)
 libextractor_tar_la_LIBADD = \
   $(top_builddir)/src/main/libextractor.la -lz
+endif
 
 libextractor_lower_la_SOURCES = \
   lowerextractor.c
@@ -216,6 +219,7 @@ libextractor_man_la_LDFLAGS = \
   $(top_builddir)/src/main/libextractor.la \
   $(PLUGINFLAGS) $(retaincommand)
 
+if HAVE_ZLIB
 libextractor_deb_la_SOURCES = \
   debextractor.c 
 libextractor_deb_la_LDFLAGS = \
@@ -223,6 +227,7 @@ libextractor_deb_la_LDFLAGS = \
   $(PLUGINFLAGS) $(retaincommand)
 libextractor_deb_la_LIBADD = \
   -lz
+endif
 
 libextractor_riff_la_SOURCES = \
   riffextractor.c 
@@ -232,6 +237,7 @@ libextractor_riff_la_LDFLAGS = \
 libextractor_riff_la_LIBADD = \
   -lm 
 
+if HAVE_ZLIB
 libextractor_png_la_SOURCES = \
   pngextractor.c
 libextractor_png_la_LDFLAGS = \
@@ -239,6 +245,7 @@ libextractor_png_la_LDFLAGS = \
   $(PLUGINFLAGS) $(retaincommand)
 libextractor_png_la_LIBADD = \
   libconvert.la -lz
+endif
 
 libextractor_filename_la_SOURCES = \
   filenameextractor.c 

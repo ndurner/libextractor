@@ -23,12 +23,12 @@ if !MINGW
   dlflag=-ldl
 endif
 
-#if HAVE_ZLIB
+if HAVE_ZLIB
   zlib =-lz
-#endif
-#if HAVE_BZ2
+endif
+if HAVE_BZ2
   bz2lib = -lbz2
-#endif
+endif
 
 libextractor_la_LDFLAGS = \
   -export-dynamic -version-info 2:0:1 $(LIBICONV)
