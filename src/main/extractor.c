@@ -131,11 +131,12 @@ static const char *keywordTypes[] = {
   gettext_noop("orientation"),
   gettext_noop("template"),
   gettext_noop("split"),
+  gettext_noop("product version"),
   NULL,
 };
 
 /* the number of keyword types (for bounds-checking) */
-#define HIGHEST_TYPE_NUMBER 90
+#define HIGHEST_TYPE_NUMBER 91
 
 #ifdef HAVE_LIBOGG
 #if HAVE_VORBIS

@@ -298,6 +298,7 @@ src/plugins/printable/Makefile
 src/plugins/hash/Makefile
 src/plugins/thumbnail/Makefile
 src/plugins/exiv2/Makefile
+src/plugins/wordleaker/Makefile
 src/test/Makefile
 ])
 

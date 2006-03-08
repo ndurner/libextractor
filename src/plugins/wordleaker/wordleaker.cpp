@@ -273,6 +273,7 @@ bool readFIB( char* filename ) {
     
 }
 
+#if HAVE_MAIN
 int main(int argc, char *argv[]) {
   cout << endl << "WordLeaker v.0.1" << endl;
   cout << " by Madelman (http://elligre.tk/madelman/)" << endl << endl;
@@ -307,4 +308,4 @@ int main(int argc, char *argv[]) {
   
   return 0;
 }
-
+#endif

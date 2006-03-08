@@ -88,7 +88,7 @@ string idToProduct( unsigned int id ) {
   }      
 }
 
-string lidToLanguage( unsigned int lid ) {
+const char * lidToLanguage( unsigned int lid ) {
   switch ( lid ) {
     case 0x0400: 
         return "No Proofing";
