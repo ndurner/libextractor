@@ -132,11 +132,21 @@ static const char *keywordTypes[] = {
   gettext_noop("template"),
   gettext_noop("split"),
   gettext_noop("product version"),
+  gettext_noop("last saved by"),
+  gettext_noop("last printed"),
+  gettext_noop("word count"),
+  gettext_noop("character count"),
+  gettext_noop("total editing time"),
+  gettext_noop("thumbnails"),
+  gettext_noop("security"),
+  gettext_noop("created by software"),
+  gettext_noop("modified by software"),
+  gettext_noop("revision history"),
   NULL,
 };
 
 /* the number of keyword types (for bounds-checking) */
-#define HIGHEST_TYPE_NUMBER 91
+#define HIGHEST_TYPE_NUMBER 101
 
 #ifdef HAVE_LIBOGG
 #if HAVE_VORBIS

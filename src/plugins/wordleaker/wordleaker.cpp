@@ -37,6 +37,8 @@
 
 unsigned long fcSttbSavedBy;
 unsigned long lcbSttbSavedBy;
+
+
   
 // read the type of the property and displays its value
 void showProperty( POLE::Stream* stream ) {
@@ -273,7 +275,6 @@ bool readFIB( char* filename ) {
     
 }
 
-#if HAVE_MAIN
 int main(int argc, char *argv[]) {
   cout << endl << "WordLeaker v.0.1" << endl;
   cout << " by Madelman (http://elligre.tk/madelman/)" << endl << endl;
@@ -308,4 +309,3 @@ int main(int argc, char *argv[]) {
   
   return 0;
 }
-#endif

@@ -1627,7 +1627,7 @@ msole_prop_parse(GsfMSOleMetaDataSection *section,
       g_warning ("error: %s", error->message);
       g_error_free (error);
     } else {
-      g_warning ("unknown error converting string property, using blank");
+      // g_warning ("unknown error converting string property, using blank");
     }
     *data += 4 + len * section->char_size;
     break;
