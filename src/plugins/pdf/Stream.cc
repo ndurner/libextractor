@@ -16,6 +16,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stddef.h>
+#include <limits.h>
 #ifndef WIN32
 #include <unistd.h>
 #endif
@@ -419,13 +420,14 @@ StreamPredictor::StreamPredictor(Stream *strA, int predictorA,
   nBits = nBitsA;
   predLine = NULL;
   ok = gFalse;
+  nVals = width * nComps;
 
   if (width <= 0 || nComps <= 0 || nBits <= 0 ||
       nComps >= INT_MAX/nBits ||
-      width >= INT_MAX/nComps/nBits) {
+      width >= INT_MAX/nComps/nBits ||
+      nVals * nBits + 7 < 0) {
     return;
   }
-  nVals = width * nComps;
   if (nVals + 7 <= 0) {
     return;
   }
@@ -1291,6 +1293,11 @@ CCITTFaxStream::CCITTFaxStream(Stream *strA, int encodingA, GBool endOfLineA,
   byteAlign = byteAlignA;
   columns = columnsA;
 
+  if (columns < 1)
+    columns = 1;
+  if (columns + 4 <= 0) 
+    columns = INT_MAX - 4;	   
+  
   rows = rowsA;
   endOfBlock = endOfBlockA;
   black = blackA;
@@ -2933,6 +2940,7 @@ GBool DCTStream::readBaselineSOF() {
   width = read16();
   numComps = str->getChar();
   if (numComps <= 0 || numComps > 4) {
+    numComps = 0;	  
     return gFalse;
   }
 
@@ -2963,6 +2971,7 @@ GBool DCTStream::readProgressiveSOF() {
   width = read16();
   numComps = str->getChar();
   if (numComps <= 0 || numComps > 4) {
+    numComps = 0;	  
     return gFalse;
   }
   if (prec != 8) {
@@ -3076,6 +3085,7 @@ GBool DCTStream::readHuffmanTables() {
 	numACHuffTables = index+1;
       tbl = &acHuffTables[index];
     } else {
+      index &= 0x0f;	    
       if (index >= numDCHuffTables)
 	numDCHuffTables = index+1;
       tbl = &dcHuffTables[index];
