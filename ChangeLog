@@ -1,6 +1,10 @@
 Thu Mar  9 17:46:39 PST 2006
-	Added support for wordleaker (additional meta-data for
-	OLE2 streams).
+        Added support for wordleaker (additional meta-data for
+        OLE2 streams).
+
+Sat Feb 18 17:39:10 PST 2006
+	Yet another round of XPDF-related security fixes.
+	Releasing libextractor 0.5.10.
 
 Tue Jan 31 12:51:55 PST 2006
 	Mis-detection of man pages as part of TAR archives fixed.
