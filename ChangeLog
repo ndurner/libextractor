@@ -1,3 +1,7 @@
+Thu Mar  9 17:46:39 PST 2006
+	Added support for wordleaker (additional meta-data for
+	OLE2 streams).
+
 Tue Jan 31 12:51:55 PST 2006
 	Mis-detection of man pages as part of TAR archives fixed.
 

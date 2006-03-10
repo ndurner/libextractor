@@ -26,17 +26,10 @@
 #include "extractor.h"
 #include "../convert.h"
 #include <math.h>
+#include <time.h>
 
 #include "wordleaker.h"
 #include "pole.h"
-
-
-
-#include <iostream>
-#include <fstream>
-#include <stdlib.h>
-#include <list>
-#include <ctime>
 
 
 extern "C" {
@@ -80,15 +73,39 @@ extern "C" {
   }
 
   static char * dateToString( unsigned long date ) {
-    char f[16];
-    sprintf(f, "%d/%d/%d", (date / 10000 % 100), (date / 100 % 100), (date % 100));
-    return strdup(f);
+    char f[128];
+    struct tm t;
+    memset(&t, 0, sizeof(struct tm));
+    t.tm_year = 1900 + date % 100;
+    t.tm_mon = date / 100 % 100;
+    t.tm_mday = date / 10000 % 100;
+    if (0 == strftime(f, 128, 
+		      nl_langinfo(D_FMT),
+		      &t))
+      return NULL;
+      
+    return strndup(f, 128);
   }
   
   static const char * idToProduct( unsigned int id ) {
-    // TODO: find the rest of ids
+    // TODO: find the rest of ids (and check existing ones!)
     switch ( id ) {
-    case  0x6A62:
+    case 0xa:
+    case 0x46:
+    case 0x490d:
+    case 0x101:
+    case 0x193:
+    case 0x201:
+    case 0xffff:
+    case 0x4000:
+      return "Powerpoint?";      
+    case 0x6954:
+    case 0x656d:
+      return "Word 97 (Windows NT)?";
+    case 0x206d:
+    case 0x696c:
+      return "Word 6 (MS DOS)?";
+    case 0x6A62:
       return "Word 97";
     case 0x626A:
       return "Word 98 (Mac)";
@@ -216,7 +233,7 @@ extern "C" {
     case 0x043E:
       return _("Malaysian");  
     default:
-      return _("Unknown");
+      return NULL;
     }
   }
 
@@ -224,7 +241,6 @@ extern "C" {
  
   // read the type of the property and displays its value
   static char * getProperty( POLE::Stream* stream ) {
-    unsigned long read, type;
     unsigned char buffer[256];
     unsigned char c;
     unsigned long i;
@@ -232,29 +248,39 @@ extern "C" {
     unsigned long t, t1, t2;
     char *s;
     
-    read = stream->read(buffer, 4);
-    type = buffer[0] + (buffer[1] << 8) + (buffer[2] << 16) + (buffer[3] << 24);
+    unsigned long read = stream->read(buffer, 4);
+    if (read != 4)
+      return NULL;
+    unsigned int type = buffer[0] + (buffer[1] << 8) + (buffer[2] << 16) + (buffer[3] << 24);
     
     switch (type) {
     case 2: // VT_I2
       read = stream->read(buffer, 2);
+      if (read != 2)
+	return NULL;
       i = buffer[0] + (buffer[1] << 8);
       s = (char*) malloc(16);
       snprintf(s, 16, "%u", i);
       return s;
     case 3: // VT_I4
       read = stream->read(buffer, 4);
+      if (read != 4)
+	return NULL;
       i = buffer[0] + (buffer[1] << 8) + (buffer[2] << 16) + (buffer[3] << 24);
       s = (char*) malloc(16);
       snprintf(s, 16, "%u", i);
       return s;
     case 11: // VT_BOOL
       read = stream->read(buffer, 1);
+      if (read != 1)
+	return NULL;
       if ((char) buffer[0] == -1)
 	return strdup("true");
       return strdup("false");
     case 30: // VT_LPSTR
       read = stream->read(buffer, 4);
+      if (read != 4)
+	return NULL;
       i = buffer[0] + (buffer[1] << 8) + (buffer[2] << 16) + (buffer[3] << 24);
       if ( (i < 0) || (i > 16*1024*1024))
 	return NULL;
@@ -272,6 +298,8 @@ extern "C" {
       return s;
     case 64: // VT_FILETIME
       read = stream->read(buffer, 8);
+      if (read != 8)
+	return NULL;
       t1 = buffer[0] + (buffer[1] << 8) + (buffer[2] << 16) + (buffer[3] << 24);
       t2 = buffer[4]  + (buffer[5] << 8) + (buffer[6] << 16) + (buffer[7] << 24);
       t = filetime_to_unixtime(t1, t2);
@@ -303,13 +331,18 @@ extern "C" {
     unsigned long fcSttbSavedBy = buffer[722] + (buffer[723] << 8) + (buffer[724] << 16) + (buffer[725] << 24);
     unsigned long lcbSttbSavedBy = buffer[726] + (buffer[727] << 8) + (buffer[728] << 16) + (buffer[729] << 24);
     
-    snprintf(ver, 16, "%u", nProduct);
-    prev = addKeyword(EXTRACTOR_PRODUCTVERSION,
-		      ver,
-		      prev);
-    prev = addKeyword(EXTRACTOR_LANGUAGE,
-		      lidToLanguage(lid),
-		      prev);
+    if (nProduct != 0) {
+      snprintf(ver, 16, "%u", nProduct);
+      prev = addKeyword(EXTRACTOR_PRODUCTVERSION,
+			ver,
+			prev);
+    }
+    const char * lang = lidToLanguage(lid);
+    if (lang != NULL) {
+      prev = addKeyword(EXTRACTOR_LANGUAGE,
+			lang,
+			prev);
+    }
     char * date = dateToString(lProductCreated);
     snprintf(product, 128, _("%s (Build %s)"),
 	     idToProduct(wMagicCreated),
@@ -329,8 +362,10 @@ extern "C" {
     
     POLE::Storage* storage = new POLE::Storage( filename );
     storage->open();
-    if( storage->result() != POLE::Storage::Ok )
+    if (storage->result() != POLE::Storage::Ok ) {
+      delete storage;
       return prev;
+    }
     
     POLE::Stream * stream = storage->stream( "SummaryInformation" );
     if (stream) {
@@ -338,47 +373,56 @@ extern "C" {
       
       // ClassID & Offset
       stream->seek(28);
-      stream->read(buffer, 20);
+      if (20 != stream->read(buffer, 20)) {
+	delete storage;
+	return prev;
+      }
       // beginning of section
       unsigned long begin = stream->tell();
-      // length of section
-      unsigned long read = stream->read(buffer, 4);
+      // skip length of section
+      stream->read(buffer, 4);
       // number of properties
-      read = stream->read(buffer, 4);
-      unsigned int nproperties = buffer[0] + (buffer[1] << 8) + (buffer[2] << 16) + (buffer[3] << 24);
-      // properties
-      for (unsigned int i = 0; i < nproperties; i++) {
-	read = stream->read(buffer, 8);
-	unsigned int propertyID = buffer[0] + (buffer[1] << 8) + (buffer[2] << 16) + (buffer[3] << 24);
-	unsigned int offsetProp = buffer[4] + (buffer[5] << 8) + (buffer[6] << 16) + (buffer[7] << 24);
-	if (propertyID > 1 && propertyID < 20) {
-	  unsigned long offsetCur = stream->tell();
-	  stream->seek(offsetProp + begin);
-	  char * prop = getProperty(stream);  
-	  prev = addKeyword(SummaryProperties[propertyID],
-			    prop,
-			    prev);
-	  free(prop);
-	  stream->seek(offsetCur);
+      if (4 == stream->read(buffer, 4)) {
+	unsigned int nproperties = buffer[0] + (buffer[1] << 8) + (buffer[2] << 16) + (buffer[3] << 24);
+	// properties
+	for (unsigned int i = 0; i < nproperties; i++) {
+	  if (8 != stream->read(buffer, 8))
+	    break;
+	  unsigned int propertyID = buffer[0] + (buffer[1] << 8) + (buffer[2] << 16) + (buffer[3] << 24);
+	  unsigned int offsetProp = buffer[4] + (buffer[5] << 8) + (buffer[6] << 16) + (buffer[7] << 24);
+	  if (propertyID > 1 && propertyID < 20) {	    
+	    unsigned long offsetCur = stream->tell();
+	    stream->seek(offsetProp + begin);
+	    if (propertyID == 10) {
+	      /* FIXME: how is editing time encoded? */
+	    } if (propertyID == 19) {
+	      /* FIXME: how to interpret the security integer? */
+	    } else {
+	      char * prop = getProperty(stream);  
+	      if (prop != NULL) {
+		prev = addKeyword(SummaryProperties[propertyID],
+				  prop,
+				  prev);
+		free(prop);
+	      }
+	    }
+	    stream->seek(offsetCur);
+	  }
 	}
       }
     }
     
     unsigned int where = 0;
-    
-    // FIXME: should look if using 0Table or 1Table
     stream = storage->stream("1Table");
     if (! stream) 
       stream = storage->stream("0Table");
-    if (stream) {
-      unsigned char * buffer = new unsigned char[lcbSttbSavedBy];
-      unsigned char buffer2[1024];
+    if ( (stream) && (lcbSttbSavedBy >= 6)) {
+      unsigned char * buffer = (unsigned char*) malloc(lcbSttbSavedBy);
       
       // goto offset of revision
       stream->seek(fcSttbSavedBy);
       // read all the revision history
-      if (lcbSttbSavedBy == stream->read(buffer, lcbSttbSavedBy)) {
-      
+      if (lcbSttbSavedBy == stream->read(buffer, lcbSttbSavedBy)) {      
 	// there are n strings, so n/2 revisions (author & file)
 	unsigned int nRev = (buffer[2] + (buffer[3] << 8)) / 2;
 	where = 6;
@@ -386,14 +430,16 @@ extern "C" {
 	  if (where >= lcbSttbSavedBy)
 	    break;
 	  unsigned int length = buffer[where++];
-	  if (where + 2 * length + 2 >= lcbSttbSavedBy)
+	  if ( (where + 2 * length + 2 >= lcbSttbSavedBy) ||
+	       (where + 2 * length + 2 <= where) )
 	    break;
 	  char * author = convertToUtf8((const char*) &buffer[where],
 					length * 2,
 					"UTF-16BE");
 	  where += length * 2 + 1;
 	  length = buffer[where++];
-	  if (where + 2 * length >= lcbSttbSavedBy)
+	  if ( (where + 2 * length >= lcbSttbSavedBy) ||
+	       (where + 2 * length + 1 <= where) )
 	    break;
 	  char * filename = convertToUtf8((const char*) &buffer[where],
 					  length * 2,
@@ -411,8 +457,7 @@ extern "C" {
 	  free(rbuf);
 	}
       }
-      delete buffer;
-    
+      free(buffer);    
     }
     delete storage;
     
