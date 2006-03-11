@@ -15,7 +15,7 @@ if HAVE_EXIV2
  exiv2dir=exiv2
 endif
 
-SUBDIRS = . $(oodir) $(printdir) hash $(oledir) rpm pdf $(thumbdir) $(exiv2dir)
+SUBDIRS = . $(oodir) $(printdir) hash $(oledir) rpm pdf $(thumbdir) $(exiv2dir) wordleaker
 
 if HAVE_VORBISFILE
  extraogg = libextractor_ogg.la
