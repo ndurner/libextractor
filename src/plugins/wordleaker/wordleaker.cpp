@@ -23,9 +23,6 @@
    Boston, MA 02111-1307, US
 */
 
-// TAKE CARE: there's not a single check for validity of data,
-// so any malformed or malicious Word file will break it
-
 #include <iostream>
 #include <fstream>
 #include <stdlib.h>
