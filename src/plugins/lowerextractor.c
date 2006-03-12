@@ -22,8 +22,8 @@
 #include "extractor.h"
 
 static void addKeyword(struct EXTRACTOR_Keywords ** list,
-		       char * keyword,
-	       EXTRACTOR_KeywordType type) {
+		       const char * keyword,
+		       EXTRACTOR_KeywordType type) {
   EXTRACTOR_KeywordList * next;
   next = malloc(sizeof(EXTRACTOR_KeywordList));
   next->next = *list;
@@ -33,10 +33,11 @@ static void addKeyword(struct EXTRACTOR_Keywords ** list,
 }
 
 /* convert other keywords to lower case */
-struct EXTRACTOR_Keywords * libextractor_lower_extract(char * filename,
-						       char * data,
-						       size_t size,
-						       struct EXTRACTOR_Keywords * prev) {
+struct EXTRACTOR_Keywords * 
+libextractor_lower_extract(char * filename,
+			   char * data,
+			   size_t size,
+			   struct EXTRACTOR_Keywords * prev) {
   struct EXTRACTOR_Keywords * pos;
   char *lower;
   unsigned int mem, needed, i;
@@ -61,7 +62,7 @@ struct EXTRACTOR_Keywords * libextractor_lower_extract(char * filename,
 
     if(strcmp(pos->keyword, lower))
     {
-     addKeyword(&prev, lower, EXTRACTOR_UNKNOWN);
+     addKeyword(&prev, lower, EXTRACTOR_LOWERCASE);
     }
     pos = pos->next;
   }

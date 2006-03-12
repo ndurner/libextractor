@@ -142,11 +142,12 @@ static const char *keywordTypes[] = {
   gettext_noop("created by software"),
   gettext_noop("modified by software"),
   gettext_noop("revision history"),
+  gettext_noop("lower case conversion"),
   NULL,
 };
 
 /* the number of keyword types (for bounds-checking) */
-#define HIGHEST_TYPE_NUMBER 101
+#define HIGHEST_TYPE_NUMBER 102
 
 #ifdef HAVE_LIBOGG
 #if HAVE_VORBIS
