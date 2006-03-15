@@ -308,6 +308,8 @@ extern "C" {
 							struct EXTRACTOR_Keywords * prev) {
     char ver[16];
     char product[128];
+    unsigned char buffer[256];
+      
     if ( (size < 512 + 898) || (filename == NULL) ) 
       return prev;
 
@@ -317,6 +319,54 @@ extern "C" {
       delete storage;
       return prev;
     }    
+
+    POLE::Stream * stream = storage->stream( "SummaryInformation" );
+    if (! stream) {
+      delete storage;
+      return prev;
+    }
+
+    // ClassID & Offset
+    stream->seek(28);
+    if (20 != stream->read(buffer, 20)) {
+      delete storage;
+      return prev;
+    }
+
+    // beginning of section
+    unsigned long begin = stream->tell();
+    // skip length of section
+    stream->read(buffer, 4);
+    // number of properties
+    if (4 == stream->read(buffer, 4)) {
+      unsigned int nproperties = buffer[0] + (buffer[1] << 8) + (buffer[2] << 16) + (buffer[3] << 24);
+      // properties
+      for (unsigned int i = 0; i < nproperties; i++) {
+	if (8 != stream->read(buffer, 8))
+	  break;
+	unsigned int propertyID = buffer[0] + (buffer[1] << 8) + (buffer[2] << 16) + (buffer[3] << 24);
+	unsigned int offsetProp = buffer[4] + (buffer[5] << 8) + (buffer[6] << 16) + (buffer[7] << 24);
+	if (propertyID > 1 && propertyID < 20) {	    
+	  unsigned long offsetCur = stream->tell();
+	  stream->seek(offsetProp + begin);
+	  if (propertyID == 10) {
+	    /* FIXME: how is editing time encoded? */
+	  } if (propertyID == 19) {
+	    /* FIXME: how to interpret the security integer? */
+	  } else {
+	    char * prop = getProperty(stream);  
+	    if (prop != NULL) {
+	      prev = addKeyword(SummaryProperties[propertyID],
+				prop,
+				prev);
+	      free(prop);
+	    }
+	  }
+	  stream->seek(offsetCur);
+	}
+      }
+    }   
+
 
     const unsigned char * buffer = (const unsigned char*) &data[512];
     unsigned int wIdent = buffer[0] + (buffer[1] << 8);
@@ -365,50 +415,6 @@ extern "C" {
 			prev);
     }
     
-    POLE::Stream * stream = storage->stream( "SummaryInformation" );
-    if (stream) {
-      unsigned char buffer[256];
-      
-      // ClassID & Offset
-      stream->seek(28);
-      if (20 != stream->read(buffer, 20)) {
-	delete storage;
-	return prev;
-      }
-      // beginning of section
-      unsigned long begin = stream->tell();
-      // skip length of section
-      stream->read(buffer, 4);
-      // number of properties
-      if (4 == stream->read(buffer, 4)) {
-	unsigned int nproperties = buffer[0] + (buffer[1] << 8) + (buffer[2] << 16) + (buffer[3] << 24);
-	// properties
-	for (unsigned int i = 0; i < nproperties; i++) {
-	  if (8 != stream->read(buffer, 8))
-	    break;
-	  unsigned int propertyID = buffer[0] + (buffer[1] << 8) + (buffer[2] << 16) + (buffer[3] << 24);
-	  unsigned int offsetProp = buffer[4] + (buffer[5] << 8) + (buffer[6] << 16) + (buffer[7] << 24);
-	  if (propertyID > 1 && propertyID < 20) {	    
-	    unsigned long offsetCur = stream->tell();
-	    stream->seek(offsetProp + begin);
-	    if (propertyID == 10) {
-	      /* FIXME: how is editing time encoded? */
-	    } if (propertyID == 19) {
-	      /* FIXME: how to interpret the security integer? */
-	    } else {
-	      char * prop = getProperty(stream);  
-	      if (prop != NULL) {
-		prev = addKeyword(SummaryProperties[propertyID],
-				  prop,
-				  prev);
-		free(prop);
-	      }
-	    }
-	    stream->seek(offsetCur);
-	  }
-	}
-      }
-    }
     
     unsigned int where = 0;
     stream = storage->stream("1Table");
