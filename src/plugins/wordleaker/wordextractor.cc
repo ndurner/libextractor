@@ -347,7 +347,7 @@ extern "C" {
     }
     prod = idToProduct(wMagicRevised);
     if (prod != NULL) {
-      date = dateToString(lProductRevised);
+      char * date = dateToString(lProductRevised);
       snprintf(product, 128, _("%s (Build %s)"),
 	       prod,
 	       date);
