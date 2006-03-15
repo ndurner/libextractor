@@ -368,17 +368,17 @@ extern "C" {
     }   
 
 
-    const unsigned char * buffer = (const unsigned char*) &data[512];
-    unsigned int wIdent = buffer[0] + (buffer[1] << 8);
-    unsigned int nProduct = buffer[4] + (buffer[5] << 8);
-    unsigned int lid = buffer[6] + (buffer[7] << 8);
-    unsigned int envr = buffer[18];
-    unsigned int wMagicCreated = buffer[34] + (buffer[35] << 8);
-    unsigned int wMagicRevised = buffer[36] + (buffer[37] << 8);
-    unsigned long lProductCreated = buffer[68] + (buffer[69] << 8) + (buffer[70] << 16) + (buffer[71] << 24);
-    unsigned long lProductRevised = buffer[72] + (buffer[73] << 8) + (buffer[74] << 16) + (buffer[75] << 24);
-    unsigned long fcSttbSavedBy = buffer[722] + (buffer[723] << 8) + (buffer[724] << 16) + (buffer[725] << 24);
-    unsigned long lcbSttbSavedBy = buffer[726] + (buffer[727] << 8) + (buffer[728] << 16) + (buffer[729] << 24);
+    const unsigned char * data512 = (const unsigned char*) &data[512];
+    unsigned int wIdent = data512[0] + (data512[1] << 8);
+    unsigned int nProduct = data512[4] + (data512[5] << 8);
+    unsigned int lid = data512[6] + (data512[7] << 8);
+    unsigned int envr = data512[18];
+    unsigned int wMagicCreated = data512[34] + (data512[35] << 8);
+    unsigned int wMagicRevised = data512[36] + (data512[37] << 8);
+    unsigned long lProductCreated = data512[68] + (data512[69] << 8) + (data512[70] << 16) + (data512[71] << 24);
+    unsigned long lProductRevised = data512[72] + (data512[73] << 8) + (data512[74] << 16) + (data512[75] << 24);
+    unsigned long fcSttbSavedBy = data512[722] + (data512[723] << 8) + (data512[724] << 16) + (data512[725] << 24);
+    unsigned long lcbSttbSavedBy = data512[726] + (data512[727] << 8) + (data512[728] << 16) + (data512[729] << 24);
     
     if (nProduct != 0) {
       snprintf(ver, 16, "%u", nProduct);
@@ -421,31 +421,31 @@ extern "C" {
     if (! stream) 
       stream = storage->stream("0Table");
     if ( (stream) && (lcbSttbSavedBy >= 6)) {
-      unsigned char * buffer = (unsigned char*) malloc(lcbSttbSavedBy);
+      unsigned char * lbuffer = (unsigned char*) malloc(lcbSttbSavedBy);
       
       // goto offset of revision
       stream->seek(fcSttbSavedBy);
       // read all the revision history
-      if (lcbSttbSavedBy == stream->read(buffer, lcbSttbSavedBy)) {      
+      if (lcbSttbSavedBy == stream->read(lbuffer, lcbSttbSavedBy)) {      
 	// there are n strings, so n/2 revisions (author & file)
-	unsigned int nRev = (buffer[2] + (buffer[3] << 8)) / 2;
+	unsigned int nRev = (lbuffer[2] + (lbuffer[3] << 8)) / 2;
 	where = 6;
 	for (unsigned int i=0; i < nRev; i++) {	
 	  if (where >= lcbSttbSavedBy)
 	    break;
-	  unsigned int length = buffer[where++];
+	  unsigned int length = lbuffer[where++];
 	  if ( (where + 2 * length + 2 >= lcbSttbSavedBy) ||
 	       (where + 2 * length + 2 <= where) )
 	    break;
-	  char * author = convertToUtf8((const char*) &buffer[where],
+	  char * author = convertToUtf8((const char*) &lbuffer[where],
 					length * 2,
 					"UTF-16BE");
 	  where += length * 2 + 1;
-	  length = buffer[where++];
+	  length = lbuffer[where++];
 	  if ( (where + 2 * length >= lcbSttbSavedBy) ||
 	       (where + 2 * length + 1 <= where) )
 	    break;
-	  char * filename = convertToUtf8((const char*) &buffer[where],
+	  char * filename = convertToUtf8((const char*) &lbuffer[where],
 					  length * 2,
 					  "UTF-16BE");	
 	  where += length * 2 + 1;
@@ -461,7 +461,7 @@ extern "C" {
 	  free(rbuf);
 	}
       }
-      free(buffer);    
+      free(lbuffer);    
     }
     delete storage;
     
