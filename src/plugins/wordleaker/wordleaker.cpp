@@ -83,7 +83,7 @@ void showProperty( POLE::Stream* stream ) {
         cout << s;
         break;
       default:
-          cout << "Unknown format " << type << endl;
+	cout << "Unknown format " << type << endl;
   }
 }
 

@@ -90,15 +90,6 @@ extern "C" {
   static const char * idToProduct( unsigned int id ) {
     // TODO: find the rest of ids (and check existing ones!)
     switch ( id ) {
-    case 0xa:
-    case 0x46:
-    case 0x490d:
-    case 0x101:
-    case 0x193:
-    case 0x201:
-    case 0xffff:
-    case 0x4000:
-      return "Powerpoint?";      
     case 0x6954:
     case 0x656d:
       return "Word 97 (Windows NT)?";
@@ -110,7 +101,7 @@ extern "C" {
     case 0x626A:
       return "Word 98 (Mac)";
     default:
-      return "Unknown";
+      return NULL;
     }      
   }
 
@@ -343,22 +334,28 @@ extern "C" {
 			lang,
 			prev);
     }
-    char * date = dateToString(lProductCreated);
-    snprintf(product, 128, _("%s (Build %s)"),
-	     idToProduct(wMagicCreated),
-	     date);
-    free(date);
-    prev = addKeyword(EXTRACTOR_CREATED_BY_SOFTWARE,
-		      product,
-		      prev);
-    date = dateToString(lProductRevised);
-    snprintf(product, 128, _("%s (Build %s)"),
-	     idToProduct(wMagicRevised),
-	     date);
-    free(date);
-    prev = addKeyword(EXTRACTOR_MODIFIED_BY_SOFTWARE,
-		      product,
-		      prev);
+    const char * prod = idToProduct(wMagicCreated);
+    if (prod != NULL) {
+      char * date = dateToString(lProductCreated);
+      snprintf(product, 128, _("%s (Build %s)"),
+	       prod,
+	       date);
+      free(date);
+      prev = addKeyword(EXTRACTOR_CREATED_BY_SOFTWARE,
+			product,
+			prev);
+    }
+    prod = idToProduct(wMagicRevised);
+    if (prod != NULL) {
+      date = dateToString(lProductRevised);
+      snprintf(product, 128, _("%s (Build %s)"),
+	       prod,
+	       date);
+      free(date);
+      prev = addKeyword(EXTRACTOR_MODIFIED_BY_SOFTWARE,
+			product,
+			prev);
+    }
     
     POLE::Storage* storage = new POLE::Storage( filename );
     storage->open();
