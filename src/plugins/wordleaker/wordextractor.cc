@@ -308,8 +308,16 @@ extern "C" {
 							struct EXTRACTOR_Keywords * prev) {
     char ver[16];
     char product[128];
-    if (size < 512 + 898)
+    if ( (size < 512 + 898) || (filename == NULL) ) 
       return prev;
+
+    POLE::Storage* storage = new POLE::Storage(filename);
+    storage->open();
+    if (storage->result() != POLE::Storage::Ok ) {
+      delete storage;
+      return prev;
+    }    
+
     const unsigned char * buffer = (const unsigned char*) &data[512];
     unsigned int wIdent = buffer[0] + (buffer[1] << 8);
     unsigned int nProduct = buffer[4] + (buffer[5] << 8);
@@ -355,13 +363,6 @@ extern "C" {
       prev = addKeyword(EXTRACTOR_MODIFIED_BY_SOFTWARE,
 			product,
 			prev);
-    }
-    
-    POLE::Storage* storage = new POLE::Storage( filename );
-    storage->open();
-    if (storage->result() != POLE::Storage::Ok ) {
-      delete storage;
-      return prev;
     }
     
     POLE::Stream * stream = storage->stream( "SummaryInformation" );
