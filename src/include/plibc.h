@@ -22,7 +22,7 @@
  * @brief PlibC header
  * @attention This file is usually not installed under Unix,
  *            so ship it with your application
- * @version $Revision: 1.27 $
+ * @version $Revision: 1.29 $
  */
 
 #ifndef _PLIBC_H_
@@ -173,6 +173,8 @@ extern "C" {
 #define ENOSHARE 136        /* No such host or network path */
 #define ECASECLASH 137      /* Filename exists with different case */
 #define EWOULDBLOCK EAGAIN	/* Operation would block */
+#define EILSEQ 138
+#define EOVERFLOW 139 /* Value too large for defined data type */
 
 #undef HOST_NOT_FOUND
 #define HOST_NOT_FOUND 1
@@ -188,6 +190,7 @@ extern "C" {
 #define MAP_SHARED  0x1
 #define MAP_PRIVATE 0x2 /* unsupported */
 #define MAP_FIXED   0x10
+#define MAP_FAILED  ((void *)-1)
 
 struct statfs
 {
