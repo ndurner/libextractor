@@ -57,6 +57,15 @@ extern "C" {
     EXTRACTOR_SOFTWARE,
     EXTRACTOR_SECURITY,
   };
+  
+  static char * xstrndup(const char * s, size_t n){
+    char * d;
+  
+    d= malloc(n+1);
+    memcpy(d,s,n);
+    d[n]='\0';
+    return d;
+  }
 
   static struct EXTRACTOR_Keywords * addKeyword(EXTRACTOR_KeywordType type,
 						const char * keyword,
@@ -84,7 +93,7 @@ extern "C" {
 		      &t))
       return NULL;
       
-    return strndup(f, 128);
+    return xstrndup(f, 128);
   }
   
   static const char * idToProduct( unsigned int id ) {
