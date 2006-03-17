@@ -22,7 +22,7 @@
  * @brief PlibC header
  * @attention This file is usually not installed under Unix,
  *            so ship it with your application
- * @version $Revision: 1.29 $
+ * @version $Revision: 1.30 $
  */
 
 #ifndef _PLIBC_H_
@@ -173,7 +173,6 @@ extern "C" {
 #define ENOSHARE 136        /* No such host or network path */
 #define ECASECLASH 137      /* Filename exists with different case */
 #define EWOULDBLOCK EAGAIN	/* Operation would block */
-#define EILSEQ 138
 #define EOVERFLOW 139 /* Value too large for defined data type */
 
 #undef HOST_NOT_FOUND
