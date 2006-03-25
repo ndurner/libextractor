@@ -18,9 +18,25 @@
      Boston, MA 02111-1307, USA.
  */
 
+/**
+ * TODO:
+ * - code clean up (factor out some parsing aspects?)
+ * - proper string decoding (escape sequences)
+ * - proper dictionary support
+ * - filters (compression!)
+ * - page count (and other document catalog information,
+ *   such as language, viewer preferences, page layout,
+ *   Metadatastreams (10.2.2), legal and permissions info)
+ * - pdf 1.5 support ((compressed) cross reference streams)
+ */
+
 #include "platform.h"
 #include "extractor.h"
 #include <zlib.h>
+#ifndef _XOPEN_SOURCE
+#define _XOPEN_SOURCE 1
+#endif
+#include <time.h>
 #include "convert.h"
 
 static char * stndup(const char * str,
@@ -32,23 +48,9 @@ static char * stndup(const char * str,
   return tmp;
 }
 
-/**
- * strnlen is GNU specific, let's redo it here to be
- * POSIX compliant.
- */
-static size_t stnlen(const char * str,
-		     size_t maxlen) {
-  size_t ret;
-  ret = 0;
-  while ( (ret < maxlen) &&
-	  (str[ret] != '\0') )
-    ret++;
-  return ret;
-}
-
 static struct EXTRACTOR_Keywords * 
 addKeyword(EXTRACTOR_KeywordType type,
-	   const char * keyword,
+	   char * keyword,
 	   struct EXTRACTOR_Keywords * next) {
   EXTRACTOR_KeywordList * result;
 
@@ -56,26 +58,108 @@ addKeyword(EXTRACTOR_KeywordType type,
     return next;
   result = malloc(sizeof(EXTRACTOR_KeywordList));
   result->next = next;
-  result->keyword = strdup(keyword);
+  result->keyword = keyword;
   result->keywordType = type;
   return result;
+}
+
+
+
+static char * 
+dateDecode(const char * pdfString) {
+  unsigned char * ret;
+
+  if (pdfString == NULL)
+    return NULL;
+  if (strlen(pdfString) < 4)
+    return NULL;
+  return stndup(&pdfString[3], strlen(pdfString) - 4);
+}
+
+static unsigned char * 
+stringDecode(const char * pdfString,
+	     size_t * size) {
+  size_t slen;
+  unsigned char * ret;
+  char hex[3];
+  int i;
+  int val;
+
+  slen = strlen(pdfString);
+  if (slen < 2)
+    return NULL;
+  switch (pdfString[0]) {
+  case '(':
+    if (pdfString[slen-1] != ')')    
+      return NULL;
+    /* todo: recode escape sequences! */
+    *size = slen - 2;
+    return stndup(&pdfString[1], slen-2);     
+  case '<':
+    if (pdfString[slen-1] != '>')
+      return NULL;
+    hex[2] = '\0';
+    ret = malloc(1 + ((slen - 1) / 2));
+    for (i=0;i<slen-2;i+=2) {
+      hex[0] = pdfString[i+1];
+      hex[1] = '0';
+      if (i + 1 < slen)
+	hex[1] = pdfString[i+2];
+      if ( (1 != sscanf(hex, "%x", &val)) &&
+	   (1 != sscanf(hex, "%X", &val)) ) {
+	free(ret);
+	return NULL;
+      }
+      ret[i/2] = val;
+    }
+    ret[(slen-1)/2] = '\0';
+    *size = (slen-1) / 2;
+    return ret;
+  }
+  return NULL;
+}
+
+static char * 
+charsetDecode(const unsigned char * in,
+	      size_t size) {
+  if (in == NULL)
+    return NULL;
+  if ( (size < 2) ||
+       (in[0] != 0xfe) ||
+       (in[1] != 0xff) ) {
+    /* TODO: extend glibc with
+       character set that corresponds to
+       Adobe's extended ISOLATIN1 encoding! */
+    return convertToUtf8(in,
+			 size,
+			 "CSISOLATIN1");
+  } else { 
+    return convertToUtf8(&in[2],
+			 size - 2,
+			 "UNICODEBIG");
+  }
+    
 }
 
 static struct {
   char * name;
   EXTRACTOR_KeywordType type;
 } tagmap[] = {
-   { "Author" , EXTRACTOR_AUTHOR},
-   { "Description" , EXTRACTOR_DESCRIPTION},
-   { "Comment", EXTRACTOR_COMMENT},
-   { "Copyright", EXTRACTOR_COPYRIGHT},
-   { "Source", EXTRACTOR_SOURCE},
-   { "Creation Time", EXTRACTOR_DATE},
-   { "Title", EXTRACTOR_TITLE},
-   { "Software", EXTRACTOR_SOFTWARE},
-   { "Disclaimer", EXTRACTOR_DISCLAIMER},
-   { "Warning", EXTRACTOR_WARNING},
-   { "Signature", EXTRACTOR_RESOURCE_IDENTIFIER},
+   { "/CreationDate", EXTRACTOR_CREATION_DATE},
+   { "/Author" , EXTRACTOR_AUTHOR},
+   { "/Description" , EXTRACTOR_DESCRIPTION},
+   { "/Title" , EXTRACTOR_TITLE},
+   { "/Comment", EXTRACTOR_COMMENT},
+   { "/Copyright", EXTRACTOR_COPYRIGHT},
+   { "/Subject", EXTRACTOR_SUBJECT},
+   { "/PTEX.Fullbanner", EXTRACTOR_SOFTWARE},
+   { "/Creator", EXTRACTOR_CREATOR},
+   { "/ModDate", EXTRACTOR_MODIFICATION_DATE},
+   { "/Producer", EXTRACTOR_PRODUCER},
+   { "/Software", EXTRACTOR_SOFTWARE},
+   { "/Keywords", EXTRACTOR_KEYWORDS},
+   { "/Warning", EXTRACTOR_WARNING},
+   { "/Signature", EXTRACTOR_RESOURCE_IDENTIFIER},
    { NULL, EXTRACTOR_UNKNOWN},
 };
 
@@ -97,7 +181,9 @@ libextractor_pdf_extract(const char * filename,
 			 size_t size,
 			 struct EXTRACTOR_Keywords * prev) {
   size_t pos;
+  size_t spos;
   size_t steps;
+  size_t mlen;
   unsigned int xstart;
   unsigned int xcount;
   unsigned int xinfo;
@@ -107,6 +193,10 @@ libextractor_pdf_extract(const char * filename,
   unsigned long long info_offset;
   char buf[MAX_STEPS+1];
   int i;
+  char * meta;
+  unsigned char * dmeta;
+  char pcnt[20];
+  float version;
 
   while ( (size > 0) && (IS_NL(data[size-1])) )
     size--;
@@ -116,6 +206,20 @@ libextractor_pdf_extract(const char * filename,
     return prev;
   if (0 != memcmp(&data[size - strlen(PDF_EOF)], PDF_EOF, strlen(PDF_EOF))) 
     return prev;
+  /* PDF format is pretty much sure by now */
+  memcpy(buf,
+	 data,
+	 8);
+  buf[8] = '\0';
+  if (1 != sscanf(buf, "%%PDF-%f", &version)) {
+    return prev;
+  }
+  sprintf(pcnt, "PDF %.1f", version);
+  prev = addKeyword(EXTRACTOR_FORMAT,
+		    strdup(pcnt),
+		    prev);
+
+
   
   pos = size - strlen(PDF_EOF) - strlen(PDF_SXR);
   steps = 0;
@@ -123,21 +227,20 @@ libextractor_pdf_extract(const char * filename,
 	  (pos > 0) &&
 	  (0 != memcmp(&data[pos], PDF_SXR, strlen(PDF_SXR))) ) 
     pos--;
-  printf("pos: %u\n", pos);
-  if (0 != memcmp(&data[pos], PDF_SXR, strlen(PDF_SXR)))
+  if (0 != memcmp(&data[pos], PDF_SXR, strlen(PDF_SXR))) {
+    /* cross reference streams not yet supported! */
     return prev; 
+  }
   memcpy(buf, &data[pos + strlen(PDF_SXR)], steps);
   buf[steps] = '\0';
   if (1 != sscanf(buf, "%llu", &startxref)) 
     return prev;
-  printf("startxref: %llu\n", startxref);
   if (startxref >= size - strlen(PDF_XREF))
     return prev;
   if (0 != memcmp(&data[startxref], PDF_XREF, strlen(PDF_XREF)))
     return prev;
   haveValidXref = 0;
   xrefpos = startxref + strlen(PDF_XREF);
-
   while (1) {
     pos = xrefpos;
     while ( (pos < size) && (IS_NL(data[pos])) )
@@ -146,10 +249,6 @@ libextractor_pdf_extract(const char * filename,
     buf[MIN(MAX_STEPS,size-pos)] = '\0';
     if (2 != sscanf(buf, "%u %u", &xstart, &xcount)) 
       break;
-    printf("xstart: %u - xcount: %u - pos %u\n",
-	   xstart,
-	   xcount,
-	   pos);
     while ( (pos < size) && (! IS_NL(data[pos])) )
       pos++;
     if ( (pos < size) && IS_NL(data[pos]))
@@ -158,8 +257,6 @@ libextractor_pdf_extract(const char * filename,
     if ( (xrefpos >= size) || (xrefpos < pos) )
       return prev; /* invalid xref size */
     haveValidXref = 1;
-    printf("xref portion ends at %llu\n",
-	   xrefpos);
   }
   if (! haveValidXref)
     return prev;
@@ -170,6 +267,7 @@ libextractor_pdf_extract(const char * filename,
 		  strlen(PDF_TRAILER))) 
     return prev;
   pos += strlen(PDF_TRAILER);
+
   SKIP("<< \n\r", pos, data, size);
   while ( (pos < size) &&
 	  (pos + strlen(PDF_INFO) < size) &&
@@ -186,8 +284,7 @@ libextractor_pdf_extract(const char * filename,
     }
     while ( (pos < size) &&
 	    (IS_NL(data[pos]) || isspace(data[pos]) ) )
-      pos++;
-  }
+      pos++;  }
   if ( ! ( (pos < size) &&
 	   (pos + strlen(PDF_INFO) < size) &&
 	   (0 == memcmp(&data[pos],
@@ -207,7 +304,6 @@ libextractor_pdf_extract(const char * filename,
     }
   if (1 != sscanf(buf, "%u", &xinfo)) 
     return prev;
-  printf("xinfo: %u\n", xinfo);
 
   haveValidXref = 0;  
   /* now go find xinfo in xref table */
@@ -220,10 +316,6 @@ libextractor_pdf_extract(const char * filename,
     buf[MIN(MAX_STEPS,size-pos)] = '\0';
     if (2 != sscanf(buf, "%u %u", &xstart, &xcount)) 
       break;
-    printf("xstart: %u - xcount: %u - pos %u\n",
-	   xstart,
-	   xcount,
-	   pos);
     while ( (pos < size) && (! IS_NL(data[pos])) )
       pos++;
     if ( (pos < size) && IS_NL(data[pos]))
@@ -234,9 +326,7 @@ libextractor_pdf_extract(const char * filename,
       pos += 20 * xinfo - xstart;
       memcpy(buf, &data[pos], 20);
       buf[20] = '\0';
-      sscanf(buf, "%10llu %*5u %*c", &info_offset);
-      
-
+      sscanf(buf, "%10llu %*5u %*c", &info_offset);      
       break;
     }
     xrefpos = 20 * xcount + pos;    
@@ -245,11 +335,72 @@ libextractor_pdf_extract(const char * filename,
   }
   if (! haveValidXref)
     return prev;
-
-  /* read size of xref */
-  /* parse xref */
-  /* find info index */
-  /* parse info */
+  pos = info_offset;
+  
+  while ( (pos < size - 4) &&
+	  (! ( (data[pos] == '<') &&
+	       (data[pos+1] == '<') ) ) )
+    pos++;
+  pos++;
+  if (pos >= size - 4)
+    return prev;
+  if ( (data[pos] == ' ') ||
+       (data[pos] == 10) ||
+       (data[pos] == 13) ) 
+    pos++;
+  
+  while ( (pos < size - 2) &&
+	  ( ! ( (data[pos] == '>') &&
+		(data[pos+1] == '>') ) ) ) {
+    i = 0;
+    while (tagmap[i].name != NULL) {
+      if ( (pos + strlen(tagmap[i].name) > pos) &&
+	   (pos + strlen(tagmap[i].name) + 1 < size) &&
+	   (0 == memcmp(&data[pos],
+			tagmap[i].name,
+			strlen(tagmap[i].name))) ) {
+	pos += strlen(tagmap[i].name);
+	if (isspace(data[pos]))
+	  pos++;
+	spos = pos;
+	while ( (pos < size + 2) &&
+		(! IS_NL(data[pos])) &&
+		(data[pos] != '/') &&
+		(! ( (data[pos] == '>') &&
+		     (data[pos+1] == '>') ) ) )
+	  pos++;	
+	meta = stndup(&data[spos],
+		      pos - spos);
+	if (i == 0) {
+	  dmeta = dateDecode(meta);
+	  mlen = strlen(dmeta);
+	} else {
+	  dmeta = stringDecode(meta,
+			       &mlen);
+	}
+	if (meta != NULL)
+	  free(meta);
+	meta = charsetDecode(dmeta, mlen);
+	if (dmeta != NULL)
+	  free(dmeta);
+	if (meta != NULL) {
+	  prev = addKeyword(tagmap[i].type,
+			    meta,
+			    prev);
+	}
+	break;
+      }
+      i++;
+    }
+    if (tagmap[i].name == NULL) {
+      while ( (pos < size) &&
+	      (! IS_NL(data[pos])) )
+	pos++;
+    }
+    while ( (pos < size) &&
+	    (IS_NL(data[pos])) )
+      pos++;
+  }
 
   return prev;
 }

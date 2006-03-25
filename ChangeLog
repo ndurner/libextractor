@@ -1,3 +1,8 @@
+Fri Mar 24 21:43:43 PST 2006
+	Started re-implementation of PDF support from scratch
+	(incomplete but working).  Improvements to the build
+	system.
+	
 Thu Mar  9 17:46:39 PST 2006
         Added support for wordleaker (additional meta-data for
         OLE2 streams).  Releasing libextractor 0.5.11.

@@ -15,7 +15,16 @@ if HAVE_EXIV2
  exiv2dir=exiv2
 endif
 
-SUBDIRS = . $(oodir) $(printdir) hash $(oledir) rpm pdf $(thumbdir) $(exiv2dir) wordleaker
+if HAVE_XPDF
+ xpdfdir=pdf
+else
+ pdfplugin=libextractor_pdf.la 
+endif
+
+# toggle for development
+# SUBDIRS = . 
+SUBDIRS = . $(oodir) $(printdir) hash $(oledir) rpm $(xpdfdir) $(thumbdir) $(exiv2dir) wordleaker
+
 
 if HAVE_VORBISFILE
  extraogg = libextractor_ogg.la
@@ -30,7 +39,7 @@ extraqt = libextractor_qt.la
 oodir = oo
 endif
 
-plugin_LTLIBRARIES = \
+plugin_LTLIBRARIES = $(pdfplugin) \
   libextractor_asf.la \
   libextractor_deb.la \
   libextractor_dvi.la \
@@ -91,6 +100,13 @@ libextractor_wav_la_SOURCES = \
   wavextractor.c
 libextractor_wav_la_LDFLAGS = \
   $(PLUGINFLAGS)  $(retaincommand)
+
+libextractor_pdf_la_SOURCES = \
+  pdfextractor.c
+libextractor_pdf_la_LDFLAGS = \
+  $(PLUGINFLAGS)  $(retaincommand)
+libextractor_pdf_la_LIBADD = \
+  libconvert.la  
 
 libextractor_mp3_la_SOURCES = \
   mp3extractor.c 

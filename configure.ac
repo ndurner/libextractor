@@ -261,6 +261,25 @@ AC_ARG_ENABLE(printable,
         printable=1])
 AM_CONDITIONAL(HAVE_PRINTABLE, test x$printable != x0)
 
+
+xpdf=0
+AC_MSG_CHECKING([whether to enable xpdf-based extractor])
+AC_ARG_ENABLE(xpdf,
+ [AC_HELP_STRING([--enable-xpdf],[Enable xpdf-based extractor])
+  AC_HELP_STRING([--disable-xpdf],[Disable xpdf-based extractor])],
+ [case "$enableval" in
+  no)	AC_MSG_RESULT(no)
+        xpdf=0
+	;;
+  *)    AC_MSG_RESULT(yes)
+        xpdf=1
+	;;
+  esac],
+  [     AC_MSG_RESULT(no)
+        xpdf=0])
+AM_CONDITIONAL(HAVE_XPDF, test x$xpdf != x0)
+
+
 exiv2=1
 AC_MSG_CHECKING([whether to enable exiv2 extractor])
 AC_ARG_ENABLE(exiv2,
@@ -303,3 +322,48 @@ src/test/Makefile
 ])
 
 AC_OUTPUT
+
+if test "x$xpdf" = "x1"
+then
+ AC_MSG_NOTICE([NOTICE: xpdf enabled (xpdf has a bad security record)])
+else 
+ AC_MSG_NOTICE([NOTICE: xpdf disabled (result: limited PDF support)])
+fi
+
+if test "x$exiv2" = "x0"
+then
+ AC_MSG_NOTICE([NOTICE: exiv2 disabled])
+fi
+
+
+if test "x$printable" = "x0"
+then
+ AC_MSG_NOTICE([NOTICE: printable plugins disabled])
+else 
+ AC_MSG_NOTICE([NOTICE: printable plugins enabled (will need 150 MB memory to compile)])
+fi
+
+if test "x$without_glib" = "xtrue"
+then
+ AC_MSG_NOTICE([NOTICE: glib not used, no OLE2 (MS Office) support])
+fi
+
+if test "x$without_gtk" = "xtrue"
+then
+ AC_MSG_NOTICE([NOTICE: gtk not found, no thumbnail support])
+fi
+
+if test "x$HAVE_VORBISFILE_TRUE" = "x#"
+then
+ AC_MSG_NOTICE([NOTICE: vorbis support disabled])
+fi
+
+if test "x$HAVE_BZ2_TRUE" = "x#"
+then
+ AC_MSG_NOTICE([NOTICE: bzip2 support disabled])
+fi
+
+if test "x$HAVE_ZLIB_TRUE" = "x#"
+then
+ AC_MSG_ERROR([FATAL: zlib not found (headers not installed?)])
+fi

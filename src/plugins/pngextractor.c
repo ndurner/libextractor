@@ -282,7 +282,7 @@ static struct EXTRACTOR_Keywords * processzTXt(const char * data,
 
 
 
-struct EXTRACTOR_Keywords * libextractor_png_extract(char * filename,
+struct EXTRACTOR_Keywords * libextractor_png_extract(const char * filename,
                                                      const char * data,
                                                      size_t size,
                                                      struct EXTRACTOR_Keywords * prev) {
