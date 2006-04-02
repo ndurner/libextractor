@@ -21,7 +21,6 @@
 /**
  * TODO:
  * - code clean up (factor out some parsing aspects?)
- * - proper string decoding (escape sequences)
  * - proper dictionary support
  * - filters (compression!)
  * - page count (and other document catalog information,
@@ -80,6 +79,8 @@ static unsigned char *
 stringDecode(const char * pdfString,
 	     size_t * size) {
   size_t slen;
+  size_t r;
+  size_t w;
   unsigned char * ret;
   char hex[3];
   int i;
@@ -92,9 +93,75 @@ stringDecode(const char * pdfString,
   case '(':
     if (pdfString[slen-1] != ')')    
       return NULL;
-    /* todo: recode escape sequences! */
-    *size = slen - 2;
-    return stndup(&pdfString[1], slen-2);     
+    ret = malloc(slen);
+    w = 0;
+    for (r=1;r<slen-1;r++) {
+      if (pdfString[r] == '/') {
+	r++;
+	switch (pdfString[r]) {
+	case '/':
+	  ret[w++] = '/';
+	  break;
+	case 'n':
+	  ret[w++] = '\n';
+	  break;
+	case 'r':
+	  ret[w++] = '\r';
+	  break;
+	case 't':
+	  ret[w++] = '\t';
+	  break;
+	case 'b':
+	  ret[w++] = '\b';
+	  break;
+	case 'f':
+	  ret[w++] = '\f';
+	  break;
+	case '(':
+	  ret[w++] = '(';
+	  break;
+	case ')':
+	  ret[w++] = ')';
+	  break;
+	case '0':
+	case '1':
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9': {
+	  char buf[4];
+	  unsigned int u;
+	  memset(buf, 0, 4);
+	  buf[0] = pdfString[r++];
+	  if ( (pdfString[r] >= '0') &&
+	       (pdfString[r] <= '9') )
+	    buf[1] = pdfString[r++];
+	  if ( (pdfString[r] >= '0') &&
+	       (pdfString[r] <= '9') )
+	    buf[2] = pdfString[r++];
+	  if (1 == sscanf(buf, "%o", &u)) {
+	    ret[w++] = (char) u;
+	  } else {
+	    free(ret);
+	    return NULL; /* invalid! */
+	  }	       
+	  break;
+	}
+	default: /* invalid */
+	  free(ret);
+	  return NULL;
+	}
+      } else {
+	ret[w++] = pdfString[r];
+      }
+    }
+    ret[w] = '/';
+    *size = w;
+    return ret;
   case '<':
     if (pdfString[slen-1] != '>')
       return NULL;
@@ -138,7 +205,6 @@ charsetDecode(const unsigned char * in,
 			 size - 2,
 			 "UNICODEBIG");
   }
-    
 }
 
 static struct {
@@ -401,7 +467,6 @@ libextractor_pdf_extract(const char * filename,
 	    (IS_NL(data[pos])) )
       pos++;
   }
-
   return prev;
 }
 
