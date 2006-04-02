@@ -321,6 +321,10 @@ extern "C" {
       
     if ( (size < 512 + 898) || (filename == NULL) ) 
       return prev;
+    if (0 != memcmp(data, "\xd0\xcf\x11\xe0\xa1\xb1\x1a\xe1", 8))
+      /* look at file magic number to avoid false positives */
+      return prev;
+
 
     POLE::Storage* storage = new POLE::Storage(filename);
     storage->open();
