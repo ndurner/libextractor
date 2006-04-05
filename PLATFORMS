@@ -17,10 +17,13 @@ OpenBSD/NetBSD:
 - unknown
 
 OS X (10.3, PowerPC):
-- PDF extractor does not work properly
+- (X)PDF extractor does not work properly
 
 Solaris 8 (SunOS 5.8, Sparc SunFire 880):
 - unknown
+
+Solaris 10
+- reported success for 0.5.11 with minor modifiations (on LE mailinglist, 2006/3/27)
 
 MinGW:
 - linking against libstdc++ fails

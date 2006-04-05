@@ -56,6 +56,7 @@ netbsd*)
      AC_CHECK_LIB(resolv, res_init)
      XTRA_CPPLIBS=-lstdc++
      AM_CONDITIONAL(HAVE_GNU_LD, false)
+     CFLAGS="-D_POSIX_PTHREAD_SEMANTICS $CFLAGS"
      ;;
 darwin*)
      AC_DEFINE_UNQUOTED(DARWIN,1,[This is a Darwin system])
