@@ -16,7 +16,14 @@
      along with libextractor; see the file COPYING.  If not, write to the
      Free Software Foundation, Inc., 59 Temple Place - Suite 330,
      Boston, MA 02111-1307, USA.
- */
+
+     Most of the code in this directory comes from
+     libgsf 1.10.1 (Licensed under GPL/LGPL).
+
+     libgsf -- The G Structured File Library
+     Copyright (C) 2002-2004 Jody Goldberg (jody@gnome.org)
+
+*/
 
 #include "platform.h"
 #include "extractor.h"
