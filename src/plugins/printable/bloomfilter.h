@@ -29,6 +29,7 @@
 #include <string.h>
 #include "bloomfilter-def.h"
 
+
 typedef struct {
   unsigned char data[20];
 } HashCode160;

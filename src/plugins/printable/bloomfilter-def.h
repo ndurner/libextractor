@@ -28,11 +28,14 @@
 #include "platform.h"
 #include <string.h>
 
+#define SUBTABLES 32
+
 typedef struct {
   /** How many bits we set for each stored element */
   unsigned int addressesPerElement;
   /** The actual bloomfilter bit array */
   unsigned char * bitArray;
+  unsigned char ** sbitArray;
   /** Size of bitArray in bytes */
   unsigned int bitArraySize;
 } Bloomfilter;

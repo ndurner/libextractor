@@ -33,6 +33,8 @@
 #include <string.h>
 #include "bloomfilter.h"
 
+
+
 /**
  * Checks if a bit is active in the bitArray
  *
@@ -40,14 +42,17 @@
  * @param bitIdx which bit to test
  * @return 1 if the bit is set, 0 if not.
  */
-static int testBit(unsigned char * bitArray,
+static int testBit(unsigned char ** bitArray,
+		   unsigned int size,
 		   unsigned int bitIdx) {
   unsigned int slot;
   unsigned int targetBit;
+  unsigned int msize;
 
   slot = bitIdx / 8;
   targetBit = (1L << (bitIdx % 8));
-  return (bitArray[slot] & targetBit) != 0;
+  msize = size / SUBTABLES;
+  return (bitArray[slot / msize][slot % msize] & targetBit) != 0;
 }
 
 
@@ -62,7 +67,8 @@ static void testBitCallback(Bloomfilter * bf,
 			    unsigned int bit,
 			    void * cls) {
   int * arg = cls;
-  if (! testBit(bf->bitArray,
+  if (! testBit(bf->sbitArray,
+		bf->bitArraySize,
 		bit))
     *arg = 0;
 }

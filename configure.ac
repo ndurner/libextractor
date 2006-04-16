@@ -341,7 +341,7 @@ if test "x$printable" = "x0"
 then
  AC_MSG_NOTICE([NOTICE: printable plugins disabled])
 else 
- AC_MSG_NOTICE([NOTICE: printable plugins enabled (will need 150 MB memory to compile)])
+ AC_MSG_NOTICE([NOTICE: printable plugins enabled])
 fi
 
 if test "x$without_glib" = "xtrue"

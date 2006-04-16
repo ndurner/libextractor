@@ -74,11 +74,6 @@ An example implementation can be found in mp3extractor.c.
 Notes
 =====
 
-libextractor contains some very large C files.  gcc can easily use
-over (!) 100 MB of memory to compile them.  If you have that much,
-libextractor will compile in about a minute.  If you don't have that
-much, you may want to consider using the binaries.
-
 On Mac OS X, libextractor will avoid using GCC 3.1, because of
 problems compiling one of the extractors.  GCC 3.3 and 2.95.2 are
 known to work well; as such, libextractor will first look for 3.3 (by

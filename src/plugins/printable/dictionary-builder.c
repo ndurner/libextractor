@@ -1,6 +1,6 @@
 /*
      This file is part of libextractor.
-     (C) 2002, 2003, 2004, 2005 Vidyut Samanta and Christian Grothoff
+     (C) 2002, 2003, 2004, 2005, 2006 Vidyut Samanta and Christian Grothoff
 
      libextractor is free software; you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published
@@ -16,11 +16,6 @@
      along with libextractor; see the file COPYING.  If not, write to the
      Free Software Foundation, Inc., 59 Temple Place - Suite 330,
      Boston, MA 02111-1307, USA.
-
-     Portions of this code were adapted from libhtmlparse by
-     Mooneer Salem (mooneer@translator.cs).  The main changes
-     to libhtmlparse were the removal of globals to make the
-     code reentrant.
  */
 /**
  * Tool to build a bloomfilter from a dictionary.
@@ -81,11 +76,13 @@ static void addToBloomfilter(Bloomfilter * bf,
 
 #define ADDR_PER_ELEMENT 46
 
+
 int main(int argc,
 	 char ** argv) {
   Bloomfilter bf;
   HashCode160 hc;
   int i;
+  int j;
   int cnt;
   char * fn;
   char ** words;
@@ -95,11 +92,11 @@ int main(int argc,
   char * charset = NULL;
 #define ALLOCSIZE 1024*1024
 
-  if (argc<2) {
+  if (argc<3) {
     fprintf(stderr,
 	    _("Please provide the name of the language you are building\n"
 	      "a dictionary for.  For example:\n"));
-    fprintf(stderr, "$ ./dictionary-builder en > en.c\n");
+    fprintf(stderr, "$ ./dictionary-builder ./en en > en.c\n");
     exit(-1);
   }
 
@@ -139,7 +136,7 @@ int main(int argc,
   }
 
   bf.addressesPerElement = ADDR_PER_ELEMENT;
-  bf.bitArraySize = cnt*4;
+  bf.bitArraySize = cnt * 4 / SUBTABLES * SUBTABLES;
   bf.bitArray = malloc(bf.bitArraySize);
   memset(bf.bitArray, 0, bf.bitArraySize);
 
@@ -158,12 +155,34 @@ int main(int argc,
      gcc versions then output tons of warnings about "decimal constant
      is so large that it is unsigned" (even for unsigned long long[]
      that warning is generated and dramatically increases compile times). */
-  fprintf(stdout,
-	  "static int bits[] = { ");
-  for (i=0;i<bf.bitArraySize/sizeof(int);i++)
+  for (j=0;j<SUBTABLES;j++) {
+    char fn[64];
+    FILE * btfile;
+
+    snprintf(fn, 64, "%s_%d.c", argv[1], j);
+    btfile = fopen(fn, "w+");    
+    fprintf(btfile,
+	    "int %s_bits_%d[] = { ", argv[2], j);
+    for (i= j    * bf.bitArraySize/sizeof(int)/SUBTABLES;
+	 i<(j+1) * bf.bitArraySize/sizeof(int)/SUBTABLES;
+	 i++)
+      fprintf(btfile,
+	      "%dL,",
+	      (((int*)bf.bitArray)[i]));
+    fprintf(btfile,
+	    "};\n");
+    fclose(btfile);
     fprintf(stdout,
-	    "%dL,",
-	    (((int*)bf.bitArray)[i]));
+	    "extern int %s_bits_%d[];\n", argv[2], j);
+  }
+
+  fprintf(stdout,
+	  "static int * bits[] = { ");
+  for (i=0;i<SUBTABLES;i++)
+    fprintf(stdout,
+	    "%s_bits_%d,",
+	    argv[2],
+	    i);
   fprintf(stdout,
 	  "};\n");
   bn = &argv[1][strlen(argv[1])];
@@ -175,7 +194,8 @@ int main(int argc,
   fprintf(stdout,
 	  "Bloomfilter libextractor_printable_%s_filter = {\n"
 	  "  %u,\n"
-	  "  (unsigned char*)bits,\n"
+	  "  NULL,\n" /* bitarray */
+	  "  (unsigned char **)bits,\n" /* sbitArray */
 	  "  %u };\n",
 	  bn,
 	  ADDR_PER_ELEMENT,
