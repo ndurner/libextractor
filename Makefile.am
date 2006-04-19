@@ -6,6 +6,7 @@ EXTRA_DIST = config.rpath \
 dist-hook:
 	cp -p $(srcdir)/src/plugins/printable/peXX.c $(distdir)/src/plugins/printable/
 	cp -p $(srcdir)/src/plugins/printable/??.txt $(distdir)/src/plugins/printable/
+	rm -f $(distdir)/src/plugins/printable/??_*.c
 	rm -f $(distdir)/src/plugins/printable/??.c
 	rm -f $(distdir)/src/plugins/printable/peda.c
 	rm -f $(distdir)/src/plugins/printable/pede.c

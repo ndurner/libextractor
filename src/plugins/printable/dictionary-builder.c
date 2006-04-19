@@ -161,6 +161,12 @@ int main(int argc,
 
     snprintf(fn, 64, "%s_%d.c", argv[1], j);
     btfile = fopen(fn, "w+");    
+    if (btfile == NULL) {
+      fprintf(stderr,
+	      _("Error opening file `%s': %s\n"),
+	      fn, strerror(errno));
+      exit(-1);
+    }
     fprintf(btfile,
 	    "int %s_bits_%d[] = { ", argv[2], j);
     for (i= j    * bf.bitArraySize/sizeof(int)/SUBTABLES;

@@ -1,3 +1,8 @@
+Tue Apr 18 14:44:37 PDT 2006
+	Improved memory utilization for printable extractors
+	at compile time.  Added dictionaries for Finnish,
+	French, Gaelic and Swedish (for printable extractors).
+
 Fri Mar 24 21:43:43 PST 2006
 	Started re-implementation of PDF support from scratch
 	(incomplete but working).  Improvements to the build

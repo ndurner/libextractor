@@ -1,5 +1,5 @@
 #!/bin/sh
-for l in da de en es it no pt
+for l in sv ga fi fr
 do
   r=""
   for n in `seq 0 31`

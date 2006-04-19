@@ -120,7 +120,7 @@ static struct EXTRACTOR_Keywords * addKeyword(struct EXTRACTOR_Keywords * list,
  *
  * @param word (alphabetic characters without spaces)
  * @return 0 if it is no word, 1 if it is
- **/
+ */
 static int wordTest(char * word,
 		    double * strlenthreshold) {
   int i;
@@ -449,10 +449,11 @@ static char * blacklist[] = {
    what we are doing here.  EXTRACT_FUNC_NAME is set by
    Makefile.am to reflect the library that this code module
    is getting compiled into. */
-struct EXTRACTOR_Keywords * EXTRACT_NAME (char * filename,
-					  char * data,
-					  size_t size,
-					  struct EXTRACTOR_Keywords * prev) {
+struct EXTRACTOR_Keywords * 
+EXTRACT_NAME (const char * filename,
+	      const char * data,
+	      size_t size,
+	      struct EXTRACTOR_Keywords * prev) {
   int i;
   size_t last;
   size_t pos;

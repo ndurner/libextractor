@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2006-03-09 20:29-0800\n"
+"POT-Creation-Date: 2006-04-18 14:46-0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -104,12 +104,12 @@ msgstr ""
 msgid "Extract metadata from files."
 msgstr ""
 
-#: src/main/extract.c:198 src/main/extractor.c:1135
+#: src/main/extract.c:198 src/main/extractor.c:1136
 #, c-format
 msgid "%s - (binary)\n"
 msgstr ""
 
-#: src/main/extract.c:204 src/main/extractor.c:1140
+#: src/main/extract.c:204 src/main/extractor.c:1141
 #, c-format
 msgid "INVALID TYPE - %s\n"
 msgstr ""
@@ -538,24 +538,28 @@ msgstr ""
 msgid "revision history"
 msgstr ""
 
-#: src/main/extractor.c:239
+#: src/main/extractor.c:145
+msgid "lower case conversion"
+msgstr ""
+
+#: src/main/extractor.c:240
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr ""
 
-#: src/main/extractor.c:388
+#: src/main/extractor.c:389
 #, c-format
 msgid ""
 "Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
 "failed also.  Errors are: `%s' and `%s'.\n"
 msgstr ""
 
-#: src/main/extractor.c:417
+#: src/main/extractor.c:418
 #, c-format
 msgid "Loading `%s' plugin failed: %s\n"
 msgstr ""
 
-#: src/main/extractor.c:622
+#: src/main/extractor.c:623
 #, c-format
 msgid "Unloading plugin `%s' failed!\n"
 msgstr ""
@@ -1270,26 +1274,26 @@ msgstr ""
 msgid "(variable bps)"
 msgstr ""
 
-#: src/plugins/printable/dictionary-builder.c:100
+#: src/plugins/printable/dictionary-builder.c:97
 #, c-format
 msgid ""
 "Please provide the name of the language you are building\n"
 "a dictionary for.  For example:\n"
 msgstr ""
 
-#: src/plugins/printable/dictionary-builder.c:113
+#: src/plugins/printable/dictionary-builder.c:110
 #, c-format
 msgid "Error opening file `%s': %s\n"
 msgstr ""
 
-#: src/plugins/printable/dictionary-builder.c:121
+#: src/plugins/printable/dictionary-builder.c:118
 #, c-format
 msgid ""
 "Error allocating: %s\n"
 "."
 msgstr ""
 
-#: src/plugins/printable/dictionary-builder.c:135
+#: src/plugins/printable/dictionary-builder.c:132
 #, c-format
 msgid "Increase ALLOCSIZE (in %s).\n"
 msgstr ""
@@ -1541,13 +1545,13 @@ msgstr ""
 msgid "Malaysian"
 msgstr ""
 
-#: src/plugins/wordleaker/wordextractor.cc:347
-#: src/plugins/wordleaker/wordextractor.cc:355
+#: src/plugins/wordleaker/wordextractor.cc:411
+#: src/plugins/wordleaker/wordextractor.cc:422
 #, c-format
 msgid "%s (Build %s)"
 msgstr ""
 
-#: src/plugins/wordleaker/wordextractor.cc:450
+#: src/plugins/wordleaker/wordextractor.cc:467
 #, c-format
 msgid "Revision #%u: Author '%s' worked on '%s'"
 msgstr ""
