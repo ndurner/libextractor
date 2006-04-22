@@ -203,7 +203,7 @@ charsetDecode(const unsigned char * in,
   } else { 
     return convertToUtf8(&in[2],
 			 size - 2,
-			 "UNICODEBIG");
+			 "UTF-16BE");
   }
 }
 

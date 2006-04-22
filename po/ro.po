@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.4.2\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2006-04-18 14:46-0700\n"
+"POT-Creation-Date: 2006-04-22 11:52-0700\n"
 "PO-Revision-Date: 2005-02-25 12:00-0500\n"
 "Last-Translator: Laurentiu Buzdugan <lbuz@rolix.org>\n"
 "Language-Team: Romanian <translation-team-ro@lists.sourceforge.net>\n"
@@ -1312,6 +1312,7 @@ msgstr ""
 "un dicþionar.  De exemplu:\n"
 
 #: src/plugins/printable/dictionary-builder.c:110
+#: src/plugins/printable/dictionary-builder.c:166
 #, c-format
 msgid "Error opening file `%s': %s\n"
 msgstr "Eroare deschidere fiºier `%s': %s\n"

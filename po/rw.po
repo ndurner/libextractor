@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.4.2\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2006-04-18 14:46-0700\n"
+"POT-Creation-Date: 2006-04-22 11:52-0700\n"
 "PO-Revision-Date: 2005-04-04 10:55-0700\n"
 "Last-Translator: Steven Michael Murphy <murf@e-tools.com>\n"
 "Language-Team: Kinyarwanda <translation-team-rw@lists.sourceforge.net>\n"
@@ -1586,6 +1586,7 @@ msgstr "i Izina: Bya i Ururimi Inkoranyamagambo kugirango Urugero"
 
 # basctl/source\basicide\basidesh.src:RID_STR_ERROROPENSTORAGE.text
 #: src/plugins/printable/dictionary-builder.c:110
+#: src/plugins/printable/dictionary-builder.c:166
 #, fuzzy, c-format
 msgid "Error opening file `%s': %s\n"
 msgstr "Hari ikibazo mu gufungura dosiye"

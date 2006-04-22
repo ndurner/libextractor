@@ -73,34 +73,11 @@ extern "C" {
       if ((((unsigned char)s[0]) & 0xff) == 0xfe &&
 	  (((unsigned char)s[1]) & 0xff) == 0xff) {
 	char * result;
-	unsigned char u[2];
-	unsigned int pos;
-	unsigned int len;
-	char * con;
 
-	result = (char*) malloc(s1->getLength() * 4);
-	result[0] = '\0';
-	len = s1->getLength();
-	for (pos=0;pos<len;pos+=2) {
-	  u[0] = s1->getChar(pos+1);
-	  u[1] = s1->getChar(pos);
-	  /* Q: is there a difference between UTF-16 and UNICODE?
-	     Which one is needed here?  And how to do it on solaris
-	     where UNICODE is not known!?
-	     See http://lists.gnu.org/archive/html/libextractor/2006-04/msg00006.html
-	  */
-#ifdef SOLARIS
-	  con = (char*) convertToUtf8((const char*) u, 2, "UTF-16");
-#else
-	  con = (char*) convertToUtf8((const char*) u, 2, "UNICODE");
-#endif
-	  strcat(result, con);
-	  free(con);
-	}
+	result = convertToUtf8((const char*) &s[2], s1->getLength() - 2, "UTF-16BE");
 	next = addKeyword(type,
-			  strdup(result),
+			  result,
 			  next);
-	free(result);
       } else {
         unsigned int len = (NULL == s) ? 0 : strlen(s);
 
@@ -157,25 +134,11 @@ extern "C" {
 	  (s1->getChar(1) & 0xff) == 0xff) {
 	/* isUnicode */
 	char * result;
-	unsigned char u[2];
-	unsigned int pos;
-	unsigned int len;
-	char * con;
 
-	result = (char*) malloc(s1->getLength() * 4);
-	result[0] = '\0';
-	len = s1->getLength();
-	for (pos=0;pos<len;pos+=2) {
-	  u[0] = s1->getChar(pos+1);
-	  u[1] = s1->getChar(pos);
-	  con = (char*) convertToUtf8((const char*) u, 2, "UNICODE");
-	  strcat(result, con);
-	  free(con);
-	}		
+	result = convertToUtf8((const char*)&s[2], s1->getLength() - 2, "UTF-16BE");
 	next = addKeyword(type,
-			  strdup(result),
+			  result,
 			  next);
-	free(result);
       } else {
 	if (s[0] == 'D' && s[1] == ':') {
 	  s += 2;

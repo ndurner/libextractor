@@ -136,7 +136,7 @@ int main(int argc,
   }
 
   bf.addressesPerElement = ADDR_PER_ELEMENT;
-  bf.bitArraySize = cnt * 4 / SUBTABLES * SUBTABLES;
+  bf.bitArraySize = (1 + (cnt / SUBTABLES)) * sizeof(int) * SUBTABLES;
   bf.bitArray = malloc(bf.bitArraySize);
   memset(bf.bitArray, 0, bf.bitArraySize);
 
@@ -169,8 +169,8 @@ int main(int argc,
     }
     fprintf(btfile,
 	    "int %s_bits_%d[] = { ", argv[2], j);
-    for (i= j    * bf.bitArraySize/sizeof(int)/SUBTABLES;
-	 i<(j+1) * bf.bitArraySize/sizeof(int)/SUBTABLES;
+    for (i= j    * (bf.bitArraySize/sizeof(int)/SUBTABLES);
+	 i<(j+1) * (bf.bitArraySize/sizeof(int)/SUBTABLES);
 	 i++)
       fprintf(btfile,
 	      "%dL,",

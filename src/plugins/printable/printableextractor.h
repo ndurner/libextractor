@@ -69,10 +69,8 @@ static void testBitCallback(Bloomfilter * bf,
   int * arg = cls;
   if (! testBit(bf->sbitArray,
 		bf->bitArraySize,
-		bit)) {
-    printf("Testing bit %u failed!\n", bit);
-    *arg = 0;
-  }
+		bit)) 
+    *arg = 0;  
 }
 /**
  * Test if an element is in the filter.
@@ -129,9 +127,8 @@ static int wordTest(char * word,
   HashCode160 hc;
   char * lower;
 
-  if (strlen(word) <= (int) (*strlenthreshold)) {
+  if (strlen(word) <= (int) (*strlenthreshold)) 
     return 0;
-  }
   for (i=strlen(word)-1;i>=0;i--)
     if (isdigit(word[i]))
       return 0;

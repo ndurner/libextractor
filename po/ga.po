@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.5.6a\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2006-04-18 14:46-0700\n"
+"POT-Creation-Date: 2006-04-22 11:52-0700\n"
 "PO-Revision-Date: 2005-09-21 00:46-0700\n"
 "Last-Translator: Kevin Patrick Scannell <scannell@SLU.EDU>\n"
 "Language-Team: Irish <gaeilge-gnulinux@lists.sourceforge.net>\n"
@@ -1304,6 +1304,7 @@ msgstr ""
 "Mar shampla:\n"
 
 #: src/plugins/printable/dictionary-builder.c:110
+#: src/plugins/printable/dictionary-builder.c:166
 #, c-format
 msgid "Error opening file `%s': %s\n"
 msgstr "Earráid agus comhad `%s' á oscailt: %s\n"

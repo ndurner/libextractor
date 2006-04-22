@@ -1,3 +1,7 @@
+Sat Apr 22 11:18:56 PDT 2006
+	Final touches to new build of printable extractors.
+	Releasing libextractor 0.5.12.
+
 Tue Apr 18 14:44:37 PDT 2006
 	Improved memory utilization for printable extractors
 	at compile time.  Added dictionaries for Finnish,
