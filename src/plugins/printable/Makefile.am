@@ -16,27 +16,27 @@ fr_LANG=fr_0.c fr_1.c fr_2.c fr_3.c fr_4.c fr_5.c fr_6.c fr_7.c fr_8.c fr_9.c fr
 
 CLEANFILES = da.c de.c en.c es.c fi.c fr.c ga.c it.c no.c pt.c sv.c peda.c pede.c peen.c pees.c pefi.c pefr.c pega.c peit.c peno.c pept.c pesv.c $(da_LANG) $(de_LANG) $(es_LANG) $(en_LANG) $(fi_LANG) $(fr_LANG) $(ga_LANG) $(it_LANG) $(no_LANG) $(pt_LANG) $(sv_LANG)
 
-da.c: dictionary-builder$(EXEEXT)
+da.c $(da_LANG): dictionary-builder$(EXEEXT)
 	./dictionary-builder $(srcdir)/da da > da.c
-de.c: dictionary-builder$(EXEEXT)
+de.c $(de_LANG): dictionary-builder$(EXEEXT)
 	./dictionary-builder $(srcdir)/de de > de.c
-en.c: dictionary-builder$(EXEEXT)
+en.c $(en_LANG): dictionary-builder$(EXEEXT)
 	./dictionary-builder $(srcdir)/en en > en.c
-es.c: dictionary-builder$(EXEEXT)
+es.c $(es_LANG): dictionary-builder$(EXEEXT)
 	./dictionary-builder $(srcdir)/es es > es.c
-fi.c: dictionary-builder$(EXEEXT)
+fi.c $(fi_LANG): dictionary-builder$(EXEEXT)
 	./dictionary-builder $(srcdir)/fi fi > fi.c
-fr.c: dictionary-builder$(EXEEXT)
+fr.c $(fr_LANG): dictionary-builder$(EXEEXT)
 	./dictionary-builder $(srcdir)/fr fr > fr.c
-ga.c: dictionary-builder$(EXEEXT)
+ga.c $(ga_LANG): dictionary-builder$(EXEEXT)
 	./dictionary-builder $(srcdir)/ga ga > ga.c
-it.c: dictionary-builder$(EXEEXT)
+it.c $(it_LANG): dictionary-builder$(EXEEXT)
 	./dictionary-builder $(srcdir)/it it > it.c
-no.c: dictionary-builder$(EXEEXT)
+no.c $(no_LANG): dictionary-builder$(EXEEXT)
 	./dictionary-builder $(srcdir)/no no > no.c
-pt.c: dictionary-builder$(EXEEXT)
+pt.c $(pt_LANG): dictionary-builder$(EXEEXT)
 	./dictionary-builder $(srcdir)/pt pt > pt.c
-sv.c: dictionary-builder$(EXEEXT)
+sv.c $(sv_LANG): dictionary-builder$(EXEEXT)
 	./dictionary-builder $(srcdir)/sv sv > sv.c
 
 peda.c:

@@ -1,6 +1,6 @@
 /*
      This file is part of libextractor.
-     (C) 2002, 2003, 2004 Vidyut Samanta and Christian Grothoff
+     (C) 2002, 2003, 2004, 2006 Vidyut Samanta and Christian Grothoff
 
      libextractor is free software; you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published
@@ -69,8 +69,10 @@ static void testBitCallback(Bloomfilter * bf,
   int * arg = cls;
   if (! testBit(bf->sbitArray,
 		bf->bitArraySize,
-		bit))
+		bit)) {
+    printf("Testing bit %u failed!\n", bit);
     *arg = 0;
+  }
 }
 /**
  * Test if an element is in the filter.
@@ -275,7 +277,7 @@ static int process(char * keyword,
 
 static void testKeyword(size_t start,
 			size_t end,
-			char * data,
+			const char * data,
 			double * thresh,
 			struct EXTRACTOR_Keywords ** head,
 			struct EXTRACTOR_Keywords ** tail) {
@@ -528,4 +530,4 @@ EXTRACT_NAME (const char * filename,
 }
 
 
-/* end of printableextractor.c */
+/* end of printableextractor.h */
