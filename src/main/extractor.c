@@ -1336,7 +1336,7 @@ int EXTRACTOR_binaryDecode(const char * in,
       end = inSize;
     marker = in[pos++];
     for (i=pos;i<end;i++)
-      buf[wpos++] = (in[i] == marker) ? 0 : in[i];
+      buf[wpos++] = (in[i] == (char) marker) ? 0 : in[i];
     pos = end;
   }
   *outSize = wpos;
