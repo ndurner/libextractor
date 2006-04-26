@@ -13,7 +13,15 @@ GNU/Linux (Alpha):
 FreeBSD (x86):
 - perfect
 
-OpenBSD/NetBSD:
+OpenBSD 3.8:
+- Chan Siu Ming <namely_void@yahoo.co.uk> writes:
+  - libtool is good to have
+  - OpenBSD 3.8 also doesn't have CODESET in langinfo.h (used in about three places.) I'm not sure how to cleanly overcome this.
+  - for some reason, convert.a is linked with a static version of libiconv.a, so that convert.a ends up containing convert.o 
+    and libiconv.a, which confuses the linker, because archives aren't supposed to contain other archives. Removed the ICONV 
+    stuff from convert_la_LDFLAGS in some Makefiles and it seemed to get past that.
+
+- NetBSD:
 - unknown
 
 OS X (10.3, PowerPC):

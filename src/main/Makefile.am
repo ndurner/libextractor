@@ -20,7 +20,9 @@ extract_LDADD = \
   $(top_builddir)/src/main/libextractor.la 
 
 if !MINGW
+if !SOMEBSD
   dlflag=-ldl
+endif
 endif
 
 if HAVE_ZLIB

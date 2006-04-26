@@ -33,7 +33,7 @@
 
 // *****************************************************************************
 // included header files
-#ifdef _MSC_VER
+#if _MSC_VER
 # include "exv_msvc.h"
 #else
 # include "exv_conf.h"
@@ -45,12 +45,12 @@
 #include <utility>
 #include <sstream>
 #include <cstdio>
-#ifdef EXV_HAVE_STDINT_H
+#if EXV_HAVE_STDINT_H
 # include <stdint.h>
 #endif
 
 // MSVC doesn't provide C99 types, but it has MS specific variants
-#ifdef _MSC_VER
+#if _MSC_VER
 typedef unsigned __int8  uint8_t;
 typedef unsigned __int16 uint16_t;
 typedef unsigned __int32 uint32_t;

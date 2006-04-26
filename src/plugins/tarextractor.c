@@ -194,6 +194,10 @@ tar_octalvalue(const char *data,
    return result;
 }
 
+#ifndef EOVERFLOW
+#define EOVERFLOW -1
+#endif
+
 static int
 tar_time(long long timeval,
          char *rtime,
