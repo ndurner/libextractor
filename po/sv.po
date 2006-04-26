@@ -1,0 +1,1423 @@
+# Swedish translation of libextractor
+# Copyright (C) 2005 Free Software Foundation, Inc.
+# This file is distributed under the same license as the libextractor package.
+# Daniel Nylander <po@danielnylander.se>, 2005
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: libextractor 0.5.7\n"
+"Report-Msgid-Bugs-To: libextractor@gnu.org\n"
+"POT-Creation-Date: 2006-04-26 10:20-0700\n"
+"PO-Revision-Date: 2005-12-27 09:21+0100\n"
+"Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
+"Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/main/extract.c:49
+#, c-format
+msgid ""
+"Usage: %s\n"
+"%s\n"
+"\n"
+msgstr ""
+"Användning: %s\n"
+"%s\n"
+"\n"
+
+#: src/main/extract.c:52
+#, c-format
+msgid ""
+"Arguments mandatory for long options are also mandatory for short options.\n"
+msgstr ""
+"Argument som är obligatoriska för långa flaggor är också obligatoriska för "
+"korta flaggor.\n"
+
+#: src/main/extract.c:126
+msgid "do not remove any duplicates"
+msgstr "ta inte bort några dubletter"
+
+#: src/main/extract.c:128
+msgid "print output in bibtex format"
+msgstr "skriv ut i bibtex-format"
+
+#: src/main/extract.c:130
+msgid ""
+"use the generic plaintext extractor for the language with the 2-letter "
+"language code LANG"
+msgstr ""
+"använd den generiska klartextuppackare för språket med 2-bokstavskoden i LANG"
+
+#: src/main/extract.c:132
+msgid "remove duplicates only if types match"
+msgstr "ta bort dubbletter endast om typen stämmer"
+
+#: src/main/extract.c:134
+msgid "use the filename as a keyword (loads filename-extractor plugin)"
+msgstr ""
+"använd filnamnet som ett nyckelord (läser in insticket filename-extractor)"
+
+#: src/main/extract.c:136
+msgid "print this help"
+msgstr "skriv ut denna hjälp"
+
+#: src/main/extract.c:138
+msgid "compute hash using the given ALGORITHM (currently sha1 or md5)"
+msgstr "beräkna hash med angiven ALGORITM (för närvarande sha1 eller md5)"
+
+#: src/main/extract.c:140
+msgid "load an extractor plugin named LIBRARY"
+msgstr "läser in instick för uppackning med namnet BIBLIOTEK"
+
+#: src/main/extract.c:142
+msgid "list all keyword types"
+msgstr "lista alla typer av nyckelord"
+
+#: src/main/extract.c:144
+msgid "do not use the default set of extractor plugins"
+msgstr "använd inte förvalda uppsättningen av uppackningsinstick"
+
+#: src/main/extract.c:146
+msgid "print only keywords of the given TYPE (use -L to get a list)"
+msgstr "skriv endast ut nyckelord av angiven TYP (använd -L för lista)"
+
+#: src/main/extract.c:148
+msgid "remove duplicates even if keyword types do not match"
+msgstr "ta bort dubbletter även om nyckelordstyp inte stämmer"
+
+#: src/main/extract.c:150
+msgid "use keyword splitting (loads split-extractor plugin)"
+msgstr "använd delning av nyckelord (läser in insticket split-extractor)"
+
+#: src/main/extract.c:152
+msgid "print the version number"
+msgstr "skriv ut versionsnummer"
+
+#: src/main/extract.c:154
+msgid "be verbose"
+msgstr "var informativ"
+
+#: src/main/extract.c:156
+msgid "do not print keywords of the given TYPE"
+msgstr "skriv inte ut nyckelord av angiven TYP"
+
+#: src/main/extract.c:159
+msgid "extract [OPTIONS] [FILENAME]*"
+msgstr "extract [FLAGGOR] [FILNAMN]*"
+
+#: src/main/extract.c:160
+msgid "Extract metadata from files."
+msgstr "Plocka ut metadata från filer."
+
+#: src/main/extract.c:198 src/main/extractor.c:1137
+#, c-format
+msgid "%s - (binary)\n"
+msgstr "%s - (binär)\n"
+
+#: src/main/extract.c:204 src/main/extractor.c:1142
+#, c-format
+msgid "INVALID TYPE - %s\n"
+msgstr "OGILTIG TYP - %s\n"
+
+#: src/main/extract.c:270 src/main/extractor.c:47
+msgid "title"
+msgstr "titel"
+
+#: src/main/extract.c:272 src/main/extractor.c:45
+msgid "filename"
+msgstr "filnamn"
+
+#: src/main/extract.c:277 src/main/extractor.c:48
+msgid "author"
+msgstr "upphovsman"
+
+#: src/main/extract.c:281 src/main/extractor.c:50
+msgid "description"
+msgstr "beskrivning"
+
+#: src/main/extract.c:283 src/main/extractor.c:62
+msgid "keywords"
+msgstr "nyckelord"
+
+#: src/main/extract.c:285 src/main/extractor.c:51
+msgid "comment"
+msgstr "kommentar"
+
+#: src/main/extract.c:289 src/main/extractor.c:52
+msgid "date"
+msgstr "datum"
+
+#: src/main/extract.c:291 src/main/extractor.c:74
+msgid "creation date"
+msgstr "skapad den"
+
+#: src/main/extract.c:319 src/main/extractor.c:53
+msgid "publisher"
+msgstr "publiserad av"
+
+#: src/main/extract.c:323 src/main/extractor.c:59
+msgid "organization"
+msgstr "organisation"
+
+#: src/main/extract.c:327 src/main/extractor.c:61
+msgid "subject"
+msgstr "ämne"
+
+#: src/main/extract.c:331 src/main/extractor.c:78
+msgid "page count"
+msgstr "sidantal"
+
+#: src/main/extract.c:474
+#, c-format
+msgid "You must specify an argument for the `%s' option (option ignored).\n"
+msgstr "Du måste ange ett argument för flaggan \"%s\" (flagga ignoreras).\n"
+
+#: src/main/extract.c:541
+#, c-format
+msgid "Use --help to get a list of options.\n"
+msgstr "Använd --help för att få en lista på flaggor.\n"
+
+#: src/main/extract.c:600
+#, c-format
+msgid "%% BiBTeX file\n"
+msgstr "%% BiBTeX-fil\n"
+
+#: src/main/extract.c:617
+#, c-format
+msgid "Keywords for file %s:\n"
+msgstr "Nyckelord för fil %s:\n"
+
+#: src/main/extractor.c:44
+msgid "unknown"
+msgstr "okänd"
+
+#: src/main/extractor.c:46
+msgid "mimetype"
+msgstr "MIME-typ"
+
+#: src/main/extractor.c:49
+msgid "artist"
+msgstr "artist"
+
+#: src/main/extractor.c:54
+msgid "language"
+msgstr "språk"
+
+#: src/main/extractor.c:55
+msgid "album"
+msgstr "album"
+
+#: src/main/extractor.c:56
+msgid "genre"
+msgstr "genre"
+
+#: src/main/extractor.c:57
+msgid "location"
+msgstr "plats"
+
+#: src/main/extractor.c:58
+msgid "version"
+msgstr "version"
+
+#: src/main/extractor.c:60
+msgid "copyright"
+msgstr "copyright"
+
+#: src/main/extractor.c:63
+msgid "contributor"
+msgstr "bidragare"
+
+#: src/main/extractor.c:64
+msgid "resource-type"
+msgstr "resurstyp"
+
+#: src/main/extractor.c:65
+msgid "format"
+msgstr "format"
+
+#: src/main/extractor.c:66
+msgid "resource-identifier"
+msgstr "resursidentifierare"
+
+#: src/main/extractor.c:67
+msgid "source"
+msgstr "källa"
+
+#: src/main/extractor.c:68
+msgid "relation"
+msgstr "relation"
+
+#: src/main/extractor.c:69
+msgid "coverage"
+msgstr "täckning"
+
+#: src/main/extractor.c:70
+msgid "software"
+msgstr "programvara"
+
+#: src/main/extractor.c:71
+msgid "disclaimer"
+msgstr "disclaimer"
+
+#: src/main/extractor.c:72
+msgid "warning"
+msgstr "varning"
+
+#: src/main/extractor.c:73
+msgid "translated"
+msgstr "översatt"
+
+#: src/main/extractor.c:75
+msgid "modification date"
+msgstr "modifieringsdatum"
+
+#: src/main/extractor.c:76
+msgid "creator"
+msgstr "skapare"
+
+#: src/main/extractor.c:77
+msgid "producer"
+msgstr "producent"
+
+#: src/main/extractor.c:79
+msgid "page orientation"
+msgstr "sidorientering"
+
+#: src/main/extractor.c:80
+msgid "paper size"
+msgstr "pappersstorlek"
+
+#: src/main/extractor.c:81
+msgid "used fonts"
+msgstr "använda typsnitt"
+
+#: src/main/extractor.c:82
+msgid "page order"
+msgstr "sidordning"
+
+#: src/main/extractor.c:83
+msgid "created for"
+msgstr "skapad för"
+
+#: src/main/extractor.c:84
+msgid "magnification"
+msgstr "förstorning"
+
+#: src/main/extractor.c:85
+msgid "release"
+msgstr "utgåva"
+
+#: src/main/extractor.c:86
+msgid "group"
+msgstr "grupp"
+
+#: src/main/extractor.c:87
+msgid "size"
+msgstr "storlek"
+
+#: src/main/extractor.c:88
+msgid "summary"
+msgstr "sammanfattning"
+
+#: src/main/extractor.c:89
+msgid "packager"
+msgstr "paketerare"
+
+#: src/main/extractor.c:90
+msgid "vendor"
+msgstr "tillverkare"
+
+#: src/main/extractor.c:91
+msgid "license"
+msgstr "licens"
+
+#: src/main/extractor.c:92
+msgid "distribution"
+msgstr "distribution"
+
+#: src/main/extractor.c:93
+msgid "build-host"
+msgstr "byggd på"
+
+#: src/main/extractor.c:94
+msgid "os"
+msgstr "operativsystem"
+
+#: src/main/extractor.c:95
+msgid "dependency"
+msgstr "beroende av"
+
+#: src/main/extractor.c:96
+msgid "MD4"
+msgstr "MD4"
+
+#: src/main/extractor.c:97
+msgid "MD5"
+msgstr "MD5"
+
+#: src/main/extractor.c:98
+msgid "SHA-0"
+msgstr "SHA-0"
+
+#: src/main/extractor.c:99
+msgid "SHA-1"
+msgstr "SHA-1"
+
+#: src/main/extractor.c:100
+msgid "RipeMD160"
+msgstr "RipeMD160"
+
+#: src/main/extractor.c:101
+msgid "resolution"
+msgstr "upplösning"
+
+#: src/main/extractor.c:102
+msgid "category"
+msgstr "kategori"
+
+#: src/main/extractor.c:103
+msgid "book title"
+msgstr "boktitel"
+
+#: src/main/extractor.c:104
+msgid "priority"
+msgstr "prioritet"
+
+#: src/main/extractor.c:105
+msgid "conflicts"
+msgstr "konflikt med"
+
+#: src/main/extractor.c:106
+msgid "replaces"
+msgstr "ersätter"
+
+#: src/main/extractor.c:107
+msgid "provides"
+msgstr "ger"
+
+# Osäker!
+#: src/main/extractor.c:108
+msgid "conductor"
+msgstr "Dirigent"
+
+#: src/main/extractor.c:109
+msgid "interpreter"
+msgstr "tolk"
+
+#: src/main/extractor.c:110
+msgid "owner"
+msgstr "ägare"
+
+#: src/main/extractor.c:111
+msgid "lyrics"
+msgstr "texter"
+
+#: src/main/extractor.c:112
+msgid "media type"
+msgstr "mediatyp"
+
+#: src/main/extractor.c:113
+msgid "contact"
+msgstr "kontakt"
+
+# Förslag på bättre önskas
+#: src/main/extractor.c:114
+msgid "binary thumbnail data"
+msgstr "binär miniatyrbilddata"
+
+#: src/main/extractor.c:115
+msgid "publication date"
+msgstr "publiseringsdatum"
+
+#: src/main/extractor.c:116
+msgid "camera make"
+msgstr "kameratillverkare"
+
+#: src/main/extractor.c:117
+msgid "camera model"
+msgstr "kameramodell"
+
+#: src/main/extractor.c:118
+msgid "exposure"
+msgstr ""
+
+#: src/main/extractor.c:119
+msgid "aperture"
+msgstr ""
+
+#: src/main/extractor.c:120
+msgid "exposure bias"
+msgstr ""
+
+#: src/main/extractor.c:121
+msgid "flash"
+msgstr "blixt"
+
+#: src/main/extractor.c:122
+msgid "flash bias"
+msgstr ""
+
+#: src/main/extractor.c:123
+msgid "focal length"
+msgstr "brännvidd"
+
+#: src/main/extractor.c:124
+msgid "focal length (35mm equivalent)"
+msgstr "brännvidd (35mm motsvarande)"
+
+#: src/main/extractor.c:125
+msgid "iso speed"
+msgstr "ISO-hastighet"
+
+#: src/main/extractor.c:126
+msgid "exposure mode"
+msgstr "exponeringsläge"
+
+#: src/main/extractor.c:127
+msgid "metering mode"
+msgstr "mätarläge"
+
+#: src/main/extractor.c:128
+msgid "macro mode"
+msgstr "makroläge"
+
+#: src/main/extractor.c:129
+msgid "image quality"
+msgstr "bildkvalite"
+
+#: src/main/extractor.c:130
+msgid "white balance"
+msgstr "vitbalans"
+
+#: src/main/extractor.c:131
+msgid "orientation"
+msgstr "orientering"
+
+#: src/main/extractor.c:132
+msgid "template"
+msgstr "mall"
+
+#: src/main/extractor.c:133
+msgid "split"
+msgstr ""
+
+#: src/main/extractor.c:134
+#, fuzzy
+msgid "product version"
+msgstr "producent"
+
+#: src/main/extractor.c:135
+msgid "last saved by"
+msgstr ""
+
+#: src/main/extractor.c:136
+msgid "last printed"
+msgstr ""
+
+#: src/main/extractor.c:137
+#, fuzzy
+msgid "word count"
+msgstr "sidantal"
+
+#: src/main/extractor.c:138
+#, fuzzy
+msgid "character count"
+msgstr "sidantal"
+
+#: src/main/extractor.c:139
+msgid "total editing time"
+msgstr ""
+
+#: src/main/extractor.c:140
+msgid "thumbnails"
+msgstr ""
+
+#: src/main/extractor.c:141
+msgid "security"
+msgstr ""
+
+#: src/main/extractor.c:142
+#, fuzzy
+msgid "created by software"
+msgstr "skapad för"
+
+#: src/main/extractor.c:143
+msgid "modified by software"
+msgstr ""
+
+#: src/main/extractor.c:144
+msgid "revision history"
+msgstr ""
+
+#: src/main/extractor.c:145
+msgid "lower case conversion"
+msgstr ""
+
+#: src/main/extractor.c:241
+#, c-format
+msgid "Initialization of plugin mechanism failed: %s!\n"
+msgstr "Initiering av insticksmekanism misslyckades: %s!\n"
+
+#: src/main/extractor.c:390
+#, c-format
+msgid ""
+"Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
+"failed also.  Errors are: `%s' and `%s'.\n"
+msgstr ""
+"Uppslag av symbol \"%s\" i bibliotek \"%s\" misslyckades så jag försökte med "
+"\"%s\" men det misslyckades också.  Felen är: \"%s\" och \"%s\".\n"
+
+#: src/main/extractor.c:419
+#, c-format
+msgid "Loading `%s' plugin failed: %s\n"
+msgstr "Inläsning av instick \"%s\" misslyckades: %s\n"
+
+#: src/main/extractor.c:624
+#, c-format
+msgid "Unloading plugin `%s' failed!\n"
+msgstr "Urläsning av instick \"%s\" misslyckades!\n"
+
+#: src/main/getopt.c:681
+#, c-format
+msgid "%s: option `%s' is ambiguous\n"
+msgstr "%s: flagga \"%s\" är tvetydig\n"
+
+#: src/main/getopt.c:706
+#, c-format
+msgid "%s: option `--%s' doesn't allow an argument\n"
+msgstr "%s: flagga \"--%s\" tillåter inte ett argument\n"
+
+#: src/main/getopt.c:712
+#, c-format
+msgid "%s: option `%c%s' doesn't allow an argument\n"
+msgstr "%s: flagga \"%c%s\" tillåter inte ett argument\n"
+
+#: src/main/getopt.c:729 src/main/getopt.c:900
+#, c-format
+msgid "%s: option `%s' requires an argument\n"
+msgstr "%s: flagga \"%s\" kräver ett argument\n"
+
+#: src/main/getopt.c:758
+#, c-format
+msgid "%s: unrecognized option `--%s'\n"
+msgstr "%s: okänd flagga \"--%s\"\n"
+
+#: src/main/getopt.c:762
+#, c-format
+msgid "%s: unrecognized option `%c%s'\n"
+msgstr "%s: okänd flagga \"%c%s\"\n"
+
+#: src/main/getopt.c:788
+#, c-format
+msgid "%s: illegal option -- %c\n"
+msgstr "%s: ej tillåten flagga -- %c\n"
+
+#: src/main/getopt.c:790
+#, c-format
+msgid "%s: invalid option -- %c\n"
+msgstr "%s: ogiltig flagga -- %c\n"
+
+#: src/main/getopt.c:819 src/main/getopt.c:949
+#, c-format
+msgid "%s: option requires an argument -- %c\n"
+msgstr "%s: flagga kräver ett argument -- %c\n"
+
+#: src/main/getopt.c:867
+#, c-format
+msgid "%s: option `-W %s' is ambiguous\n"
+msgstr "%s: flagga \"-W %s\" är tvetydig\n"
+
+#: src/main/getopt.c:885
+#, c-format
+msgid "%s: option `-W %s' doesn't allow an argument\n"
+msgstr "%s: flagga \"-W %s\" tillåter inte ett argument\n"
+
+#: src/plugins/jpegextractor.c:178
+#, c-format
+msgid "%ux%u dots per inch"
+msgstr "%ux%u punkter per tum"
+
+#: src/plugins/jpegextractor.c:188
+#, c-format
+msgid "%ux%u dots per cm"
+msgstr "%ux%u punkter per cm"
+
+#: src/plugins/jpegextractor.c:198
+#, c-format
+msgid "%ux%u dots per inch?"
+msgstr "%ux%u punkter per tum?"
+
+#: src/plugins/manextractor.c:145
+msgid "Commands"
+msgstr "Kommandon"
+
+#: src/plugins/manextractor.c:150
+msgid "System calls"
+msgstr "Systemanrop"
+
+#: src/plugins/manextractor.c:155
+msgid "Library calls"
+msgstr "Biblioteksanrop"
+
+#: src/plugins/manextractor.c:160
+msgid "Special files"
+msgstr "Specialfiler"
+
+#: src/plugins/manextractor.c:165
+msgid "File formats and conventions"
+msgstr "Filformat och konventioner"
+
+#: src/plugins/manextractor.c:170
+msgid "Games"
+msgstr "Spel"
+
+#: src/plugins/manextractor.c:175
+msgid "Conventions and miscellaneous"
+msgstr "Konventioner och diverse"
+
+#: src/plugins/manextractor.c:180
+msgid "System management commands"
+msgstr "Kommandon för systemhantering"
+
+#: src/plugins/manextractor.c:185
+msgid "Kernel routines"
+msgstr "Kärnrutiner"
+
+#: src/plugins/mp3extractor.c:49
+msgid "Blues"
+msgstr "Blues"
+
+#: src/plugins/mp3extractor.c:50
+msgid "Classic Rock"
+msgstr "Klassisk rock"
+
+#: src/plugins/mp3extractor.c:51
+msgid "Country"
+msgstr "Country"
+
+#: src/plugins/mp3extractor.c:52
+msgid "Dance"
+msgstr "Dans"
+
+#: src/plugins/mp3extractor.c:53
+msgid "Disco"
+msgstr "Disco"
+
+#: src/plugins/mp3extractor.c:54
+msgid "Funk"
+msgstr "Funk"
+
+#: src/plugins/mp3extractor.c:55
+msgid "Grunge"
+msgstr "Grunge"
+
+#: src/plugins/mp3extractor.c:56
+msgid "Hip-Hop"
+msgstr "Hip-Hop"
+
+#: src/plugins/mp3extractor.c:57
+msgid "Jazz"
+msgstr "Jazz"
+
+#: src/plugins/mp3extractor.c:58
+msgid "Metal"
+msgstr "Metal"
+
+#: src/plugins/mp3extractor.c:59
+msgid "New Age"
+msgstr "New Age"
+
+#: src/plugins/mp3extractor.c:60
+msgid "Oldies"
+msgstr "Gamla godingar"
+
+#: src/plugins/mp3extractor.c:61
+msgid "Other"
+msgstr "Övrigt"
+
+#: src/plugins/mp3extractor.c:62
+msgid "Pop"
+msgstr "Pop"
+
+#: src/plugins/mp3extractor.c:63
+msgid "R&B"
+msgstr "R&B"
+
+#: src/plugins/mp3extractor.c:64
+msgid "Rap"
+msgstr "Rap"
+
+#: src/plugins/mp3extractor.c:65
+msgid "Reggae"
+msgstr "Reggae"
+
+#: src/plugins/mp3extractor.c:66
+msgid "Rock"
+msgstr "Rock"
+
+#: src/plugins/mp3extractor.c:67
+msgid "Techno"
+msgstr "Techno"
+
+#: src/plugins/mp3extractor.c:68
+msgid "Industrial"
+msgstr "Industriell"
+
+#: src/plugins/mp3extractor.c:69
+msgid "Alternative"
+msgstr "Alternativ"
+
+#: src/plugins/mp3extractor.c:70
+msgid "Ska"
+msgstr "Ska"
+
+#: src/plugins/mp3extractor.c:71
+msgid "Death Metal"
+msgstr "Death Metal"
+
+#: src/plugins/mp3extractor.c:72
+msgid "Pranks"
+msgstr "Skämt"
+
+#: src/plugins/mp3extractor.c:73
+msgid "Soundtrack"
+msgstr "Soundtrack"
+
+#: src/plugins/mp3extractor.c:74
+msgid "Euro-Techno"
+msgstr "Euro-Techno"
+
+#: src/plugins/mp3extractor.c:75
+msgid "Ambient"
+msgstr "Ambient"
+
+#: src/plugins/mp3extractor.c:76
+msgid "Trip-Hop"
+msgstr "Trip-Hop"
+
+#: src/plugins/mp3extractor.c:77
+msgid "Vocal"
+msgstr "Vocal"
+
+#: src/plugins/mp3extractor.c:78
+msgid "Jazz+Funk"
+msgstr "Jazz+Funk"
+
+#: src/plugins/mp3extractor.c:79
+msgid "Fusion"
+msgstr "Fusion"
+
+#: src/plugins/mp3extractor.c:80
+msgid "Trance"
+msgstr "Trance"
+
+#: src/plugins/mp3extractor.c:81
+msgid "Classical"
+msgstr "Klassisk"
+
+#: src/plugins/mp3extractor.c:82
+msgid "Instrumental"
+msgstr "Instrumental"
+
+#: src/plugins/mp3extractor.c:83
+msgid "Acid"
+msgstr "Acid"
+
+#: src/plugins/mp3extractor.c:84
+msgid "House"
+msgstr "House"
+
+#: src/plugins/mp3extractor.c:85
+msgid "Game"
+msgstr "Spel"
+
+#: src/plugins/mp3extractor.c:86
+msgid "Sound Clip"
+msgstr "Ljudklipp"
+
+#: src/plugins/mp3extractor.c:87
+msgid "Gospel"
+msgstr "Gospel"
+
+#: src/plugins/mp3extractor.c:88
+msgid "Noise"
+msgstr "Noise"
+
+#: src/plugins/mp3extractor.c:89
+msgid "Alt. Rock"
+msgstr "Alt. Rock"
+
+#: src/plugins/mp3extractor.c:90
+msgid "Bass"
+msgstr "Bas"
+
+#: src/plugins/mp3extractor.c:91
+msgid "Soul"
+msgstr "Soul"
+
+#: src/plugins/mp3extractor.c:92
+msgid "Punk"
+msgstr "Punk"
+
+#: src/plugins/mp3extractor.c:93
+msgid "Space"
+msgstr "Space"
+
+#: src/plugins/mp3extractor.c:94
+msgid "Meditative"
+msgstr "Meditativ"
+
+#: src/plugins/mp3extractor.c:95
+msgid "Instrumental Pop"
+msgstr "Instrumental Pop"
+
+#: src/plugins/mp3extractor.c:96
+msgid "Instrumental Rock"
+msgstr "Instrumental Rock"
+
+#: src/plugins/mp3extractor.c:97
+msgid "Ethnic"
+msgstr "Ethnic"
+
+#: src/plugins/mp3extractor.c:98
+msgid "Gothic"
+msgstr "Gothic"
+
+#: src/plugins/mp3extractor.c:99
+msgid "Darkwave"
+msgstr "Darkwave"
+
+#: src/plugins/mp3extractor.c:100
+msgid "Techno-Industrial"
+msgstr "Techno-Industrial"
+
+#: src/plugins/mp3extractor.c:101
+msgid "Electronic"
+msgstr "Elektronisk"
+
+#: src/plugins/mp3extractor.c:102
+msgid "Pop-Folk"
+msgstr "Pop-Folk"
+
+#: src/plugins/mp3extractor.c:103
+msgid "Eurodance"
+msgstr "Eurodance"
+
+#: src/plugins/mp3extractor.c:104
+msgid "Dream"
+msgstr "Dream"
+
+#: src/plugins/mp3extractor.c:105
+msgid "Southern Rock"
+msgstr "Southern Rock"
+
+#: src/plugins/mp3extractor.c:106
+msgid "Comedy"
+msgstr "Komedi"
+
+#: src/plugins/mp3extractor.c:107
+msgid "Cult"
+msgstr "Kult"
+
+#: src/plugins/mp3extractor.c:108
+msgid "Gangsta Rap"
+msgstr "Gangsta Rap"
+
+#: src/plugins/mp3extractor.c:109
+msgid "Top 40"
+msgstr "Topp 40"
+
+#: src/plugins/mp3extractor.c:110
+msgid "Christian Rap"
+msgstr "Kristen rap"
+
+#: src/plugins/mp3extractor.c:111
+msgid "Pop/Funk"
+msgstr "Pop/Funk"
+
+#: src/plugins/mp3extractor.c:112
+msgid "Jungle"
+msgstr "Jungle"
+
+#: src/plugins/mp3extractor.c:113
+msgid "Native American"
+msgstr "Native American"
+
+#: src/plugins/mp3extractor.c:114
+msgid "Cabaret"
+msgstr "Kabaret"
+
+#: src/plugins/mp3extractor.c:115
+msgid "New Wave"
+msgstr "New Wave"
+
+#: src/plugins/mp3extractor.c:116
+msgid "Psychedelic"
+msgstr "Psykadelisk"
+
+#: src/plugins/mp3extractor.c:117
+msgid "Rave"
+msgstr "Rave"
+
+#: src/plugins/mp3extractor.c:118
+msgid "Showtunes"
+msgstr "Showtunes"
+
+#: src/plugins/mp3extractor.c:119
+msgid "Trailer"
+msgstr "Trailer"
+
+#: src/plugins/mp3extractor.c:120
+msgid "Lo-Fi"
+msgstr "Lo-Fi"
+
+#: src/plugins/mp3extractor.c:121
+msgid "Tribal"
+msgstr "Tribal"
+
+#: src/plugins/mp3extractor.c:122
+msgid "Acid Punk"
+msgstr "Acid Punk"
+
+#: src/plugins/mp3extractor.c:123
+msgid "Acid Jazz"
+msgstr "Acid Jazz"
+
+#: src/plugins/mp3extractor.c:124
+msgid "Polka"
+msgstr "Polka"
+
+#: src/plugins/mp3extractor.c:125
+msgid "Retro"
+msgstr "Retro"
+
+#: src/plugins/mp3extractor.c:126
+msgid "Musical"
+msgstr "Musikal"
+
+#: src/plugins/mp3extractor.c:127
+msgid "Rock & Roll"
+msgstr "Rock & Roll"
+
+#: src/plugins/mp3extractor.c:128
+msgid "Hard Rock"
+msgstr "Hårdrock"
+
+#: src/plugins/mp3extractor.c:129
+msgid "Folk"
+msgstr "Folk"
+
+#: src/plugins/mp3extractor.c:130
+msgid "Folk/Rock"
+msgstr "Folk/Rock"
+
+#: src/plugins/mp3extractor.c:131
+msgid "National Folk"
+msgstr "National Folk"
+
+#: src/plugins/mp3extractor.c:132
+msgid "Swing"
+msgstr "Swing"
+
+#: src/plugins/mp3extractor.c:133
+msgid "Fast-Fusion"
+msgstr "Fast-Fusion"
+
+#: src/plugins/mp3extractor.c:134
+msgid "Bebob"
+msgstr "Bebob"
+
+#: src/plugins/mp3extractor.c:135
+msgid "Latin"
+msgstr "Latin"
+
+#: src/plugins/mp3extractor.c:136
+msgid "Revival"
+msgstr "Revival"
+
+#: src/plugins/mp3extractor.c:137
+msgid "Celtic"
+msgstr "Celtic"
+
+#: src/plugins/mp3extractor.c:138
+msgid "Bluegrass"
+msgstr "Bluegrass"
+
+#: src/plugins/mp3extractor.c:139
+msgid "Avantgarde"
+msgstr "Avantgarde"
+
+#: src/plugins/mp3extractor.c:140
+msgid "Gothic Rock"
+msgstr "Gothic Rock"
+
+#: src/plugins/mp3extractor.c:141
+msgid "Progressive Rock"
+msgstr "Progressiv Rock"
+
+#: src/plugins/mp3extractor.c:142
+msgid "Psychedelic Rock"
+msgstr "Psychedelisk Rock"
+
+#: src/plugins/mp3extractor.c:143
+msgid "Symphonic Rock"
+msgstr "Symfonisk rock"
+
+#: src/plugins/mp3extractor.c:144
+msgid "Slow Rock"
+msgstr "Långsam rock"
+
+#: src/plugins/mp3extractor.c:145
+msgid "Big Band"
+msgstr "Storband"
+
+#: src/plugins/mp3extractor.c:146
+msgid "Chorus"
+msgstr "Chorus"
+
+#: src/plugins/mp3extractor.c:147
+msgid "Easy Listening"
+msgstr "Lättsam lyssning"
+
+#: src/plugins/mp3extractor.c:148
+msgid "Acoustic"
+msgstr "Ackustisk"
+
+#: src/plugins/mp3extractor.c:149
+msgid "Humour"
+msgstr "Humor"
+
+#: src/plugins/mp3extractor.c:150
+msgid "Speech"
+msgstr "Tal"
+
+#: src/plugins/mp3extractor.c:151
+msgid "Chanson"
+msgstr "Chanson"
+
+#: src/plugins/mp3extractor.c:152
+msgid "Opera"
+msgstr "Opera"
+
+#: src/plugins/mp3extractor.c:153
+msgid "Chamber Music"
+msgstr "Kammarmusik"
+
+#: src/plugins/mp3extractor.c:154
+msgid "Sonata"
+msgstr "Sonata"
+
+#: src/plugins/mp3extractor.c:155
+msgid "Symphony"
+msgstr "Symfoni"
+
+#: src/plugins/mp3extractor.c:156
+msgid "Booty Bass"
+msgstr "Booty Bass"
+
+#: src/plugins/mp3extractor.c:157
+msgid "Primus"
+msgstr "Primus"
+
+#: src/plugins/mp3extractor.c:158
+msgid "Porn Groove"
+msgstr "Porn Groove"
+
+#: src/plugins/mp3extractor.c:159
+msgid "Satire"
+msgstr "Satir"
+
+#: src/plugins/mp3extractor.c:160
+msgid "Slow Jam"
+msgstr "Slow Jam"
+
+#: src/plugins/mp3extractor.c:161
+msgid "Club"
+msgstr "Club"
+
+#: src/plugins/mp3extractor.c:162
+msgid "Tango"
+msgstr "Tango"
+
+#: src/plugins/mp3extractor.c:163
+msgid "Samba"
+msgstr "Samba"
+
+#: src/plugins/mp3extractor.c:164
+msgid "Folklore"
+msgstr "Folklore"
+
+#: src/plugins/mp3extractor.c:165
+msgid "Ballad"
+msgstr "Ballad"
+
+#: src/plugins/mp3extractor.c:166
+msgid "Power Ballad"
+msgstr "Power Ballad"
+
+#: src/plugins/mp3extractor.c:167
+msgid "Rhythmic Soul"
+msgstr "Rhythmic Soul"
+
+#: src/plugins/mp3extractor.c:168
+msgid "Freestyle"
+msgstr "Freestyle"
+
+#: src/plugins/mp3extractor.c:169
+msgid "Duet"
+msgstr "Duet"
+
+#: src/plugins/mp3extractor.c:170
+msgid "Punk Rock"
+msgstr "Punk Rock"
+
+#: src/plugins/mp3extractor.c:171
+msgid "Drum Solo"
+msgstr "Drum Solo"
+
+#: src/plugins/mp3extractor.c:172
+msgid "A Cappella"
+msgstr "A Cappella"
+
+#: src/plugins/mp3extractor.c:173
+msgid "Euro-House"
+msgstr "Euro-House"
+
+#: src/plugins/mp3extractor.c:174
+msgid "Dance Hall"
+msgstr "Dance Hall"
+
+#: src/plugins/mp3extractor.c:175
+msgid "Goa"
+msgstr "Goa"
+
+#: src/plugins/mp3extractor.c:176
+msgid "Drum & Bass"
+msgstr "Drum & Bass"
+
+#: src/plugins/mp3extractor.c:177
+msgid "Club-House"
+msgstr "Club-House"
+
+#: src/plugins/mp3extractor.c:178
+msgid "Hardcore"
+msgstr "Hardcore"
+
+#: src/plugins/mp3extractor.c:179
+msgid "Terror"
+msgstr "Terror"
+
+#: src/plugins/mp3extractor.c:180
+msgid "Indie"
+msgstr "Indie"
+
+#: src/plugins/mp3extractor.c:181
+msgid "BritPop"
+msgstr "BritPop"
+
+#: src/plugins/mp3extractor.c:182
+msgid "Negerpunk"
+msgstr "Negerpunk"
+
+#: src/plugins/mp3extractor.c:183
+msgid "Polsk Punk"
+msgstr "Polsk Punk"
+
+#: src/plugins/mp3extractor.c:184
+msgid "Beat"
+msgstr "Beat"
+
+#: src/plugins/mp3extractor.c:185
+msgid "Christian Gangsta Rap"
+msgstr "Christian Gangsta Rap"
+
+#: src/plugins/mp3extractor.c:186
+msgid "Heavy Metal"
+msgstr "Heavy Metal"
+
+#: src/plugins/mp3extractor.c:187
+msgid "Black Metal"
+msgstr "Black Metal"
+
+#: src/plugins/mp3extractor.c:188
+msgid "Crossover"
+msgstr "Crossover"
+
+#: src/plugins/mp3extractor.c:189
+msgid "Contemporary Christian"
+msgstr "Contemporary Christian"
+
+#: src/plugins/mp3extractor.c:190
+msgid "Christian Rock"
+msgstr "Kristen rock"
+
+#: src/plugins/mp3extractor.c:191
+msgid "Merengue"
+msgstr "Merengue"
+
+#: src/plugins/mp3extractor.c:192
+msgid "Salsa"
+msgstr "Salsa"
+
+#: src/plugins/mp3extractor.c:193
+msgid "Thrash Metal"
+msgstr "Thrash Metal"
+
+#: src/plugins/mp3extractor.c:194
+msgid "Anime"
+msgstr "Anime"
+
+#: src/plugins/mp3extractor.c:195
+msgid "JPop"
+msgstr "JPop"
+
+#: src/plugins/mp3extractor.c:196
+msgid "Synthpop"
+msgstr "Synthpop"
+
+#: src/plugins/mp3extractor.c:434 src/plugins/wavextractor.c:113
+msgid "stereo"
+msgstr "stereo"
+
+#: src/plugins/mp3extractor.c:434 src/plugins/wavextractor.c:113
+msgid "mono"
+msgstr "mono"
+
+#: src/plugins/mp3extractor.c:435
+msgid "(variable bps)"
+msgstr "(variabel bithastighet)"
+
+#: src/plugins/printable/dictionary-builder.c:97
+#, c-format
+msgid ""
+"Please provide the name of the language you are building\n"
+"a dictionary for.  For example:\n"
+msgstr ""
+"Vänligen ange namnet på det språk du bygger en\n"
+"ordbok för.  Till exempel:\n"
+
+#: src/plugins/printable/dictionary-builder.c:110
+#: src/plugins/printable/dictionary-builder.c:166
+#, c-format
+msgid "Error opening file `%s': %s\n"
+msgstr "Fel vid öppning av fil \"%s\": %s\n"
+
+#: src/plugins/printable/dictionary-builder.c:118
+#, c-format
+msgid ""
+"Error allocating: %s\n"
+"."
+msgstr ""
+"Fel vid allokering: %s\n"
+"."
+
+#: src/plugins/printable/dictionary-builder.c:132
+#, c-format
+msgid "Increase ALLOCSIZE (in %s).\n"
+msgstr "Öka ALLOCSIZE (i %s).\n"
+
+#: src/plugins/riffextractor.c:167
+#, c-format
+msgid "codec: %s, %u fps, %u ms"
+msgstr "kodare: %s, %u bilder/sek, %u ms"
+
+#: src/plugins/rpm/rpmextractor.c:3048
+#, c-format
+msgid "Source RPM %d.%d"
+msgstr "Källkods-RPM %d.%d"
+
+#: src/plugins/rpm/rpmextractor.c:3053
+#, c-format
+msgid "Binary RPM %d.%d"
+msgstr "Binär RPM %d.%d"
+
+#: src/plugins/wordleaker/wordextractor.cc:121
+msgid "No Proofing"
+msgstr ""
+
+#: src/plugins/wordleaker/wordextractor.cc:129
+msgid "Traditional Chinese"
+msgstr ""
+
+#: src/plugins/wordleaker/wordextractor.cc:131
+msgid "Simplified Chinese"
+msgstr ""
+
+#: src/plugins/wordleaker/wordextractor.cc:139
+msgid "Swiss German"
+msgstr ""
+
+#: src/plugins/wordleaker/wordextractor.cc:143
+msgid "U.S. English"
+msgstr ""
+
+#: src/plugins/wordleaker/wordextractor.cc:145
+msgid "U.K. English"
+msgstr ""
+
+#: src/plugins/wordleaker/wordextractor.cc:147
+msgid "Australian English"
+msgstr ""
+
+#: src/plugins/wordleaker/wordextractor.cc:149
+msgid "Castilian Spanish"
+msgstr ""
+
+#: src/plugins/wordleaker/wordextractor.cc:151
+msgid "Mexican Spanish"
+msgstr ""
+
+#: src/plugins/wordleaker/wordextractor.cc:157
+msgid "Belgian French"
+msgstr ""
+
+#: src/plugins/wordleaker/wordextractor.cc:159
+msgid "Canadian French"
+msgstr ""
+
+#: src/plugins/wordleaker/wordextractor.cc:161
+msgid "Swiss French"
+msgstr ""
+
+#: src/plugins/wordleaker/wordextractor.cc:171
+msgid "Swiss Italian"
+msgstr ""
+
+#: src/plugins/wordleaker/wordextractor.cc:179
+msgid "Belgian Dutch"
+msgstr ""
+
+#: src/plugins/wordleaker/wordextractor.cc:181
+msgid "Norwegian Bokmal"
+msgstr ""
+
+#: src/plugins/wordleaker/wordextractor.cc:191
+msgid "Rhaeto-Romanic"
+msgstr ""
+
+#: src/plugins/wordleaker/wordextractor.cc:197
+msgid "Croato-Serbian (Latin)"
+msgstr ""
+
+#: src/plugins/wordleaker/wordextractor.cc:199
+msgid "Serbo-Croatian (Cyrillic)"
+msgstr ""
+
+#: src/plugins/wordleaker/wordextractor.cc:227
+msgid "Farsi"
+msgstr ""
+
+#: src/plugins/wordleaker/wordextractor.cc:412
+#: src/plugins/wordleaker/wordextractor.cc:423
+#, c-format
+msgid "%s (Build %s)"
+msgstr ""
+
+#: src/plugins/wordleaker/wordextractor.cc:468
+#, c-format
+msgid "Revision #%u: Author '%s' worked on '%s'"
+msgstr ""
+
+#~ msgid "Please provide a list of klp files as arguments.\n"
+#~ msgstr "Vänligen ange en lista av klp-filer som argument.\n"
