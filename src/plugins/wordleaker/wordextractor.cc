@@ -31,6 +31,7 @@
 #include "wordleaker.h"
 #include "pole.h"
 
+#define __(a) dgettext("iso-639", a)
 
 extern "C" {
 
@@ -119,25 +120,25 @@ extern "C" {
     case 0x0400: 
       return _("No Proofing");
     case 0x0401: 
-      return _("Arabic");
+      return __("Arabic");
     case 0x0402:
-      return _("Bulgarian");
+      return __("Bulgarian");
     case 0x0403:
-      return _("Catalan");
+      return __("Catalan");
     case 0x0404:
       return _("Traditional Chinese");
     case 0x0804:
       return _("Simplified Chinese");
     case 0x0405:
-      return _("Czech");
+      return __("Chechen");
     case 0x0406:
-      return _("Danish");
+      return __("Danish");
     case 0x0407:
-      return _("German");
+      return __("German");
     case 0x0807:
       return _("Swiss German");
     case 0x0408:
-      return _("Greek");
+      return __("Greek");
     case 0x0409:
       return _("U.S. English");
     case 0x0809:
@@ -149,9 +150,9 @@ extern "C" {
     case 0x080a:
       return _("Mexican Spanish");
     case 0x040b:
-      return _("Finnish");
+      return __("Finnish");
     case 0x040c:
-      return _("French");
+      return __("French");
     case 0x080c:
       return _("Belgian French");
     case 0x0c0c:
@@ -159,79 +160,79 @@ extern "C" {
     case 0x100c:
       return _("Swiss French");
     case 0x040d:
-      return _("Hebrew");
+      return __("Hebrew");
     case 0x040e:
-      return _("Hungarian");
+      return __("Hungarian");
     case 0x040f:
-      return _("Icelandic");
+      return __("Icelandic");
     case 0x0410:
-      return _("Italian");
+      return __("Italian");
     case 0x0810:
       return _("Swiss Italian");
     case 0x0411:
-      return _("Japanese");
+      return __("Japanese");
     case 0x0412:
-      return _("Korean");
+      return __("Korean");
     case 0x0413:
-      return _("Dutch");
+      return __("Dutch");
     case 0x0813:
       return _("Belgian Dutch");
     case 0x0414:
-      return _("Norwegian - Bokmal");
+      return _("Norwegian Bokmal");
     case 0x0814:
-      return _("Norwegian - Nynorsk");
+      return __("Norwegian Nynorsk");
     case 0x0415:
-      return _("Polish");
+      return __("Polish");
     case 0x0416:
-      return _("Brazilian Portuguese");
+      return __("Brazilian Portuguese");
     case 0x0816:
-      return _("Portuguese");
+      return __("Portuguese");
     case 0x0417:
       return _("Rhaeto-Romanic");
     case 0x0418:
-      return _("Romanian");
+      return __("Romanian");
     case 0x0419:
-      return _("Russian");
+      return __("Russian");
     case 0x041a:
       return _("Croato-Serbian (Latin)");
     case 0x081a:
       return _("Serbo-Croatian (Cyrillic)");
     case 0x041b:
-      return _("Slovak");
+      return __("Slovak");
     case 0x041c:
-      return _("Albanian");
+      return __("Albanian");
     case 0x041d:
-      return _("Swedish");
+      return __("Swedish");
     case 0x041e:
-      return _("Thai");
+      return __("Thai");
     case 0x041f:
-      return _("Turkish");
+      return __("Turkish");
     case 0x0420:
-      return _("Urdu");
+      return __("Urdu");
     case 0x0421:
-      return _("Bahasa"); 
+      return __("Bahasa"); 
     case 0x0422:
-      return _("Ukrainian");
+      return __("Ukrainian");
     case 0x0423:
-      return _("Byelorussian");
+      return __("Byelorussian");
     case 0x0424:
-      return _("Slovenian");
+      return __("Slovenian");
     case 0x0425:
-      return _("Estonian");
+      return __("Estonian");
     case 0x0426:
-      return _("Latvian");
+      return __("Latvian");
     case 0x0427:
-      return _("Lithuanian");
+      return __("Lithuanian");
     case 0x0429:
       return _("Farsi");
     case 0x042D:
-      return _("Basque");
+      return __("Basque");
     case 0x042F:
-      return _("Macedonian");
+      return __("Macedonian");
     case 0x0436:
-      return _("Afrikaans");
+      return __("Afrikaans");
     case 0x043E:
-      return _("Malaysian");  
+      return __("Malayalam");  
     default:
       return NULL;
     }

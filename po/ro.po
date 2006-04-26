@@ -7,10 +7,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: libextractor 0.4.2\n"
+"Project-Id-Version: libextractor 0.5.3\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2006-04-22 11:52-0700\n"
-"PO-Revision-Date: 2005-02-25 12:00-0500\n"
+"POT-Creation-Date: 2006-04-26 10:20-0700\n"
+"PO-Revision-Date: 2005-08-16 12:00-0500\n"
 "Last-Translator: Laurentiu Buzdugan <lbuz@rolix.org>\n"
 "Language-Team: Romanian <translation-team-ro@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -122,12 +122,12 @@ msgstr "extract [OPÞIUNI] [NUME_FIªIER]*"
 msgid "Extract metadata from files."
 msgstr "Extrage metadata din fiºiere."
 
-#: src/main/extract.c:198 src/main/extractor.c:1136
+#: src/main/extract.c:198 src/main/extractor.c:1137
 #, c-format
 msgid "%s - (binary)\n"
 msgstr "%s - (binar)\n"
 
-#: src/main/extract.c:204 src/main/extractor.c:1141
+#: src/main/extract.c:204 src/main/extractor.c:1142
 #, c-format
 msgid "INVALID TYPE - %s\n"
 msgstr "TIP INVALID - %s\n"
@@ -181,10 +181,10 @@ msgid "page count"
 msgstr "numãr de pagini"
 
 #: src/main/extract.c:474
-#, c-format
+#, fuzzy, c-format
 msgid "You must specify an argument for the `%s' option (option ignored).\n"
 msgstr ""
-"Trebuie sã specificaþi un argument pentru opþiunea `%s' (opþiune ignoratã).\n"
+"Trebuie sã specificaþi un argument pentru opþiunea '%s' (opþiune ignoratã).\n"
 
 #: src/main/extract.c:541
 #, c-format
@@ -438,74 +438,72 @@ msgid "binary thumbnail data"
 msgstr "data thumbnail binar"
 
 #: src/main/extractor.c:115
-#, fuzzy
 msgid "publication date"
-msgstr "data creãrii"
+msgstr "data publicãrii"
 
 #: src/main/extractor.c:116
 msgid "camera make"
-msgstr ""
+msgstr "producãtor"
 
 #: src/main/extractor.c:117
 msgid "camera model"
-msgstr ""
+msgstr "model de camerã"
 
 #: src/main/extractor.c:118
 msgid "exposure"
-msgstr ""
+msgstr "expunere"
 
 #: src/main/extractor.c:119
 msgid "aperture"
-msgstr ""
+msgstr "aperturã"
 
 #: src/main/extractor.c:120
 msgid "exposure bias"
-msgstr ""
+msgstr "predilecþie expunere"
 
 #: src/main/extractor.c:121
 msgid "flash"
-msgstr ""
+msgstr "bliþ"
 
 #: src/main/extractor.c:122
 msgid "flash bias"
-msgstr ""
+msgstr "predilecþie bliþ"
 
 #: src/main/extractor.c:123
 msgid "focal length"
-msgstr ""
+msgstr "lungime focalã"
 
 #: src/main/extractor.c:124
 msgid "focal length (35mm equivalent)"
-msgstr ""
+msgstr "lungime focalã (echivalent 35mm)"
 
 #: src/main/extractor.c:125
 msgid "iso speed"
-msgstr ""
+msgstr "valoare iso"
 
 #: src/main/extractor.c:126
 msgid "exposure mode"
-msgstr ""
+msgstr "mod expunere"
 
 #: src/main/extractor.c:127
 msgid "metering mode"
-msgstr ""
+msgstr "mod de mãsurare"
 
 #: src/main/extractor.c:128
 msgid "macro mode"
-msgstr ""
+msgstr "mod macro"
 
 #: src/main/extractor.c:129
 msgid "image quality"
-msgstr ""
+msgstr "calitate imagine"
 
 #: src/main/extractor.c:130
 msgid "white balance"
-msgstr ""
+msgstr "balanþã alb"
 
 #: src/main/extractor.c:131
-#, fuzzy
 msgid "orientation"
-msgstr "orientare paginã"
+msgstr "orientare"
 
 #: src/main/extractor.c:132
 #, fuzzy
@@ -568,29 +566,29 @@ msgstr ""
 msgid "lower case conversion"
 msgstr ""
 
-#: src/main/extractor.c:240
+#: src/main/extractor.c:241
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "iniþializare mecanismului de plugin a eºuat: %s!\n"
 
-#: src/main/extractor.c:389
-#, c-format
+#: src/main/extractor.c:390
+#, fuzzy, c-format
 msgid ""
 "Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
 "failed also.  Errors are: `%s' and `%s'.\n"
 msgstr ""
-"Rezolvarea simbolului `%s' în biblioteca `%s' a eºuat, aºa cã am încercat '%"
-"s', dar ºi acesta a eºuat.  Erorile sunt: `%s' ºi `%s'.\n"
+"Rezolvarea simbolului '%s' în biblioteca '%s' a eºuat, aºa cã am încercat '%"
+"s', dar ºi acesta a eºuat.  Erorile sunt: '%s' ºi '%s'.\n"
 
-#: src/main/extractor.c:418
-#, c-format
+#: src/main/extractor.c:419
+#, fuzzy, c-format
 msgid "Loading `%s' plugin failed: %s\n"
-msgstr "Încãrcarea plugin-ului `%s' a eºuat: %s\n"
+msgstr "Încãrcarea plugin-ului '%s' a eºuat: %s\n"
 
-#: src/main/extractor.c:623
-#, c-format
+#: src/main/extractor.c:624
+#, fuzzy, c-format
 msgid "Unloading plugin `%s' failed!\n"
-msgstr "Descãrcarea plugin-ului `%s' a eºuat!\n"
+msgstr "Descãrcarea plugin-ului '%s' a eºuat!\n"
 
 #: src/main/getopt.c:681
 #, c-format
@@ -1313,9 +1311,9 @@ msgstr ""
 
 #: src/plugins/printable/dictionary-builder.c:110
 #: src/plugins/printable/dictionary-builder.c:166
-#, c-format
+#, fuzzy, c-format
 msgid "Error opening file `%s': %s\n"
-msgstr "Eroare deschidere fiºier `%s': %s\n"
+msgstr "Eroare deschidere fiºier '%s': %s\n"
 
 #: src/plugins/printable/dictionary-builder.c:118
 #, c-format
@@ -1346,251 +1344,89 @@ msgstr "Sursã RPM %d.%d"
 msgid "Binary RPM %d.%d"
 msgstr "Binar RPM %d.%d"
 
-#: src/plugins/wordleaker/wordextractor.cc:120
+#: src/plugins/wordleaker/wordextractor.cc:121
 msgid "No Proofing"
 msgstr ""
 
-#: src/plugins/wordleaker/wordextractor.cc:122
-msgid "Arabic"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:124
-msgid "Bulgarian"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:126
-msgid "Catalan"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:128
+#: src/plugins/wordleaker/wordextractor.cc:129
 msgid "Traditional Chinese"
 msgstr ""
 
-#: src/plugins/wordleaker/wordextractor.cc:130
+#: src/plugins/wordleaker/wordextractor.cc:131
 msgid "Simplified Chinese"
 msgstr ""
 
-#: src/plugins/wordleaker/wordextractor.cc:132
-msgid "Czech"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:134
-msgid "Danish"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:136
-msgid "German"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:138
+#: src/plugins/wordleaker/wordextractor.cc:139
 msgid "Swiss German"
 msgstr ""
 
-#: src/plugins/wordleaker/wordextractor.cc:140
-msgid "Greek"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:142
+#: src/plugins/wordleaker/wordextractor.cc:143
 msgid "U.S. English"
 msgstr ""
 
-#: src/plugins/wordleaker/wordextractor.cc:144
+#: src/plugins/wordleaker/wordextractor.cc:145
 msgid "U.K. English"
 msgstr ""
 
-#: src/plugins/wordleaker/wordextractor.cc:146
+#: src/plugins/wordleaker/wordextractor.cc:147
 msgid "Australian English"
 msgstr ""
 
-#: src/plugins/wordleaker/wordextractor.cc:148
+#: src/plugins/wordleaker/wordextractor.cc:149
 msgid "Castilian Spanish"
 msgstr ""
 
-#: src/plugins/wordleaker/wordextractor.cc:150
+#: src/plugins/wordleaker/wordextractor.cc:151
 msgid "Mexican Spanish"
 msgstr ""
 
-#: src/plugins/wordleaker/wordextractor.cc:152
-msgid "Finnish"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:154
-msgid "French"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:156
+#: src/plugins/wordleaker/wordextractor.cc:157
 msgid "Belgian French"
 msgstr ""
 
-#: src/plugins/wordleaker/wordextractor.cc:158
+#: src/plugins/wordleaker/wordextractor.cc:159
 msgid "Canadian French"
 msgstr ""
 
-#: src/plugins/wordleaker/wordextractor.cc:160
+#: src/plugins/wordleaker/wordextractor.cc:161
 msgid "Swiss French"
 msgstr ""
 
-#: src/plugins/wordleaker/wordextractor.cc:162
-msgid "Hebrew"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:164
-msgid "Hungarian"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:166
-msgid "Icelandic"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:168
-msgid "Italian"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:170
+#: src/plugins/wordleaker/wordextractor.cc:171
 msgid "Swiss Italian"
 msgstr ""
 
-#: src/plugins/wordleaker/wordextractor.cc:172
-msgid "Japanese"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:174
-msgid "Korean"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:176
-#, fuzzy
-msgid "Dutch"
-msgstr "Duet"
-
-#: src/plugins/wordleaker/wordextractor.cc:178
+#: src/plugins/wordleaker/wordextractor.cc:179
 msgid "Belgian Dutch"
 msgstr ""
 
-#: src/plugins/wordleaker/wordextractor.cc:180
-msgid "Norwegian - Bokmal"
+#: src/plugins/wordleaker/wordextractor.cc:181
+msgid "Norwegian Bokmal"
 msgstr ""
 
-#: src/plugins/wordleaker/wordextractor.cc:182
-msgid "Norwegian - Nynorsk"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:184
-msgid "Polish"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:186
-msgid "Brazilian Portuguese"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:188
-msgid "Portuguese"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:190
+#: src/plugins/wordleaker/wordextractor.cc:191
 msgid "Rhaeto-Romanic"
 msgstr ""
 
-#: src/plugins/wordleaker/wordextractor.cc:192
-#, fuzzy
-msgid "Romanian"
-msgstr "organizaþie"
-
-#: src/plugins/wordleaker/wordextractor.cc:194
-#, fuzzy
-msgid "Russian"
-msgstr "Fusion"
-
-#: src/plugins/wordleaker/wordextractor.cc:196
+#: src/plugins/wordleaker/wordextractor.cc:197
 msgid "Croato-Serbian (Latin)"
 msgstr ""
 
-#: src/plugins/wordleaker/wordextractor.cc:198
+#: src/plugins/wordleaker/wordextractor.cc:199
 msgid "Serbo-Croatian (Cyrillic)"
 msgstr ""
 
-#: src/plugins/wordleaker/wordextractor.cc:200
-msgid "Slovak"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:202
-msgid "Albanian"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:204
-msgid "Swedish"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:206
-msgid "Thai"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:208
-msgid "Turkish"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:210
-msgid "Urdu"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:212
-#, fuzzy
-msgid "Bahasa"
-msgstr "Bass"
-
-#: src/plugins/wordleaker/wordextractor.cc:214
-msgid "Ukrainian"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:216
-msgid "Byelorussian"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:218
-msgid "Slovenian"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:220
-msgid "Estonian"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:222
-#, fuzzy
-msgid "Latvian"
-msgstr "Latin"
-
-#: src/plugins/wordleaker/wordextractor.cc:224
-msgid "Lithuanian"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:226
+#: src/plugins/wordleaker/wordextractor.cc:227
 msgid "Farsi"
 msgstr ""
 
-#: src/plugins/wordleaker/wordextractor.cc:228
-#, fuzzy
-msgid "Basque"
-msgstr "Bass"
-
-#: src/plugins/wordleaker/wordextractor.cc:230
-msgid "Macedonian"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:232
-msgid "Afrikaans"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:234
-msgid "Malaysian"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:411
-#: src/plugins/wordleaker/wordextractor.cc:422
+#: src/plugins/wordleaker/wordextractor.cc:412
+#: src/plugins/wordleaker/wordextractor.cc:423
 #, c-format
 msgid "%s (Build %s)"
 msgstr ""
 
-#: src/plugins/wordleaker/wordextractor.cc:467
+#: src/plugins/wordleaker/wordextractor.cc:468
 #, c-format
 msgid "Revision #%u: Author '%s' worked on '%s'"
 msgstr ""
@@ -1599,7 +1435,7 @@ msgstr ""
 #~ msgstr "Fatal: nu am putut aloca (%s la %s:%d).\n"
 
 #~ msgid "No error"
-#~ msgstr "Ni o eroare"
+#~ msgstr "Nici o eroare"
 
 #~ msgid "Unknown host"
 #~ msgstr "Gazdã necunoscutã"

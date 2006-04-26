@@ -231,6 +231,7 @@ void __attribute__ ((constructor)) le_ltdl_init(void) {
 #if ENABLE_NLS
   setlocale(LC_ALL, "");
   BINDTEXTDOMAIN(PACKAGE, LOCALEDIR);
+  BINDTEXTDOMAIN("iso-639", ISOLOCALEDIR); /* used by wordextractor */
 #endif
   err = lt_dlinit ();
   if (err > 0)
