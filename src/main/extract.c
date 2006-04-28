@@ -196,7 +196,7 @@ printSelectedKeywords(FILE * handle,
     if (keywords->keywordType == EXTRACTOR_THUMBNAIL_DATA) {
       fprintf (handle,
 	       _("%s - (binary)\n"),
-	       EXTRACTOR_getKeywordTypeAsString(keywords->keywordType));
+	       _(EXTRACTOR_getKeywordTypeAsString(keywords->keywordType)));
     } else {
       if (NULL == EXTRACTOR_getKeywordTypeAsString(keywords->keywordType)) {
 	if (verbose == YES) {
@@ -207,7 +207,7 @@ printSelectedKeywords(FILE * handle,
       } else if (print[keywords->keywordType] == YES)
 	fprintf (handle,
 		 "%s - %s\n",
-		 EXTRACTOR_getKeywordTypeAsString(keywords->keywordType),
+		 _(EXTRACTOR_getKeywordTypeAsString(keywords->keywordType)),
 		 keyword);
     }
     free(keyword);
@@ -463,7 +463,8 @@ main (int argc, char *argv[])
 	case 'L':
 	  i = 0;
 	  while (NULL != EXTRACTOR_getKeywordTypeAsString (i))
-	    printf ("%s\n", EXTRACTOR_getKeywordTypeAsString (i++));
+	    printf ("%s\n", 
+		    _(EXTRACTOR_getKeywordTypeAsString (i++)));
 	  return 0;
 	case 'n':
 	  nodefault = YES;
@@ -485,7 +486,9 @@ main (int argc, char *argv[])
 	  i = 0;
 	  while (NULL != EXTRACTOR_getKeywordTypeAsString (i))
 	    {
-	      if (0 == strcmp (optarg, EXTRACTOR_getKeywordTypeAsString (i)))
+	      if ( (0 == strcmp (optarg, EXTRACTOR_getKeywordTypeAsString (i))) ||
+		   (0 == strcmp (optarg, _(EXTRACTOR_getKeywordTypeAsString (i)))) )
+		   
 		{
 		  print[i] = YES;
 		  break;
@@ -517,7 +520,8 @@ main (int argc, char *argv[])
 	  i = 0;
 	  while (NULL != EXTRACTOR_getKeywordTypeAsString (i))
 	    {
-	      if (0 == strcmp (optarg, EXTRACTOR_getKeywordTypeAsString (i)))
+	      if ( (0 == strcmp (optarg, EXTRACTOR_getKeywordTypeAsString (i))) ||
+		   (0 == strcmp (optarg, _(EXTRACTOR_getKeywordTypeAsString (i)))) )
 		{
 		  print[i] = NO;
 		  break;

@@ -34,37 +34,44 @@ linux*)
      AC_DEFINE(LINUX,1,[This is a Linux system])
      AC_DEFINE_UNQUOTED(LINUX,1,[This is a LINUX system])
      AM_CONDITIONAL(HAVE_GNU_LD, true)    
+     AM_CONDITIONAL(SOMEBSD, false)
      XTRA_CPPLIBS=-lstdc++
      ;;
 freebsd*)
      AC_DEFINE_UNQUOTED(SOMEBSD,1,[This is a BSD system])
      AC_CHECK_LIB(c_r, pthread_create)
      AM_CONDITIONAL(HAVE_GNU_LD, true)
+     AM_CONDITIONAL(SOMEBSD, true)
      ;;
 openbsd*)
      AC_DEFINE_UNQUOTED(SOMEBSD,1,[This is a BSD system])
      AC_CHECK_LIB(c_r, pthread_create)
      AM_CONDITIONAL(HAVE_GNU_LD, true)
+     AM_CONDITIONAL(SOMEBSD, true)
      ;;
 netbsd*)
      AC_DEFINE_UNQUOTED(SOMEBSD,1,[This is a BSD system])
      AC_CHECK_LIB(c_r, pthread_create)
      AM_CONDITIONAL(HAVE_GNU_LD, true)
+     AM_CONDITIONAL(SOMEBSD, true)
      ;;
 *solaris*)
      AC_DEFINE_UNQUOTED(SOLARIS,1,[This is a Solaris system])
      AC_CHECK_LIB(resolv, res_init)
      XTRA_CPPLIBS=-lstdc++
      AM_CONDITIONAL(HAVE_GNU_LD, false)
+     AM_CONDITIONAL(SOMEBSD, false)
      CFLAGS="-D_POSIX_PTHREAD_SEMANTICS $CFLAGS"
      ;;
 darwin*)
      AC_DEFINE_UNQUOTED(DARWIN,1,[This is a Darwin system])
      AM_CONDITIONAL(HAVE_GNU_LD, false)
+     AM_CONDITIONAL(SOMEBSD, false)
      ;;
 cygwin*)
      AC_DEFINE_UNQUOTED(CYGWIN,1,[This is a CYGWIN system])
      LDFLAGS="$LDFLAGS -no-undefined"
+     AM_CONDITIONAL(SOMEBSD, false)
      AM_CONDITIONAL(HAVE_GNU_LD, false)
      ;;
 mingw*)
@@ -75,12 +82,14 @@ mingw*)
      AC_CHECK_LIB(plibc, plibc_init,,[AC_MSG_ERROR([libextractor requires PlibC])])
      LDFLAGS="$LDFLAGS -no-undefined -Wl,--export-all-symbols"
      AM_CONDITIONAL(HAVE_GNU_LD, true)
+     AM_CONDITIONAL(SOMEBSD, false)
      ;;
 *)
      AC_MSG_RESULT(Unrecognised OS $host_os)
      AC_DEFINE_UNQUOTED(OTHEROS,1,[Some strange OS])
      AC_MSG_RESULT(otheros)
      AM_CONDITIONAL(HAVE_GNU_LD, false)
+     AM_CONDITIONAL(SOMEBSD, false)
      ;;
 esac
 
@@ -111,6 +120,7 @@ AC_FUNC_FSEEKO
 
 AM_CONDITIONAL(CYGWIN, test "$build_os" = "cygwin")
 AM_CONDITIONAL(MINGW, test "$build_os" = "mingw32")
+
 
 # use '-fno-strict-aliasing', but only if the compiler can take it
 if gcc -fno-strict-aliasing -S -o /dev/null -xc /dev/null >/dev/null 2>&1; 

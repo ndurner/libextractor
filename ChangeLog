@@ -1,3 +1,11 @@
+Fri Apr 28 16:18:26 PDT 2006
+	Fixing some i18n issues.  Specifically, EXTRACTOR_getKeywordTypeAsString
+	will now never return the translated version of the keyword type
+	(before, it *sometimes* returned the translated version, depending on
+	the default gettext domain and translation availability).  If translation
+	is desired, clients should use 'dgettext("libextractor", ret-value)' to
+	translate the returned value.
+
 Wed Apr 26 12:20:00 PDT 2006
 	Some improvements for OpenBSD portability.
 

@@ -358,7 +358,7 @@ const char *
 EXTRACTOR_getKeywordTypeAsString(const EXTRACTOR_KeywordType type)
 {
   if ((type >= 0) && (type < HIGHEST_TYPE_NUMBER))
-    return gettext(keywordTypes[type]);
+    return keywordTypes[type];
   else
     return NULL;
 }
@@ -1135,7 +1135,7 @@ EXTRACTOR_printKeywords(FILE * handle,
       if (keywords->keywordType == EXTRACTOR_THUMBNAIL_DATA) {
 	fprintf(handle,
 		_("%s - (binary)\n"),
-		gettext(keywordTypes[keywords->keywordType]));
+		_(keywordTypes[keywords->keywordType]));
       } else {
 	if (keywords->keywordType >= HIGHEST_TYPE_NUMBER)
 	  fprintf(handle,
@@ -1144,7 +1144,7 @@ EXTRACTOR_printKeywords(FILE * handle,
 	else
 	  fprintf(handle,
 		  "%s - %s\n",
-		  gettext(keywordTypes[keywords->keywordType]),
+		  _(keywordTypes[keywords->keywordType]),
 		  buf);
       }
       free(buf);
@@ -1212,14 +1212,15 @@ EXTRACTOR_extractLastByString (const char * type,
 			       EXTRACTOR_KeywordList * keywords)
 {
   char * result = NULL;
-  if ( type == NULL )
-    return result;
-  while (keywords != NULL )
-    {
-      if ( !strcmp(gettext(keywordTypes[keywords->keywordType]), type) )
-	result = keywords->keyword;
-      keywords = keywords->next;
-    }
+
+  if (type == NULL)
+    return NULL;
+  while (keywords != NULL) {
+    if ( (0 == strcmp(_(keywordTypes[keywords->keywordType]), type)) ||
+	 (0 == strcmp(keywordTypes[keywords->keywordType], type) ) )
+      result = keywords->keyword;
+    keywords = keywords->next;
+  }
   return result;
 }
 
