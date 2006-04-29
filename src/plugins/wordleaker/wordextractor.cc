@@ -22,14 +22,14 @@
      the README file in this directory.
  */
 
-#include "platform.h"
-#include "extractor.h"
-#include "../convert.h"
 #include <math.h>
 #include <time.h>
 
 #include "wordleaker.h"
 #include "pole.h"
+#include "platform.h"
+#include "extractor.h"
+#include "../convert.h"
 
 #define __(a) dgettext("iso-639", a)
 

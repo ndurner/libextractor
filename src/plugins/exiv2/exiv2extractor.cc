@@ -23,19 +23,18 @@
   @date    30-Jun-05, ahu: created
 */
 
-#include "platform.h"
-#include "extractor.h"
-
-#include "exif.hpp"
-#include "image.hpp"
-#include "futils.hpp"
-
 #include <iostream>
 #include <iomanip>
 #include <cassert>
 #include <cstring>
 #include <math.h>
 
+#include "platform.h"
+#include "extractor.h"
+
+#include "exif.hpp"
+#include "image.hpp"
+#include "futils.hpp"
 
 #define WORKAROUND_905 1
 #if WORKAROUND_905
