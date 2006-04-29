@@ -69,8 +69,6 @@ src/main/getopt.h
 src/plugins/convert.h
 src/plugins/exiv2/exv_msvc.h
 src/plugins/exiv2/exv_conf.h
-src/plugins/wordleaker/pole.h
-src/plugins/wordleaker/wordleaker.h
 src/plugins/pack.h
 src/plugins/pdf/Array.h
 src/plugins/pdf/Catalog.h
@@ -105,7 +103,6 @@ src/plugins/printable/bloomfilter-def.h
 src/plugins/printable/sha1.h
 src/plugins/printable/printableextractor.h
 src/plugins/exiv2/exiv2extractor.cc
-src/plugins/wordleaker/wordextractor.cc
 src/plugins/pdf/Array.cc
 src/plugins/pdf/Catalog.cc
 src/plugins/pdf/Decrypt.cc
@@ -151,8 +148,6 @@ src/plugins/exiv2/makernote.cpp
 src/plugins/exiv2/image.cpp
 src/plugins/exiv2/canonmn.cpp
 src/plugins/exiv2/sigmamn.cpp
-src/plugins/wordleaker/pole.cpp
-src/plugins/wordleaker/wordleaker.cpp
 src/plugins/exiv2/error.hpp
 src/plugins/exiv2/tags.hpp
 src/plugins/exiv2/nikonmn.hpp

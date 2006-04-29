@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.4.2\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2006-04-26 10:20-0700\n"
+"POT-Creation-Date: 2006-04-28 22:42-0700\n"
 "PO-Revision-Date: 2005-04-04 10:55-0700\n"
 "Last-Translator: Steven Michael Murphy <murf@e-tools.com>\n"
 "Language-Team: Kinyarwanda <translation-team-rw@lists.sourceforge.net>\n"
@@ -130,12 +130,12 @@ msgstr ""
 msgid "Extract metadata from files."
 msgstr "Bivuye Idosiye"
 
-#: src/main/extract.c:198 src/main/extractor.c:1137
+#: src/main/extract.c:198 src/main/extractor.c:1144
 #, fuzzy, c-format
 msgid "%s - (binary)\n"
 msgstr "%s-(Nyabibiri"
 
-#: src/main/extract.c:204 src/main/extractor.c:1142
+#: src/main/extract.c:204 src/main/extractor.c:1149
 #, c-format
 msgid "INVALID TYPE - %s\n"
 msgstr ""
@@ -211,22 +211,22 @@ msgstr "Ikivugwaho"
 msgid "page count"
 msgstr "Kubara amapaje"
 
-#: src/main/extract.c:474
+#: src/main/extract.c:475
 #, fuzzy, c-format
 msgid "You must specify an argument for the `%s' option (option ignored).\n"
 msgstr "kugirango i Ihitamo Ihitamo"
 
-#: src/main/extract.c:541
+#: src/main/extract.c:545
 #, fuzzy, c-format
 msgid "Use --help to get a list of options.\n"
 msgstr "Ifashayobora Kuri Kubona a Urutonde Bya Amahitamo"
 
-#: src/main/extract.c:600
+#: src/main/extract.c:604
 #, c-format
 msgid "%% BiBTeX file\n"
 msgstr ""
 
-#: src/main/extract.c:617
+#: src/main/extract.c:621
 #, fuzzy, c-format
 msgid "Keywords for file %s:\n"
 msgstr "kugirango IDOSIYE"
@@ -417,7 +417,7 @@ msgid "build-host"
 msgstr "Ubuturo"
 
 #: src/main/extractor.c:94
-msgid "os"
+msgid "operating system"
 msgstr ""
 
 #: src/main/extractor.c:95
@@ -700,24 +700,64 @@ msgstr ""
 msgid "lower case conversion"
 msgstr ""
 
-#: src/main/extractor.c:241
+#: src/main/extractor.c:146
+msgid "company"
+msgstr ""
+
+#: src/main/extractor.c:147
+msgid "generator"
+msgstr ""
+
+# sw/source\ui\inc\swmn.hrc:_MN_INS.MN_SUB_FIELD.FN_INSERT_FLD_PGCOUNT.text
+#: src/main/extractor.c:148
+#, fuzzy
+msgid "character set"
+msgstr "Kubara amapaje"
+
+# sw/source\ui\inc\swmn.hrc:_MN_INS.MN_SUB_FIELD.FN_INSERT_FLD_PGCOUNT.text
+#: src/main/extractor.c:149
+#, fuzzy
+msgid "line count"
+msgstr "Kubara amapaje"
+
+# sw/source\ui\inc\swmn.hrc:_MN_INS.MN_SUB_FIELD.FN_INSERT_FLD_PGCOUNT.text
+#: src/main/extractor.c:150
+#, fuzzy
+msgid "paragraph count"
+msgstr "Kubara amapaje"
+
+#: src/main/extractor.c:151
+msgid "editing cycles"
+msgstr ""
+
+#: src/main/extractor.c:152
+msgid "scale"
+msgstr ""
+
+# sc/source\ui\src\sortdlg.src:RID_SCPAGE_SORT_OPTIONS.FT_LANGUAGE.text
+#: src/main/extractor.c:153
+#, fuzzy
+msgid "manager"
+msgstr "Ururimi"
+
+#: src/main/extractor.c:248
 #, fuzzy, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "Bya Byanze"
 
-#: src/main/extractor.c:390
+#: src/main/extractor.c:397
 #, fuzzy, c-format
 msgid ""
 "Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
 "failed also.  Errors are: `%s' and `%s'.\n"
 msgstr "IKIMENYETSO in Isomero Byanze Byanze Na"
 
-#: src/main/extractor.c:419
+#: src/main/extractor.c:426
 #, fuzzy, c-format
 msgid "Loading `%s' plugin failed: %s\n"
 msgstr "Byanze"
 
-#: src/main/extractor.c:624
+#: src/main/extractor.c:631
 #, fuzzy, c-format
 msgid "Unloading plugin `%s' failed!\n"
 msgstr "Byanze"
@@ -1440,6 +1480,87 @@ msgstr ""
 msgid "(variable bps)"
 msgstr "(IMPINDURAGACIRO"
 
+#: src/plugins/ole2/ole2extractor.c:257
+msgid "No Proofing"
+msgstr ""
+
+#: src/plugins/ole2/ole2extractor.c:265
+msgid "Traditional Chinese"
+msgstr ""
+
+#: src/plugins/ole2/ole2extractor.c:267
+msgid "Simplified Chinese"
+msgstr ""
+
+#: src/plugins/ole2/ole2extractor.c:275
+msgid "Swiss German"
+msgstr ""
+
+#: src/plugins/ole2/ole2extractor.c:279
+msgid "U.S. English"
+msgstr ""
+
+#: src/plugins/ole2/ole2extractor.c:281
+msgid "U.K. English"
+msgstr ""
+
+#: src/plugins/ole2/ole2extractor.c:283
+msgid "Australian English"
+msgstr ""
+
+#: src/plugins/ole2/ole2extractor.c:285
+msgid "Castilian Spanish"
+msgstr ""
+
+#: src/plugins/ole2/ole2extractor.c:287
+msgid "Mexican Spanish"
+msgstr ""
+
+#: src/plugins/ole2/ole2extractor.c:293
+msgid "Belgian French"
+msgstr ""
+
+#: src/plugins/ole2/ole2extractor.c:295
+msgid "Canadian French"
+msgstr ""
+
+#: src/plugins/ole2/ole2extractor.c:297
+msgid "Swiss French"
+msgstr ""
+
+#: src/plugins/ole2/ole2extractor.c:307
+msgid "Swiss Italian"
+msgstr ""
+
+#: src/plugins/ole2/ole2extractor.c:315
+msgid "Belgian Dutch"
+msgstr ""
+
+#: src/plugins/ole2/ole2extractor.c:317
+msgid "Norwegian Bokmal"
+msgstr ""
+
+#: src/plugins/ole2/ole2extractor.c:327
+msgid "Rhaeto-Romanic"
+msgstr ""
+
+#: src/plugins/ole2/ole2extractor.c:333
+msgid "Croato-Serbian (Latin)"
+msgstr ""
+
+#: src/plugins/ole2/ole2extractor.c:335
+msgid "Serbo-Croatian (Cyrillic)"
+msgstr ""
+
+#: src/plugins/ole2/ole2extractor.c:363
+msgid "Farsi"
+msgstr ""
+
+#: src/plugins/ole2/ole2extractor.c:423
+#, c-format
+msgid "Revision #%u: Author '%s' worked on '%s'"
+msgstr ""
+
 #: src/plugins/printable/dictionary-builder.c:97
 #, fuzzy, c-format
 msgid ""
@@ -1479,93 +1600,6 @@ msgstr ""
 #: src/plugins/rpm/rpmextractor.c:3053
 #, c-format
 msgid "Binary RPM %d.%d"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:121
-msgid "No Proofing"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:129
-msgid "Traditional Chinese"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:131
-msgid "Simplified Chinese"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:139
-msgid "Swiss German"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:143
-msgid "U.S. English"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:145
-msgid "U.K. English"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:147
-msgid "Australian English"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:149
-msgid "Castilian Spanish"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:151
-msgid "Mexican Spanish"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:157
-msgid "Belgian French"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:159
-msgid "Canadian French"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:161
-msgid "Swiss French"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:171
-msgid "Swiss Italian"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:179
-msgid "Belgian Dutch"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:181
-msgid "Norwegian Bokmal"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:191
-msgid "Rhaeto-Romanic"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:197
-msgid "Croato-Serbian (Latin)"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:199
-msgid "Serbo-Croatian (Cyrillic)"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:227
-msgid "Farsi"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:412
-#: src/plugins/wordleaker/wordextractor.cc:423
-#, c-format
-msgid "%s (Build %s)"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:468
-#, c-format
-msgid "Revision #%u: Author '%s' worked on '%s'"
 msgstr ""
 
 #~ msgid "No error"

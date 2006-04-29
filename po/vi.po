@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor-0.5.7\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2006-04-26 10:20-0700\n"
+"POT-Creation-Date: 2006-04-28 22:42-0700\n"
 "PO-Revision-Date: 2006-01-11 13:24+1030\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <gnomevi-list@lists.sourceforge.net>\n"
@@ -119,12 +119,12 @@ msgstr ""
 msgid "Extract metadata from files."
 msgstr "Rút siêu dữ liệu ra tập tin."
 
-#: src/main/extract.c:198 src/main/extractor.c:1137
+#: src/main/extract.c:198 src/main/extractor.c:1144
 #, c-format
 msgid "%s - (binary)\n"
 msgstr "%s - (nhị phân)\n"
 
-#: src/main/extract.c:204 src/main/extractor.c:1142
+#: src/main/extract.c:204 src/main/extractor.c:1149
 #, c-format
 msgid "INVALID TYPE - %s\n"
 msgstr "KIỂU KHÔNG HỢP LỆ — %s\n"
@@ -177,23 +177,23 @@ msgstr "chủ đề"
 msgid "page count"
 msgstr "tổng số trang"
 
-#: src/main/extract.c:474
+#: src/main/extract.c:475
 #, c-format
 msgid "You must specify an argument for the `%s' option (option ignored).\n"
 msgstr "Bạn phải ghi rõ một đối số cho tùy chọn « %s » (tùy chọn bị bỏ qua).\n"
 
-#: src/main/extract.c:541
+#: src/main/extract.c:545
 #, c-format
 msgid "Use --help to get a list of options.\n"
 msgstr ""
 "Hãy sử dụng lệnh « --help » (trợ giúp) để xem một danh sách các tùy chọn.\n"
 
-#: src/main/extract.c:600
+#: src/main/extract.c:604
 #, c-format
 msgid "%% BiBTeX file\n"
 msgstr "%% tập tin BiBTeX\n"
 
-#: src/main/extract.c:617
+#: src/main/extract.c:621
 #, c-format
 msgid "Keywords for file %s:\n"
 msgstr "Từ khóa cho tập tin %s:\n"
@@ -351,8 +351,8 @@ msgid "build-host"
 msgstr "máy hỗ trợ xây dụng"
 
 #: src/main/extractor.c:94
-msgid "os"
-msgstr "hệ điều hành"
+msgid "operating system"
+msgstr ""
 
 #: src/main/extractor.c:95
 msgid "dependency"
@@ -567,12 +567,50 @@ msgstr ""
 msgid "lower case conversion"
 msgstr ""
 
-#: src/main/extractor.c:241
+#: src/main/extractor.c:146
+msgid "company"
+msgstr ""
+
+#: src/main/extractor.c:147
+#, fuzzy
+msgid "generator"
+msgstr "người tạo"
+
+#: src/main/extractor.c:148
+#, fuzzy
+msgid "character set"
+msgstr "tổng số trang"
+
+#: src/main/extractor.c:149
+#, fuzzy
+msgid "line count"
+msgstr "tổng số trang"
+
+#: src/main/extractor.c:150
+#, fuzzy
+msgid "paragraph count"
+msgstr "tổng số trang"
+
+#: src/main/extractor.c:151
+msgid "editing cycles"
+msgstr ""
+
+#: src/main/extractor.c:152
+#, fuzzy
+msgid "scale"
+msgstr "Kịch nhạc"
+
+#: src/main/extractor.c:153
+#, fuzzy
+msgid "manager"
+msgstr "nhà đóng gói"
+
+#: src/main/extractor.c:248
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "Việc khởi động cơ chế cầm phít bị lỗi: %s\n"
 
-#: src/main/extractor.c:390
+#: src/main/extractor.c:397
 #, c-format
 msgid ""
 "Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
@@ -581,12 +619,12 @@ msgstr ""
 "Việc tháo gỡ ký hiệu « %s » trong thư viên « %s » bị lỗi, thì đã cố « %s », "
 "nhưng mà nó cũng không thành công. Gặp lỗi « %s » và « %s ».\n"
 
-#: src/main/extractor.c:419
+#: src/main/extractor.c:426
 #, c-format
 msgid "Loading `%s' plugin failed: %s\n"
 msgstr "Việc tải bộ cầm phít « %s » bị lỗi: %s\n"
 
-#: src/main/extractor.c:624
+#: src/main/extractor.c:631
 #, c-format
 msgid "Unloading plugin `%s' failed!\n"
 msgstr "Việc bỏ tải bộ cầm phít « %s » bị lỗi.\n"
@@ -1301,6 +1339,87 @@ msgstr "một nguồn"
 msgid "(variable bps)"
 msgstr "(bit/giây thay đổi)"
 
+#: src/plugins/ole2/ole2extractor.c:257
+msgid "No Proofing"
+msgstr ""
+
+#: src/plugins/ole2/ole2extractor.c:265
+msgid "Traditional Chinese"
+msgstr ""
+
+#: src/plugins/ole2/ole2extractor.c:267
+msgid "Simplified Chinese"
+msgstr ""
+
+#: src/plugins/ole2/ole2extractor.c:275
+msgid "Swiss German"
+msgstr ""
+
+#: src/plugins/ole2/ole2extractor.c:279
+msgid "U.S. English"
+msgstr ""
+
+#: src/plugins/ole2/ole2extractor.c:281
+msgid "U.K. English"
+msgstr ""
+
+#: src/plugins/ole2/ole2extractor.c:283
+msgid "Australian English"
+msgstr ""
+
+#: src/plugins/ole2/ole2extractor.c:285
+msgid "Castilian Spanish"
+msgstr ""
+
+#: src/plugins/ole2/ole2extractor.c:287
+msgid "Mexican Spanish"
+msgstr ""
+
+#: src/plugins/ole2/ole2extractor.c:293
+msgid "Belgian French"
+msgstr ""
+
+#: src/plugins/ole2/ole2extractor.c:295
+msgid "Canadian French"
+msgstr ""
+
+#: src/plugins/ole2/ole2extractor.c:297
+msgid "Swiss French"
+msgstr ""
+
+#: src/plugins/ole2/ole2extractor.c:307
+msgid "Swiss Italian"
+msgstr ""
+
+#: src/plugins/ole2/ole2extractor.c:315
+msgid "Belgian Dutch"
+msgstr ""
+
+#: src/plugins/ole2/ole2extractor.c:317
+msgid "Norwegian Bokmal"
+msgstr ""
+
+#: src/plugins/ole2/ole2extractor.c:327
+msgid "Rhaeto-Romanic"
+msgstr ""
+
+#: src/plugins/ole2/ole2extractor.c:333
+msgid "Croato-Serbian (Latin)"
+msgstr ""
+
+#: src/plugins/ole2/ole2extractor.c:335
+msgid "Serbo-Croatian (Cyrillic)"
+msgstr ""
+
+#: src/plugins/ole2/ole2extractor.c:363
+msgid "Farsi"
+msgstr ""
+
+#: src/plugins/ole2/ole2extractor.c:423
+#, c-format
+msgid "Revision #%u: Author '%s' worked on '%s'"
+msgstr ""
+
 #: src/plugins/printable/dictionary-builder.c:97
 #, c-format
 msgid ""
@@ -1344,92 +1463,8 @@ msgstr "RPM nguồn %d.%d"
 msgid "Binary RPM %d.%d"
 msgstr "RPM nhị phân %d.%d"
 
-#: src/plugins/wordleaker/wordextractor.cc:121
-msgid "No Proofing"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:129
-msgid "Traditional Chinese"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:131
-msgid "Simplified Chinese"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:139
-msgid "Swiss German"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:143
-msgid "U.S. English"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:145
-msgid "U.K. English"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:147
-msgid "Australian English"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:149
-msgid "Castilian Spanish"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:151
-msgid "Mexican Spanish"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:157
-msgid "Belgian French"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:159
-msgid "Canadian French"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:161
-msgid "Swiss French"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:171
-msgid "Swiss Italian"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:179
-msgid "Belgian Dutch"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:181
-msgid "Norwegian Bokmal"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:191
-msgid "Rhaeto-Romanic"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:197
-msgid "Croato-Serbian (Latin)"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:199
-msgid "Serbo-Croatian (Cyrillic)"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:227
-msgid "Farsi"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:412
-#: src/plugins/wordleaker/wordextractor.cc:423
-#, c-format
-msgid "%s (Build %s)"
-msgstr ""
-
-#: src/plugins/wordleaker/wordextractor.cc:468
-#, c-format
-msgid "Revision #%u: Author '%s' worked on '%s'"
-msgstr ""
+#~ msgid "os"
+#~ msgstr "hệ điều hành"
 
 #~ msgid "Please provide a list of klp files as arguments.\n"
 #~ msgstr "Hãy cung cấp danh sách các tập tin kiểu « klp » dạng đối số.\n"

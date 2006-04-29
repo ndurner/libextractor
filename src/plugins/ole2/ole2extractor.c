@@ -520,6 +520,7 @@ libextractor_ole2_extract(const char * filename,
     }
   }  
   g_object_unref(G_OBJECT(infile));
+  g_object_unref(G_OBJECT(input));
 
   /*
    * Hack to return an appropriate mimetype
@@ -555,7 +556,7 @@ libextractor_ole2_extract(const char * filename,
   
     prev = addKeyword(prev, mimetype, EXTRACTOR_MIMETYPE);
   }
-
+  
   return prev;
 }
 
