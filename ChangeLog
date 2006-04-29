@@ -1,3 +1,7 @@
+Fri Apr 28 22:26:43 PDT 2006
+	Integrated wordleaker into OLE2 plugin.  Changed OLE2 plugin to use
+	libgsf (new dependency!).
+
 Fri Apr 28 16:18:26 PDT 2006
 	Fixing some i18n issues.  Specifically, EXTRACTOR_getKeywordTypeAsString
 	will now never return the translated version of the keyword type

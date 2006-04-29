@@ -619,10 +619,11 @@ static struct EXTRACTOR_Keywords * addKeyword(EXTRACTOR_KeywordList *oldhead,
 #define rmd160_new() rmd160_copy(NULL,NULL)
 
 
-struct EXTRACTOR_Keywords * libextractor_hash_rmd160_extract(const char * filename,
-							     char * data,
-							     size_t size,
-							     struct EXTRACTOR_Keywords * prev) {
+struct EXTRACTOR_Keywords * 
+libextractor_hash_rmd160_extract(const char * filename,
+				 const unsigned char * data,
+				 size_t size,
+				 struct EXTRACTOR_Keywords * prev) {
   unsigned char bin_buffer[MAX_DIGEST_BIN_BYTES];
   char hash[8 * MAX_DIGEST_BIN_BYTES];
   char buf[16];

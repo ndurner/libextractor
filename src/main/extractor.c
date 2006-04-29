@@ -41,113 +41,121 @@
  * The sources of keywords as strings.
  */
 static const char *keywordTypes[] = {
-  gettext_noop("unknown"),
+  gettext_noop("unknown"), /* 0 */
   gettext_noop("filename"),
   gettext_noop("mimetype"),
   gettext_noop("title"),
   gettext_noop("author"),
-  gettext_noop("artist"),
+  gettext_noop("artist"), /* 5 */
   gettext_noop("description"),
   gettext_noop("comment"),
   gettext_noop("date"),
   gettext_noop("publisher"),
-  gettext_noop("language"),
+  gettext_noop("language"), /* 10 */
   gettext_noop("album"),
   gettext_noop("genre"),
   gettext_noop("location"),
   gettext_noop("version"),
-  gettext_noop("organization"),
+  gettext_noop("organization"), /* 15 */
   gettext_noop("copyright"),
   gettext_noop("subject"),
   gettext_noop("keywords"),
   gettext_noop("contributor"),
-  gettext_noop("resource-type"),
+  gettext_noop("resource-type"), /* 20 */
   gettext_noop("format"),
   gettext_noop("resource-identifier"),
   gettext_noop("source"),
   gettext_noop("relation"),
-  gettext_noop("coverage"),
+  gettext_noop("coverage"), /* 25 */
   gettext_noop("software"),
   gettext_noop("disclaimer"),
   gettext_noop("warning"),
   gettext_noop("translated"),
-  gettext_noop("creation date"),
+  gettext_noop("creation date"), /* 30 */
   gettext_noop("modification date"),
   gettext_noop("creator"),
   gettext_noop("producer"),
   gettext_noop("page count"),
-  gettext_noop("page orientation"),
+  gettext_noop("page orientation"), /* 35 */
   gettext_noop("paper size"),
   gettext_noop("used fonts"),
   gettext_noop("page order"),
   gettext_noop("created for"),
-  gettext_noop("magnification"),
+  gettext_noop("magnification"), /* 40 */
   gettext_noop("release"),
   gettext_noop("group"),
   gettext_noop("size"),
   gettext_noop("summary"),
-  gettext_noop("packager"),
+  gettext_noop("packager"), /* 45 */
   gettext_noop("vendor"),
   gettext_noop("license"),
   gettext_noop("distribution"),
   gettext_noop("build-host"),
-  gettext_noop("os"),
+  gettext_noop("operating system"), /* 50 */
   gettext_noop("dependency"),
   gettext_noop("MD4"),
   gettext_noop("MD5"),
   gettext_noop("SHA-0"),
-  gettext_noop("SHA-1"),
+  gettext_noop("SHA-1"), /* 55 */
   gettext_noop("RipeMD160"),
   gettext_noop("resolution"),
   gettext_noop("category"),
   gettext_noop("book title"),
-  gettext_noop("priority"),
+  gettext_noop("priority"), /* 60 */
   gettext_noop("conflicts"),
   gettext_noop("replaces"),
   gettext_noop("provides"),
   gettext_noop("conductor"),
-  gettext_noop("interpreter"),
+  gettext_noop("interpreter"), /* 65 */
   gettext_noop("owner"),
   gettext_noop("lyrics"),
   gettext_noop("media type"),
   gettext_noop("contact"),
-  gettext_noop("binary thumbnail data"),
+  gettext_noop("binary thumbnail data"), /* 70 */
   gettext_noop("publication date"),
   gettext_noop("camera make"),
   gettext_noop("camera model"),
   gettext_noop("exposure"),
-  gettext_noop("aperture"),
+  gettext_noop("aperture"), /* 75 */
   gettext_noop("exposure bias"),
   gettext_noop("flash"),
   gettext_noop("flash bias"),
   gettext_noop("focal length"),
-  gettext_noop("focal length (35mm equivalent)"),
+  gettext_noop("focal length (35mm equivalent)"), /* 80 */
   gettext_noop("iso speed"),
   gettext_noop("exposure mode"),
   gettext_noop("metering mode"),
   gettext_noop("macro mode"),
-  gettext_noop("image quality"),
+  gettext_noop("image quality"), /* 85 */
   gettext_noop("white balance"),
   gettext_noop("orientation"),
   gettext_noop("template"),
   gettext_noop("split"),
-  gettext_noop("product version"),
+  gettext_noop("product version"), /* 90 */
   gettext_noop("last saved by"),
   gettext_noop("last printed"),
   gettext_noop("word count"),
   gettext_noop("character count"),
-  gettext_noop("total editing time"),
+  gettext_noop("total editing time"), /* 95 */
   gettext_noop("thumbnails"),
   gettext_noop("security"),
   gettext_noop("created by software"),
   gettext_noop("modified by software"),
-  gettext_noop("revision history"),
+  gettext_noop("revision history"), /* 100 */
   gettext_noop("lower case conversion"),
+  gettext_noop("company"),
+  gettext_noop("generator"),
+  gettext_noop("character set"),
+  gettext_noop("line count"), /* 105 */
+  gettext_noop("paragraph count"), 
+  gettext_noop("editing cycles"),
+  gettext_noop("scale"),
+  gettext_noop("manager"),
   NULL,
 };
 
 /* the number of keyword types (for bounds-checking) */
-#define HIGHEST_TYPE_NUMBER 102
+#define HIGHEST_TYPE_NUMBER 110
 
 #ifdef HAVE_LIBOGG
 #if HAVE_VORBIS
@@ -211,7 +219,6 @@ libextractor_riff:\
 libextractor_mpeg:\
 libextractor_elf:\
 libextractor_oo:\
-libextractor_word:\
 libextractor_asf"
 
 #define DEFAULT_LIBRARIES EXSO OLESO OGGSO QTSO DEFSO

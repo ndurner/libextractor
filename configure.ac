@@ -313,6 +313,7 @@ AC_ARG_ENABLE(exiv2,
 AM_CONDITIONAL(HAVE_EXIV2, test x$exiv2 != x0)
 AC_DEFINE_UNQUOTED([HAVE_EXIV2], $exiv2, [We use EXIV2])
 
+ABI_GSF
 
 AC_SUBST(CPPFLAGS)
 AC_SUBST(LDFLAGS)
@@ -358,9 +359,9 @@ else
  AC_MSG_NOTICE([NOTICE: printable plugins enabled])
 fi
 
-if test "x$without_glib" = "xtrue"
+if test "x$have_gsf" != "xtrue"
 then
- AC_MSG_NOTICE([NOTICE: glib not used, no OLE2 (MS Office) support])
+ AC_MSG_NOTICE([NOTICE: libgsf not found, no OLE2 (MS Office) support])
 fi
 
 if test "x$without_gtk" = "xtrue"

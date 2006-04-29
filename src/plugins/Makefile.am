@@ -1,7 +1,9 @@
 include Makefile-plugins.am
 
 if HAVE_GLIB
-oledir=ole2
+if WITH_GSF
+ oledir=ole2
+endif
 if HAVE_GTK
 thumbdir=thumbnail
 endif
@@ -15,6 +17,7 @@ if HAVE_EXIV2
  exiv2dir=exiv2
 endif
 
+
 if HAVE_XPDF
  xpdfdir=pdf
 else
@@ -23,7 +26,7 @@ endif
 
 # toggle for development
 # SUBDIRS = . 
-SUBDIRS = . $(oodir) $(printdir) hash $(oledir) rpm $(xpdfdir) $(thumbdir) $(exiv2dir) wordleaker
+SUBDIRS = . $(oodir) $(printdir) hash $(oledir) rpm $(xpdfdir) $(thumbdir) $(exiv2dir)
 
 
 if HAVE_VORBISFILE

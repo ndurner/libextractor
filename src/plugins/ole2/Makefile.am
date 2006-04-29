@@ -4,12 +4,11 @@ include ../Makefile-plugins.am
 plugin_LTLIBRARIES = \
   libextractor_ole2.la
 
-AM_CFLAGS = $(GLIB_CFLAGS)
-
 libextractor_ole2_la_CFLAGS = \
-  $(GLIB_CFLAGS) 
+  $(GSF_CFLAGS) 
 libextractor_ole2_la_LIBADD = \
-  $(LIBADD) $(GLIB_LIBS) -lgobject-2.0 \
+  $(LIBADD) $(GSF_LIBS) \
+  $(top_builddir)/src/plugins/libconvert.la \
   $(top_builddir)/src/main/libextractor.la
 libextractor_ole2_la_LDFLAGS = \
   $(PLUGINFLAGS) $(retaincommand) 
