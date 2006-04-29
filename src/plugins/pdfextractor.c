@@ -64,15 +64,13 @@ addKeyword(EXTRACTOR_KeywordType type,
 
 
 
-static char * 
+static unsigned char * 
 dateDecode(const char * pdfString) {
-  unsigned char * ret;
-
   if (pdfString == NULL)
     return NULL;
   if (strlen(pdfString) < 4)
     return NULL;
-  return stndup(&pdfString[3], strlen(pdfString) - 4);
+  return (unsigned char*) stndup(&pdfString[3], strlen(pdfString) - 4);
 }
 
 static unsigned char * 
@@ -197,11 +195,11 @@ charsetDecode(const unsigned char * in,
     /* TODO: extend glibc with
        character set that corresponds to
        Adobe's extended ISOLATIN1 encoding! */
-    return convertToUtf8(in,
+    return convertToUtf8((const char*) in,
 			 size,
 			 "CSISOLATIN1");
   } else { 
-    return convertToUtf8(&in[2],
+    return convertToUtf8((const char*) &in[2],
 			 size - 2,
 			 "UTF-16BE");
   }
@@ -439,7 +437,7 @@ libextractor_pdf_extract(const char * filename,
 		      pos - spos);
 	if (i == 0) {
 	  dmeta = dateDecode(meta);
-	  mlen = strlen(dmeta);
+	  mlen = strlen((const char*)dmeta);
 	} else {
 	  dmeta = stringDecode(meta,
 			       &mlen);
