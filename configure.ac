@@ -1,8 +1,8 @@
 # Process this file with autoconf to produce a configure script.
 AC_PREREQ(2.57)
-AC_INIT([libextractor], [0.5.12], [bug-libextractor@gnu.org])
+AC_INIT([libextractor], [0.5.13], [bug-libextractor@gnu.org])
 AC_REVISION($Revision: 1.67 $)
-AM_INIT_AUTOMAKE([libextractor], [0.5.12])
+AM_INIT_AUTOMAKE([libextractor], [0.5.13])
 AM_CONFIG_HEADER(src/include/config.h)
 
 AH_TOP([#define _GNU_SOURCE  1])
@@ -333,7 +333,6 @@ src/plugins/printable/Makefile
 src/plugins/hash/Makefile
 src/plugins/thumbnail/Makefile
 src/plugins/exiv2/Makefile
-src/plugins/wordleaker/Makefile
 src/test/Makefile
 ])
 
