@@ -446,7 +446,7 @@ libextractor_ole2_extract(const char * filename,
   GsfInput * src;
   GError * err = NULL;
   const char * name;
-  const char * software = NULL;
+  const char * generator = NULL;
   int i;
   unsigned int lcb;
   unsigned int fcb;
@@ -525,33 +525,33 @@ libextractor_ole2_extract(const char * filename,
   /*
    * Hack to return an appropriate mimetype
    */
-  software = EXTRACTOR_extractLast(EXTRACTOR_SOFTWARE, prev);
-  if (NULL == software) {
+  generator = EXTRACTOR_extractLast(EXTRACTOR_GENERATOR, prev);
+  if (NULL == generator) {
      /*
       * when very puzzled, just look at file magic number
       */
     if ( (8 < size)
 	 && (0 == memcmp(data, "\xd0\xcf\x11\xe0\xa1\xb1\x1a\xe1", 8)) )
-      software = "Microsoft Office";
+      generator = "Microsoft Office";
   }
 
-  if(NULL != software) {
+  if(NULL != generator) {
     const char * mimetype = "application/vnd.ms-files";
  
-    if((0 == strncmp(software, "Microsoft Word", 14)) ||
-       (0 == strncmp(software, "Microsoft Office Word", 21)))
+    if((0 == strncmp(generator, "Microsoft Word", 14)) ||
+       (0 == strncmp(generator, "Microsoft Office Word", 21)))
       mimetype = "application/msword";
-    else if((0 == strncmp(software, "Microsoft Excel", 15)) ||
-            (0 == strncmp(software, "Microsoft Office Excel", 22)))
+    else if((0 == strncmp(generator, "Microsoft Excel", 15)) ||
+            (0 == strncmp(generator, "Microsoft Office Excel", 22)))
       mimetype = "application/vnd.ms-excel";
-    else if((0 == strncmp(software, "Microsoft PowerPoint", 20)) ||
-            (0 == strncmp(software, "Microsoft Office PowerPoint", 27)))
+    else if((0 == strncmp(generator, "Microsoft PowerPoint", 20)) ||
+            (0 == strncmp(generator, "Microsoft Office PowerPoint", 27)))
       mimetype = "application/vnd.ms-powerpoint";
-    else if(0 == strncmp(software, "Microsoft Project", 17))
+    else if(0 == strncmp(generator, "Microsoft Project", 17))
       mimetype = "application/vnd.ms-project";
-    else if(0 == strncmp(software, "Microsoft Visio", 15))
+    else if(0 == strncmp(generator, "Microsoft Visio", 15))
       mimetype = "application/vnd.visio";
-    else if(0 == strncmp(software, "Microsoft Office", 16))
+    else if(0 == strncmp(generator, "Microsoft Office", 16))
       mimetype = "application/vnd.ms-office";
   
     prev = addKeyword(prev, mimetype, EXTRACTOR_MIMETYPE);
