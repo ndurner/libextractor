@@ -10,6 +10,9 @@ GNU/Linux (Ultra Sparc):
 GNU/Linux (Alpha):
 - perfect
 
+GNU/Linux (x86_64, Fedora Core)
+- set "CFLAGS=-fPIC" before running configure
+
 FreeBSD (x86):
 - perfect
 
