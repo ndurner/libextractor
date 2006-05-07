@@ -70,8 +70,10 @@ if test "x$have_gsf_gnome" = "xtrue" ; then
 	abi_gsf_message="yes, with GNOME support"
 else if test "x$have_gsf" = "xtrue" ; then
 	abi_gsf_message="yes, without GNOME support"
+        AC_DEFINE(HAVE_GSF, 1, [Have gsf])
 else
 	abi_gsf_message="no"
+        AC_DEFINE(HAVE_GSF, 0, [Have gsf])
 fi
 fi
 

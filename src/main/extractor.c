@@ -185,7 +185,7 @@ static const char *keywordTypes[] = {
 #define QTSO ""
 #endif
 
-#if HAVE_GLIB
+#if HAVE_GSF
 #define OLESO "libextractor_ole2:"
 #else
 #define OLESO ""
