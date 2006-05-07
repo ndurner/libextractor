@@ -373,11 +373,6 @@ then
  AC_MSG_NOTICE([NOTICE: vorbis support disabled])
 fi
 
-if test "x$HAVE_BZ2_TRUE" = "x#"
-then
- AC_MSG_NOTICE([NOTICE: bzip2 support disabled])
-fi
-
 if test "x$HAVE_ZLIB_TRUE" = "x#"
 then
  AC_MSG_ERROR([FATAL: zlib not found (headers not installed?)])
