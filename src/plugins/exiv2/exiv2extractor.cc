@@ -346,9 +346,13 @@ extern "C" {
         }
         result = newResult;
 
+#if 0
+	/* this can sometimes be wrong (corrupt exiv2 data?).
+	   Either way, we should get the data directly from
+	   the specific file format parser (i.e. jpeg, tiff). */
         // Exif Resolution
-        long xdim = 0;
-        long ydim = 0;
+        unsigned long xdim = 0;
+        unsigned long ydim = 0;
         md = exifData.findKey(Exiv2::ExifKey("Exif.Photo.PixelXDimension"));
         if (md != exifData.end()) xdim = md->toLong();
         md = exifData.findKey(Exiv2::ExifKey("Exif.Photo.PixelYDimension"));
@@ -360,7 +364,7 @@ extern "C" {
                                 strdup(os.str().c_str()),
                                 result);
         }
-
+#endif
         // White balance
         // Todo: Implement this for other cameras
 
