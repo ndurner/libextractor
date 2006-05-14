@@ -23,6 +23,9 @@
 
 #ifdef __cplusplus
 extern "C" {
+#if 0 /* keep Emacsens' auto-indent happy */
+}
+#endif
 #endif
 
 /**
@@ -420,6 +423,9 @@ char * EXTRACTOR_binaryEncode(const unsigned char * data,
 			      size_t size);
 
 
+#if 0 /* keep Emacsens' auto-indent happy */
+{
+#endif
 #ifdef __cplusplus
 }
 #endif
