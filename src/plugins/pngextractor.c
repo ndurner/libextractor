@@ -77,7 +77,7 @@ static struct {
    { "Comment", EXTRACTOR_COMMENT},
    { "Copyright", EXTRACTOR_COPYRIGHT},
    { "Source", EXTRACTOR_SOURCE},
-   { "Creation Time", EXTRACTOR_DATE},
+   { "Creation Time", EXTRACTOR_CREATION_DATE},
    { "Title", EXTRACTOR_TITLE},
    { "Software", EXTRACTOR_SOFTWARE},
    { "Disclaimer", EXTRACTOR_DISCLAIMER},
