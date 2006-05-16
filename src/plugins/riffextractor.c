@@ -58,10 +58,10 @@ static struct EXTRACTOR_Keywords * riffparse_INFO(char * buffer,
     word = malloc(c+1-8);
     memcpy(word,
 	   &buffer[8],
-	   c);
+	   c - 8);
     word[c-8] = '\0';
     addKeyword(&prev,
-	       strdup(buffer+c),
+	       word,
 	       EXTRACTOR_UNKNOWN); /* eh, what exactly is it */
   }
   return prev;
