@@ -99,6 +99,12 @@ libextractor_mpeg_extract(const char * filename,
       addKeyword(&prev, "MPEG1", EXTRACTOR_RESOURCE_TYPE);
   }
   if (info->gop != NULL) {
+    /* this usually does not work yet, since gop's are not
+       often at the beginning of the stream (and we
+       don't iterate over the stream hoping to find one).
+       Hence we usually don't get the size.  Not sure how
+       to *efficiently* get the gop (without scanning 
+       through the entire file) */
     snprintf(format, 256, "%u:%u:%u (%u frames)",
 	     info->gop->hours,
 	     info->gop->minutes,

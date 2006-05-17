@@ -10,7 +10,6 @@ Core:
 * add support for different character sets (to 'all' extractors)
 
 'Unclean' code:
-* QT
 * ASF
 * RPM
 
