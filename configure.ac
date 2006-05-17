@@ -152,6 +152,11 @@ AC_CHECK_LIB(bz2, BZ2_decompress,
         AC_DEFINE(HAVE_LIBBZ2,1,[Have libbz2])],
         [AM_CONDITIONAL(HAVE_BZ2, false)])
 
+AC_CHECK_LIB(mpeg2, mpeg2_init,
+        [AM_CONDITIONAL(HAVE_MPEG2, true)
+        AC_DEFINE(HAVE_LIBMPEG2,1,[Have libmpeg2])],
+        [AM_CONDITIONAL(HAVE_MPEG2, false)])
+
 # restore LIBS
 LIBS=$LIBSOLD
 
@@ -176,7 +181,7 @@ AC_HEADER_STDC
 AC_HEADER_DIRENT
 AC_HEADER_STDBOOL
 AC_CHECK_HEADERS([fcntl.h netinet/in.h stdlib.h string.h unistd.h libintl.h limits.h stddef.h zlib.h])
-AC_CHECK_HEADERS([ltdl.h iconv.h bzlib.h])
+AC_CHECK_HEADERS([ltdl.h iconv.h bzlib.h mpeg2dec/mpeg2.h])
 # fixme, we need to die here if a header is not found!
 
 AC_CHECK_HEADERS([vorbis/vorbisfile.h])
@@ -366,4 +371,9 @@ fi
 if test "x$HAVE_ZLIB_TRUE" = "x#"
 then
  AC_MSG_ERROR([FATAL: zlib not found (headers not installed?)])
+fi
+
+if test "x$HAVE_MPEG2_TRUE" = "x#"
+then
+ AC_MSG_ERROR([FATAL: libmpeg2 not found])
 fi

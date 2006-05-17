@@ -15,6 +15,7 @@ libvorbis-dev
 zlib1g-dev
 libbz2-dev
 libgsf-1-dev
+libmpeg2-4-dev
 
 For Subversion access and compilation:
 

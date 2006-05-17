@@ -230,7 +230,7 @@ libextractor_mpeg_la_LDFLAGS = \
   $(top_builddir)/src/main/libextractor.la \
   $(PLUGINFLAGS)  $(retaincommand)
 libextractor_mpeg_la_LIBADD = \
-  -lm
+  -lmpeg2
 
 libextractor_man_la_SOURCES = \
   manextractor.c 
