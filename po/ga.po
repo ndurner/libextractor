@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.5.7\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2006-04-28 22:42-0700\n"
+"POT-Creation-Date: 2006-05-17 00:53-0700\n"
 "PO-Revision-Date: 2005-11-15 00:46-0700\n"
 "Last-Translator: Kevin Patrick Scannell <scannell@SLU.EDU>\n"
 "Language-Team: Irish <gaeilge-gnulinux@lists.sourceforge.net>\n"
@@ -114,12 +114,12 @@ msgstr "extract [ROGHANNA] [COMHADAINM]*"
 msgid "Extract metadata from files."
 msgstr "Bain meiteashonraí as comhaid."
 
-#: src/main/extract.c:198 src/main/extractor.c:1144
+#: src/main/extract.c:198 src/main/extractor.c:1149
 #, c-format
 msgid "%s - (binary)\n"
 msgstr "%s - (dénártha)\n"
 
-#: src/main/extract.c:204 src/main/extractor.c:1149
+#: src/main/extract.c:204 src/main/extractor.c:1154
 #, c-format
 msgid "INVALID TYPE - %s\n"
 msgstr "CINEÁL NEAMHBHAILÍ - %s\n"
@@ -595,12 +595,37 @@ msgstr "Ceolra"
 msgid "manager"
 msgstr "pacáisteoir"
 
-#: src/main/extractor.c:248
+#: src/main/extractor.c:154
+#, fuzzy
+msgid "director"
+msgstr "cruthaitheoir"
+
+#: src/main/extractor.c:155
+#, fuzzy
+msgid "duration"
+msgstr "gaol"
+
+#: src/main/extractor.c:156
+#, fuzzy
+msgid "information"
+msgstr "formáid"
+
+#: src/main/extractor.c:157
+#, fuzzy
+msgid "full name"
+msgstr "comhadainm"
+
+#: src/main/extractor.c:158
+#, fuzzy
+msgid "chapter"
+msgstr "catagóir"
+
+#: src/main/extractor.c:253
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "Theip ar thúsú meicníocht na mbreiseán: %s!\n"
 
-#: src/main/extractor.c:397
+#: src/main/extractor.c:402
 #, c-format
 msgid ""
 "Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
@@ -610,12 +635,12 @@ msgstr ""
 "bhain mé triail as `%s', ach theip ar an cheann sin freisin.  Na hearráidí: `"
 "%s' agus `%s'.\n"
 
-#: src/main/extractor.c:426
+#: src/main/extractor.c:431
 #, c-format
 msgid "Loading `%s' plugin failed: %s\n"
 msgstr "Theip ar luchtú an bhreiseáin `%s': %s\n"
 
-#: src/main/extractor.c:631
+#: src/main/extractor.c:636
 #, c-format
 msgid "Unloading plugin `%s' failed!\n"
 msgstr "Theip ar dhíluchtú an bhreiseáin `%s'!\n"

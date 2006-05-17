@@ -1,8 +1,8 @@
 # Process this file with autoconf to produce a configure script.
 AC_PREREQ(2.57)
-AC_INIT([libextractor], [0.5.13], [bug-libextractor@gnu.org])
+AC_INIT([libextractor], [0.5.14], [bug-libextractor@gnu.org])
 AC_REVISION($Revision: 1.67 $)
-AM_INIT_AUTOMAKE([libextractor], [0.5.13])
+AM_INIT_AUTOMAKE([libextractor], [0.5.14])
 AM_CONFIG_HEADER(src/include/config.h)
 
 AH_TOP([#define _GNU_SOURCE  1])
@@ -10,19 +10,9 @@ AH_TOP([#define _GNU_SOURCE  1])
 # Checks for programs.
 AC_CANONICAL_HOST
 
-# The problem that I'm trying to solve here by specifying gcc-3.3 and gcc2
-# in the search list ahead of the other stuff is that gcc-3.1 on Mac OS X
-# does not work for some of the pdf extractor code.  Now, it would seem
-# that we could have a conditional on $host_os that puts just the right
-# amount of crazyness into the checks only on the Mac.  Unfortunately, this
-# will not work, because (according to some mailing lists and painful
-# personal experiences) AC_PROG_CXX does not work inside of conditionals.
-# So, instead, we do this crazyness globally.  The list of compilers that
-# you see below is taken right out of the autoconf (version 2.57) sources,
-# so it should not impede our portability.
-AC_PROG_CC(gcc-4.0 gcc-3.3 gcc2 gcc cc /usr/ucb/cc cl)
+AC_PROG_CC
 AC_PROG_CPP
-AC_PROG_CXX(g++-4.0 g++-3.3 g++2 g++ c++ gpp aCC CC cxx cc++ cl FCC KCC RCC xlC_r xlC)
+AC_PROG_CXX
 
 AC_PROG_INSTALL
 AC_PROG_LN_S

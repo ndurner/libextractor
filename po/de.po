@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.5.6a\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2006-04-28 22:42-0700\n"
+"POT-Creation-Date: 2006-05-17 00:53-0700\n"
 "PO-Revision-Date: 2005-09-22 10:07+0200\n"
 "Last-Translator: Karl Eichwalder <ke@suse.de>\n"
 "Language-Team: German <de@li.org>\n"
@@ -118,12 +118,12 @@ msgstr "extract [OPTIONEN] [DATEINAME]*"
 msgid "Extract metadata from files."
 msgstr "Metadaten aus den Dateien extrahieren."
 
-#: src/main/extract.c:198 src/main/extractor.c:1144
+#: src/main/extract.c:198 src/main/extractor.c:1149
 #, c-format
 msgid "%s - (binary)\n"
 msgstr "%s - (binär)\n"
 
-#: src/main/extract.c:204 src/main/extractor.c:1149
+#: src/main/extract.c:204 src/main/extractor.c:1154
 #, c-format
 msgid "INVALID TYPE - %s\n"
 msgstr "UNGÜLTIGE ART - %s\n"
@@ -596,24 +596,49 @@ msgstr "Musical"
 msgid "manager"
 msgstr "Paket-Ersteller"
 
-#: src/main/extractor.c:248
+#: src/main/extractor.c:154
+#, fuzzy
+msgid "director"
+msgstr "Ersteller"
+
+#: src/main/extractor.c:155
+#, fuzzy
+msgid "duration"
+msgstr "Relation"
+
+#: src/main/extractor.c:156
+#, fuzzy
+msgid "information"
+msgstr "Format"
+
+#: src/main/extractor.c:157
+#, fuzzy
+msgid "full name"
+msgstr "Dateiname"
+
+#: src/main/extractor.c:158
+#, fuzzy
+msgid "chapter"
+msgstr "Kategorie"
+
+#: src/main/extractor.c:253
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "Initialisierung des Plugin-Mechanismus' ist fehlgeschlagen: %s.\n"
 
-#: src/main/extractor.c:397
+#: src/main/extractor.c:402
 #, c-format
 msgid ""
 "Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
 "failed also.  Errors are: `%s' and `%s'.\n"
 msgstr ""
 
-#: src/main/extractor.c:426
+#: src/main/extractor.c:431
 #, c-format
 msgid "Loading `%s' plugin failed: %s\n"
 msgstr "Laden des »%s«-Plugins ist fehlgeschlagen: %s\n"
 
-#: src/main/extractor.c:631
+#: src/main/extractor.c:636
 #, c-format
 msgid "Unloading plugin `%s' failed!\n"
 msgstr "Entladen des »%s«-Plugins ist fehlgeschlagen!\n"

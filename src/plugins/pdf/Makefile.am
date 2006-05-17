@@ -42,9 +42,3 @@ libextractor_pdf_la_SOURCES = \
  gmempp.cc\
  parseargs.cc parseargs.h \
  pdfextractor.cc
-
-# gcc 3.3 produces BROKEN code for -O1 and -O2 (PDF extraction
-# would fail silently) hence we MUST override the user flag here
-# which may contain -O1 or -O2!
-CXXFLAGS = "`echo "$(CXXFLAGS)" | sed -e "s/-O?//g"` -O0"
-
