@@ -1,3 +1,7 @@
+Tue May 16 20:08:30 PDT 2006
+	Dramatically improved qt extractor (essentially re-written from
+	scratch).
+
 Fri Apr 28 22:26:43 PDT 2006
 	Integrated wordleaker into OLE2 plugin.  Changed OLE2 plugin to use
 	libgsf (new dependency!).  Releasing libextractor 0.5.13.

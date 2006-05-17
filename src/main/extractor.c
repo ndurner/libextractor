@@ -151,11 +151,16 @@ static const char *keywordTypes[] = {
   gettext_noop("editing cycles"),
   gettext_noop("scale"),
   gettext_noop("manager"),
+  gettext_noop(/* movie director */"director"),
+  gettext_noop("duration"),
+  gettext_noop("information"),
+  gettext_noop("full name"),
+  gettext_noop("chapter"),
   NULL,
 };
 
 /* the number of keyword types (for bounds-checking) */
-#define HIGHEST_TYPE_NUMBER 110
+#define HIGHEST_TYPE_NUMBER 115
 
 #ifdef HAVE_LIBOGG
 #if HAVE_VORBIS

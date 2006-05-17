@@ -17,50 +17,6 @@
      Free Software Foundation, Inc., 59 Temple Place - Suite 330,
      Boston, MA 02111-1307, USA.
  */
-/*
-  This code is based on Bitzi's bitcollider.  Original
-  Copyright as follows:
-
-      (PD) 2004 The Bitzi Corporation
-
-1. This work and others bearing the above label were
-created by, or on behalf of, the Bitzi Corporation.
-
-2. The Bitzi Corporation places these works into the
-public domain, disclaiming all rights granted us by
-copyright law.
-
-You are completely free to copy, use, redistribute
-and modify this work, though you should be aware of
-points (3) and (4), below.
-
-3. The Bitzi Corporation reserves all rights with
-regard to any of its trademarks which may appear
-herein, such as "Bitzi" or "Bitcollider". Please take
-care that your uses of this work do not infringe on
-our trademarks or imply our endorsement, for example
-be sure to change labels and identifying strings in
-your derivative works.
-
-4. THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS''
-AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT
-NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE
-FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
-EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
-LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
-TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
-ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
-ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-Please see http://bitzi.com/publicdomain or write
-info@bitzi.com for more info.
- */
-
 
 #include "platform.h"
 #include "extractor.h"
@@ -79,15 +35,6 @@ typedef struct {
   unsigned int type;
   unsigned long long size;
 } LongAtom;
-
-/*
- * We implement our own rounding function, because the availability of
- * C99's round(), nearbyint(), rint(), etc. seems to be spotty, whereas
- * floor() is available in math.h on all C compilers.
- */
-static double round_double(double num) {
-  return floor(num + 0.5);
-}
 
 static unsigned long long ntohll(unsigned long long n) {
 #if __BYTE_ORDER == __BIG_ENDIAN
@@ -319,13 +266,14 @@ static int mvhdHandler(const char * input,
 		       size_t pos,
 		       struct EXTRACTOR_Keywords ** list) {
   const MovieHeaderAtom * m;
+  char duration[16];
   if (getAtomSize(&input[pos]) != sizeof(MovieHeaderAtom))
     return 0;
   m = (const MovieHeaderAtom* ) &input[pos];
-  /* TODO: extract metadata */
-#if DEBUG
-  printf("mvhdHandler not implemented\n");
-#endif
+  snprintf(duration, 16, "%us", ntohl(m->duration) / ntohl(m->timeScale));
+  addKeyword(EXTRACTOR_DURATION,
+	     duration,
+	     list);
   return 1;
 }
 
@@ -397,6 +345,11 @@ static int cmovHandler(const char * input,
 }
 
 typedef struct {
+  short integer;
+  short fraction;
+} Fixed;
+
+typedef struct {
   Atom hdr;
   unsigned int flags; /* 1 byte of version, 3 bytes of flags */
   /* in seconds since midnight, January 1, 1904 */
@@ -412,11 +365,11 @@ typedef struct {
   unsigned short alternate_group;
   unsigned short volume;
   unsigned short reserved_3;
-  unsigned char matrix[36];
+  Fixed matrix[3][3];
   /* in pixels */
-  unsigned int track_width;
+  Fixed track_width;
   /* in pixels */
-  unsigned int track_height;
+  Fixed track_height;
 } TrackAtom;
 
 static int tkhdHandler(const char * input,
@@ -424,13 +377,22 @@ static int tkhdHandler(const char * input,
 		       size_t pos,
 		       struct EXTRACTOR_Keywords ** list) {
   const TrackAtom * m;
+  char dimensions[40];
+
   if (getAtomSize(&input[pos]) < sizeof(TrackAtom))
     return 0;
   m = (const TrackAtom* ) &input[pos];
-  /* TODO: extract metadata */
-#if DEBUG
-  printf("tkhdHandler not implemented\n");
-#endif
+  if (ntohs(m->track_width.integer) != 0) {
+    /* if actually a/the video track */
+    snprintf(dimensions, 
+	     40, 
+	     "%dx%d", 
+	     ntohs(m->track_width.integer), 
+	     ntohs(m->track_height.integer));
+    addKeyword(EXTRACTOR_FORMAT,
+	       dimensions,
+	       list);
+  }
   return 1;
 }
 
@@ -455,33 +417,6 @@ static int metaHandler(const char * input,
 			 getAtomSize(&input[pos]) - hdr - 4,
 			 list);
 }
-
-typedef struct {
-  Atom header;
-  unsigned int flags;
-  unsigned int componentType;
-  unsigned int componentSubType;
-  unsigned int componentManufacturer;
-  unsigned int componentFlags;
-  unsigned int componentFlagsMask;
-} PublicHandler;
-
-
-static int hdlrHandler(const char * input,
-		       size_t size,
-		       size_t pos,
-		       struct EXTRACTOR_Keywords ** list) {
-  const PublicHandler * m;
-  if (getAtomSize(&input[pos]) < sizeof(PublicHandler))
-    return 0;
-  m = (const PublicHandler* ) &input[pos];
-  /* TODO: extract metadata */
-#if DEBUG
-  printf("hdlrHandler not implemented\n");
-#endif
-  return 1;
-}
-
 
 typedef struct {
   Atom header;
@@ -644,136 +579,63 @@ static int processTextTag(const char * input,
   return 1;
 }
 
-static int c_cpyHandler(const char * input,
-			size_t size,
-			size_t pos,
-			struct EXTRACTOR_Keywords ** list) {
-  return processTextTag(input,
-			size,
-			pos,
-			EXTRACTOR_COPYRIGHT,
-			list);
-}
+typedef struct CHE {
+  const char * pfx;
+  EXTRACTOR_KeywordType type;
+} CHE;
 
-static int c_swrHandler(const char * input,
-			size_t size,
-			size_t pos,
-			struct EXTRACTOR_Keywords ** list) {
-  return processTextTag(input,
-			size,
-			pos,
-			EXTRACTOR_SOFTWARE,
-			list);
-}
+static CHE cHm[] = {
+  { "aut", EXTRACTOR_AUTHOR, },
+  { "cpy", EXTRACTOR_COPYRIGHT, },
+  { "day", EXTRACTOR_CREATION_DATE, },
+  { "cmt", EXTRACTOR_COMMENT, },
+  { "hst", EXTRACTOR_BUILDHOST, },
+  { "inf", EXTRACTOR_INFORMATION, },
+  { "nam", EXTRACTOR_FULL_NAME, },
+  { "mak", EXTRACTOR_CAMERA_MAKE, },
+  { "mod", EXTRACTOR_CAMERA_MODEL, },
+  { "des", EXTRACTOR_DESCRIPTION, },
+  { "dis", EXTRACTOR_DISCLAIMER, },
+  { "dir", EXTRACTOR_MOVIE_DIRECTOR, },
+  { "src", EXTRACTOR_CONTRIBUTOR, }, 
+  { "prf", EXTRACTOR_ARTIST, }, /* performer */
+  { "req", EXTRACTOR_CREATED_FOR, }, /* hardware requirements */
+  { "fmt", EXTRACTOR_FORMAT, },
+  { "prd", EXTRACTOR_PRODUCER, },
+  { "PRD", EXTRACTOR_PRODUCTVERSION, }, /* just product */
+  { "swr", EXTRACTOR_SOFTWARE, },
+  { "wrt", EXTRACTOR_AUTHOR, }, /* writer */
+  { "wrn", EXTRACTOR_WARNING, },
+  { "ed1", EXTRACTOR_REVISION_HISTORY, },
+  { "ed2", EXTRACTOR_REVISION_HISTORY, },
+  { "ed3", EXTRACTOR_REVISION_HISTORY, },
+  { "ed4", EXTRACTOR_REVISION_HISTORY, },
+  { "ed5", EXTRACTOR_REVISION_HISTORY, },
+  { "ed6", EXTRACTOR_REVISION_HISTORY, },
+  { "ed7", EXTRACTOR_REVISION_HISTORY, },
+  { "ed8", EXTRACTOR_REVISION_HISTORY, },
+  { "ed9", EXTRACTOR_REVISION_HISTORY, }, 
+  { "chp", EXTRACTOR_CHAPTER, }, 
+  { NULL, EXTRACTOR_UNKNOWN },
+};
 
-static int c_dayHandler(const char * input,
-			size_t size,
-			size_t pos,
-			struct EXTRACTOR_Keywords ** list) {
-  return processTextTag(input,
-			size,
-			pos,
-			EXTRACTOR_CREATION_DATE,
-			list);
-}
+static int c_Handler(const char * input,
+		     size_t size,
+		     size_t pos,
+		     struct EXTRACTOR_Keywords ** list) {
+  int i;
 
-static int c_dirHandler(const char * input,
-			size_t size,
-			size_t pos,
-			struct EXTRACTOR_Keywords ** list) {
-  return processTextTag(input,
-			size,
-			pos,
-			EXTRACTOR_MOVIE_DIRECTOR,
-			list);
-}
-
-static int c_fmtHandler(const char * input,
-			size_t size,
-			size_t pos,
-			struct EXTRACTOR_Keywords ** list) {
-  return processTextTag(input,
-			size,
-			pos,
-			EXTRACTOR_FORMAT,
-			list);
-}
-
-static int c_infHandler(const char * input,
-			size_t size,
-			size_t pos,
-			struct EXTRACTOR_Keywords ** list) {
-  return processTextTag(input,
-			size,
-			pos,
-			EXTRACTOR_COMMENT,
-			list);
-}
-
-static int c_prdHandler(const char * input,
-			size_t size,
-			size_t pos,
-			struct EXTRACTOR_Keywords ** list) {
-  return processTextTag(input,
-			size,
-			pos,
-			EXTRACTOR_PRODUCER,
-			list);
-}
-
-static int c_prfHandler(const char * input,
-			size_t size,
-			size_t pos,
-			struct EXTRACTOR_Keywords ** list) {
-  return processTextTag(input,
-			size,
-			pos,
-			EXTRACTOR_ARTIST,
-			list);
-}
-
-static int c_reqHandler(const char * input,
-			size_t size,
-			size_t pos,
-			struct EXTRACTOR_Keywords ** list) {
-  return processTextTag(input,
-			size,
-			pos,
-			EXTRACTOR_CREATED_FOR, /* hardware requirements */
-			list);
-}
-
-static int c_srcHandler(const char * input,
-			size_t size,
-			size_t pos,
-			struct EXTRACTOR_Keywords ** list) {
-  return processTextTag(input,
-			size,
-			pos,
-			EXTRACTOR_CONTRIBUTOR,
-			list);
-}
-
-static int c_edXHandler(const char * input,
-			size_t size,
-			size_t pos,
-			struct EXTRACTOR_Keywords ** list) {
-  return processTextTag(input,
-			size,
-			pos,
-			EXTRACTOR_DESCRIPTION,
-			list);
-}
-
-static int c_wrtHandler(const char * input,
-			size_t size,
-			size_t pos,
-			struct EXTRACTOR_Keywords ** list) {
-  return processTextTag(input,
-			size,
-			pos,
-			EXTRACTOR_AUTHOR,
-			list);
+  i = 0;
+  while ( (cHm[i].pfx != NULL) &&
+	  (0 != memcmp(&input[5], cHm[i].pfx, 3)) )
+    i++;
+  if (cHm[i].pfx != NULL)
+    return processTextTag(input,
+			  size,
+			  pos,
+			  cHm[i].type,
+			  list);
+  return -1; /* not found */
 }
 
 static int udtaHandler(const char * input,
@@ -785,11 +647,6 @@ static int udtaHandler(const char * input,
 			 getAtomSize(&input[pos]) - hdr,
 			 list);
 }
-
-
-
-
-
 
 typedef struct {
   char * name;
@@ -804,28 +661,38 @@ static HandlerEntry handlers[] = {
   { "tkhd", &tkhdHandler },
   { "meta", &metaHandler },
   { "udta", &udtaHandler },
-  { "hdlr", &hdlrHandler },
   { "ftyp", &ftypHandler },
-  { "\xa9""swr", &c_swrHandler },
-  { "\xa9""cpy", &c_cpyHandler },
-  { "\xa9""day", &c_dayHandler },
-  { "\xa9""dir", &c_dirHandler },
-  { "\xa9""ed1", &c_edXHandler },
-  { "\xa9""ed2", &c_edXHandler },
-  { "\xa9""ed3", &c_edXHandler },
-  { "\xa9""ed4", &c_edXHandler },
-  { "\xa9""ed5", &c_edXHandler },
-  { "\xa9""ed6", &c_edXHandler },
-  { "\xa9""ed7", &c_edXHandler },
-  { "\xa9""ed8", &c_edXHandler },
-  { "\xa9""ed9", &c_edXHandler },
-  { "\xa9""fmt", &c_fmtHandler },
-  { "\xa9""inf", &c_infHandler },
-  { "\xa9""prd", &c_prdHandler },
-  { "\xa9""prf", &c_prfHandler },
-  { "\xa9""req", &c_reqHandler },
-  { "\xa9""src", &c_srcHandler },
-  { "\xa9""wrt", &c_wrtHandler },
+  { "\xa9""swr", &c_Handler },
+  { "\xa9""cpy", &c_Handler },
+  { "\xa9""day", &c_Handler },
+  { "\xa9""dir", &c_Handler },
+  { "\xa9""ed1", &c_Handler },
+  { "\xa9""ed2", &c_Handler },
+  { "\xa9""ed3", &c_Handler },
+  { "\xa9""ed4", &c_Handler },
+  { "\xa9""ed5", &c_Handler },
+  { "\xa9""ed6", &c_Handler },
+  { "\xa9""ed7", &c_Handler },
+  { "\xa9""ed8", &c_Handler },
+  { "\xa9""ed9", &c_Handler },
+  { "\xa9""fmt", &c_Handler },
+  { "\xa9""inf", &c_Handler },
+  { "\xa9""prd", &c_Handler },
+  { "\xa9""prf", &c_Handler },
+  { "\xa9""req", &c_Handler },
+  { "\xa9""src", &c_Handler },
+  { "\xa9""wrt", &c_Handler },
+  { "\xa9""aut", &c_Handler },
+  { "\xa9""hst", &c_Handler },
+  { "\xa9""wrt", &c_Handler },
+  { "\xa9""cmt", &c_Handler },
+  { "\xa9""mak", &c_Handler },
+  { "\xa9""mod", &c_Handler },
+  { "\xa9""nam", &c_Handler },
+  { "\xa9""des", &c_Handler },
+  { "\xa9""PRD", &c_Handler },
+  { "\xa9""wrn", &c_Handler },
+  { "\xa9""chp", &c_Handler },
   /*  { "name", &nameHandler }, */
   { NULL, NULL },
 };
@@ -865,159 +732,6 @@ static int handleAtom(const char * input,
 #endif
   return i;
 }
-
-
-
-
-
-
-
-
-#if 0
-/* Wrap the metadata we're collecting into a struct for easy passing */
-typedef struct {
-  unsigned int width;			/* width in pixels */
-  unsigned int height;			/* height in pixels */
-  unsigned int fps;			/* frames per second */
-  unsigned int duration;		/* duration in milliseconds */
-  unsigned int bitrate;		/* bitrate in kbps */
-  const char * codec;			/* video compression codec */
-} Data;
-
-
-
-/* QuickTime uses big-endian ordering, and block ("atom") lengths include the
- * entire atom, including the fourcc specifying atom type and the length
- * integer itself.
- */
-static int parse_quicktime(const char * input,
-			   size_t size,
-			   Data * data) {
-  char fourcc[5];
-  unsigned blockLen;
-  unsigned subBlockLen;
-  unsigned subSubBlockLen;
-  unsigned timescale;
-  long blockStart;
-  long subBlockStart;
-  long subSubBlockStart;
-  size_t pos;
-  
-  fseek(file, 4L, SEEK_SET);
-  fread(fourcc, sizeof(char), 4, file);
-  /* If data is first, header's at end of file, so skip to it */
-  if (memcmp(fourcc, "mdat", 4)==0) {
-    fseek(file, 0L, SEEK_SET);
-    blockLen = fread_be(file, 4);
-    fseek(file, (long) (blockLen + 4), SEEK_SET);
-    fread(fourcc, sizeof(char), 4, file);
-  }
-  
-  if (memcmp(fourcc, "moov", 4)!=0)
-    return 1;
-  blockStart = ftell(file);
-  blockLen = fread_be(file, 4);	/* mvhd length */
-  fread(fourcc, sizeof(char), 4, file);
-  if (memcmp(fourcc, "mvhd", 4)!=0)
-    return 1;
-  
-  /* Now we're at the start of the movie header */
-  
-  /* 20: time scale (time units per second) (4 bytes) */
-  fseek(file, blockStart + 20, SEEK_SET);
-  timescale = fread_be(file, 4);
-  
-  /* 24: duration in time units (4 bytes) */
-  data->duration = (unsigned int) round_double((double) fread_be(file, 4)
-					       / timescale * 1000);
-  
-  /* Skip the rest of the mvhd */
-  fseek(file, blockStart + blockLen, SEEK_SET);
-  
-  /* Find and parse trak atoms */
-  while (!feof(file)) {
-    unsigned int width;
-    unsigned int height;
-    
-    /* Find the next trak atom */
-    blockStart = ftell(file);
-    blockLen = fread_be(file, 4);	/* trak (or other atom) length */
-    fread(fourcc, sizeof(char), 4, file);
-    if(memcmp(fourcc, "trak", 4)!=0)	/* If it's not a trak atom, skip it */
-      {
-	if(!feof(file))
-	  fseek(file, blockStart + blockLen, SEEK_SET);
-	continue;
-      }
-    
-    subBlockStart = ftell(file);
-    subBlockLen = fread_be(file, 4);	/* tkhd length */
-    fread(fourcc, sizeof(char), 4, file);
-    if(memcmp(fourcc, "tkhd", 4)!=0)
-      return 1;
-    
-    /* Now in the track header */
-    
-    /* 84: width (2 bytes) */
-    fseek(file, subBlockStart + 84, SEEK_SET);
-    width = fread_be(file, 2);
-    
-    /* 88: height (2 bytes) */
-    fseek(file, subBlockStart + 88, SEEK_SET);
-    height = fread_be(file, 2);
-    
-    /* Note on above: Apple's docs say that width/height are 4-byte integers,
-     * but all files I've seen have the data stored in the high-order two
-     * bytes, with the low-order two being 0x0000.  Interpreting it the
-     * "official" way would make width/height be thousands of pixels each.
-     */
-    
-    /* Skip rest of tkhd */
-    fseek(file, subBlockStart + subBlockLen, SEEK_SET);
-    
-    /* Find mdia atom for this trak */
-    subBlockStart = ftell(file);
-    subBlockLen = fread_be(file, 4);
-    fread(fourcc, sizeof(char), 4, file);
-    while(memcmp(fourcc, "mdia", 4)!=0) {
-      fseek(file, subBlockStart + subBlockLen, SEEK_SET);
-      subBlockStart = ftell(file);
-      subBlockLen = fread_be(file, 4);
-      fread(fourcc, sizeof(char), 4, file);
-    }
-    
-    /* Now we're in the mdia atom; first sub-atom should be mdhd */
-    subSubBlockStart = ftell(file);
-    subSubBlockLen = fread_be(file, 4);
-    fread(fourcc, sizeof(char), 4, file);
-    if(memcmp(fourcc, "mdhd", 4)!=0)
-      return 1;
-    /* TODO: extract language from the mdhd?  For now skip to hdlr. */
-    fseek(file, subSubBlockStart + subSubBlockLen, SEEK_SET);
-    subSubBlockStart = ftell(file);
-    subSubBlockLen = fread_be(file, 4);
-    fread(fourcc, sizeof(char), 4, file);
-    if(memcmp(fourcc, "hdlr", 4)!=0)
-      return 1;
-    /* 12: Component type: "mhlr" or "dhlr"; we only care about mhlr,
-     * which should (?) appear first */
-    fseek(file, subSubBlockStart + 12, SEEK_SET);
-    fread(fourcc, sizeof(char), 4, file);
-    if(memcmp(fourcc, "mhlr", 4)!=0)
-      return 1;
-    fread(fourcc, sizeof(char), 4, file);
-    if(memcmp(fourcc, "vide", 4)==0)	/* This is a video trak */
-      {
-	data->height = height;
-	data->width = width;
-      }
-    
-    /* Skip rest of the trak */
-    fseek(file, blockStart + blockLen, SEEK_SET);
-  }
-  return 0;
-}
-#endif
 
 /* mimetypes:
    video/quicktime: mov,qt: Quicktime animation;
