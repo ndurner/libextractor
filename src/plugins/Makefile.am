@@ -24,6 +24,10 @@ else
  pdfplugin=libextractor_pdf.la 
 endif
 
+if HAVE_MPEG2
+ extrampeg = libextractor_mpeg.la
+endif
+
 # toggle for development
 # SUBDIRS = . 
 SUBDIRS = . $(oodir) $(printdir) hash $(oledir) rpm $(xpdfdir) $(thumbdir) $(exiv2dir)
@@ -58,7 +62,7 @@ plugin_LTLIBRARIES = $(pdfplugin) \
   libextractor_man.la \
   libextractor_mime.la \
   libextractor_mp3.la \
-  libextractor_mpeg.la \
+  $(extrampeg) \
   $(extraogg) \
   libextractor_png.la \
   libextractor_ps.la \
@@ -224,6 +228,7 @@ libextractor_mime_la_LDFLAGS = \
   $(top_builddir)/src/main/libextractor.la \
   $(PLUGINFLAGS)  $(retaincommand)
 
+if HAVE_MPEG2
 libextractor_mpeg_la_SOURCES = \
   mpegextractor.c 
 libextractor_mpeg_la_LDFLAGS = \
@@ -231,6 +236,7 @@ libextractor_mpeg_la_LDFLAGS = \
   $(PLUGINFLAGS)  $(retaincommand)
 libextractor_mpeg_la_LIBADD = \
   -lmpeg2
+endif
 
 libextractor_man_la_SOURCES = \
   manextractor.c 

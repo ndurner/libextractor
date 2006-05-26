@@ -154,7 +154,7 @@ AC_CHECK_LIB(bz2, BZ2_decompress,
 
 AC_CHECK_LIB(mpeg2, mpeg2_init,
         [AM_CONDITIONAL(HAVE_MPEG2, true)
-        AC_DEFINE(HAVE_LIBMPEG2,1,[Have libmpeg2])],
+        AC_DEFINE(HAVE_MPEG2,1,[Have libmpeg2])],
         [AM_CONDITIONAL(HAVE_MPEG2, false)])
 
 # restore LIBS
@@ -375,5 +375,5 @@ fi
 
 if test "x$HAVE_MPEG2_TRUE" = "x#"
 then
- AC_MSG_ERROR([FATAL: libmpeg2 not found])
+ AC_MSG_NOTICE([NOTICE: libmpeg2 not found])
 fi
