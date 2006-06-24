@@ -9,6 +9,14 @@ thumbdir=thumbnail
 endif
 endif
 
+if HAVE_QT
+ thumbqt=libextractor_thumbnailqt.la
+endif
+
+if HAVE_QT_SVG
+ svgflags = -lQtSvg4
+endif
+
 if HAVE_PRINTABLE
  printdir=printable
 endif
@@ -72,6 +80,7 @@ plugin_LTLIBRARIES = $(pdfplugin) \
   libextractor_split.la \
   libextractor_tar.la \
   libextractor_tiff.la \
+  $(thumbqt) \
   libextractor_translit.la \
   libextractor_wav.la \
   libextractor_zip.la 
@@ -289,4 +298,11 @@ libextractor_translit_la_SOURCES = \
   translitextractor.c 
 libextractor_translit_la_LDFLAGS = \
   $(PLUGINFLAGS) $(retaincommand)
+
+libextractor_thumbnailqt_la_SOURCES = \
+	thumbnailextractorqt.cc
+libextractor_thumbnailqt_la_LIBADD = \
+  $(top_builddir)/src/main/libextractor.la
+libextractor_thumbnailqt_la_LDFLAGS = \
+  $(PLUGINFLAGS) $(retaincommand) -lQtCore4 -lQtGui4 $(svgflags)
 

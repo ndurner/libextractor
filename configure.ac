@@ -252,6 +252,78 @@ else
  AM_CONDITIONAL(HAVE_GTK,false)
 fi
 
+# check for Qt 4
+qt=0
+AC_LANG_PUSH([C++])
+AC_MSG_CHECKING(for Qt)
+AC_ARG_WITH(qt,
+   [  --with-qt=PFX    Base of Qt installation],
+   [AC_MSG_RESULT([$with_qt])
+    case $with_qt in
+      no)
+        ;;
+      yes)
+        AC_CHECK_HEADERS(qpixmap.h,
+          AC_CHECK_LIB([QtGui4], [_ZN7QPixmap12defaultDepthEv],
+            qt=1))
+        ;;
+      *)
+        LDFLAGS="-L$with_qt/lib $LDFLAGS"
+        CPPFLAGS="-I$with_qt/include -I$with_qt/include/Qt $CPPFLAGS"
+        AC_CHECK_HEADERS(qpixmap.h,
+          AC_CHECK_LIB([QtGui4], [_ZN7QPixmap12defaultDepthEv],
+            EXT_LIB_PATH="-L$with_qt/lib $EXT_LIB_PATH"
+            qt=1))
+        ;;
+    esac
+   ],
+   [AC_MSG_RESULT([--with-qt not specified])
+    AC_CHECK_HEADERS(qpixmap.h,
+     AC_CHECK_LIB([QtGui4], [_ZN7QPixmap12defaultDepthEv],
+      qt=1))])
+
+if test x$qt != x0
+then
+ AC_DEFINE(HAVE_QT, 1, [We have Qt])
+fi
+AM_CONDITIONAL(HAVE_QT, test x$qt != x0)
+
+# check for Qt SVG module
+AC_MSG_CHECKING(for Qt SVG)
+AC_ARG_WITH(qt,
+   [  --with-qt=PFX    Base of Qt installation],
+   [AC_MSG_RESULT([$with_qt])
+    case $with_qt in
+      no)
+        ;;
+      yes)
+        AC_CHECK_HEADERS(qsvgrenderer.h,
+          AC_CHECK_LIB([QtSvg4], [_ZN10QSvgWidgetD0Ev],
+            qt_svg=1))
+        ;;
+      *)
+        LDFLAGS="-L$with_qt/lib $LDFLAGS"
+        CPPFLAGS="-I$with_qt/include -I$with_qt/include/Qt $CPPFLAGS"
+        AC_CHECK_HEADERS(qsvgrenderer.h,
+          AC_CHECK_LIB([QtSvg4], [_ZN10QSvgWidgetD0Ev],
+            EXT_LIB_PATH="-L$with_qt/lib $EXT_LIB_PATH"
+            qt_svg=1))
+        ;;
+    esac
+   ],
+   [AC_MSG_RESULT([--with-qt not specified])
+    AC_CHECK_HEADERS(qsvgrenderer.h,
+     AC_CHECK_LIB([QtSvg4], [_ZN10QSvgWidgetD0Ev],
+      qt_svg=1))])
+
+if test x$qt_svg != x0
+then
+ AC_DEFINE(HAVE_QT_SVG, 1, [We have Qt SVG])
+fi
+AM_CONDITIONAL(HAVE_QT_SVG, test x$qt_svg != x0)
+
+
+AC_LANG_POP([C++])
 
 
 printable=1
