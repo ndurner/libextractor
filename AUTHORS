@@ -3,35 +3,35 @@ Vidyut Samanta <vids@cs.ucla.edu>
 Christian Grothoff <christian@grothoff.org>
 
 Formats:
-html      - core team with code from libhtmlparse 0.1.13, http://msalem.translator.cx/libhtmlparse.html
-jpeg      - core team
-mp3       - core team and James Blackwell <jblack@linuxguru.net>
-ogg       - core team using ogg-vorbis
-png       - core team
-gif       - core team
-real      - core team
-mime      - core team and Igor Wronsky <iwronsky@users.sourceforge.net>
-pdf       - core team with code form xpdf 0.93, http://www.foolabs.com/xpdf/
-ps        - core team
-tiff      - core team
-zip       - Julia Wolf <julia@virtadpt.net>
-rpm       - core team
-asf       - core team based on code from xine
-printable - core team based in part on code from GNUnet (bloom filters)
-avi       - core team based in part on code from avinfo 1.0.0 alpha 11 and bitcollider 0.6.0
-mpeg      - core team based in part on code from avinfo 1.0.0 alpha 11 and bitcollider 0.6.0
-ole2      - core team based on code from libgsf
-tar       - core team and Ronan MELENNEC <ronan.melennec@cena.fr>
-tar.gz    - core team using zlib
-deb       - core team using zlib
-man       - core team using zlib (for man.gz)
-id3v2     - core team with Milan <milan@skoid.org>
-hash      - core team using GNU coreutils/textutils and GPL'ed RMD160 code.
-translit  - Nils Durner <n.durner@t-online.de>
-thumbnail - core team using ImageMagick
-exiv2     - Andreas Huggel <ahuggel@gmx.net>
-language  - Roberto Cappuccio <roberto.cappuccio@gmail.com> (from libkat)
-word      - Ariya Hidayat <ariya@kde.org> and Sacha Fuentes <mandelman@iname.com>
+html          - core team with code from libhtmlparse 0.1.13, http://msalem.translator.cx/libhtmlparse.html
+jpeg          - core team
+mp3           - core team and James Blackwell <jblack@linuxguru.net>
+ogg           - core team using ogg-vorbis
+png           - core team
+gif           - core team
+real          - core team
+mime          - core team and Igor Wronsky <iwronsky@users.sourceforge.net>
+pdf           - core team with code form xpdf 0.93, http://www.foolabs.com/xpdf/
+ps            - core team
+tiff          - core team
+zip           - Julia Wolf <julia@virtadpt.net>
+rpm           - core team
+asf           - core team based on code from xine
+printable     - core team based in part on code from GNUnet (bloom filters)
+avi           - core team based in part on code from avinfo 1.0.0 alpha 11 and bitcollider 0.6.0
+mpeg          - core team based in part on code from avinfo 1.0.0 alpha 11 and bitcollider 0.6.0
+ole2          - core team based on code from libgsf
+tar           - core team and Ronan MELENNEC <ronan.melennec@cena.fr>
+tar.gz        - core team using zlib
+deb           - core team using zlib
+man           - core team using zlib (for man.gz)
+id3v2         - core team with Milan <milan@skoid.org>
+hash          - core team using GNU coreutils/textutils and GPL'ed RMD160 code.
+translit      - Nils Durner <n.durner@t-online.de>
+thumbnail     - core team using ImageMagick
+exiv2         - Andreas Huggel <ahuggel@gmx.net>
+language      - Roberto Cappuccio <roberto.cappuccio@gmail.com> (from libkat)
+word          - Ariya Hidayat <ariya@kde.org> and Sacha Fuentes <mandelman@iname.com>
 
 General contributors:
 Yuri N. Sedunov <aris@altlinux.ru>
