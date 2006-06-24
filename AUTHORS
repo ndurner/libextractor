@@ -27,8 +27,8 @@ deb           - core team using zlib
 man           - core team using zlib (for man.gz)
 id3v2         - core team with Milan <milan@skoid.org>
 hash          - core team using GNU coreutils/textutils and GPL'ed RMD160 code.
-translit      - Nils Durner <n.durner@t-online.de>
-thumbnail     - core team using ImageMagick
+translit      - Nils Durner <durner@gnunet.org>
+thumbnail     - core team using GTK
 exiv2         - Andreas Huggel <ahuggel@gmx.net>
 language      - Roberto Cappuccio <roberto.cappuccio@gmail.com> (from libkat)
 word          - Ariya Hidayat <ariya@kde.org> and Sacha Fuentes <mandelman@iname.com>
