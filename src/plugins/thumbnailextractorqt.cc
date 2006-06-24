@@ -100,8 +100,9 @@ static char * whitelist[] = {
 struct EXTRACTOR_Keywords * libextractor_thumbnailqt_extract(const char * filename,
 							   const unsigned char * data,
 							   size_t size,
-							   struct EXTRACTOR_Keywords * prev) {
-  QPixmap img;
+							   struct EXTRACTOR_Keywords * prev,
+                 const char * options) {
+  QImage *img;
   QByteArray bytes;
   QBuffer buffer;
   unsigned long width;
@@ -110,6 +111,7 @@ struct EXTRACTOR_Keywords * libextractor_thumbnailqt_extract(const char * filena
   const char * mime;
   int j;
   char * format;
+  QImage::Format colors;
 
   /* if the mime-type of the file is not whitelisted
      do not run the thumbnail extactor! */
@@ -126,7 +128,28 @@ struct EXTRACTOR_Keywords * libextractor_thumbnailqt_extract(const char * filena
 
   if (whitelist[j] == NULL)
     return prev;
-    
+
+  /* Determine image format to use */
+  if (options == NULL)
+    colors = QImage::Format_ARGB32;
+  else
+    switch(atoi(options))
+    {
+      case 1:
+        colors = QImage::Format_Mono;
+        break;
+      case 8:
+        colors = QImage::Format_Indexed8;
+        break;
+      case 16:
+      case 24:
+        colors = QImage::Format_RGB32;
+        break;
+      default:
+        colors = QImage::Format_ARGB32;
+        break;
+    }
+
 #ifdef HAVE_QT_SVG
   if (strcmp(mime, "image/svg+xml") == 0)
   {
@@ -138,9 +161,9 @@ struct EXTRACTOR_Keywords * libextractor_thumbnailqt_extract(const char * filena
       return prev;
 
     size = svg.defaultSize();
-    img = QPixmap(size);
+    img = new QImage(size, colors);
     
-    QPainter painter(&img);
+    QPainter painter(img);
     painter.setViewport(0, 0, size.width(), size.height());
     painter.eraseRect(0, 0, size.width(), size.height());
 
@@ -148,11 +171,14 @@ struct EXTRACTOR_Keywords * libextractor_thumbnailqt_extract(const char * filena
   }
   else
 #endif
+  {
     /* Load image */
-    img.loadFromData(data, size);
-
-  height = img.height();
-  width = img.width();
+    img = new QImage();
+    img->loadFromData(data, size);
+  }
+  
+  height = img->height();
+  width = img->width();
   format = (char *) malloc(64);
   snprintf(format,
 	   64,
@@ -176,10 +202,13 @@ struct EXTRACTOR_Keywords * libextractor_thumbnailqt_extract(const char * filena
     width = THUMBSIZE;
   }
   
-  img = img.scaled(width, height, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+  QImage thumb = img->scaled(width, height, Qt::KeepAspectRatio,
+    Qt::SmoothTransformation).convertToFormat(colors);
+  delete img;
+  
   buffer.setBuffer(&bytes);
   buffer.open(QIODevice::WriteOnly);
-  img.save(&buffer, "PNG");
+  thumb.save(&buffer, "PNG");
 
   binary
     = EXTRACTOR_binaryEncode((const unsigned char*) bytes.data(),
