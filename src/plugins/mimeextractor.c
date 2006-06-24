@@ -1,6 +1,6 @@
 /*
      This file is part of libextractor.
-     (C) 2002, 2003 Vidyut Samanta and Christian Grothoff
+     (C) 2002, 2003, 2006 Vidyut Samanta and Christian Grothoff
 
      libextractor is free software; you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published
@@ -126,6 +126,45 @@ static int xPatternMatcher(char * data,
 }
 
 /**
+ * Detect SVG
+ */
+static int svgMatcher(char *data,
+                      size_t len,
+                      ExtraPattern *arg) {
+  enum {XMLSTART, XMLCLOSE, SVGSTART, ABORT, OK} state;
+  size_t i;
+  
+  i = 0;
+  state = XMLSTART;
+  
+  while (i < len && state != ABORT) {
+    switch (state) {
+      case XMLSTART:
+        if (i + 6 >= len)
+          state = ABORT;
+        else if (memcmp(data + i, "<?xml", 5) == 0 && isspace(*(data + i + 5)))
+          state = XMLCLOSE;
+        break;
+      case XMLCLOSE:
+        if (i + 2 >= len)
+          state = ABORT;
+        else if (memcmp(data + i, "?>", 2) == 0)
+          state = SVGSTART;
+        break;
+      case SVGSTART:
+        if (i + 5 >= len)
+          state = ABORT;
+        else if (memcmp(data + i, "<svg", 4) == 0 && isspace(*(data + i + 4)))
+          state = OK;
+    }
+    
+    i++;
+  }
+  
+  return state == OK;
+}
+
+/**
  * Use this detector, if the simple header-prefix matching is
  * sufficient.
  **/
@@ -236,6 +275,7 @@ static Pattern patterns[] = {
   { "#!/bin/csh",  10, "application/x-shellscript", DEFAULT},
   { "#!/bin/tcsh", 11, "application/x-shellscript", DEFAULT},
   { "#!/bin/perl", 11, "application/x-perl", DEFAULT},
+  { "", 0, "image/svg+xml", svgMatcher, NULL},
   {NULL, 0, NULL, DISABLED},
 };
 
