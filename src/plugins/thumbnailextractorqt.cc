@@ -192,19 +192,27 @@ struct EXTRACTOR_Keywords * libextractor_thumbnailqt_extract(const char * filena
     height = 1;
   if (width == 0)
     width = 1;
-
-  if (height > THUMBSIZE) {
-    width = width * THUMBSIZE / height;
-    height = THUMBSIZE;
-  }
-  if (width > THUMBSIZE) {
-    height = height * THUMBSIZE / width;
-    width = THUMBSIZE;
-  }
-  
-  QImage thumb = img->scaled(width, height, Qt::KeepAspectRatio,
-    Qt::SmoothTransformation).convertToFormat(colors);
+ 
+  /* Resize image */
+  QImage thumb = img->convertToFormat(colors);
   delete img;
+
+  while(true)
+  {
+    width /= 2;
+    if (width < THUMBSIZE)
+      width = THUMBSIZE;
+
+    height /= 2;
+    if (height < THUMBSIZE)
+      height = THUMBSIZE;
+    
+    thumb = thumb.scaled(width, height, Qt::KeepAspectRatio,
+      Qt::SmoothTransformation);
+    
+    if (width == THUMBSIZE && height == THUMBSIZE)
+      break;
+  }
   
   buffer.setBuffer(&bytes);
   buffer.open(QIODevice::WriteOnly);
