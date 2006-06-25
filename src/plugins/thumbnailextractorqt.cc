@@ -53,7 +53,7 @@ void __attribute__ ((constructor)) thumnailextractorqt_init(void)
   app = new QApplication(argc, &argv);
 }
 
-void __attribute__ ((destructor)) my_fini(void)
+void __attribute__ ((destructor)) thumnailextractorqt_done(void)
 {
   delete app;
   free(argv);
@@ -192,11 +192,16 @@ struct EXTRACTOR_Keywords * libextractor_thumbnailqt_extract(const char * filena
     height = 1;
   if (width == 0)
     width = 1;
- 
-  /* Resize image */
+
+  /* Change color depth */ 
   QImage thumb = img->convertToFormat(colors);
   delete img;
 
+  /* Resize image
+   *
+   * Qt's scaled() produces poor quality if the image is resized to less than
+   * half the size. Therefore, we resize the image in multiple steps.
+   * http://lists.trolltech.com/qt-interest/2006-04/msg00376.html */
   while(true)
   {
     width /= 2;
