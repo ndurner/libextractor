@@ -161,7 +161,7 @@ struct EXTRACTOR_Keywords * libextractor_thumbnailqt_extract(const char * filena
       return prev;
 
     size = svg.defaultSize();
-    img = new QImage(size, colors);
+    img = new QImage(size, QImage::Format_ARGB32);
     
     QPainter painter(img);
     painter.setViewport(0, 0, size.width(), size.height());
