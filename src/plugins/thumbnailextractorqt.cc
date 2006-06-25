@@ -131,7 +131,7 @@ struct EXTRACTOR_Keywords * libextractor_thumbnailqt_extract(const char * filena
 
   /* Determine image format to use */
   if (options == NULL)
-    colors = QImage::Format_ARGB32;
+    colors = QImage::Format_Indexed8;
   else
     switch(atoi(options))
     {
