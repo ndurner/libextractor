@@ -1,5 +1,7 @@
 include Makefile-plugins.am
 
+LIBEXT = @LIBEXT@
+
 if HAVE_GLIB
 if WITH_GSF
  oledir=ole2
@@ -305,4 +307,20 @@ libextractor_thumbnailqt_la_LIBADD = \
   $(top_builddir)/src/main/libextractor.la
 libextractor_thumbnailqt_la_LDFLAGS = \
   $(PLUGINFLAGS) $(retaincommand) -lQtCore4 -lQtGui4 $(svgflags)
+
+install-exec-hook:
+	rm -f $(DESTDIR)$(plugindir)/libextractor_thumbnail$(LIBEXT); \
+	rm -f $(DESTDIR)$(plugindir)/libextractor_thumbnail.la; \
+	if test "$(thumbdir)" != ""; then \
+		if test "$(thumbqt)" != ""; then \
+			$(LN_S) $(DESTDIR)$(plugindir)/libextractor_thumbnailqt$(LIBEXT) \
+				$(DESTDIR)$(plugindir)/libextractor_thumbnail$(LIBEXT); \
+		else \
+			$(LN_S) $(DESTDIR)$(plugindir)/libextractor_thumbnailgtk$(LIBEXT) \
+				$(DESTDIR)$(plugindir)/libextractor_thumbnail$(LIBEXT); \
+		fi; \
+	else \
+		$(LN_S) $(DESTDIR)$(plugindir)/libextractor_thumbnailqt$(LIBEXT) \
+			$(DESTDIR)$(plugindir)/libextractor_thumbnail$(LIBEXT); \
+	fi;
 

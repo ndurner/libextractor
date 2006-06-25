@@ -26,24 +26,28 @@ linux*)
      AM_CONDITIONAL(HAVE_GNU_LD, true)    
      AM_CONDITIONAL(SOMEBSD, false)
      XTRA_CPPLIBS=-lstdc++
+     LIBEXT=.so
      ;;
 freebsd*)
      AC_DEFINE_UNQUOTED(SOMEBSD,1,[This is a BSD system])
      AC_CHECK_LIB(c_r, pthread_create)
      AM_CONDITIONAL(HAVE_GNU_LD, true)
      AM_CONDITIONAL(SOMEBSD, true)
+     LIBEXT=.so
      ;;
 openbsd*)
      AC_DEFINE_UNQUOTED(SOMEBSD,1,[This is a BSD system])
      AC_CHECK_LIB(c_r, pthread_create)
      AM_CONDITIONAL(HAVE_GNU_LD, true)
      AM_CONDITIONAL(SOMEBSD, true)
+     LIBEXT=.so
      ;;
 netbsd*)
      AC_DEFINE_UNQUOTED(SOMEBSD,1,[This is a BSD system])
      AC_CHECK_LIB(c_r, pthread_create)
      AM_CONDITIONAL(HAVE_GNU_LD, true)
      AM_CONDITIONAL(SOMEBSD, true)
+     LIBEXT=.so
      ;;
 *solaris*)
      AC_DEFINE_UNQUOTED(SOLARIS,1,[This is a Solaris system])
@@ -52,17 +56,20 @@ netbsd*)
      AM_CONDITIONAL(HAVE_GNU_LD, false)
      AM_CONDITIONAL(SOMEBSD, false)
      CFLAGS="-D_POSIX_PTHREAD_SEMANTICS $CFLAGS"
+     LIBEXT=.so
      ;;
 darwin*)
      AC_DEFINE_UNQUOTED(DARWIN,1,[This is a Darwin system])
      AM_CONDITIONAL(HAVE_GNU_LD, false)
      AM_CONDITIONAL(SOMEBSD, false)
+     LIBEXT=.dylib
      ;;
 cygwin*)
      AC_DEFINE_UNQUOTED(CYGWIN,1,[This is a CYGWIN system])
      LDFLAGS="$LDFLAGS -no-undefined"
      AM_CONDITIONAL(SOMEBSD, false)
      AM_CONDITIONAL(HAVE_GNU_LD, false)
+     LIBEXT=.dll
      ;;
 mingw*)
      AC_DEFINE_UNQUOTED(MINGW,1,[This is a MinGW system])
@@ -73,6 +80,7 @@ mingw*)
      LDFLAGS="$LDFLAGS -no-undefined -Wl,--export-all-symbols"
      AM_CONDITIONAL(HAVE_GNU_LD, true)
      AM_CONDITIONAL(SOMEBSD, false)
+     LIBEXT=.dll
      ;;
 *)
      AC_MSG_RESULT(Unrecognised OS $host_os)
@@ -80,6 +88,7 @@ mingw*)
      AC_MSG_RESULT(otheros)
      AM_CONDITIONAL(HAVE_GNU_LD, false)
      AM_CONDITIONAL(SOMEBSD, false)
+     LIBEXT=.so
      ;;
 esac
 
@@ -385,6 +394,7 @@ ABI_GSF
 AC_SUBST(CPPFLAGS)
 AC_SUBST(LDFLAGS)
 AC_SUBST(XTRA_CPPLIBS)
+AC_SUBST(LIBEXT)
 
 AC_CONFIG_FILES([Makefile po/Makefile.in m4/Makefile 
 doc/Makefile
@@ -430,9 +440,9 @@ then
  AC_MSG_NOTICE([NOTICE: libgsf not found, no OLE2 (MS Office) support])
 fi
 
-if test "x$without_gtk" = "xtrue"
+if test "x$without_gtk" = "xtrue" -a "x$qt" = "x0"
 then
- AC_MSG_NOTICE([NOTICE: gtk not found, no thumbnail support])
+ AC_MSG_NOTICE([NOTICE: neither gtk nor Qt not found, no thumbnail support])
 fi
 
 if test "x$HAVE_VORBISFILE_TRUE" = "x#"
