@@ -50,12 +50,13 @@ void __attribute__ ((constructor)) thumnailextractorqt_init(void)
   int argc = 0;
   
   argv = strdup("");
-  app = new QApplication(argc, &argv);
+  app = qApp ? NULL : new QApplication(argc, &argv);
 }
 
 void __attribute__ ((destructor)) thumnailextractorqt_done(void)
 {
-  delete app;
+  if (qApp == app)
+    delete app;
   free(argv);
 }
 
