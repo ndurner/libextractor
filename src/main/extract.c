@@ -221,7 +221,7 @@ printSelectedKeywords(FILE * handle,
  * Take title, auth, year and return a string
  */
 static char *
-splice(const char * title,
+str_splice(const char * title,
        const char * auth,
        const char * year)
 {
@@ -332,7 +332,7 @@ printSelectedKeywordsBibtex (FILE * handle,
       if ( pages )
 	last = pages;
 
-      fprintf(handle, "@misc{ %s,\n",splice(title, author, year));
+      fprintf(handle, "@misc{ %s,\n",str_splice(title, author, year));
       if ( title )
 	fprintf(handle, "    title = \"%s\"%s\n", title,
 	    (last == title)?"":",");
