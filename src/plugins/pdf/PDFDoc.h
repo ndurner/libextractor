@@ -138,8 +138,8 @@ public:
   GBool isLinearized();
 
   // Return the document's Info dictionary (if any).
-  Object *getDocInfo(Object *obj) { return xref->getDocInfo(obj); }
-  Object *getDocInfoNF(Object *obj) { return xref->getDocInfoNF(obj); }
+  Object *getDocInfo(Object *obj) { return xref != NULL ? xref->getDocInfo(obj) : NULL; }
+  Object *getDocInfoNF(Object *obj) { return xref != NULL ? xref->getDocInfoNF(obj) : NULL; }
 
   // Return the PDF version specified by the file.
   double getPDFVersion() { return pdfVersion; }

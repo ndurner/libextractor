@@ -233,8 +233,8 @@ extern "C" {
     result = addKeyword(EXTRACTOR_MIMETYPE,
 			strdup("application/pdf"),
 			prev);
-    doc->getDocInfo(&info);
-    if (info.isDict()) {
+    if ( (NULL != doc->getDocInfo(&info)) &&
+	 (info.isDict()) ) {
       result = printInfoString(info.getDict(),
 			       "Title",
 			       EXTRACTOR_TITLE,

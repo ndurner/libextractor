@@ -437,20 +437,25 @@ libextractor_pdf_extract(const char * filename,
 		      pos - spos);
 	if (i == 0) {
 	  dmeta = dateDecode(meta);
-	  mlen = strlen((const char*)dmeta);
+	  if (dmeta != NULL)
+	    mlen = strlen((const char*)dmeta);
+	  else
+	    mlen = 0;
 	} else {
 	  dmeta = stringDecode(meta,
 			       &mlen);
 	}
 	if (meta != NULL)
 	  free(meta);
-	meta = charsetDecode(dmeta, mlen);
-	if (dmeta != NULL)
-	  free(dmeta);
-	if (meta != NULL) {
-	  prev = addKeyword(tagmap[i].type,
-			    meta,
-			    prev);
+	if (dmeta != NULL) {
+	  meta = charsetDecode(dmeta, mlen);
+	  if (dmeta != NULL)
+	    free(dmeta);
+	  if (meta != NULL) {
+	    prev = addKeyword(tagmap[i].type,
+			      meta,
+			      prev);
+	  }
 	}
 	break;
       }
