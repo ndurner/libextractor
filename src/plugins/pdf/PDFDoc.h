@@ -43,7 +43,7 @@ public:
   ~PDFDoc();
 
   // Was PDF document successfully opened?
-  GBool isOk() { return ok; }
+  GBool isOk() { return (xref != NULL) && ok; }
 
   // Get the error code (if isOk() returns false).
   int getErrorCode() { return errCode; }
