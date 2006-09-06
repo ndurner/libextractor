@@ -1,18 +1,18 @@
 # German translations for libextractor package
-# Copyright © 2004, 2005 Free Software Foundation, Inc.
+# Copyright © 2004, 2005, 2006 Free Software Foundation, Inc.
 # Copyright © 2004 Christian Grothoff
 # This file is distributed under the same license as the libextractor package.
-# Karl Eichwalder <ke@suse.de>, 2004, 2005.
+# Karl Eichwalder <ke@suse.de>, 2004, 2005, 2006.
 # Christian Grothoff <christian@grothoff.org>, 2004.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: libextractor 0.5.6a\n"
+"Project-Id-Version: libextractor 0.5.14\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2006-05-17 00:53-0700\n"
-"PO-Revision-Date: 2005-09-22 10:07+0200\n"
+"POT-Creation-Date: 2006-09-06 14:22-0700\n"
+"PO-Revision-Date: 2006-05-20 20:02+0200\n"
 "Last-Translator: Karl Eichwalder <ke@suse.de>\n"
-"Language-Team: German <de@li.org>\n"
+"Language-Team: German <translation-team-de@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -118,12 +118,12 @@ msgstr "extract [OPTIONEN] [DATEINAME]*"
 msgid "Extract metadata from files."
 msgstr "Metadaten aus den Dateien extrahieren."
 
-#: src/main/extract.c:198 src/main/extractor.c:1149
+#: src/main/extract.c:198 src/main/extractor.c:1387
 #, c-format
 msgid "%s - (binary)\n"
 msgstr "%s - (binär)\n"
 
-#: src/main/extract.c:204 src/main/extractor.c:1154
+#: src/main/extract.c:204 src/main/extractor.c:1392
 #, c-format
 msgid "INVALID TYPE - %s\n"
 msgstr "UNGÜLTIGE ART - %s\n"
@@ -247,20 +247,22 @@ msgid "format"
 msgstr "Format"
 
 #: src/main/extractor.c:66
+#, fuzzy
 msgid "resource-identifier"
-msgstr "Ressourcen Identifikation"
+msgstr "Art der Ressource"
 
 #: src/main/extractor.c:67
 msgid "source"
 msgstr "Quelle"
 
 #: src/main/extractor.c:68
+#, fuzzy
 msgid "relation"
-msgstr "Relation"
+msgstr "Auflösung"
 
 #: src/main/extractor.c:69
 msgid "coverage"
-msgstr "Inhalt"
+msgstr ""
 
 #: src/main/extractor.c:70
 msgid "software"
@@ -336,7 +338,7 @@ msgstr "Paket-Ersteller"
 
 #: src/main/extractor.c:90
 msgid "vendor"
-msgstr ""
+msgstr "Anbieter"
 
 #: src/main/extractor.c:91
 msgid "license"
@@ -352,7 +354,7 @@ msgstr ""
 
 #: src/main/extractor.c:94
 msgid "operating system"
-msgstr ""
+msgstr "Betriebssystem"
 
 #: src/main/extractor.c:95
 msgid "dependency"
@@ -396,19 +398,21 @@ msgstr "Priorität"
 
 #: src/main/extractor.c:105
 msgid "conflicts"
-msgstr "Konflikte"
+msgstr "in Konflikt mit"
 
 #: src/main/extractor.c:106
 msgid "replaces"
 msgstr "Ersatz für"
 
 #: src/main/extractor.c:107
+#, fuzzy
 msgid "provides"
-msgstr "stellt bereit"
+msgstr "Hersteller"
 
 #: src/main/extractor.c:108
+#, fuzzy
 msgid "conductor"
-msgstr "Leitung"
+msgstr "Beiträger"
 
 #: src/main/extractor.c:109
 msgid "interpreter"
@@ -444,11 +448,11 @@ msgstr ""
 
 #: src/main/extractor.c:117
 msgid "camera model"
-msgstr "Kameramodell"
+msgstr "Kamera-Modell"
 
 #: src/main/extractor.c:118
 msgid "exposure"
-msgstr "Belichtung"
+msgstr ""
 
 #: src/main/extractor.c:119
 msgid "aperture"
@@ -468,7 +472,7 @@ msgstr ""
 
 #: src/main/extractor.c:123
 msgid "focal length"
-msgstr "Brennweite"
+msgstr ""
 
 #: src/main/extractor.c:124
 msgid "focal length (35mm equivalent)"
@@ -488,7 +492,7 @@ msgstr ""
 
 #: src/main/extractor.c:128
 msgid "macro mode"
-msgstr "Makromodus"
+msgstr "Makro-Modus"
 
 #: src/main/extractor.c:129
 msgid "image quality"
@@ -496,11 +500,11 @@ msgstr "Bildqualität"
 
 #: src/main/extractor.c:130
 msgid "white balance"
-msgstr ""
+msgstr "Weißabgleich"
 
 #: src/main/extractor.c:131
 msgid "orientation"
-msgstr "Seitenausrichtung"
+msgstr "Ausrichtung"
 
 #: src/main/extractor.c:132
 msgid "template"
@@ -508,7 +512,7 @@ msgstr "Vorlage"
 
 #: src/main/extractor.c:133
 msgid "split"
-msgstr "spalten"
+msgstr ""
 
 #: src/main/extractor.c:134
 msgid "product version"
@@ -516,11 +520,11 @@ msgstr "Produktversion"
 
 #: src/main/extractor.c:135
 msgid "last saved by"
-msgstr "zuletzt gesichert von"
+msgstr "zuletzt gespeichert von"
 
 #: src/main/extractor.c:136
 msgid "last printed"
-msgstr "zuletzt ausgedruckt am"
+msgstr "zuletzt gedruckt"
 
 #: src/main/extractor.c:137
 msgid "word count"
@@ -536,7 +540,7 @@ msgstr ""
 
 #: src/main/extractor.c:140
 msgid "thumbnails"
-msgstr "Vorschauen"
+msgstr ""
 
 #: src/main/extractor.c:141
 msgid "security"
@@ -544,7 +548,7 @@ msgstr "Sicherheit"
 
 #: src/main/extractor.c:142
 msgid "created by software"
-msgstr "erstellt mit Software"
+msgstr "erstellt mit der Software"
 
 #: src/main/extractor.c:143
 msgid "modified by software"
@@ -552,7 +556,7 @@ msgstr ""
 
 #: src/main/extractor.c:144
 msgid "revision history"
-msgstr ""
+msgstr "Versionsgeschichte"
 
 #: src/main/extractor.c:145
 msgid "lower case conversion"
@@ -563,24 +567,21 @@ msgid "company"
 msgstr ""
 
 #: src/main/extractor.c:147
-#, fuzzy
 msgid "generator"
-msgstr "Ersteller"
+msgstr "Erzeuger"
 
 #: src/main/extractor.c:148
-#, fuzzy
 msgid "character set"
-msgstr "Zeichenanzahl"
+msgstr "Zeichensatz"
 
 #: src/main/extractor.c:149
 #, fuzzy
 msgid "line count"
-msgstr "Seitenanzahl"
+msgstr "Zeilenanzahl"
 
 #: src/main/extractor.c:150
-#, fuzzy
 msgid "paragraph count"
-msgstr "Seitenanzahl"
+msgstr "Absatzanzahl"
 
 #: src/main/extractor.c:151
 msgid "editing cycles"
@@ -602,43 +603,40 @@ msgid "director"
 msgstr "Ersteller"
 
 #: src/main/extractor.c:155
-#, fuzzy
 msgid "duration"
-msgstr "Relation"
+msgstr "Dauer"
 
 #: src/main/extractor.c:156
-#, fuzzy
 msgid "information"
-msgstr "Format"
+msgstr "Information"
 
 #: src/main/extractor.c:157
-#, fuzzy
 msgid "full name"
-msgstr "Dateiname"
+msgstr "vollständiger Name"
 
 #: src/main/extractor.c:158
 #, fuzzy
 msgid "chapter"
 msgstr "Kategorie"
 
-#: src/main/extractor.c:253
+#: src/main/extractor.c:496
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "Initialisierung des Plugin-Mechanismus' ist fehlgeschlagen: %s.\n"
 
-#: src/main/extractor.c:402
+#: src/main/extractor.c:640
 #, c-format
 msgid ""
 "Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
 "failed also.  Errors are: `%s' and `%s'.\n"
 msgstr ""
 
-#: src/main/extractor.c:431
+#: src/main/extractor.c:669
 #, c-format
 msgid "Loading `%s' plugin failed: %s\n"
 msgstr "Laden des »%s«-Plugins ist fehlgeschlagen: %s\n"
 
-#: src/main/extractor.c:636
+#: src/main/extractor.c:874
 #, c-format
 msgid "Unloading plugin `%s' failed!\n"
 msgstr "Entladen des »%s«-Plugins ist fehlgeschlagen!\n"
@@ -763,7 +761,7 @@ msgstr "Country"
 
 #: src/plugins/mp3extractor.c:52
 msgid "Dance"
-msgstr "Tanz"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:53
 msgid "Disco"
@@ -826,38 +824,43 @@ msgid "Techno"
 msgstr "Techno"
 
 #: src/plugins/mp3extractor.c:68
+#, fuzzy
 msgid "Industrial"
-msgstr "Industriell"
+msgstr "Instrumental"
 
 #: src/plugins/mp3extractor.c:69
 msgid "Alternative"
-msgstr "Alternativ"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:70
 msgid "Ska"
 msgstr "Ska"
 
 #: src/plugins/mp3extractor.c:71
+#, fuzzy
 msgid "Death Metal"
-msgstr "Death Metal"
+msgstr "Metal"
 
 #: src/plugins/mp3extractor.c:72
+#, fuzzy
 msgid "Pranks"
-msgstr ""
+msgstr "Punk"
 
 #: src/plugins/mp3extractor.c:73
 msgid "Soundtrack"
 msgstr "Filmmusik (Soundtrack)"
 
 #: src/plugins/mp3extractor.c:74
+#, fuzzy
 msgid "Euro-Techno"
-msgstr "Euro-Techno"
+msgstr "Techno"
 
 #: src/plugins/mp3extractor.c:75
 msgid "Ambient"
-msgstr "Ambient"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:76
+#, fuzzy
 msgid "Trip-Hop"
 msgstr "Hip-Hop"
 
@@ -875,11 +878,11 @@ msgstr "Fusion"
 
 #: src/plugins/mp3extractor.c:80
 msgid "Trance"
-msgstr "Trance"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:81
 msgid "Classical"
-msgstr "Klassisch"
+msgstr "Klassik"
 
 #: src/plugins/mp3extractor.c:82
 msgid "Instrumental"
@@ -911,11 +914,11 @@ msgstr "Noise"
 
 #: src/plugins/mp3extractor.c:89
 msgid "Alt. Rock"
-msgstr "Alternativ Rock"
+msgstr "Alt. Rock"
 
 #: src/plugins/mp3extractor.c:90
 msgid "Bass"
-msgstr "Bass"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:91
 msgid "Soul"
@@ -926,24 +929,29 @@ msgid "Punk"
 msgstr "Punk"
 
 #: src/plugins/mp3extractor.c:93
+#, fuzzy
 msgid "Space"
-msgstr "Weltraum"
+msgstr "Paket-Ersteller"
 
 #: src/plugins/mp3extractor.c:94
+#, fuzzy
 msgid "Meditative"
-msgstr "Meditation"
+msgstr "Medien-Art"
 
 #: src/plugins/mp3extractor.c:95
+#, fuzzy
 msgid "Instrumental Pop"
-msgstr "Instrumentaler Pop"
+msgstr "Instrumental"
 
 #: src/plugins/mp3extractor.c:96
+#, fuzzy
 msgid "Instrumental Rock"
-msgstr "Instrumentaler Rock"
+msgstr "Instrumental"
 
 #: src/plugins/mp3extractor.c:97
+#, fuzzy
 msgid "Ethnic"
-msgstr "Ethnisch"
+msgstr "Gothic"
 
 #: src/plugins/mp3extractor.c:98
 msgid "Gothic"
@@ -959,15 +967,16 @@ msgstr ""
 
 #: src/plugins/mp3extractor.c:101
 msgid "Electronic"
-msgstr "Elektronik"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:102
+#, fuzzy
 msgid "Pop-Folk"
-msgstr "Pop-Volksmusik"
+msgstr "Folk"
 
 #: src/plugins/mp3extractor.c:103
 msgid "Eurodance"
-msgstr "Eurodance"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:104
 msgid "Dream"
@@ -983,7 +992,7 @@ msgstr ""
 
 #: src/plugins/mp3extractor.c:107
 msgid "Cult"
-msgstr "Kult"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:108
 msgid "Gangsta Rap"
@@ -1042,12 +1051,14 @@ msgid "Tribal"
 msgstr ""
 
 #: src/plugins/mp3extractor.c:122
+#, fuzzy
 msgid "Acid Punk"
-msgstr "Acid Punk"
+msgstr "Punk"
 
 #: src/plugins/mp3extractor.c:123
+#, fuzzy
 msgid "Acid Jazz"
-msgstr "Acid Jazz"
+msgstr "Jazz"
 
 #: src/plugins/mp3extractor.c:124
 msgid "Polka"
@@ -1086,8 +1097,9 @@ msgid "Swing"
 msgstr "Swing"
 
 #: src/plugins/mp3extractor.c:133
+#, fuzzy
 msgid "Fast-Fusion"
-msgstr "Schnelle Fusion"
+msgstr "Fusion"
 
 #: src/plugins/mp3extractor.c:134
 msgid "Bebob"
@@ -1103,19 +1115,21 @@ msgstr ""
 
 #: src/plugins/mp3extractor.c:137
 msgid "Celtic"
-msgstr "Keltisch"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:138
+#, fuzzy
 msgid "Bluegrass"
-msgstr ""
+msgstr "Blues"
 
 #: src/plugins/mp3extractor.c:139
 msgid "Avantgarde"
 msgstr "Avantgarde"
 
 #: src/plugins/mp3extractor.c:140
+#, fuzzy
 msgid "Gothic Rock"
-msgstr "Gothischer Rock"
+msgstr "Gothic"
 
 #: src/plugins/mp3extractor.c:141
 msgid "Progressive Rock"
@@ -1126,12 +1140,14 @@ msgid "Psychedelic Rock"
 msgstr ""
 
 #: src/plugins/mp3extractor.c:143
+#, fuzzy
 msgid "Symphonic Rock"
-msgstr "Rocksymphonie"
+msgstr "Symphonie"
 
 #: src/plugins/mp3extractor.c:144
+#, fuzzy
 msgid "Slow Rock"
-msgstr "Langsamer Rock"
+msgstr "Rock"
 
 #: src/plugins/mp3extractor.c:145
 msgid "Big Band"
@@ -1227,27 +1243,29 @@ msgstr ""
 
 #: src/plugins/mp3extractor.c:168
 msgid "Freestyle"
-msgstr ""
+msgstr "Freestyle"
 
 #: src/plugins/mp3extractor.c:169
 msgid "Duet"
-msgstr "Duett"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:170
+#, fuzzy
 msgid "Punk Rock"
-msgstr "Punk Rock"
+msgstr "Rock"
 
 #: src/plugins/mp3extractor.c:171
 msgid "Drum Solo"
-msgstr "Trommel Solo"
+msgstr ""
 
 #: src/plugins/mp3extractor.c:172
 msgid "A Cappella"
 msgstr "A cappella"
 
 #: src/plugins/mp3extractor.c:173
+#, fuzzy
 msgid "Euro-House"
-msgstr "Euro-House"
+msgstr "House"
 
 #: src/plugins/mp3extractor.c:174
 msgid "Dance Hall"
@@ -1262,24 +1280,27 @@ msgid "Drum & Bass"
 msgstr ""
 
 #: src/plugins/mp3extractor.c:177
+#, fuzzy
 msgid "Club-House"
-msgstr "Club-House"
+msgstr "House"
 
 #: src/plugins/mp3extractor.c:178
 msgid "Hardcore"
 msgstr ""
 
 #: src/plugins/mp3extractor.c:179
+#, fuzzy
 msgid "Terror"
-msgstr ""
+msgstr "Kein Fehler"
 
 #: src/plugins/mp3extractor.c:180
 msgid "Indie"
 msgstr ""
 
 #: src/plugins/mp3extractor.c:181
+#, fuzzy
 msgid "BritPop"
-msgstr "Britischer Pop"
+msgstr "Pop"
 
 #: src/plugins/mp3extractor.c:182
 msgid "Negerpunk"
@@ -1298,12 +1319,14 @@ msgid "Christian Gangsta Rap"
 msgstr ""
 
 #: src/plugins/mp3extractor.c:186
+#, fuzzy
 msgid "Heavy Metal"
-msgstr "Heavy Metal"
+msgstr "Metal"
 
 #: src/plugins/mp3extractor.c:187
+#, fuzzy
 msgid "Black Metal"
-msgstr "Black Metal"
+msgstr "Metal"
 
 #: src/plugins/mp3extractor.c:188
 msgid "Crossover"
@@ -1334,8 +1357,9 @@ msgid "Anime"
 msgstr ""
 
 #: src/plugins/mp3extractor.c:195
+#, fuzzy
 msgid "JPop"
-msgstr ""
+msgstr "Pop"
 
 #: src/plugins/mp3extractor.c:196
 msgid "Synthpop"
@@ -1359,27 +1383,27 @@ msgstr ""
 
 #: src/plugins/ole2/ole2extractor.c:265
 msgid "Traditional Chinese"
-msgstr "Traditionelles Chinesisch"
+msgstr ""
 
 #: src/plugins/ole2/ole2extractor.c:267
 msgid "Simplified Chinese"
-msgstr "Vereinfachtes Chinesisch"
+msgstr ""
 
 #: src/plugins/ole2/ole2extractor.c:275
 msgid "Swiss German"
-msgstr "Schweizerdeutsch"
+msgstr ""
 
 #: src/plugins/ole2/ole2extractor.c:279
 msgid "U.S. English"
-msgstr "Amerikanisches Englisch"
+msgstr ""
 
 #: src/plugins/ole2/ole2extractor.c:281
 msgid "U.K. English"
-msgstr "Britisches Englisch"
+msgstr ""
 
 #: src/plugins/ole2/ole2extractor.c:283
 msgid "Australian English"
-msgstr "Australisches Englisch"
+msgstr ""
 
 #: src/plugins/ole2/ole2extractor.c:285
 msgid "Castilian Spanish"
@@ -1387,7 +1411,7 @@ msgstr ""
 
 #: src/plugins/ole2/ole2extractor.c:287
 msgid "Mexican Spanish"
-msgstr "Mexikanisches Spanisch"
+msgstr ""
 
 #: src/plugins/ole2/ole2extractor.c:293
 msgid "Belgian French"
@@ -1477,57 +1501,6 @@ msgstr "Quell-RPM %d.%d"
 #, c-format
 msgid "Binary RPM %d.%d"
 msgstr "Binäres RPM %d.%d"
-
-#~ msgid "os"
-#~ msgstr "Betriebssystem"
-
-#~ msgid "Greek"
-#~ msgstr "Griechisch"
-
-#~ msgid "Arabic"
-#~ msgstr "Arabisch"
-
-#~ msgid "Bulgarian"
-#~ msgstr "Bulgarisch"
-
-#~ msgid "German"
-#~ msgstr "Deutsch"
-
-#~ msgid "Finnish"
-#~ msgstr "Finnisch"
-
-#~ msgid "Icelandic"
-#~ msgstr "Islandisch"
-
-#~ msgid "Japanese"
-#~ msgstr "Japanisch"
-
-#~ msgid "Korean"
-#~ msgstr "Koreanisch"
-
-#~ msgid "Polish"
-#~ msgstr "Polisch"
-
-#~ msgid "Brazilian Portuguese"
-#~ msgstr "Brasillianisches Portiguisisch"
-
-#~ msgid "Portuguese"
-#~ msgstr "Portuguisisch"
-
-#~ msgid "Russian"
-#~ msgstr "Russisch"
-
-#~ msgid "Albanian"
-#~ msgstr "Albanisch"
-
-#~ msgid "Swedish"
-#~ msgstr "Schwedisch"
-
-#~ msgid "Lithuanian"
-#~ msgstr "Litauisch"
-
-#~ msgid "Please provide a list of klp files as arguments.\n"
-#~ msgstr "Geben Sie eine Liste der klp-Dateien als Argument an.\n"
 
 #~ msgid "Fatal: could not allocate (%s at %s:%d).\n"
 #~ msgstr "Fatal: Allokieren nicht möglich (%s bei %s:%d).\n"

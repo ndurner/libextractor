@@ -232,13 +232,257 @@ const char * EXTRACTOR_getDefaultLibraries() {
   return DEFAULT_LIBRARIES;
 }
 
+/* determine installation path */
+
+static char * cut_bin(char * in) {
+  size_t p;
+
+  if (in == NULL)
+    return NULL;
+  p = strlen(in);
+  if (p > 4) {
+    if ( (in[p-1] == '/') ||
+	 (in[p-1] == '\\') )
+      in[--p] = '\0';
+    if (0 == strcmp(&in[p-3],
+		    "bin")) {
+      in[p-3] = '\0';
+      p -= 3;
+    }
+  }
+  return in;
+}
+
+static char * cut_lib(char * in) {
+  size_t p;
+
+  if (in == NULL)
+    return NULL;
+  p = strlen(in);
+  if (p > 4) {
+    if ( (in[p-1] == '/') ||
+	 (in[p-1] == '\\') )
+      in[--p] = '\0';
+    if (0 == strcmp(&in[p-3],
+		    "lib")) {
+      in[p-3] = '\0';
+      p -= 3;
+    }
+  }
+  return in;
+}
+
+
+#if LINUX
+/**
+ * Try to determine path by reading /proc/PID/exe or
+ * /proc/PID/maps.
+ *
+ * Note that this may fail if LE is installed in one directory
+ * and the binary linking against it sits elsewhere.
+ */
+static char * 
+get_path_from_proc_exe() {
+  char fn[64];
+  char line[1024];
+  char dir[1024];
+  char * lnk;
+  size_t size;
+  FILE * f;
+
+  snprintf(fn, 
+	   64,
+	   "/proc/%u/maps",
+	   getpid());
+  f = fopen(fn, "r");
+  if (f != NULL) {
+    while (NULL != fgets(line, 1024, f)) {
+      if ( (1 == sscanf(line,
+			"%*x-%*x %*c%*c%*c%*c %*x %*2u:%*2u %*u%*[ ]%s",
+			dir)) &&
+	   (NULL != strstr(dir,
+			   "libextractor")) ) {
+	strstr(dir, "libextractor")[0] = '\0';
+	fclose(f);
+	return cut_lib(strdup(dir));
+      }      
+    }
+  }
+  fclose(f);
+  snprintf(fn, 
+	   64,
+	   "/proc/%u/exe",
+	   getpid());
+  lnk = malloc(1024);
+  size = readlink(fn, lnk, 1023);
+  if ( (size == 0) || (size >= 1024) ) {
+    free(lnk);
+    return NULL;
+  }
+  lnk[size] = '\0';
+  while ( (lnk[size] != '/') &&
+	  (size > 0) )
+    size--;
+  if ( (size < 4) ||
+       (lnk[size-4] != '/') ) {
+    /* not installed in "/bin/" -- binary path probably useless */
+    free(lnk);
+    return NULL;
+  }
+  lnk[size] = '\0';
+  return cut_bin(lnk);
+}
+#endif
+
+#if WINDOWS
+/**
+ * Try to determine path with win32-specific function
+ */
+static char * get_path_from_module_filename() {
+  char * path;
+  char * idx;
+  
+  path = MALLOC(4097);
+  GetModuleFileName(NULL, path, 4096);
+  idx = path + strlen(idx);
+  while ( (idx > path) && 
+	  (path != '\\') &&
+	  (path != '/') )
+    idx++;
+  *idx = '\0';
+  return cut_bin(path);  
+}
+#endif
+
+/**
+ * This may also fail -- for example, if extract
+ * is not also installed.
+ */
+static char * 
+get_path_from_PATH() {
+  struct stat sbuf;
+  char * path;
+  char * pos;
+  char * end;
+  char * buf;
+  const char * p;
+  size_t size;
+
+  p = getenv("PATH");
+  if (p == NULL)
+    return NULL;
+  path = strdup(p); /* because we write on it */
+  buf = malloc(strlen(path) + 20);
+  size = strlen(path);
+  pos = path;
+
+  while (NULL != (end = strchr(pos, ':'))) {
+    *end = '\0';
+    sprintf(buf, "%s/%s", pos, "extract");
+    if (0 == stat(buf, &sbuf)) {
+      pos = strdup(pos);
+      free(buf);
+      free(path);
+      return cut_bin(pos);
+    }
+    pos = end + 1;
+  }
+  sprintf(buf, "%s/%s", pos, "extract");
+  if (0 == stat(buf, &sbuf)) {
+    pos = strdup(pos);
+    free(buf);
+    free(path);
+    return cut_bin(pos);
+  }
+  free(buf);
+  free(path);
+  return NULL;
+}
+
+static char * 
+get_path_from_ENV_PREFIX() {
+  const char * p;
+
+  p = getenv("LIBEXTRACTOR_PREFIX");
+  if (p != NULL)
+    return cut_bin(cut_lib(strdup(p)));
+  return NULL;
+}
+
+/*
+ * @brief get the path to the plugin directory
+ * @return a pointer to the dir path (to be freed by the caller)
+ */
+static char * os_get_installation_path() {
+  size_t n;
+  char * tmp;
+  char * lpref;
+  char * pexe;
+  char * modu;
+  char * path;  
+
+  lpref = get_path_from_ENV_PREFIX();
+#if LINUX
+  pexe = get_path_from_proc_exe();
+#else
+  pexe = NULL;
+#endif
+#if WINDOWS
+  modu = get_path_from_module_filename();
+#else
+  modu = NULL;
+#endif
+  path = get_path_from_PATH();
+  n = 1;
+  if (lpref != NULL)
+    n += strlen(lpref) + strlen("/lib/libextractor/:");
+  if (pexe != NULL)
+    n += strlen(pexe) + strlen("/lib/libextractor/:");
+  if (modu != NULL)
+    n += strlen(modu) + strlen("/lib/libextractor/:");
+  if (path != NULL)
+    n += strlen(path) + strlen("/lib/libextractor/:");
+  tmp = malloc(n);
+  tmp[0] = '\0';
+  if (lpref != NULL) {
+    strcat(tmp, lpref);
+    strcat(tmp, "/lib/libextractor/:");
+    free(lpref);
+  }
+  if (pexe != NULL) {
+    strcat(tmp, pexe);
+    strcat(tmp, "/lib/libextractor/:");
+    free(pexe);
+  }
+  if (modu != NULL) {
+    strcat(tmp, modu);
+    strcat(tmp, "/lib/libextractor/:");
+    free(modu);
+  }
+  if (path != NULL) {
+    strcat(tmp, path);
+    strcat(tmp, "/lib/libextractor/:");
+    free(path);
+  }
+  if (strlen(tmp) > 0)
+    tmp[strlen(tmp)-1] = '\0';
+  if (strlen(tmp) == 0) {
+    free(tmp);
+    return NULL;
+  }
+  return tmp;
+}
+
+
 /* ************library initialization ***************** */
 
 static char * old_dlsearchpath = NULL;
 
 /* using libtool, needs init! */
-void __attribute__ ((constructor)) le_ltdl_init(void) {
+void __attribute__ ((constructor)) le_ltdl_init() {
   int err;
+  const char * opath;
+  char * path;
 
 #if ENABLE_NLS
   setlocale(LC_ALL, "");
@@ -246,33 +490,28 @@ void __attribute__ ((constructor)) le_ltdl_init(void) {
   BINDTEXTDOMAIN("iso-639", ISOLOCALEDIR); /* used by wordextractor */
 #endif
   err = lt_dlinit ();
-  if (err > 0)
-    {
+  if (err > 0) {
 #if DEBUG
-      fprintf(stderr,
-	      _("Initialization of plugin mechanism failed: %s!\n"),
-	      lt_dlerror());
+    fprintf(stderr,
+	    _("Initialization of plugin mechanism failed: %s!\n"),
+	    lt_dlerror());
 #endif
-      return;
-    }
-  if (lt_dlgetsearchpath() != NULL)
-    old_dlsearchpath = strdup(lt_dlgetsearchpath());
-  if (lt_dlgetsearchpath () == NULL)
-    lt_dladdsearchdir ("/usr/lib/libextractor");
-  else if (strstr (lt_dlgetsearchpath (), "/usr/lib/libextractor") == NULL)
-    lt_dladdsearchdir ("/usr/lib/libextractor");
-  if (strstr (lt_dlgetsearchpath (), "/usr/local/lib/libextractor") == NULL)
-    lt_dladdsearchdir ("/usr/local/lib/libextractor");
-#ifdef PLUGIN_PATH
-  if (strstr (lt_dlgetsearchpath (), PLUGIN_PATH) == NULL)
-    lt_dladdsearchdir (PLUGIN_PATH);
-#endif
+    return;
+  }
+  opath = lt_dlgetsearchpath();
+  if (opath != NULL)
+    old_dlsearchpath = strdup(opath);
+  path = os_get_installation_path();
+  if (path != NULL) {
+    lt_dlsetsearchpath(path);
+    free(path);  
+  }
 #ifdef MINGW
   InitWinEnv();
 #endif
 }
 
-void __attribute__ ((destructor)) le_ltdl_fini(void) {
+void __attribute__ ((destructor)) le_ltdl_fini() {
   lt_dlsetsearchpath(old_dlsearchpath);
   if (old_dlsearchpath != NULL) {
     free(old_dlsearchpath);
@@ -281,7 +520,6 @@ void __attribute__ ((destructor)) le_ltdl_fini(void) {
 #ifdef MINGW
   ShutdownWinEnv();
 #endif
-
   lt_dlexit ();
 }
 

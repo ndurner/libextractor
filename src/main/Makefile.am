@@ -13,9 +13,6 @@ lib_LTLIBRARIES = \
 
 bin_PROGRAMS = extract
 
-AM_CFLAGS = \
-  -DPLUGIN_PATH="\"${plugindir}\""
-
 extract_LDADD = \
   $(top_builddir)/src/main/libextractor.la 
 

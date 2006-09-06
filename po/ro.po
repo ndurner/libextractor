@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.5.3\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2006-05-17 00:53-0700\n"
+"POT-Creation-Date: 2006-09-06 14:22-0700\n"
 "PO-Revision-Date: 2005-08-16 12:00-0500\n"
 "Last-Translator: Laurentiu Buzdugan <lbuz@rolix.org>\n"
 "Language-Team: Romanian <translation-team-ro@lists.sourceforge.net>\n"
@@ -122,12 +122,12 @@ msgstr "extract [OPÞIUNI] [NUME_FIªIER]*"
 msgid "Extract metadata from files."
 msgstr "Extrage metadata din fiºiere."
 
-#: src/main/extract.c:198 src/main/extractor.c:1149
+#: src/main/extract.c:198 src/main/extractor.c:1387
 #, c-format
 msgid "%s - (binary)\n"
 msgstr "%s - (binar)\n"
 
-#: src/main/extract.c:204 src/main/extractor.c:1154
+#: src/main/extract.c:204 src/main/extractor.c:1392
 #, c-format
 msgid "INVALID TYPE - %s\n"
 msgstr "TIP INVALID - %s\n"
@@ -576,9 +576,8 @@ msgid "generator"
 msgstr "creator"
 
 #: src/main/extractor.c:148
-#, fuzzy
 msgid "character set"
-msgstr "numãr de pagini"
+msgstr ""
 
 #: src/main/extractor.c:149
 #, fuzzy
@@ -629,12 +628,12 @@ msgstr "nume_fiºier"
 msgid "chapter"
 msgstr "categorie"
 
-#: src/main/extractor.c:253
+#: src/main/extractor.c:496
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "iniþializare mecanismului de plugin a eºuat: %s!\n"
 
-#: src/main/extractor.c:402
+#: src/main/extractor.c:640
 #, fuzzy, c-format
 msgid ""
 "Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
@@ -643,12 +642,12 @@ msgstr ""
 "Rezolvarea simbolului '%s' în biblioteca '%s' a eºuat, aºa cã am încercat '%"
 "s', dar ºi acesta a eºuat.  Erorile sunt: '%s' ºi '%s'.\n"
 
-#: src/main/extractor.c:431
+#: src/main/extractor.c:669
 #, fuzzy, c-format
 msgid "Loading `%s' plugin failed: %s\n"
 msgstr "Încãrcarea plugin-ului '%s' a eºuat: %s\n"
 
-#: src/main/extractor.c:636
+#: src/main/extractor.c:874
 #, fuzzy, c-format
 msgid "Unloading plugin `%s' failed!\n"
 msgstr "Descãrcarea plugin-ului '%s' a eºuat!\n"
@@ -1488,11 +1487,11 @@ msgstr "Sursã RPM %d.%d"
 msgid "Binary RPM %d.%d"
 msgstr "Binar RPM %d.%d"
 
-#~ msgid "os"
-#~ msgstr "sistem operare"
-
 #~ msgid "Fatal: could not allocate (%s at %s:%d).\n"
 #~ msgstr "Fatal: nu am putut aloca (%s la %s:%d).\n"
+
+#~ msgid "os"
+#~ msgstr "sistem operare"
 
 #~ msgid "No error"
 #~ msgstr "Nici o eroare"

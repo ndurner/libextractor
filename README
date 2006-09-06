@@ -84,3 +84,17 @@ exiv2 requires G++ 3.0 or higher.  With older GCC versions (and other
 broken C++ compilers), you have to manually disable exiv2 by passing
 "--disable-exiv2" to "configure" in order to avoid compilation
 problems.
+
+
+If libextractor fails to find the plugins, a possible method of last
+resort is to set the environment variable LIBEXTRACTOR_PREFIX to the
+parent of the directory where the plugins are installed (i.e., if the
+plugins are in "/foo/bar/lib/libextractor/*.so", set the variable to
+"/foo/bar/lib").  This should not be needed if "extract" is in
+"/foo/bar/bin/extract" and "/foo/bar/bin" is in the PATH, if you are
+running Linux and "libextractor.so" is in
+"/foo/bar/lib/libextractor.so", or if you are on linux and the binary
+using libextractor resides in "/foo/bar/bin", or if you are under
+Windows and "GetModuleFileName" returns "/foo/bar/bin".  If none of
+these common circumstances apply, you may have to set the environment
+variable.

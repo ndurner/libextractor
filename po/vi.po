@@ -1,22 +1,21 @@
-# Vietnamese translation for Lib. Extractor.
-# Copyright © 2004, 2005, 2006 Free Software Foundation, Inc.
-# Copyright © 2004, 2005, 2006 Christian Grothoff
-# This file is distributed under the same license as the libextractor package.
-# Clytie Siddall <clytie@riverland.net.au>, 2005, 2006.
+# Vietnamese translation for LibExtractor.
+# Copyright © 2006 Free Software Foundation, Inc.
+# Copyright © 2006 Christian Grothoff
+# Clytie Siddall <clytie@riverland.net.au>, 2005-2006.
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: libextractor-0.5.7\n"
+"Project-Id-Version: libextractor 0.5.14\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2006-05-17 00:53-0700\n"
-"PO-Revision-Date: 2006-01-11 13:24+1030\n"
+"POT-Creation-Date: 2006-09-06 14:22-0700\n"
+"PO-Revision-Date: 2006-05-23 17:58+0930\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <gnomevi-list@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0\n"
-"X-Generator: LocFactoryEditor 1.6b23\n"
+"X-Generator: LocFactoryEditor 1.6b36\n"
 
 #: src/main/extract.c:49
 #, c-format
@@ -60,8 +59,8 @@ msgstr "gỡ bỏ bản sao chỉ nếu kiểu khớp thôi"
 #: src/main/extract.c:134
 msgid "use the filename as a keyword (loads filename-extractor plugin)"
 msgstr ""
-"dùng tên tập tin là một từ khóa (thì tải bộ cầm phít « filename-extractor "
-"» [rút tên tập tin])"
+"dùng tên tập tin là một từ khoá (thì tải bổ sung « filename-extractor » [rút "
+"tên tập tin])"
 
 #: src/main/extract.c:136
 msgid "print this help"
@@ -77,25 +76,25 @@ msgstr "tải một trình cầm phít rút có tên LIBRARY (THƯ VIÊN)"
 
 #: src/main/extract.c:142
 msgid "list all keyword types"
-msgstr "liệt kê mọi kiểu từ khóa"
+msgstr "liệt kê mọi kiểu từ khoá"
 
 #: src/main/extract.c:144
 msgid "do not use the default set of extractor plugins"
-msgstr "đừng dùng bộ trình cầm phít rút mặc định"
+msgstr "đừng dùng bộ trình rút mặc định"
 
 #: src/main/extract.c:146
 msgid "print only keywords of the given TYPE (use -L to get a list)"
 msgstr ""
-"hiển thị chỉ từ khóa KIỂU (TYPE) đã cho thôi (dùng « -L » để xem danh sách)"
+"hiển thị chỉ từ khoá KIỂU (TYPE) đã cho thôi (dùng « -L » để xem danh sách)"
 
 #: src/main/extract.c:148
 msgid "remove duplicates even if keyword types do not match"
-msgstr "gỡ bỏ bản sao thậm chí nếu kiểu từ khóa không khớp"
+msgstr "gỡ bỏ bản sao thậm chí nếu kiểu từ khoá không khớp"
 
 #: src/main/extract.c:150
 msgid "use keyword splitting (loads split-extractor plugin)"
 msgstr ""
-"dùng khả năng xẻ từ khóa (thì tải bộ cầm phít « split-extractor » [rút xẻ])"
+"dùng khả năng xẻ từ khoá (thì tải bổ sung « split-extractor » [rút xẻ])"
 
 #: src/main/extract.c:152
 msgid "print the version number"
@@ -107,7 +106,7 @@ msgstr "xuất chi tiết"
 
 #: src/main/extract.c:156
 msgid "do not print keywords of the given TYPE"
-msgstr "đừng hiển thị từ khóa KIỂU (TYPE) đã cho"
+msgstr "đừng hiển thị từ khoá KIỂU (TYPE) đã cho"
 
 #: src/main/extract.c:159
 msgid "extract [OPTIONS] [FILENAME]*"
@@ -119,19 +118,19 @@ msgstr ""
 msgid "Extract metadata from files."
 msgstr "Rút siêu dữ liệu ra tập tin."
 
-#: src/main/extract.c:198 src/main/extractor.c:1149
+#: src/main/extract.c:198 src/main/extractor.c:1387
 #, c-format
 msgid "%s - (binary)\n"
 msgstr "%s - (nhị phân)\n"
 
-#: src/main/extract.c:204 src/main/extractor.c:1154
+#: src/main/extract.c:204 src/main/extractor.c:1392
 #, c-format
 msgid "INVALID TYPE - %s\n"
 msgstr "KIỂU KHÔNG HỢP LỆ — %s\n"
 
 #: src/main/extract.c:270 src/main/extractor.c:47
 msgid "title"
-msgstr "tựa đề"
+msgstr "tựa"
 
 #: src/main/extract.c:272 src/main/extractor.c:45
 msgid "filename"
@@ -147,7 +146,7 @@ msgstr "mô tả"
 
 #: src/main/extract.c:283 src/main/extractor.c:62
 msgid "keywords"
-msgstr "từ khóa"
+msgstr "từ khoá"
 
 #: src/main/extract.c:285 src/main/extractor.c:51
 msgid "comment"
@@ -196,11 +195,11 @@ msgstr "%% tập tin BiBTeX\n"
 #: src/main/extract.c:621
 #, c-format
 msgid "Keywords for file %s:\n"
-msgstr "Từ khóa cho tập tin %s:\n"
+msgstr "Từ khoá cho tập tin %s:\n"
 
 #: src/main/extractor.c:44
 msgid "unknown"
-msgstr "không biết"
+msgstr "không rõ"
 
 #: src/main/extractor.c:46
 msgid "mimetype"
@@ -224,7 +223,7 @@ msgstr "thể loại"
 
 #: src/main/extractor.c:57
 msgid "location"
-msgstr "đía điểm"
+msgstr "địa điểm"
 
 #: src/main/extractor.c:58
 msgid "version"
@@ -296,7 +295,7 @@ msgstr "hướng trang"
 
 #: src/main/extractor.c:80
 msgid "paper size"
-msgstr "kích cỡ giấy"
+msgstr "cỡ giấy"
 
 #: src/main/extractor.c:81
 msgid "used fonts"
@@ -340,7 +339,7 @@ msgstr "nhà bán"
 
 #: src/main/extractor.c:91
 msgid "license"
-msgstr "quyền"
+msgstr "quyền phép"
 
 #: src/main/extractor.c:92
 msgid "distribution"
@@ -348,11 +347,11 @@ msgstr "bản phân phối"
 
 #: src/main/extractor.c:93
 msgid "build-host"
-msgstr "máy hỗ trợ xây dụng"
+msgstr "máy hỗ trợ xây dựng"
 
 #: src/main/extractor.c:94
 msgid "operating system"
-msgstr ""
+msgstr "hệ điều hành"
 
 #: src/main/extractor.c:95
 msgid "dependency"
@@ -421,7 +420,7 @@ msgstr "người dịch"
 
 #: src/main/extractor.c:110
 msgid "owner"
-msgstr "người sở hữu"
+msgstr "sở hữu"
 
 #: src/main/extractor.c:111
 msgid "lyrics"
@@ -433,7 +432,7 @@ msgstr "kiểu vật chứa"
 
 #: src/main/extractor.c:113
 msgid "contact"
-msgstr "liên hệ"
+msgstr "liên lạc"
 
 #: src/main/extractor.c:114
 msgid "binary thumbnail data"
@@ -513,146 +512,131 @@ msgstr "mẫu"
 
 #: src/main/extractor.c:133
 msgid "split"
-msgstr ""
+msgstr "phần"
 
 #: src/main/extractor.c:134
-#, fuzzy
 msgid "product version"
-msgstr "người cung cấp"
+msgstr "phiên bản sản phẩm"
 
 #: src/main/extractor.c:135
 msgid "last saved by"
-msgstr ""
+msgstr "lưu cuối cùng bởi"
 
 #: src/main/extractor.c:136
 msgid "last printed"
-msgstr ""
+msgstr "in cuối cùng"
 
 #: src/main/extractor.c:137
-#, fuzzy
 msgid "word count"
-msgstr "tổng số trang"
+msgstr "tổng số từ"
 
 #: src/main/extractor.c:138
-#, fuzzy
 msgid "character count"
-msgstr "tổng số trang"
+msgstr "tổng số ký tự"
 
 #: src/main/extractor.c:139
 msgid "total editing time"
-msgstr ""
+msgstr "tổng thời gian sửa"
 
 #: src/main/extractor.c:140
 msgid "thumbnails"
-msgstr ""
+msgstr "hình thu nhỏ"
 
 #: src/main/extractor.c:141
 msgid "security"
-msgstr ""
+msgstr "giấy chứng khoán"
 
 #: src/main/extractor.c:142
-#, fuzzy
 msgid "created by software"
-msgstr "tạo cho"
+msgstr "bị phần mềm tạo"
 
 #: src/main/extractor.c:143
 msgid "modified by software"
-msgstr ""
+msgstr "bị phần mềm sửa đổi"
 
 #: src/main/extractor.c:144
 msgid "revision history"
-msgstr ""
+msgstr "lược sử sửa đổi"
 
 #: src/main/extractor.c:145
 msgid "lower case conversion"
-msgstr ""
+msgstr "chuyển đổi sang chữ hoa"
 
 #: src/main/extractor.c:146
 msgid "company"
-msgstr ""
+msgstr "công ty"
 
 #: src/main/extractor.c:147
-#, fuzzy
 msgid "generator"
-msgstr "người tạo"
+msgstr "bộ tạo ra"
 
 #: src/main/extractor.c:148
-#, fuzzy
 msgid "character set"
-msgstr "tổng số trang"
+msgstr "bộ ký tự"
 
 #: src/main/extractor.c:149
-#, fuzzy
 msgid "line count"
-msgstr "tổng số trang"
+msgstr "số đếm trang"
 
 #: src/main/extractor.c:150
-#, fuzzy
 msgid "paragraph count"
-msgstr "tổng số trang"
+msgstr "số đếm đoạn văn"
 
 #: src/main/extractor.c:151
 msgid "editing cycles"
-msgstr ""
+msgstr "chu kỳ hiệu chỉnh"
 
 #: src/main/extractor.c:152
-#, fuzzy
 msgid "scale"
-msgstr "Kịch nhạc"
+msgstr "tỷ lệ"
 
 #: src/main/extractor.c:153
-#, fuzzy
 msgid "manager"
-msgstr "nhà đóng gói"
+msgstr "nhà quản lý"
 
 #: src/main/extractor.c:154
-#, fuzzy
 msgid "director"
-msgstr "người tạo"
+msgstr "giám đốc"
 
 #: src/main/extractor.c:155
-#, fuzzy
 msgid "duration"
-msgstr "liên quan"
+msgstr "thời lượng"
 
 #: src/main/extractor.c:156
-#, fuzzy
 msgid "information"
-msgstr "định dạng"
+msgstr "thông tin"
 
 #: src/main/extractor.c:157
-#, fuzzy
 msgid "full name"
-msgstr "tên tập tin"
+msgstr "họ tên"
 
 #: src/main/extractor.c:158
-#, fuzzy
 msgid "chapter"
-msgstr "phân loại"
+msgstr "chương"
 
-#: src/main/extractor.c:253
+#: src/main/extractor.c:496
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "Việc khởi động cơ chế cầm phít bị lỗi: %s\n"
 
-#: src/main/extractor.c:402
+#: src/main/extractor.c:640
 #, c-format
 msgid ""
 "Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
 "failed also.  Errors are: `%s' and `%s'.\n"
 msgstr ""
-"Việc tháo gỡ ký hiệu « %s » trong thư viên « %s » bị lỗi, thì đã cố « %s », "
+"Việc tháo gỡ ký hiệu « %s » trong thư viện « %s » bị lỗi, thì đã cố « %s », "
 "nhưng mà nó cũng không thành công. Gặp lỗi « %s » và « %s ».\n"
 
-#: src/main/extractor.c:431
+#: src/main/extractor.c:669
 #, c-format
 msgid "Loading `%s' plugin failed: %s\n"
-msgstr "Việc tải bộ cầm phít « %s » bị lỗi: %s\n"
+msgstr "Việc tải bổ sung « %s » bị lỗi: %s\n"
 
-#: src/main/extractor.c:636
+#: src/main/extractor.c:874
 #, c-format
 msgid "Unloading plugin `%s' failed!\n"
-msgstr "Việc bỏ tải bộ cầm phít « %s » bị lỗi.\n"
+msgstr "Việc bỏ tải bổ sung « %s » bị lỗi.\n"
 
 #: src/main/getopt.c:681
 #, c-format
@@ -734,7 +718,7 @@ msgstr "Cuộc gọi hệ thống"
 
 #: src/plugins/manextractor.c:155
 msgid "Library calls"
-msgstr "Cuộc gọi thư viên"
+msgstr "Cuộc gọi thư viện"
 
 #: src/plugins/manextractor.c:160
 msgid "Special files"
@@ -742,7 +726,7 @@ msgstr "Tập tin đặc biệt"
 
 #: src/plugins/manextractor.c:165
 msgid "File formats and conventions"
-msgstr "Khuôn dạng tập tin và quy ước"
+msgstr "Khuôn dang tập tin và quy ước"
 
 #: src/plugins/manextractor.c:170
 msgid "Games"
@@ -770,7 +754,7 @@ msgstr "Rốc cổ điển"
 
 #: src/plugins/mp3extractor.c:51
 msgid "Country"
-msgstr "Đồng quê"
+msgstr "Quốc gia"
 
 #: src/plugins/mp3extractor.c:52
 msgid "Dance"
@@ -982,7 +966,7 @@ msgstr "Khiêu vũ Âu"
 
 #: src/plugins/mp3extractor.c:104
 msgid "Dream"
-msgstr "Mơ mộng "
+msgstr "Mơ mộng"
 
 #: src/plugins/mp3extractor.c:105
 msgid "Southern Rock"
@@ -1366,84 +1350,84 @@ msgstr "(bit/giây thay đổi)"
 
 #: src/plugins/ole2/ole2extractor.c:257
 msgid "No Proofing"
-msgstr ""
+msgstr "Đừng bắt lỗi"
 
 #: src/plugins/ole2/ole2extractor.c:265
 msgid "Traditional Chinese"
-msgstr ""
+msgstr "Tiếng Hoa truyền thống"
 
 #: src/plugins/ole2/ole2extractor.c:267
 msgid "Simplified Chinese"
-msgstr ""
+msgstr "Tiếng Hoa giản thể"
 
 #: src/plugins/ole2/ole2extractor.c:275
 msgid "Swiss German"
-msgstr ""
+msgstr "Đức Thụy Sĩ"
 
 #: src/plugins/ole2/ole2extractor.c:279
 msgid "U.S. English"
-msgstr ""
+msgstr "Tiếng Anh (Mỹ)"
 
 #: src/plugins/ole2/ole2extractor.c:281
 msgid "U.K. English"
-msgstr ""
+msgstr "Tiếng Anh (Quốc Anh)"
 
 #: src/plugins/ole2/ole2extractor.c:283
 msgid "Australian English"
-msgstr ""
+msgstr "Tiếng Anh (Úc)"
 
 #: src/plugins/ole2/ole2extractor.c:285
 msgid "Castilian Spanish"
-msgstr ""
+msgstr "Tây Ban Nha (Căt-tín)"
 
 #: src/plugins/ole2/ole2extractor.c:287
 msgid "Mexican Spanish"
-msgstr ""
+msgstr "Tây Ban Nha (Mê-hi-cô)"
 
 #: src/plugins/ole2/ole2extractor.c:293
 msgid "Belgian French"
-msgstr ""
+msgstr "Pháp (Bỉ)"
 
 #: src/plugins/ole2/ole2extractor.c:295
 msgid "Canadian French"
-msgstr ""
+msgstr "Pháp (Ca-na-đa)"
 
 #: src/plugins/ole2/ole2extractor.c:297
 msgid "Swiss French"
-msgstr ""
+msgstr "Pháp (Thuỵ sĩ)"
 
 #: src/plugins/ole2/ole2extractor.c:307
 msgid "Swiss Italian"
-msgstr ""
+msgstr "Ý (Thuỵ sĩ)"
 
 #: src/plugins/ole2/ole2extractor.c:315
 msgid "Belgian Dutch"
-msgstr ""
+msgstr "Hoà Lan (Bỉ)"
 
 #: src/plugins/ole2/ole2extractor.c:317
 msgid "Norwegian Bokmal"
-msgstr ""
+msgstr "Na Uy (Bóc-măn)"
 
 #: src/plugins/ole2/ole2extractor.c:327
 msgid "Rhaeto-Romanic"
-msgstr ""
+msgstr "Rai-tô-Rô-ma-ni"
 
 #: src/plugins/ole2/ole2extractor.c:333
 msgid "Croato-Serbian (Latin)"
-msgstr ""
+msgstr "Xéc-bi Cợ-rô-a-ti-a (La-tinh)"
 
 #: src/plugins/ole2/ole2extractor.c:335
 msgid "Serbo-Croatian (Cyrillic)"
-msgstr ""
+msgstr "Xéc-bi Cợ-rô-a-ti-a (Ki-rin)"
 
 #: src/plugins/ole2/ole2extractor.c:363
 msgid "Farsi"
-msgstr ""
+msgstr "Pha-xi"
 
 #: src/plugins/ole2/ole2extractor.c:423
 #, c-format
 msgid "Revision #%u: Author '%s' worked on '%s'"
-msgstr ""
+msgstr "Bản sửa đổi #%u: Tác giả « %s » đã làm việc « %s »."
 
 #: src/plugins/printable/dictionary-builder.c:97
 #, c-format
@@ -1451,7 +1435,7 @@ msgid ""
 "Please provide the name of the language you are building\n"
 "a dictionary for.  For example:\n"
 msgstr ""
-"Hãy cung cấp tên ngôn ngữ mà bạn đang xây dụng từ điển cho nó. Lấy thí dụ:\n"
+"Hãy cung cấp tên ngôn ngữ mà bạn đang xây dựng từ điển cho nó. Lấy thí dụ :\n"
 
 #: src/plugins/printable/dictionary-builder.c:110
 #: src/plugins/printable/dictionary-builder.c:166
@@ -1490,6 +1474,126 @@ msgstr "RPM nhị phân %d.%d"
 
 #~ msgid "os"
 #~ msgstr "hệ điều hành"
+
+#~ msgid "Arabic"
+#~ msgstr "Ả Rập"
+
+#~ msgid "Bulgarian"
+#~ msgstr "Bảo-gia-lơi"
+
+#~ msgid "Catalan"
+#~ msgstr "Ca-ta-lan"
+
+#~ msgid "Czech"
+#~ msgstr "Séc"
+
+#~ msgid "Danish"
+#~ msgstr "Đan Mạch"
+
+#~ msgid "German"
+#~ msgstr "Đức"
+
+#~ msgid "Greek"
+#~ msgstr "Hy Lạp"
+
+#~ msgid "Finnish"
+#~ msgstr "Phần-lan"
+
+#~ msgid "French"
+#~ msgstr "Pháp"
+
+#~ msgid "Hebrew"
+#~ msgstr "Do Thái"
+
+#~ msgid "Hungarian"
+#~ msgstr "Hung-gia-lợi"
+
+#~ msgid "Icelandic"
+#~ msgstr "Băng đảo"
+
+#~ msgid "Italian"
+#~ msgstr "Ý"
+
+#~ msgid "Japanese"
+#~ msgstr "Nhật Bản"
+
+#~ msgid "Korean"
+#~ msgstr "Triều Tiên"
+
+#~ msgid "Dutch"
+#~ msgstr "Hoà-lan"
+
+#~ msgid "Norwegian - Nynorsk"
+#~ msgstr "Na Uy (Ny-noa-x-kh)"
+
+#~ msgid "Polish"
+#~ msgstr "Ba Lan"
+
+#~ msgid "Brazilian Portuguese"
+#~ msgstr "Bồ Đào Nha của Bra-xin"
+
+#~ msgid "Portuguese"
+#~ msgstr "Bồ Đào Nha"
+
+#~ msgid "Romanian"
+#~ msgstr "Lỗ-má-ni"
+
+#~ msgid "Russian"
+#~ msgstr "Nga"
+
+#~ msgid "Slovak"
+#~ msgstr "Xlô-vác"
+
+#~ msgid "Albanian"
+#~ msgstr "An-ba-ni"
+
+#~ msgid "Swedish"
+#~ msgstr "Thuỵ Điển"
+
+#~ msgid "Thai"
+#~ msgstr "Thái"
+
+#~ msgid "Turkish"
+#~ msgstr "Thổ Nhĩ Kỳ"
+
+#~ msgid "Urdu"
+#~ msgstr "Ơ-đu"
+
+#~ msgid "Bahasa"
+#~ msgstr "Ba-ha-xa"
+
+#~ msgid "Ukrainian"
+#~ msgstr "U-cợ-rainh"
+
+#~ msgid "Byelorussian"
+#~ msgstr "Bie-lo-ru-xi"
+
+#~ msgid "Slovenian"
+#~ msgstr "Xlô-ven"
+
+#~ msgid "Estonian"
+#~ msgstr "Et-tô-ni-a"
+
+#~ msgid "Latvian"
+#~ msgstr "Lát-vi-a"
+
+#~ msgid "Lithuanian"
+#~ msgstr "Li-tu-a-ni"
+
+#~ msgid "Basque"
+#~ msgstr "Bax-quợ"
+
+#~ msgid "Macedonian"
+#~ msgstr "Ma-xê-đô-ni"
+
+#~ msgid "Afrikaans"
+#~ msgstr "Hoà-lan Nam Phi"
+
+#~ msgid "Malaysian"
+#~ msgstr "Ma-lay-xi-a"
+
+#~ msgid "%s (Build %s)"
+#~ msgstr "%s (Bản xây dựng %s)"
 
 #~ msgid "Please provide a list of klp files as arguments.\n"
 #~ msgstr "Hãy cung cấp danh sách các tập tin kiểu « klp » dạng đối số.\n"

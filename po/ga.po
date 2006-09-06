@@ -1,13 +1,13 @@
 # Irish translations for libextractor
 # Copyright (C) 2005 Free Software Foundation, Inc.
 # This file is distributed under the same license as the libextractor package.
-# Kevin Patrick Scannell <scannell@SLU.EDU>, 2005.
+# Kevin Patrick Scannell <scannell@SLU.EDU>, 2005, 2006.
 msgid ""
 msgstr ""
-"Project-Id-Version: libextractor 0.5.7\n"
+"Project-Id-Version: libextractor 0.5.14\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2006-05-17 00:53-0700\n"
-"PO-Revision-Date: 2005-11-15 00:46-0700\n"
+"POT-Creation-Date: 2006-09-06 14:22-0700\n"
+"PO-Revision-Date: 2006-05-22 20:46-0700\n"
 "Last-Translator: Kevin Patrick Scannell <scannell@SLU.EDU>\n"
 "Language-Team: Irish <gaeilge-gnulinux@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -114,12 +114,12 @@ msgstr "extract [ROGHANNA] [COMHADAINM]*"
 msgid "Extract metadata from files."
 msgstr "Bain meiteashonraí as comhaid."
 
-#: src/main/extract.c:198 src/main/extractor.c:1149
+#: src/main/extract.c:198 src/main/extractor.c:1387
 #, c-format
 msgid "%s - (binary)\n"
 msgstr "%s - (dénártha)\n"
 
-#: src/main/extract.c:204 src/main/extractor.c:1154
+#: src/main/extract.c:204 src/main/extractor.c:1392
 #, c-format
 msgid "INVALID TYPE - %s\n"
 msgstr "CINEÁL NEAMHBHAILÍ - %s\n"
@@ -347,7 +347,7 @@ msgstr "óstríomhaire-tógála"
 
 #: src/main/extractor.c:94
 msgid "operating system"
-msgstr ""
+msgstr "córas oibriúcháin"
 
 #: src/main/extractor.c:95
 msgid "dependency"
@@ -503,129 +503,114 @@ msgstr "teimpléad"
 
 #: src/main/extractor.c:133
 msgid "split"
-msgstr ""
+msgstr "roinn"
 
 #: src/main/extractor.c:134
-#, fuzzy
 msgid "product version"
-msgstr "táirgeoir"
+msgstr "leagan an táirge"
 
 #: src/main/extractor.c:135
 msgid "last saved by"
-msgstr ""
+msgstr "sábháilte is déanaí ag"
 
 #: src/main/extractor.c:136
 msgid "last printed"
-msgstr ""
+msgstr "priontáilte"
 
 #: src/main/extractor.c:137
-#, fuzzy
 msgid "word count"
-msgstr "líon na leathanach"
+msgstr "líon na bhfocal"
 
 #: src/main/extractor.c:138
-#, fuzzy
 msgid "character count"
-msgstr "líon na leathanach"
+msgstr "líon na gcarachtar"
 
 #: src/main/extractor.c:139
 msgid "total editing time"
-msgstr ""
+msgstr "am iomlán eagair"
 
 #: src/main/extractor.c:140
 msgid "thumbnails"
-msgstr ""
+msgstr "mionsamhlacha"
 
 #: src/main/extractor.c:141
 msgid "security"
-msgstr ""
+msgstr "slándáil"
 
 #: src/main/extractor.c:142
-#, fuzzy
 msgid "created by software"
-msgstr "cruthaithe ar son"
+msgstr "cruthaithe ag bogearraí"
 
 #: src/main/extractor.c:143
 msgid "modified by software"
-msgstr ""
+msgstr "mionathraithe ag bogearraí"
 
 #: src/main/extractor.c:144
 msgid "revision history"
-msgstr ""
+msgstr "stair leasaithe"
 
 #: src/main/extractor.c:145
 msgid "lower case conversion"
-msgstr ""
+msgstr "tiontú go cás íochtair"
 
 #: src/main/extractor.c:146
 msgid "company"
-msgstr ""
+msgstr "comhlacht"
 
 #: src/main/extractor.c:147
-#, fuzzy
 msgid "generator"
-msgstr "cruthaitheoir"
+msgstr "gineadóir"
 
 #: src/main/extractor.c:148
-#, fuzzy
 msgid "character set"
-msgstr "líon na leathanach"
+msgstr "tacar carachtar"
 
 #: src/main/extractor.c:149
-#, fuzzy
 msgid "line count"
-msgstr "líon na leathanach"
+msgstr "líon na línte"
 
 #: src/main/extractor.c:150
-#, fuzzy
 msgid "paragraph count"
-msgstr "líon na leathanach"
+msgstr "líon na n-alt"
 
 #: src/main/extractor.c:151
 msgid "editing cycles"
-msgstr ""
+msgstr "timthriallta eagarthóireachta"
 
 #: src/main/extractor.c:152
-#, fuzzy
 msgid "scale"
-msgstr "Ceolra"
+msgstr "scála"
 
 #: src/main/extractor.c:153
-#, fuzzy
 msgid "manager"
-msgstr "pacáisteoir"
+msgstr "bainisteoir"
 
 #: src/main/extractor.c:154
-#, fuzzy
 msgid "director"
-msgstr "cruthaitheoir"
+msgstr "stiúrthóir"
 
 #: src/main/extractor.c:155
-#, fuzzy
 msgid "duration"
-msgstr "gaol"
+msgstr "achar"
 
 #: src/main/extractor.c:156
-#, fuzzy
 msgid "information"
-msgstr "formáid"
+msgstr "eolas"
 
 #: src/main/extractor.c:157
-#, fuzzy
 msgid "full name"
-msgstr "comhadainm"
+msgstr "ainm iomlán"
 
 #: src/main/extractor.c:158
-#, fuzzy
 msgid "chapter"
-msgstr "catagóir"
+msgstr "caibidil"
 
-#: src/main/extractor.c:253
+#: src/main/extractor.c:496
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "Theip ar thúsú meicníocht na mbreiseán: %s!\n"
 
-#: src/main/extractor.c:402
+#: src/main/extractor.c:640
 #, c-format
 msgid ""
 "Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
@@ -635,12 +620,12 @@ msgstr ""
 "bhain mé triail as `%s', ach theip ar an cheann sin freisin.  Na hearráidí: `"
 "%s' agus `%s'.\n"
 
-#: src/main/extractor.c:431
+#: src/main/extractor.c:669
 #, c-format
 msgid "Loading `%s' plugin failed: %s\n"
 msgstr "Theip ar luchtú an bhreiseáin `%s': %s\n"
 
-#: src/main/extractor.c:636
+#: src/main/extractor.c:874
 #, c-format
 msgid "Unloading plugin `%s' failed!\n"
 msgstr "Theip ar dhíluchtú an bhreiseáin `%s'!\n"
@@ -745,7 +730,7 @@ msgstr "Coinbhinsiúin agus rudaí eile"
 
 #: src/plugins/manextractor.c:180
 msgid "System management commands"
-msgstr "Orduithe bainistíochta an chórais"
+msgstr "Orduithe bainisteoireacht an chórais"
 
 #: src/plugins/manextractor.c:185
 msgid "Kernel routines"
@@ -1358,84 +1343,84 @@ msgstr "(bss athraitheach)"
 
 #: src/plugins/ole2/ole2extractor.c:257
 msgid "No Proofing"
-msgstr ""
+msgstr "Gan Phrofadh"
 
 #: src/plugins/ole2/ole2extractor.c:265
 msgid "Traditional Chinese"
-msgstr ""
+msgstr "Sínis Traidisiúnta"
 
 #: src/plugins/ole2/ole2extractor.c:267
 msgid "Simplified Chinese"
-msgstr ""
+msgstr "Sínis Simplithe"
 
 #: src/plugins/ole2/ole2extractor.c:275
 msgid "Swiss German"
-msgstr ""
+msgstr "Gearmáinis Eilvéiseach"
 
 #: src/plugins/ole2/ole2extractor.c:279
 msgid "U.S. English"
-msgstr ""
+msgstr "Béarla S.A.M."
 
 #: src/plugins/ole2/ole2extractor.c:281
 msgid "U.K. English"
-msgstr ""
+msgstr "Béarla Sasanach"
 
 #: src/plugins/ole2/ole2extractor.c:283
 msgid "Australian English"
-msgstr ""
+msgstr "Béarla Astrálach"
 
 #: src/plugins/ole2/ole2extractor.c:285
 msgid "Castilian Spanish"
-msgstr ""
+msgstr "Spáinnis Chaistíleach"
 
 #: src/plugins/ole2/ole2extractor.c:287
 msgid "Mexican Spanish"
-msgstr ""
+msgstr "Spáinnis Mheicsiceach"
 
 #: src/plugins/ole2/ole2extractor.c:293
 msgid "Belgian French"
-msgstr ""
+msgstr "Fraincis Bheilgeach"
 
 #: src/plugins/ole2/ole2extractor.c:295
 msgid "Canadian French"
-msgstr ""
+msgstr "Fraincis Cheanadach"
 
 #: src/plugins/ole2/ole2extractor.c:297
 msgid "Swiss French"
-msgstr ""
+msgstr "Fraincis Eilvéiseach"
 
 #: src/plugins/ole2/ole2extractor.c:307
 msgid "Swiss Italian"
-msgstr ""
+msgstr "Iodáilis Eilvéiseach"
 
 #: src/plugins/ole2/ole2extractor.c:315
 msgid "Belgian Dutch"
-msgstr ""
+msgstr "Ollainnis Bheilgeach"
 
 #: src/plugins/ole2/ole2extractor.c:317
 msgid "Norwegian Bokmal"
-msgstr ""
+msgstr "Ioruais Bokmål"
 
 #: src/plugins/ole2/ole2extractor.c:327
 msgid "Rhaeto-Romanic"
-msgstr ""
+msgstr "Raeta-Rómáinsis"
 
 #: src/plugins/ole2/ole2extractor.c:333
 msgid "Croato-Serbian (Latin)"
-msgstr ""
+msgstr "Seirbea-Chróitis (Laidineach)"
 
 #: src/plugins/ole2/ole2extractor.c:335
 msgid "Serbo-Croatian (Cyrillic)"
-msgstr ""
+msgstr "Seirbea-Chróitis (Coireallach)"
 
 #: src/plugins/ole2/ole2extractor.c:363
 msgid "Farsi"
-msgstr ""
+msgstr "Fairsis"
 
 #: src/plugins/ole2/ole2extractor.c:423
 #, c-format
 msgid "Revision #%u: Author '%s' worked on '%s'"
-msgstr ""
+msgstr "Leasú #%u: D'oibrigh údar '%s' ar '%s'"
 
 #: src/plugins/printable/dictionary-builder.c:97
 #, c-format
@@ -1483,6 +1468,126 @@ msgstr "RPM Dénártha %d.%d"
 
 #~ msgid "os"
 #~ msgstr "córas"
+
+#~ msgid "Arabic"
+#~ msgstr "Araibis"
+
+#~ msgid "Bulgarian"
+#~ msgstr "Bulgáiris"
+
+#~ msgid "Catalan"
+#~ msgstr "Catalóinis"
+
+#~ msgid "Czech"
+#~ msgstr "Seicis"
+
+#~ msgid "Danish"
+#~ msgstr "Danmhairgis"
+
+#~ msgid "German"
+#~ msgstr "Gearmáinis"
+
+#~ msgid "Greek"
+#~ msgstr "Gréigis"
+
+#~ msgid "Finnish"
+#~ msgstr "Fionlainnis"
+
+#~ msgid "French"
+#~ msgstr "Fraincis"
+
+#~ msgid "Hebrew"
+#~ msgstr "Eabhrais"
+
+#~ msgid "Hungarian"
+#~ msgstr "Ungáiris"
+
+#~ msgid "Icelandic"
+#~ msgstr "Íoslainnis"
+
+#~ msgid "Italian"
+#~ msgstr "Iodáilis"
+
+#~ msgid "Japanese"
+#~ msgstr "Seapáinis"
+
+#~ msgid "Korean"
+#~ msgstr "Cóiréis"
+
+#~ msgid "Dutch"
+#~ msgstr "Ollainnis"
+
+#~ msgid "Norwegian - Nynorsk"
+#~ msgstr "Ioruais - Nynorsk"
+
+#~ msgid "Polish"
+#~ msgstr "Polainnis"
+
+#~ msgid "Brazilian Portuguese"
+#~ msgstr "Portaingéilis na Brasaíle"
+
+#~ msgid "Portuguese"
+#~ msgstr "Portaingéilis"
+
+#~ msgid "Romanian"
+#~ msgstr "Rómáinis"
+
+#~ msgid "Russian"
+#~ msgstr "Rúisis"
+
+#~ msgid "Slovak"
+#~ msgstr "Slóvaicis"
+
+#~ msgid "Albanian"
+#~ msgstr "Albáinis"
+
+#~ msgid "Swedish"
+#~ msgstr "Sualainnis"
+
+#~ msgid "Thai"
+#~ msgstr "Téalainnis"
+
+#~ msgid "Turkish"
+#~ msgstr "Tuircis"
+
+#~ msgid "Urdu"
+#~ msgstr "Urdais"
+
+#~ msgid "Bahasa"
+#~ msgstr "Indinéisis"
+
+#~ msgid "Ukrainian"
+#~ msgstr "Úcráinis"
+
+#~ msgid "Byelorussian"
+#~ msgstr "Bealarúisis"
+
+#~ msgid "Slovenian"
+#~ msgstr "Slóivéinis"
+
+#~ msgid "Estonian"
+#~ msgstr "Eastóinis"
+
+#~ msgid "Latvian"
+#~ msgstr "Laitvis"
+
+#~ msgid "Lithuanian"
+#~ msgstr "Liotuáinis"
+
+#~ msgid "Basque"
+#~ msgstr "Bascais"
+
+#~ msgid "Macedonian"
+#~ msgstr "Macadóinis"
+
+#~ msgid "Afrikaans"
+#~ msgstr "Afracáinis"
+
+#~ msgid "Malaysian"
+#~ msgstr "Malaeis"
+
+#~ msgid "%s (Build %s)"
+#~ msgstr "%s (Tógáil %s)"
 
 #~ msgid "Please provide a list of klp files as arguments.\n"
 #~ msgstr "Tabhair uait liosta de chomhaid klp mar argóintí, le do thoil.\n"
