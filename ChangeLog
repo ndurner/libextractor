@@ -1,3 +1,6 @@
+Wed Sep  6 13:38:55 PDT 2006
+	Added tIME support to PNG extractor.  Bugfixes in PDF extractors.
+
 Wed May 17 02:05:37 PDT 2006
         Switched mpegextractor to use libmpeg2 (improves correctness,
 	adds dependency!).  Releasing libextractor 0.5.14.

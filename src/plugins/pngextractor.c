@@ -215,7 +215,6 @@ static struct EXTRACTOR_Keywords * processIHDR(const char * data,
 		    prev);
 }
 
-/* not supported... */
 static struct EXTRACTOR_Keywords * processzTXt(const char * data,
 					       unsigned int length,
 					       struct EXTRACTOR_Keywords * prev) {
@@ -278,6 +277,42 @@ static struct EXTRACTOR_Keywords * processzTXt(const char * data,
 		    prev);
 }
 
+static struct EXTRACTOR_Keywords * processtIME(const char * data,
+					       unsigned int length,
+					       struct EXTRACTOR_Keywords * prev) {
+  unsigned short y;
+  unsigned int year;
+  unsigned int mo;
+  unsigned int day;
+  unsigned int h;
+  unsigned int m;
+  unsigned int s;
+  char val[256];
+
+  if (length != 7)
+    return prev;
+  memcpy(&y,
+	 &data[4],
+	 sizeof(unsigned short));
+  year = ntohs(y);
+  mo   = (unsigned char) data[6];
+  day  = (unsigned char) data[7];
+  h    = (unsigned char) data[8];
+  m    = (unsigned char) data[9];
+  s    = (unsigned char) data[10];
+  sprintf(val,
+	  "%04u-%02u-%02u %02d:%02d:%02d",
+	  year,
+	  mo,
+	  day,
+	  h,
+	  m,
+	  s);
+  return addKeyword(EXTRACTOR_MODIFICATION_DATE,
+		    strdup(val),
+		    prev);
+}
+
 #define PNG_HEADER "\211PNG\r\n\032\n"
 
 
@@ -318,6 +353,8 @@ struct EXTRACTOR_Keywords * libextractor_png_extract(const char * filename,
       result = processtEXt(pos, length, result);
     if (0 == strncmp(pos, "zTXt", 4))
       result = processzTXt(pos, length, result);
+    if (0 == strncmp(pos, "tIME", 4))
+      result = processtIME(pos, length, result);
     pos += 4+length+4; /* Chunk type, data, crc */
   }
   return result;
