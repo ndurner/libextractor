@@ -309,6 +309,7 @@ libextractor_thumbnailqt_la_LDFLAGS = \
   $(PLUGINFLAGS) $(retaincommand) -lQtCore4 -lQtGui4 $(svgflags)
 
 install-exec-hook:
+	mkdir $(DESTDIR)$(plugindir) &> /dev/null
 	rm -f $(DESTDIR)$(plugindir)/libextractor_thumbnail$(LIBEXT); \
 	rm -f $(DESTDIR)$(plugindir)/libextractor_thumbnail.la; \
 	if test "$(thumbdir)" != ""; then \
