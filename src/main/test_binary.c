@@ -27,7 +27,7 @@ static int test(const char * buf,
   unsigned char * dec;
   size_t out;
 
-  enc = EXTRACTOR_binaryEncode(buf,
+  enc = EXTRACTOR_binaryEncode((const unsigned char*) buf,
 			       size);
   if (0 != EXTRACTOR_binaryDecode(enc,
 				  &dec,
