@@ -43,7 +43,7 @@ static EXTRACTOR_KeywordList * addKeyword(EXTRACTOR_KeywordType type,
  * @param arg closure...
  * @return 0 if the file does not match, 1 if it does
  **/
-typedef int (*Detector)(char * data,
+typedef int (*Detector)(const char * data,
 			size_t len,
 			void * arg);
 
@@ -53,7 +53,7 @@ typedef int (*Detector)(char * data,
  * @param len the length of the file
  * @return always 1
  **/
-static int defaultDetector(char * data,
+static int defaultDetector(const char * data,
 			   size_t len,
 			   void * arg) {
   return 1;
@@ -65,7 +65,7 @@ static int defaultDetector(char * data,
  * @param len the length of the file
  * @return always 0
  **/
-static int disableDetector(char * data,
+static int disableDetector(const char * data,
 			   size_t len,
 			   void * arg) {
   return 0;
@@ -110,9 +110,11 @@ static ExtraPattern xpatterns[] = {
  * entries in the main table, so this "AND" (all match) semantics are
  * the only reasonable answer.
  **/
-static int xPatternMatcher(char * data,
+static int xPatternMatcher(const char * data,
 			   size_t len,
-			   ExtraPattern * arg) {
+			   void * cls) {
+  ExtraPattern * arg = cls;
+
   while (arg->pattern != NULL) {
     if (arg->pos + arg->len > len)
       return 0;
@@ -128,40 +130,44 @@ static int xPatternMatcher(char * data,
 /**
  * Detect SVG
  */
-static int svgMatcher(char *data,
+static int svgMatcher(const char *data,
                       size_t len,
-                      ExtraPattern *arg) {
-  enum {XMLSTART, XMLCLOSE, SVGSTART, ABORT, OK} state;
+                      void * cls) {
+  enum {XMLSTART, XMLCLOSE, SVGSTART} state;
   size_t i;
   
   i = 0;
   state = XMLSTART;
   
-  while (i < len && state != ABORT) {
+  while (i < len) {
+    if (! isprint(data[i]))
+      return 0; 
     switch (state) {
       case XMLSTART:
         if (i + 6 >= len)
-          state = ABORT;
+          return 0;
         else if (memcmp(data + i, "<?xml", 5) == 0 && isspace(*(data + i + 5)))
           state = XMLCLOSE;
         break;
       case XMLCLOSE:
         if (i + 2 >= len)
-          state = ABORT;
+          return 0;
         else if (memcmp(data + i, "?>", 2) == 0)
           state = SVGSTART;
         break;
       case SVGSTART:
         if (i + 5 >= len)
-          state = ABORT;
+          return 0;
         else if (memcmp(data + i, "<svg", 4) == 0 && isspace(*(data + i + 4)))
-          state = OK;
-    }
-    
+          return 1;
+	break;
+      default:
+        /* do nothing */
+	break;
+    }    
     i++;
-  }
-  
-  return state == OK;
+  }  
+  return 0;
 }
 
 /**
@@ -179,7 +185,7 @@ static int svgMatcher(char *data,
 /**
  * Select an entry in xpatterns for matching
  **/
-#define XPATTERN(a) (Detector)&xPatternMatcher, &xpatterns[(a)]
+#define XPATTERN(a) &xPatternMatcher, &xpatterns[(a)]
 				
 typedef struct Pattern {
   char * pattern;
@@ -275,14 +281,15 @@ static Pattern patterns[] = {
   { "#!/bin/csh",  10, "application/x-shellscript", DEFAULT},
   { "#!/bin/tcsh", 11, "application/x-shellscript", DEFAULT},
   { "#!/bin/perl", 11, "application/x-perl", DEFAULT},
-  { "", 0, "image/svg+xml", svgMatcher, NULL},
+  { "<?xml", 5, "image/svg+xml", svgMatcher, NULL},
   {NULL, 0, NULL, DISABLED},
 };
 
-struct EXTRACTOR_Keywords * libextractor_mime_extract(char * filename,
-                                                      char * data,
-                                                      size_t size,
-                                                      struct EXTRACTOR_Keywords * prev) {
+struct EXTRACTOR_Keywords * 
+libextractor_mime_extract(const char * filename,
+			  const char * data,
+			  size_t size,
+			  struct EXTRACTOR_Keywords * prev) {
   int i;
   const char * mime;
 
