@@ -1,6 +1,6 @@
 /*
      This file is part of libextractor.
-     (C) 2002, 2003, 2004, 2005 Vidyut Samanta and Christian Grothoff
+     (C) 2002, 2003, 2004, 2005, 2006 Vidyut Samanta and Christian Grothoff
 
      libextractor is free software; you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published
@@ -594,39 +594,34 @@ main (int argc, char *argv[])
     extractors = EXTRACTOR_addLibraryLast(extractors,
 					  "libextractor_split");
 
-  if (verbose == YES)
-    {
-      /* print list of all used extractors */
-    }
   /* extract keywords */
   if ( bibtex == YES )
     fprintf(stdout,
 	    _("%% BiBTeX file\n"));
-  for (i = optind; i < argc; i++)
-    {
-      errno = 0;
-      keywords = EXTRACTOR_getKeywords (extractors, argv[i]);
-      if (0 != errno) {
-	if (verbose == YES) {
-	  fprintf(stderr, 
-		  "%s: %s: %s\n",
-		  argv[0], argv[i], strerror(errno));
-	}
-	ret = 1;
-	continue;
+  for (i = optind; i < argc; i++) {
+    errno = 0;
+    keywords = EXTRACTOR_getKeywords (extractors, argv[i]);
+    if (0 != errno) {
+      if (verbose == YES) {
+	fprintf(stderr, 
+		"%s: %s: %s\n",
+		argv[0], argv[i], strerror(errno));
       }
-      if (duplicates != -1 || bibtex == YES)
-	keywords = EXTRACTOR_removeDuplicateKeywords (keywords, duplicates);
-      if (verbose == YES && bibtex == NO)
-	printf (_("Keywords for file %s:\n"), argv[i]);
-      if (bibtex == YES)
-	printSelectedKeywordsBibtex (stdout, keywords, print, argv[i]);
-      else
-	printSelectedKeywords (stdout, keywords, print, verbose);
-      if (verbose == YES && bibtex == NO)
-	printf ("\n");
-      EXTRACTOR_freeKeywords (keywords);
+      ret = 1;
+      continue;
     }
+    if ( (duplicates != -1) || (bibtex == YES))
+      keywords = EXTRACTOR_removeDuplicateKeywords (keywords, duplicates);
+    if (verbose == YES && bibtex == NO)
+      printf (_("Keywords for file %s:\n"), argv[i]);
+    if (bibtex == YES)
+      printSelectedKeywordsBibtex (stdout, keywords, print, argv[i]);
+    else
+      printSelectedKeywords (stdout, keywords, print, verbose);
+    if (verbose == YES && bibtex == NO)
+      printf ("\n");
+    EXTRACTOR_freeKeywords (keywords);
+  }
   free (print);
   EXTRACTOR_removeAll (extractors);
 

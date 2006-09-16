@@ -1,6 +1,6 @@
 /*
      This file is part of libextractor.
-     (C) 2002, 2003, 2004 Vidyut Samanta and Christian Grothoff
+     (C) 2002, 2003, 2004, 2006 Vidyut Samanta and Christian Grothoff
 
      libextractor is free software; you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published
@@ -56,11 +56,19 @@ typedef struct {
 
 static Matches tmap[] = {
   { "COMM", EXTRACTOR_COMMENT },
+  { "IPLS", EXTRACTOR_CONTRIBUTOR },
+  { "TIPL", EXTRACTOR_CONTRIBUTOR },
+  { "TMOO", EXTRACTOR_MOOD },
+  { "TMCL", EXTRACTOR_MUSICIAN_CREDITS_LIST },
+  { "LINK", EXTRACTOR_LINK },
+  { "MCDI", EXTRACTOR_MUSIC_CD_IDENTIFIER },
+  { "PCNT", EXTRACTOR_PLAY_COUNTER },
+  { "POPM", EXTRACTOR_POPULARITY_METER },
   { "TCOP", EXTRACTOR_COPYRIGHT },
   { "TDRC", EXTRACTOR_DATE },
   { "TCON", EXTRACTOR_GENRE },
   { "TIT1", EXTRACTOR_GENRE },
-  { "TENC", EXTRACTOR_PRODUCER },
+  { "TENC", EXTRACTOR_ENCODED_BY },
   { "TEXT", EXTRACTOR_LYRICS },
   { "TOLY", EXTRACTOR_CONTRIBUTOR },
   { "TOPE", EXTRACTOR_CONTRIBUTOR },
@@ -69,6 +77,7 @@ static Matches tmap[] = {
   { "TPE2", EXTRACTOR_ARTIST },
   { "TPE3", EXTRACTOR_CONDUCTOR },
   { "TPE4", EXTRACTOR_INTERPRET },
+  { "TIME", EXTRACTOR_TIME },
   { "TMED", EXTRACTOR_MEDIA_TYPE },
   { "TCOM", EXTRACTOR_CREATOR },
   { "TOFN", EXTRACTOR_FILENAME },
@@ -77,6 +86,7 @@ static Matches tmap[] = {
   { "TRSN", EXTRACTOR_SOURCE },
   { "TRSO", EXTRACTOR_CREATED_FOR },
   { "TSRC", EXTRACTOR_RESOURCE_IDENTIFIER },
+  { "TYER", EXTRACTOR_YEAR },
   { "TOAL", EXTRACTOR_ALBUM },
   { "TALB", EXTRACTOR_ALBUM },
   { "TLAN", EXTRACTOR_LANGUAGE },

@@ -1,6 +1,6 @@
 /*
      This file is part of libextractor.
-     (C) 2002, 2003, 2004 Vidyut Samanta and Christian Grothoff
+     (C) 2002, 2003, 2004, 2006 Vidyut Samanta and Christian Grothoff
 
      libextractor is free software; you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published
@@ -55,11 +55,16 @@ typedef struct {
 
 static Matches tmap[] = {
   { "COMM", EXTRACTOR_COMMENT },
+  { "IPLS", EXTRACTOR_CONTRIBUTOR },
+  { "LINK", EXTRACTOR_LINK },
+  { "MCDI", EXTRACTOR_MUSIC_CD_IDENTIFIER },
+  { "PCNT", EXTRACTOR_PLAY_COUNTER },
+  { "POPM", EXTRACTOR_POPULARITY_METER },
   { "TCOP", EXTRACTOR_COPYRIGHT },
   { "TDAT", EXTRACTOR_DATE },
-  { "TCON", EXTRACTOR_GENRE },
+  { "TCON", EXTRACTOR_CONTENT_TYPE },
   { "TIT1", EXTRACTOR_GENRE },
-  { "TENC", EXTRACTOR_PRODUCER },
+  { "TENC", EXTRACTOR_ENCODED_BY },
   { "TEXT", EXTRACTOR_LYRICS },
   { "TOLY", EXTRACTOR_CONTRIBUTOR },
   { "TOPE", EXTRACTOR_CONTRIBUTOR },
@@ -70,7 +75,7 @@ static Matches tmap[] = {
   { "TPE4", EXTRACTOR_INTERPRET },
   { "TMED", EXTRACTOR_MEDIA_TYPE },
   { "TCOM", EXTRACTOR_CREATOR },
-  { "TIME", EXTRACTOR_DATE },
+  { "TIME", EXTRACTOR_TIME },
   { "TOFN", EXTRACTOR_FILENAME },
   { "TOPE", EXTRACTOR_ARTIST },
   { "TPUB", EXTRACTOR_PUBLISHER },
@@ -80,6 +85,8 @@ static Matches tmap[] = {
   { "TOAL", EXTRACTOR_ALBUM },
   { "TALB", EXTRACTOR_ALBUM },
   { "TLAN", EXTRACTOR_LANGUAGE },
+  { "TYER", EXTRACTOR_YEAR },
+  { "TLEN", EXTRACTOR_DURATION },
   { "TIT2", EXTRACTOR_TITLE },
   { "TIT3", EXTRACTOR_DESCRIPTION },
   { "WCOM", EXTRACTOR_RELEASE },

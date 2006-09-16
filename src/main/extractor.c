@@ -1,6 +1,6 @@
 /*
      This file is part of libextractor.
-     (C) 2002, 2003, 2004, 2005 Vidyut Samanta and Christian Grothoff
+     (C) 2002, 2003, 2004, 2005, 2006 Vidyut Samanta and Christian Grothoff
 
      libextractor is free software; you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published
@@ -151,16 +151,26 @@ static const char *keywordTypes[] = {
   gettext_noop("editing cycles"),
   gettext_noop("scale"),
   gettext_noop("manager"),
-  gettext_noop(/* movie director */"director"),
+  gettext_noop(/* movie director */"director"), /* 110 */
   gettext_noop("duration"),
   gettext_noop("information"),
   gettext_noop("full name"),
   gettext_noop("chapter"),
+  gettext_noop("year"), /* 115 */
+  gettext_noop("link"),
+  gettext_noop("music CD identifier"),
+  gettext_noop("play counter"),
+  gettext_noop("popularity meter"),
+  gettext_noop("content type"), /* 120 */
+  gettext_noop("encoded by"),
+  gettext_noop("time"),
+  gettext_noop("musician credits list"),
+  gettext_noop("mood"),
   NULL,
 };
 
 /* the number of keyword types (for bounds-checking) */
-#define HIGHEST_TYPE_NUMBER 115
+#define HIGHEST_TYPE_NUMBER 125
 
 #ifdef HAVE_LIBOGG
 #if HAVE_VORBIS
@@ -1236,11 +1246,11 @@ removeKeyword (const char *keyword,
 	}
       if (pos == NULL)
 	break;
-      if ((0 == strcmp (pos->keyword, keyword)) &&
-	  ((pos->keywordType == type) ||
-	   (((options & EXTRACTOR_DUPLICATES_TYPELESS) > 0)) ||
-	   (((options & EXTRACTOR_DUPLICATES_REMOVE_UNKNOWN) > 0) &&
-	    (pos->keywordType == EXTRACTOR_UNKNOWN))))
+      if ( (0 == strcmp (pos->keyword, keyword)) &&
+	   ( (pos->keywordType == type) ||
+	     (((options & EXTRACTOR_DUPLICATES_TYPELESS) > 0)) ||
+	     ( ((options & EXTRACTOR_DUPLICATES_REMOVE_UNKNOWN) > 0) &&
+	       (pos->keywordType == EXTRACTOR_UNKNOWN)) ) )
 	{
 	  /* remove! */
 	  if (prev == NULL)
@@ -1269,16 +1279,18 @@ removeKeyword (const char *keyword,
  */
 EXTRACTOR_KeywordList *
 EXTRACTOR_removeDuplicateKeywords (EXTRACTOR_KeywordList * list,
-				   const unsigned int options)
-{
+				   const unsigned int options) {
   EXTRACTOR_KeywordList *pos;
 
   pos = list;
-  while (pos != NULL)
-    {
-      removeKeyword (pos->keyword, pos->keywordType, options, &list, pos);
-      pos = pos->next;
-    }
+  while (pos != NULL) {
+    removeKeyword(pos->keyword, 
+		  pos->keywordType,
+		  options, 
+		  &list,
+		  pos);
+    pos = pos->next;
+  }
   return list;
 }
 
@@ -1288,8 +1300,7 @@ EXTRACTOR_removeDuplicateKeywords (EXTRACTOR_KeywordList * list,
  * @return a list of keywords without duplicates
  */
 EXTRACTOR_KeywordList *
-EXTRACTOR_removeEmptyKeywords (EXTRACTOR_KeywordList * list)
-{
+EXTRACTOR_removeEmptyKeywords (EXTRACTOR_KeywordList * list) {
   EXTRACTOR_KeywordList * pos;
   EXTRACTOR_KeywordList * last;
 

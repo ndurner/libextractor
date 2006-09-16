@@ -1,3 +1,7 @@
+Sat Sep 16 12:36:42 MDT 2006
+	Added support for various additional tags to ID3v2 extractors.
+	Now (again) trimming whitespace at the end of ID3v1 tags.
+
 Wed Sep  6 13:38:55 PDT 2006
 	Added tIME support to PNG extractor.  Bugfixes in PDF extractors.
 	Made libextractor relocateable (plugin path no longer hardwired

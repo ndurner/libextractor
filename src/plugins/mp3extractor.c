@@ -1,6 +1,6 @@
 /*
      This file is part of libextractor.
-     (C) 2002, 2003, 2004 Vidyut Samanta and Christian Grothoff
+     (C) 2002, 2003, 2004, 2006 Vidyut Samanta and Christian Grothoff
 
      libextractor is free software; you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published
@@ -243,6 +243,12 @@ int freq_table[4][3]={
 #define SYSERR     1
 #define INVALID_ID3 2
 
+static void trim(char * k) {
+  while ( (strlen(k) > 0) &&
+	  (isspace(k[strlen(k)-1])) )
+    k[strlen(k)-1] = '\0';
+}
+
 static int get_id3(const char * data,
 		   size_t size,
 		   id3tag * id3) {
@@ -261,22 +267,27 @@ static int get_id3(const char * data,
   id3->title = convertToUtf8(pos,
 			     30,
 			     "ISO-8859-1"); 
+  trim(id3->title);
   pos += 30;
   id3->artist = convertToUtf8(pos,
 			      30,
 			      "ISO-8859-1"); 
+  trim(id3->artist);
   pos += 30;
   id3->album = convertToUtf8(pos,
 			      30,
 			      "ISO-8859-1");
+  trim(id3->album);
   pos += 30;
   id3->year = convertToUtf8(pos,
 			    4,
 			    "ISO-8859-1"); 
+  trim(id3->year);
   pos += 4;
   id3->comment = convertToUtf8(pos,
 			       30,
 			       "ISO-8859-1");
+  trim(id3->comment);
   pos += 30;
   id3->genre = "";
   if (pos[0] < GENRE_NAME_COUNT)
@@ -289,9 +300,8 @@ static struct EXTRACTOR_Keywords *
 addkword(EXTRACTOR_KeywordList *oldhead,
 	 const char * phrase,
 	 EXTRACTOR_KeywordType type) {
-
    EXTRACTOR_KeywordList * keyword;
-
+   
    keyword = malloc(sizeof(EXTRACTOR_KeywordList));
    keyword->next = oldhead;
    keyword->keyword = strdup(phrase);
@@ -460,10 +470,10 @@ libextractor_mp3_extract(const char * filename,
   if (strlen(info.album) > 0)
     klist = addkword(klist, info.album, EXTRACTOR_ALBUM);
   if (strlen(info.year) > 0)
-    klist = addkword(klist, info.year, EXTRACTOR_DATE);
+    klist = addkword(klist, info.year, EXTRACTOR_YEAR);
   if (strlen(info.genre) > 0)
     klist = addkword(klist, info.genre, EXTRACTOR_GENRE);
-  if (strlen(info.genre) > 0)
+  if (strlen(info.comment) > 0)
     klist = addkword(klist, info.comment, EXTRACTOR_COMMENT);
 
 
