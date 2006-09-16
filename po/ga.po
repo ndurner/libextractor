@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.5.14\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2006-09-06 14:22-0700\n"
+"POT-Creation-Date: 2006-09-16 13:04-0600\n"
 "PO-Revision-Date: 2006-05-22 20:46-0700\n"
 "Last-Translator: Kevin Patrick Scannell <scannell@SLU.EDU>\n"
 "Language-Team: Irish <gaeilge-gnulinux@lists.sourceforge.net>\n"
@@ -114,12 +114,12 @@ msgstr "extract [ROGHANNA] [COMHADAINM]*"
 msgid "Extract metadata from files."
 msgstr "Bain meiteashonraí as comhaid."
 
-#: src/main/extract.c:198 src/main/extractor.c:1387
+#: src/main/extract.c:198 src/main/extractor.c:1398
 #, c-format
 msgid "%s - (binary)\n"
 msgstr "%s - (dénártha)\n"
 
-#: src/main/extract.c:204 src/main/extractor.c:1392
+#: src/main/extract.c:204 src/main/extractor.c:1403
 #, c-format
 msgid "INVALID TYPE - %s\n"
 msgstr "CINEÁL NEAMHBHAILÍ - %s\n"
@@ -183,12 +183,12 @@ msgstr ""
 msgid "Use --help to get a list of options.\n"
 msgstr "Bain úsáid as '--help' le haghaidh níos mó roghanna.\n"
 
-#: src/main/extract.c:604
+#: src/main/extract.c:600
 #, c-format
 msgid "%% BiBTeX file\n"
 msgstr "%% Comhad BiBTeX\n"
 
-#: src/main/extract.c:621
+#: src/main/extract.c:616
 #, c-format
 msgid "Keywords for file %s:\n"
 msgstr "Lorgfhocail do chomhad %s:\n"
@@ -605,12 +605,56 @@ msgstr "ainm iomlán"
 msgid "chapter"
 msgstr "caibidil"
 
-#: src/main/extractor.c:496
+#: src/main/extractor.c:159
+msgid "year"
+msgstr ""
+
+#: src/main/extractor.c:160
+msgid "link"
+msgstr ""
+
+#: src/main/extractor.c:161
+#, fuzzy
+msgid "music CD identifier"
+msgstr "aitheantóir-acmhainne"
+
+#: src/main/extractor.c:162
+#, fuzzy
+msgid "play counter"
+msgstr "líon na leathanach"
+
+#: src/main/extractor.c:163
+msgid "popularity meter"
+msgstr ""
+
+#: src/main/extractor.c:164
+msgid "content type"
+msgstr ""
+
+#: src/main/extractor.c:165
+msgid "encoded by"
+msgstr ""
+
+#: src/main/extractor.c:166
+#, fuzzy
+msgid "time"
+msgstr "teideal"
+
+#: src/main/extractor.c:167
+msgid "musician credits list"
+msgstr ""
+
+#: src/main/extractor.c:168
+#, fuzzy
+msgid "mood"
+msgstr "mona"
+
+#: src/main/extractor.c:506
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "Theip ar thúsú meicníocht na mbreiseán: %s!\n"
 
-#: src/main/extractor.c:640
+#: src/main/extractor.c:650
 #, c-format
 msgid ""
 "Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
@@ -620,12 +664,12 @@ msgstr ""
 "bhain mé triail as `%s', ach theip ar an cheann sin freisin.  Na hearráidí: `"
 "%s' agus `%s'.\n"
 
-#: src/main/extractor.c:669
+#: src/main/extractor.c:679
 #, c-format
 msgid "Loading `%s' plugin failed: %s\n"
 msgstr "Theip ar luchtú an bhreiseáin `%s': %s\n"
 
-#: src/main/extractor.c:874
+#: src/main/extractor.c:884
 #, c-format
 msgid "Unloading plugin `%s' failed!\n"
 msgstr "Theip ar dhíluchtú an bhreiseáin `%s'!\n"
@@ -1329,15 +1373,15 @@ msgstr "JPap"
 msgid "Synthpop"
 msgstr "Popcheol sintéiseach"
 
-#: src/plugins/mp3extractor.c:434 src/plugins/wavextractor.c:113
+#: src/plugins/mp3extractor.c:444 src/plugins/wavextractor.c:113
 msgid "stereo"
 msgstr "steirió"
 
-#: src/plugins/mp3extractor.c:434 src/plugins/wavextractor.c:113
+#: src/plugins/mp3extractor.c:444 src/plugins/wavextractor.c:113
 msgid "mono"
 msgstr "mona"
 
-#: src/plugins/mp3extractor.c:435
+#: src/plugins/mp3extractor.c:445
 msgid "(variable bps)"
 msgstr "(bss athraitheach)"
 

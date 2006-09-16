@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.5.14\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2006-09-06 14:22-0700\n"
+"POT-Creation-Date: 2006-09-16 13:04-0600\n"
 "PO-Revision-Date: 2006-05-20 20:02+0200\n"
 "Last-Translator: Karl Eichwalder <ke@suse.de>\n"
 "Language-Team: German <translation-team-de@lists.sourceforge.net>\n"
@@ -118,12 +118,12 @@ msgstr "extract [OPTIONEN] [DATEINAME]*"
 msgid "Extract metadata from files."
 msgstr "Metadaten aus den Dateien extrahieren."
 
-#: src/main/extract.c:198 src/main/extractor.c:1387
+#: src/main/extract.c:198 src/main/extractor.c:1398
 #, c-format
 msgid "%s - (binary)\n"
 msgstr "%s - (binär)\n"
 
-#: src/main/extract.c:204 src/main/extractor.c:1392
+#: src/main/extract.c:204 src/main/extractor.c:1403
 #, c-format
 msgid "INVALID TYPE - %s\n"
 msgstr "UNGÜLTIGE ART - %s\n"
@@ -188,12 +188,12 @@ msgstr ""
 msgid "Use --help to get a list of options.\n"
 msgstr "Verwenden Sie --help, um eine Liste aller Optionen zu sehen.\n"
 
-#: src/main/extract.c:604
+#: src/main/extract.c:600
 #, c-format
 msgid "%% BiBTeX file\n"
 msgstr "%% BibTeX Datei\n"
 
-#: src/main/extract.c:621
+#: src/main/extract.c:616
 #, c-format
 msgid "Keywords for file %s:\n"
 msgstr "Schlüsserwörter für die Datei %s:\n"
@@ -256,9 +256,8 @@ msgid "source"
 msgstr "Quelle"
 
 #: src/main/extractor.c:68
-#, fuzzy
 msgid "relation"
-msgstr "Auflösung"
+msgstr "Bezug"
 
 #: src/main/extractor.c:69
 msgid "coverage"
@@ -575,7 +574,6 @@ msgid "character set"
 msgstr "Zeichensatz"
 
 #: src/main/extractor.c:149
-#, fuzzy
 msgid "line count"
 msgstr "Zeilenanzahl"
 
@@ -593,14 +591,12 @@ msgid "scale"
 msgstr "Musical"
 
 #: src/main/extractor.c:153
-#, fuzzy
 msgid "manager"
-msgstr "Paket-Ersteller"
+msgstr "Manager"
 
 #: src/main/extractor.c:154
-#, fuzzy
 msgid "director"
-msgstr "Ersteller"
+msgstr "Direktor"
 
 #: src/main/extractor.c:155
 msgid "duration"
@@ -615,28 +611,69 @@ msgid "full name"
 msgstr "vollständiger Name"
 
 #: src/main/extractor.c:158
-#, fuzzy
 msgid "chapter"
-msgstr "Kategorie"
+msgstr "Kapitel"
 
-#: src/main/extractor.c:496
+#: src/main/extractor.c:159
+msgid "year"
+msgstr "Jahr"
+
+#: src/main/extractor.c:160
+msgid "link"
+msgstr "Verweis"
+
+#: src/main/extractor.c:161
+#, fuzzy
+msgid "music CD identifier"
+msgstr "Art der Ressource"
+
+#: src/main/extractor.c:162
+#, fuzzy
+msgid "play counter"
+msgstr "Seitenanzahl"
+
+#: src/main/extractor.c:163
+msgid "popularity meter"
+msgstr ""
+
+#: src/main/extractor.c:164
+msgid "content type"
+msgstr ""
+
+#: src/main/extractor.c:165
+msgid "encoded by"
+msgstr ""
+
+#: src/main/extractor.c:166
+msgid "time"
+msgstr "Zeit"
+
+#: src/main/extractor.c:167
+msgid "musician credits list"
+msgstr ""
+
+#: src/main/extractor.c:168
+msgid "mood"
+msgstr "Stimmung"
+
+#: src/main/extractor.c:506
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "Initialisierung des Plugin-Mechanismus' ist fehlgeschlagen: %s.\n"
 
-#: src/main/extractor.c:640
+#: src/main/extractor.c:650
 #, c-format
 msgid ""
 "Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
 "failed also.  Errors are: `%s' and `%s'.\n"
 msgstr ""
 
-#: src/main/extractor.c:669
+#: src/main/extractor.c:679
 #, c-format
 msgid "Loading `%s' plugin failed: %s\n"
 msgstr "Laden des »%s«-Plugins ist fehlgeschlagen: %s\n"
 
-#: src/main/extractor.c:874
+#: src/main/extractor.c:884
 #, c-format
 msgid "Unloading plugin `%s' failed!\n"
 msgstr "Entladen des »%s«-Plugins ist fehlgeschlagen!\n"
@@ -824,9 +861,8 @@ msgid "Techno"
 msgstr "Techno"
 
 #: src/plugins/mp3extractor.c:68
-#, fuzzy
 msgid "Industrial"
-msgstr "Instrumental"
+msgstr "Industriell"
 
 #: src/plugins/mp3extractor.c:69
 msgid "Alternative"
@@ -1365,15 +1401,15 @@ msgstr "Pop"
 msgid "Synthpop"
 msgstr ""
 
-#: src/plugins/mp3extractor.c:434 src/plugins/wavextractor.c:113
+#: src/plugins/mp3extractor.c:444 src/plugins/wavextractor.c:113
 msgid "stereo"
 msgstr "Stereo"
 
-#: src/plugins/mp3extractor.c:434 src/plugins/wavextractor.c:113
+#: src/plugins/mp3extractor.c:444 src/plugins/wavextractor.c:113
 msgid "mono"
 msgstr "Mono"
 
-#: src/plugins/mp3extractor.c:435
+#: src/plugins/mp3extractor.c:445
 msgid "(variable bps)"
 msgstr "(variable BPS)"
 

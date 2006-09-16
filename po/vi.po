@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.5.14\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2006-09-06 14:22-0700\n"
+"POT-Creation-Date: 2006-09-16 13:04-0600\n"
 "PO-Revision-Date: 2006-05-23 17:58+0930\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <gnomevi-list@lists.sourceforge.net>\n"
@@ -118,12 +118,12 @@ msgstr ""
 msgid "Extract metadata from files."
 msgstr "Rút siêu dữ liệu ra tập tin."
 
-#: src/main/extract.c:198 src/main/extractor.c:1387
+#: src/main/extract.c:198 src/main/extractor.c:1398
 #, c-format
 msgid "%s - (binary)\n"
 msgstr "%s - (nhị phân)\n"
 
-#: src/main/extract.c:204 src/main/extractor.c:1392
+#: src/main/extract.c:204 src/main/extractor.c:1403
 #, c-format
 msgid "INVALID TYPE - %s\n"
 msgstr "KIỂU KHÔNG HỢP LỆ — %s\n"
@@ -187,12 +187,12 @@ msgid "Use --help to get a list of options.\n"
 msgstr ""
 "Hãy sử dụng lệnh « --help » (trợ giúp) để xem một danh sách các tùy chọn.\n"
 
-#: src/main/extract.c:604
+#: src/main/extract.c:600
 #, c-format
 msgid "%% BiBTeX file\n"
 msgstr "%% tập tin BiBTeX\n"
 
-#: src/main/extract.c:621
+#: src/main/extract.c:616
 #, c-format
 msgid "Keywords for file %s:\n"
 msgstr "Từ khoá cho tập tin %s:\n"
@@ -614,12 +614,56 @@ msgstr "họ tên"
 msgid "chapter"
 msgstr "chương"
 
-#: src/main/extractor.c:496
+#: src/main/extractor.c:159
+msgid "year"
+msgstr ""
+
+#: src/main/extractor.c:160
+msgid "link"
+msgstr ""
+
+#: src/main/extractor.c:161
+#, fuzzy
+msgid "music CD identifier"
+msgstr "điều nhận diện tài nguyên"
+
+#: src/main/extractor.c:162
+#, fuzzy
+msgid "play counter"
+msgstr "tổng số trang"
+
+#: src/main/extractor.c:163
+msgid "popularity meter"
+msgstr ""
+
+#: src/main/extractor.c:164
+msgid "content type"
+msgstr ""
+
+#: src/main/extractor.c:165
+msgid "encoded by"
+msgstr ""
+
+#: src/main/extractor.c:166
+#, fuzzy
+msgid "time"
+msgstr "tựa"
+
+#: src/main/extractor.c:167
+msgid "musician credits list"
+msgstr ""
+
+#: src/main/extractor.c:168
+#, fuzzy
+msgid "mood"
+msgstr "một nguồn"
+
+#: src/main/extractor.c:506
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "Việc khởi động cơ chế cầm phít bị lỗi: %s\n"
 
-#: src/main/extractor.c:640
+#: src/main/extractor.c:650
 #, c-format
 msgid ""
 "Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
@@ -628,12 +672,12 @@ msgstr ""
 "Việc tháo gỡ ký hiệu « %s » trong thư viện « %s » bị lỗi, thì đã cố « %s », "
 "nhưng mà nó cũng không thành công. Gặp lỗi « %s » và « %s ».\n"
 
-#: src/main/extractor.c:669
+#: src/main/extractor.c:679
 #, c-format
 msgid "Loading `%s' plugin failed: %s\n"
 msgstr "Việc tải bổ sung « %s » bị lỗi: %s\n"
 
-#: src/main/extractor.c:874
+#: src/main/extractor.c:884
 #, c-format
 msgid "Unloading plugin `%s' failed!\n"
 msgstr "Việc bỏ tải bổ sung « %s » bị lỗi.\n"
@@ -1336,15 +1380,15 @@ msgstr "JPốp"
 msgid "Synthpop"
 msgstr "Pốp tổng hợp"
 
-#: src/plugins/mp3extractor.c:434 src/plugins/wavextractor.c:113
+#: src/plugins/mp3extractor.c:444 src/plugins/wavextractor.c:113
 msgid "stereo"
 msgstr "âm lập thể"
 
-#: src/plugins/mp3extractor.c:434 src/plugins/wavextractor.c:113
+#: src/plugins/mp3extractor.c:444 src/plugins/wavextractor.c:113
 msgid "mono"
 msgstr "một nguồn"
 
-#: src/plugins/mp3extractor.c:435
+#: src/plugins/mp3extractor.c:445
 msgid "(variable bps)"
 msgstr "(bit/giây thay đổi)"
 

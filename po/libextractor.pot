@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2006-09-06 14:22-0700\n"
+"POT-Creation-Date: 2006-09-16 13:04-0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -104,12 +104,12 @@ msgstr ""
 msgid "Extract metadata from files."
 msgstr ""
 
-#: src/main/extract.c:198 src/main/extractor.c:1387
+#: src/main/extract.c:198 src/main/extractor.c:1398
 #, c-format
 msgid "%s - (binary)\n"
 msgstr ""
 
-#: src/main/extract.c:204 src/main/extractor.c:1392
+#: src/main/extract.c:204 src/main/extractor.c:1403
 #, c-format
 msgid "INVALID TYPE - %s\n"
 msgstr ""
@@ -172,12 +172,12 @@ msgstr ""
 msgid "Use --help to get a list of options.\n"
 msgstr ""
 
-#: src/main/extract.c:604
+#: src/main/extract.c:600
 #, c-format
 msgid "%% BiBTeX file\n"
 msgstr ""
 
-#: src/main/extract.c:621
+#: src/main/extract.c:616
 #, c-format
 msgid "Keywords for file %s:\n"
 msgstr ""
@@ -594,24 +594,64 @@ msgstr ""
 msgid "chapter"
 msgstr ""
 
-#: src/main/extractor.c:496
+#: src/main/extractor.c:159
+msgid "year"
+msgstr ""
+
+#: src/main/extractor.c:160
+msgid "link"
+msgstr ""
+
+#: src/main/extractor.c:161
+msgid "music CD identifier"
+msgstr ""
+
+#: src/main/extractor.c:162
+msgid "play counter"
+msgstr ""
+
+#: src/main/extractor.c:163
+msgid "popularity meter"
+msgstr ""
+
+#: src/main/extractor.c:164
+msgid "content type"
+msgstr ""
+
+#: src/main/extractor.c:165
+msgid "encoded by"
+msgstr ""
+
+#: src/main/extractor.c:166
+msgid "time"
+msgstr ""
+
+#: src/main/extractor.c:167
+msgid "musician credits list"
+msgstr ""
+
+#: src/main/extractor.c:168
+msgid "mood"
+msgstr ""
+
+#: src/main/extractor.c:506
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr ""
 
-#: src/main/extractor.c:640
+#: src/main/extractor.c:650
 #, c-format
 msgid ""
 "Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
 "failed also.  Errors are: `%s' and `%s'.\n"
 msgstr ""
 
-#: src/main/extractor.c:669
+#: src/main/extractor.c:679
 #, c-format
 msgid "Loading `%s' plugin failed: %s\n"
 msgstr ""
 
-#: src/main/extractor.c:874
+#: src/main/extractor.c:884
 #, c-format
 msgid "Unloading plugin `%s' failed!\n"
 msgstr ""
@@ -1314,15 +1354,15 @@ msgstr ""
 msgid "Synthpop"
 msgstr ""
 
-#: src/plugins/mp3extractor.c:434 src/plugins/wavextractor.c:113
+#: src/plugins/mp3extractor.c:444 src/plugins/wavextractor.c:113
 msgid "stereo"
 msgstr ""
 
-#: src/plugins/mp3extractor.c:434 src/plugins/wavextractor.c:113
+#: src/plugins/mp3extractor.c:444 src/plugins/wavextractor.c:113
 msgid "mono"
 msgstr ""
 
-#: src/plugins/mp3extractor.c:435
+#: src/plugins/mp3extractor.c:445
 msgid "(variable bps)"
 msgstr ""
 

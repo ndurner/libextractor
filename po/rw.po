@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.4.2\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2006-09-06 14:22-0700\n"
+"POT-Creation-Date: 2006-09-16 13:04-0600\n"
 "PO-Revision-Date: 2005-04-04 10:55-0700\n"
 "Last-Translator: Steven Michael Murphy <murf@e-tools.com>\n"
 "Language-Team: Kinyarwanda <translation-team-rw@lists.sourceforge.net>\n"
@@ -130,12 +130,12 @@ msgstr ""
 msgid "Extract metadata from files."
 msgstr "Bivuye Idosiye"
 
-#: src/main/extract.c:198 src/main/extractor.c:1387
+#: src/main/extract.c:198 src/main/extractor.c:1398
 #, fuzzy, c-format
 msgid "%s - (binary)\n"
 msgstr "%s-(Nyabibiri"
 
-#: src/main/extract.c:204 src/main/extractor.c:1392
+#: src/main/extract.c:204 src/main/extractor.c:1403
 #, c-format
 msgid "INVALID TYPE - %s\n"
 msgstr ""
@@ -221,12 +221,12 @@ msgstr "kugirango i Ihitamo Ihitamo"
 msgid "Use --help to get a list of options.\n"
 msgstr "Ifashayobora Kuri Kubona a Urutonde Bya Amahitamo"
 
-#: src/main/extract.c:604
+#: src/main/extract.c:600
 #, c-format
 msgid "%% BiBTeX file\n"
 msgstr ""
 
-#: src/main/extract.c:621
+#: src/main/extract.c:616
 #, fuzzy, c-format
 msgid "Keywords for file %s:\n"
 msgstr "kugirango IDOSIYE"
@@ -784,24 +784,68 @@ msgstr "Izina ry'idosiye"
 msgid "chapter"
 msgstr "Icyiciro"
 
-#: src/main/extractor.c:496
+#: src/main/extractor.c:159
+msgid "year"
+msgstr ""
+
+#: src/main/extractor.c:160
+msgid "link"
+msgstr ""
+
+#: src/main/extractor.c:161
+#, fuzzy
+msgid "music CD identifier"
+msgstr "Ikiranga"
+
+# sw/source\ui\inc\swmn.hrc:_MN_INS.MN_SUB_FIELD.FN_INSERT_FLD_PGCOUNT.text
+#: src/main/extractor.c:162
+#, fuzzy
+msgid "play counter"
+msgstr "Kubara amapaje"
+
+#: src/main/extractor.c:163
+msgid "popularity meter"
+msgstr ""
+
+#: src/main/extractor.c:164
+msgid "content type"
+msgstr ""
+
+#: src/main/extractor.c:165
+msgid "encoded by"
+msgstr ""
+
+#: src/main/extractor.c:166
+#, fuzzy
+msgid "time"
+msgstr "umutwe"
+
+#: src/main/extractor.c:167
+msgid "musician credits list"
+msgstr ""
+
+#: src/main/extractor.c:168
+msgid "mood"
+msgstr ""
+
+#: src/main/extractor.c:506
 #, fuzzy, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "Bya Byanze"
 
-#: src/main/extractor.c:640
+#: src/main/extractor.c:650
 #, fuzzy, c-format
 msgid ""
 "Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
 "failed also.  Errors are: `%s' and `%s'.\n"
 msgstr "IKIMENYETSO in Isomero Byanze Byanze Na"
 
-#: src/main/extractor.c:669
+#: src/main/extractor.c:679
 #, fuzzy, c-format
 msgid "Loading `%s' plugin failed: %s\n"
 msgstr "Byanze"
 
-#: src/main/extractor.c:874
+#: src/main/extractor.c:884
 #, fuzzy, c-format
 msgid "Unloading plugin `%s' failed!\n"
 msgstr "Byanze"
@@ -1511,15 +1555,15 @@ msgstr ""
 msgid "Synthpop"
 msgstr ""
 
-#: src/plugins/mp3extractor.c:434 src/plugins/wavextractor.c:113
+#: src/plugins/mp3extractor.c:444 src/plugins/wavextractor.c:113
 msgid "stereo"
 msgstr ""
 
-#: src/plugins/mp3extractor.c:434 src/plugins/wavextractor.c:113
+#: src/plugins/mp3extractor.c:444 src/plugins/wavextractor.c:113
 msgid "mono"
 msgstr ""
 
-#: src/plugins/mp3extractor.c:435
+#: src/plugins/mp3extractor.c:445
 #, fuzzy
 msgid "(variable bps)"
 msgstr "(IMPINDURAGACIRO"
