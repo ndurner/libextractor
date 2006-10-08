@@ -314,14 +314,14 @@ install-exec-hook:
 	rm -f $(DESTDIR)$(plugindir)/libextractor_thumbnail.la; \
 	if test "$(thumbdir)" != ""; then \
 		if test "$(thumbqt)" != ""; then \
-			$(LN_S) $(DESTDIR)$(plugindir)/libextractor_thumbnailqt$(LIBEXT) \
+			$(LN_S) $(plugindir)/libextractor_thumbnailqt$(LIBEXT) \
 				$(DESTDIR)$(plugindir)/libextractor_thumbnail$(LIBEXT); \
 		else \
-			$(LN_S) $(DESTDIR)$(plugindir)/libextractor_thumbnailgtk$(LIBEXT) \
+			$(LN_S) $(plugindir)/libextractor_thumbnailgtk$(LIBEXT) \
 				$(DESTDIR)$(plugindir)/libextractor_thumbnail$(LIBEXT); \
 		fi; \
 	else \
-		$(LN_S) $(DESTDIR)$(plugindir)/libextractor_thumbnailqt$(LIBEXT) \
+		$(LN_S) $(plugindir)/libextractor_thumbnailqt$(LIBEXT) \
 			$(DESTDIR)$(plugindir)/libextractor_thumbnail$(LIBEXT); \
 	fi;
 
