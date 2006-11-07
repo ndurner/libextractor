@@ -68,6 +68,7 @@ AM_CONDITIONAL(WITH_GSF_GNOME, test "x$have_gsf_gnome" = "xtrue")
 
 if test "x$have_gsf_gnome" = "xtrue" ; then
 	abi_gsf_message="yes, with GNOME support"
+        AC_DEFINE(HAVE_GSF, 1, [Have gsf])
 else if test "x$have_gsf" = "xtrue" ; then
 	abi_gsf_message="yes, without GNOME support"
         AC_DEFINE(HAVE_GSF, 1, [Have gsf])
