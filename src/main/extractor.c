@@ -234,7 +234,8 @@ libextractor_riff:\
 libextractor_mpeg:\
 libextractor_elf:\
 libextractor_oo:\
-libextractor_asf"
+libextractor_asf:\
+libextractor_nsf"
 
 #define DEFAULT_LIBRARIES EXSO OLESO OGGSO QTSO DEFSO
 

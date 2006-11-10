@@ -1,3 +1,6 @@
+Sat Nov 11 00:04:34 EET 2006
+	Added a NSF ( NES Sound Format ) plugin
+
 Sat Sep 16 12:36:42 MDT 2006
 	Added support for various additional tags to ID3v2 extractors.
 	Now (again) trimming whitespace at the end of ID3v1 tags.

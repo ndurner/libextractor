@@ -73,6 +73,7 @@ plugin_LTLIBRARIES = $(pdfplugin) \
   libextractor_mime.la \
   libextractor_mp3.la \
   $(extrampeg) \
+  libextractor_nsf.la \
   $(extraogg) \
   libextractor_png.la \
   libextractor_ps.la \
@@ -290,6 +291,13 @@ libextractor_filename_la_LDFLAGS = \
 libextractor_filename_la_LIBADD = \
   $(top_builddir)/src/main/libextractor.la \
   libconvert.la
+
+libextractor_nsf_la_SOURCES = \
+  nsfextractor.c 
+libextractor_nsf_la_LDFLAGS = \
+  $(PLUGINFLAGS)  $(retaincommand)
+libextractor_nsf_la_LIBADD = \
+  $(top_builddir)/src/main/libextractor.la
 
 libextractor_split_la_SOURCES = \
   splitextractor.c 
