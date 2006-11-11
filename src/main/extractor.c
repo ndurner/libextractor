@@ -499,6 +499,7 @@ void __attribute__ ((constructor)) le_ltdl_init() {
   int err;
   const char * opath;
   char * path;
+  char * cpath;
 
 #if ENABLE_NLS
   setlocale(LC_ALL, "");
@@ -519,8 +520,13 @@ void __attribute__ ((constructor)) le_ltdl_init() {
     old_dlsearchpath = strdup(opath);
   path = os_get_installation_path();
   if (path != NULL) {
-    lt_dlsetsearchpath(path);
+    cpath = malloc(strlen(path) + strlen(opath) + 4);
+    strcpy(cpath, opath);
+    strcat(cpath, ":");
+    strcat(cpath, path);
+    lt_dlsetsearchpath(cpath);
     free(path);  
+    free(cpath);
   }
 #ifdef MINGW
   InitWinEnv();
