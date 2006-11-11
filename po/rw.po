@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.4.2\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2006-09-16 13:04-0600\n"
+"POT-Creation-Date: 2006-11-11 16:18-0700\n"
 "PO-Revision-Date: 2005-04-04 10:55-0700\n"
 "Last-Translator: Steven Michael Murphy <murf@e-tools.com>\n"
 "Language-Team: Kinyarwanda <translation-team-rw@lists.sourceforge.net>\n"
@@ -130,12 +130,12 @@ msgstr ""
 msgid "Extract metadata from files."
 msgstr "Bivuye Idosiye"
 
-#: src/main/extract.c:198 src/main/extractor.c:1398
+#: src/main/extract.c:198 src/main/extractor.c:1410
 #, fuzzy, c-format
 msgid "%s - (binary)\n"
 msgstr "%s-(Nyabibiri"
 
-#: src/main/extract.c:204 src/main/extractor.c:1403
+#: src/main/extract.c:204 src/main/extractor.c:1415
 #, c-format
 msgid "INVALID TYPE - %s\n"
 msgstr ""
@@ -828,24 +828,47 @@ msgstr ""
 msgid "mood"
 msgstr ""
 
-#: src/main/extractor.c:506
+#: src/main/extractor.c:169
+#, fuzzy
+msgid "format version"
+msgstr "Imiterere"
+
+#: src/main/extractor.c:170
+msgid "television system"
+msgstr ""
+
+# sw/source\ui\inc\swmn.hrc:_MN_INS.MN_SUB_FIELD.FN_INSERT_FLD_PGCOUNT.text
+#: src/main/extractor.c:171
+#, fuzzy
+msgid "song count"
+msgstr "Kubara amapaje"
+
+#: src/main/extractor.c:172
+msgid "starting song"
+msgstr ""
+
+#: src/main/extractor.c:173
+msgid "hardware dependency"
+msgstr ""
+
+#: src/main/extractor.c:513
 #, fuzzy, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "Bya Byanze"
 
-#: src/main/extractor.c:650
+#: src/main/extractor.c:662
 #, fuzzy, c-format
 msgid ""
 "Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
 "failed also.  Errors are: `%s' and `%s'.\n"
 msgstr "IKIMENYETSO in Isomero Byanze Byanze Na"
 
-#: src/main/extractor.c:679
+#: src/main/extractor.c:691
 #, fuzzy, c-format
 msgid "Loading `%s' plugin failed: %s\n"
 msgstr "Byanze"
 
-#: src/main/extractor.c:884
+#: src/main/extractor.c:896
 #, fuzzy, c-format
 msgid "Unloading plugin `%s' failed!\n"
 msgstr "Byanze"

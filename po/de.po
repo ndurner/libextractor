@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.5.14\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2006-09-16 13:04-0600\n"
+"POT-Creation-Date: 2006-11-11 16:18-0700\n"
 "PO-Revision-Date: 2006-05-20 20:02+0200\n"
 "Last-Translator: Karl Eichwalder <ke@suse.de>\n"
 "Language-Team: German <translation-team-de@lists.sourceforge.net>\n"
@@ -118,12 +118,12 @@ msgstr "extract [OPTIONEN] [DATEINAME]*"
 msgid "Extract metadata from files."
 msgstr "Metadaten aus den Dateien extrahieren."
 
-#: src/main/extract.c:198 src/main/extractor.c:1398
+#: src/main/extract.c:198 src/main/extractor.c:1410
 #, c-format
 msgid "%s - (binary)\n"
 msgstr "%s - (binär)\n"
 
-#: src/main/extract.c:204 src/main/extractor.c:1403
+#: src/main/extract.c:204 src/main/extractor.c:1415
 #, c-format
 msgid "INVALID TYPE - %s\n"
 msgstr "UNGÜLTIGE ART - %s\n"
@@ -586,9 +586,8 @@ msgid "editing cycles"
 msgstr ""
 
 #: src/main/extractor.c:152
-#, fuzzy
 msgid "scale"
-msgstr "Musical"
+msgstr "Skalierung"
 
 #: src/main/extractor.c:153
 msgid "manager"
@@ -656,24 +655,48 @@ msgstr ""
 msgid "mood"
 msgstr "Stimmung"
 
-#: src/main/extractor.c:506
+#: src/main/extractor.c:169
+#, fuzzy
+msgid "format version"
+msgstr "Information"
+
+#: src/main/extractor.c:170
+#, fuzzy
+msgid "television system"
+msgstr "Betriebssystem"
+
+#: src/main/extractor.c:171
+#, fuzzy
+msgid "song count"
+msgstr "Seitenanzahl"
+
+#: src/main/extractor.c:172
+msgid "starting song"
+msgstr ""
+
+#: src/main/extractor.c:173
+#, fuzzy
+msgid "hardware dependency"
+msgstr "Abhängigkeit"
+
+#: src/main/extractor.c:513
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "Initialisierung des Plugin-Mechanismus' ist fehlgeschlagen: %s.\n"
 
-#: src/main/extractor.c:650
+#: src/main/extractor.c:662
 #, c-format
 msgid ""
 "Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
 "failed also.  Errors are: `%s' and `%s'.\n"
 msgstr ""
 
-#: src/main/extractor.c:679
+#: src/main/extractor.c:691
 #, c-format
 msgid "Loading `%s' plugin failed: %s\n"
 msgstr "Laden des »%s«-Plugins ist fehlgeschlagen: %s\n"
 
-#: src/main/extractor.c:884
+#: src/main/extractor.c:896
 #, c-format
 msgid "Unloading plugin `%s' failed!\n"
 msgstr "Entladen des »%s«-Plugins ist fehlgeschlagen!\n"

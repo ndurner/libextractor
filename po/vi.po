@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.5.14\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2006-09-16 13:04-0600\n"
+"POT-Creation-Date: 2006-11-11 16:18-0700\n"
 "PO-Revision-Date: 2006-05-23 17:58+0930\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <gnomevi-list@lists.sourceforge.net>\n"
@@ -118,12 +118,12 @@ msgstr ""
 msgid "Extract metadata from files."
 msgstr "Rút siêu dữ liệu ra tập tin."
 
-#: src/main/extract.c:198 src/main/extractor.c:1398
+#: src/main/extract.c:198 src/main/extractor.c:1410
 #, c-format
 msgid "%s - (binary)\n"
 msgstr "%s - (nhị phân)\n"
 
-#: src/main/extract.c:204 src/main/extractor.c:1403
+#: src/main/extract.c:204 src/main/extractor.c:1415
 #, c-format
 msgid "INVALID TYPE - %s\n"
 msgstr "KIỂU KHÔNG HỢP LỆ — %s\n"
@@ -658,12 +658,36 @@ msgstr ""
 msgid "mood"
 msgstr "một nguồn"
 
-#: src/main/extractor.c:506
+#: src/main/extractor.c:169
+#, fuzzy
+msgid "format version"
+msgstr "thông tin"
+
+#: src/main/extractor.c:170
+#, fuzzy
+msgid "television system"
+msgstr "hệ điều hành"
+
+#: src/main/extractor.c:171
+#, fuzzy
+msgid "song count"
+msgstr "tổng số trang"
+
+#: src/main/extractor.c:172
+msgid "starting song"
+msgstr ""
+
+#: src/main/extractor.c:173
+#, fuzzy
+msgid "hardware dependency"
+msgstr "phụ thuộc"
+
+#: src/main/extractor.c:513
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "Việc khởi động cơ chế cầm phít bị lỗi: %s\n"
 
-#: src/main/extractor.c:650
+#: src/main/extractor.c:662
 #, c-format
 msgid ""
 "Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
@@ -672,12 +696,12 @@ msgstr ""
 "Việc tháo gỡ ký hiệu « %s » trong thư viện « %s » bị lỗi, thì đã cố « %s », "
 "nhưng mà nó cũng không thành công. Gặp lỗi « %s » và « %s ».\n"
 
-#: src/main/extractor.c:679
+#: src/main/extractor.c:691
 #, c-format
 msgid "Loading `%s' plugin failed: %s\n"
 msgstr "Việc tải bổ sung « %s » bị lỗi: %s\n"
 
-#: src/main/extractor.c:884
+#: src/main/extractor.c:896
 #, c-format
 msgid "Unloading plugin `%s' failed!\n"
 msgstr "Việc bỏ tải bổ sung « %s » bị lỗi.\n"

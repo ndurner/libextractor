@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2006-09-16 13:04-0600\n"
+"POT-Creation-Date: 2006-11-11 16:18-0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -104,12 +104,12 @@ msgstr ""
 msgid "Extract metadata from files."
 msgstr ""
 
-#: src/main/extract.c:198 src/main/extractor.c:1398
+#: src/main/extract.c:198 src/main/extractor.c:1410
 #, c-format
 msgid "%s - (binary)\n"
 msgstr ""
 
-#: src/main/extract.c:204 src/main/extractor.c:1403
+#: src/main/extract.c:204 src/main/extractor.c:1415
 #, c-format
 msgid "INVALID TYPE - %s\n"
 msgstr ""
@@ -634,24 +634,44 @@ msgstr ""
 msgid "mood"
 msgstr ""
 
-#: src/main/extractor.c:506
+#: src/main/extractor.c:169
+msgid "format version"
+msgstr ""
+
+#: src/main/extractor.c:170
+msgid "television system"
+msgstr ""
+
+#: src/main/extractor.c:171
+msgid "song count"
+msgstr ""
+
+#: src/main/extractor.c:172
+msgid "starting song"
+msgstr ""
+
+#: src/main/extractor.c:173
+msgid "hardware dependency"
+msgstr ""
+
+#: src/main/extractor.c:513
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr ""
 
-#: src/main/extractor.c:650
+#: src/main/extractor.c:662
 #, c-format
 msgid ""
 "Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
 "failed also.  Errors are: `%s' and `%s'.\n"
 msgstr ""
 
-#: src/main/extractor.c:679
+#: src/main/extractor.c:691
 #, c-format
 msgid "Loading `%s' plugin failed: %s\n"
 msgstr ""
 
-#: src/main/extractor.c:884
+#: src/main/extractor.c:896
 #, c-format
 msgid "Unloading plugin `%s' failed!\n"
 msgstr ""
