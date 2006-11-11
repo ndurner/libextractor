@@ -166,11 +166,15 @@ static const char *keywordTypes[] = {
   gettext_noop("time"),
   gettext_noop("musician credits list"),
   gettext_noop("mood"),
+  gettext_noop("format version"), /* 125 */
+  gettext_noop("television system"),
+  gettext_noop("song count"),
+  gettext_noop("starting song"),
   NULL,
 };
 
 /* the number of keyword types (for bounds-checking) */
-#define HIGHEST_TYPE_NUMBER 125
+#define HIGHEST_TYPE_NUMBER 129
 
 #ifdef HAVE_LIBOGG
 #if HAVE_VORBIS

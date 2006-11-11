@@ -50,9 +50,9 @@ libextractor_nsf_extract(const char * filename,
 			      size_t size,
 			      struct EXTRACTOR_Keywords * prev) {
   int i;
-  char name[32];
-  char artist[32];
-  char copyright[32];
+  char name[33];
+  char artist[33];
+  char copyright[33];
   char songs[32];
   char startingsong[32];
 
@@ -80,20 +80,20 @@ libextractor_nsf_extract(const char * filename,
 
   /* Version of NSF format */
 
-  sprintf( startingsong, "NSF version: %d", data[5] );
-  prev = addkword(prev, startingsong, EXTRACTOR_UNKNOWN);
+  sprintf( startingsong, "%d", data[5] );
+  prev = addkword(prev, startingsong, EXTRACTOR_FORMAT_VERSION);
 
 
   /* Get song count */
 
-  sprintf( songs, "total songs: %d", data[6] );
-  prev = addkword(prev, songs, EXTRACTOR_UNKNOWN);
+  sprintf( songs, "%d", data[6] );
+  prev = addkword(prev, songs, EXTRACTOR_SONG_COUNT);
 
 
   /* Get number of the first song to be played */
 
-  sprintf( startingsong, "starting song: %d", data[7] );
-  prev = addkword(prev, startingsong, EXTRACTOR_UNKNOWN);
+  sprintf( startingsong, "%d", data[7] );
+  prev = addkword(prev, startingsong, EXTRACTOR_STARTING_SONG);
 
 
   /* Parse name, artist, copyright fields */
@@ -105,6 +105,10 @@ libextractor_nsf_extract(const char * filename,
     copyright[i] = data[ 0x4e + i ];
   }
 
+  name[32] = '\0';
+  artist[32] = '\0';
+  copyright[32] = '\0';
+
   prev = addkword(prev, name, EXTRACTOR_TITLE);
   prev = addkword(prev, artist, EXTRACTOR_ARTIST);
   prev = addkword(prev, copyright, EXTRACTOR_COPYRIGHT);
@@ -114,17 +118,17 @@ libextractor_nsf_extract(const char * filename,
 
   if( data[0x7a] & 2 )
   {
-    prev = addkword(prev, "a dual PAL/NTSC tune", EXTRACTOR_UNKNOWN);
+    prev = addkword(prev, "PAL/NTSC", EXTRACTOR_TELEVISION_SYSTEM);
   }
   else
   {
     if( data[0x7a] & 1 )
     {
-      prev = addkword(prev, "a PAL tune", EXTRACTOR_UNKNOWN);
+      prev = addkword(prev, "PAL", EXTRACTOR_TELEVISION_SYSTEM);
     }
     else
     {
-      prev = addkword(prev, "an NTSC tune", EXTRACTOR_UNKNOWN);
+      prev = addkword(prev, "NTSC", EXTRACTOR_TELEVISION_SYSTEM);
     }
   }
 
