@@ -29,10 +29,16 @@ if HAVE_BZ2
   bz2lib = -lbz2
 endif
 
+if HAVE_GLIB
+if WITH_GSF
+ GSF_LIBS_X = $(GSF_LIBS)
+endif
+endif
+
 libextractor_la_LDFLAGS = \
-  -export-dynamic -version-info 2:0:1 $(LIBICONV)
+  -export-dynamic -version-info 2:1:1 $(LIBICONV)
 libextractor_la_LIBADD = \
-  $(LIBLTDL) $(dlflag) $(zlib) $(bz2lib)
+  $(LIBLTDL) $(dlflag) $(zlib) $(bz2lib) $(GSF_LIBS_X)
 libextractor_la_DEPENDENCIES = \
   $(LIBLTDL) 
 
