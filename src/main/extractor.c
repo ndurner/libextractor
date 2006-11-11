@@ -170,11 +170,12 @@ static const char *keywordTypes[] = {
   gettext_noop("television system"),
   gettext_noop("song count"),
   gettext_noop("starting song"),
+  gettext_noop("hardware dependency"),
   NULL,
 };
 
 /* the number of keyword types (for bounds-checking) */
-#define HIGHEST_TYPE_NUMBER 129
+#define HIGHEST_TYPE_NUMBER 130
 
 #ifdef HAVE_LIBOGG
 #if HAVE_VORBIS

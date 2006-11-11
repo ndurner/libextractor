@@ -137,27 +137,27 @@ libextractor_nsf_extract(const char * filename,
 
   if( data[0x7b] & 1 )
   {
-    prev = addkword(prev, "uses VRCVI", EXTRACTOR_UNKNOWN);
+    prev = addkword(prev, "VRCVI", EXTRACTOR_HARDWARE_DEPENDENCY);
   }
   if( data[0x7b] & 2 )
   {
-    prev = addkword(prev, "uses VRCVII", EXTRACTOR_UNKNOWN);
+    prev = addkword(prev, "VRCVII", EXTRACTOR_HARDWARE_DEPENDENCY);
   }
   if( data[0x7b] & 4 )
   {
-    prev = addkword(prev, "uses FDS Sound", EXTRACTOR_UNKNOWN);
+    prev = addkword(prev, "FDS Sound", EXTRACTOR_HARDWARE_DEPENDENCY);
   }
   if( data[0x7b] & 8 )
   {
-    prev = addkword(prev, "uses MMC5 audio", EXTRACTOR_UNKNOWN);
+    prev = addkword(prev, "MMC5 audio", EXTRACTOR_HARDWARE_DEPENDENCY);
   }
   if( data[0x7b] & 16 )
   {
-    prev = addkword(prev, "uses Namco 106", EXTRACTOR_UNKNOWN);
+    prev = addkword(prev, "Namco 106", EXTRACTOR_HARDWARE_DEPENDENCY);
   }
   if( data[0x7b] & 32 )
   {
-    prev = addkword(prev, "uses Sunsoft FME-07", EXTRACTOR_UNKNOWN);
+    prev = addkword(prev, "Sunsoft FME-07", EXTRACTOR_HARDWARE_DEPENDENCY);
   }
 
   return prev;
