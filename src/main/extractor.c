@@ -520,13 +520,18 @@ void __attribute__ ((constructor)) le_ltdl_init() {
     old_dlsearchpath = strdup(opath);
   path = os_get_installation_path();
   if (path != NULL) {
-    cpath = malloc(strlen(path) + strlen(opath) + 4);
-    strcpy(cpath, opath);
-    strcat(cpath, ":");
-    strcat(cpath, path);
-    lt_dlsetsearchpath(cpath);
-    free(path);  
-    free(cpath);
+    if (opath != NULL) {
+      cpath = malloc(strlen(path) + strlen(opath) + 4);
+      strcpy(cpath, opath);
+      strcat(cpath, ":");
+      strcat(cpath, path);
+      lt_dlsetsearchpath(cpath);
+      free(path);  
+      free(cpath);
+    } else {
+      lt_dlsetsearchpath(path);
+      free(path);
+    }
   }
 #ifdef MINGW
   InitWinEnv();

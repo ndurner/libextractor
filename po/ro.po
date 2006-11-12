@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.5.3\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2006-11-11 16:18-0700\n"
+"POT-Creation-Date: 2006-11-11 21:57-0700\n"
 "PO-Revision-Date: 2005-08-16 12:00-0500\n"
 "Last-Translator: Laurentiu Buzdugan <lbuz@rolix.org>\n"
 "Language-Team: Romanian <translation-team-ro@lists.sourceforge.net>\n"
@@ -122,12 +122,12 @@ msgstr "extract [OPÞIUNI] [NUME_FIªIER]*"
 msgid "Extract metadata from files."
 msgstr "Extrage metadata din fiºiere."
 
-#: src/main/extract.c:198 src/main/extractor.c:1410
+#: src/main/extract.c:198 src/main/extractor.c:1415
 #, c-format
 msgid "%s - (binary)\n"
 msgstr "%s - (binar)\n"
 
-#: src/main/extract.c:204 src/main/extractor.c:1415
+#: src/main/extract.c:204 src/main/extractor.c:1420
 #, c-format
 msgid "INVALID TYPE - %s\n"
 msgstr "TIP INVALID - %s\n"
@@ -700,7 +700,7 @@ msgstr "dependinþe"
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "iniþializare mecanismului de plugin a eºuat: %s!\n"
 
-#: src/main/extractor.c:662
+#: src/main/extractor.c:667
 #, fuzzy, c-format
 msgid ""
 "Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
@@ -709,12 +709,12 @@ msgstr ""
 "Rezolvarea simbolului '%s' în biblioteca '%s' a eºuat, aºa cã am încercat '%"
 "s', dar ºi acesta a eºuat.  Erorile sunt: '%s' ºi '%s'.\n"
 
-#: src/main/extractor.c:691
+#: src/main/extractor.c:696
 #, fuzzy, c-format
 msgid "Loading `%s' plugin failed: %s\n"
 msgstr "Încãrcarea plugin-ului '%s' a eºuat: %s\n"
 
-#: src/main/extractor.c:896
+#: src/main/extractor.c:901
 #, fuzzy, c-format
 msgid "Unloading plugin `%s' failed!\n"
 msgstr "Descãrcarea plugin-ului '%s' a eºuat!\n"
