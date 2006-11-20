@@ -80,6 +80,7 @@ plugin_LTLIBRARIES = $(pdfplugin) \
   $(extraqt) \
   libextractor_real.la \
   libextractor_riff.la \
+  libextractor_sid.la \
   libextractor_split.la \
   libextractor_tar.la \
   libextractor_tiff.la \
@@ -291,6 +292,13 @@ libextractor_filename_la_LDFLAGS = \
 libextractor_filename_la_LIBADD = \
   $(top_builddir)/src/main/libextractor.la \
   libconvert.la
+
+libextractor_sid_la_SOURCES = \
+  sidextractor.c 
+libextractor_sid_la_LDFLAGS = \
+  $(PLUGINFLAGS)  $(retaincommand)
+libextractor_sid_la_LIBADD = \
+  $(top_builddir)/src/main/libextractor.la
 
 libextractor_nsf_la_SOURCES = \
   nsfextractor.c 

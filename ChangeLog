@@ -1,3 +1,6 @@
+Mon Nov 20 22:08:55 EET 2006
+	Added an SID (C64 music file) plugin
+
 Sat Nov 11 16:04:38 MST 2006
 	Fixed libltdl side-effect of loading libextractor; code
 	now preserves the old library search path and only appends
