@@ -560,5 +560,19 @@ libextractor_ole2_extract(const char * filename,
   return prev;
 }
 
+void __attribute__ ((constructor)) ole2_ltdl_init() {
+#ifdef gsf_init
+  gsf_init();
+#endif
+  // gsf_init_dynamic(NULL);
+}
+
+void __attribute__ ((destructor)) ole2_ltdl_fini() {
+#ifdef gsf_init
+  gsf_shutdown();
+#endif
+  // gsf_shutdown_dynamic(NULL);
+}
+
 /* end of ole2extractor.c */
 
