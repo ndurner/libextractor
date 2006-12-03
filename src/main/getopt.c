@@ -234,6 +234,9 @@ my_index (str, chr)
    and has done so at least since version 2.4.5. -- rms.  */
 extern int strlen (const char *);
 #endif /* not __STDC__ */
+#if defined(__APPLE__)
+extern size_t strlen (const char *);
+#endif
 #endif /* __GNUC__ */
 
 #endif /* not __GNU_LIBRARY__ */

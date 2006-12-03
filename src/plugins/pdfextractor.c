@@ -236,7 +236,9 @@ static struct {
 #define MAX_STEPS 256
 
 #define IS_NL(c) ((c == '\n') || (c == '\r'))
+#ifndef MIN
 #define MIN(a,b) ((a) < (b) ? (a) : (b)) 
+#endif
 #define SKIP(k,p,b,s) while ( (p<s) && (NULL != strchr(k, b[p])) ) p++;
 
 struct EXTRACTOR_Keywords * 
