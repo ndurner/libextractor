@@ -359,7 +359,7 @@ static char * get_path_from_module_filename() {
   char * path;
   char * idx;
   
-  path = MALLOC(4097);
+  path = malloc(4097);
   GetModuleFileName(NULL, path, 4096);
   idx = path + strlen(idx);
   while ( (idx > path) && 
