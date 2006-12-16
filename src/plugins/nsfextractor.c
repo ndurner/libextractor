@@ -23,6 +23,47 @@
 #include "convert.h"
 
 
+#define HEADER_SIZE  0x80
+
+#define PAL_FLAG     0x01
+#define DUAL_FLAG    0x02
+
+#define VRCVI_FLAG   0x01
+#define VRCVII_FLAG  0x02
+#define FDS_FLAG     0x04
+#define MMC5_FLAG    0x08
+#define NAMCO_FLAG   0x16
+#define SUNSOFT_FLAG 0x32
+
+#define UINT16 unsigned short
+
+
+struct header
+{
+char magicid[5];
+char nsfversion;
+char songs;
+char firstsong;
+UINT16 loadaddr;
+UINT16 initaddr;
+UINT16 playaddr;
+char title[32];
+char artist[32];
+char copyright[32];
+UINT16 ntscspeed;
+char bankswitch[8];
+UINT16 palspeed;
+char tvflags;
+char chipflags;
+};
+
+union nsfdata
+{
+	struct header head;
+	char buf[ HEADER_SIZE ];
+};
+
+
 static struct EXTRACTOR_Keywords *
 addkword(EXTRACTOR_KeywordList *oldhead,
          const char * phrase,
@@ -49,25 +90,26 @@ libextractor_nsf_extract(const char * filename,
 			      char * data,
 			      size_t size,
 			      struct EXTRACTOR_Keywords * prev) {
-  int i;
-  char name[33];
+  char album[33];
   char artist[33];
   char copyright[33];
   char songs[32];
   char startingsong[32];
+  char nsfversion[32];
+  union nsfdata input;
 
+  /* Check header size */
 
-  /* Check header size and "magic" id bytes */
+  if( size < HEADER_SIZE )
+  {
+    return prev;
+  }
 
-  if
-  (
-     size < 0x80 ||
-     data[0] != 'N' ||
-     data[1] != 'E' ||
-     data[2] != 'S' ||
-     data[3] != 'M' ||
-     data[4] != 0x1a
-  )
+  memcpy( &input, data, HEADER_SIZE );
+
+  /* Check "magic" id bytes */
+
+  if( memcmp( input.head.magicid, "NESM\x1a", 5 ) )
   {
     return prev;
   }
@@ -80,49 +122,46 @@ libextractor_nsf_extract(const char * filename,
 
   /* Version of NSF format */
 
-  sprintf( startingsong, "%d", data[5] );
-  prev = addkword(prev, startingsong, EXTRACTOR_FORMAT_VERSION);
+  sprintf( nsfversion, "%d", input.head.nsfversion );
+  prev = addkword(prev, nsfversion, EXTRACTOR_FORMAT_VERSION);
 
 
   /* Get song count */
 
-  sprintf( songs, "%d", data[6] );
+  sprintf( songs, "%d", input.head.songs );
   prev = addkword(prev, songs, EXTRACTOR_SONG_COUNT);
 
 
   /* Get number of the first song to be played */
 
-  sprintf( startingsong, "%d", data[7] );
+  sprintf( startingsong, "%d", input.head.firstsong );
   prev = addkword(prev, startingsong, EXTRACTOR_STARTING_SONG);
 
 
-  /* Parse name, artist, copyright fields */
+  /* name, artist, copyright fields */
 
-  for( i = 0; i < 32; i++ )
-  {
-    name[i] = data[ 0x0e + i ];
-    artist[i] = data[ 0x2e + i ];
-    copyright[i] = data[ 0x4e + i ];
-  }
-
-  name[32] = '\0';
+  album[32] = '\0';
   artist[32] = '\0';
   copyright[32] = '\0';
 
-  prev = addkword(prev, name, EXTRACTOR_TITLE);
+  memcpy( &album, input.head.title, 32 );
+  memcpy( &artist, input.head.artist, 32 );
+  memcpy( &copyright, input.head.copyright, 32 );
+
+  prev = addkword(prev, album, EXTRACTOR_ALBUM);
   prev = addkword(prev, artist, EXTRACTOR_ARTIST);
   prev = addkword(prev, copyright, EXTRACTOR_COPYRIGHT);
 
 
   /* PAL or NTSC */
 
-  if( data[0x7a] & 2 )
+  if( input.head.tvflags & DUAL_FLAG )
   {
     prev = addkword(prev, "PAL/NTSC", EXTRACTOR_TELEVISION_SYSTEM);
   }
   else
   {
-    if( data[0x7a] & 1 )
+    if( input.head.tvflags & PAL_FLAG )
     {
       prev = addkword(prev, "PAL", EXTRACTOR_TELEVISION_SYSTEM);
     }
@@ -135,30 +174,31 @@ libextractor_nsf_extract(const char * filename,
 
   /* Detect Extra Sound Chips needed to play the files */
 
-  if( data[0x7b] & 1 )
+  if( input.head.chipflags & VRCVI_FLAG )
   {
     prev = addkword(prev, "VRCVI", EXTRACTOR_HARDWARE_DEPENDENCY);
   }
-  if( data[0x7b] & 2 )
+  if( input.head.chipflags & VRCVII_FLAG )
   {
     prev = addkword(prev, "VRCVII", EXTRACTOR_HARDWARE_DEPENDENCY);
   }
-  if( data[0x7b] & 4 )
+  if( input.head.chipflags & FDS_FLAG )
   {
     prev = addkword(prev, "FDS Sound", EXTRACTOR_HARDWARE_DEPENDENCY);
   }
-  if( data[0x7b] & 8 )
+  if( input.head.chipflags & MMC5_FLAG )
   {
     prev = addkword(prev, "MMC5 audio", EXTRACTOR_HARDWARE_DEPENDENCY);
   }
-  if( data[0x7b] & 16 )
+  if( input.head.chipflags & NAMCO_FLAG )
   {
     prev = addkword(prev, "Namco 106", EXTRACTOR_HARDWARE_DEPENDENCY);
   }
-  if( data[0x7b] & 32 )
+  if( input.head.chipflags & SUNSOFT_FLAG )
   {
     prev = addkword(prev, "Sunsoft FME-07", EXTRACTOR_HARDWARE_DEPENDENCY);
   }
 
   return prev;
+
 }
