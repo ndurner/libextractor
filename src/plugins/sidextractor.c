@@ -48,7 +48,7 @@ libextractor_sid_extract(const char * filename,
 			      size_t size,
 			      struct EXTRACTOR_Keywords * prev) {
   int i, version;
-  char name[33];
+  char album[33];
   char artist[33];
   char copyright[33];
   char songs[32];
@@ -93,20 +93,20 @@ libextractor_sid_extract(const char * filename,
   prev = addkword(prev, startingsong, EXTRACTOR_STARTING_SONG);
 
 
-  /* Parse name, artist, copyright fields */
+  /* Parse album, artist, copyright fields */
 
   for( i = 0; i < 32; i++ )
   {
-    name[i] = data[ 0x16 + i ];
+    album[i] = data[ 0x16 + i ];
     artist[i] = data[ 0x36 + i ];
     copyright[i] = data[ 0x56 + i ];
   }
 
-  name[32] = '\0';
+  album[32] = '\0';
   artist[32] = '\0';
   copyright[32] = '\0';
 
-  prev = addkword(prev, name, EXTRACTOR_TITLE);
+  prev = addkword(prev, album, EXTRACTOR_ALBUM);
   prev = addkword(prev, artist, EXTRACTOR_ARTIST);
   prev = addkword(prev, copyright, EXTRACTOR_COPYRIGHT);
 
