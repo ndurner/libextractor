@@ -37,8 +37,8 @@
 #define VRCVII_FLAG  0x02
 #define FDS_FLAG     0x04
 #define MMC5_FLAG    0x08
-#define NAMCO_FLAG   0x16
-#define SUNSOFT_FLAG 0x32
+#define NAMCO_FLAG   0x10
+#define SUNSOFT_FLAG 0x20
 
 #define UINT16 unsigned short
 
