@@ -76,20 +76,20 @@ libextractor_sid_extract(const char * filename,
 
   /* Version of SID format */
 
-  version = data[4] * 0xff + data[5];
+  version = data[4] * 0x100 + data[5];
   sprintf( startingsong, "%d", version );
   prev = addkword(prev, startingsong, EXTRACTOR_FORMAT_VERSION);
 
 
   /* Get song count */
 
-  sprintf( songs, "%d", data[0x0e] * 0xff + data[0x0f] );
+  sprintf( songs, "%d", data[0x0e] * 0x100 + data[0x0f] );
   prev = addkword(prev, songs, EXTRACTOR_SONG_COUNT);
 
 
   /* Get number of the first song to be played */
 
-  sprintf( startingsong, "%d", data[0x10] * 0xff + data[0x11] );
+  sprintf( startingsong, "%d", data[0x10] * 0x100 + data[0x11] );
   prev = addkword(prev, startingsong, EXTRACTOR_STARTING_SONG);
 
 
