@@ -42,7 +42,6 @@
 
 #define UINT16 unsigned short
 
-
 struct header
 {
 	char magicid[ 5 ];
@@ -60,12 +59,6 @@ struct header
 	UINT16 palspeed;
 	char tvflags;
 	char chipflags;
-};
-
-union nsfdata
-{
-	struct header head;
-	char buf[ HEADER_SIZE ];
 };
 
 
@@ -107,7 +100,7 @@ struct EXTRACTOR_Keywords * libextractor_nsf_extract
 	char songs[ 32 ];
 	char startingsong[ 32 ];
 	char nsfversion[ 32 ];
-	union nsfdata input;
+	struct header *head;
 
 	/* Check header size */
 
@@ -116,11 +109,11 @@ struct EXTRACTOR_Keywords * libextractor_nsf_extract
 		return( prev );
 	}
 
-	memcpy( &input, data, HEADER_SIZE );
+	head = ( struct header * ) data;
 
 	/* Check "magic" id bytes */
 
-	if( memcmp( input.head.magicid, "NESM\x1a", 5 ) )
+	if( memcmp( head->magicid, "NESM\x1a", 5 ) )
 	{
 		return( prev );
 	}
@@ -133,19 +126,19 @@ struct EXTRACTOR_Keywords * libextractor_nsf_extract
 
 	/* Version of NSF format */
 
-	sprintf( nsfversion, "%d", input.head.nsfversion );
+	sprintf( nsfversion, "%d", head->nsfversion );
 	prev = addkword( prev, nsfversion, EXTRACTOR_FORMAT_VERSION );
 
 
 	/* Get song count */
 
-	sprintf( songs, "%d", input.head.songs );
+	sprintf( songs, "%d", head->songs );
 	prev = addkword( prev, songs, EXTRACTOR_SONG_COUNT );
 
 
 	/* Get number of the first song to be played */
 
-	sprintf( startingsong, "%d", input.head.firstsong );
+	sprintf( startingsong, "%d", head->firstsong );
 	prev = addkword( prev, startingsong, EXTRACTOR_STARTING_SONG );
 
 
@@ -155,9 +148,9 @@ struct EXTRACTOR_Keywords * libextractor_nsf_extract
 	artist[ 32 ] = '\0';
 	copyright[ 32 ] = '\0';
 
-	memcpy( &album, input.head.title, 32 );
-	memcpy( &artist, input.head.artist, 32 );
-	memcpy( &copyright, input.head.copyright, 32 );
+	memcpy( &album, head->title, 32 );
+	memcpy( &artist, head->artist, 32 );
+	memcpy( &copyright, head->copyright, 32 );
 
 	prev = addkword( prev, album, EXTRACTOR_ALBUM );
 	prev = addkword( prev, artist, EXTRACTOR_ARTIST );
@@ -166,13 +159,13 @@ struct EXTRACTOR_Keywords * libextractor_nsf_extract
 
 	/* PAL or NTSC */
 
-	if( input.head.tvflags & DUAL_FLAG )
+	if( head->tvflags & DUAL_FLAG )
 	{
 		prev = addkword( prev, "PAL/NTSC", EXTRACTOR_TELEVISION_SYSTEM );
 	}
 	else
 	{
-		if( input.head.tvflags & PAL_FLAG )
+		if( head->tvflags & PAL_FLAG )
 		{
 			prev = addkword( prev, "PAL", EXTRACTOR_TELEVISION_SYSTEM );
 		}
@@ -185,27 +178,27 @@ struct EXTRACTOR_Keywords * libextractor_nsf_extract
 
 	/* Detect Extra Sound Chips needed to play the files */
 
-	if( input.head.chipflags & VRCVI_FLAG )
+	if( head->chipflags & VRCVI_FLAG )
 	{
 		prev = addkword( prev, "VRCVI", EXTRACTOR_HARDWARE_DEPENDENCY );
 	}
-	if( input.head.chipflags & VRCVII_FLAG )
+	if( head->chipflags & VRCVII_FLAG )
 	{
 		prev = addkword( prev, "VRCVII", EXTRACTOR_HARDWARE_DEPENDENCY );
 	}
-	if( input.head.chipflags & FDS_FLAG )
+	if( head->chipflags & FDS_FLAG )
 	{
 		prev = addkword( prev, "FDS Sound", EXTRACTOR_HARDWARE_DEPENDENCY );
 	}
-	if( input.head.chipflags & MMC5_FLAG )
+	if( head->chipflags & MMC5_FLAG )
 	{
 		prev = addkword( prev, "MMC5 audio", EXTRACTOR_HARDWARE_DEPENDENCY );
 	}
-	if( input.head.chipflags & NAMCO_FLAG )
+	if( head->chipflags & NAMCO_FLAG )
 	{
 		prev = addkword( prev, "Namco 106", EXTRACTOR_HARDWARE_DEPENDENCY );
 	}
-	if( input.head.chipflags & SUNSOFT_FLAG )
+	if( head->chipflags & SUNSOFT_FLAG )
 	{
 		prev = addkword( prev, "Sunsoft FME-07", EXTRACTOR_HARDWARE_DEPENDENCY );
 	}
