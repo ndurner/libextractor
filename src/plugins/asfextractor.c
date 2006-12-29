@@ -519,7 +519,7 @@ static int asf_read_header(demux_asf_t *this) {
           get_le64(this);
           total_size = get_le32(this);
 	  if (total_size > sizeof(this->wavex))
-	    goto fail; 
+	    goto fail;
           stream_data_size = get_le32(this);
           stream_id = get_le16(this); /* stream id */
           get_le32(this);

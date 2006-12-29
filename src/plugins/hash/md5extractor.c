@@ -3,7 +3,7 @@
      (C) 2004, 2005 Vidyut Samanta and Christian Grothoff
 
    Copyright (C) 1995, 1996, 1999, 2000, 2003 Free Software Foundation, Inc.
-   NOTE: The canonical source of the MD5 code from this file is maintained 
+   NOTE: The canonical source of the MD5 code from this file is maintained
    with the GNU C Library.  Bugs can be reported to bug-glibc@prep.ai.mit.edu.
 
      libextractor is free software; you can redistribute it and/or modify
@@ -412,11 +412,11 @@ md5_buffer (const char *buffer, size_t len, void *resblock)
 
 
 
-static struct EXTRACTOR_Keywords * 
+static struct EXTRACTOR_Keywords *
 addKeyword(EXTRACTOR_KeywordList *oldhead,
 	   const char *phrase,
 	   EXTRACTOR_KeywordType type) {
-  
+
    EXTRACTOR_KeywordList * keyword;
    keyword = (EXTRACTOR_KeywordList*) malloc(sizeof(EXTRACTOR_KeywordList));
    keyword->next = oldhead;
@@ -432,7 +432,7 @@ addKeyword(EXTRACTOR_KeywordList *oldhead,
 #define DIGEST_BIN_BYTES (DIGEST_BITS / 8)
 #define MAX_DIGEST_BIN_BYTES DIGEST_BIN_BYTES
 
-struct EXTRACTOR_Keywords * 
+struct EXTRACTOR_Keywords *
 libextractor_hash_md5_extract(const char * filename,
 			      const char * data,
 			      size_t size,

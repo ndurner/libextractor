@@ -1,5 +1,5 @@
 FIX:
-* check exiv2 memory consumption on very large files; 
+* check exiv2 memory consumption on very large files;
   also investigate 500kb (!) allocation/leak in exiv2 on test/test.html
   (reported by valgrind)
 * 500 kb leak for each load/unload of exiv2 plugin (glibc?)
@@ -26,7 +26,7 @@ Desirable missing formats:
 * info pages (scan for 'Node: %s^?ID' - see end of .info files!)
 * sources (Java, C, C++, see doxygen!)
 * a.out (== ar?)
-* rtf 
+* rtf
 * EXE
 * APEv2 (MPC file format, www.personal.uni-jena.de/~pfk/mpp/sv8/apetag.html)
 * PRC (Palm module, http://web.mit.edu/tytso/www/pilot/prc-format.html)

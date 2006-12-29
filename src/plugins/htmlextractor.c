@@ -109,7 +109,7 @@ typedef struct TI {
 /**
  * Add a keyword.
  */
-static struct EXTRACTOR_Keywords * 
+static struct EXTRACTOR_Keywords *
 addKeyword(EXTRACTOR_KeywordType type,
 	   char * keyword,
 	   struct EXTRACTOR_Keywords * next) {
@@ -131,8 +131,8 @@ static int tagMatch(const char * tag,
 	   (0 == strncasecmp(tag, s, e-s)) );
 }
 
-static int lookFor(char c, 
-		   size_t * pos, 
+static int lookFor(char c,
+		   size_t * pos,
 		   const char * data,
 		   size_t size) {
   size_t p = *pos;
@@ -146,7 +146,7 @@ static int lookFor(char c,
   return p < size;
 }
 
-static int skipWhitespace(size_t * pos, 
+static int skipWhitespace(size_t * pos,
 			  const char * data,
 			  size_t size) {
   size_t p = *pos;
@@ -160,11 +160,11 @@ static int skipWhitespace(size_t * pos,
   return p < size;
 }
 
-static int skipLetters(size_t * pos, 
+static int skipLetters(size_t * pos,
 		       const char * data,
 		       size_t size) {
   size_t p = *pos;
-  
+
   while ( (p < size) &&
 	  (isalpha(data[p])) ) {
     if (data[p] == '\0') return 0;
@@ -174,8 +174,8 @@ static int skipLetters(size_t * pos,
   return p < size;
 }
 
-static int lookForMultiple(const char * c, 
-			   size_t * pos, 
+static int lookForMultiple(const char * c,
+			   size_t * pos,
 			   const char * data,
 			   size_t size) {
   size_t p = *pos;
@@ -201,9 +201,9 @@ static void findEntry(const char * key,
   len =  strlen(key);
   while (start < end - len - 1) {
     start++;
-    if (start[len] != '=') 
-      continue;         
-    if (0 == strncmp(start, 
+    if (start[len] != '=')
+      continue;
+    if (0 == strncmp(start,
 		     key,
 		     len)) {
       start += len+1;
@@ -230,7 +230,7 @@ static void findEntry(const char * key,
  * Search all tags that correspond to "tagname".  Example:
  * If the tag is <meta name="foo" desc="bar">, and
  * tagname == "meta", keyname="name", keyvalue="foo",
- * and searchname="desc", then this function returns a 
+ * and searchname="desc", then this function returns a
  * copy (!) of "bar".  Easy enough?
  *
  * @return NULL if nothing is found
@@ -263,13 +263,13 @@ static char * findInTags(TagInfo * t,
 		  &pend);
 	if (pstart != NULL) {
 	  char * ret = malloc(pend - pstart + 1);
-	  memcpy(ret, 
+	  memcpy(ret,
 		 pstart,
 		 pend - pstart);
 	  ret[pend-pstart] = '\0';
 	  return ret;
 	}
-      } 
+      }
     }
     t = t->next;
   }
@@ -278,7 +278,7 @@ static char * findInTags(TagInfo * t,
 
 
 /* mimetype = text/html */
-struct EXTRACTOR_Keywords * 
+struct EXTRACTOR_Keywords *
 libextractor_html_extract(const char * filename,
 			  const char * data,
 			  const size_t size,
@@ -325,19 +325,19 @@ libextractor_html_extract(const char * filename,
     if (! skipWhitespace(&pos, data, size)) break;
   STEP3:
     if (! lookForMultiple(">\"\'", &pos, data, size)) break;
-    if (data[pos] != '>') {      
+    if (data[pos] != '>') {
       /* find end-quote, ignore escaped quotes (\') */
       do {
 	tpos = pos;
 	pos++;
-	if (! lookFor(data[tpos], &pos, data, size)) 
+	if (! lookFor(data[tpos], &pos, data, size))
 	  break;
       } while (data[pos-1] == '\\');
       pos++;
       goto STEP3;
     }
     pos++;
-    if (! skipWhitespace(&pos, data, size)) break;   
+    if (! skipWhitespace(&pos, data, size)) break;
     tag.dataStart = &data[pos];
     if (! lookFor('<', &pos, data, size)) break;
     tag.dataEnd = &data[pos];
@@ -354,12 +354,12 @@ libextractor_html_extract(const char * filename,
 	break;
       }
       i++;
-    } 
+    }
     /* abort early if we hit the body tag */
     if (tagMatch("body",
 		 tag.tagStart,
 		 tag.tagEnd))
-      break; 
+      break;
   }
 
   /* fast exit */
@@ -370,7 +370,7 @@ libextractor_html_extract(const char * filename,
 
   /* first, try to determine mime type and/or character set */
   tmp = findInTags(tags,
-		   "meta", 
+		   "meta",
 		   "http-equiv", "content-type",
 		   "content");
   if (tmp != NULL) {
@@ -379,11 +379,11 @@ libextractor_html_extract(const char * filename,
        is present, we try to use that for character set conversion. */
     if (0 == strncmp(tmp,
 		     "text/html",
-		     strlen("text/html"))) 
+		     strlen("text/html")))
       prev = addKeyword(EXTRACTOR_MIMETYPE,
 			strdup("text/html"),
 			prev);
-    
+
     charset = strstr(tmp, "charset=");
 
     if (charset != NULL)
@@ -392,8 +392,8 @@ libextractor_html_extract(const char * filename,
   }
   if (charset == NULL)
     charset = strdup("ISO-8859-1"); /* try a sensible default */
-  
-  
+
+
   i = 0;
   while (tagmap[i].name != NULL) {
     tmp = findInTags(tags,
@@ -405,23 +405,23 @@ libextractor_html_extract(const char * filename,
 			convertToUtf8(tmp,
 				      strlen(tmp),
 				      charset),
-			prev);    
+			prev);
       free(tmp);
     }
     i++;
   }
 
-  
+
   while (tags != NULL) {
     t = tags;
     if (tagMatch("title",
 		 t->tagStart,
-		 t->tagEnd)) 
+		 t->tagEnd))
       prev = addKeyword(EXTRACTOR_TITLE,
 			convertToUtf8(t->dataStart,
 				      t->dataEnd - t->dataStart,
 				      charset),
-			prev);    
+			prev);
     tags = t->next;
     free(t);
   }

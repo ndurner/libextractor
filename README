@@ -6,7 +6,7 @@ does not support all formats but supports a simple plugging mechanism
 such that you can quickly add extractors for additional formats, even
 without recompiling libextractor.  libextractor typically ships with a
 dozen helper-libraries that can be used to obtain keywords from common
-file-types.  
+file-types.
 
 libextractor is a part of the GNU project (http://www.gnu.org/).
 

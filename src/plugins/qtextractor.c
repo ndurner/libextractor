@@ -116,8 +116,8 @@ static unsigned int getAtomHeaderSize(const char * buf) {
   const Atom * atom;
 
   atom = (const Atom*) buf;
-  if (ntohl(atom->size) == 1) 
-    return sizeof(const LongAtom);  
+  if (ntohl(atom->size) == 1)
+    return sizeof(const LongAtom);
   return sizeof(Atom);
 }
 
@@ -172,7 +172,7 @@ static int moovHandler(const char * input,
 		       size_t pos,
 		       struct EXTRACTOR_Keywords ** list) {
   unsigned int hdr = getAtomHeaderSize(&input[pos]);
-  return processAllAtoms(&input[pos+hdr], 
+  return processAllAtoms(&input[pos+hdr],
 			 getAtomSize(&input[pos]) - hdr,
 			 list);
 }
@@ -184,7 +184,7 @@ typedef struct {
   /* minor version */
   unsigned int version;
   /* compatible brands */
-  char compatibility[4]; 
+  char compatibility[4];
 } FileType;
 
 typedef struct {
@@ -225,10 +225,10 @@ static int ftypHandler(const char * input,
   while ( (ftMap[i].ext != NULL) &&
 	  (0 != memcmp(ft->type, ftMap[i].ext, 4)) )
     i++;
-  if (ftMap[i].ext != NULL) 
+  if (ftMap[i].ext != NULL)
     addKeyword(EXTRACTOR_MIMETYPE,
 	       ftMap[i].mime,
-	       list);  
+	       list);
   return 1;
 }
 
@@ -247,7 +247,7 @@ typedef struct {
      scale units. */
   unsigned int duration;
   unsigned int preferredRate;
-  /* A 16-bit fixed-point number that specifies how loud to 
+  /* A 16-bit fixed-point number that specifies how loud to
      play. 1.0 indicates full volume */
   unsigned short preferredVolume;
   unsigned char reserved[10];
@@ -292,7 +292,7 @@ static int cmovHandler(const char * input,
   const CompressedMovieHeaderAtom * c;
   unsigned int s;
   char * buf;
-  int ret; 
+  int ret;
   z_stream z_state;
   int z_ret_code;
 
@@ -313,7 +313,7 @@ static int cmovHandler(const char * input,
   buf = malloc(s);
   if (buf == NULL)
     return 1; /* out of memory, handle gracefully */
-  
+
   z_state.next_in = (unsigned char*) &c[1];
   z_state.avail_in = ntohl(c->cmvdAtom.size);
   z_state.avail_out = s;
@@ -384,10 +384,10 @@ static int tkhdHandler(const char * input,
   m = (const TrackAtom* ) &input[pos];
   if (ntohs(m->track_width.integer) != 0) {
     /* if actually a/the video track */
-    snprintf(dimensions, 
-	     40, 
-	     "%dx%d", 
-	     ntohs(m->track_width.integer), 
+    snprintf(dimensions,
+	     40,
+	     "%dx%d",
+	     ntohs(m->track_width.integer),
 	     ntohs(m->track_height.integer));
     addKeyword(EXTRACTOR_FORMAT,
 	       dimensions,
@@ -401,7 +401,7 @@ static int trakHandler(const char * input,
 		       size_t pos,
 		       struct EXTRACTOR_Keywords ** list) {
   unsigned int hdr = getAtomHeaderSize(&input[pos]);
-  return processAllAtoms(&input[pos+hdr], 
+  return processAllAtoms(&input[pos+hdr],
 			 getAtomSize(&input[pos]) - hdr,
 			 list);
 }
@@ -413,7 +413,7 @@ static int metaHandler(const char * input,
   unsigned int hdr = getAtomHeaderSize(&input[pos]);
   if (getAtomSize(&input[pos]) < hdr + 4)
     return 0;
-  return processAllAtoms(&input[pos+hdr+4], 
+  return processAllAtoms(&input[pos+hdr+4],
 			 getAtomSize(&input[pos]) - hdr - 4,
 			 list);
 }
@@ -563,7 +563,7 @@ static int processTextTag(const char * input,
   addKeyword(EXTRACTOR_LANGUAGE,
 	     languages[lang],
 	     list);
-  /* TODO: what is the character set encoding here? 
+  /* TODO: what is the character set encoding here?
      For now, let's assume it is Utf-8 (cannot find
      anything in the public documentation) */
   meta = malloc(len + 1);
@@ -597,7 +597,7 @@ static CHE cHm[] = {
   { "des", EXTRACTOR_DESCRIPTION, },
   { "dis", EXTRACTOR_DISCLAIMER, },
   { "dir", EXTRACTOR_MOVIE_DIRECTOR, },
-  { "src", EXTRACTOR_CONTRIBUTOR, }, 
+  { "src", EXTRACTOR_CONTRIBUTOR, },
   { "prf", EXTRACTOR_ARTIST, }, /* performer */
   { "req", EXTRACTOR_CREATED_FOR, }, /* hardware requirements */
   { "fmt", EXTRACTOR_FORMAT, },
@@ -614,8 +614,8 @@ static CHE cHm[] = {
   { "ed6", EXTRACTOR_REVISION_HISTORY, },
   { "ed7", EXTRACTOR_REVISION_HISTORY, },
   { "ed8", EXTRACTOR_REVISION_HISTORY, },
-  { "ed9", EXTRACTOR_REVISION_HISTORY, }, 
-  { "chp", EXTRACTOR_CHAPTER, }, 
+  { "ed9", EXTRACTOR_REVISION_HISTORY, },
+  { "chp", EXTRACTOR_CHAPTER, },
   { NULL, EXTRACTOR_UNKNOWN },
 };
 
@@ -643,7 +643,7 @@ static int udtaHandler(const char * input,
 		       size_t pos,
 		       struct EXTRACTOR_Keywords ** list) {
   unsigned int hdr = getAtomHeaderSize(&input[pos]);
-  return processAllAtoms(&input[pos+hdr], 
+  return processAllAtoms(&input[pos+hdr],
 			 getAtomSize(&input[pos]) - hdr,
 			 list);
 }
@@ -723,11 +723,11 @@ static int handleAtom(const char * input,
 #endif
     return -1;
   }
-  i = handlers[i].handler(input, size, pos, list);  
+  i = handlers[i].handler(input, size, pos, list);
 #if DEBUG
   printf("Running handler for `%4s' at %u completed with result %d\n",
 	 &input[pos + 4],
-	 pos, 
+	 pos,
 	 i);
 #endif
   return i;
@@ -738,7 +738,7 @@ static int handleAtom(const char * input,
    video/x-quicktime: mov,qt: Quicktime animation;
    application/x-quicktimeplayer: qtl: Quicktime list;
  */
-struct EXTRACTOR_Keywords * 
+struct EXTRACTOR_Keywords *
 libextractor_qt_extract(const char * filename,
 			const char * data,
 			size_t size,

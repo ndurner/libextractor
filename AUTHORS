@@ -69,7 +69,7 @@ sha1        - Scott G. Miller and Robert Klep <robert@ilse.nl>
 
 Libraries used:
 libz        -
-ogg-vorbis  - 
-glib        - 
-libltdl     - 
-gtk (pixbuf)- 
+ogg-vorbis  -
+glib        -
+libltdl     -
+gtk (pixbuf)-

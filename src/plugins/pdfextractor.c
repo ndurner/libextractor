@@ -47,7 +47,7 @@ static char * stndup(const char * str,
   return tmp;
 }
 
-static struct EXTRACTOR_Keywords * 
+static struct EXTRACTOR_Keywords *
 addKeyword(EXTRACTOR_KeywordType type,
 	   char * keyword,
 	   struct EXTRACTOR_Keywords * next) {
@@ -64,7 +64,7 @@ addKeyword(EXTRACTOR_KeywordType type,
 
 
 
-static unsigned char * 
+static unsigned char *
 dateDecode(const char * pdfString) {
   if (pdfString == NULL)
     return NULL;
@@ -73,7 +73,7 @@ dateDecode(const char * pdfString) {
   return (unsigned char*) stndup(&pdfString[3], strlen(pdfString) - 4);
 }
 
-static unsigned char * 
+static unsigned char *
 stringDecode(const char * pdfString,
 	     size_t * size) {
   size_t slen;
@@ -89,7 +89,7 @@ stringDecode(const char * pdfString,
     return NULL;
   switch (pdfString[0]) {
   case '(':
-    if (pdfString[slen-1] != ')')    
+    if (pdfString[slen-1] != ')')
       return NULL;
     ret = malloc(slen);
     w = 0;
@@ -146,7 +146,7 @@ stringDecode(const char * pdfString,
 	  } else {
 	    free(ret);
 	    return NULL; /* invalid! */
-	  }	       
+	  }	
 	  break;
 	}
 	default: /* invalid */
@@ -184,7 +184,7 @@ stringDecode(const char * pdfString,
   return NULL;
 }
 
-static char * 
+static char *
 charsetDecode(const unsigned char * in,
 	      size_t size) {
   if (in == NULL)
@@ -198,7 +198,7 @@ charsetDecode(const unsigned char * in,
     return convertToUtf8((const char*) in,
 			 size,
 			 "CSISOLATIN1");
-  } else { 
+  } else {
     return convertToUtf8((const char*) &in[2],
 			 size - 2,
 			 "UTF-16BE");
@@ -237,11 +237,11 @@ static struct {
 
 #define IS_NL(c) ((c == '\n') || (c == '\r'))
 #ifndef MIN
-#define MIN(a,b) ((a) < (b) ? (a) : (b)) 
+#define MIN(a,b) ((a) < (b) ? (a) : (b))
 #endif
 #define SKIP(k,p,b,s) while ( (p<s) && (NULL != strchr(k, b[p])) ) p++;
 
-struct EXTRACTOR_Keywords * 
+struct EXTRACTOR_Keywords *
 libextractor_pdf_extract(const char * filename,
 			 const char * data,
 			 size_t size,
@@ -270,7 +270,7 @@ libextractor_pdf_extract(const char * filename,
     return prev;
   if (0 != memcmp(data, PDF_HEADER, strlen(PDF_HEADER)))
     return prev;
-  if (0 != memcmp(&data[size - strlen(PDF_EOF)], PDF_EOF, strlen(PDF_EOF))) 
+  if (0 != memcmp(&data[size - strlen(PDF_EOF)], PDF_EOF, strlen(PDF_EOF)))
     return prev;
   /* PDF format is pretty much sure by now */
   memcpy(buf,
@@ -286,20 +286,20 @@ libextractor_pdf_extract(const char * filename,
 		    prev);
 
 
-  
+
   pos = size - strlen(PDF_EOF) - strlen(PDF_SXR);
   steps = 0;
   while ( (steps++ < MAX_STEPS) &&
 	  (pos > 0) &&
-	  (0 != memcmp(&data[pos], PDF_SXR, strlen(PDF_SXR))) ) 
+	  (0 != memcmp(&data[pos], PDF_SXR, strlen(PDF_SXR))) )
     pos--;
   if (0 != memcmp(&data[pos], PDF_SXR, strlen(PDF_SXR))) {
     /* cross reference streams not yet supported! */
-    return prev; 
+    return prev;
   }
   memcpy(buf, &data[pos + strlen(PDF_SXR)], steps);
   buf[steps] = '\0';
-  if (1 != sscanf(buf, "%llu", &startxref)) 
+  if (1 != sscanf(buf, "%llu", &startxref))
     return prev;
   if (startxref >= size - strlen(PDF_XREF))
     return prev;
@@ -313,13 +313,13 @@ libextractor_pdf_extract(const char * filename,
       pos++;
     memcpy(buf, &data[pos], MIN(MAX_STEPS, size - pos));
     buf[MIN(MAX_STEPS,size-pos)] = '\0';
-    if (2 != sscanf(buf, "%u %u", &xstart, &xcount)) 
+    if (2 != sscanf(buf, "%u %u", &xstart, &xcount))
       break;
     while ( (pos < size) && (! IS_NL(data[pos])) )
       pos++;
     if ( (pos < size) && IS_NL(data[pos]))
       pos++;
-    xrefpos = 20 * xcount + pos;    
+    xrefpos = 20 * xcount + pos;
     if ( (xrefpos >= size) || (xrefpos < pos) )
       return prev; /* invalid xref size */
     haveValidXref = 1;
@@ -330,7 +330,7 @@ libextractor_pdf_extract(const char * filename,
     return prev;
   if (0 != memcmp(&data[pos],
 		  PDF_TRAILER,
-		  strlen(PDF_TRAILER))) 
+		  strlen(PDF_TRAILER)))
     return prev;
   pos += strlen(PDF_TRAILER);
 
@@ -344,8 +344,8 @@ libextractor_pdf_extract(const char * filename,
 	    (! IS_NL(data[pos]) ) ) {
       if ( (data[pos] == '>') &&
 	   (pos + 1 < size) &&
-	   (data[pos+1] == '>') ) 
-	return prev; /* no info */      
+	   (data[pos+1] == '>') )
+	return prev; /* no info */
       pos++;
     }
     while ( (pos < size) &&
@@ -355,7 +355,7 @@ libextractor_pdf_extract(const char * filename,
 	   (pos + strlen(PDF_INFO) < size) &&
 	   (0 == memcmp(&data[pos],
 			PDF_INFO,
-			strlen(PDF_INFO))) ) ) 
+			strlen(PDF_INFO))) ) )
     return prev;
 
   pos += strlen(PDF_INFO);
@@ -368,10 +368,10 @@ libextractor_pdf_extract(const char * filename,
       buf[i] = '\0';
       break;
     }
-  if (1 != sscanf(buf, "%u", &xinfo)) 
+  if (1 != sscanf(buf, "%u", &xinfo))
     return prev;
 
-  haveValidXref = 0;  
+  haveValidXref = 0;
   /* now go find xinfo in xref table */
   xrefpos = startxref + strlen(PDF_XREF);
   while (1) {
@@ -380,7 +380,7 @@ libextractor_pdf_extract(const char * filename,
       pos++;
     memcpy(buf, &data[pos], MIN(MAX_STEPS, size - pos));
     buf[MIN(MAX_STEPS,size-pos)] = '\0';
-    if (2 != sscanf(buf, "%u %u", &xstart, &xcount)) 
+    if (2 != sscanf(buf, "%u %u", &xstart, &xcount))
       break;
     while ( (pos < size) && (! IS_NL(data[pos])) )
       pos++;
@@ -392,17 +392,17 @@ libextractor_pdf_extract(const char * filename,
       pos += 20 * xinfo - xstart;
       memcpy(buf, &data[pos], 20);
       buf[20] = '\0';
-      sscanf(buf, "%10llu %*5u %*c", &info_offset);      
+      sscanf(buf, "%10llu %*5u %*c", &info_offset);
       break;
     }
-    xrefpos = 20 * xcount + pos;    
+    xrefpos = 20 * xcount + pos;
     if ( (xrefpos >= size) || (xrefpos < pos) )
       return prev; /* invalid xref size */
   }
   if (! haveValidXref)
     return prev;
   pos = info_offset;
-  
+
   while ( (pos < size - 4) &&
 	  (! ( (data[pos] == '<') &&
 	       (data[pos+1] == '<') ) ) )
@@ -412,9 +412,9 @@ libextractor_pdf_extract(const char * filename,
     return prev;
   if ( (data[pos] == ' ') ||
        (data[pos] == 10) ||
-       (data[pos] == 13) ) 
+       (data[pos] == 13) )
     pos++;
-  
+
   while ( (pos < size - 2) &&
 	  ( ! ( (data[pos] == '>') &&
 		(data[pos+1] == '>') ) ) ) {

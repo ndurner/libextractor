@@ -41,8 +41,8 @@
 /**
  * @file languageextractor.c
  * @author Christian Grothoff
- * @brief try to identify the language of the document using 
- *        letter and letter-pair statistics 
+ * @brief try to identify the language of the document using
+ *        letter and letter-pair statistics
  */
 
 #include "platform.h"
@@ -65,13 +65,13 @@ int LanguageList::compareItems( QCollection::Item item1, QCollection::Item item2
 }
 
 
-static void extractNGrams(const char * str, 
+static void extractNGrams(const char * str,
 			  QStringList& ngrams) {
   QString paddedString( str );
-  
+
   paddedString = paddedString.replace( QRegExp( " " ), "_" );
   paddedString = '_' + paddedString + '_';
-  
+
   for( int i = 0; i < paddedString.length() - size + 1; i++ )
     ngrams.append( paddedString.mid( i, size ) );
 }
@@ -120,7 +120,7 @@ static NGramsList createFingerprintFromQString(const char * buf )
     return wngrams;
 }
 
-static const char * identifyLanguage(const QString& buffer, 
+static const char * identifyLanguage(const QString& buffer,
 				     LanguageProfileMap lp )
 {
     long distance;
@@ -191,17 +191,17 @@ static const char * identifyLanguage(const QString& buffer,
     }
 }
 
-static unsigned long long calculateDistance(NGramsList & file_ngrams, 
+static unsigned long long calculateDistance(NGramsList & file_ngrams,
 					    LanguageProfile & langNG) {
   unsigned long long fileNGPos = 0L;
   unsigned long long langNGPos = 0L;
   unsigned long long distance = 0L;
-  
+
   NGramsList::Iterator file_ngram = file_ngrams.begin();
   while ( file_ngram != file_ngrams.end() )
     {
       NGram* currentFileNGram = *file_ngram;
-      
+
       QMap<QString, unsigned long long>::iterator ng = langNG.find( currentFileNGram->ngram );
 
       if ( ng == langNG.end() )
@@ -215,17 +215,17 @@ static unsigned long long calculateDistance(NGramsList & file_ngrams,
 	  langNGPos = ng.data();
 	  distance = distance + labs( langNGPos - fileNGPos );
         }
-      
+
       fileNGPos++;
       file_ngram++;
     }
-  
+
   return distance;
 }
 
 
 
-struct EXTRACTOR_Keywords * 
+struct EXTRACTOR_Keywords *
 libextractor_language_extract(const char * filename,
 			      const char * buf,
 			      size_t size,

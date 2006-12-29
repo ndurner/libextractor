@@ -1043,7 +1043,7 @@ LZWStream::LZWStream(Stream *strA, int predictor, int columns, int colors,
     if (! pred->isOk()) {
       delete pred;
       pred = NULL;
-    }	    
+    }	
   } else {
     pred = NULL;
   }
@@ -1295,9 +1295,9 @@ CCITTFaxStream::CCITTFaxStream(Stream *strA, int encodingA, GBool endOfLineA,
 
   if (columns < 1)
     columns = 1;
-  if (columns + 4 <= 0) 
-    columns = INT_MAX - 4;	   
-  
+  if (columns + 4 <= 0)
+    columns = INT_MAX - 4;	
+
   rows = rowsA;
   endOfBlock = endOfBlockA;
   black = blackA;
@@ -1316,7 +1316,7 @@ CCITTFaxStream::CCITTFaxStream(Stream *strA, int encodingA, GBool endOfLineA,
     columns = 0;
   }
   refLine = (short *)gmalloc((columns + 3) * sizeof(short));
-  codingLine = (short *)gmalloc((columns + 2) * sizeof(short));  
+  codingLine = (short *)gmalloc((columns + 2) * sizeof(short));
 }
 
 CCITTFaxStream::~CCITTFaxStream() {
@@ -2940,7 +2940,7 @@ GBool DCTStream::readBaselineSOF() {
   width = read16();
   numComps = str->getChar();
   if (numComps <= 0 || numComps > 4) {
-    numComps = 0;	  
+    numComps = 0;	
     return gFalse;
   }
 
@@ -2971,7 +2971,7 @@ GBool DCTStream::readProgressiveSOF() {
   width = read16();
   numComps = str->getChar();
   if (numComps <= 0 || numComps > 4) {
-    numComps = 0;	  
+    numComps = 0;	
     return gFalse;
   }
   if (prec != 8) {
@@ -3085,7 +3085,7 @@ GBool DCTStream::readHuffmanTables() {
 	numACHuffTables = index+1;
       tbl = &acHuffTables[index];
     } else {
-      index &= 0x0f;	    
+      index &= 0x0f;	
       if (index >= numDCHuffTables)
 	numDCHuffTables = index+1;
       tbl = &dcHuffTables[index];
@@ -3312,10 +3312,10 @@ FlateStream::FlateStream(Stream *strA, int predictor, int columns,
     FilterStream(strA) {
   if (predictor != 1) {
     pred = new StreamPredictor(this, predictor, columns, colors, bits);
-    if (! pred->isOk()) { 
+    if (! pred->isOk()) {
       delete pred;
       pred = NULL;
-    }  
+    }
   } else {
     pred = NULL;
   }

@@ -69,8 +69,8 @@ static void testBitCallback(Bloomfilter * bf,
   int * arg = cls;
   if (! testBit(bf->sbitArray,
 		bf->bitArraySize,
-		bit)) 
-    *arg = 0;  
+		bit))
+    *arg = 0;
 }
 /**
  * Test if an element is in the filter.
@@ -127,7 +127,7 @@ static int wordTest(char * word,
   HashCode160 hc;
   char * lower;
 
-  if (strlen(word) <= (int) (*strlenthreshold)) 
+  if (strlen(word) <= (int) (*strlenthreshold))
     return 0;
   for (i=strlen(word)-1;i>=0;i--)
     if (isdigit(word[i]))
@@ -448,7 +448,7 @@ static char * blacklist[] = {
    what we are doing here.  EXTRACT_FUNC_NAME is set by
    Makefile.am to reflect the library that this code module
    is getting compiled into. */
-struct EXTRACTOR_Keywords * 
+struct EXTRACTOR_Keywords *
 EXTRACT_NAME (const char * filename,
 	      const char * data,
 	      size_t size,

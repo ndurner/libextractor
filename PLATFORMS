@@ -5,7 +5,7 @@ GNU/Linux (x86):
 - perfect, but with gcc 3.3 you must turn off optimizations!
 
 GNU/Linux (Ultra Sparc):
-- perfect 
+- perfect
 
 GNU/Linux (Alpha):
 - perfect
@@ -20,8 +20,8 @@ OpenBSD 3.8:
 - Chan Siu Ming <namely_void@yahoo.co.uk> writes:
   - libtool is good to have
   - OpenBSD 3.8 also doesn't have CODESET in langinfo.h (used in about three places.) I'm not sure how to cleanly overcome this.
-  - for some reason, convert.a is linked with a static version of libiconv.a, so that convert.a ends up containing convert.o 
-    and libiconv.a, which confuses the linker, because archives aren't supposed to contain other archives. Removed the ICONV 
+  - for some reason, convert.a is linked with a static version of libiconv.a, so that convert.a ends up containing convert.o
+    and libiconv.a, which confuses the linker, because archives aren't supposed to contain other archives. Removed the ICONV
     stuff from convert_la_LDFLAGS in some Makefiles and it seemed to get past that.
 
 - NetBSD:
@@ -40,7 +40,7 @@ Solaris 10
 MinGW:
 - linking against libstdc++ fails
     my workaround: rename libstdc++.la
-    Gerrit P. Haase writes: 
+    Gerrit P. Haase writes:
       Linking -lstdc++ with the provided libtool fails also on Cygwin, this
       is a problem with libtool, there is unfortunately no flag to tell
       libtool how to do its job on Cygwin and it seems that it cannot be the

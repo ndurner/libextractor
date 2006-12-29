@@ -17,7 +17,7 @@
      Free Software Foundation, Inc., 59 Temple Place - Suite 330,
      Boston, MA 02111-1307, USA.
 
-     This code makes extensive use of libgsf 
+     This code makes extensive use of libgsf
      -- the Gnome Structured File Library
      Copyright (C) 2002-2004 Jody Goldberg (jody@gnome.org)
 
@@ -54,7 +54,7 @@ addKeyword(EXTRACTOR_KeywordList *oldhead,
 	   const char *phrase,
 	   EXTRACTOR_KeywordType type) {
   EXTRACTOR_KeywordList * keyword;
-  
+
   if (strlen(phrase) == 0)
     return oldhead;
   if (0 == strcmp(phrase, "\"\""))
@@ -128,7 +128,7 @@ static Matches tmap[] = {
   { "dc:description", EXTRACTOR_DESCRIPTION },
   { "meta:creation-date", EXTRACTOR_CREATION_DATE },
   /* { "meta:editing-duration", EXTRACTOR_TOTAL_EDITING_TIME }, // encoding? */
-  { "meta:generator", EXTRACTOR_GENERATOR }, 
+  { "meta:generator", EXTRACTOR_GENERATOR },
   { "meta:template", EXTRACTOR_TEMPLATE },
   /* { "meta:editing-cycles", EXTRACTOR_EDITING_CYCLES }, // usually "FALSE" */
   /* { "msole:codepage", EXTRACTOR_CHARACTER_SET }, */
@@ -149,7 +149,7 @@ static void processMetadata(gpointer key,
        (value == NULL) )
     return;
   gval = gsf_doc_prop_get_val(prop);
-  
+
   if (G_VALUE_TYPE(gval) == G_TYPE_STRING) {
     contents = strdup(g_value_get_string(gval));
   } else {
@@ -173,15 +173,15 @@ static void processMetadata(gpointer key,
 			contents,
 			tmap[pos].type);
 #if DEBUG_OLE2
-  else 
+  else
     printf("No match for type `%s'\n",
 	   type);
 #endif
-  free(contents);  
+  free(contents);
 }
 
 
-static struct EXTRACTOR_Keywords * 
+static struct EXTRACTOR_Keywords *
 process(GsfInput * in,
 	struct EXTRACTOR_Keywords * prev) {
   GsfDocMetaData * sections;
@@ -198,7 +198,7 @@ process(GsfInput * in,
   return prev;
 }
 
-static struct EXTRACTOR_Keywords * 
+static struct EXTRACTOR_Keywords *
 processSO(GsfInput * src,
 	  struct EXTRACTOR_Keywords * prev) {
   off_t size;
@@ -253,9 +253,9 @@ processSO(GsfInput * src,
 
 static const char * lidToLanguage( unsigned int lid ) {
   switch ( lid ) {
-  case 0x0400: 
+  case 0x0400:
     return _("No Proofing");
-  case 0x0401: 
+  case 0x0401:
     return __("Arabic");
   case 0x0402:
     return __("Bulgarian");
@@ -346,7 +346,7 @@ static const char * lidToLanguage( unsigned int lid ) {
   case 0x0420:
     return __("Urdu");
   case 0x0421:
-    return __("Bahasa"); 
+    return __("Bahasa");
   case 0x0422:
     return __("Ukrainian");
   case 0x0423:
@@ -368,19 +368,19 @@ static const char * lidToLanguage( unsigned int lid ) {
   case 0x0436:
     return __("Afrikaans");
   case 0x043E:
-    return __("Malayalam");  
+    return __("Malayalam");
   default:
     return NULL;
   }
 }
 
-    
-static struct EXTRACTOR_Keywords * 
+
+static struct EXTRACTOR_Keywords *
 history_extract(GsfInput * stream,
 		unsigned int lcbSttbSavedBy,
 		unsigned int fcSttbSavedBy,
 		struct EXTRACTOR_Keywords * prev) {
-  unsigned int where = 0;  
+  unsigned int where = 0;
   unsigned char * lbuffer;
   unsigned int i;
   unsigned int length;
@@ -388,7 +388,7 @@ history_extract(GsfInput * stream,
   char * filename;
   char * rbuf;
   unsigned int nRev;
-      
+
   // goto offset of revision
   gsf_input_seek(stream, fcSttbSavedBy, G_SEEK_SET);
   if (gsf_input_remaining(stream) < lcbSttbSavedBy)
@@ -429,7 +429,7 @@ history_extract(GsfInput * stream,
 		      EXTRACTOR_REVISION_HISTORY);
     free(rbuf);
   }
-  free(lbuffer);    
+  free(lbuffer);
   return prev;
 }
 
@@ -477,7 +477,7 @@ libextractor_ole2_extract(const char * filename,
     if ( (0 == strcmp(name, "\005SummaryInformation"))
 	 || (0 == strcmp(name, "\005DocumentSummaryInformation")) ) {
       src = gsf_infile_child_by_index (infile, i);
-      if (src != NULL) 
+      if (src != NULL)
 	prev = process(src,
 		       prev);
     }
@@ -518,7 +518,7 @@ libextractor_ole2_extract(const char * filename,
 	}
       }
     }
-  }  
+  }
   g_object_unref(G_OBJECT(infile));
   g_object_unref(G_OBJECT(input));
 
@@ -537,7 +537,7 @@ libextractor_ole2_extract(const char * filename,
 
   if(NULL != generator) {
     const char * mimetype = "application/vnd.ms-files";
- 
+
     if((0 == strncmp(generator, "Microsoft Word", 14)) ||
        (0 == strncmp(generator, "Microsoft Office Word", 21)))
       mimetype = "application/msword";
@@ -553,10 +553,10 @@ libextractor_ole2_extract(const char * filename,
       mimetype = "application/vnd.visio";
     else if(0 == strncmp(generator, "Microsoft Office", 16))
       mimetype = "application/vnd.ms-office";
-  
+
     prev = addKeyword(prev, mimetype, EXTRACTOR_MIMETYPE);
   }
-  
+
   return prev;
 }
 

@@ -48,7 +48,7 @@ char *argv;
 void __attribute__ ((constructor)) thumnailextractorqt_init(void)
 {
   int argc = 0;
-  
+
   argv = strdup("");
   app = qApp ? NULL : new QApplication(argc, &argv);
 }
@@ -157,13 +157,13 @@ struct EXTRACTOR_Keywords * libextractor_thumbnailqt_extract(const char * filena
     /* Render SVG image */
     QSvgRenderer svg;
     QSize size;
-    
+
     if (! svg.load(QByteArray((const char *) data)))
       return prev;
 
     size = svg.defaultSize();
     img = new QImage(size, QImage::Format_ARGB32);
-    
+
     QPainter painter(img);
     painter.setViewport(0, 0, size.width(), size.height());
     painter.eraseRect(0, 0, size.width(), size.height());
@@ -177,7 +177,7 @@ struct EXTRACTOR_Keywords * libextractor_thumbnailqt_extract(const char * filena
     img = new QImage();
     img->loadFromData(data, size);
   }
-  
+
   height = img->height();
   width = img->width();
   format = (char *) malloc(64);
@@ -194,7 +194,7 @@ struct EXTRACTOR_Keywords * libextractor_thumbnailqt_extract(const char * filena
   if (width == 0)
     width = 1;
 
-  /* Change color depth */ 
+  /* Change color depth */
   QImage thumb = img->convertToFormat(colors);
   delete img;
 
@@ -212,14 +212,14 @@ struct EXTRACTOR_Keywords * libextractor_thumbnailqt_extract(const char * filena
     height /= 2;
     if (height < THUMBSIZE)
       height = THUMBSIZE;
-    
+
     thumb = thumb.scaled(width, height, Qt::KeepAspectRatio,
       Qt::SmoothTransformation);
-    
+
     if (width == THUMBSIZE && height == THUMBSIZE)
       break;
   }
-  
+
   buffer.setBuffer(&bytes);
   buffer.open(QIODevice::WriteOnly);
   thumb.save(&buffer, "PNG");

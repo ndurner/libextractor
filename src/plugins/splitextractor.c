@@ -72,9 +72,9 @@ static void splitKeywords(const char * keyword,
 	    (pos < len) )
       pos++;
     dp[pos++] = '\0';
-    if (pos - last > MINIMUM_KEYWORD_LENGTH) 
-      addKeyword(list, 
-		 &dp[last]);    
+    if (pos - last > MINIMUM_KEYWORD_LENGTH)
+      addKeyword(list,
+		 &dp[last]);
     while ( (1 == token(dp[pos], options)) &&
 	    (pos < len) )
       pos++;
@@ -96,7 +96,7 @@ libextractor_split_extract(const char * filename,
     options = TOKENIZERS;
   pos = prev;
   while (pos != NULL) {
-    splitKeywords(pos->keyword,		  
+    splitKeywords(pos->keyword,		
 		  &prev,
 		  options);
     pos = pos->next;

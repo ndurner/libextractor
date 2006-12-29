@@ -270,7 +270,7 @@ static unsigned char sha1_padding[64] =
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 };
 
-static void sha1_finish(struct sha1_context *ctx, 
+static void sha1_finish(struct sha1_context *ctx,
 			unsigned char digest[20] )
 {
     unsigned int last, padn;

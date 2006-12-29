@@ -135,13 +135,13 @@ static int svgMatcher(const char *data,
                       void * cls) {
   enum {XMLSTART, XMLCLOSE, SVGSTART} state;
   size_t i;
-  
+
   i = 0;
   state = XMLSTART;
-  
+
   while (i < len) {
     if (! isprint(data[i]))
-      return 0; 
+      return 0;
     switch (state) {
       case XMLSTART:
         if (i + 6 >= len)
@@ -164,9 +164,9 @@ static int svgMatcher(const char *data,
       default:
         /* do nothing */
 	break;
-    }    
+    }
     i++;
-  }  
+  }
   return 0;
 }
 
@@ -223,7 +223,7 @@ static Pattern patterns[] = {
   { "II\x2a\x00", 4, "image/tiff", DEFAULT}, /* little-endian */
   { "%PDF", 4, "application/pdf", DEFAULT},
   { "%!PS-Adobe-", 11, "application/postscript", DEFAULT},
-  { "\004%!PS-Adobe-", 12, "application/postscript", DEFAULT }, 
+  { "\004%!PS-Adobe-", 12, "application/postscript", DEFAULT },
   { "RIFF", 4, "video/x-msvideo", XPATTERN(AVI_XPATTERN)},
   { "RIFF", 4, "audio/x-wav", XPATTERN(WAVE_XPATTERN)},
   { "RIFX", 4, "video/x-msvideo", XPATTERN(AVI_XPATTERN)},
@@ -285,7 +285,7 @@ static Pattern patterns[] = {
   {NULL, 0, NULL, DISABLED},
 };
 
-struct EXTRACTOR_Keywords * 
+struct EXTRACTOR_Keywords *
 libextractor_mime_extract(const char * filename,
 			  const char * data,
 			  size_t size,

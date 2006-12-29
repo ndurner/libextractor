@@ -123,7 +123,7 @@ int main(int argc,
   memset(&line[0], 0, 2048);
   fscanf(dictin, "%s", (char*)&line);
   charset = strdup(line); /* not used (yet) */
-  while (1 == fscanf(dictin, "%s", (char*)&line)) {    
+  while (1 == fscanf(dictin, "%s", (char*)&line)) {
     words[cnt] = strdup(line);
     cnt++;
     memset(&line[0], 0, 2048);
@@ -160,7 +160,7 @@ int main(int argc,
     FILE * btfile;
 
     snprintf(fn, 64, "%s_%d.c", argv[1], j);
-    btfile = fopen(fn, "w+");    
+    btfile = fopen(fn, "w+");
     if (btfile == NULL) {
       fprintf(stderr,
 	      _("Error opening file `%s': %s\n"),

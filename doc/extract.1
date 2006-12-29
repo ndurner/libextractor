@@ -21,7 +21,7 @@ extract
 .I library
 ]
 [
-.B \-p 
+.B \-p
 .I type
 ]
 [
@@ -32,17 +32,17 @@ extract
 \&...
 .br
 .SH DESCRIPTION
-This manual page documents version 0.5.17 of the 
-.B extract 
+This manual page documents version 0.5.17 of the
+.B extract
 command.
 .PP
 .B extract
-tests each file specified in the argument list in an attempt to infer meta\-information from it.  Each file is subjected to the meta\-data extraction libraries from 
-.I libextractor. 
+tests each file specified in the argument list in an attempt to infer meta\-information from it.  Each file is subjected to the meta\-data extraction libraries from
+.I libextractor.
 .PP
-libextractor classifies meta\-information (also referred to as keywords) into types. A list of all types can be obtained with the 
-.B \-L 
-option. 
+libextractor classifies meta\-information (also referred to as keywords) into types. A list of all types can be obtained with the
+.B \-L
+option.
 
 .SH OPTIONS
 .TP 8
@@ -50,8 +50,8 @@ option.
 Do not remove any duplicates, even if the keywords match exactly and have the same type (i.e. because the same keyword was found by different extractor libraries).
 .TP 8
 .B \-b
-Display the output in BiBTeX format. This implies the 
-.B \-d 
+Display the output in BiBTeX format. This implies the
+.B \-d
 option
 .TP 8
 .B \-B LANG
@@ -94,7 +94,7 @@ Be verbose.
 Run the printable extractor (costly, generic extractor for binaries)
 .TP 8
 .BI \-l " libraries"
-Use the specified libraries to extract keywords. The general format of libraries is .I [[\-]LIBRARYNAME[:[\-]LIBRARYNAME]*] where LIBRARYNAME is a libextractor compatible library and typically of the form .I libextractor_jpeg.so\. The minus before the libraryname indicates that this library should be run after all the libraries that were specified so far. If the minus is missing, the library is run before all previously specified libraries. 
+Use the specified libraries to extract keywords. The general format of libraries is .I [[\-]LIBRARYNAME[:[\-]LIBRARYNAME]*] where LIBRARYNAME is a libextractor compatible library and typically of the form .I libextractor_jpeg.so\. The minus before the libraryname indicates that this library should be run after all the libraries that were specified so far. If the minus is missing, the library is run before all previously specified libraries.
 .TP 8
 .BI \-p " type"
 Print only the keywords matching the specified type. By default, all keywords that are found and not removed as duplicates are printed.

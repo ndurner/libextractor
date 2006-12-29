@@ -33,7 +33,7 @@ static void addKeyword(struct EXTRACTOR_Keywords ** list,
 }
 
 /* convert other keywords to lower case */
-struct EXTRACTOR_Keywords * 
+struct EXTRACTOR_Keywords *
 libextractor_lower_extract(char * filename,
 			   char * data,
 			   size_t size,

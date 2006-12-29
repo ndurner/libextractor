@@ -35,7 +35,7 @@ static void addKeyword(struct EXTRACTOR_Keywords ** list,
 }
 
 /* video/mpeg */
-struct EXTRACTOR_Keywords * 
+struct EXTRACTOR_Keywords *
 libextractor_mpeg_extract(const char * filename,
 			  const unsigned char * data,
 			  size_t size,
@@ -71,17 +71,17 @@ libextractor_mpeg_extract(const char * filename,
   }
   addKeyword(&prev,
 	     "video/mpeg",
-	     EXTRACTOR_MIMETYPE);  
+	     EXTRACTOR_MIMETYPE);
   if (info->sequence != NULL) {
     snprintf(format, 256, "%ux%u",
-	     info->sequence->width, 
+	     info->sequence->width,
 	     info->sequence->height);
     addKeyword(&prev, format, EXTRACTOR_SIZE);
     switch (info->sequence->flags & SEQ_VIDEO_FORMAT_UNSPECIFIED) {
     case SEQ_VIDEO_FORMAT_PAL:
       addKeyword(&prev, "PAL", EXTRACTOR_FORMAT);
       break;
-    case SEQ_VIDEO_FORMAT_NTSC:      
+    case SEQ_VIDEO_FORMAT_NTSC:
       addKeyword(&prev, "NTSC", EXTRACTOR_FORMAT);
       break;
     case SEQ_VIDEO_FORMAT_SECAM:
@@ -103,7 +103,7 @@ libextractor_mpeg_extract(const char * filename,
        often at the beginning of the stream (and we
        don't iterate over the stream hoping to find one).
        Hence we usually don't get the size.  Not sure how
-       to *efficiently* get the gop (without scanning 
+       to *efficiently* get the gop (without scanning
        through the entire file) */
     snprintf(format, 256, "%u:%u:%u (%u frames)",
 	     info->gop->hours,
@@ -113,5 +113,5 @@ libextractor_mpeg_extract(const char * filename,
     addKeyword(&prev, format, EXTRACTOR_DURATION);
   }
   mpeg2_close(handle);
-  return prev; 
+  return prev;
 }

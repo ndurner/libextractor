@@ -86,7 +86,7 @@ static void NEXT(size_t * end,
 
 
 
-struct EXTRACTOR_Keywords * 
+struct EXTRACTOR_Keywords *
 libextractor_man_extract(const char * filename,
 			 const char * buf,
 			 size_t size,
@@ -123,8 +123,8 @@ libextractor_man_extract(const char * filename,
 
     pos += xlen;
     end = pos;
-    NEXT(&end, buf, size); 
-    if (end > size) 
+    NEXT(&end, buf, size);
+    if (end > size)
       return prev;
     if (end - pos > 0) {
       prev = addKeyword(EXTRACTOR_TITLE,

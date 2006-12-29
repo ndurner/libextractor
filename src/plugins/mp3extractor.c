@@ -259,19 +259,19 @@ static int get_id3(const char * data,
 
   pos = &data[size - 128];
   if (0 != strncmp("TAG",
-		   pos, 
+		   pos,
 		   3))
     return INVALID_ID3;
   pos += 3;
 
   id3->title = convertToUtf8(pos,
 			     30,
-			     "ISO-8859-1"); 
+			     "ISO-8859-1");
   trim(id3->title);
   pos += 30;
   id3->artist = convertToUtf8(pos,
 			      30,
-			      "ISO-8859-1"); 
+			      "ISO-8859-1");
   trim(id3->artist);
   pos += 30;
   id3->album = convertToUtf8(pos,
@@ -281,7 +281,7 @@ static int get_id3(const char * data,
   pos += 30;
   id3->year = convertToUtf8(pos,
 			    4,
-			    "ISO-8859-1"); 
+			    "ISO-8859-1");
   trim(id3->year);
   pos += 4;
   id3->comment = convertToUtf8(pos,
@@ -301,7 +301,7 @@ addkword(EXTRACTOR_KeywordList *oldhead,
 	 const char * phrase,
 	 EXTRACTOR_KeywordType type) {
    EXTRACTOR_KeywordList * keyword;
-   
+
    keyword = malloc(sizeof(EXTRACTOR_KeywordList));
    keyword->next = oldhead;
    keyword->keyword = strdup(phrase);

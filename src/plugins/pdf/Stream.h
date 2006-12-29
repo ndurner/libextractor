@@ -232,7 +232,7 @@ public:
 		  int widthA, int nCompsA, int nBitsA);
 
   GBool isOk() { return ok; }
-  
+
   ~StreamPredictor();
 
   int lookChar();

@@ -154,7 +154,7 @@ tar_isnonzero(const char *data,
       return 1;
     total++;
   }
-  
+
   return 0;
 }
 
@@ -366,7 +366,7 @@ libextractor_tar_extract(const char * filename,
       && (checksum_stored != (unsigned long long) checksum_computed_500s)
       && (checksum_stored != (unsigned long long) checksum_computed_500u) )
       break;
- 
+
     tar = (const TarHeader*) &data[pos];
     typeFlag = tar->link;
     pos += TAR_HEADER_SIZE;
@@ -454,7 +454,7 @@ libextractor_tar_extract(const char * filename,
     /*
      * Locate the file names.
      */
-    if ( (0 != (format_member & TAR_POSIX2001_FORMAT)) 
+    if ( (0 != (format_member & TAR_POSIX2001_FORMAT))
       && (('x' == typeFlag) || ('X' == typeFlag)) ) {
 
       if(size <= pos)
@@ -490,15 +490,15 @@ libextractor_tar_extract(const char * filename,
 
               if( (keylength > (valptr - keyptr) + 4 + 2)
                && (0 == memcmp(valptr, "GNU.", 4)) )
-                format_archive |= TAR_GNU2004_FORMAT; 
+                format_archive |= TAR_GNU2004_FORMAT;
 
               else if( (keylength > (valptr - keyptr) + 7 + 2)
                && (0 == memcmp(valptr, "SCHILY.", 7)) )
-                format_archive |= TAR_SCHILLING2001_FORMAT; 
+                format_archive |= TAR_SCHILLING2001_FORMAT;
 
               else if( (keylength > (valptr - keyptr) + 4 + 2)
                && (0 == memcmp(valptr, "SUN.", 4)) )
-                format_archive |= TAR_SOLARIS2001_FORMAT; 
+                format_archive |= TAR_SOLARIS2001_FORMAT;
             }
 
             keyptr += keylength;
@@ -507,7 +507,7 @@ libextractor_tar_extract(const char * filename,
             break;
           }
         }
-        
+
         if ( (NULL != nameptr) && (0 != *nameptr)
           && ((size - (nameptr - data)) >= namelength) && (1 < namelength) ) {
           if (NULL != fname)
@@ -577,7 +577,7 @@ libextractor_tar_extract(const char * filename,
            */
           size_t diffpos = 0;
           fsize += TAR_HEADER_SIZE;
- 
+
           while ( (pos + diffpos + TAR_HEADER_SIZE < size)
                && (0 != *(data + pos + diffpos + 504)) ) {
             diffpos += TAR_HEADER_SIZE;

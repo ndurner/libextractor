@@ -28,13 +28,13 @@ addkword(EXTRACTOR_KeywordList *oldhead,
          const char * phrase,
          EXTRACTOR_KeywordType type) {
    EXTRACTOR_KeywordList * keyword;
-   
+
    keyword = malloc(sizeof(EXTRACTOR_KeywordList));
    keyword->next = oldhead;
    keyword->keyword = strdup(phrase);
    keyword->keywordType = type;
    return keyword;
-}   
+}
 
 
 /* "extract" keyword from a SID file
@@ -116,7 +116,7 @@ libextractor_sid_extract(const char * filename,
     return prev;
   }
 
-  /* Version 2 specific options follow 
+  /* Version 2 specific options follow
    *
    * Note: Had some troubles understanding specification
    * on the flags in version 2. I hope this is correct.

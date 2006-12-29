@@ -147,7 +147,7 @@ static const char *keywordTypes[] = {
   gettext_noop("generator"),
   gettext_noop("character set"),
   gettext_noop("line count"), /* 105 */
-  gettext_noop("paragraph count"), 
+  gettext_noop("paragraph count"),
   gettext_noop("editing cycles"),
   gettext_noop("scale"),
   gettext_noop("manager"),
@@ -298,7 +298,7 @@ static char * cut_lib(char * in) {
  * Note that this may fail if LE is installed in one directory
  * and the binary linking against it sits elsewhere.
  */
-static char * 
+static char *
 get_path_from_proc_exe() {
   char fn[64];
   char line[1024];
@@ -307,7 +307,7 @@ get_path_from_proc_exe() {
   size_t size;
   FILE * f;
 
-  snprintf(fn, 
+  snprintf(fn,
 	   64,
 	   "/proc/%u/maps",
 	   getpid());
@@ -322,11 +322,11 @@ get_path_from_proc_exe() {
 	strstr(dir, "libextractor")[0] = '\0';
 	fclose(f);
 	return cut_lib(strdup(dir));
-      }      
+      }
     }
   }
   fclose(f);
-  snprintf(fn, 
+  snprintf(fn,
 	   64,
 	   "/proc/%u/exe",
 	   getpid());
@@ -358,16 +358,16 @@ get_path_from_proc_exe() {
 static char * get_path_from_module_filename() {
   char * path;
   char * idx;
-  
+
   path = malloc(4097);
   GetModuleFileName(NULL, path, 4096);
   idx = path + strlen(idx);
-  while ( (idx > path) && 
+  while ( (idx > path) &&
 	  (path != '\\') &&
 	  (path != '/') )
     idx++;
   *idx = '\0';
-  return cut_bin(path);  
+  return cut_bin(path);
 }
 #endif
 
@@ -375,7 +375,7 @@ static char * get_path_from_module_filename() {
  * This may also fail -- for example, if extract
  * is not also installed.
  */
-static char * 
+static char *
 get_path_from_PATH() {
   struct stat sbuf;
   char * path;
@@ -416,7 +416,7 @@ get_path_from_PATH() {
   return NULL;
 }
 
-static char * 
+static char *
 get_path_from_ENV_PREFIX() {
   const char * p;
 
@@ -436,7 +436,7 @@ static char * os_get_installation_path() {
   char * lpref;
   char * pexe;
   char * modu;
-  char * path;  
+  char * path;
 
   lpref = get_path_from_ENV_PREFIX();
 #if LINUX
@@ -527,7 +527,7 @@ void __attribute__ ((constructor)) le_ltdl_init() {
       strcat(cpath, ":");
       strcat(cpath, path);
       lt_dlsetsearchpath(cpath);
-      free(path);  
+      free(path);
       free(cpath);
     } else {
       lt_dlsetsearchpath(path);
@@ -1013,7 +1013,7 @@ getKeywords (EXTRACTOR_ExtractorList * extractor,
     memset(&strm,
 	   0,
 	   sizeof(z_stream));
-#ifdef ZLIB_VERNUM 
+#ifdef ZLIB_VERNUM
     gzip_header_length = 0;
 #endif
     if (size > gzip_header_length) {
@@ -1027,14 +1027,14 @@ getKeywords (EXTRACTOR_ExtractorList * extractor,
     strm.zalloc = NULL;
     strm.zfree = NULL;
     strm.opaque = NULL;
-    
+
     /*
      * note: maybe plain inflateInit(&strm) is adequate,
      * it looks more backward-compatible also ;
      *
      * ZLIB_VERNUM isn't defined by zlib version 1.1.4 ;
      * there might be a better check.
-     */ 
+     */
 #ifdef ZLIB_VERNUM
     if (Z_OK == inflateInit2(&strm,
 			     15 + 32)) {
@@ -1071,9 +1071,9 @@ getKeywords (EXTRACTOR_ExtractorList * extractor,
 	    free(buf);
 	    buf = NULL;
 	  }
-	} while ( (buf != NULL) &&		  
-		  (ret != Z_STREAM_END) );      
-	dsize = pos + strm.total_out; 
+	} while ( (buf != NULL) &&		
+		  (ret != Z_STREAM_END) );
+	dsize = pos + strm.total_out;
 	inflateEnd(&strm);
 	if (dsize == 0) {
 	  free(buf);
@@ -1116,7 +1116,7 @@ getKeywords (EXTRACTOR_ExtractorList * extractor,
 	do {
 	  bret = BZ2_bzDecompress(&bstrm);
 	  if (bret == Z_OK) {
-	    if (dsize == MAX_DECOMPRESS) 
+	    if (dsize == MAX_DECOMPRESS)
 	      break;
 	    bpos += bstrm.total_out_lo32;
 	    bstrm.total_out_lo32 = 0;
@@ -1132,8 +1132,8 @@ getKeywords (EXTRACTOR_ExtractorList * extractor,
 	    buf = NULL;
 	  }
 	} while ( (buf != NULL) &&
-		  (bret != BZ_STREAM_END) );      
-	dsize = bpos + bstrm.total_out_lo32; 
+		  (bret != BZ_STREAM_END) );
+	dsize = bpos + bstrm.total_out_lo32;
 	BZ2_bzDecompressEnd(&bstrm);
 	if (dsize == 0) {
 	  free(buf);
@@ -1302,9 +1302,9 @@ EXTRACTOR_removeDuplicateKeywords (EXTRACTOR_KeywordList * list,
 
   pos = list;
   while (pos != NULL) {
-    removeKeyword(pos->keyword, 
+    removeKeyword(pos->keyword,
 		  pos->keywordType,
-		  options, 
+		  options,
 		  &list,
 		  pos);
     pos = pos->next;

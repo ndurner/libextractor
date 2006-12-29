@@ -169,7 +169,7 @@ printHelp ()
 
 /**
  * Print a keyword list to a file.
- * 
+ *
  * @param handle the file to write to (stdout, stderr), may NOT be NULL
  * @param keywords the list of keywords to print, may be NULL
  * @param print array indicating which types to print
@@ -194,7 +194,7 @@ printSelectedKeywords(FILE * handle,
 	keyword = iconvHelper(cd,
 			      keywords->keyword);
       else
-	keyword = strdup(keywords->keyword);      
+	keyword = strdup(keywords->keyword);
       if (NULL == EXTRACTOR_getKeywordTypeAsString(keywords->keywordType)) {
 	if (verbose == YES) {
 	  fprintf(handle,
@@ -241,7 +241,7 @@ printSelectedKeywordsGrepFriendly(FILE * handle,
 	keyword = strdup(keywords->keyword);
       fprintf (handle,
 	       (keywords->next == NULL) ? "%s" : "%s ",
-	       keyword); 
+	       keyword);
       free(keyword);
     }
     keywords = keywords->next;
@@ -501,7 +501,7 @@ main (int argc, char *argv[])
 	case 'L':
 	  i = 0;
 	  while (NULL != EXTRACTOR_getKeywordTypeAsString (i))
-	    printf ("%s\n", 
+	    printf ("%s\n",
 		    _(EXTRACTOR_getKeywordTypeAsString (i++)));
 	  return 0;
 	case 'n':
@@ -526,7 +526,7 @@ main (int argc, char *argv[])
 	    {
 	      if ( (0 == strcmp (optarg, EXTRACTOR_getKeywordTypeAsString (i))) ||
 		   (0 == strcmp (optarg, _(EXTRACTOR_getKeywordTypeAsString (i)))) )
-		   
+		
 		{
 		  print[i] = YES;
 		  break;
@@ -641,7 +641,7 @@ main (int argc, char *argv[])
     keywords = EXTRACTOR_getKeywords (extractors, argv[i]);
     if (0 != errno) {
       if (verbose == YES) {
-	fprintf(stderr, 
+	fprintf(stderr,
 		"%s: %s: %s\n",
 		argv[0], argv[i], strerror(errno));
       }
@@ -654,8 +654,8 @@ main (int argc, char *argv[])
 	 && (bibtex == NO) ) {
       if (grepfriendly == YES)
 	printf ("%s", argv[i]);
-      else 
-	printf (_("Keywords for file %s:"), 
+      else
+	printf (_("Keywords for file %s:"),
 		argv[i]);
     }
     if (bibtex == YES)

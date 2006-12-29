@@ -343,7 +343,7 @@ namespace Exiv2 {
           isMalloced_(false)
      {
      }
-    
+
 	void MemIo::wrap(const byte *data, long size)
 	{
 		data_ = (byte *) data;
@@ -362,7 +362,7 @@ namespace Exiv2 {
         if (need > size_) {
             if (need > sizeAlloced_) {
                 // Allocate in blocks of 32kB
-                long want = 32768 * (1 + need / 32768);             
+                long want = 32768 * (1 + need / 32768);
                 if (size_ > 0) {
                     if (!isMalloced_) {
                         // "copy-on-expand"
@@ -397,7 +397,7 @@ namespace Exiv2 {
             else
             	isMalloced_ = false;
 
-        	data_ = memIo->data_;            
+        	data_ = memIo->data_;
             idx_ = 0;
         }
         else{

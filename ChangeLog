@@ -2,10 +2,10 @@ Thu Dec 28 20:22:20 MST 2006
 	Fixed bug in splitextractor, addressing also Mantis #1125.
 
 Thu Dec 28 18:12:15 MST 2006
-	Added -g (greppable output, Mantis #1157) option to extact.  
+	Added -g (greppable output, Mantis #1157) option to extact.
 
 Mon Nov 20 22:08:55 EET 2006
-	Added an SID (C64 music file) plugin
+	Added an SID (C64 music file) plugin.
 
 Sat Nov 11 16:04:38 MST 2006
 	Fixed libltdl side-effect of loading libextractor; code
@@ -14,7 +14,7 @@ Sat Nov 11 16:04:38 MST 2006
 	libgsf (as workaround for GSF bug).  Releasing libextractor 0.5.16.
 
 Sat Nov 11 00:04:34 EET 2006
-	Added an NSF (NES Sound Format) plugin
+	Added an NSF (NES Sound Format) plugin.
 
 Sat Sep 16 12:36:42 MDT 2006
 	Added support for various additional tags to ID3v2 extractors.
@@ -78,13 +78,13 @@ Tue Jan 31 12:51:55 PST 2006
 	Mis-detection of man pages as part of TAR archives fixed.
 
 Wed Jan 11 11:33:46 PST 2006
-	More Mime-types for the OLE2 extractor.  Also ignore (harmless) 
+	More Mime-types for the OLE2 extractor.  Also ignore (harmless)
 	libc errors in plugins when extracting.
 
 Thu Jan  5 16:51:36 PST 2006
-	More TAR improvements: keywords 'date' and 'format' are 
+	More TAR improvements: keywords 'date' and 'format' are
 	extracted. More checksums variants were added. Long filenames
-	as produced by GNU and Schilling tar (possibly Solaris pax also) 
+	as produced by GNU and Schilling tar (possibly Solaris pax also)
 	are extracted.
 
 Fri Dec 23 11:28:23 PST 2005
@@ -161,7 +161,7 @@ Wed Sep 14 15:02:49 PDT 2005
 	problems with very large files where malloc may run into problems).
 
 Wed Sep 14 13:50:15 PDT 2005
-	Changed code for backwards-compatibility with zlib 1.1 
+	Changed code for backwards-compatibility with zlib 1.1
 	(thanks to Ronan Melennec).
 
 Tue Sep 13 04:49:43 PDT 2005
@@ -206,7 +206,7 @@ Thu Aug 18 21:18:28 PDT 2005
 	
 Sat Aug 13 18:41:02 PDT 2005
         Fixed problems with ole2 extractor.  Also removed
-	requirement for static version of glib (!).  
+	requirement for static version of glib (!).
 	Releasing libextractor 0.5.3.
 
 Fri Aug 12 23:53:54 PDT 2005
@@ -231,7 +231,7 @@ Thu Jul 14 18:52:17 CEST 2005
 Mon Jul  4 18:10:14 CEST 2005
 	Preliminary integration of exiv2 support (not enabled
 	by default due to bugs).  Moved Python and Java
-	bindings into separate packages.  
+	bindings into separate packages.
 	Releasing libextractor 0.5.1.
 	
 Wed Jun 29 15:37:51 CEST 2005
@@ -329,7 +329,7 @@ Fri Nov 12 19:20:37 EST 2004
 	4 GB file not taken care of properly).
 
 Sat Oct 30 20:18:21 EST 2004
-	Fixing various problems on Sparc64 (bus errors). 
+	Fixing various problems on Sparc64 (bus errors).
 	Workaround for re-load glib problem of OLE2 extractor.
 
 Sat Oct 23 13:21:23 EST 2004
@@ -353,14 +353,14 @@ Sun Oct 17 13:52:25 EST 2004
 Tue Oct  5 14:29:31 EST 2004
 	Updated xpdf extractor (to fix Mantis #754).  Fixed bug in Id3v2
 	extractor (potential segfault).  Added support for extracting
-	image size from jpeg.  General code cleanup.  64-bit file 
+	image size from jpeg.  General code cleanup.  64-bit file
 	support.
 
 Mon Oct  4 20:28:52 EST 2004
 	Fixed jpeg extractor to not hang on certain malformed JPEG files.
 
 Sat Oct  2 18:02:56 EST 2004
-	Added support for dvi.  Removed special code for OS X, 
+	Added support for dvi.  Removed special code for OS X,
 	normal libtool works fine now (and suddenly LE works for OS X).
 	Releasing libextractor 0.3.8.
 
@@ -375,7 +375,7 @@ Thu Sep 23 11:25:42 EST 2004
 Tue Sep 14 21:25:22 EST 2004
 	Improved performance of the HTML extractor by avoiding parsing
 	after the header (factor of 25 improvement for a 4 MB HTML file
-	resulting in a total improvement for total extraction time for 
+	resulting in a total improvement for total extraction time for
 	running all extractors of about 50%).  Improved performance
 	of the ZIP extractor for non-zip files by testing for the ZIP
 	header before trying to locate the central directory (for 5 MB
@@ -439,7 +439,7 @@ Sat Apr 24 00:07:31 EST 2004
 	Fixed memory leak in PDF-extractor.
 
 Mon Apr 12 01:30:20 EST 2004
-	Added Java binding.  If jni.h is present (and working!), 
+	Added Java binding.  If jni.h is present (and working!),
 	libextractor is build with a couple of tiny additional
 	methods that are sufficient to build a Java class to
 	access libextractor.  The API is still incomplete but
@@ -450,7 +450,7 @@ Sat Apr 10 01:34:04 EST 2004
 	Fixed memory-leak and potential segfault in zipextractor.
 
 Sat Apr 10 00:30:19 EST 2004
-	Added MPEG (video) extractor based on AVInfo.  Improved 
+	Added MPEG (video) extractor based on AVInfo.  Improved
 	output of mp3 extractor.
 	
 Fri Apr  9 22:58:51 EST 2004
@@ -476,13 +476,13 @@ Tue Oct 14 17:43:09 EST 2003
 	Releasing 0.2.6.
 
 Sun Oct 12 18:05:37 EST 2003
-	Ported to OSX, fixing endianess issues with printable 
-	extractors.  
+	Ported to OSX, fixing endianess issues with printable
+	extractors.
 
 Tue Jul 22 11:38:42 CET 2003
 	Fixed segfault with option -b for no keywords found.
 
-Wed Jul 16 13:41:34 EST 2003 
+Wed Jul 16 13:41:34 EST 2003
 	Releasing 0.2.5.
 
 Mon Jun 30 21:27:42 EST 2003
@@ -510,7 +510,7 @@ Thu Apr  3 23:09:44 EST 2003
 	ASF file with meta-data in it.
 
 Thu Apr  3 04:04:19 EST 2003
-	Fixing ogg-extractor to work with new version of libvorbis that 
+	Fixing ogg-extractor to work with new version of libvorbis that
 	requires us to link against libvorbisfile.
 
 Wed Apr  2 22:22:16 EST 2003
@@ -537,7 +537,7 @@ Tue Jan  7 18:31:38 EST 2003
 Tue Dec 31 15:26:00 EST 2002
 	Added pdf extractor based on xpdf code.
 	
-Tue Dec 17 20:36:13 CET 2002 
+Tue Dec 17 20:36:13 CET 2002
 	Added MIME-extractor.
 
 Fri Nov 22 21:54:10 EST 2002
@@ -572,7 +572,7 @@ Sun Jun  2 22:49:17 EST 2002
 	with libhtmlparse). Released v0.0.2.
 	
 Sat May 25 16:56:59 EST 2002
-        Added building of a description from artist, 
+        Added building of a description from artist,
         title and album, fixed bugs.
 
 Tue May 21 22:24:07 EST 2002

@@ -36,7 +36,7 @@
 #include "convert.h"
 
 
-static struct EXTRACTOR_Keywords * 
+static struct EXTRACTOR_Keywords *
 addKeyword(EXTRACTOR_KeywordList *oldhead,
 	   char *phrase,
 	   EXTRACTOR_KeywordType type) {

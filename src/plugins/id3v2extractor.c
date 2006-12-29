@@ -84,7 +84,7 @@ static Matches tmap[] = {
 
 
 /* mimetype = audio/mpeg */
-struct EXTRACTOR_Keywords * 
+struct EXTRACTOR_Keywords *
 libextractor_id3v2_extract(const char * filename,
 			   const unsigned char * data,
 			   size_t size,

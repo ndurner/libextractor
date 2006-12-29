@@ -87,7 +87,7 @@ extern "C" {
          *
          * The following expression might be rewritten as
          * (! isspace(s[len - 1]) && 0xA0 != s[len - 1]).
-         * There seem to exist isspace() implementations 
+         * There seem to exist isspace() implementations
          * which do return non-zero from NBSP (maybe locale-dependent).
          * Remove ISO-8859 non-breaking space (NBSP, hex value 0xA0) from
          * the expression if it looks suspicious (locale issues for instance).
