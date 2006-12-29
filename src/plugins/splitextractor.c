@@ -21,53 +21,63 @@
 #include "platform.h"
 #include "extractor.h"
 
-static char * TOKENIZERS = "._ ,%@-\n_[](){}";
+/**
+ * Default split characters.
+ */
+static const char * TOKENIZERS = "._ ,%@-\n_[](){}";
+
+/**
+ * Do not use keywords shorter than this minimum
+ * length.
+ */
 static int MINIMUM_KEYWORD_LENGTH = 4;
 
 static void addKeyword(struct EXTRACTOR_Keywords ** list,
-		       const char * keyword,
-		       EXTRACTOR_KeywordType type) {
+		       const char * keyword) {
   EXTRACTOR_KeywordList * next;
   next = malloc(sizeof(EXTRACTOR_KeywordList));
   next->next = *list;
   next->keyword = strdup(keyword);
-  next->keywordType = type;
+  next->keywordType = EXTRACTOR_SPLIT;
   *list = next;
 }
 
 static int token(char letter,
 		 const char * options) {
-  int i;
-  
-  if (options == NULL)
-    options = TOKENIZERS;
-  for (i=0;i<strlen(TOKENIZERS);i++)
-    if (letter == TOKENIZERS[i])
+  size_t i;
+
+  i = 0;
+  while (options[i] != '\0') {
+    if (letter == options[i])
       return 1;
+    i++;
+  }
   return 0;
 }
 
 static void splitKeywords(const char * keyword,
-			  EXTRACTOR_KeywordType type,
 			  struct EXTRACTOR_Keywords ** list,
 			  const char * options) {
   char * dp;
-  int pos;
-  int last;
-  int len;
+  size_t pos;
+  size_t last;
+  size_t len;
 
   dp = strdup(keyword);
   len = strlen(dp);
   pos = 0;
   last = 0;
   while (pos < len) {
-    while ((!token(dp[pos],
-																			options)) && (pos < len))
+    while ( (0 == token(dp[pos], options)) &&
+	    (pos < len) )
       pos++;
-    dp[pos++] = 0;
-    if (strlen(&dp[last]) >= MINIMUM_KEYWORD_LENGTH) {
-      addKeyword(list, &dp[last], type);
-    }
+    dp[pos++] = '\0';
+    if (pos - last > MINIMUM_KEYWORD_LENGTH) 
+      addKeyword(list, 
+		 &dp[last]);    
+    while ( (1 == token(dp[pos], options)) &&
+	    (pos < len) )
+      pos++;
     last = pos;
   }
   free(dp);
@@ -82,13 +92,16 @@ libextractor_split_extract(const char * filename,
 			   const char * options) {
   struct EXTRACTOR_Keywords * pos;
 
+  if (options == NULL)
+    options = TOKENIZERS;
   pos = prev;
   while (pos != NULL) {
-    splitKeywords(pos->keyword,
-		  EXTRACTOR_SPLIT,
+    splitKeywords(pos->keyword,		  
 		  &prev,
 		  options);
     pos = pos->next;
   }
   return prev;
 }
+
+/* end of splitextractor.c */

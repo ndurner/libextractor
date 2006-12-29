@@ -1,3 +1,9 @@
+Thu Dec 28 20:22:20 MST 2006
+	Fixed bug in splitextractor, addressing also Mantis #1125.
+
+Thu Dec 28 18:12:15 MST 2006
+	Added -g (greppable output, Mantis #1157) option to extact.  
+
 Mon Nov 20 22:08:55 EET 2006
 	Added an SID (C64 music file) plugin
 

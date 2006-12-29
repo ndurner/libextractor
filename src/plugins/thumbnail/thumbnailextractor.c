@@ -75,10 +75,11 @@ static char * whitelist[] = {
   NULL,
 };
 
-struct EXTRACTOR_Keywords * libextractor_thumbnail_extract(const char * filename,
-							   const unsigned char * data,
-							   size_t size,
-							   struct EXTRACTOR_Keywords * prev) {
+struct EXTRACTOR_Keywords *
+libextractor_thumbnail_extract(const char * filename,
+			       const unsigned char * data,
+			       size_t size,
+			       struct EXTRACTOR_Keywords * prev) {
   GdkPixbufLoader * loader;
   GdkPixbuf * in;
   GdkPixbuf * out;

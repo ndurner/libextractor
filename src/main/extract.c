@@ -132,6 +132,8 @@ printHelp ()
       gettext_noop("remove duplicates only if types match") },
     { 'f', "filename", NULL,
       gettext_noop("use the filename as a keyword (loads filename-extractor plugin)") },
+    { 'g', "grep-friendly", NULL,
+      gettext_noop("produce grep-friendly output (all results on one line per file)") },
     { 'h', "help", NULL,
       gettext_noop("print this help") },
     { 'H', "hash", "ALGORITHM",
@@ -167,7 +169,7 @@ printHelp ()
 
 /**
  * Print a keyword list to a file.
- * For debugging.
+ * 
  * @param handle the file to write to (stdout, stderr), may NOT be NULL
  * @param keywords the list of keywords to print, may be NULL
  * @param print array indicating which types to print
@@ -180,24 +182,19 @@ printSelectedKeywords(FILE * handle,
 {
   char * keyword;
   iconv_t cd;
-  char * buf;
 
-  cd = iconv_open(
-    nl_langinfo(CODESET)
-    , "UTF-8");
+  cd = iconv_open(nl_langinfo(CODESET), "UTF-8");
   while (keywords != NULL) {
-    buf = NULL;
-    if (cd != (iconv_t) -1)
-      keyword = iconvHelper(cd,
-			    keywords->keyword);
-    else
-      keyword = strdup(keywords->keyword);
-
-    if (keywords->keywordType == EXTRACTOR_THUMBNAIL_DATA) {
+    if (EXTRACTOR_isBinaryType(keywords->keywordType)) {
       fprintf (handle,
 	       _("%s - (binary)\n"),
 	       _(EXTRACTOR_getKeywordTypeAsString(keywords->keywordType)));
     } else {
+      if (cd != (iconv_t) -1)
+	keyword = iconvHelper(cd,
+			      keywords->keyword);
+      else
+	keyword = strdup(keywords->keyword);      
       if (NULL == EXTRACTOR_getKeywordTypeAsString(keywords->keywordType)) {
 	if (verbose == YES) {
 	  fprintf(handle,
@@ -209,8 +206,44 @@ printSelectedKeywords(FILE * handle,
 		 "%s - %s\n",
 		 _(EXTRACTOR_getKeywordTypeAsString(keywords->keywordType)),
 		 keyword);
+      free(keyword);
     }
-    free(keyword);
+    keywords = keywords->next;
+  }
+  if (cd != (iconv_t) -1)
+    iconv_close(cd);
+}
+
+/**
+ * Print a keyword list to a file in a grep-friendly manner.
+ *
+ * @param handle the file to write to (stdout, stderr), may NOT be NULL
+ * @param keywords the list of keywords to print, may be NULL
+ * @param print array indicating which types to print
+ */
+static void
+printSelectedKeywordsGrepFriendly(FILE * handle,
+				  EXTRACTOR_KeywordList * keywords,
+				  const int * print,
+				  const int verbose)
+{
+  char * keyword;
+  iconv_t cd;
+
+  cd = iconv_open(nl_langinfo(CODESET), "UTF-8");
+  while (keywords != NULL) {
+    if ( (EXTRACTOR_isBinaryType(EXTRACTOR_THUMBNAIL_DATA)) &&
+	 (print[keywords->keywordType] == YES) ) {
+      if (cd != (iconv_t) -1)
+	keyword = iconvHelper(cd,
+			      keywords->keyword);
+      else
+	keyword = strdup(keywords->keyword);
+      fprintf (handle,
+	       (keywords->next == NULL) ? "%s" : "%s ",
+	       keyword); 
+      free(keyword);
+    }
     keywords = keywords->next;
   }
   if (cd != (iconv_t) -1)
@@ -390,6 +423,7 @@ main (int argc, char *argv[])
   int defaultAll = YES;
   int duplicates = EXTRACTOR_DUPLICATES_REMOVE_UNKNOWN;
   int bibtex = NO;
+  int grepfriendly = NO;
   char * binary = NULL;
   int ret = 0;
 
@@ -413,6 +447,7 @@ main (int argc, char *argv[])
 	{"bibtex", 0, 0, 'b'},
 	{"duplicates", 0, 0, 'd'},
 	{"filename", 0, 0, 'f'},
+	{"grep-friendly", 0, 0, 'g'},
 	{"help", 0, 0, 'h'},
 	{"hash", 1, 0, 'H'},
 	{"list", 0, 0, 'L'},
@@ -450,6 +485,9 @@ main (int argc, char *argv[])
 	  break;
 	case 'f':
 	  useFilename = YES;
+	  break;
+	case 'g':
+	  grepfriendly = YES;
 	  break;
 	case 'h':
 	  printHelp();
@@ -612,10 +650,18 @@ main (int argc, char *argv[])
     }
     if ( (duplicates != -1) || (bibtex == YES))
       keywords = EXTRACTOR_removeDuplicateKeywords (keywords, duplicates);
-    if (verbose == YES && bibtex == NO)
-      printf (_("Keywords for file %s:\n"), argv[i]);
+    if ( ( (verbose == YES) || (grepfriendly == YES) )
+	 && (bibtex == NO) ) {
+      if (grepfriendly == YES)
+	printf ("%s", argv[i]);
+      else 
+	printf (_("Keywords for file %s:"), 
+		argv[i]);
+    }
     if (bibtex == YES)
       printSelectedKeywordsBibtex (stdout, keywords, print, argv[i]);
+    else if (grepfriendly == YES)
+      printSelectedKeywordsGrepFriendly(stdout, keywords, print, verbose);
     else
       printSelectedKeywords (stdout, keywords, print, verbose);
     if (verbose == YES && bibtex == NO)
