@@ -246,6 +246,7 @@ printSelectedKeywordsGrepFriendly(FILE * handle,
     }
     keywords = keywords->next;
   }
+  fprintf(handle, "\n");
   if (cd != (iconv_t) -1)
     iconv_close(cd);
 }
