@@ -229,6 +229,7 @@ printSelectedKeywordsGrepFriendly(FILE * handle,
 {
   char * keyword;
   iconv_t cd;
+  size_t pos;
 
   cd = iconv_open(nl_langinfo(CODESET), "UTF-8");
   while (keywords != NULL) {
@@ -239,6 +240,12 @@ printSelectedKeywordsGrepFriendly(FILE * handle,
 			      keywords->keyword);
       else
 	keyword = strdup(keywords->keyword);
+      pos = 0;
+      while (keyword[pos] != '\0') {
+	if (iscntrl(keyword[pos]))	
+	  keyword[pos] = ' ';
+	pos++;
+      }
       fprintf (handle,
 	       (keywords->next == NULL) ? "%s" : "%s ",
 	       keyword);
