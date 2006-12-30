@@ -651,7 +651,7 @@ main (int argc, char *argv[])
     }
     if ( (duplicates != -1) || (bibtex == YES))
       keywords = EXTRACTOR_removeDuplicateKeywords (keywords, duplicates);
-    if ( ( (verbose == YES) || (grepfriendly == YES) )
+    if ( (verbose == YES) 
 	 && (bibtex == NO) ) {
       if (grepfriendly == YES)
 	printf ("%s ", argv[i]);
