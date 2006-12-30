@@ -463,7 +463,7 @@ main (int argc, char *argv[])
       };
       option_index = 0;
       c = getopt_long (argc,
-		       argv, "vhbl:nsH:fp:x:LVdraB:",
+		       argv, "vhbgl:nsH:fp:x:LVdraB:",
 		       long_options,
 		       &option_index);
 
@@ -653,7 +653,7 @@ main (int argc, char *argv[])
     if ( ( (verbose == YES) || (grepfriendly == YES) )
 	 && (bibtex == NO) ) {
       if (grepfriendly == YES)
-	printf ("%s", argv[i]);
+	printf ("%s ", argv[i]);
       else
 	printf (_("Keywords for file %s:"),
 		argv[i]);
