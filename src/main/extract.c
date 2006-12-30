@@ -235,6 +235,10 @@ printSelectedKeywordsGrepFriendly(FILE * handle,
   while (keywords != NULL) {
     if ( (EXTRACTOR_isBinaryType(EXTRACTOR_THUMBNAIL_DATA)) &&
 	 (print[keywords->keywordType] == YES) ) {
+      if (verbose > 1) 
+	fprintf(handle,
+		"%s: ",
+		_(EXTRACTOR_getKeywordTypeAsString(keywords->keywordType)));
       if (cd != (iconv_t) -1)
 	keyword = iconvHelper(cd,
 			      keywords->keyword);
@@ -424,7 +428,7 @@ main (int argc, char *argv[])
   char * libraries = NULL;
   char * hash = NULL;
   int splitKeywords = NO;
-  int verbose = NO;
+  int verbose = 0;
   int useFilename = NO;
   int nodefault = NO;
   int *print;
@@ -560,7 +564,7 @@ main (int argc, char *argv[])
 	  printf ("extract v%s\n", PACKAGE_VERSION);
 	  return 0;
 	case 'V':
-	  verbose = YES;
+	  verbose++;
 	  break;
 	case 'x':
 	  i = 0;
@@ -648,7 +652,7 @@ main (int argc, char *argv[])
     errno = 0;
     keywords = EXTRACTOR_getKeywords (extractors, argv[i]);
     if (0 != errno) {
-      if (verbose == YES) {
+      if (verbose > 0) {
 	fprintf(stderr,
 		"%s: %s: %s\n",
 		argv[0], argv[i], strerror(errno));
@@ -658,7 +662,7 @@ main (int argc, char *argv[])
     }
     if ( (duplicates != -1) || (bibtex == YES))
       keywords = EXTRACTOR_removeDuplicateKeywords (keywords, duplicates);
-    if ( (verbose == YES) 
+    if ( (verbose > 0) 
 	 && (bibtex == NO) ) {
       if (grepfriendly == YES)
 	printf ("%s ", argv[i]);
@@ -672,7 +676,7 @@ main (int argc, char *argv[])
       printSelectedKeywordsGrepFriendly(stdout, keywords, print, verbose);
     else
       printSelectedKeywords (stdout, keywords, print, verbose);
-    if (verbose == YES && bibtex == NO)
+    if (verbose > 0 && bibtex == NO)
       printf ("\n");
     EXTRACTOR_freeKeywords (keywords);
   }
