@@ -35,7 +35,7 @@
 #include <zlib.h>
 #endif
 
-#define DEBUG 1
+#define DEBUG 0
 
 /**
  * The sources of keywords as strings.
