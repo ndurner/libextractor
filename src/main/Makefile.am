@@ -72,3 +72,5 @@ test_binary_SOURCES = \
 test_binary_LDADD = \
   $(top_builddir)/src/main/libextractor.la
 
+
+

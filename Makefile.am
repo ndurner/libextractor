@@ -17,3 +17,6 @@ dist-hook:
 	rm -f $(distdir)/src/plugins/printable/pept.c
 
 ACLOCAL_AMFLAGS = -I m4
+
+pkgconfigdatadir = $(prefix)/lib/pkgconfig
+pkgconfigdata_DATA = libextractor.pc

@@ -1,6 +1,7 @@
 EXTRA_DIST = \
  ac_python_devel.m4 \
  abi-gsf.m4 \
+ ax_create_pkgconfig_info.m4 \
  python.m4 \
  codeset.m4 \
  gettext.m4 \

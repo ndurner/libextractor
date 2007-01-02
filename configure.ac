@@ -1,8 +1,9 @@
 # Process this file with autoconf to produce a configure script.
 AC_PREREQ(2.57)
-AC_INIT([libextractor], [0.5.16], [bug-libextractor@gnu.org])
+LIBRARY_VERSION=0.5.17
+AC_INIT([libextractor], [0.5.17], [bug-libextractor@gnu.org])
 AC_REVISION($Revision: 1.67 $)
-AM_INIT_AUTOMAKE([libextractor], [0.5.16])
+AM_INIT_AUTOMAKE([libextractor], [0.5.17])
 AM_CONFIG_HEADER(src/include/config.h)
 
 AH_TOP([#define _GNU_SOURCE  1])
@@ -388,7 +389,6 @@ AC_ARG_ENABLE(exiv2,
         exiv2=1])
 AM_CONDITIONAL(HAVE_EXIV2, test x$exiv2 != x0)
 AC_DEFINE_UNQUOTED([HAVE_EXIV2], $exiv2, [We use EXIV2])
-
 ABI_GSF
 
 AC_SUBST(CPPFLAGS)
@@ -396,7 +396,13 @@ AC_SUBST(LDFLAGS)
 AC_SUBST(XTRA_CPPLIBS)
 AC_SUBST(LIBEXT)
 
+LIBEXTRACTOR_VERSION="0.5.17"
+datadir=
+AX_CREATE_PKGCONFIG_INFO([libextractor.pc],,[-lextractor],[Metadata extraction library],,)
+
 AC_CONFIG_FILES([Makefile po/Makefile.in m4/Makefile 
+
+
 doc/Makefile
 src/Makefile
 src/include/Makefile
