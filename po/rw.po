@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.4.2\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2006-11-11 21:57-0700\n"
+"POT-Creation-Date: 2007-01-01 20:16-0700\n"
 "PO-Revision-Date: 2005-04-04 10:55-0700\n"
 "Last-Translator: Steven Michael Murphy <murf@e-tools.com>\n"
 "Language-Team: Kinyarwanda <translation-team-rw@lists.sourceforge.net>\n"
@@ -68,125 +68,129 @@ msgid "use the filename as a keyword (loads filename-extractor plugin)"
 msgstr "Gukoresha i Izina ry'idosiye: Nka a Ijambo- banze Izina ry'idosiye:"
 
 #: src/main/extract.c:136
+msgid "produce grep-friendly output (all results on one line per file)"
+msgstr ""
+
+#: src/main/extract.c:138
 #, fuzzy
 msgid "print this help"
 msgstr "Gucapa iyi Ifashayobora"
 
-#: src/main/extract.c:138
+#: src/main/extract.c:140
 #, fuzzy
 msgid "compute hash using the given ALGORITHM (currently sha1 or md5)"
 msgstr "ikoresha i Cyangwa"
 
-#: src/main/extract.c:140
+#: src/main/extract.c:142
 #, fuzzy
 msgid "load an extractor plugin named LIBRARY"
 msgstr "Ibirimo"
 
-#: src/main/extract.c:142
+#: src/main/extract.c:144
 #, fuzzy
 msgid "list all keyword types"
 msgstr "Urutonde Byose Ijambo- banze"
 
-#: src/main/extract.c:144
+#: src/main/extract.c:146
 #, fuzzy
 msgid "do not use the default set of extractor plugins"
 msgstr "OYA Gukoresha i Mburabuzi Gushyiraho Bya"
 
-#: src/main/extract.c:146
+#: src/main/extract.c:148
 #, fuzzy
 msgid "print only keywords of the given TYPE (use -L to get a list)"
 msgstr "Gucapa Amagambo fatizo Bya i Gukoresha Kuri Kubona a Urutonde"
 
-#: src/main/extract.c:148
+#: src/main/extract.c:150
 #, fuzzy
 msgid "remove duplicates even if keyword types do not match"
 msgstr "Gukuraho... ATARIIGIHARWE NIBA Ijambo- banze OYA BIHUYE"
 
-#: src/main/extract.c:150
+#: src/main/extract.c:152
 #, fuzzy
 msgid "use keyword splitting (loads split-extractor plugin)"
 msgstr "Gukoresha Ijambo- banze Gutandukanya"
 
-#: src/main/extract.c:152
+#: src/main/extract.c:154
 #, fuzzy
 msgid "print the version number"
 msgstr "Gucapa i Verisiyo Umubare"
 
-#: src/main/extract.c:154
+#: src/main/extract.c:156
 msgid "be verbose"
 msgstr ""
 
-#: src/main/extract.c:156
+#: src/main/extract.c:158
 #, fuzzy
 msgid "do not print keywords of the given TYPE"
 msgstr "OYA Gucapa Amagambo fatizo Bya i"
 
-#: src/main/extract.c:159
+#: src/main/extract.c:161
 msgid "extract [OPTIONS] [FILENAME]*"
 msgstr ""
 
-#: src/main/extract.c:160
+#: src/main/extract.c:162
 #, fuzzy
 msgid "Extract metadata from files."
 msgstr "Bivuye Idosiye"
 
-#: src/main/extract.c:198 src/main/extractor.c:1415
+#: src/main/extract.c:190 src/main/extractor.c:1416
 #, fuzzy, c-format
 msgid "%s - (binary)\n"
 msgstr "%s-(Nyabibiri"
 
-#: src/main/extract.c:204 src/main/extractor.c:1420
+#: src/main/extract.c:201 src/main/extractor.c:1421
 #, c-format
 msgid "INVALID TYPE - %s\n"
 msgstr ""
 
-#: src/main/extract.c:270 src/main/extractor.c:47
+#: src/main/extract.c:315 src/main/extractor.c:47
 msgid "title"
 msgstr "umutwe"
 
-#: src/main/extract.c:272 src/main/extractor.c:45
+#: src/main/extract.c:317 src/main/extractor.c:45
 #, fuzzy
 msgid "filename"
 msgstr "Izina ry'idosiye"
 
 # sc/source\ui\miscdlgs\acredlin.src:RID_POPUP_CHANGES.SC_SUB_SORT.SC_SORT_AUTHOR.text
-#: src/main/extract.c:277 src/main/extractor.c:48
+#: src/main/extract.c:322 src/main/extractor.c:48
 #, fuzzy
 msgid "author"
 msgstr "Umwanditsi"
 
-#: src/main/extract.c:281 src/main/extractor.c:50
+#: src/main/extract.c:326 src/main/extractor.c:50
 msgid "description"
 msgstr "Isobanuramiterere"
 
 # sfx2/source\dialog\dinfdlg.src:TP_DOCINFODESC.FT_KEYWORDS.text
-#: src/main/extract.c:283 src/main/extractor.c:62
+#: src/main/extract.c:328 src/main/extractor.c:62
 #, fuzzy
 msgid "keywords"
 msgstr "Amagambo fatizo"
 
 # padmin/source\padialog.src:RID_TXT_TESTPAGE_COMMENT.text
-#: src/main/extract.c:285 src/main/extractor.c:51
+#: src/main/extract.c:330 src/main/extractor.c:51
 #, fuzzy
 msgid "comment"
 msgstr "Icyo wongeraho"
 
-#: src/main/extract.c:289 src/main/extractor.c:52
+#: src/main/extract.c:334 src/main/extractor.c:52
 msgid "date"
 msgstr "Itariki"
 
 # setup2/source\ui\app.src:FT_INSTINFO_MKDIR.text
-#: src/main/extract.c:291 src/main/extractor.c:74
+#: src/main/extract.c:336 src/main/extractor.c:74
 #, fuzzy
 msgid "creation date"
 msgstr "Irema ry'itariki"
 
-#: src/main/extract.c:319 src/main/extractor.c:53
+#: src/main/extract.c:364 src/main/extractor.c:53
 #, fuzzy
 msgid "publisher"
 msgstr "Uwasohoye inyandiko"
 
-#: src/main/extract.c:323 src/main/extractor.c:59
+#: src/main/extract.c:368 src/main/extractor.c:59
 #, fuzzy
 msgid "organization"
 msgstr "Ihuzagahunda"
@@ -201,34 +205,34 @@ msgstr "Ihuzagahunda"
 # officecfg/registry\schema\org\openoffice\Office\Writer.xcs:....Wizard.Fax.Save.DocInfoSubject.text
 # #-#-#-#-#  officecfg.pot (PACKAGE VERSION)  #-#-#-#-#
 # officecfg/registry\schema\org\openoffice\Office\Writer.xcs:....Wizard.Memo.Save.DocInfoSubject.text
-#: src/main/extract.c:327 src/main/extractor.c:61
+#: src/main/extract.c:372 src/main/extractor.c:61
 msgid "subject"
 msgstr "Ikivugwaho"
 
 # sw/source\ui\inc\swmn.hrc:_MN_INS.MN_SUB_FIELD.FN_INSERT_FLD_PGCOUNT.text
-#: src/main/extract.c:331 src/main/extractor.c:78
+#: src/main/extract.c:376 src/main/extractor.c:78
 #, fuzzy
 msgid "page count"
 msgstr "Kubara amapaje"
 
-#: src/main/extract.c:475
+#: src/main/extract.c:525
 #, fuzzy, c-format
 msgid "You must specify an argument for the `%s' option (option ignored).\n"
 msgstr "kugirango i Ihitamo Ihitamo"
 
-#: src/main/extract.c:545
+#: src/main/extract.c:595
 #, fuzzy, c-format
 msgid "Use --help to get a list of options.\n"
 msgstr "Ifashayobora Kuri Kubona a Urutonde Bya Amahitamo"
 
-#: src/main/extract.c:600
+#: src/main/extract.c:650
 #, c-format
 msgid "%% BiBTeX file\n"
 msgstr ""
 
-#: src/main/extract.c:616
+#: src/main/extract.c:670
 #, fuzzy, c-format
-msgid "Keywords for file %s:\n"
+msgid "Keywords for file %s:"
 msgstr "kugirango IDOSIYE"
 
 #: src/main/extractor.c:44
@@ -851,79 +855,79 @@ msgstr ""
 msgid "hardware dependency"
 msgstr ""
 
-#: src/main/extractor.c:513
+#: src/main/extractor.c:514
 #, fuzzy, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "Bya Byanze"
 
-#: src/main/extractor.c:667
+#: src/main/extractor.c:668
 #, fuzzy, c-format
 msgid ""
 "Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
 "failed also.  Errors are: `%s' and `%s'.\n"
 msgstr "IKIMENYETSO in Isomero Byanze Byanze Na"
 
-#: src/main/extractor.c:696
+#: src/main/extractor.c:697
 #, fuzzy, c-format
 msgid "Loading `%s' plugin failed: %s\n"
 msgstr "Byanze"
 
-#: src/main/extractor.c:901
+#: src/main/extractor.c:902
 #, fuzzy, c-format
 msgid "Unloading plugin `%s' failed!\n"
 msgstr "Byanze"
 
-#: src/main/getopt.c:681
+#: src/main/getopt.c:684
 #, fuzzy, c-format
 msgid "%s: option `%s' is ambiguous\n"
 msgstr "%s:Ihitamo ni"
 
-#: src/main/getopt.c:706
+#: src/main/getopt.c:709
 #, fuzzy, c-format
 msgid "%s: option `--%s' doesn't allow an argument\n"
 msgstr "%s:Ihitamo Kwemerera"
 
-#: src/main/getopt.c:712
+#: src/main/getopt.c:715
 #, fuzzy, c-format
 msgid "%s: option `%c%s' doesn't allow an argument\n"
 msgstr "%s:Ihitamo Kwemerera"
 
-#: src/main/getopt.c:729 src/main/getopt.c:900
+#: src/main/getopt.c:732 src/main/getopt.c:903
 #, fuzzy, c-format
 msgid "%s: option `%s' requires an argument\n"
 msgstr "%s:Ihitamo"
 
-#: src/main/getopt.c:758
+#: src/main/getopt.c:761
 #, fuzzy, c-format
 msgid "%s: unrecognized option `--%s'\n"
 msgstr "%s:Ihitamo"
 
-#: src/main/getopt.c:762
+#: src/main/getopt.c:765
 #, fuzzy, c-format
 msgid "%s: unrecognized option `%c%s'\n"
 msgstr "%s:Ihitamo"
 
-#: src/main/getopt.c:788
+#: src/main/getopt.c:791
 #, fuzzy, c-format
 msgid "%s: illegal option -- %c\n"
 msgstr "%s:Ihitamo"
 
-#: src/main/getopt.c:790
+#: src/main/getopt.c:793
 #, fuzzy, c-format
 msgid "%s: invalid option -- %c\n"
 msgstr "%s:Sibyo Ihitamo"
 
-#: src/main/getopt.c:819 src/main/getopt.c:949
+#: src/main/getopt.c:822 src/main/getopt.c:952
 #, fuzzy, c-format
 msgid "%s: option requires an argument -- %c\n"
 msgstr "%s:Ihitamo"
 
-#: src/main/getopt.c:867
+#: src/main/getopt.c:870
 #, fuzzy, c-format
 msgid "%s: option `-W %s' is ambiguous\n"
 msgstr "%s:Ihitamo ni"
 
-#: src/main/getopt.c:885
+#: src/main/getopt.c:888
 #, fuzzy, c-format
 msgid "%s: option `-W %s' doesn't allow an argument\n"
 msgstr "%s:Ihitamo Kwemerera"

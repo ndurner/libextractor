@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.5.14\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2006-11-11 21:57-0700\n"
+"POT-Creation-Date: 2007-01-01 20:16-0700\n"
 "PO-Revision-Date: 2006-05-23 17:58+0930\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <gnomevi-list@lists.sourceforge.net>\n"
@@ -63,138 +63,142 @@ msgstr ""
 "tên tập tin])"
 
 #: src/main/extract.c:136
+msgid "produce grep-friendly output (all results on one line per file)"
+msgstr ""
+
+#: src/main/extract.c:138
 msgid "print this help"
 msgstr "hiển thị trợ giúp này"
 
-#: src/main/extract.c:138
+#: src/main/extract.c:140
 msgid "compute hash using the given ALGORITHM (currently sha1 or md5)"
 msgstr "tính băm bằng THUẬT TOÁN đã cho (hiện là sha1 hay md5)"
 
-#: src/main/extract.c:140
+#: src/main/extract.c:142
 msgid "load an extractor plugin named LIBRARY"
 msgstr "tải một trình cầm phít rút có tên LIBRARY (THƯ VIÊN)"
 
-#: src/main/extract.c:142
+#: src/main/extract.c:144
 msgid "list all keyword types"
 msgstr "liệt kê mọi kiểu từ khoá"
 
-#: src/main/extract.c:144
+#: src/main/extract.c:146
 msgid "do not use the default set of extractor plugins"
 msgstr "đừng dùng bộ trình rút mặc định"
 
-#: src/main/extract.c:146
+#: src/main/extract.c:148
 msgid "print only keywords of the given TYPE (use -L to get a list)"
 msgstr ""
 "hiển thị chỉ từ khoá KIỂU (TYPE) đã cho thôi (dùng « -L » để xem danh sách)"
 
-#: src/main/extract.c:148
+#: src/main/extract.c:150
 msgid "remove duplicates even if keyword types do not match"
 msgstr "gỡ bỏ bản sao thậm chí nếu kiểu từ khoá không khớp"
 
-#: src/main/extract.c:150
+#: src/main/extract.c:152
 msgid "use keyword splitting (loads split-extractor plugin)"
 msgstr ""
 "dùng khả năng xẻ từ khoá (thì tải bổ sung « split-extractor » [rút xẻ])"
 
-#: src/main/extract.c:152
+#: src/main/extract.c:154
 msgid "print the version number"
 msgstr "hiển thị số thứ tự phiên bản"
 
-#: src/main/extract.c:154
+#: src/main/extract.c:156
 msgid "be verbose"
 msgstr "xuất chi tiết"
 
-#: src/main/extract.c:156
+#: src/main/extract.c:158
 msgid "do not print keywords of the given TYPE"
 msgstr "đừng hiển thị từ khoá KIỂU (TYPE) đã cho"
 
-#: src/main/extract.c:159
+#: src/main/extract.c:161
 msgid "extract [OPTIONS] [FILENAME]*"
 msgstr ""
 "extract [TÙY_CHỌN] [TÊN_TẬP_TIN]*\n"
 "[extract: rút]"
 
-#: src/main/extract.c:160
+#: src/main/extract.c:162
 msgid "Extract metadata from files."
 msgstr "Rút siêu dữ liệu ra tập tin."
 
-#: src/main/extract.c:198 src/main/extractor.c:1415
+#: src/main/extract.c:190 src/main/extractor.c:1416
 #, c-format
 msgid "%s - (binary)\n"
 msgstr "%s - (nhị phân)\n"
 
-#: src/main/extract.c:204 src/main/extractor.c:1420
+#: src/main/extract.c:201 src/main/extractor.c:1421
 #, c-format
 msgid "INVALID TYPE - %s\n"
 msgstr "KIỂU KHÔNG HỢP LỆ — %s\n"
 
-#: src/main/extract.c:270 src/main/extractor.c:47
+#: src/main/extract.c:315 src/main/extractor.c:47
 msgid "title"
 msgstr "tựa"
 
-#: src/main/extract.c:272 src/main/extractor.c:45
+#: src/main/extract.c:317 src/main/extractor.c:45
 msgid "filename"
 msgstr "tên tập tin"
 
-#: src/main/extract.c:277 src/main/extractor.c:48
+#: src/main/extract.c:322 src/main/extractor.c:48
 msgid "author"
 msgstr "tác giả"
 
-#: src/main/extract.c:281 src/main/extractor.c:50
+#: src/main/extract.c:326 src/main/extractor.c:50
 msgid "description"
 msgstr "mô tả"
 
-#: src/main/extract.c:283 src/main/extractor.c:62
+#: src/main/extract.c:328 src/main/extractor.c:62
 msgid "keywords"
 msgstr "từ khoá"
 
-#: src/main/extract.c:285 src/main/extractor.c:51
+#: src/main/extract.c:330 src/main/extractor.c:51
 msgid "comment"
 msgstr "chú thích"
 
-#: src/main/extract.c:289 src/main/extractor.c:52
+#: src/main/extract.c:334 src/main/extractor.c:52
 msgid "date"
 msgstr "ngày"
 
-#: src/main/extract.c:291 src/main/extractor.c:74
+#: src/main/extract.c:336 src/main/extractor.c:74
 msgid "creation date"
 msgstr "ngày tạo"
 
-#: src/main/extract.c:319 src/main/extractor.c:53
+#: src/main/extract.c:364 src/main/extractor.c:53
 msgid "publisher"
 msgstr "nhà xuất bản"
 
-#: src/main/extract.c:323 src/main/extractor.c:59
+#: src/main/extract.c:368 src/main/extractor.c:59
 msgid "organization"
 msgstr "tổ chức"
 
-#: src/main/extract.c:327 src/main/extractor.c:61
+#: src/main/extract.c:372 src/main/extractor.c:61
 msgid "subject"
 msgstr "chủ đề"
 
-#: src/main/extract.c:331 src/main/extractor.c:78
+#: src/main/extract.c:376 src/main/extractor.c:78
 msgid "page count"
 msgstr "tổng số trang"
 
-#: src/main/extract.c:475
+#: src/main/extract.c:525
 #, c-format
 msgid "You must specify an argument for the `%s' option (option ignored).\n"
 msgstr "Bạn phải ghi rõ một đối số cho tùy chọn « %s » (tùy chọn bị bỏ qua).\n"
 
-#: src/main/extract.c:545
+#: src/main/extract.c:595
 #, c-format
 msgid "Use --help to get a list of options.\n"
 msgstr ""
 "Hãy sử dụng lệnh « --help » (trợ giúp) để xem một danh sách các tùy chọn.\n"
 
-#: src/main/extract.c:600
+#: src/main/extract.c:650
 #, c-format
 msgid "%% BiBTeX file\n"
 msgstr "%% tập tin BiBTeX\n"
 
-#: src/main/extract.c:616
-#, c-format
-msgid "Keywords for file %s:\n"
+#: src/main/extract.c:670
+#, fuzzy, c-format
+msgid "Keywords for file %s:"
 msgstr "Từ khoá cho tập tin %s:\n"
 
 #: src/main/extractor.c:44
@@ -682,12 +686,12 @@ msgstr ""
 msgid "hardware dependency"
 msgstr "phụ thuộc"
 
-#: src/main/extractor.c:513
+#: src/main/extractor.c:514
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "Việc khởi động cơ chế cầm phít bị lỗi: %s\n"
 
-#: src/main/extractor.c:667
+#: src/main/extractor.c:668
 #, c-format
 msgid ""
 "Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
@@ -696,67 +700,67 @@ msgstr ""
 "Việc tháo gỡ ký hiệu « %s » trong thư viện « %s » bị lỗi, thì đã cố « %s », "
 "nhưng mà nó cũng không thành công. Gặp lỗi « %s » và « %s ».\n"
 
-#: src/main/extractor.c:696
+#: src/main/extractor.c:697
 #, c-format
 msgid "Loading `%s' plugin failed: %s\n"
 msgstr "Việc tải bổ sung « %s » bị lỗi: %s\n"
 
-#: src/main/extractor.c:901
+#: src/main/extractor.c:902
 #, c-format
 msgid "Unloading plugin `%s' failed!\n"
 msgstr "Việc bỏ tải bổ sung « %s » bị lỗi.\n"
 
-#: src/main/getopt.c:681
+#: src/main/getopt.c:684
 #, c-format
 msgid "%s: option `%s' is ambiguous\n"
 msgstr "%s: tùy chọn « %s » là mơ hồ\n"
 
-#: src/main/getopt.c:706
+#: src/main/getopt.c:709
 #, c-format
 msgid "%s: option `--%s' doesn't allow an argument\n"
 msgstr "%s: tùy chọn « --%s » không cho phép đối số\n"
 
-#: src/main/getopt.c:712
+#: src/main/getopt.c:715
 #, c-format
 msgid "%s: option `%c%s' doesn't allow an argument\n"
 msgstr "%s: tùy chọn « %c%s » không cho phép đối số\n"
 
-#: src/main/getopt.c:729 src/main/getopt.c:900
+#: src/main/getopt.c:732 src/main/getopt.c:903
 #, c-format
 msgid "%s: option `%s' requires an argument\n"
 msgstr "%s: tùy chọn « %s » cần đến đối số\n"
 
-#: src/main/getopt.c:758
+#: src/main/getopt.c:761
 #, c-format
 msgid "%s: unrecognized option `--%s'\n"
 msgstr "%s: không nhận ra tùy chọn « --%s »\n"
 
-#: src/main/getopt.c:762
+#: src/main/getopt.c:765
 #, c-format
 msgid "%s: unrecognized option `%c%s'\n"
 msgstr "%s: không nhận ra tùy chọn « %c%s »\n"
 
-#: src/main/getopt.c:788
+#: src/main/getopt.c:791
 #, c-format
 msgid "%s: illegal option -- %c\n"
 msgstr "%s: không cho phép tùy chọn « -- %c »\n"
 
-#: src/main/getopt.c:790
+#: src/main/getopt.c:793
 #, c-format
 msgid "%s: invalid option -- %c\n"
 msgstr "%s: tùy chọn không hợp lệ « -- %c »\n"
 
-#: src/main/getopt.c:819 src/main/getopt.c:949
+#: src/main/getopt.c:822 src/main/getopt.c:952
 #, c-format
 msgid "%s: option requires an argument -- %c\n"
 msgstr "%s: tùy chọn cần đến đối số « -- %c »\n"
 
-#: src/main/getopt.c:867
+#: src/main/getopt.c:870
 #, c-format
 msgid "%s: option `-W %s' is ambiguous\n"
 msgstr "%s: tùy chọn « -W %s » là mơ hồ\n"
 
-#: src/main/getopt.c:885
+#: src/main/getopt.c:888
 #, c-format
 msgid "%s: option `-W %s' doesn't allow an argument\n"
 msgstr "%s: tùy chọn « -W %s » không cho phép đối số\n"

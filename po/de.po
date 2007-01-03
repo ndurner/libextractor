@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.5.14\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2006-11-11 21:57-0700\n"
+"POT-Creation-Date: 2007-01-01 20:16-0700\n"
 "PO-Revision-Date: 2006-05-20 20:02+0200\n"
 "Last-Translator: Karl Eichwalder <ke@suse.de>\n"
 "Language-Team: German <translation-team-de@lists.sourceforge.net>\n"
@@ -64,138 +64,142 @@ msgstr ""
 "geladen)"
 
 #: src/main/extract.c:136
+msgid "produce grep-friendly output (all results on one line per file)"
+msgstr ""
+
+#: src/main/extract.c:138
 msgid "print this help"
 msgstr "diese Hilfe anzeigen"
 
-#: src/main/extract.c:138
+#: src/main/extract.c:140
 msgid "compute hash using the given ALGORITHM (currently sha1 or md5)"
 msgstr ""
 "Hash gemäß dem angegebenen ALGORITHMUS errechnen (z.Zt. »sha1« oder »md5«)"
 
-#: src/main/extract.c:140
+#: src/main/extract.c:142
 msgid "load an extractor plugin named LIBRARY"
 msgstr "extractor-Erweiterung mit der Bezeichnung LIBRARY laden"
 
-#: src/main/extract.c:142
+#: src/main/extract.c:144
 msgid "list all keyword types"
 msgstr "alle Arten Schlüsselwörter auflisten"
 
-#: src/main/extract.c:144
+#: src/main/extract.c:146
 msgid "do not use the default set of extractor plugins"
 msgstr "Standardsatz der extractor-Erweiterungen nicht verwenden"
 
-#: src/main/extract.c:146
+#: src/main/extract.c:148
 msgid "print only keywords of the given TYPE (use -L to get a list)"
 msgstr ""
 "nur Schlüsselwörter einer bestimmten ART ausgeben (mit -L die Liste anzeigen "
 "lassen)"
 
-#: src/main/extract.c:148
+#: src/main/extract.c:150
 msgid "remove duplicates even if keyword types do not match"
 msgstr "doppelte Einträge auch entfernen, wenn die Art nicht übereinstimmt"
 
-#: src/main/extract.c:150
+#: src/main/extract.c:152
 msgid "use keyword splitting (loads split-extractor plugin)"
 msgstr "Schlüsselwörter splitten (split-extractor-Erweiterung wird geladen)"
 
-#: src/main/extract.c:152
+#: src/main/extract.c:154
 msgid "print the version number"
 msgstr "die Versionsnummer anzeigen"
 
-#: src/main/extract.c:154
+#: src/main/extract.c:156
 msgid "be verbose"
 msgstr "viele Informationen ausgeben"
 
-#: src/main/extract.c:156
+#: src/main/extract.c:158
 msgid "do not print keywords of the given TYPE"
 msgstr "Schlüsselwörter einer bestimmten ART nicht ausgeben"
 
-#: src/main/extract.c:159
+#: src/main/extract.c:161
 msgid "extract [OPTIONS] [FILENAME]*"
 msgstr "extract [OPTIONEN] [DATEINAME]*"
 
-#: src/main/extract.c:160
+#: src/main/extract.c:162
 msgid "Extract metadata from files."
 msgstr "Metadaten aus den Dateien extrahieren."
 
-#: src/main/extract.c:198 src/main/extractor.c:1415
+#: src/main/extract.c:190 src/main/extractor.c:1416
 #, c-format
 msgid "%s - (binary)\n"
 msgstr "%s - (binär)\n"
 
-#: src/main/extract.c:204 src/main/extractor.c:1420
+#: src/main/extract.c:201 src/main/extractor.c:1421
 #, c-format
 msgid "INVALID TYPE - %s\n"
 msgstr "UNGÜLTIGE ART - %s\n"
 
-#: src/main/extract.c:270 src/main/extractor.c:47
+#: src/main/extract.c:315 src/main/extractor.c:47
 msgid "title"
 msgstr "Titel"
 
-#: src/main/extract.c:272 src/main/extractor.c:45
+#: src/main/extract.c:317 src/main/extractor.c:45
 msgid "filename"
 msgstr "Dateiname"
 
-#: src/main/extract.c:277 src/main/extractor.c:48
+#: src/main/extract.c:322 src/main/extractor.c:48
 msgid "author"
 msgstr "Autor"
 
-#: src/main/extract.c:281 src/main/extractor.c:50
+#: src/main/extract.c:326 src/main/extractor.c:50
 msgid "description"
 msgstr "Beschreibung"
 
-#: src/main/extract.c:283 src/main/extractor.c:62
+#: src/main/extract.c:328 src/main/extractor.c:62
 msgid "keywords"
 msgstr "Schlüsselwörter"
 
-#: src/main/extract.c:285 src/main/extractor.c:51
+#: src/main/extract.c:330 src/main/extractor.c:51
 msgid "comment"
 msgstr "Kommentar"
 
-#: src/main/extract.c:289 src/main/extractor.c:52
+#: src/main/extract.c:334 src/main/extractor.c:52
 msgid "date"
 msgstr "Datum"
 
-#: src/main/extract.c:291 src/main/extractor.c:74
+#: src/main/extract.c:336 src/main/extractor.c:74
 msgid "creation date"
 msgstr "Datum der Erstellung"
 
-#: src/main/extract.c:319 src/main/extractor.c:53
+#: src/main/extract.c:364 src/main/extractor.c:53
 msgid "publisher"
 msgstr "Herausgeber"
 
-#: src/main/extract.c:323 src/main/extractor.c:59
+#: src/main/extract.c:368 src/main/extractor.c:59
 msgid "organization"
 msgstr "Organisation"
 
-#: src/main/extract.c:327 src/main/extractor.c:61
+#: src/main/extract.c:372 src/main/extractor.c:61
 msgid "subject"
 msgstr "Gegenstand"
 
-#: src/main/extract.c:331 src/main/extractor.c:78
+#: src/main/extract.c:376 src/main/extractor.c:78
 msgid "page count"
 msgstr "Seitenanzahl"
 
-#: src/main/extract.c:475
+#: src/main/extract.c:525
 #, c-format
 msgid "You must specify an argument for the `%s' option (option ignored).\n"
 msgstr ""
 "Sie müssen ein Argument für die Option »%s« angeben (Option wird "
 "ignoriert).\n"
 
-#: src/main/extract.c:545
+#: src/main/extract.c:595
 #, c-format
 msgid "Use --help to get a list of options.\n"
 msgstr "Verwenden Sie --help, um eine Liste aller Optionen zu sehen.\n"
 
-#: src/main/extract.c:600
+#: src/main/extract.c:650
 #, c-format
 msgid "%% BiBTeX file\n"
 msgstr "%% BibTeX Datei\n"
 
-#: src/main/extract.c:616
-#, c-format
-msgid "Keywords for file %s:\n"
+#: src/main/extract.c:670
+#, fuzzy, c-format
+msgid "Keywords for file %s:"
 msgstr "Schlüsserwörter für die Datei %s:\n"
 
 #: src/main/extractor.c:44
@@ -679,79 +683,79 @@ msgstr ""
 msgid "hardware dependency"
 msgstr "Abhängigkeit"
 
-#: src/main/extractor.c:513
+#: src/main/extractor.c:514
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "Initialisierung des Plugin-Mechanismus' ist fehlgeschlagen: %s.\n"
 
-#: src/main/extractor.c:667
+#: src/main/extractor.c:668
 #, c-format
 msgid ""
 "Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
 "failed also.  Errors are: `%s' and `%s'.\n"
 msgstr ""
 
-#: src/main/extractor.c:696
+#: src/main/extractor.c:697
 #, c-format
 msgid "Loading `%s' plugin failed: %s\n"
 msgstr "Laden des »%s«-Plugins ist fehlgeschlagen: %s\n"
 
-#: src/main/extractor.c:901
+#: src/main/extractor.c:902
 #, c-format
 msgid "Unloading plugin `%s' failed!\n"
 msgstr "Entladen des »%s«-Plugins ist fehlgeschlagen!\n"
 
-#: src/main/getopt.c:681
+#: src/main/getopt.c:684
 #, c-format
 msgid "%s: option `%s' is ambiguous\n"
 msgstr "%s: Option »%s« ist mehrdeutig\n"
 
-#: src/main/getopt.c:706
+#: src/main/getopt.c:709
 #, c-format
 msgid "%s: option `--%s' doesn't allow an argument\n"
 msgstr "%s: Option »--%s« erwartet kein Argument\n"
 
-#: src/main/getopt.c:712
+#: src/main/getopt.c:715
 #, c-format
 msgid "%s: option `%c%s' doesn't allow an argument\n"
 msgstr "%s: Option »%c%s« erwartet kein Argument\n"
 
-#: src/main/getopt.c:729 src/main/getopt.c:900
+#: src/main/getopt.c:732 src/main/getopt.c:903
 #, c-format
 msgid "%s: option `%s' requires an argument\n"
 msgstr "%s: Option »%s« erwartet ein Argument\n"
 
-#: src/main/getopt.c:758
+#: src/main/getopt.c:761
 #, c-format
 msgid "%s: unrecognized option `--%s'\n"
 msgstr "%s: unbekannte Option »--%s«\n"
 
-#: src/main/getopt.c:762
+#: src/main/getopt.c:765
 #, c-format
 msgid "%s: unrecognized option `%c%s'\n"
 msgstr "%s: unbekannte Option »%c%s«\n"
 
-#: src/main/getopt.c:788
+#: src/main/getopt.c:791
 #, c-format
 msgid "%s: illegal option -- %c\n"
 msgstr "%s: unzulässige Option -- %c\n"
 
-#: src/main/getopt.c:790
+#: src/main/getopt.c:793
 #, c-format
 msgid "%s: invalid option -- %c\n"
 msgstr "%s: ungültige Option -- %c\n"
 
-#: src/main/getopt.c:819 src/main/getopt.c:949
+#: src/main/getopt.c:822 src/main/getopt.c:952
 #, c-format
 msgid "%s: option requires an argument -- %c\n"
 msgstr "%s: Option erwartet ein Argument -- %c\n"
 
-#: src/main/getopt.c:867
+#: src/main/getopt.c:870
 #, c-format
 msgid "%s: option `-W %s' is ambiguous\n"
 msgstr "%s: Option »-W %s« ist mehrdeutig\n"
 
-#: src/main/getopt.c:885
+#: src/main/getopt.c:888
 #, c-format
 msgid "%s: option `-W %s' doesn't allow an argument\n"
 msgstr "%s: Option »-W %s« erwartet kein Argument\n"
