@@ -18,5 +18,5 @@ dist-hook:
 
 ACLOCAL_AMFLAGS = -I m4
 
-pkgconfigdatadir = $(libdir)/lib/pkgconfig
+pkgconfigdatadir = $(libdir)/pkgconfig
 pkgconfigdata_DATA = libextractor.pc

@@ -320,9 +320,12 @@ libextractor_translit_la_LDFLAGS = \
 libextractor_thumbnailqt_la_SOURCES = \
 	thumbnailextractorqt.cc
 libextractor_thumbnailqt_la_LIBADD = \
-  $(top_builddir)/src/main/libextractor.la
+  $(top_builddir)/src/main/libextractor.la $(QT_LIBS) $(QT_SVG_LIBS)
 libextractor_thumbnailqt_la_LDFLAGS = \
-  $(PLUGINFLAGS) $(retaincommand) -lQtCore4 -lQtGui4 $(svgflags)
+  $(PLUGINFLAGS) $(retaincommand) 
+libextractor_thumbnailqt_la_CPPFLAGS = \
+  -I$(top_scrdir)/include \
+  $(QT_CFLAGS) $(QT_SVG_CFLAGS)
 
 install-exec-hook:
 	mkdir -p $(DESTDIR)$(plugindir) &> /dev/null || true

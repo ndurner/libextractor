@@ -27,14 +27,14 @@
 
 #include "platform.h"
 #include "extractor.h"
-#include <qpixmap.h>
-#include <qbytearray.h>
-#include <qbuffer.h>
-#include <qapplication.h>
+#include <Qt/qpixmap.h>
+#include <Qt/qbytearray.h>
+#include <Qt/qbuffer.h>
+#include <Qt/qapplication.h>
 
 #ifdef HAVE_QT_SVG
   #include <qsvgrenderer.h>
-  #include <qpainter.h>
+  #include <Qt/qpainter.h>
 #endif
 
 #define THUMBSIZE 128

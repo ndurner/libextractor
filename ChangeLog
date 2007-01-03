@@ -1,5 +1,8 @@
+Tue Jan  2 19:38:10 MST 2007
+	Fixed various build issues.  Releasing libextractor 0.5.17a.
+
 Mon Jan  1 19:10:40 MST 2007
-	Added pkgconfig support.
+	Added pkgconfig support.  Releasing libextractor 0.5.17.
 
 Thu Dec 28 20:22:20 MST 2006
 	Fixed bug in splitextractor, addressing also Mantis #1125.
