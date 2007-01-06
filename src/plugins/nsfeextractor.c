@@ -57,7 +57,7 @@ struct infochunk
 	char firstsong;
 };
 
-int nsfeuint( char * data )
+static int nsfeuint(const char * data )
 {
 	int i, value = 0;
 
@@ -74,7 +74,7 @@ int nsfeuint( char * data )
 	return( value );
 }
 
-char * nsfestring( char * data, int size )
+static char * nsfestring(const char * data, int size )
 {
 	char *s;
 	int length;
@@ -88,7 +88,7 @@ char * nsfestring( char * data, int size )
 		length = strlen( data );
 	}
 
-	s = ( char * ) malloc( length + 1 );
+	s = malloc( length + 1 );
 
 	if( data != NULL )
 	{
@@ -116,17 +116,17 @@ static struct EXTRACTOR_Keywords * addkword
 	return( keyword );
 }
 
-struct EXTRACTOR_Keywords * libextractor_nsfe_info_extract
+static struct EXTRACTOR_Keywords * libextractor_nsfe_info_extract
 (
-	char * data,
+	const char * data,
 	size_t size,
 	struct EXTRACTOR_Keywords * prev
 )
 {
-	struct infochunk *ichunk;
+        const struct infochunk *ichunk;
 	char songs[ 32 ];
 
-	ichunk = ( struct infochunk * ) data;
+	ichunk = (const struct infochunk * ) data;
 
 	if( size < 8 )
 	{
@@ -194,9 +194,9 @@ struct EXTRACTOR_Keywords * libextractor_nsfe_info_extract
 }
 
 
-struct EXTRACTOR_Keywords * libextractor_nsfe_tlbl_extract
+static struct EXTRACTOR_Keywords * libextractor_nsfe_tlbl_extract
 (
-	char * data,
+	const char * data,
 	size_t size,
 	struct EXTRACTOR_Keywords * prev
 )
@@ -209,16 +209,16 @@ struct EXTRACTOR_Keywords * libextractor_nsfe_tlbl_extract
 	{
 		title = nsfestring( &data[ size - left ], left );
 		prev = addkword( prev, title, EXTRACTOR_TITLE );
-
 		left -= ( strlen( title ) + 1 );
+		free(title);
 	}
 
 	return( prev );
 }
 
-struct EXTRACTOR_Keywords * libextractor_nsfe_auth_extract
+static struct EXTRACTOR_Keywords * libextractor_nsfe_auth_extract
 (
-	char * data,
+        const char * data,
 	size_t size,
 	struct EXTRACTOR_Keywords * prev
 )
@@ -236,9 +236,9 @@ struct EXTRACTOR_Keywords * libextractor_nsfe_auth_extract
 
 	album = nsfestring( &data[ size - left ], left );
 	prev = addkword( prev, album, EXTRACTOR_ALBUM );
-
+	
 	left -= ( strlen( album ) + 1 );
-
+	free(album);
 	if( left < 1 )
 	{
 		return( prev );
@@ -248,7 +248,7 @@ struct EXTRACTOR_Keywords * libextractor_nsfe_auth_extract
 	prev = addkword( prev, artist, EXTRACTOR_ARTIST );
 
 	left -= ( strlen( artist ) + 1 );
-
+	free(artist);
 	if( left < 1 )
 	{
 		return( prev );
@@ -258,7 +258,7 @@ struct EXTRACTOR_Keywords * libextractor_nsfe_auth_extract
 	prev = addkword( prev, copyright, EXTRACTOR_COPYRIGHT );
 
 	left -= ( strlen( copyright ) + 1 );
-
+	free(copyright);
 	if( left < 1 )
 	{
 		return( prev );
@@ -266,7 +266,7 @@ struct EXTRACTOR_Keywords * libextractor_nsfe_auth_extract
 
 	ripper = nsfestring( &data[ size - left ], left );
 	prev = addkword( prev, ripper, EXTRACTOR_RIPPER );
-
+	free(ripper);
 	return( prev );
 }
 
@@ -281,12 +281,12 @@ struct EXTRACTOR_Keywords * libextractor_nsfe_auth_extract
 struct EXTRACTOR_Keywords * libextractor_nsfe_extract
 (
 	const char * filename,
-	char * data,
+	const char * data,
 	size_t size,
 	struct EXTRACTOR_Keywords * prev
 )
 {
-	struct header *head;
+	const struct header *head;
 	int i;
 	char chunkid[ 5 ] = "     ";
 
@@ -297,7 +297,7 @@ struct EXTRACTOR_Keywords * libextractor_nsfe_extract
 		return( prev );
 	}
 
-	head = ( struct header * ) data;
+	head = (const struct header * ) data;
 
 	/* Check "magic" id bytes */
 

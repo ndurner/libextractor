@@ -171,7 +171,7 @@ static const char *keywordTypes[] = {
   gettext_noop("song count"),
   gettext_noop("starting song"),
   gettext_noop("hardware dependency"),
-  gettext_noop("ripper"),
+  gettext_noop("ripper"), /* 130 */
   NULL,
 };
 
