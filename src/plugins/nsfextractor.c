@@ -144,13 +144,13 @@ struct EXTRACTOR_Keywords * libextractor_nsf_extract
 
 	/* name, artist, copyright fields */
 
-	album[ 32 ] = '\0';
-	artist[ 32 ] = '\0';
-	copyright[ 32 ] = '\0';
-
 	memcpy( &album, head->title, 32 );
 	memcpy( &artist, head->artist, 32 );
 	memcpy( &copyright, head->copyright, 32 );
+
+	album[ 32 ] = '\0';
+	artist[ 32 ] = '\0';
+	copyright[ 32 ] = '\0';
 
 	prev = addkword( prev, album, EXTRACTOR_ALBUM );
 	prev = addkword( prev, artist, EXTRACTOR_ARTIST );
