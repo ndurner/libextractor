@@ -171,11 +171,12 @@ static const char *keywordTypes[] = {
   gettext_noop("song count"),
   gettext_noop("starting song"),
   gettext_noop("hardware dependency"),
+  gettext_noop("ripper"),
   NULL,
 };
 
 /* the number of keyword types (for bounds-checking) */
-#define HIGHEST_TYPE_NUMBER 130
+#define HIGHEST_TYPE_NUMBER 131
 
 #ifdef HAVE_LIBOGG
 #if HAVE_VORBIS
@@ -241,6 +242,7 @@ libextractor_elf:\
 libextractor_oo:\
 libextractor_asf:\
 libextractor_sid:\
+libextractor_nsfe:\
 libextractor_nsf"
 
 #define DEFAULT_LIBRARIES EXSO OLESO OGGSO QTSO DEFSO
