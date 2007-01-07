@@ -183,6 +183,22 @@ struct EXTRACTOR_Keywords * libextractor_sid_extract
 
 	flags = sidword( head->flags );
 
+
+	/* MUS data */
+
+	if( flags & MUSPLAYER_FLAG )
+	{
+		prev = addkword( prev, "Compute!'s Sidplayer", EXTRACTOR_DEPENDENCY );
+	}
+
+	/* PlaySID data */
+
+	if( flags & PLAYSID_FLAG )
+	{
+		prev = addkword( prev, "PlaySID", EXTRACTOR_DEPENDENCY );
+	}
+
+
 	/* PAL or NTSC */
 
 	if( flags & PAL_FLAG )
