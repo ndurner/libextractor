@@ -61,15 +61,13 @@ static int nsfeuint(const char * data )
 {
 	int i, value = 0;
 
-	for( i = 3; i >= 0 ; i-- )
+	for( i = 3; i > 0 ; i-- )
 	{
-	        value += ( unsigned char ) data[ i ];
-
-		if( i > 0 )
-		{
-			value *= 0x100;
-		}
+		value += ( unsigned char ) data[ i ];
+		value *= 0x100;
 	}
+
+	value += ( unsigned char ) data[ 0 ];
 
 	return( value );
 }
@@ -202,14 +200,15 @@ static struct EXTRACTOR_Keywords * libextractor_nsfe_tlbl_extract
 )
 {
 	char * title;
-	int left = size;
+	int left, length;
 
 
-	while( left > 0 )
+	for( left = size; left > 0; left -= length )
 	{
 		title = nsfestring( &data[ size - left ], left );
 		prev = addkword( prev, title, EXTRACTOR_TITLE );
-		left -= ( strlen( title ) + 1 );
+		length = strlen( title ) + 1;
+
 		free(title);
 	}
 
@@ -239,6 +238,7 @@ static struct EXTRACTOR_Keywords * libextractor_nsfe_auth_extract
 	
 	left -= ( strlen( album ) + 1 );
 	free(album);
+
 	if( left < 1 )
 	{
 		return( prev );
@@ -249,6 +249,7 @@ static struct EXTRACTOR_Keywords * libextractor_nsfe_auth_extract
 
 	left -= ( strlen( artist ) + 1 );
 	free(artist);
+
 	if( left < 1 )
 	{
 		return( prev );
@@ -259,6 +260,7 @@ static struct EXTRACTOR_Keywords * libextractor_nsfe_auth_extract
 
 	left -= ( strlen( copyright ) + 1 );
 	free(copyright);
+
 	if( left < 1 )
 	{
 		return( prev );
@@ -267,6 +269,7 @@ static struct EXTRACTOR_Keywords * libextractor_nsfe_auth_extract
 	ripper = nsfestring( &data[ size - left ], left );
 	prev = addkword( prev, ripper, EXTRACTOR_RIPPER );
 	free(ripper);
+
 	return( prev );
 }
 
