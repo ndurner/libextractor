@@ -405,7 +405,10 @@ printSelectedKeywordsBibtex (FILE * handle,
       if ( pages )
 	fprintf(handle, "    pages = \"%s\"%s\n", pages,
 	    (last == pages)?"":",");
-
+      if (month != NULL)
+	free(month);
+      if (year != NULL)
+	free(year);
       fprintf(handle, "}\n\n");
     }
 }

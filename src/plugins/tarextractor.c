@@ -805,6 +805,7 @@ libextractor_tar_extract(const char * filename,
             strcpy(format + format_length, " TAR");
             prev = addKeyword(EXTRACTOR_FORMAT, format, prev);
           }
+	  free(format);
         }
       }
     }

@@ -372,16 +372,16 @@ libextractor_zip_extract(const char * filename,
   /* note: this free()'s the info list as it goes */
   info = start;
   while (NULL != info) {
-    if (strlen(info->filename)){
-      EXTRACTOR_KeywordList * keyword = malloc(sizeof(EXTRACTOR_KeywordList));
-      keyword->next = prev;    
-      keyword->keyword = strdup(info->filename);
-      keyword->keywordType = EXTRACTOR_FILENAME;
-      prev = keyword;
-    }  
-    if (info->filename != NULL)
+    if (info->filename != NULL) {
+      if (strlen(info->filename)){
+	EXTRACTOR_KeywordList * keyword = malloc(sizeof(EXTRACTOR_KeywordList));
+	keyword->next = prev;    
+	keyword->keyword = strdup(info->filename);
+	keyword->keywordType = EXTRACTOR_FILENAME;
+	prev = keyword;
+      }  
       free(info->filename);
-
+    }
     if (strlen(info->comment)){
       EXTRACTOR_KeywordList * keyword = malloc(sizeof(EXTRACTOR_KeywordList));    
       keyword->next = prev;

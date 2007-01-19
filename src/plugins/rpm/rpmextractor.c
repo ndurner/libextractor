@@ -2705,7 +2705,7 @@ static void providePackageNVR(Header h)
     int_32 pFlags = RPMSENSE_EQUAL;
     const char ** provides = NULL;
     const char ** providesEVR = NULL;
-    rpmTagType pnt, pvt;
+    rpmTagType pnt, pvt = RPM_NULL_TYPE;
     int_32 * provideFlags = NULL;
     int providesCount;
     int i;

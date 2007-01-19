@@ -127,10 +127,10 @@ int main(int argc,
     words[cnt] = strdup(line);
     cnt++;
     memset(&line[0], 0, 2048);
-    if (cnt > ALLOCSIZE) {
+    if (cnt >= ALLOCSIZE) {
       fprintf(stderr,
 	      _("Increase ALLOCSIZE (in %s).\n"),
-	      __FILE__);
+	      __FILE__);      
       exit(-1);
     }
   }
@@ -206,5 +206,6 @@ int main(int argc,
 	  bn,
 	  ADDR_PER_ELEMENT,
 	  bf.bitArraySize);
+  free(charset);
   return 0;
 }

@@ -88,10 +88,7 @@ static char * nsfestring(const char * data, int size )
 
 	s = malloc( length + 1 );
 
-	if( data != NULL )
-	{
-		strncpy( s, data, length );
-	}
+	strncpy( s, data, length );	
 
 	s[ strlen( data ) ] = '\0';
 

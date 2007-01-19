@@ -43,7 +43,7 @@ libextractor_lower_extract(char * filename,
   unsigned int mem, needed, i;
 
   pos = prev;
-  lower = 0;
+  lower = NULL;
   mem = 0;
 
   while (pos != NULL)
@@ -51,7 +51,7 @@ libextractor_lower_extract(char * filename,
     needed = strlen(pos->keyword) + 1;
     if (needed > mem)
     {
-     lower = (char *) (lower) ? realloc(lower, needed) : malloc(needed);
+     lower = (lower == NULL) ? realloc(lower, needed) : malloc(needed);
      mem = needed;
     }
 

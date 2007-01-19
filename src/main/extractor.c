@@ -1247,8 +1247,7 @@ removeKeyword (const char *keyword,
 	       const EXTRACTOR_KeywordType type,
 	       const unsigned int options,
 	       EXTRACTOR_KeywordList ** list,
-	       EXTRACTOR_KeywordList * current)
-{
+	       EXTRACTOR_KeywordList * current) {
   EXTRACTOR_KeywordList *first;
   EXTRACTOR_KeywordList *pos;
   EXTRACTOR_KeywordList *prev;
@@ -1257,37 +1256,32 @@ removeKeyword (const char *keyword,
   first = *list;
   pos = first;
   prev = NULL;
-  while (pos != NULL)
-    {
-      if (pos == current)
-	{
-	  prev = pos;
-	  pos = current->next;
-	}
-      if (pos == NULL)
-	break;
-      if ( (0 == strcmp (pos->keyword, keyword)) &&
-	   ( (pos->keywordType == type) ||
-	     (((options & EXTRACTOR_DUPLICATES_TYPELESS) > 0)) ||
-	     ( ((options & EXTRACTOR_DUPLICATES_REMOVE_UNKNOWN) > 0) &&
-	       (pos->keywordType == EXTRACTOR_UNKNOWN)) ) )
-	{
-	  /* remove! */
-	  if (prev == NULL)
-	    first = pos->next;
-	  else
-	    prev->next = pos->next;
-	  next = pos->next;
-	  free (pos->keyword);
-	  free (pos);
-	  pos = next;
-	}
+  while (pos != NULL) {
+    if (pos == current) {
+      prev = pos;
+      pos = current->next;
+    }
+    if (pos == NULL)
+      break;
+    if ( (0 == strcmp (pos->keyword, keyword)) &&
+	 ( (pos->keywordType == type) ||
+	   (((options & EXTRACTOR_DUPLICATES_TYPELESS) > 0)) ||
+	   ( ((options & EXTRACTOR_DUPLICATES_REMOVE_UNKNOWN) > 0) &&
+	     (pos->keywordType == EXTRACTOR_UNKNOWN)) ) ) {
+      /* remove! */
+      if (prev == NULL)
+	first = pos->next;
       else
-	{
-	  prev = pos;
-	  pos = pos->next;
-	}
-    }				/* end while */
+	prev->next = pos->next;
+      next = pos->next;
+      free (pos->keyword);
+      free (pos);
+      pos = next;
+    } else {
+      prev = pos;
+      pos = pos->next;
+    }
+  } /* end while */
   *list = first;
 }
 

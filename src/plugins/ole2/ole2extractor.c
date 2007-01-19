@@ -156,11 +156,11 @@ static void processMetadata(gpointer key,
     /* convert other formats? */
     contents = g_strdup_value_contents(gval);
   }
+  if (contents == NULL)
+    return;
   if ( (strlen(contents) > 0) &&
        (contents[strlen(contents)-1] == '\n') )
     contents[strlen(contents)-1] = '\0';
-  if (contents == NULL)
-    return;
   pos = 0;
   while (tmap[pos].text != NULL) {
     if (0 == strcmp(tmap[pos].text,
@@ -412,8 +412,10 @@ history_extract(GsfInput * stream,
     where += length * 2 + 1;
     length = lbuffer[where++];
     if ( (where + 2 * length >= lcbSttbSavedBy) ||
-	 (where + 2 * length + 1 <= where) )
+	 (where + 2 * length + 1 <= where) ) {
+      free(author);
       break;
+    }
     filename = convertToUtf8((const char*) &lbuffer[where],
 			     length * 2,
 			     "UTF-16BE");	

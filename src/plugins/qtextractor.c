@@ -558,7 +558,7 @@ static int processTextTag(const char * input,
   if (len + sizeof(InternationalText) > as)
     return 0; /* invalid */
   lang = ntohs(txt->language);
-  if (lang > 138)
+  if (lang >= sizeof(languages) / sizeof(char*))
     return 0; /* invalid */
   addKeyword(EXTRACTOR_LANGUAGE,
 	     languages[lang],
