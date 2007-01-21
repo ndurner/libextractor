@@ -100,7 +100,7 @@ struct EXTRACTOR_Keywords * libextractor_sid_extract
 )
 {
 	unsigned int flags;
-	int i, version;
+	int version;
 	char album[ 33 ];
 	char artist[ 33 ];
 	char copyright[ 33 ];

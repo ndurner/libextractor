@@ -42,7 +42,7 @@ typedef struct {
   char * album;
   char * year;
   char * comment;
-  char * genre;
+  const char * genre;
 } id3tag;
 
 static const char *const genre_names[] = {
