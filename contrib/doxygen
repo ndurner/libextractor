@@ -329,7 +329,7 @@ EXCLUDE                =
 # EXCLUDE_PATTERNS tag to specify one or more wildcard patterns to exclude 
 # certain files from those directories.
 
-EXCLUDE_PATTERNS       = */da_*.c */de_*.c */en_*.c */es_*.c */it_*.c */no_*.c */latin_*.c */fi_*.c */ga_*.c */sv_*.c */te_*.c */pt_*.c
+EXCLUDE_PATTERNS       = */da_*.c */de_*.c */en_*.c */es_*.c */it_*.c */no_*.c */latin_*.c */fi_*.c */ga_*.c */sv_*.c */te_*.c */pt_*.c */fr_*.c
 
 # The EXAMPLE_PATH tag can be used to specify one or more files or 
 # directories that contain example code fragments that are included (see 
