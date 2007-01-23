@@ -490,7 +490,7 @@ GENERATE_LATEX         = YES
 # If a relative path is entered the value of OUTPUT_DIRECTORY will be 
 # put in front of it. If left blank `latex' will be used as the default path.
 
-LATEX_OUTPUT           = /home/libextractor/Extractor-docs/WWW/doxygen/TeX
+LATEX_OUTPUT           = /home/libextractor/WWW/doxygen/TeX
 
 # If the COMPACT_LATEX tag is set to YES Doxygen generates more compact 
 # LaTeX documents. This may be useful for small projects and may help to 
