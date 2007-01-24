@@ -40,7 +40,7 @@ endif
 
 # toggle for development
 # SUBDIRS = . 
-SUBDIRS = . $(oodir) $(printdir) hash $(oledir) rpm $(xpdfdir) $(thumbdir) $(exiv2dir)
+SUBDIRS = $(thumbdir) . $(oodir) $(printdir) hash $(oledir) rpm $(xpdfdir) $(exiv2dir)
 
 
 if HAVE_VORBISFILE
