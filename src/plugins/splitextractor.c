@@ -75,8 +75,8 @@ static void splitKeywords(const char * keyword,
     if (pos - last > MINIMUM_KEYWORD_LENGTH)
       addKeyword(list,
 		 &dp[last]);
-    while ( (1 == token(dp[pos], options)) &&
-	    (pos < len) )
+    while ( (pos < len) &&
+	    (1 == token(dp[pos], options)) )
       pos++;
     last = pos;
   }
