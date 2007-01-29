@@ -1265,7 +1265,9 @@ removeKeyword (const char *keyword,
       break;
     if ( (0 == strcmp (pos->keyword, keyword)) &&
 	 ( (pos->keywordType == type) ||
-	   (((options & EXTRACTOR_DUPLICATES_TYPELESS) > 0)) ||
+	   ( ((options & EXTRACTOR_DUPLICATES_TYPELESS) > 0) &&
+	     ( (pos->keywordType == EXTRACTOR_SPLIT) ||
+	       (type != EXTRACTOR_SPLIT)) ) ||
 	   ( ((options & EXTRACTOR_DUPLICATES_REMOVE_UNKNOWN) > 0) &&
 	     (pos->keywordType == EXTRACTOR_UNKNOWN)) ) ) {
       /* remove! */
