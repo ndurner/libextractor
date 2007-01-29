@@ -72,7 +72,9 @@ static void splitKeywords(const char * keyword,
 	    (pos < len) )
       pos++;
     dp[pos++] = '\0';
-    if (pos - last > MINIMUM_KEYWORD_LENGTH)
+    if ( (pos - last > MINIMUM_KEYWORD_LENGTH) &&
+	 (0 != strcmp(keyword,
+		      &dp[last])) )	  
       addKeyword(list,
 		 &dp[last]);
     while ( (pos < len) &&
