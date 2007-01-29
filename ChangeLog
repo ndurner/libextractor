@@ -1,3 +1,8 @@
+Sun Jan 28 20:54:35 MST 2007
+	Biased removal of duplicate keywords against those obtained
+	from splitting.  Do not allow splitextractor to produce mere
+	copy of original keyword.  Fixed two minor bugs.
+
 Sat Jan  6 14:27:18 EET 2007
 	Added an NSFE (Extended Nintendo Sound Format) plugin.
 
