@@ -1,3 +1,6 @@
+Sun Feb  4 23:51:08 MST 2007
+	Better handling of build process without C++ compiler.
+
 Sun Jan 28 20:54:35 MST 2007
 	Biased removal of duplicate keywords against those obtained
 	from splitting.  Do not allow splitextractor to produce mere

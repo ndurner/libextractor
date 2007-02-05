@@ -212,6 +212,12 @@ static const char *keywordTypes[] = {
 #define OLESO ""
 #endif
 
+#if HAVE_MPEG2
+#define MPEGSO "libextractor_mpeg:"
+#else
+#define MPEGSO ""
+#endif 
+
 /* ATTN: order matters (for performance!) since
    mime-types can be used to avoid parsing once
    the type has been established! */
@@ -237,7 +243,6 @@ libextractor_tiff:\
 libextractor_zip:\
 libextractor_rpm:\
 libextractor_riff:\
-libextractor_mpeg:\
 libextractor_elf:\
 libextractor_oo:\
 libextractor_asf:\
@@ -245,7 +250,7 @@ libextractor_sid:\
 libextractor_nsfe:\
 libextractor_nsf"
 
-#define DEFAULT_LIBRARIES EXSO OLESO OGGSO QTSO DEFSO
+#define DEFAULT_LIBRARIES MPEGSO EXSO OLESO OGGSO QTSO DEFSO
 
 const char * EXTRACTOR_getDefaultLibraries() {
   return DEFAULT_LIBRARIES;

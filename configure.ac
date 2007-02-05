@@ -14,6 +14,8 @@ AC_CANONICAL_HOST
 AC_PROG_CC
 AC_PROG_CPP
 AC_PROG_CXX
+AC_CHECK_PROG(HAVE_CXX, $CXX, yes, no)
+AM_CONDITIONAL(HAVE_CXX, test "x$HAVE_CXX" == "xyes")
 
 AC_PROG_INSTALL
 AC_PROG_LN_S
@@ -262,17 +264,59 @@ else
  AM_CONDITIONAL(HAVE_GTK,false)
 fi
 
+# check for all C++ dependencies...
+qt=0
+qt_svg=0
+xpdf=0
+exiv2=0
+
+if test "x$HAVE_CXX" == "xyes"
+then
+  
 # check for Qt 4
-qt=1
-qt_svg=1
 AC_LANG_PUSH([C++])
-PKG_CHECK_MODULES(QT,QtCore >= 4.0.1,,qt=0)
-PKG_CHECK_MODULES(QT_SVG,QtSvg >= 4.0.1,,qt_svg=0)
+PKG_CHECK_MODULES(QT,QtCore >= 4.0.1,qt=1,qt=0)
+PKG_CHECK_MODULES(QT_SVG,QtSvg >= 4.0.1,qt_svg=1,qt_svg=0)
 AC_SUBST(QT_CFLAGS)
 AC_SUBST(QT_LIBS)
 AC_SUBST(QT_SVG_CFLAGS)
 AC_SUBST(QT_SVG_LIBS)
 
+AC_MSG_CHECKING([whether to enable xpdf-based extractor])
+AC_ARG_ENABLE(xpdf,
+ [AC_HELP_STRING([--enable-xpdf],[Enable xpdf-based extractor])
+  AC_HELP_STRING([--disable-xpdf],[Disable xpdf-based extractor])],
+ [case "$enableval" in
+  no)	AC_MSG_RESULT(no)
+        xpdf=0
+	;;
+  *)    AC_MSG_RESULT(yes)
+        xpdf=1
+	;;
+  esac],
+  [     AC_MSG_RESULT(no)
+        xpdf=0])
+
+exiv2=1
+AC_MSG_CHECKING([whether to enable exiv2 extractor])
+AC_ARG_ENABLE(exiv2,
+ [AC_HELP_STRING([--enable-exiv2],[Enable exiv2 support])
+  AC_HELP_STRING([--disable-exiv2],[Disable exiv2 support])],
+ [case "$enableval" in
+  no)	AC_MSG_RESULT(no)
+        exiv2=0
+	;;
+  *)    AC_MSG_RESULT(yes)
+        exiv2=1
+	;;
+  esac],
+  [     AC_MSG_RESULT(yes)
+        exiv2=1])
+AC_LANG_POP([C++])
+# end C++ checks
+fi
+
+# set C++-dependent defines
 if test x$qt != x0
 then
  AC_DEFINE(HAVE_QT, 1, [We have Qt])
@@ -285,9 +329,12 @@ then
 fi
 AM_CONDITIONAL(HAVE_QT_SVG, test x$qt_svg != x0)
 
+AM_CONDITIONAL(HAVE_XPDF, test x$xpdf != x0)
 
-AC_LANG_POP([C++])
+AM_CONDITIONAL(HAVE_EXIV2, test x$exiv2 != x0)
+AC_DEFINE_UNQUOTED([HAVE_EXIV2], $exiv2, [We use EXIV2])
 
+ABI_GSF
 
 printable=1
 AC_MSG_CHECKING([whether to enable printable extractors])
@@ -306,43 +353,6 @@ AC_ARG_ENABLE(printable,
         printable=1])
 AM_CONDITIONAL(HAVE_PRINTABLE, test x$printable != x0)
 
-
-xpdf=0
-AC_MSG_CHECKING([whether to enable xpdf-based extractor])
-AC_ARG_ENABLE(xpdf,
- [AC_HELP_STRING([--enable-xpdf],[Enable xpdf-based extractor])
-  AC_HELP_STRING([--disable-xpdf],[Disable xpdf-based extractor])],
- [case "$enableval" in
-  no)	AC_MSG_RESULT(no)
-        xpdf=0
-	;;
-  *)    AC_MSG_RESULT(yes)
-        xpdf=1
-	;;
-  esac],
-  [     AC_MSG_RESULT(no)
-        xpdf=0])
-AM_CONDITIONAL(HAVE_XPDF, test x$xpdf != x0)
-
-
-exiv2=1
-AC_MSG_CHECKING([whether to enable exiv2 extractor])
-AC_ARG_ENABLE(exiv2,
- [AC_HELP_STRING([--enable-exiv2],[Enable exiv2 support])
-  AC_HELP_STRING([--disable-exiv2],[Disable exiv2 support])],
- [case "$enableval" in
-  no)	AC_MSG_RESULT(no)
-        exiv2=0
-	;;
-  *)    AC_MSG_RESULT(yes)
-        exiv2=1
-	;;
-  esac],
-  [     AC_MSG_RESULT(yes)
-        exiv2=1])
-AM_CONDITIONAL(HAVE_EXIV2, test x$exiv2 != x0)
-AC_DEFINE_UNQUOTED([HAVE_EXIV2], $exiv2, [We use EXIV2])
-ABI_GSF
 
 AC_SUBST(CPPFLAGS)
 AC_SUBST(LDFLAGS)
@@ -416,6 +426,10 @@ fi
 
 if test "x$HAVE_MPEG2_TRUE" = "x#"
 then
- AC_MSG_NOTICE([NOTICE: libmpeg2 not found])
+ AC_MSG_NOTICE([NOTICE: libmpeg2 not found (will not compile mpeg2 plugin)])
 fi
 
+if test "x$HAVE_CXX" != "xyes"
+then
+ AC_MSG_NOTICE([NOTICE: no C++ compiler found (not compiling plugins that require C++)])
+fi

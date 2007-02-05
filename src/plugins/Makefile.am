@@ -23,8 +23,10 @@ if HAVE_PRINTABLE
  printdir=printable
 endif
 
+if HAVE_CXX
 if HAVE_EXIV2
  exiv2dir=exiv2
+endif
 endif
 
 
