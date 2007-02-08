@@ -213,7 +213,7 @@ AC_FUNC_STAT
 AC_FUNC_ERROR_AT_LINE
 AC_CHECK_FUNCS([mkstemp strndup munmap strcasecmp strdup strncasecmp memmove memset strtoul floor getcwd pow setenv sqrt strchr strcspn strrchr strnlen strndup ftruncate])
 
-AM_GNU_GETTEXT_VERSION(0.13)
+AM_GNU_GETTEXT_VERSION([0.16.1])
 AM_GNU_GETTEXT([external])
 
 # check for GNU LD
