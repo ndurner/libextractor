@@ -26,3 +26,5 @@ libextractor_tiff_extract
 libextractor_translit_extract
 libextractor_wav_extract
 libextractor_zip_extract
+libextractor_thumbnail_extract
+libextractor_thumbnailqt_extract
