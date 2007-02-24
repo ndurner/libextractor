@@ -98,11 +98,12 @@ static char * whitelist[] = {
   NULL
 };
 
-struct EXTRACTOR_Keywords * libextractor_thumbnailqt_extract(const char * filename,
-							   const unsigned char * data,
-							   size_t size,
-							   struct EXTRACTOR_Keywords * prev,
-                 const char * options) {
+struct EXTRACTOR_Keywords * 
+libextractor_thumbnailqt_extract(const char * filename,
+				 const unsigned char * data,
+				 size_t size,
+				 struct EXTRACTOR_Keywords * prev,
+				 const char * options) {
   QImage *img;
   QByteArray bytes;
   QBuffer buffer;
@@ -234,6 +235,19 @@ struct EXTRACTOR_Keywords * libextractor_thumbnailqt_extract(const char * filena
   return addKeyword(EXTRACTOR_THUMBNAIL_DATA,
 		    binary,
 		    prev);
+}
+
+struct EXTRACTOR_Keywords * 
+libextractor_thumbnail_extract(const char * filename,
+			       const unsigned char * data,
+			       size_t size,
+			       struct EXTRACTOR_Keywords * prev,
+			       const char * options) {
+  return libextractor_thumbnailqt_extract(filename,
+					  data,
+					  size,
+					  prev, 
+					  options);
 }
 
 } // extern "C"

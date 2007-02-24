@@ -76,10 +76,10 @@ static char * whitelist[] = {
 };
 
 struct EXTRACTOR_Keywords *
-libextractor_thumbnail_extract(const char * filename,
-			       const unsigned char * data,
-			       size_t size,
-			       struct EXTRACTOR_Keywords * prev) {
+libextractor_thumbnailgtk_extract(const char * filename,
+				  const unsigned char * data,
+				  size_t size,
+				  struct EXTRACTOR_Keywords * prev) {
   GdkPixbufLoader * loader;
   GdkPixbuf * in;
   GdkPixbuf * out;
@@ -178,6 +178,18 @@ libextractor_thumbnail_extract(const char * filename,
   return addKeyword(EXTRACTOR_THUMBNAIL_DATA,
 		    binary,
 		    prev);
+}
+
+struct EXTRACTOR_Keywords * 
+libextractor_thumbnail_extract(const char * filename,
+			       const unsigned char * data,
+			       size_t size,
+			       struct EXTRACTOR_Keywords * prev,
+			       const char * options) {
+  return libextractor_thumbnailgtk_extract(filename,
+					   data,
+					   size,
+					   prev);
 }
 
 /* end of thumbnailextractor.c */
