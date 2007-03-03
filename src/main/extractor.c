@@ -1186,40 +1186,56 @@ EXTRACTOR_getKeywords (EXTRACTOR_ExtractorList * extractor,
   void * buffer;
   struct stat fstatbuf;
   size_t size;
-  int eno;
+  int eno, dir;
 
+  if (-1 == STAT(filename, &fstatbuf))
+    return NULL;
+
+  if (!S_ISDIR(fstatbuf.st_mode)) {
+    dir = 0;
+      
 #ifdef O_LARGEFILE
-  file = fileopen(filename, O_RDONLY | O_LARGEFILE);
+    file = fileopen(filename, O_RDONLY | O_LARGEFILE);
 #else
-  file = fileopen(filename, O_RDONLY);
+    file = fileopen(filename, O_RDONLY);
 #endif
-  if (-1 == file)
-    return NULL;
-  if (-1 == FSTAT(file, &fstatbuf)) {
-    close(file);
-    return NULL;
+    if (-1 == file)
+      return NULL;
+  
+    size = fstatbuf.st_size;
+    if (size == 0) {
+      close(file);
+      return NULL;
+    }
+  
+    if (size > MAX_READ)
+      size = MAX_READ; /* do not mmap/read more than 1 GB! */
+    buffer = MMAP(NULL, size, PROT_READ, MAP_PRIVATE, file, 0);
+    if ( (buffer == NULL) || (buffer == (void *) -1) ) {
+      eno = errno;
+      close(file);
+      errno = eno;
+      return NULL;
+    }
   }
-  size = fstatbuf.st_size;
-  if (size == 0) {
-    close(file);
-    return NULL;
+  else {
+    dir = 1;
+    
+    size = 0;
+    buffer = malloc(1);
   }
-
-  if (size > MAX_READ)
-    size = MAX_READ; /* do not mmap/read more than 1 GB! */
-  buffer = MMAP(NULL, size, PROT_READ, MAP_PRIVATE, file, 0);
-  if ( (buffer == NULL) || (buffer == (void *) -1) ) {
-    eno = errno;
-    close(file);
-    errno = eno;
-    return NULL;
-  }
+  
   result = getKeywords(extractor,
 		       filename,
 		       buffer,
 		       size);
-  MUNMAP (buffer, size);
-  close(file);
+  
+  if (dir)
+    free(buffer);
+  else {
+    MUNMAP (buffer, size);
+    close(file);
+  }
   return result;
 }
 
