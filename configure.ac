@@ -213,7 +213,7 @@ AC_FUNC_STAT
 AC_FUNC_ERROR_AT_LINE
 AC_CHECK_FUNCS([mkstemp strndup munmap strcasecmp strdup strncasecmp memmove memset strtoul floor getcwd pow setenv sqrt strchr strcspn strrchr strnlen strndup ftruncate])
 
-AM_GNU_GETTEXT_VERSION([0.16.1])
+AM_GNU_GETTEXT_VERSION([0.13.1])
 AM_GNU_GETTEXT([external])
 
 # check for GNU LD
@@ -275,12 +275,62 @@ then
   
 # check for Qt 4
 AC_LANG_PUSH([C++])
-PKG_CHECK_MODULES(QT,QtCore >= 4.0.1,qt=1,qt=0)
-PKG_CHECK_MODULES(QT_SVG,QtSvg >= 4.0.1,qt_svg=1,qt_svg=0)
-AC_SUBST(QT_CFLAGS)
-AC_SUBST(QT_LIBS)
-AC_SUBST(QT_SVG_CFLAGS)
-AC_SUBST(QT_SVG_LIBS)
+qt=0
+AC_MSG_CHECKING(for Qt)
+AC_ARG_WITH(qt,
+   [  --with-qt=PFX    Base of Qt installation],
+   [AC_MSG_RESULT([$with_qt])
+    case $with_qt in
+      no)
+        ;;
+      yes)
+        AC_CHECK_HEADERS(qpixmap.h,
+          AC_CHECK_LIB([QtGui4], [_ZN7QPixmap12defaultDepthEv],
+            qt=1))
+        ;;
+      *)
+        LDFLAGS="-L$with_qt/lib $LDFLAGS"
+        CPPFLAGS="-I$with_qt/include -I$with_qt/include/Qt $CPPFLAGS"
+        AC_CHECK_HEADERS(qpixmap.h,
+          AC_CHECK_LIB([QtGui4], [_ZN7QPixmap12defaultDepthEv],
+            EXT_LIB_PATH="-L$with_qt/lib $EXT_LIB_PATH"
+            qt=1))
+        ;;
+    esac
+   ],
+   [AC_MSG_RESULT([--with-qt not specified])
+    AC_CHECK_HEADERS(qpixmap.h,
+     AC_CHECK_LIB([QtGui4], [_ZN7QPixmap12defaultDepthEv],
+      qt=1))])
+
+# check for Qt SVG module
+qt_svg=0
+AC_MSG_CHECKING(for Qt SVG)
+AC_ARG_WITH(qt,
+   [  --with-qt=PFX    Base of Qt installation],
+   [AC_MSG_RESULT([$with_qt])
+    case $with_qt in
+      no)
+        ;;
+      yes)
+        AC_CHECK_HEADERS(qsvgrenderer.h,
+          AC_CHECK_LIB([QtSvg4], [_ZN10QSvgWidgetD0Ev],
+            qt_svg=1))
+        ;;
+      *)
+        LDFLAGS="-L$with_qt/lib $LDFLAGS"
+        CPPFLAGS="-I$with_qt/include -I$with_qt/include/Qt $CPPFLAGS"
+        AC_CHECK_HEADERS(qsvgrenderer.h,
+          AC_CHECK_LIB([QtSvg4], [_ZN10QSvgWidgetD0Ev],
+            EXT_LIB_PATH="-L$with_qt/lib $EXT_LIB_PATH"
+            qt_svg=1))
+        ;;
+    esac
+   ],
+   [AC_MSG_RESULT([--with-qt not specified])
+    AC_CHECK_HEADERS(qsvgrenderer.h,
+     AC_CHECK_LIB([QtSvg4], [_ZN10QSvgWidgetD0Ev],
+      qt_svg=1))])
 
 AC_MSG_CHECKING([whether to enable xpdf-based extractor])
 AC_ARG_ENABLE(xpdf,
