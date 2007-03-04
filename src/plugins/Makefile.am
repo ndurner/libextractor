@@ -13,6 +13,7 @@ endif
 
 if HAVE_QT
  thumbqt=libextractor_thumbnailqt.la
+ qtflags=-lQtGui4 -lQtCore4
 endif
 
 if HAVE_QT_SVG
@@ -330,9 +331,9 @@ libextractor_translit_la_LDFLAGS = \
 libextractor_thumbnailqt_la_SOURCES = \
 	thumbnailextractorqt.cc
 libextractor_thumbnailqt_la_LIBADD = \
-  $(top_builddir)/src/main/libextractor.la $(QT_LIBS) $(QT_SVG_LIBS)
+  $(top_builddir)/src/main/libextractor.la
 libextractor_thumbnailqt_la_LDFLAGS = \
-  $(PLUGINFLAGS) $(retaincommand) 
+  $(PLUGINFLAGS) $(retaincommand) $(qtflags) $(svgflags)
 libextractor_thumbnailqt_la_CPPFLAGS = \
   -I$(top_scrdir)/include \
   $(QT_CFLAGS) $(QT_SVG_CFLAGS)
