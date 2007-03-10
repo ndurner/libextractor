@@ -98,9 +98,11 @@ libextractor_split_extract(const char * filename,
     options = TOKENIZERS;
   pos = prev;
   while (pos != NULL) {
-    splitKeywords(pos->keyword,		
-		  &prev,
-		  options);
+    if (pos->keywordType != EXTRACTOR_FILE_SIZE)
+      splitKeywords(pos->keyword,		
+  		  &prev,
+  		  options);
+    
     pos = pos->next;
   }
   return prev;

@@ -48,6 +48,11 @@ libextractor_lower_extract(char * filename,
 
   while (pos != NULL)
   {
+    if (pos->keywordType == EXTRACTOR_FILE_SIZE) {
+      pos = pos->next;
+      continue;
+    }
+    
     needed = strlen(pos->keyword) + 1;
     if (needed > mem)
     {

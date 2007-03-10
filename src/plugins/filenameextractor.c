@@ -33,18 +33,40 @@ libextractor_filename_extract(const char * filename,
   const char * filenameRoot = filename;
   int res;
 
-  if (filename == NULL)
-    return prev;
-  for (res=strlen(filename)-1;res>=0;res--)
-    if (filename[res] == DIR_SEPARATOR) {
-      filenameRoot = &filename[res+1];
-      break;
-    }
-  keyword = malloc(sizeof(EXTRACTOR_KeywordList));
-  keyword->next = prev;
-  keyword->keyword = convertToUtf8(filenameRoot,
-				   strlen(filenameRoot),
-				   nl_langinfo(CODESET));
-  keyword->keywordType = EXTRACTOR_FILENAME;
-  return keyword;
+  /* get filename */
+  if (filename != NULL) {
+    for (res=strlen(filename)-1;res>=0;res--)
+      if (filename[res] == DIR_SEPARATOR) {
+        filenameRoot = &filename[res+1];
+        break;
+      }
+    keyword = malloc(sizeof(EXTRACTOR_KeywordList));
+    keyword->next = prev;
+    keyword->keyword = convertToUtf8(filenameRoot,
+  				   strlen(filenameRoot),
+  				   nl_langinfo(CODESET));
+    keyword->keywordType = EXTRACTOR_FILENAME;
+    prev = keyword;
+  }
+  
+  /* get file size */
+  if (size > 0) {
+    keyword = malloc(sizeof(EXTRACTOR_KeywordList));
+    keyword->next = prev;
+    keyword->keyword = malloc(14);
+    keyword->keywordType = EXTRACTOR_FILE_SIZE;
+    
+    if (size >= 1000000000)
+      snprintf(keyword->keyword, 13, "%.2f %s", size / 1000000000.0, _("GB"));
+    else if (size >= 1000000)
+      snprintf(keyword->keyword, 13, "%.2f %s", size / 1000000.0, _("MB"));
+    else if (size >= 1000)
+      snprintf(keyword->keyword, 13, "%.2f %s", size / 1000.0, _("KB"));
+    else
+      snprintf(keyword->keyword, 13, "%.2f %s", size, _("Bytes"));
+    
+    prev = keyword;
+  }
+  
+  return prev;
 }
