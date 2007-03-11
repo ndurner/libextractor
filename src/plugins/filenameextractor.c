@@ -57,13 +57,13 @@ libextractor_filename_extract(const char * filename,
     keyword->keywordType = EXTRACTOR_FILE_SIZE;
     
     if (size >= 1000000000)
-      snprintf(keyword->keyword, 13, "%.2f %s", size / 1000000000.0, _("GB"));
+      snprintf(keyword->keyword, 13, "%.2f %s", size / 1000000000.0, _("gigabytes"));
     else if (size >= 1000000)
-      snprintf(keyword->keyword, 13, "%.2f %s", size / 1000000.0, _("MB"));
+      snprintf(keyword->keyword, 13, "%.2f %s", size / 1000000.0, _("megabytes"));
     else if (size >= 1000)
-      snprintf(keyword->keyword, 13, "%.2f %s", size / 1000.0, _("KB"));
+      snprintf(keyword->keyword, 13, "%.2f %s", size / 1000.0, _("kilobytes"));
     else
-      snprintf(keyword->keyword, 13, "%.2f %s", size, _("Bytes"));
+      snprintf(keyword->keyword, 13, "%.2u %s", size, _("bytes"));
     
     prev = keyword;
   }

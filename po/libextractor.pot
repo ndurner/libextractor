@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2007-01-01 20:16-0700\n"
+"POT-Creation-Date: 2007-03-11 17:53-0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -108,12 +108,12 @@ msgstr ""
 msgid "Extract metadata from files."
 msgstr ""
 
-#: src/main/extract.c:190 src/main/extractor.c:1416
+#: src/main/extract.c:190 src/main/extractor.c:1436
 #, c-format
 msgid "%s - (binary)\n"
 msgstr ""
 
-#: src/main/extract.c:201 src/main/extractor.c:1421
+#: src/main/extract.c:201 src/main/extractor.c:1441
 #, c-format
 msgid "INVALID TYPE - %s\n"
 msgstr ""
@@ -166,22 +166,22 @@ msgstr ""
 msgid "page count"
 msgstr ""
 
-#: src/main/extract.c:525
+#: src/main/extract.c:528
 #, c-format
 msgid "You must specify an argument for the `%s' option (option ignored).\n"
 msgstr ""
 
-#: src/main/extract.c:595
+#: src/main/extract.c:598
 #, c-format
 msgid "Use --help to get a list of options.\n"
 msgstr ""
 
-#: src/main/extract.c:650
+#: src/main/extract.c:653
 #, c-format
 msgid "%% BiBTeX file\n"
 msgstr ""
 
-#: src/main/extract.c:670
+#: src/main/extract.c:673
 #, c-format
 msgid "Keywords for file %s:"
 msgstr ""
@@ -658,24 +658,32 @@ msgstr ""
 msgid "hardware dependency"
 msgstr ""
 
-#: src/main/extractor.c:514
+#: src/main/extractor.c:174
+msgid "ripper"
+msgstr ""
+
+#: src/main/extractor.c:175
+msgid "filesize"
+msgstr ""
+
+#: src/main/extractor.c:522
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr ""
 
-#: src/main/extractor.c:668
+#: src/main/extractor.c:676
 #, c-format
 msgid ""
 "Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
 "failed also.  Errors are: `%s' and `%s'.\n"
 msgstr ""
 
-#: src/main/extractor.c:697
+#: src/main/extractor.c:705
 #, c-format
 msgid "Loading `%s' plugin failed: %s\n"
 msgstr ""
 
-#: src/main/extractor.c:902
+#: src/main/extractor.c:910
 #, c-format
 msgid "Unloading plugin `%s' failed!\n"
 msgstr ""
@@ -733,6 +741,22 @@ msgstr ""
 #: src/main/getopt.c:888
 #, c-format
 msgid "%s: option `-W %s' doesn't allow an argument\n"
+msgstr ""
+
+#: src/plugins/filenameextractor.c:60
+msgid "gigabytes"
+msgstr ""
+
+#: src/plugins/filenameextractor.c:62
+msgid "megabytes"
+msgstr ""
+
+#: src/plugins/filenameextractor.c:64
+msgid "kilobytes"
+msgstr ""
+
+#: src/plugins/filenameextractor.c:66
+msgid "bytes"
 msgstr ""
 
 #: src/plugins/jpegextractor.c:178
@@ -1466,7 +1490,7 @@ msgstr ""
 msgid "Farsi"
 msgstr ""
 
-#: src/plugins/ole2/ole2extractor.c:423
+#: src/plugins/ole2/ole2extractor.c:425
 #, c-format
 msgid "Revision #%u: Author '%s' worked on '%s'"
 msgstr ""

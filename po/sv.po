@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.5.14\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2007-01-01 20:16-0700\n"
+"POT-Creation-Date: 2007-03-11 17:53-0600\n"
 "PO-Revision-Date: 2006-05-23 22:17+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
@@ -114,12 +114,12 @@ msgstr "extract [FLAGGOR] [FILNAMN]*"
 msgid "Extract metadata from files."
 msgstr "Plocka ut metadata från filer."
 
-#: src/main/extract.c:190 src/main/extractor.c:1416
+#: src/main/extract.c:190 src/main/extractor.c:1436
 #, c-format
 msgid "%s - (binary)\n"
 msgstr "%s - (binär)\n"
 
-#: src/main/extract.c:201 src/main/extractor.c:1421
+#: src/main/extract.c:201 src/main/extractor.c:1441
 #, c-format
 msgid "INVALID TYPE - %s\n"
 msgstr "OGILTIG TYP - %s\n"
@@ -172,22 +172,22 @@ msgstr "ämne"
 msgid "page count"
 msgstr "sidantal"
 
-#: src/main/extract.c:525
+#: src/main/extract.c:528
 #, c-format
 msgid "You must specify an argument for the `%s' option (option ignored).\n"
 msgstr "Du måste ange ett argument för flaggan \"%s\" (flagga ignoreras).\n"
 
-#: src/main/extract.c:595
+#: src/main/extract.c:598
 #, c-format
 msgid "Use --help to get a list of options.\n"
 msgstr "Använd --help för att få en lista på flaggor.\n"
 
-#: src/main/extract.c:650
+#: src/main/extract.c:653
 #, c-format
 msgid "%% BiBTeX file\n"
 msgstr "%% BiBTeX-fil\n"
 
-#: src/main/extract.c:670
+#: src/main/extract.c:673
 #, fuzzy, c-format
 msgid "Keywords for file %s:"
 msgstr "Nyckelord för fil %s:\n"
@@ -678,12 +678,22 @@ msgstr ""
 msgid "hardware dependency"
 msgstr "beroende av"
 
-#: src/main/extractor.c:514
+#: src/main/extractor.c:174
+#, fuzzy
+msgid "ripper"
+msgstr "Trailer"
+
+#: src/main/extractor.c:175
+#, fuzzy
+msgid "filesize"
+msgstr "storlek"
+
+#: src/main/extractor.c:522
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "Initiering av insticksmekanism misslyckades: %s!\n"
 
-#: src/main/extractor.c:668
+#: src/main/extractor.c:676
 #, c-format
 msgid ""
 "Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
@@ -692,12 +702,12 @@ msgstr ""
 "Uppslag av symbol \"%s\" i bibliotek \"%s\" misslyckades så jag försökte med "
 "\"%s\" men det misslyckades också.  Felen är: \"%s\" och \"%s\".\n"
 
-#: src/main/extractor.c:697
+#: src/main/extractor.c:705
 #, c-format
 msgid "Loading `%s' plugin failed: %s\n"
 msgstr "Inläsning av instick \"%s\" misslyckades: %s\n"
 
-#: src/main/extractor.c:902
+#: src/main/extractor.c:910
 #, c-format
 msgid "Unloading plugin `%s' failed!\n"
 msgstr "Urläsning av instick \"%s\" misslyckades!\n"
@@ -756,6 +766,22 @@ msgstr "%s: flagga \"-W %s\" är tvetydig\n"
 #, c-format
 msgid "%s: option `-W %s' doesn't allow an argument\n"
 msgstr "%s: flagga \"-W %s\" tillåter inte ett argument\n"
+
+#: src/plugins/filenameextractor.c:60
+msgid "gigabytes"
+msgstr ""
+
+#: src/plugins/filenameextractor.c:62
+msgid "megabytes"
+msgstr ""
+
+#: src/plugins/filenameextractor.c:64
+msgid "kilobytes"
+msgstr ""
+
+#: src/plugins/filenameextractor.c:66
+msgid "bytes"
+msgstr ""
 
 #: src/plugins/jpegextractor.c:178
 #, c-format
@@ -1490,7 +1516,7 @@ msgstr "Serbokroatiska (Kyrillisk)"
 msgid "Farsi"
 msgstr "Farsi"
 
-#: src/plugins/ole2/ole2extractor.c:423
+#: src/plugins/ole2/ole2extractor.c:425
 #, c-format
 msgid "Revision #%u: Author '%s' worked on '%s'"
 msgstr "Revision %u: Upphovsmannen \"%s\" arbetade på \"%s\""

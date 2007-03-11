@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.5.14\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2007-01-01 20:16-0700\n"
+"POT-Creation-Date: 2007-03-11 17:53-0600\n"
 "PO-Revision-Date: 2006-05-23 17:58+0930\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <gnomevi-list@lists.sourceforge.net>\n"
@@ -122,12 +122,12 @@ msgstr ""
 msgid "Extract metadata from files."
 msgstr "Rút siêu dữ liệu ra tập tin."
 
-#: src/main/extract.c:190 src/main/extractor.c:1416
+#: src/main/extract.c:190 src/main/extractor.c:1436
 #, c-format
 msgid "%s - (binary)\n"
 msgstr "%s - (nhị phân)\n"
 
-#: src/main/extract.c:201 src/main/extractor.c:1421
+#: src/main/extract.c:201 src/main/extractor.c:1441
 #, c-format
 msgid "INVALID TYPE - %s\n"
 msgstr "KIỂU KHÔNG HỢP LỆ — %s\n"
@@ -180,23 +180,23 @@ msgstr "chủ đề"
 msgid "page count"
 msgstr "tổng số trang"
 
-#: src/main/extract.c:525
+#: src/main/extract.c:528
 #, c-format
 msgid "You must specify an argument for the `%s' option (option ignored).\n"
 msgstr "Bạn phải ghi rõ một đối số cho tùy chọn « %s » (tùy chọn bị bỏ qua).\n"
 
-#: src/main/extract.c:595
+#: src/main/extract.c:598
 #, c-format
 msgid "Use --help to get a list of options.\n"
 msgstr ""
 "Hãy sử dụng lệnh « --help » (trợ giúp) để xem một danh sách các tùy chọn.\n"
 
-#: src/main/extract.c:650
+#: src/main/extract.c:653
 #, c-format
 msgid "%% BiBTeX file\n"
 msgstr "%% tập tin BiBTeX\n"
 
-#: src/main/extract.c:670
+#: src/main/extract.c:673
 #, fuzzy, c-format
 msgid "Keywords for file %s:"
 msgstr "Từ khoá cho tập tin %s:\n"
@@ -686,12 +686,22 @@ msgstr ""
 msgid "hardware dependency"
 msgstr "phụ thuộc"
 
-#: src/main/extractor.c:514
+#: src/main/extractor.c:174
+#, fuzzy
+msgid "ripper"
+msgstr "Quảng cáo trước phím"
+
+#: src/main/extractor.c:175
+#, fuzzy
+msgid "filesize"
+msgstr "cỡ"
+
+#: src/main/extractor.c:522
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "Việc khởi động cơ chế cầm phít bị lỗi: %s\n"
 
-#: src/main/extractor.c:668
+#: src/main/extractor.c:676
 #, c-format
 msgid ""
 "Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
@@ -700,12 +710,12 @@ msgstr ""
 "Việc tháo gỡ ký hiệu « %s » trong thư viện « %s » bị lỗi, thì đã cố « %s », "
 "nhưng mà nó cũng không thành công. Gặp lỗi « %s » và « %s ».\n"
 
-#: src/main/extractor.c:697
+#: src/main/extractor.c:705
 #, c-format
 msgid "Loading `%s' plugin failed: %s\n"
 msgstr "Việc tải bổ sung « %s » bị lỗi: %s\n"
 
-#: src/main/extractor.c:902
+#: src/main/extractor.c:910
 #, c-format
 msgid "Unloading plugin `%s' failed!\n"
 msgstr "Việc bỏ tải bổ sung « %s » bị lỗi.\n"
@@ -764,6 +774,22 @@ msgstr "%s: tùy chọn « -W %s » là mơ hồ\n"
 #, c-format
 msgid "%s: option `-W %s' doesn't allow an argument\n"
 msgstr "%s: tùy chọn « -W %s » không cho phép đối số\n"
+
+#: src/plugins/filenameextractor.c:60
+msgid "gigabytes"
+msgstr ""
+
+#: src/plugins/filenameextractor.c:62
+msgid "megabytes"
+msgstr ""
+
+#: src/plugins/filenameextractor.c:64
+msgid "kilobytes"
+msgstr ""
+
+#: src/plugins/filenameextractor.c:66
+msgid "bytes"
+msgstr ""
 
 #: src/plugins/jpegextractor.c:178
 #, c-format
@@ -1496,7 +1522,7 @@ msgstr "Xéc-bi Cợ-rô-a-ti-a (Ki-rin)"
 msgid "Farsi"
 msgstr "Pha-xi"
 
-#: src/plugins/ole2/ole2extractor.c:423
+#: src/plugins/ole2/ole2extractor.c:425
 #, c-format
 msgid "Revision #%u: Author '%s' worked on '%s'"
 msgstr "Bản sửa đổi #%u: Tác giả « %s » đã làm việc « %s »."

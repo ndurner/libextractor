@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.5.14\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2007-01-01 20:16-0700\n"
+"POT-Creation-Date: 2007-03-11 17:53-0600\n"
 "PO-Revision-Date: 2006-05-22 20:46-0700\n"
 "Last-Translator: Kevin Patrick Scannell <scannell@SLU.EDU>\n"
 "Language-Team: Irish <gaeilge-gnulinux@lists.sourceforge.net>\n"
@@ -118,12 +118,12 @@ msgstr "extract [ROGHANNA] [COMHADAINM]*"
 msgid "Extract metadata from files."
 msgstr "Bain meiteashonraí as comhaid."
 
-#: src/main/extract.c:190 src/main/extractor.c:1416
+#: src/main/extract.c:190 src/main/extractor.c:1436
 #, c-format
 msgid "%s - (binary)\n"
 msgstr "%s - (dénártha)\n"
 
-#: src/main/extract.c:201 src/main/extractor.c:1421
+#: src/main/extract.c:201 src/main/extractor.c:1441
 #, c-format
 msgid "INVALID TYPE - %s\n"
 msgstr "CINEÁL NEAMHBHAILÍ - %s\n"
@@ -176,23 +176,23 @@ msgstr "ábhar"
 msgid "page count"
 msgstr "líon na leathanach"
 
-#: src/main/extract.c:525
+#: src/main/extract.c:528
 #, c-format
 msgid "You must specify an argument for the `%s' option (option ignored).\n"
 msgstr ""
 "Ní mór duit argóint a thabhairt i ndiaidh na rogha `%s' (á ligean thart).\n"
 
-#: src/main/extract.c:595
+#: src/main/extract.c:598
 #, c-format
 msgid "Use --help to get a list of options.\n"
 msgstr "Bain úsáid as '--help' le haghaidh níos mó roghanna.\n"
 
-#: src/main/extract.c:650
+#: src/main/extract.c:653
 #, c-format
 msgid "%% BiBTeX file\n"
 msgstr "%% Comhad BiBTeX\n"
 
-#: src/main/extract.c:670
+#: src/main/extract.c:673
 #, fuzzy, c-format
 msgid "Keywords for file %s:"
 msgstr "Lorgfhocail do chomhad %s:\n"
@@ -677,12 +677,22 @@ msgstr ""
 msgid "hardware dependency"
 msgstr "spleáchas"
 
-#: src/main/extractor.c:514
+#: src/main/extractor.c:174
+#, fuzzy
+msgid "ripper"
+msgstr "Tréiléar"
+
+#: src/main/extractor.c:175
+#, fuzzy
+msgid "filesize"
+msgstr "méid"
+
+#: src/main/extractor.c:522
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "Theip ar thúsú meicníocht na mbreiseán: %s!\n"
 
-#: src/main/extractor.c:668
+#: src/main/extractor.c:676
 #, c-format
 msgid ""
 "Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
@@ -692,12 +702,12 @@ msgstr ""
 "bhain mé triail as `%s', ach theip ar an cheann sin freisin.  Na hearráidí: `"
 "%s' agus `%s'.\n"
 
-#: src/main/extractor.c:697
+#: src/main/extractor.c:705
 #, c-format
 msgid "Loading `%s' plugin failed: %s\n"
 msgstr "Theip ar luchtú an bhreiseáin `%s': %s\n"
 
-#: src/main/extractor.c:902
+#: src/main/extractor.c:910
 #, c-format
 msgid "Unloading plugin `%s' failed!\n"
 msgstr "Theip ar dhíluchtú an bhreiseáin `%s'!\n"
@@ -756,6 +766,22 @@ msgstr "%s: Tá an rogha `-W %s' débhríoch\n"
 #, c-format
 msgid "%s: option `-W %s' doesn't allow an argument\n"
 msgstr "%s: ní cheadaítear argóint i ndiaidh na rogha `-W %s'\n"
+
+#: src/plugins/filenameextractor.c:60
+msgid "gigabytes"
+msgstr ""
+
+#: src/plugins/filenameextractor.c:62
+msgid "megabytes"
+msgstr ""
+
+#: src/plugins/filenameextractor.c:64
+msgid "kilobytes"
+msgstr ""
+
+#: src/plugins/filenameextractor.c:66
+msgid "bytes"
+msgstr ""
 
 #: src/plugins/jpegextractor.c:178
 #, c-format
@@ -1489,7 +1515,7 @@ msgstr "Seirbea-Chróitis (Coireallach)"
 msgid "Farsi"
 msgstr "Fairsis"
 
-#: src/plugins/ole2/ole2extractor.c:423
+#: src/plugins/ole2/ole2extractor.c:425
 #, c-format
 msgid "Revision #%u: Author '%s' worked on '%s'"
 msgstr "Leasú #%u: D'oibrigh údar '%s' ar '%s'"
