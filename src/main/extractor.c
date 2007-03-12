@@ -1093,7 +1093,8 @@ getKeywords (EXTRACTOR_ExtractorList * extractor,
 #endif
 
 #if HAVE_LIBBZ2
-  if ( (data[0] == 'B') &&
+  if ( (size >= 4) &&
+       (data[0] == 'B') &&
        (data[1] == 'Z') &&
        (data[2] == 'h') ) {
     /* now try bz2 decompression */

@@ -801,11 +801,12 @@ libextractor_tar_extract(const char * filename,
             }
           }
 
-          if(0 < format_length) {
+          if (0 < format_length) {
             strcpy(format + format_length, " TAR");
             prev = addKeyword(EXTRACTOR_FORMAT, format, prev);
-          }
-	  free(format);
+          } else {
+	    free(format);
+	  }
         }
       }
     }

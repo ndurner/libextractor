@@ -47,10 +47,11 @@ libextractor_mpeg_extract(const char * filename,
   mpeg2_state_t state;
   char format[256];
 
-  if ( ! ( (data[0]==0x00) &&
-	   (data[1]==0x00) &&
-	   (data[2]==0x01) &&
-	   ( (data[3]==0xB3) || (data[3]==0xBA) ) ) )
+  if ( ( size < 4) ||
+       ( ! ( (data[0]==0x00) &&
+	     (data[1]==0x00) &&
+	     (data[2]==0x01) &&
+	     ( (data[3]==0xB3) || (data[3]==0xBA) ) ) ) ) 
     return prev;
 
   handle = mpeg2_init();
