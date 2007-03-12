@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2007-03-11 17:53-0600\n"
+"POT-Creation-Date: 2007-03-11 18:21-0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -108,12 +108,12 @@ msgstr ""
 msgid "Extract metadata from files."
 msgstr ""
 
-#: src/main/extract.c:190 src/main/extractor.c:1436
+#: src/main/extract.c:190 src/main/extractor.c:1437
 #, c-format
 msgid "%s - (binary)\n"
 msgstr ""
 
-#: src/main/extract.c:201 src/main/extractor.c:1441
+#: src/main/extract.c:201 src/main/extractor.c:1442
 #, c-format
 msgid "INVALID TYPE - %s\n"
 msgstr ""

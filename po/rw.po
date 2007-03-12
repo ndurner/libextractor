@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.4.2\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2007-03-11 17:53-0600\n"
+"POT-Creation-Date: 2007-03-11 18:21-0600\n"
 "PO-Revision-Date: 2005-04-04 10:55-0700\n"
 "Last-Translator: Steven Michael Murphy <murf@e-tools.com>\n"
 "Language-Team: Kinyarwanda <translation-team-rw@lists.sourceforge.net>\n"
@@ -134,12 +134,12 @@ msgstr ""
 msgid "Extract metadata from files."
 msgstr "Bivuye Idosiye"
 
-#: src/main/extract.c:190 src/main/extractor.c:1436
+#: src/main/extract.c:190 src/main/extractor.c:1437
 #, fuzzy, c-format
 msgid "%s - (binary)\n"
 msgstr "%s-(Nyabibiri"
 
-#: src/main/extract.c:201 src/main/extractor.c:1441
+#: src/main/extract.c:201 src/main/extractor.c:1442
 #, c-format
 msgid "INVALID TYPE - %s\n"
 msgstr ""
