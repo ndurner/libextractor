@@ -1184,7 +1184,7 @@ static int dataLength(int_32 type, hPTR_t p, int_32 count, int onDisk)
 /**
  */
 static void copyData(int_32 type, /*@out@*/ void * dstPtr, const void * srcPtr,
-		int_32 c, int dataLength)
+		int_32 c, int dataLengtha)
 	/*@modifies *dstPtr @*/
 {
     const char ** src;
@@ -1209,7 +1209,7 @@ static void copyData(int_32 type, /*@out@*/ void * dstPtr, const void * srcPtr,
 	break;
 
     default:
-	memmove(dstPtr, srcPtr, dataLength);
+	memmove(dstPtr, srcPtr, dataLengtha);
 	break;
     }
 }
@@ -1772,7 +1772,6 @@ unsigned int headerSizeof(/*@null@*/ Header h, enum hMagic magicp)
 {
     indexEntry entry;
     unsigned int size = 0;
-    unsigned int pad = 0;
     int i;
 
     if (h == NULL)
@@ -1817,7 +1816,6 @@ unsigned int headerSizeof(/*@null@*/ Header h, enum hMagic magicp)
 	    diff = typeSizes[type] - (size % typeSizes[type]);
 	    if (diff != typeSizes[type]) {
 		size += diff;
-		pad += diff;
 	    }
 	}
 
@@ -2132,7 +2130,6 @@ Header headerLoad(/*@kept@*/ void * uh)
     char * dataStart;
     indexEntry entry;
     int rdlen;
-    int i;
 
     /* Sanity checks on header intro. */
     if (hdrchkTags(il) || hdrchkData(dl))
@@ -2170,7 +2167,6 @@ Header headerLoad(/*@kept@*/ void * uh)
     }
 
     entry = h->index;
-    i = 0;
     if (!(htonl(pe->tag) < HEADER_I18NTABLE)) {
 	h->flags |= HEADERFLAG_LEGACY;
 	entry->info.type = REGION_TAG_TYPE;
@@ -2303,7 +2299,6 @@ Header headerRead(FD_t fd, enum hMagic magicp)
 	/*@modifies fd @*/
 {
     int_32 block[4];
-    int_32 reserved;
     int_32 * ei = NULL;
     int_32 il;
     int_32 dl;
@@ -2328,7 +2323,7 @@ Header headerRead(FD_t fd, enum hMagic magicp)
 	magic = block[i++];
 	if (memcmp(&magic, header_magic, sizeof(magic)))
 	    goto exit;
-	reserved = block[i++];
+	i++;
     }
 
     il = ntohl(block[i]);	i++;
@@ -2889,7 +2884,6 @@ static void headerMergeLegacySigs(Header h, const Header sig)
     HeaderIterator hi;
     int_32 tag, type, count;
     const void * ptr;
-    int xx;
 
     /*@-mods@*/ /* FIX: undocumented modification of sig */
     for (hi = headerInitIterator(sig);
@@ -2932,7 +2926,7 @@ static void headerMergeLegacySigs(Header h, const Header sig)
 	}
 	if (ptr == NULL) continue;	/* XXX can't happen */
 	if (!headerIsEntry(h, tag))
-	    xx = hae(h, tag, type, ptr, count);
+	  hae(h, tag, type, ptr, count);
     }
     hi = headerFreeIterator(hi);
 }
