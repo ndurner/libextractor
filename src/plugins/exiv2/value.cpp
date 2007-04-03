@@ -37,6 +37,7 @@ EXIV2_RCSID("@(#) $Id: value.cpp 560 2005-04-17 11:51:32Z ahuggel $");
 #include "error.hpp"
 
 // + standard includes
+#include <cstdlib>
 #include <iostream>
 #include <iomanip>
 #include <sstream>

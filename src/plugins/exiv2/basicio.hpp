@@ -34,6 +34,8 @@
 #include "types.hpp"
 
 // + standard includes
+#include <cstdlib>
+#include <memory>
 #include <string>
 #include <vector>
 #include <cstdio>
