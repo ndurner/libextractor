@@ -1,6 +1,6 @@
 /*
      This file is part of libextractor.
-     (C) 2002, 2003, 2004, 2006 Vidyut Samanta and Christian Grothoff
+     (C) 2002, 2003, 2004, 2006, 2007 Vidyut Samanta and Christian Grothoff
 
      libextractor is free software; you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published
@@ -205,7 +205,8 @@ libextractor_id3v23_extract(const char * filename,
 			    word,
 			    tmap[i].type);	
 	} else {
-	  free(word);
+	  if (word != NULL)
+	    free(word);
 	}
 	break;
       }
