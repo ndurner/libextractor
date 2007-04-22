@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.5.14\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2007-03-11 18:21-0600\n"
+"POT-Creation-Date: 2007-04-22 11:49-0600\n"
 "PO-Revision-Date: 2007-03-23 23:16+0100\n"
 "Last-Translator: Nils Durner <durner@gnunet.org>\n"
 "Language-Team: German <translation-team-de@lists.sourceforge.net>\n"
@@ -31,7 +31,8 @@ msgstr ""
 
 #: src/main/extract.c:52
 #, c-format
-msgid "Arguments mandatory for long options are also mandatory for short options.\n"
+msgid ""
+"Arguments mandatory for long options are also mandatory for short options.\n"
 msgstr ""
 "Argumente, die für lange Optionen notwendig sind, sind ebenfalls für die\n"
 "Optionen in Kurzform notwendig.\n"
@@ -45,8 +46,12 @@ msgid "print output in bibtex format"
 msgstr "Ausgabe im BibTeX format"
 
 #: src/main/extract.c:130
-msgid "use the generic plaintext extractor for the language with the 2-letter language code LANG"
-msgstr "generischen Klartext-extractor für die Sprache mit dem 2-Buchstabenkürzel LANG verwenden"
+msgid ""
+"use the generic plaintext extractor for the language with the 2-letter "
+"language code LANG"
+msgstr ""
+"generischen Klartext-extractor für die Sprache mit dem 2-Buchstabenkürzel "
+"LANG verwenden"
 
 #: src/main/extract.c:132
 msgid "remove duplicates only if types match"
@@ -54,11 +59,14 @@ msgstr "doppelte Einträge nur entfernen, wenn die Art übereinstimmt"
 
 #: src/main/extract.c:134
 msgid "use the filename as a keyword (loads filename-extractor plugin)"
-msgstr "Dateinamen als Schlüsselwort verwenden (filename-extractor-Erweiterung wird geladen)"
+msgstr ""
+"Dateinamen als Schlüsselwort verwenden (filename-extractor-Erweiterung wird "
+"geladen)"
 
 #: src/main/extract.c:136
 msgid "produce grep-friendly output (all results on one line per file)"
-msgstr "grep-freundliche Ausgabe erzeugen (alle Ergebnisse als eine Zeile pro Datei)"
+msgstr ""
+"grep-freundliche Ausgabe erzeugen (alle Ergebnisse als eine Zeile pro Datei)"
 
 #: src/main/extract.c:138
 msgid "print this help"
@@ -66,7 +74,8 @@ msgstr "diese Hilfe anzeigen"
 
 #: src/main/extract.c:140
 msgid "compute hash using the given ALGORITHM (currently sha1 or md5)"
-msgstr "Hash gemäß dem angegebenen ALGORITHMUS errechnen (z.Zt. »sha1« oder »md5«)"
+msgstr ""
+"Hash gemäß dem angegebenen ALGORITHMUS errechnen (z.Zt. »sha1« oder »md5«)"
 
 #: src/main/extract.c:142
 msgid "load an extractor plugin named LIBRARY"
@@ -82,7 +91,9 @@ msgstr "Standardsatz der extractor-Erweiterungen nicht verwenden"
 
 #: src/main/extract.c:148
 msgid "print only keywords of the given TYPE (use -L to get a list)"
-msgstr "nur Schlüsselwörter einer bestimmten ART ausgeben (mit -L die Liste anzeigen lassen)"
+msgstr ""
+"nur Schlüsselwörter einer bestimmten ART ausgeben (mit -L die Liste anzeigen "
+"lassen)"
 
 #: src/main/extract.c:150
 msgid "remove duplicates even if keyword types do not match"
@@ -112,82 +123,70 @@ msgstr "extract [OPTIONEN] [DATEINAME]*"
 msgid "Extract metadata from files."
 msgstr "Metadaten aus den Dateien extrahieren."
 
-#: src/main/extract.c:190
-#: src/main/extractor.c:1437
+#: src/main/extract.c:190 src/main/extractor.c:1437
 #, c-format
 msgid "%s - (binary)\n"
 msgstr "%s - (binär)\n"
 
-#: src/main/extract.c:201
-#: src/main/extractor.c:1442
+#: src/main/extract.c:201 src/main/extractor.c:1442
 #, c-format
 msgid "INVALID TYPE - %s\n"
 msgstr "UNGÜLTIGE ART - %s\n"
 
-#: src/main/extract.c:315
-#: src/main/extractor.c:47
+#: src/main/extract.c:315 src/main/extractor.c:47
 msgid "title"
 msgstr "Titel"
 
-#: src/main/extract.c:317
-#: src/main/extractor.c:45
+#: src/main/extract.c:317 src/main/extractor.c:45
 msgid "filename"
 msgstr "Dateiname"
 
-#: src/main/extract.c:322
-#: src/main/extractor.c:48
+#: src/main/extract.c:322 src/main/extractor.c:48
 msgid "author"
 msgstr "Autor"
 
-#: src/main/extract.c:326
-#: src/main/extractor.c:50
+#: src/main/extract.c:326 src/main/extractor.c:50
 msgid "description"
 msgstr "Beschreibung"
 
-#: src/main/extract.c:328
-#: src/main/extractor.c:62
+#: src/main/extract.c:328 src/main/extractor.c:62
 msgid "keywords"
 msgstr "Schlüsselwörter"
 
-#: src/main/extract.c:330
-#: src/main/extractor.c:51
+#: src/main/extract.c:330 src/main/extractor.c:51
 msgid "comment"
 msgstr "Kommentar"
 
-#: src/main/extract.c:334
-#: src/main/extractor.c:52
+#: src/main/extract.c:334 src/main/extractor.c:52
 msgid "date"
 msgstr "Datum"
 
-#: src/main/extract.c:336
-#: src/main/extractor.c:74
+#: src/main/extract.c:336 src/main/extractor.c:74
 msgid "creation date"
 msgstr "Datum der Erstellung"
 
-#: src/main/extract.c:364
-#: src/main/extractor.c:53
+#: src/main/extract.c:364 src/main/extractor.c:53
 msgid "publisher"
 msgstr "Herausgeber"
 
-#: src/main/extract.c:368
-#: src/main/extractor.c:59
+#: src/main/extract.c:368 src/main/extractor.c:59
 msgid "organization"
 msgstr "Organisation"
 
-#: src/main/extract.c:372
-#: src/main/extractor.c:61
+#: src/main/extract.c:372 src/main/extractor.c:61
 msgid "subject"
 msgstr "Gegenstand"
 
-#: src/main/extract.c:376
-#: src/main/extractor.c:78
+#: src/main/extract.c:376 src/main/extractor.c:78
 msgid "page count"
 msgstr "Seitenanzahl"
 
 #: src/main/extract.c:528
 #, c-format
 msgid "You must specify an argument for the `%s' option (option ignored).\n"
-msgstr "Sie müssen ein Argument für die Option »%s« angeben (Option wird ignoriert).\n"
+msgstr ""
+"Sie müssen ein Argument für die Option »%s« angeben (Option wird "
+"ignoriert).\n"
 
 #: src/main/extract.c:598
 #, c-format
@@ -691,8 +690,12 @@ msgstr "Initialisierung des Plugin-Mechanismus' ist fehlgeschlagen: %s.\n"
 
 #: src/main/extractor.c:676
 #, c-format
-msgid "Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that failed also.  Errors are: `%s' and `%s'.\n"
-msgstr "Das Auflösen von Symbol `%s' in Bibliothek `%s' ist fehlgeschlagen, deshalb wurde `%s' versucht, was aber auch fehlschlug. Fehler sind: `%s' und `%s'.\n"
+msgid ""
+"Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
+"failed also.  Errors are: `%s' and `%s'.\n"
+msgstr ""
+"Das Auflösen von Symbol `%s' in Bibliothek `%s' ist fehlgeschlagen, deshalb "
+"wurde `%s' versucht, was aber auch fehlschlug. Fehler sind: `%s' und `%s'.\n"
 
 #: src/main/extractor.c:705
 #, c-format
@@ -719,8 +722,7 @@ msgstr "%s: Option »--%s« erwartet kein Argument\n"
 msgid "%s: option `%c%s' doesn't allow an argument\n"
 msgstr "%s: Option »%c%s« erwartet kein Argument\n"
 
-#: src/main/getopt.c:732
-#: src/main/getopt.c:903
+#: src/main/getopt.c:732 src/main/getopt.c:903
 #, c-format
 msgid "%s: option `%s' requires an argument\n"
 msgstr "%s: Option »%s« erwartet ein Argument\n"
@@ -745,8 +747,7 @@ msgstr "%s: unzulässige Option -- %c\n"
 msgid "%s: invalid option -- %c\n"
 msgstr "%s: ungültige Option -- %c\n"
 
-#: src/main/getopt.c:822
-#: src/main/getopt.c:952
+#: src/main/getopt.c:822 src/main/getopt.c:952
 #, c-format
 msgid "%s: option requires an argument -- %c\n"
 msgstr "%s: Option erwartet ein Argument -- %c\n"
@@ -762,19 +763,19 @@ msgid "%s: option `-W %s' doesn't allow an argument\n"
 msgstr "%s: Option »-W %s« erwartet kein Argument\n"
 
 #: src/plugins/filenameextractor.c:60
-msgid "gigabytes"
-msgstr "Gigabytes"
+msgid "GB"
+msgstr ""
 
 #: src/plugins/filenameextractor.c:62
-msgid "megabytes"
-msgstr "Megabytes"
+msgid "MB"
+msgstr ""
 
 #: src/plugins/filenameextractor.c:64
-msgid "kilobytes"
-msgstr "Kilobytes"
+msgid "KB"
+msgstr ""
 
 #: src/plugins/filenameextractor.c:66
-msgid "bytes"
+msgid "Bytes"
 msgstr "Bytes"
 
 #: src/plugins/jpegextractor.c:178
@@ -1420,13 +1421,11 @@ msgstr "JPop"
 msgid "Synthpop"
 msgstr "Synthpop"
 
-#: src/plugins/mp3extractor.c:444
-#: src/plugins/wavextractor.c:113
+#: src/plugins/mp3extractor.c:444 src/plugins/wavextractor.c:113
 msgid "stereo"
 msgstr "Stereo"
 
-#: src/plugins/mp3extractor.c:444
-#: src/plugins/wavextractor.c:113
+#: src/plugins/mp3extractor.c:444 src/plugins/wavextractor.c:113
 msgid "mono"
 msgstr "Mono"
 
@@ -1549,16 +1548,24 @@ msgstr "ALLOCSIZE vergrößern (in %s).\n"
 msgid "codec: %s, %u fps, %u ms"
 msgstr "Codec: %s, %u fps, %u ms"
 
-#: src/plugins/rpm/rpmextractor.c:3048
+#: src/plugins/rpm/rpmextractor.c:3042
 #, c-format
 msgid "Source RPM %d.%d"
 msgstr "Quell-RPM %d.%d"
 
-#: src/plugins/rpm/rpmextractor.c:3053
+#: src/plugins/rpm/rpmextractor.c:3047
 #, c-format
 msgid "Binary RPM %d.%d"
 msgstr "Binäres RPM %d.%d"
 
+#~ msgid "gigabytes"
+#~ msgstr "Gigabytes"
+
+#~ msgid "megabytes"
+#~ msgstr "Megabytes"
+
+#~ msgid "kilobytes"
+#~ msgstr "Kilobytes"
+
 #~ msgid "Fatal: could not allocate (%s at %s:%d).\n"
 #~ msgstr "Fatal: Allokieren nicht möglich (%s bei %s:%d).\n"
-

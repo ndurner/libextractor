@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2007-03-11 18:21-0600\n"
+"POT-Creation-Date: 2007-04-22 11:49-0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -744,19 +744,19 @@ msgid "%s: option `-W %s' doesn't allow an argument\n"
 msgstr ""
 
 #: src/plugins/filenameextractor.c:60
-msgid "gigabytes"
+msgid "GB"
 msgstr ""
 
 #: src/plugins/filenameextractor.c:62
-msgid "megabytes"
+msgid "MB"
 msgstr ""
 
 #: src/plugins/filenameextractor.c:64
-msgid "kilobytes"
+msgid "KB"
 msgstr ""
 
 #: src/plugins/filenameextractor.c:66
-msgid "bytes"
+msgid "Bytes"
 msgstr ""
 
 #: src/plugins/jpegextractor.c:178
@@ -1525,12 +1525,12 @@ msgstr ""
 msgid "codec: %s, %u fps, %u ms"
 msgstr ""
 
-#: src/plugins/rpm/rpmextractor.c:3048
+#: src/plugins/rpm/rpmextractor.c:3042
 #, c-format
 msgid "Source RPM %d.%d"
 msgstr ""
 
-#: src/plugins/rpm/rpmextractor.c:3053
+#: src/plugins/rpm/rpmextractor.c:3047
 #, c-format
 msgid "Binary RPM %d.%d"
 msgstr ""

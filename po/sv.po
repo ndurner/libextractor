@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.5.14\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2007-03-11 18:21-0600\n"
+"POT-Creation-Date: 2007-04-22 11:49-0600\n"
 "PO-Revision-Date: 2006-05-23 22:17+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
@@ -768,20 +768,21 @@ msgid "%s: option `-W %s' doesn't allow an argument\n"
 msgstr "%s: flagga \"-W %s\" tillåter inte ett argument\n"
 
 #: src/plugins/filenameextractor.c:60
-msgid "gigabytes"
+msgid "GB"
 msgstr ""
 
 #: src/plugins/filenameextractor.c:62
-msgid "megabytes"
+msgid "MB"
 msgstr ""
 
 #: src/plugins/filenameextractor.c:64
-msgid "kilobytes"
+msgid "KB"
 msgstr ""
 
 #: src/plugins/filenameextractor.c:66
-msgid "bytes"
-msgstr ""
+#, fuzzy
+msgid "Bytes"
+msgstr "Blues"
 
 #: src/plugins/jpegextractor.c:178
 #, c-format
@@ -1555,12 +1556,12 @@ msgstr "Öka ALLOCSIZE (i %s).\n"
 msgid "codec: %s, %u fps, %u ms"
 msgstr "kodek: %s, %u bilder/s, %u ms"
 
-#: src/plugins/rpm/rpmextractor.c:3048
+#: src/plugins/rpm/rpmextractor.c:3042
 #, c-format
 msgid "Source RPM %d.%d"
 msgstr "Källkods-RPM %d.%d"
 
-#: src/plugins/rpm/rpmextractor.c:3053
+#: src/plugins/rpm/rpmextractor.c:3047
 #, c-format
 msgid "Binary RPM %d.%d"
 msgstr "Binär RPM %d.%d"
