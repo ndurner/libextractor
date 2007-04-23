@@ -230,4 +230,4 @@ libextractor_id3v24_extract(const char * filename,
   return prev;
 }
 
-/* end of id3v2extractor.c */
+/* end of id3v24extractor.c */

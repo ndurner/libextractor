@@ -63,7 +63,7 @@ libextractor_filename_extract(const char * filename,
     else if (size >= 1000)
       snprintf(keyword->keyword, 13, "%.2f %s", size / 1000.0, _("KB"));
     else
-      snprintf(keyword->keyword, 13, "%.2f %s", size, _("Bytes"));
+      snprintf(keyword->keyword, 13, "%.2f %s", (double) size, _("Bytes"));
     
     prev = keyword;
   }
