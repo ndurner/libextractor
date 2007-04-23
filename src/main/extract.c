@@ -267,15 +267,19 @@ printSelectedKeywordsGrepFriendly(FILE * handle,
  */
 static char *
 str_splice(const char * title,
-       const char * auth,
-       const char * year)
-{
-  char * temp = (char*)malloc(sizeof(char)*16);
+	   const char * auth,
+	   const char * year) {
+  char * temp = malloc(16);
   int i = 0;
-  memset(temp, 0, sizeof(char)*16);
-  snprintf(temp, 15, "%.5s%.5s%.5s", auth, year, title);
-  for ( i = 0; i < strlen(temp); i++ ) {
-    if ( !isalnum(temp[i]) )
+
+  snprintf(temp, 
+	   15,
+	   "%.5s%.5s%.5s", 
+	   auth, 
+	   year, 
+	   title);
+  for (i=0;i<strlen(temp);i++ ) {
+    if (! isalnum(temp[i]) )
       temp[i] = '_';
     else
       temp[i] = tolower(temp[i]);
@@ -311,6 +315,7 @@ printSelectedKeywordsBibtex (FILE * handle,
       const char * pages = NULL;
       char * year = NULL;
       char * month = NULL;
+      char * tmp;
 
       title = EXTRACTOR_extractLastByString(_("title"), keywords);
       if ( !title )
@@ -377,7 +382,11 @@ printSelectedKeywordsBibtex (FILE * handle,
       if ( pages )
 	last = pages;
 
-      fprintf(handle, "@misc{ %s,\n",str_splice(title, author, year));
+      tmp = str_splice(title, author, year);
+      fprintf(handle, 
+	      "@misc{ %s,\n", 
+	      tmp);
+      free(tmp);      
       if ( title )
 	fprintf(handle, "    title = \"%s\"%s\n", title,
 	    (last == title)?"":",");
