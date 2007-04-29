@@ -58,8 +58,8 @@ int main(int argc, char * argv[]){
 				      "-libextractor_split");
   list = EXTRACTOR_getKeywords(arg,
 			       "/etc/resolv.conf");
-  if (3 != EXTRACTOR_countKeywords(list)) {
-    printf("Invalid number of keywords (3 != %d)\n",
+  if (4 != EXTRACTOR_countKeywords(list)) {
+    printf("Invalid number of keywords (4 != %d)\n",
 	   EXTRACTOR_countKeywords(list));
     return -1;
   }
