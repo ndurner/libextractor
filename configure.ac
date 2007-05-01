@@ -14,7 +14,7 @@ AC_PROG_CC
 AC_PROG_CPP
 AC_PROG_CXX
 AC_CHECK_PROG(HAVE_CXX, $CXX, yes, no)
-AM_CONDITIONAL(HAVE_CXX, test "x$HAVE_CXX" == "xyes")
+AM_CONDITIONAL(HAVE_CXX, test "x$HAVE_CXX" = "xyes")
 
 AC_PROG_INSTALL
 AC_PROG_LN_S
@@ -236,7 +236,7 @@ AC_ARG_ENABLE(glib,
 
 if test x$without_glib != xtrue
 then
-  if test $with_gnu_ld == yes
+  if test $with_gnu_ld = yes
   then
 # We need both GNU LD and GLIB here!
     AM_CONDITIONAL(HAVE_GLIB,true)
@@ -269,7 +269,7 @@ qt_svg=0
 xpdf=0
 exiv2=0
 
-if test "x$HAVE_CXX" == "xyes"
+if test "x$HAVE_CXX" = "xyes"
 then
   
 # check for Qt 4
