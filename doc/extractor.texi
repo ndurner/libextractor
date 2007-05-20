@@ -1,0 +1,690 @@
+\input texinfo                  @c -*- Texinfo -*-
+@c % The structure of this document is based on the
+@c % Texinfo manual from libgcrypt by Werner Koch and 
+@c % and Moritz Schulte.
+@c %**start of header
+@setfilename extractor.info
+@include version.texi
+@settitle The libextractor Reference Manual
+@c Unify some of the indices.
+@c %**end of header
+@copying
+This manual is for libextractor
+(version @value{VERSION}, @value{UPDATED}),
+which is GNU's library for meta data extraction.
+
+Copyright @copyright{} 2007 Christian Grothoff
+
+@quotation
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU General Public License as published by the
+Free Software Foundation; either version 2 of the License, or (at your
+option) any later version. The text of the license can be found in the
+section entitled ``Copying''.
+@end quotation
+@end copying
+
+@dircategory GNU Libraries
+@direntry
+* libextractor: (extractor).  Meta data extraction library.
+@end direntry
+
+
+
+@c
+@c Titlepage
+@c
+@setchapternewpage odd
+@titlepage
+@title The libextractor Reference Manual
+@subtitle Version @value{VERSION}
+@subtitle @value{UPDATED}
+@author Christian Grothoff (@email{christian@@grothoff.org})
+
+@page
+@vskip 0pt plus 1filll
+@insertcopying
+@end titlepage
+
+
+@summarycontents
+@contents
+@page
+
+
+@ifnottex
+@node Top
+@top The libextractor Library
+@insertcopying
+@end ifnottex
+
+
+@menu
+* Introduction::                 What is @acronym{libextractor}.
+* Preparation::                  What you should do before using the library.
+* Generalities::                 General library functions and data types.
+* Extracting meta data::         How to use @acronym{libextractor} to obtain meta data.
+* Language bindings::            How to use @acronym{libextractor} from languages other than C.
+* Utility functions::            Utility functions of @acronym{libextractor}.
+* Existing Plugins::             What plugins are available.
+* Writing new Plugins::          How to write new plugins for @acronym{libextractor}.
+* Internal utility functions::   Utility functions of @acronym{libextractor} for writing plugins.
+* Reporting bugs::               How to report bugs or request new features.
+
+Appendices
+
+* Copying::                     The GNU General Public License says how you
+                                can copy and share some parts of `libextractor'.
+
+Indices
+
+* Concept Index::               Index of concepts and programs.
+* Function and Data Index::     Index of functions, variables and data types.
+* Type Index::                  Index of data types.
+
+@end menu
+
+
+
+@c **********************************************************
+@c *******************  Introduction  ***********************
+@c **********************************************************
+@node Introduction
+@chapter Introduction
+
+@cindex error handling
+@acronym{libextractor} is GNU's library for extracting meta data from
+files.  Meta data includes format information (such as mime type,
+image dimensions, color depth, recording frequency), content
+descriptions (such as document title or document description) and
+copyright information (such as license, author and contributors).
+Meta data extraction is an inherently uncertain business --- a parse
+error can be a corrupt file, an incompatibility in the file format
+version, an entirely different file format or a bug in the parser.  As
+a result of this uncertainty, @acronym{libextractor} deliberately
+avoids to ever report any errors.  Unexpected file contents simply
+result in less or possibly no meta data being extracted.  
+
+@cindex plugin
+@acronym{libextractor} uses plugins to handle various file formats.
+Technically a plugin can support multiple file formats; however, most
+plugins only support one particular format.  @acronym{libextractor}
+uses a certain set of @emph{default} plugins.  Certain additional
+plugins are only used if specifically requested.  Optional plugins
+exist for computing various cryptographic hash functions (the hash of
+the file is returned as meta data), thumbnail creation for images and
+full-text extraction (based on language-specific dictionaries).  A few
+plugins exist to manipulate results from other plugins, such as
+splitting meta data into individual words at particular characters and
+converting the output to lower case letters.
+
+@acronym{libextractor} is distributed with the @command{extract} 
+command@footnote{Some distributions ship @command{extract} in a
+seperate package.} which is a command-line tool for extracting
+meta data.  @command{extract} is given a list of filenames and 
+prints the resulting meta data to the console.  The @command{extract}
+source code also serves as an advanced example for how to use
+@acronym{libextractor}.  
+
+This manual focuses on providing documentation for writing software
+with @acronym{libextractor}.  The only relevant parts for end-users
+are the chapter on compiling and installing @acronym{libextractor}
+(@xref{Preparation}.).  Also, the chapter on existing plugins maybe of
+interest (@xref{Existing Plugins}.).  Additional documentation for
+end-users can be find in the man page on @command{extract} (using
+@verb{|man extract|}).
+
+@cindex license
+@acronym{libextractor} is licensed under the GNU Public License.  The
+developers have frequently received requests to license GNU
+libextractor under alternative terms.  However, @acronym{libextractor}
+borrows plenty of GPL-licensed code from various other projects.
+Hence we cannot change the license (even if we wanted to).@footnote{It
+maybe possible to switch to GPLv3 in the future.  For this, an audit
+of the license status of our dependencies would be required.  The new
+code that was developed specifically for @acronym{libextractor} has
+always been licensed under GPLv2 @emph{or any later version}.}
+
+@node Preparation
+@chapter Preparation
+
+Compiling @acronym{libextractor} follows the standard GNU autotools
+build process using @command{configure} and @command{make}.  For
+details, read the @file{INSTALL} file and query 
+@verb{|./configure --help|} for additional options.
+
+@acronym{libextractor} has various dependencies, some of which are
+optional.  You can find the current list specified in terms of Debian
+GNU/Linux packages in @file{README.debian}.  Note that transitive
+dependencies are @emph{not} listed.
+
+Once you have compiled and installed @acronym{libextractor}, you
+should have a file @file{include/extractor.h} installed in your
+include directory.  This file should be the starting point for your C
+and C++ development with @acronym{libextractor}.  The build process
+also installs the @file{extract} binary and man pages for
+@file{extract} and @acronym{libextractor}.  The @file{extract} man
+page documents the @file{extract} tool.  The @acronym{libextractor}
+man page gives a brief summary of the C API for
+@acronym{libextractor}.  
+
+@cindex packageing
+@cindex directory structure
+@cindex plugin
+@cindex environment variables
+@vindex LIBEXTRACTOR_PREFIX
+When you install @acronym{libextractor}, various plugins will be
+installed in the @file{lib/libextractor/} directory.  The main library
+will be installed as @file{lib/libextractor.so}.  Note that
+@acronym{libextractor} will attempt to find the plugins relativ to the
+path of the main library.  Consequently, a package manager can move
+the library and its plugins to a different location later --- as long
+as the relative path between the main library and the plugins is
+preserved.  As a method of last resort, the user can specify an
+environment variable @verb{|LIBEXTRACTOR_PREFIX|}.  If
+@acronym{libextractor} cannot locate a plugin, it will look in
+@verb{|LIBEXTRACTOR_PREFIX/lib/libextractor/|}.
+
+
+@node Generalities
+@chapter Generalities
+
+Each public symbol exported by @acronym{libextractor} has the prefix
+@verb{|EXTRACTOR_|}.  All-caps names are used for constants.  For the
+impatient, the minimal C code for using @acronym{libextractor} (on the
+executing binary itself) looks like this:
+
+@verbatim
+#include <extractor.h>
+int main(int argc, char ** argv) {
+  EXTRACTOR_ExtractorList * plugins 
+    = EXTRACTOR_loadDefaultLibraries();
+  EXTRACTOR_KeywordList * keywords 
+    = EXTRACTOR_getKeywords(plugins, argv[0]);
+  EXTRACTOR_printKeywords(stdout, keywords);
+  EXTRACTOR_freeKeywords(keywords);
+  EXTRACTOR_removeAll(plugins);
+  return 0;
+}
+@end verbatim
+
+@acronym{libextractor} defines three main data types.  Understanding
+these types is key for programming with @acronym{libextractor}.
+
+@tindex EXTRACTOR_KeywordType
+@findex EXTRACTOR_getHighestKeywordTypeNumber
+First, @verb{|EXTRACTOR_KeywordType|} is a C enum which defines a
+list of over 100 different types of meta data.  The total number can
+differ between different @acronym{libextractor} releases; the maximum
+value for the current release can be obtained using the
+@verb{|EXTRACTOR_getHighestKeywordTypeNumber|} function.
+
+@findex EXTRACTOR_getKeywordTypeAsString
+@cindex gettext
+@cindex internationalization
+The function @verb{|EXTRACTOR_getKeywordTypeAsString|} can be used to
+obtain an English string @samp{s} describing the meta data type.  The
+string maybe translated into other languages using GNU gettext with
+the domain set to @acronym{libextractor}
+(@verb{|dgettext("libextractor", s)|}).
+
+@tindex EXTRACTOR_KeywordList
+@cindex UTF-8
+@cindex character set
+@cindex internationalization
+Second, @acronym{libextractor} uses a linked list
+@verb{|EXTRACTOR_KeywordList|} to store extracted meta data.  The
+structure is extremely simple, consisting of a field @samp{keyword}
+which holds the meta data as a zero terminated UTF-8 string, a field
+@samp{keywordType} of type @verb{|EXTRACTOR_KeywordType|} which
+describes the type of the meta data and a @samp{next} pointer to the
+next meta data record (or @verb{|NULL|} for the last entry).
+
+@findex EXTRACTOR_freeKeywords
+Clients are allowed to directly access the keyword list.  After
+returning the list to the client, @acronym{libextractor} makes no
+assumptions about how the client may process the list.  The client is
+responsible for freeing both the linked list and the keywords stored
+in the linked list.  The @verb{|EXTRACTOR_freeKeywords|} function
+provides a convenient way to do so.
+
+@tindex EXTRACTOR_ExtractorList
+Finally, the third data type used by @acronym{libextractor} is 
+the @verb{|EXTRACTOR_ExtractorList|}.  This linked list is used
+to store information about the plugins that @acronym{libextractor}
+is using to obtain meta data.  The struct contains information
+identifying the plugin, a pointer to the meta data extraction
+function provided by the plugin and options for the plugin.  
+Most clients should never be concerned with the internals of this
+type.  
+
+@findex EXTRACTOR_loadDefaultLibraries
+@findex EXTRACTOR_removeAll
+@cindex reentrant
+@cindex concurrency
+@cindex threads
+Clients should use the @verb{|EXTRACTOR_loadDefaultLibraries|}
+function to create an extractor list with the default set of plugins.
+Additional functions are provided for loading optional plugins.  Once
+the meta data extraction is complete, clients should call
+@verb{|EXTRACTOR_removeAll|} to unload the plugins and free the
+extractor list.  Note that loading and unloading the plugins is a
+relatively costly operation.  If possible, programmers should avoid
+needlessly loading and unloading the plugins.  @acronym{libextractor}
+is reentrant, so the same set of plugins can be safely used
+concurrently by multiple threads.
+
+
+@node Extracting meta data
+@chapter Extracting meta data
+
+@findex EXTRACTOR_getKeywords
+@findex EXTRACTOR_getKeywords2
+The main functions for extracting keywords with @acronym{libextractor}
+are @verb{|EXTRACTOR_getKeywords|} and
+@verb{|EXTRACTOR_getKeywords2|}.  The first argument to both functions
+is an extractor list which specifies the set of plugins that should be
+used for extracting meta data.   Both functions return a linked list
+of keywords (of type @verb{|EXTRACTOR_KeywordList|}).
+
+The difference between the two functions is in how the file from which
+the meta data should be obtained is specified. The
+@verb{|EXTRACTOR_getKeywords|} function simply takes the name of the
+file as its second argument.  The @verb{|EXTRACTOR_getKeywords2|}
+function takes a (read-only) buffer and its size (in bytes) as
+arguments, allowing meta data extraction from memory.
+
+@cindex SIGBUS
+@cindex bus error
+Meta data extraction should never really fail -- at worst,
+@acronym{libextractor} should return a @verb{|NULL|} pointer
+indicating that no meta data was found.  By design,
+@acronym{libextractor} should never crash or leak memory, even given
+corrupt files as input.  Note however, that running
+@acronym{libextractor} on a corrupt file system (or incorrectly
+@verb{|mmap|}ed files) can result in the operating system sending a
+SIGBUS (bus error) to the process.  @acronym{libextractor} will
+@emph{not} attempt to catch this signal and your application is likely
+to crash.  Note again that this should only happen if the file
+@emph{system} is corrupt (not if individual files are corrupt).  If
+this is not acceptable, you might want to consider running
+@acronym{libextractor} out-of-process (as done, for example, by
+@url{http://gnunet.org/doodle/,doodle}).
+
+
+@menu
+* Customizing the Plugins::      Customizing the Plugins
+@end menu
+
+@node Customizing the Plugins
+@section Customizing the Plugins
+
+@findex EXTRACTOR_loadConfigLibraries
+@verb{|EXTRACTOR_loadConfigLibraries|}
+
+@findex EXTRACTOR_addLibrary
+@verb{|EXTRACTOR_addLibrary|}
+
+@findex EXTRACTOR_addLibraryLast
+@verb{|EXTRACTOR_addLibraryLast|}
+
+@findex EXTRACTOR_removeLibrary
+@verb{|EXTRACTOR_removeLibrary|}       
+
+
+
+
+@node Language bindings
+@chapter Language bindings
+
+@cindex Java
+@cindex Python
+@cindex PHP
+@cindex Ruby
+@acronym{libextractor} works immediately with C and C++ code.
+Bindings for Java, Ruby, PHP and Python are available for download
+from the main @acronym{libextractor} website.  Documentation for these
+bindings (if available) is part of the downloads for the respective
+binding.  In all cases, a full installation of the C library is
+required before the binding can be installed.
+
+
+@node Utility functions
+@chapter Utility functions
+
+@menu
+* Utility Constants::            Constants
+* Misc Keyword List::            Keyword List Functions
+* Cleaning up the Keyword List:: Keyword List Remove Functions
+* Finding Keywords::             Keyword List Search Functions
+* Binary Meta data::             Handling of binary meta data
+@end menu
+
+@node Utility Constants
+@section Utility Constants
+
+@findex EXTRACTOR_VERSION
+@verb{|EXTRACTOR_VERSION|}       
+
+@findex EXTRACTOR_getDefaultLibraries
+@verb{|EXTRACTOR_getDefaultLibraries|}       
+
+
+
+@node Misc Keyword List
+@section Misc Keyword List
+
+
+@findex EXTRACTOR_printKeywords
+@verb{|EXTRACTOR_printKeywords|}       
+
+@findex EXTRACTOR_countKeywords
+@verb{|EXTRACTOR_countKeywords|}       
+
+
+@node Cleaning up the Keyword List
+@section Cleaning up the Keyword List
+
+
+@findex EXTRACTOR_removeDuplicateKeywords
+@verb{|EXTRACTOR_removeDuplicateKeywords|}       
+
+@findex EXTRACTOR_removeEmptyKeywords
+@verb{|EXTRACTOR_removeEmptyKeywords|}       
+
+@findex EXTRACTOR_removeKeywordsOfType
+@verb{|EXTRACTOR_removeKeywordsOfType|}       
+
+
+@node Finding Keywords
+@section Finding Keywords
+
+
+@findex EXTRACTOR_extractLast
+@verb{|EXTRACTOR_extractLast|}       
+
+@findex EXTRACTOR_extractLastByString
+@verb{|EXTRACTOR_extractLastByString|}       
+
+
+
+@node Binary Meta data
+@section Binary Meta data
+
+@findex EXTRACTOR_isBinaryType
+@verb{|EXTRACTOR_isBinaryType|}       
+
+@findex EXTRACTOR_binaryDecode
+@verb{|EXTRACTOR_binaryDecode|}       
+
+@findex EXTRACTOR_binaryEncode
+@verb{|EXTRACTOR_binaryEncode|}       
+
+
+
+@node Existing Plugins
+@chapter Existing Plugins
+
+HTML,
+PDF,
+PS,
+OLE2 (DOC, XLS, PPT),
+OpenOffice (sxw),
+StarOffice (sdw),
+DVI,
+MAN,
+MP3 (ID3v1 and ID3v2),
+NSF (NES Sound Format),
+SID,
+OGG,
+WAV,
+EXIV2,
+JPEG,
+GIF,
+PNG,
+TIFF,
+DEB,
+RPM,
+TAR(.GZ),
+ZIP,
+ELF,
+REAL,
+RIFF (AVI),
+MPEG,
+QT
+and
+ASF.
+
+
+@node Writing new Plugins
+@chapter Writing new Plugins
+
+Writing a new plugin for libextractor usually requires writing of or
+interfacing with an actual parser for a specific format.  How this is
+can be accomplished depends on the format and cannot be specified in
+general.  However, care should be taken for the code to be reentrant
+and highly fault-tolerant, especially with respect to malformed
+inputs.
+
+Plugins should start by verifying that the header of the data matches
+the specific format and immediately return if that is not the case.
+Even if the header matches the expected file format, plugins must not
+assume that the remainder of the file is well formed.
+
+The plugin library must be called libextractor_XXX.so, where XXX 
+denotes the file format of the plugin. The library must export a 
+method @verb{|libextractor_XXX_extract|}, with the following 
+signature:
+@verbatim
+struct EXTRACTOR_Keywords *
+libextractor_XXX_extract
+   (const char * filename,
+    const char * data,
+    size_t size,
+    struct EXTRACTOR_Keywords * prev,
+    const char * options);
+@end verbatim
+
+The argument @samp{filename} specifies the name of the file being
+processed and maybe @verb{|NULL|}.  @samp{data} is a pointer to 
+the typically memory mapped contents of the file.  Note that 
+plugins cannot ignore the @verb{|const|} annotation since the
+memory mapping may have been done read-only (and thus writes 
+to this page will result in an error).  The @samp{size} argument
+specifies the size of the @samp{data} buffer in bytes.  
+
+@samp{prev} is the list of keywords extracted so far by other 
+plugins for the file.  The function is expected to return an 
+updated list of keywords.  If the format does not match the 
+expectations of the plugin, @samp{prev} is returned.  Most 
+plugins use a function such as @verb{|addKeyword|} to extend the list:
+
+@verbatim
+static void addKeyword
+   (struct EXTRACTOR_Keywords ** list,
+    const char * keyword,
+    EXTRACTOR_KeywordType type)
+{
+  EXTRACTOR_KeywordList * next;
+  next = malloc(sizeof(EXTRACTOR_KeywordList));
+  next->next = *list;
+  next->keyword = strdup(keyword);
+  next->keywordType = type;
+  *list = next;
+}
+@end verbatim
+
+A typical use of @verb{|addKeyword|} is to add the MIME type once the
+file format has been established (beyond reasonable doubt).
+
+
+
+@node Internal utility functions
+@chapter Internal utility functions
+
+@cindex UTF-8
+@cindex character set
+@findex convertToUtf8
+Various @acronym{libextractor} plugins make use of the internal
+@file{convert.h} header which defines a function
+@verb{|convertToUtf8|} which can be used to easily convert text from
+any character set to UTF-8.  This conversion is important since the
+linked list of keywords that is returned by @acronym{libextractor} is
+expected to contain only UTF-8 strings.  Naturally, proper conversion
+may not always be possible since some file formats fail to specify the
+character set.  In that case, it is often better to not convert at
+all.
+
+The arguments to @verb{|convertToUtf8|} are the input string (which
+does @emph{not} have to be zero-terminated), the length of the input
+string, and the character set (which @emph{must} be zero-terminated).
+Which character sets are supported depends on the platform, a list can
+generally be obtained using the @command{iconv -l} command.  The
+return value from @verb{|convertToUtf8|} is a zero-terminated string
+in UTF-8 format.  The responsibility to free the string is with the
+caller, so storing the string in the keyword list is acceptable.
+
+
+@node Reporting bugs
+@chapter Reporting bugs
+
+@cindex bug
+@acronym{libextractor} uses the @url{http://gnunet.org/mantis/,Mantis
+bugtracking system}.  If possible, please report bugs there.  You can
+also e-mail the @acronym{libextractor} mailinglist at
+@url{libextractor@@gnu.org}.
+
+
+
+@c **********************************************************
+@c *******************  Appendices  *************************
+@c **********************************************************
+
+@include gpl.texi
+
+@node Concept Index
+@unnumbered Concept Index
+
+@printindex cp
+
+@node Function and Data Index
+@unnumbered Function and Data Index
+
+@printindex fn
+
+@node Type Index
+@unnumbered Type Index
+
+@printindex tp
+
+@bye
+
+
+
+
+Memory allocation functions are of the following types:
+@deftp {Data type} gcry_handler_alloc_t
+This type is defined as: @code{void *(*gcry_handler_alloc_t) (size_t n)}.
+@end deftp
+@deftp {Data type} gcry_handler_secure_check_t
+This type is defined as: @code{int *(*gcry_handler_secure_check_t) (const void *)}.
+@end deftp
+@deftp {Data type} gcry_handler_realloc_t
+This type is defined as: @code{void *(*gcry_handler_realloc_t) (void *p, size_t n)}.
+@end deftp
+@deftp {Data type} gcry_handler_free_t
+This type is defined as: @code{void *(*gcry_handler_free_t) (void *)}.
+@end deftp
+
+
+
+
+
+Example code:
+@example
+@{
+  gcry_ac_key_pair_t key_pair;
+  gcry_ac_key_spec_rsa  rsa_spec;
+
+  rsa_spec.e = gcry_mpi_new (0);
+  gcry_mpi_set_ui (rsa_spec.e, 1)
+
+  err = gcry_ac_open  (&handle, GCRY_AC_RSA, 0);
+  assert (! err);
+
+  err = gcry_ac_key_pair_generate (handle, &key_pair, 1024, (void *) &rsa_spec);
+  assert (! err);
+@}
+@end example
+
+
+
+@deftypefun gcry_ac_key_t gcry_ac_key_pair_extract (gcry_ac_key_pair_t @var{key_pair}, gcry_ac_key_type_t @var{which})
+Returns the key of type @var{which} out of the key pair
+@var{key_pair}.
+@end deftypefun
+
+
+
+
+Basic arithmetic operations:
+
+@deftypefun void gcry_mpi_add (@w{gcry_mpi_t @var{w}}, @w{gcry_mpi_t @var{u}}, @w{gcry_mpi_t @var{v}})
+
+@math{@var{w} = @var{u} + @var{v}}.
+@end deftypefun
+
+
+Memory allocation functions are of the following types:
+@deftp {Data type} gcry_handler_alloc_t
+This type is defined as: @code{void *(*gcry_handler_alloc_t) (size_t n)}.
+@end deftp
+@deftp {Data type} gcry_handler_secure_check_t
+This type is defined as: @code{int *(*gcry_handler_secure_check_t) (const void *)}.
+@end deftp
+@deftp {Data type} gcry_handler_realloc_t
+This type is defined as: @code{void *(*gcry_handler_realloc_t) (void *p, size_t n)}.
+@end deftp
+@deftp {Data type} gcry_handler_free_t
+This type is defined as: @code{void *(*gcry_handler_free_t) (void *)}.
+@end deftp
+
+
+
+
+
+Example code:
+@example
+@{
+  gcry_ac_key_pair_t key_pair;
+  gcry_ac_key_spec_rsa  rsa_spec;
+
+  rsa_spec.e = gcry_mpi_new (0);
+  gcry_mpi_set_ui (rsa_spec.e, 1)
+
+  err = gcry_ac_open  (&handle, GCRY_AC_RSA, 0);
+  assert (! err);
+
+  err = gcry_ac_key_pair_generate (handle, &key_pair, 1024, (void *) &rsa_spec);
+  assert (! err);
+@}
+@end example
+
+
+
+@deftypefun gcry_ac_key_t gcry_ac_key_pair_extract (gcry_ac_key_pair_t @var{key_pair}, gcry_ac_key_type_t @var{which})
+Returns the key of type @var{which} out of the key pair
+@var{key_pair}.
+@end deftypefun
+
+
+
+
+Basic arithmetic operations:
+
+@deftypefun void gcry_mpi_add (@w{gcry_mpi_t @var{w}}, @w{gcry_mpi_t @var{u}}, @w{gcry_mpi_t @var{v}})
+
+@math{@var{w} = @var{u} + @var{v}}.
+@end deftypefun
+
+
