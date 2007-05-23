@@ -338,11 +338,12 @@ this is not acceptable, you might want to consider running
 @chapter Language bindings
 
 @cindex Java
+@cindex Perl
 @cindex Python
 @cindex PHP
 @cindex Ruby
 @acronym{libextractor} works immediately with C and C++ code.
-Bindings for Java, Ruby, PHP and Python are available for download
+Bindings for Java, Ruby, Perl, PHP and Python are available for download
 from the main @acronym{libextractor} website.  Documentation for these
 bindings (if available) is part of the downloads for the respective
 binding.  In all cases, a full installation of the C library is
