@@ -283,28 +283,35 @@ AC_ARG_WITH(qt,
       no)
         ;;
       yes)
-        AC_CHECK_HEADERS(qpixmap.h,
+        AC_CHECK_HEADERS([Qt/qpixmap.h],
           AC_CHECK_LIB([QtGui4], [_ZN7QPixmap12defaultDepthEv],
-            qt=1, [AC_CHECK_LIB([QtGui], [_ZN7QPixmap12defaultDepthEv],
-	            qt=1)]))
+            qt=1,
+              AC_CHECK_LIB([QtGui], [_ZN7QPixmap12defaultDepthEv],
+              qt=1)))
         ;;
       *)
         LDFLAGS="-L$with_qt/lib $LDFLAGS"
-        CPPFLAGS="-I$with_qt/include -I$with_qt/include/Qt $CPPFLAGS"
-        AC_CHECK_HEADERS(qpixmap.h,
+        CPPFLAGS="-I$with_qt/include -I$with_qt/include/qt4 $CPPFLAGS"
+        AC_CHECK_HEADERS([Qt/qpixmap.h],
           AC_CHECK_LIB([QtGui4], [_ZN7QPixmap12defaultDepthEv],
             EXT_LIB_PATH="-L$with_qt/lib $EXT_LIB_PATH"
-            qt=1, [AC_CHECK_LIB([QtGui], [_ZN7QPixmap12defaultDepthEv],
-	            EXT_LIB_PATH="-L$with_qt/lib $EXT_LIB_PATH"
-	            qt=1)]))
+            qt=1,
+              AC_CHECK_LIB([QtGui], [_ZN7QPixmap12defaultDepthEv],
+              EXT_LIB_PATH="-L$with_qt/lib $EXT_LIB_PATH"
+              qt=1)))
         ;;
     esac
    ],
    [AC_MSG_RESULT([--with-qt not specified])
-    AC_CHECK_HEADERS(qpixmap.h,
-     AC_CHECK_LIB([QtGui4], [_ZN7QPixmap12defaultDepthEv],
-      qt=1, [AC_CHECK_LIB([QtGui], [_ZN7QPixmap12defaultDepthEv],
-	      qt=1)]))])
+    LDFLAGS="-L/usr/lib $LDFLAGS"
+    CPPFLAGS="-I/usr/include -I/usr/include/qt4 $CPPFLAGS"    
+    AC_CHECK_HEADERS([Qt/qpixmap.h],
+          AC_CHECK_LIB([QtGui4], [_ZN7QPixmap12defaultDepthEv],
+            EXT_LIB_PATH="-L$with_qt/lib $EXT_LIB_PATH"
+            qt=1,
+              AC_CHECK_LIB([QtGui], [_ZN7QPixmap12defaultDepthEv],
+              EXT_LIB_PATH="-L$with_qt/lib $EXT_LIB_PATH"
+              qt=1)))])
 
 # check for Qt SVG module
 qt_svg=0
