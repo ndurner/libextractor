@@ -446,7 +446,6 @@ libextractor_ole2_extract(const char * filename,
   GsfInput * input;
   GsfInfile * infile;
   GsfInput * src;
-  GError * err = NULL;
   const char * name;
   const char * generator = NULL;
   int i;
@@ -464,7 +463,7 @@ libextractor_ole2_extract(const char * filename,
   if (input == NULL)
     return prev;
 
-  infile = gsf_infile_msole_new(input, &err);
+  infile = gsf_infile_msole_new(input, NULL);
   if (infile == NULL) {
     g_object_unref(G_OBJECT(input));
     return prev;
