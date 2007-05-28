@@ -285,7 +285,8 @@ AC_ARG_WITH(qt,
       yes)
         AC_CHECK_HEADERS(qpixmap.h,
           AC_CHECK_LIB([QtGui4], [_ZN7QPixmap12defaultDepthEv],
-            qt=1))
+            qt=1, [AC_CHECK_LIB([QtGui], [_ZN7QPixmap12defaultDepthEv],
+	            qt=1)]))
         ;;
       *)
         LDFLAGS="-L$with_qt/lib $LDFLAGS"
@@ -293,14 +294,17 @@ AC_ARG_WITH(qt,
         AC_CHECK_HEADERS(qpixmap.h,
           AC_CHECK_LIB([QtGui4], [_ZN7QPixmap12defaultDepthEv],
             EXT_LIB_PATH="-L$with_qt/lib $EXT_LIB_PATH"
-            qt=1))
+            qt=1, [AC_CHECK_LIB([QtGui], [_ZN7QPixmap12defaultDepthEv],
+	            EXT_LIB_PATH="-L$with_qt/lib $EXT_LIB_PATH"
+	            qt=1)]))
         ;;
     esac
    ],
    [AC_MSG_RESULT([--with-qt not specified])
     AC_CHECK_HEADERS(qpixmap.h,
      AC_CHECK_LIB([QtGui4], [_ZN7QPixmap12defaultDepthEv],
-      qt=1))])
+      qt=1, [AC_CHECK_LIB([QtGui], [_ZN7QPixmap12defaultDepthEv],
+	      qt=1)]))])
 
 # check for Qt SVG module
 qt_svg=0
@@ -314,7 +318,8 @@ AC_ARG_WITH(qt,
       yes)
         AC_CHECK_HEADERS(qsvgrenderer.h,
           AC_CHECK_LIB([QtSvg4], [_ZN10QSvgWidgetD0Ev],
-            qt_svg=1))
+            qt_svg=1, [AC_CHECK_LIB([QtSvg], [_ZN10QSvgWidgetD0Ev],
+	            qt_svg=1)]))
         ;;
       *)
         LDFLAGS="-L$with_qt/lib $LDFLAGS"
@@ -322,14 +327,17 @@ AC_ARG_WITH(qt,
         AC_CHECK_HEADERS(qsvgrenderer.h,
           AC_CHECK_LIB([QtSvg4], [_ZN10QSvgWidgetD0Ev],
             EXT_LIB_PATH="-L$with_qt/lib $EXT_LIB_PATH"
-            qt_svg=1))
+            qt_svg=1, [AC_CHECK_LIB([QtSvg], [_ZN10QSvgWidgetD0Ev],
+	            EXT_LIB_PATH="-L$with_qt/lib $EXT_LIB_PATH"
+	            qt_svg=1)]))
         ;;
     esac
    ],
    [AC_MSG_RESULT([--with-qt not specified])
     AC_CHECK_HEADERS(qsvgrenderer.h,
      AC_CHECK_LIB([QtSvg4], [_ZN10QSvgWidgetD0Ev],
-      qt_svg=1))])
+      qt_svg=1, [AC_CHECK_LIB([QtSvg], [_ZN10QSvgWidgetD0Ev],
+	      qt_svg=1)]))])
 
 AC_MSG_CHECKING([whether to enable xpdf-based extractor])
 AC_ARG_ENABLE(xpdf,
