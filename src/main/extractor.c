@@ -371,8 +371,8 @@ static char * get_path_from_module_filename() {
   GetModuleFileName(NULL, path, 4096);
   idx = path + strlen(path);
   while ( (idx > path) &&
-	  (path != '\\') &&
-	  (path != '/') )
+	  (*idx != '\\') &&
+	  (*idx != '/') )
     idx--;
   *idx = '\0';
   return cut_bin(path);
