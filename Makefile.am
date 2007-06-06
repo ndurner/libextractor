@@ -1,6 +1,6 @@
 SUBDIRS  = m4 po libltdl src doc . 
 EXTRA_DIST = config.rpath \
-  ABOUT-NLS \
+  ABOUT-NLS mkinstalldirs install.sh \
   PLATFORMS README.debian 
 # yayh: automake hacks!
 dist-hook:
