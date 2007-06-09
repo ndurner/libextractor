@@ -285,7 +285,7 @@ AC_ARG_WITH(qt,
       yes)
         AC_CHECK_HEADERS([Qt/qpixmap.h],
           AC_CHECK_LIB([QtGui4], [_ZN7QPixmap12defaultDepthEv],
-            qt=1,
+            qt4=1,
               AC_CHECK_LIB([QtGui], [_ZN7QPixmap12defaultDepthEv],
               qt=1)))
         ;;
@@ -295,7 +295,7 @@ AC_ARG_WITH(qt,
         AC_CHECK_HEADERS([Qt/qpixmap.h],
           AC_CHECK_LIB([QtGui4], [_ZN7QPixmap12defaultDepthEv],
             EXT_LIB_PATH="-L$with_qt/lib $EXT_LIB_PATH"
-            qt=1,
+            qt4=1,
               AC_CHECK_LIB([QtGui], [_ZN7QPixmap12defaultDepthEv],
               EXT_LIB_PATH="-L$with_qt/lib $EXT_LIB_PATH"
               qt=1)))
@@ -308,7 +308,7 @@ AC_ARG_WITH(qt,
     AC_CHECK_HEADERS([Qt/qpixmap.h],
           AC_CHECK_LIB([QtGui4], [_ZN7QPixmap12defaultDepthEv],
             EXT_LIB_PATH="-L$with_qt/lib $EXT_LIB_PATH"
-            qt=1,
+            qt4=1,
               AC_CHECK_LIB([QtGui], [_ZN7QPixmap12defaultDepthEv],
               EXT_LIB_PATH="-L$with_qt/lib $EXT_LIB_PATH"
               qt=1)))])
@@ -325,7 +325,7 @@ AC_ARG_WITH(qt,
       yes)
         AC_CHECK_HEADERS([Qt/qsvgrenderer.h],
           AC_CHECK_LIB([QtSvg4], [_ZN10QSvgWidgetD0Ev],
-            qt_svg=1,
+            qt_svg4=1,
               AC_CHECK_LIB([QtSvg], [_ZN10QSvgWidgetD0Ev],
               qt_svg=1)))
         ;;
@@ -335,7 +335,7 @@ AC_ARG_WITH(qt,
         AC_CHECK_HEADERS([Qt/qsvgrenderer.h],
           AC_CHECK_LIB([QtSvg4], [_ZN10QSvgWidgetD0Ev],
             EXT_LIB_PATH="-L$with_qt/lib $EXT_LIB_PATH"
-            qt_svg=1,
+            qt_svg4=1,
               AC_CHECK_LIB([QtSvg], [_ZN10QSvgWidgetD0Ev],
               EXT_LIB_PATH="-L$with_qt/lib $EXT_LIB_PATH"
               qt_svg=1)))
@@ -348,7 +348,7 @@ AC_ARG_WITH(qt,
     AC_CHECK_HEADERS([Qt/qsvgrenderer.h],
           AC_CHECK_LIB([QtSvg4], [_ZN10QSvgWidgetD0Ev],
             EXT_LIB_PATH="-L$with_qt/lib $EXT_LIB_PATH"
-            qt_svg=1,
+            qt_svg4=1,
               AC_CHECK_LIB([QtSvg], [_ZN10QSvgWidgetD0Ev],
               EXT_LIB_PATH="-L$with_qt/lib $EXT_LIB_PATH"
               qt_svg=1)))])
@@ -393,12 +393,22 @@ then
  AC_DEFINE(HAVE_QT, 1, [We have Qt])
 fi
 AM_CONDITIONAL(HAVE_QT, test x$qt != x0)
+if test x$qt4 != x0
+then
+ AC_DEFINE(HAVE_QT4, 1, [We have Qt4])
+fi
+AM_CONDITIONAL(HAVE_QT4, test x$qt4 != x0)
 
 if test x$qt_svg != x0
 then
  AC_DEFINE(HAVE_QT_SVG, 1, [We have Qt SVG])
 fi
+if test x$qt_svg4 != x0
+then
+ AC_DEFINE(HAVE_QT_SVG4, 1, [We have Qt SVG4])
+fi
 AM_CONDITIONAL(HAVE_QT_SVG, test x$qt_svg != x0)
+AM_CONDITIONAL(HAVE_QT_SVG4, test x$qt_svg4 != x0)
 
 AM_CONDITIONAL(HAVE_XPDF, test x$xpdf != x0)
 

@@ -13,11 +13,20 @@ endif
 
 if HAVE_QT
  thumbqt=libextractor_thumbnailqt.la
+ qtflags=-lQtGui -lQtCore
+else
+if HAVE_QT4
+ thumbqt=libextractor_thumbnailqt.la
  qtflags=-lQtGui4 -lQtCore4
+endif
 endif
 
 if HAVE_QT_SVG
+ svgflags = -lQtSvg
+else
+if HAVE_QT_SVG4
  svgflags = -lQtSvg4
+endif
 endif
 
 if HAVE_PRINTABLE
