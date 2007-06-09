@@ -33,7 +33,7 @@
 #include <Qt/qapplication.h>
 
 #ifdef HAVE_QT_SVG
-  #include <qsvgrenderer.h>
+  #include <Qt/qsvgrenderer.h>
   #include <Qt/qpainter.h>
 #endif
 
