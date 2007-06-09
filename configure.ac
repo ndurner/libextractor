@@ -264,8 +264,6 @@ else
 fi
 
 # check for all C++ dependencies...
-qt=0
-qt_svg=0
 xpdf=0
 exiv2=0
 
@@ -275,6 +273,7 @@ then
 # check for Qt 4
 AC_LANG_PUSH([C++])
 qt=0
+qt4=0
 AC_MSG_CHECKING(for Qt)
 AC_ARG_WITH(qt,
    [  --with-qt=PFX    Base of Qt installation],
@@ -315,6 +314,7 @@ AC_ARG_WITH(qt,
 
 # check for Qt SVG module
 qt_svg=0
+qt_svg4=0
 AC_MSG_CHECKING(for Qt SVG)
 AC_ARG_WITH(qt,
    [  --with-qt=PFX    Base of Qt installation],
