@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.5.14\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2007-04-22 11:49-0600\n"
+"POT-Creation-Date: 2007-05-19 13:07-0600\n"
 "PO-Revision-Date: 2006-05-23 17:58+0930\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <gnomevi-list@lists.sourceforge.net>\n"
@@ -132,71 +132,71 @@ msgstr "%s - (nhị phân)\n"
 msgid "INVALID TYPE - %s\n"
 msgstr "KIỂU KHÔNG HỢP LỆ — %s\n"
 
-#: src/main/extract.c:315 src/main/extractor.c:47
+#: src/main/extract.c:320 src/main/extractor.c:47
 msgid "title"
 msgstr "tựa"
 
-#: src/main/extract.c:317 src/main/extractor.c:45
+#: src/main/extract.c:322 src/main/extractor.c:45
 msgid "filename"
 msgstr "tên tập tin"
 
-#: src/main/extract.c:322 src/main/extractor.c:48
+#: src/main/extract.c:327 src/main/extractor.c:48
 msgid "author"
 msgstr "tác giả"
 
-#: src/main/extract.c:326 src/main/extractor.c:50
+#: src/main/extract.c:331 src/main/extractor.c:50
 msgid "description"
 msgstr "mô tả"
 
-#: src/main/extract.c:328 src/main/extractor.c:62
+#: src/main/extract.c:333 src/main/extractor.c:62
 msgid "keywords"
 msgstr "từ khoá"
 
-#: src/main/extract.c:330 src/main/extractor.c:51
+#: src/main/extract.c:335 src/main/extractor.c:51
 msgid "comment"
 msgstr "chú thích"
 
-#: src/main/extract.c:334 src/main/extractor.c:52
+#: src/main/extract.c:339 src/main/extractor.c:52
 msgid "date"
 msgstr "ngày"
 
-#: src/main/extract.c:336 src/main/extractor.c:74
+#: src/main/extract.c:341 src/main/extractor.c:74
 msgid "creation date"
 msgstr "ngày tạo"
 
-#: src/main/extract.c:364 src/main/extractor.c:53
+#: src/main/extract.c:369 src/main/extractor.c:53
 msgid "publisher"
 msgstr "nhà xuất bản"
 
-#: src/main/extract.c:368 src/main/extractor.c:59
+#: src/main/extract.c:373 src/main/extractor.c:59
 msgid "organization"
 msgstr "tổ chức"
 
-#: src/main/extract.c:372 src/main/extractor.c:61
+#: src/main/extract.c:377 src/main/extractor.c:61
 msgid "subject"
 msgstr "chủ đề"
 
-#: src/main/extract.c:376 src/main/extractor.c:78
+#: src/main/extract.c:381 src/main/extractor.c:78
 msgid "page count"
 msgstr "tổng số trang"
 
-#: src/main/extract.c:528
+#: src/main/extract.c:537
 #, c-format
 msgid "You must specify an argument for the `%s' option (option ignored).\n"
 msgstr "Bạn phải ghi rõ một đối số cho tùy chọn « %s » (tùy chọn bị bỏ qua).\n"
 
-#: src/main/extract.c:598
+#: src/main/extract.c:607
 #, c-format
 msgid "Use --help to get a list of options.\n"
 msgstr ""
 "Hãy sử dụng lệnh « --help » (trợ giúp) để xem một danh sách các tùy chọn.\n"
 
-#: src/main/extract.c:653
+#: src/main/extract.c:662
 #, c-format
 msgid "%% BiBTeX file\n"
 msgstr "%% tập tin BiBTeX\n"
 
-#: src/main/extract.c:673
+#: src/main/extract.c:682
 #, fuzzy, c-format
 msgid "Keywords for file %s:"
 msgstr "Từ khoá cho tập tin %s:\n"

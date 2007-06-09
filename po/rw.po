@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.4.2\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2007-04-22 11:49-0600\n"
+"POT-Creation-Date: 2007-05-19 13:07-0600\n"
 "PO-Revision-Date: 2005-04-04 10:55-0700\n"
 "Last-Translator: Steven Michael Murphy <murf@e-tools.com>\n"
 "Language-Team: Kinyarwanda <translation-team-rw@lists.sourceforge.net>\n"
@@ -144,53 +144,53 @@ msgstr "%s-(Nyabibiri"
 msgid "INVALID TYPE - %s\n"
 msgstr ""
 
-#: src/main/extract.c:315 src/main/extractor.c:47
+#: src/main/extract.c:320 src/main/extractor.c:47
 msgid "title"
 msgstr "umutwe"
 
-#: src/main/extract.c:317 src/main/extractor.c:45
+#: src/main/extract.c:322 src/main/extractor.c:45
 #, fuzzy
 msgid "filename"
 msgstr "Izina ry'idosiye"
 
 # sc/source\ui\miscdlgs\acredlin.src:RID_POPUP_CHANGES.SC_SUB_SORT.SC_SORT_AUTHOR.text
-#: src/main/extract.c:322 src/main/extractor.c:48
+#: src/main/extract.c:327 src/main/extractor.c:48
 #, fuzzy
 msgid "author"
 msgstr "Umwanditsi"
 
-#: src/main/extract.c:326 src/main/extractor.c:50
+#: src/main/extract.c:331 src/main/extractor.c:50
 msgid "description"
 msgstr "Isobanuramiterere"
 
 # sfx2/source\dialog\dinfdlg.src:TP_DOCINFODESC.FT_KEYWORDS.text
-#: src/main/extract.c:328 src/main/extractor.c:62
+#: src/main/extract.c:333 src/main/extractor.c:62
 #, fuzzy
 msgid "keywords"
 msgstr "Amagambo fatizo"
 
 # padmin/source\padialog.src:RID_TXT_TESTPAGE_COMMENT.text
-#: src/main/extract.c:330 src/main/extractor.c:51
+#: src/main/extract.c:335 src/main/extractor.c:51
 #, fuzzy
 msgid "comment"
 msgstr "Icyo wongeraho"
 
-#: src/main/extract.c:334 src/main/extractor.c:52
+#: src/main/extract.c:339 src/main/extractor.c:52
 msgid "date"
 msgstr "Itariki"
 
 # setup2/source\ui\app.src:FT_INSTINFO_MKDIR.text
-#: src/main/extract.c:336 src/main/extractor.c:74
+#: src/main/extract.c:341 src/main/extractor.c:74
 #, fuzzy
 msgid "creation date"
 msgstr "Irema ry'itariki"
 
-#: src/main/extract.c:364 src/main/extractor.c:53
+#: src/main/extract.c:369 src/main/extractor.c:53
 #, fuzzy
 msgid "publisher"
 msgstr "Uwasohoye inyandiko"
 
-#: src/main/extract.c:368 src/main/extractor.c:59
+#: src/main/extract.c:373 src/main/extractor.c:59
 #, fuzzy
 msgid "organization"
 msgstr "Ihuzagahunda"
@@ -205,32 +205,32 @@ msgstr "Ihuzagahunda"
 # officecfg/registry\schema\org\openoffice\Office\Writer.xcs:....Wizard.Fax.Save.DocInfoSubject.text
 # #-#-#-#-#  officecfg.pot (PACKAGE VERSION)  #-#-#-#-#
 # officecfg/registry\schema\org\openoffice\Office\Writer.xcs:....Wizard.Memo.Save.DocInfoSubject.text
-#: src/main/extract.c:372 src/main/extractor.c:61
+#: src/main/extract.c:377 src/main/extractor.c:61
 msgid "subject"
 msgstr "Ikivugwaho"
 
 # sw/source\ui\inc\swmn.hrc:_MN_INS.MN_SUB_FIELD.FN_INSERT_FLD_PGCOUNT.text
-#: src/main/extract.c:376 src/main/extractor.c:78
+#: src/main/extract.c:381 src/main/extractor.c:78
 #, fuzzy
 msgid "page count"
 msgstr "Kubara amapaje"
 
-#: src/main/extract.c:528
+#: src/main/extract.c:537
 #, fuzzy, c-format
 msgid "You must specify an argument for the `%s' option (option ignored).\n"
 msgstr "kugirango i Ihitamo Ihitamo"
 
-#: src/main/extract.c:598
+#: src/main/extract.c:607
 #, fuzzy, c-format
 msgid "Use --help to get a list of options.\n"
 msgstr "Ifashayobora Kuri Kubona a Urutonde Bya Amahitamo"
 
-#: src/main/extract.c:653
+#: src/main/extract.c:662
 #, c-format
 msgid "%% BiBTeX file\n"
 msgstr ""
 
-#: src/main/extract.c:673
+#: src/main/extract.c:682
 #, fuzzy, c-format
 msgid "Keywords for file %s:"
 msgstr "kugirango IDOSIYE"

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.5.14\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2007-04-22 11:49-0600\n"
+"POT-Creation-Date: 2007-05-19 13:07-0600\n"
 "PO-Revision-Date: 2006-05-22 20:46-0700\n"
 "Last-Translator: Kevin Patrick Scannell <scannell@SLU.EDU>\n"
 "Language-Team: Irish <gaeilge-gnulinux@lists.sourceforge.net>\n"
@@ -128,71 +128,71 @@ msgstr "%s - (dénártha)\n"
 msgid "INVALID TYPE - %s\n"
 msgstr "CINEÁL NEAMHBHAILÍ - %s\n"
 
-#: src/main/extract.c:315 src/main/extractor.c:47
+#: src/main/extract.c:320 src/main/extractor.c:47
 msgid "title"
 msgstr "teideal"
 
-#: src/main/extract.c:317 src/main/extractor.c:45
+#: src/main/extract.c:322 src/main/extractor.c:45
 msgid "filename"
 msgstr "comhadainm"
 
-#: src/main/extract.c:322 src/main/extractor.c:48
+#: src/main/extract.c:327 src/main/extractor.c:48
 msgid "author"
 msgstr "údar"
 
-#: src/main/extract.c:326 src/main/extractor.c:50
+#: src/main/extract.c:331 src/main/extractor.c:50
 msgid "description"
 msgstr "cur síos"
 
-#: src/main/extract.c:328 src/main/extractor.c:62
+#: src/main/extract.c:333 src/main/extractor.c:62
 msgid "keywords"
 msgstr "lorgfhocail"
 
-#: src/main/extract.c:330 src/main/extractor.c:51
+#: src/main/extract.c:335 src/main/extractor.c:51
 msgid "comment"
 msgstr "nóta tráchta"
 
-#: src/main/extract.c:334 src/main/extractor.c:52
+#: src/main/extract.c:339 src/main/extractor.c:52
 msgid "date"
 msgstr "dáta"
 
-#: src/main/extract.c:336 src/main/extractor.c:74
+#: src/main/extract.c:341 src/main/extractor.c:74
 msgid "creation date"
 msgstr "dáta a cruthaíodh"
 
-#: src/main/extract.c:364 src/main/extractor.c:53
+#: src/main/extract.c:369 src/main/extractor.c:53
 msgid "publisher"
 msgstr "foilsitheoir"
 
-#: src/main/extract.c:368 src/main/extractor.c:59
+#: src/main/extract.c:373 src/main/extractor.c:59
 msgid "organization"
 msgstr "eagras"
 
-#: src/main/extract.c:372 src/main/extractor.c:61
+#: src/main/extract.c:377 src/main/extractor.c:61
 msgid "subject"
 msgstr "ábhar"
 
-#: src/main/extract.c:376 src/main/extractor.c:78
+#: src/main/extract.c:381 src/main/extractor.c:78
 msgid "page count"
 msgstr "líon na leathanach"
 
-#: src/main/extract.c:528
+#: src/main/extract.c:537
 #, c-format
 msgid "You must specify an argument for the `%s' option (option ignored).\n"
 msgstr ""
 "Ní mór duit argóint a thabhairt i ndiaidh na rogha `%s' (á ligean thart).\n"
 
-#: src/main/extract.c:598
+#: src/main/extract.c:607
 #, c-format
 msgid "Use --help to get a list of options.\n"
 msgstr "Bain úsáid as '--help' le haghaidh níos mó roghanna.\n"
 
-#: src/main/extract.c:653
+#: src/main/extract.c:662
 #, c-format
 msgid "%% BiBTeX file\n"
 msgstr "%% Comhad BiBTeX\n"
 
-#: src/main/extract.c:673
+#: src/main/extract.c:682
 #, fuzzy, c-format
 msgid "Keywords for file %s:"
 msgstr "Lorgfhocail do chomhad %s:\n"
