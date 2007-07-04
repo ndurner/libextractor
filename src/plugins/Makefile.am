@@ -7,7 +7,7 @@ if WITH_GSF
  oledir=ole2
 endif
 if HAVE_GTK
-thumbdir=thumbnail
+thumbgtk=thumbnail
 endif
 endif
 
@@ -52,7 +52,7 @@ endif
 
 # toggle for development
 # SUBDIRS = . 
-SUBDIRS = $(thumbdir) . $(oodir) $(printdir) hash $(oledir) rpm $(xpdfdir) $(exiv2dir)
+SUBDIRS = $(thumbgtk) . $(oodir) $(printdir) hash $(oledir) rpm $(xpdfdir) $(exiv2dir)
 
 
 if HAVE_VORBISFILE
@@ -349,18 +349,15 @@ libextractor_thumbnailqt_la_CPPFLAGS = \
 
 install-exec-hook:
 	mkdir -p $(DESTDIR)$(plugindir) &> /dev/null || true
-	rm -f $(DESTDIR)$(plugindir)/libextractor_thumbnail$(LIBEXT); \
-	rm -f $(DESTDIR)$(plugindir)/libextractor_thumbnail.la; \
-	if test "$(thumbdir)" != ""; then \
+	rm -f $(DESTDIR)$(plugindir)/libextractor_thumbnail$(LIBEXT)
+	rm -f $(DESTDIR)$(plugindir)/libextractor_thumbnail.la
+	if test "$(thumbgtk)" != ""; then \
+		$(LN_S) $(plugindir)/libextractor_thumbnailgtk$(LIBEXT) \
+			$(DESTDIR)$(plugindir)/libextractor_thumbnail$(LIBEXT); \
+	else \
 		if test "$(thumbqt)" != ""; then \
 			$(LN_S) $(plugindir)/libextractor_thumbnailqt$(LIBEXT) \
 				$(DESTDIR)$(plugindir)/libextractor_thumbnail$(LIBEXT); \
-		else \
-			$(LN_S) $(plugindir)/libextractor_thumbnailgtk$(LIBEXT) \
-				$(DESTDIR)$(plugindir)/libextractor_thumbnail$(LIBEXT); \
 		fi; \
-	else \
-		$(LN_S) $(plugindir)/libextractor_thumbnailqt$(LIBEXT) \
-			$(DESTDIR)$(plugindir)/libextractor_thumbnail$(LIBEXT); \
 	fi;
 

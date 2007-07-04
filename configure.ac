@@ -1,8 +1,8 @@
 # Process this file with autoconf to produce a configure script.
 AC_PREREQ(2.57)
-AC_INIT([libextractor], [0.5.18], [bug-libextractor@gnu.org])
+AC_INIT([libextractor], [0.5.18a], [bug-libextractor@gnu.org])
 AC_REVISION($Revision: 1.67 $)
-AM_INIT_AUTOMAKE([libextractor], [0.5.18])
+AM_INIT_AUTOMAKE([libextractor], [0.5.18a])
 AM_CONFIG_HEADER(src/include/config.h)
 
 AH_TOP([#define _GNU_SOURCE  1])
@@ -466,7 +466,7 @@ src/plugins/exiv2/Makefile
 src/test/Makefile
 ])
 
-LIBEXTRACTOR_VERSION="0.5.17a"
+LIBEXTRACTOR_VERSION="0.5.18a"
 AX_CREATE_PKGCONFIG_INFO([libextractor.pc],,[-lextractor],[Metadata extraction library],,)
 
 

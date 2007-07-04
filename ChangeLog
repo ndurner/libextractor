@@ -1,3 +1,8 @@
+Wed Jul  4 17:36:53 MDT 2007
+	Fixed problem with newer versions of libgsf.
+	Fixed problem with automake 1.10 not setting MKDIR_P.
+	Releasing libextractor 0.5.18a.
+
 Sat Jun  9 01:34:21 MDT 2007
 	Working on Qt build process.  Created TexInfo manual.
 

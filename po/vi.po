@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.5.14\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2007-05-19 13:07-0600\n"
+"POT-Creation-Date: 2007-07-04 17:53-0600\n"
 "PO-Revision-Date: 2006-05-23 17:58+0930\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <gnomevi-list@lists.sourceforge.net>\n"
@@ -1447,83 +1447,83 @@ msgstr "một nguồn"
 msgid "(variable bps)"
 msgstr "(bit/giây thay đổi)"
 
-#: src/plugins/ole2/ole2extractor.c:257
+#: src/plugins/ole2/ole2extractor.c:252
 msgid "No Proofing"
 msgstr "Đừng bắt lỗi"
 
-#: src/plugins/ole2/ole2extractor.c:265
+#: src/plugins/ole2/ole2extractor.c:260
 msgid "Traditional Chinese"
 msgstr "Tiếng Hoa truyền thống"
 
-#: src/plugins/ole2/ole2extractor.c:267
+#: src/plugins/ole2/ole2extractor.c:262
 msgid "Simplified Chinese"
 msgstr "Tiếng Hoa giản thể"
 
-#: src/plugins/ole2/ole2extractor.c:275
+#: src/plugins/ole2/ole2extractor.c:270
 msgid "Swiss German"
 msgstr "Đức Thụy Sĩ"
 
-#: src/plugins/ole2/ole2extractor.c:279
+#: src/plugins/ole2/ole2extractor.c:274
 msgid "U.S. English"
 msgstr "Tiếng Anh (Mỹ)"
 
-#: src/plugins/ole2/ole2extractor.c:281
+#: src/plugins/ole2/ole2extractor.c:276
 msgid "U.K. English"
 msgstr "Tiếng Anh (Quốc Anh)"
 
-#: src/plugins/ole2/ole2extractor.c:283
+#: src/plugins/ole2/ole2extractor.c:278
 msgid "Australian English"
 msgstr "Tiếng Anh (Úc)"
 
-#: src/plugins/ole2/ole2extractor.c:285
+#: src/plugins/ole2/ole2extractor.c:280
 msgid "Castilian Spanish"
 msgstr "Tây Ban Nha (Căt-tín)"
 
-#: src/plugins/ole2/ole2extractor.c:287
+#: src/plugins/ole2/ole2extractor.c:282
 msgid "Mexican Spanish"
 msgstr "Tây Ban Nha (Mê-hi-cô)"
 
-#: src/plugins/ole2/ole2extractor.c:293
+#: src/plugins/ole2/ole2extractor.c:288
 msgid "Belgian French"
 msgstr "Pháp (Bỉ)"
 
-#: src/plugins/ole2/ole2extractor.c:295
+#: src/plugins/ole2/ole2extractor.c:290
 msgid "Canadian French"
 msgstr "Pháp (Ca-na-đa)"
 
-#: src/plugins/ole2/ole2extractor.c:297
+#: src/plugins/ole2/ole2extractor.c:292
 msgid "Swiss French"
 msgstr "Pháp (Thuỵ sĩ)"
 
-#: src/plugins/ole2/ole2extractor.c:307
+#: src/plugins/ole2/ole2extractor.c:302
 msgid "Swiss Italian"
 msgstr "Ý (Thuỵ sĩ)"
 
-#: src/plugins/ole2/ole2extractor.c:315
+#: src/plugins/ole2/ole2extractor.c:310
 msgid "Belgian Dutch"
 msgstr "Hoà Lan (Bỉ)"
 
-#: src/plugins/ole2/ole2extractor.c:317
+#: src/plugins/ole2/ole2extractor.c:312
 msgid "Norwegian Bokmal"
 msgstr "Na Uy (Bóc-măn)"
 
-#: src/plugins/ole2/ole2extractor.c:327
+#: src/plugins/ole2/ole2extractor.c:322
 msgid "Rhaeto-Romanic"
 msgstr "Rai-tô-Rô-ma-ni"
 
-#: src/plugins/ole2/ole2extractor.c:333
+#: src/plugins/ole2/ole2extractor.c:328
 msgid "Croato-Serbian (Latin)"
 msgstr "Xéc-bi Cợ-rô-a-ti-a (La-tinh)"
 
-#: src/plugins/ole2/ole2extractor.c:335
+#: src/plugins/ole2/ole2extractor.c:330
 msgid "Serbo-Croatian (Cyrillic)"
 msgstr "Xéc-bi Cợ-rô-a-ti-a (Ki-rin)"
 
-#: src/plugins/ole2/ole2extractor.c:363
+#: src/plugins/ole2/ole2extractor.c:358
 msgid "Farsi"
 msgstr "Pha-xi"
 
-#: src/plugins/ole2/ole2extractor.c:425
+#: src/plugins/ole2/ole2extractor.c:420
 #, c-format
 msgid "Revision #%u: Author '%s' worked on '%s'"
 msgstr "Bản sửa đổi #%u: Tác giả « %s » đã làm việc « %s »."

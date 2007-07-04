@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.5.14\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2007-05-19 13:07-0600\n"
+"POT-Creation-Date: 2007-07-04 17:53-0600\n"
 "PO-Revision-Date: 2006-05-23 22:17+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
@@ -1440,84 +1440,84 @@ msgid "(variable bps)"
 msgstr "(variabel bithastighet)"
 
 # Hjälp! Rätt översättning?
-#: src/plugins/ole2/ole2extractor.c:257
+#: src/plugins/ole2/ole2extractor.c:252
 msgid "No Proofing"
 msgstr "Ingen korrekturläsning"
 
-#: src/plugins/ole2/ole2extractor.c:265
+#: src/plugins/ole2/ole2extractor.c:260
 msgid "Traditional Chinese"
 msgstr "Traditionell kinesiska"
 
-#: src/plugins/ole2/ole2extractor.c:267
+#: src/plugins/ole2/ole2extractor.c:262
 msgid "Simplified Chinese"
 msgstr "Förenklad kinesiska"
 
-#: src/plugins/ole2/ole2extractor.c:275
+#: src/plugins/ole2/ole2extractor.c:270
 msgid "Swiss German"
 msgstr "Schweizisk tyska"
 
-#: src/plugins/ole2/ole2extractor.c:279
+#: src/plugins/ole2/ole2extractor.c:274
 msgid "U.S. English"
 msgstr "Amerikansk engelska"
 
-#: src/plugins/ole2/ole2extractor.c:281
+#: src/plugins/ole2/ole2extractor.c:276
 msgid "U.K. English"
 msgstr "Brittisk engelska"
 
-#: src/plugins/ole2/ole2extractor.c:283
+#: src/plugins/ole2/ole2extractor.c:278
 msgid "Australian English"
 msgstr "Australisk engelska"
 
-#: src/plugins/ole2/ole2extractor.c:285
+#: src/plugins/ole2/ole2extractor.c:280
 msgid "Castilian Spanish"
 msgstr "Kastiliansk spanska"
 
-#: src/plugins/ole2/ole2extractor.c:287
+#: src/plugins/ole2/ole2extractor.c:282
 msgid "Mexican Spanish"
 msgstr "Mexikansk spanska"
 
-#: src/plugins/ole2/ole2extractor.c:293
+#: src/plugins/ole2/ole2extractor.c:288
 msgid "Belgian French"
 msgstr "Belgisk franska"
 
-#: src/plugins/ole2/ole2extractor.c:295
+#: src/plugins/ole2/ole2extractor.c:290
 msgid "Canadian French"
 msgstr "Kanadensisk franska"
 
-#: src/plugins/ole2/ole2extractor.c:297
+#: src/plugins/ole2/ole2extractor.c:292
 msgid "Swiss French"
 msgstr "Schweizisk franska"
 
-#: src/plugins/ole2/ole2extractor.c:307
+#: src/plugins/ole2/ole2extractor.c:302
 msgid "Swiss Italian"
 msgstr "Schweizisk italienska"
 
-#: src/plugins/ole2/ole2extractor.c:315
+#: src/plugins/ole2/ole2extractor.c:310
 msgid "Belgian Dutch"
 msgstr "Belgisk holländska"
 
-#: src/plugins/ole2/ole2extractor.c:317
+#: src/plugins/ole2/ole2extractor.c:312
 msgid "Norwegian Bokmal"
 msgstr "Norska (Bokmål)"
 
 # Hjälp! Detta är tydligen danska stavningen. Vad är den svenska?
-#: src/plugins/ole2/ole2extractor.c:327
+#: src/plugins/ole2/ole2extractor.c:322
 msgid "Rhaeto-Romanic"
 msgstr "Rätoromanska"
 
-#: src/plugins/ole2/ole2extractor.c:333
+#: src/plugins/ole2/ole2extractor.c:328
 msgid "Croato-Serbian (Latin)"
 msgstr "Kroatoserbiska (Latin)"
 
-#: src/plugins/ole2/ole2extractor.c:335
+#: src/plugins/ole2/ole2extractor.c:330
 msgid "Serbo-Croatian (Cyrillic)"
 msgstr "Serbokroatiska (Kyrillisk)"
 
-#: src/plugins/ole2/ole2extractor.c:363
+#: src/plugins/ole2/ole2extractor.c:358
 msgid "Farsi"
 msgstr "Farsi"
 
-#: src/plugins/ole2/ole2extractor.c:425
+#: src/plugins/ole2/ole2extractor.c:420
 #, c-format
 msgid "Revision #%u: Author '%s' worked on '%s'"
 msgstr "Revision %u: Upphovsmannen \"%s\" arbetade på \"%s\""
