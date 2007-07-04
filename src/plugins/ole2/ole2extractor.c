@@ -1,6 +1,6 @@
 /*
      This file is part of libextractor.
-     (C) 2004, 2005, 2006 Vidyut Samanta and Christian Grothoff
+     (C) 2004, 2005, 2006, 2007 Vidyut Samanta and Christian Grothoff
 
      libextractor is free software; you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published
@@ -43,11 +43,6 @@
 #define DEBUG_OLE2 0
 
 /* ******************************** main extraction code ************************ */
-
-/* using libgobject, needs init! */
-void __attribute__ ((constructor)) ole_gobject_init(void) {
- g_type_init();
-}
 
 static struct EXTRACTOR_Keywords *
 addKeyword(EXTRACTOR_KeywordList *oldhead,
@@ -562,14 +557,15 @@ libextractor_ole2_extract(const char * filename,
 }
 
 void __attribute__ ((constructor)) ole2_ltdl_init() {
-#ifdef gsf_init
+ g_type_init();
+#ifdef HAVE_GSF_INIT
   gsf_init();
 #endif
   // gsf_init_dynamic(NULL);
 }
 
 void __attribute__ ((destructor)) ole2_ltdl_fini() {
-#ifdef gsf_init
+#ifdef HAVE_GSF_INIT
   gsf_shutdown();
 #endif
   // gsf_shutdown_dynamic(NULL);

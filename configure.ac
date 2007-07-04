@@ -420,6 +420,10 @@ AC_DEFINE_UNQUOTED([HAVE_EXIV2], $exiv2, [We use EXIV2])
 
 ABI_GSF
 
+# produce new line
+echo ""
+AC_CHECK_LIB(gsf-1, gsf_init, AC_DEFINE(HAVE_GSF_INIT,1,[gsf_init supported]))
+
 printable=1
 AC_MSG_CHECKING([whether to enable printable extractors])
 AC_ARG_ENABLE(printable,

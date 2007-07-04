@@ -45,7 +45,7 @@ extern "C"
 QApplication *app;
 char *argv;
 
-void __attribute__ ((constructor)) thumnailextractorqt_init(void)
+void __attribute__ ((constructor)) thumnailextractorqt_init()
 {
   int argc = 0;
 
@@ -53,7 +53,7 @@ void __attribute__ ((constructor)) thumnailextractorqt_init(void)
   app = qApp ? NULL : new QApplication(argc, &argv);
 }
 
-void __attribute__ ((destructor)) thumnailextractorqt_done(void)
+void __attribute__ ((destructor)) thumnailextractorqt_done()
 {
   if (qApp == app)
     delete app;
