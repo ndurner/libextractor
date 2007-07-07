@@ -7,9 +7,6 @@ AM_CONFIG_HEADER(src/include/config.h)
 
 AH_TOP([#define _GNU_SOURCE  1])
 
-# Hack for automake 1.10
-export MKDIR_P="mkdir -p"
-
 # Checks for programs.
 AC_CANONICAL_HOST
 
