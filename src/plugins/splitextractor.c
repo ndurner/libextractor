@@ -146,7 +146,7 @@ libextractor_split_extract (const char *filename,
   while (kpos != NULL)
     {
       if (kpos->keywordType != EXTRACTOR_FILE_SIZE)
-        splitKeywords (kpos->keyword, &prev, options);
+        splitKeywords (kpos->keyword, &prev, opt);
 
       kpos = kpos->next;
     }
