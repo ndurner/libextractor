@@ -1,3 +1,6 @@
+Sun Jul 29 02:30:40 MDT 2007
+	Added escape (\n) handling to split extractor.
+
 Wed Jul  4 17:36:53 MDT 2007
 	Fixed problem with newer versions of libgsf.
 	Fixed problem with automake 1.10 not setting MKDIR_P.

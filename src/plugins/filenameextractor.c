@@ -25,48 +25,52 @@
 
 /* "extract" the 'filename' as a keyword */
 struct EXTRACTOR_Keywords *
-libextractor_filename_extract(const char * filename,
-			      char * date,
-			      size_t size,
-			      struct EXTRACTOR_Keywords * prev) {
-  EXTRACTOR_KeywordList * keyword;
-  const char * filenameRoot = filename;
+libextractor_filename_extract (const char *filename,
+                               char *date,
+                               size_t size, struct EXTRACTOR_Keywords *prev)
+{
+  EXTRACTOR_KeywordList *keyword;
+  const char *filenameRoot = filename;
   int res;
 
   /* get filename */
-  if (filename != NULL) {
-    for (res=strlen(filename)-1;res>=0;res--)
-      if (filename[res] == DIR_SEPARATOR) {
-        filenameRoot = &filename[res+1];
-        break;
-      }
-    keyword = malloc(sizeof(EXTRACTOR_KeywordList));
-    keyword->next = prev;
-    keyword->keyword = convertToUtf8(filenameRoot,
-  				   strlen(filenameRoot),
-  				   nl_langinfo(CODESET));
-    keyword->keywordType = EXTRACTOR_FILENAME;
-    prev = keyword;
-  }
-  
+  if (filename != NULL)
+    {
+      for (res = strlen (filename) - 1; res >= 0; res--)
+        if (filename[res] == DIR_SEPARATOR)
+          {
+            filenameRoot = &filename[res + 1];
+            break;
+          }
+      keyword = malloc (sizeof (EXTRACTOR_KeywordList));
+      keyword->next = prev;
+      keyword->keyword = convertToUtf8 (filenameRoot,
+                                        strlen (filenameRoot),
+                                        nl_langinfo (CODESET));
+      keyword->keywordType = EXTRACTOR_FILENAME;
+      prev = keyword;
+    }
+
   /* get file size */
-  if (size > 0) {
-    keyword = malloc(sizeof(EXTRACTOR_KeywordList));
-    keyword->next = prev;
-    keyword->keyword = malloc(14);
-    keyword->keywordType = EXTRACTOR_FILE_SIZE;
-    
-    if (size >= 1000000000)
-      snprintf(keyword->keyword, 13, "%.2f %s", size / 1000000000.0, _("GB"));
-    else if (size >= 1000000)
-      snprintf(keyword->keyword, 13, "%.2f %s", size / 1000000.0, _("MB"));
-    else if (size >= 1000)
-      snprintf(keyword->keyword, 13, "%.2f %s", size / 1000.0, _("KB"));
-    else
-      snprintf(keyword->keyword, 13, "%.2f %s", (double) size, _("Bytes"));
-    
-    prev = keyword;
-  }
-  
+  if (size > 0)
+    {
+      keyword = malloc (sizeof (EXTRACTOR_KeywordList));
+      keyword->next = prev;
+      keyword->keyword = malloc (14);
+      keyword->keywordType = EXTRACTOR_FILE_SIZE;
+
+      if (size >= 1000000000)
+        snprintf (keyword->keyword, 13, "%.2f %s", size / 1000000000.0,
+                  _("GB"));
+      else if (size >= 1000000)
+        snprintf (keyword->keyword, 13, "%.2f %s", size / 1000000.0, _("MB"));
+      else if (size >= 1000)
+        snprintf (keyword->keyword, 13, "%.2f %s", size / 1000.0, _("KB"));
+      else
+        snprintf (keyword->keyword, 13, "%.2f %s", (double) size, _("Bytes"));
+
+      prev = keyword;
+    }
+
   return prev;
 }

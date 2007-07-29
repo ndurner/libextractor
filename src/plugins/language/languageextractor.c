@@ -48,172 +48,185 @@
 #include "platform.h"
 #include "extractor.h"
 
-int NGramsList::compareItems( QCollection::Item item1, QCollection::Item item2 )
+int
+NGramsList::compareItems (QCollection::Item item1, QCollection::Item item2)
 {
-    NGram* n1 = (NGram*)item1;
-    NGram* n2 = (NGram*)item2;
+  NGram *n1 = (NGram *) item1;
+  NGram *n2 = (NGram *) item2;
 
-    return n2->occurrences - n1->occurrences;
+  return n2->occurrences - n1->occurrences;
 }
 
-int LanguageList::compareItems( QCollection::Item item1, QCollection::Item item2 )
+int
+LanguageList::compareItems (QCollection::Item item1, QCollection::Item item2)
 {
-    Language* n1 = (Language*)item1;
-    Language* n2 = (Language*)item2;
+  Language *n1 = (Language *) item1;
+  Language *n2 = (Language *) item2;
 
-    return n2->distance - n1->distance;
+  return n2->distance - n1->distance;
 }
 
 
-static void extractNGrams(const char * str,
-			  QStringList& ngrams) {
-  QString paddedString( str );
+static void
+extractNGrams (const char *str, QStringList & ngrams)
+{
+  QString paddedString (str);
 
-  paddedString = paddedString.replace( QRegExp( " " ), "_" );
+  paddedString = paddedString.replace (QRegExp (" "), "_");
   paddedString = '_' + paddedString + '_';
 
-  for( int i = 0; i < paddedString.length() - size + 1; i++ )
-    ngrams.append( paddedString.mid( i, size ) );
+  for (int i = 0; i < paddedString.length () - size + 1; i++)
+    ngrams.append (paddedString.mid (i, size));
 }
 
-static NGramsList createFingerprintFromQString(const char * buf )
+static NGramsList
+createFingerprintFromQString (const char *buf)
 {
-    QStringList ngrams;
-    NGramsList wngrams;
+  QStringList ngrams;
+  NGramsList wngrams;
 
-    wngrams.setAutoDelete( true );
+  wngrams.setAutoDelete (true);
 
-    QString buffer( buf );
-    buffer.truncate( MAXDOCSIZE ); // only use the first MAXDOCSIZE characters of the buffer
+  QString buffer (buf);
+  buffer.truncate (MAXDOCSIZE); // only use the first MAXDOCSIZE characters of the buffer
 
-    // extract the ngrams
-    for ( int size = 1; size <= MAXNGRAMSIZE; ++size )
-        extractNGrams( buffer, ngrams, size );
+  // extract the ngrams
+  for (int size = 1; size <= MAXNGRAMSIZE; ++size)
+    extractNGrams (buffer, ngrams, size);
 
-    // sort the ngrams
-    ngrams.sort();
+  // sort the ngrams
+  ngrams.sort ();
 
-    // count the occurrences of every ngram
-    // and build the NGramList wngrams
-    long occurrences;
-    QStringList::Iterator ngram = ngrams.begin();
-    while ( ngram != ngrams.end() )
+  // count the occurrences of every ngram
+  // and build the NGramList wngrams
+  long occurrences;
+  QStringList::Iterator ngram = ngrams.begin ();
+  while (ngram != ngrams.end ())
     {
-        QString currentNGram = *ngram;
+      QString currentNGram = *ngram;
 
-        ngram++;
+      ngram++;
 
-        occurrences = 1;
-        while ( *ngram == currentNGram )
+      occurrences = 1;
+      while (*ngram == currentNGram)
         {
-            occurrences++;
-            ngram++;
+          occurrences++;
+          ngram++;
         }
 
-        wngrams.inSort( new NGram( currentNGram, occurrences ) );
+      wngrams.inSort (new NGram (currentNGram, occurrences));
     }
 
-    // the profile has to contain a maximum of MAXNGRAMS
-    while ( wngrams.count() > MAXNGRAMS )
-        wngrams.removeLast();
+  // the profile has to contain a maximum of MAXNGRAMS
+  while (wngrams.count () > MAXNGRAMS)
+    wngrams.removeLast ();
 
-    return wngrams;
+  return wngrams;
 }
 
-static const char * identifyLanguage(const QString& buffer,
-				     LanguageProfileMap lp )
+static const char *
+identifyLanguage (const QString & buffer, LanguageProfileMap lp)
 {
-    long distance;
-    long minscore = MAXSCORE;
-    long threshold = minscore;
-    LanguageList language_list;
-    language_list.setAutoDelete( true );
-    LanguageList candidates;
-    candidates.setAutoDelete( true );
+  long distance;
+  long minscore = MAXSCORE;
+  long threshold = minscore;
+  LanguageList language_list;
+  language_list.setAutoDelete (true);
+  LanguageList candidates;
+  candidates.setAutoDelete (true);
 
-    // create the fingerprint of the buffer
-    NGramsList file_ngrams = createFingerprintFromQString( buffer );
-    if ( buffer.length() < MINDOCSIZE )
-        return QString( "unknown" );
+  // create the fingerprint of the buffer
+  NGramsList file_ngrams = createFingerprintFromQString (buffer);
+  if (buffer.length () < MINDOCSIZE)
+    return QString ("unknown");
 
-    // cycle through the list of managed languages
-    // and build an ordered list of languages sorted by distance
-    QMap<QString,LanguageProfile>::Iterator end( lp.end() );
-    for ( QMap<QString,LanguageProfile>::Iterator it = lp.begin(); it != end; ++it )
+  // cycle through the list of managed languages
+  // and build an ordered list of languages sorted by distance
+  QMap < QString, LanguageProfile >::Iterator end (lp.end ());
+  for (QMap < QString, LanguageProfile >::Iterator it = lp.begin ();
+       it != end; ++it)
     {
-        QString lname = it.key();
-        LanguageProfile language_ngrams = (LanguageProfile)it.data();
+      QString lname = it.key ();
+      LanguageProfile language_ngrams = (LanguageProfile) it.data ();
 
-        // calculate the distance between the file profile and the language profile
-        distance = calculateDistance( file_ngrams, language_ngrams );
+      // calculate the distance between the file profile and the language profile
+      distance = calculateDistance (file_ngrams, language_ngrams);
 
-        // calculate the threshold
-        if ( distance < minscore )
+      // calculate the threshold
+      if (distance < minscore)
         {
-            minscore = distance;
-            threshold = (long)( (double)distance * THRESHOLDVALUE );
+          minscore = distance;
+          threshold = (long) ((double) distance * THRESHOLDVALUE);
         }
 
-        language_list.inSort( new Language( lname, distance ) );
+      language_list.inSort (new Language (lname, distance));
     }
 
-    // now that the list of languages is sorted by distance
-    // extract at most MAXCANDIDATES candidates
-    int cnt = 0;
-    Language* currentLanguage;
-    QPtrList<Language>::Iterator language = language_list.begin();
-    while ( language != language_list.end() )
+  // now that the list of languages is sorted by distance
+  // extract at most MAXCANDIDATES candidates
+  int cnt = 0;
+  Language *currentLanguage;
+  QPtrList < Language >::Iterator language = language_list.begin ();
+  while (language != language_list.end ())
     {
-        currentLanguage = *language;
+      currentLanguage = *language;
 
-        if ( currentLanguage->distance <= threshold )
+      if (currentLanguage->distance <= threshold)
         {
-            cnt++;
-            if ( cnt == MAXCANDIDATES + 1 )
-                break;
+          cnt++;
+          if (cnt == MAXCANDIDATES + 1)
+            break;
 
-            candidates.inSort( new Language( currentLanguage->language, currentLanguage->distance ) );
+          candidates.
+            inSort (new
+                    Language (currentLanguage->language,
+                              currentLanguage->distance));
         }
 
-        language++;
+      language++;
     }
 
-    // If more than MAXCANDIDATES matches are found within the threshold,
-    // the classifier reports unknown, because the input is obviously confusing
-    if ( cnt == MAXCANDIDATES + 1 ) {
-        return QString( "unknown" );
-    } else {
-        Language* first = candidates.getFirst();
-        if ( first != 0L )
-            return QString( first->language );
-        else
-            return QString( "unknown" );
+  // If more than MAXCANDIDATES matches are found within the threshold,
+  // the classifier reports unknown, because the input is obviously confusing
+  if (cnt == MAXCANDIDATES + 1)
+    {
+      return QString ("unknown");
+    }
+  else
+    {
+      Language *first = candidates.getFirst ();
+      if (first != 0L)
+        return QString (first->language);
+      else
+        return QString ("unknown");
     }
 }
 
-static unsigned long long calculateDistance(NGramsList & file_ngrams,
-					    LanguageProfile & langNG) {
+static unsigned long long
+calculateDistance (NGramsList & file_ngrams, LanguageProfile & langNG)
+{
   unsigned long long fileNGPos = 0L;
   unsigned long long langNGPos = 0L;
   unsigned long long distance = 0L;
 
-  NGramsList::Iterator file_ngram = file_ngrams.begin();
-  while ( file_ngram != file_ngrams.end() )
+  NGramsList::Iterator file_ngram = file_ngrams.begin ();
+  while (file_ngram != file_ngrams.end ())
     {
-      NGram* currentFileNGram = *file_ngram;
+      NGram *currentFileNGram = *file_ngram;
 
-      QMap<QString, unsigned long long>::iterator ng = langNG.find( currentFileNGram->ngram );
+      QMap < QString, unsigned long long >::iterator ng =
+        langNG.find (currentFileNGram->ngram);
 
-      if ( ng == langNG.end() )
+      if (ng == langNG.end ())
         {
-	  // not found
-	  distance = distance + MAXOUTOFPLACE;
+          // not found
+          distance = distance + MAXOUTOFPLACE;
         }
       else
         {
-	  //found
-	  langNGPos = ng.data();
-	  distance = distance + labs( langNGPos - fileNGPos );
+          //found
+          langNGPos = ng.data ();
+          distance = distance + labs (langNGPos - fileNGPos);
         }
 
       fileNGPos++;
@@ -226,9 +239,9 @@ static unsigned long long calculateDistance(NGramsList & file_ngrams,
 
 
 struct EXTRACTOR_Keywords *
-libextractor_language_extract(const char * filename,
-			      const char * buf,
-			      size_t size,
-			      struct EXTRACTOR_Keywords * prev) {
+libextractor_language_extract (const char *filename,
+                               const char *buf,
+                               size_t size, struct EXTRACTOR_Keywords *prev)
+{
   return prev;
 }

@@ -21,67 +21,63 @@
 #include "platform.h"
 
 
-int main(int argc,
-	 char ** argv) {
+int
+main (int argc, char **argv)
+{
   int i;
   int cnt;
-  char * fn;
-  char ** words;
-  char line[2048]; /* buffer overflow, here we go */
+  char *fn;
+  char **words;
+  char line[2048];              /* buffer overflow, here we go */
   FILE *dictin;
-  char * bn;
+  char *bn;
 #define ALLOCSIZE 1024*1024
 
-  if (argc<2) {
-    fprintf(stderr,
-	    _("Please provide a list of klp files as arguments.\n"));
-    exit(-1);
-  }
-
-  fn = malloc(strlen(argv[1]) + 6);
-  strcpy(fn, argv[1]);
-  strcat(fn, ".txt");
-  dictin=fopen(fn,"r");
-  free(fn);
-  if (dictin==NULL) {
-    fprintf(stderr,
-	    _("Error opening file `%s': %s\n"),
-	    argv[1],strerror(errno));
-    exit(-1);
-  }
-
-  words = malloc(sizeof(char*) * ALLOCSIZE); /* don't we LOVE constant size buffers? */
-  if (words == NULL) {
-    fprintf(stderr,
-	    _("Error allocating: %s\n."),
-	    strerror(errno));
-    exit(-1);
-  }
-  cnt = 0;
-  memset(&line[0], 0, 2048);
-  while (1 == fscanf(dictin, "%s", (char*)&line)) {
-    words[cnt] = strdup(line);
-    cnt++;
-    memset(&line[0], 0, 2048);
-    if (cnt > ALLOCSIZE) {
-      fprintf(stderr,
-	      _("Increase ALLOCSIZE (in %s).\n"),
-	      __FILE__);
-      exit(-1);
+  if (argc < 2)
+    {
+      fprintf (stderr,
+               _("Please provide a list of klp files as arguments.\n"));
+      exit (-1);
     }
 
-  }
+  fn = malloc (strlen (argv[1]) + 6);
+  strcpy (fn, argv[1]);
+  strcat (fn, ".txt");
+  dictin = fopen (fn, "r");
+  free (fn);
+  if (dictin == NULL)
+    {
+      fprintf (stderr,
+               _("Error opening file `%s': %s\n"), argv[1], strerror (errno));
+      exit (-1);
+    }
+
+  words = malloc (sizeof (char *) * ALLOCSIZE); /* don't we LOVE constant size buffers? */
+  if (words == NULL)
+    {
+      fprintf (stderr, _("Error allocating: %s\n."), strerror (errno));
+      exit (-1);
+    }
+  cnt = 0;
+  memset (&line[0], 0, 2048);
+  while (1 == fscanf (dictin, "%s", (char *) &line))
+    {
+      words[cnt] = strdup (line);
+      cnt++;
+      memset (&line[0], 0, 2048);
+      if (cnt > ALLOCSIZE)
+        {
+          fprintf (stderr, _("Increase ALLOCSIZE (in %s).\n"), __FILE__);
+          exit (-1);
+        }
+
+    }
 
 
-  fprintf(stdout,
-	  "#include \"somefile.h\"\n");
-  fprintf(stdout,
-	  "static int bits[] = { ");
-  for (i=0;i<bf.bitArraySize/sizeof(int);i++)
-    fprintf(stdout,
-	    "%dL,",
-	    (((int*)bf.bitArray)[i]));
-  fprintf(stdout,
-	  "};\n");
+  fprintf (stdout, "#include \"somefile.h\"\n");
+  fprintf (stdout, "static int bits[] = { ");
+  for (i = 0; i < bf.bitArraySize / sizeof (int); i++)
+    fprintf (stdout, "%dL,", (((int *) bf.bitArray)[i]));
+  fprintf (stdout, "};\n");
   return 0;
 }

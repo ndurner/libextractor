@@ -30,11 +30,12 @@
 #include "extractor.h"
 #include <math.h>
 
-static void addKeyword(struct EXTRACTOR_Keywords ** list,
-		       char * keyword,
-		       EXTRACTOR_KeywordType type) {
-  EXTRACTOR_KeywordList * next;
-  next = malloc(sizeof(EXTRACTOR_KeywordList));
+static void
+addKeyword (struct EXTRACTOR_Keywords **list,
+            char *keyword, EXTRACTOR_KeywordType type)
+{
+  EXTRACTOR_KeywordList *next;
+  next = malloc (sizeof (EXTRACTOR_KeywordList));
   next->next = *list;
   next->keyword = keyword;
   next->keywordType = type;
@@ -43,27 +44,24 @@ static void addKeyword(struct EXTRACTOR_Keywords ** list,
 
 
 #ifdef FIXME
-static struct EXTRACTOR_Keywords * riffparse_INFO(char * buffer,
-						  size_t size,
-						  struct EXTRACTOR_Keywords * prev) {
+static struct EXTRACTOR_Keywords *
+riffparse_INFO (char *buffer, size_t size, struct EXTRACTOR_Keywords *prev)
+{
   size_t c = 0;
-  char * word;
+  char *word;
 
   if (size < 64)
     return prev;
   c = 8;
-  while ( (c < size) && isprint(buffer[c]) )
+  while ((c < size) && isprint (buffer[c]))
     c++;
-  if (c > 8) {
-    word = malloc(c+1-8);
-    memcpy(word,
-	   &buffer[8],
-	   c - 8);
-    word[c-8] = '\0';
-    addKeyword(&prev,
-	       word,
-	       EXTRACTOR_UNKNOWN); /* eh, what exactly is it */
-  }
+  if (c > 8)
+    {
+      word = malloc (c + 1 - 8);
+      memcpy (word, &buffer[8], c - 8);
+      word[c - 8] = '\0';
+      addKeyword (&prev, word, EXTRACTOR_UNKNOWN);      /* eh, what exactly is it */
+    }
   return prev;
 }
 #endif
@@ -73,12 +71,14 @@ static struct EXTRACTOR_Keywords * riffparse_INFO(char * buffer,
  * Read the specified number of bytes as a little-endian (least
  * significant byte first) integer.
  */
-static unsigned int fread_le(char * data) {
+static unsigned int
+fread_le (char *data)
+{
   int x;
   unsigned int result = 0;
 
-  for(x=0;x<4; x++)
-    result |= ((unsigned char)data[x]) << (x*8);
+  for (x = 0; x < 4; x++)
+    result |= ((unsigned char) data[x]) << (x * 8);
   return result;
 }
 
@@ -86,15 +86,18 @@ static unsigned int fread_le(char * data) {
  * C99's round(), nearbyint(), rint(), etc. seems to be spotty, whereas
  * floor() is available in math.h on all C compilers.
  */
-static double round_double(double num) {
-   return floor(num + 0.5);
+static double
+round_double (double num)
+{
+  return floor (num + 0.5);
 }
 
 /* video/x-msvideo */
-struct EXTRACTOR_Keywords * libextractor_riff_extract(char * filename,
-						      char * xdata,
-						      size_t xsize,
-						      struct EXTRACTOR_Keywords * prev) {
+struct EXTRACTOR_Keywords *
+libextractor_riff_extract (char *filename,
+                           char *xdata,
+                           size_t xsize, struct EXTRACTOR_Keywords *prev)
+{
   unsigned int blockLen;
   unsigned int fps;
   unsigned int duration;
@@ -102,87 +105,54 @@ struct EXTRACTOR_Keywords * libextractor_riff_extract(char * filename,
   unsigned int width;
   unsigned int height;
   char codec[5];
-  char * format;
+  char *format;
 
   if (xsize < 32)
     return prev;
 
-  if ( (memcmp(&xdata[0],
-	       "RIFF", 4) !=0) ||
-       (memcmp(&xdata[8],
-	       "AVI ",
-	       4) !=0) )
+  if ((memcmp (&xdata[0],
+               "RIFF", 4) != 0) || (memcmp (&xdata[8], "AVI ", 4) != 0))
     return prev;
 
-  if (memcmp(&xdata[12],
-	     "LIST",
-	     4) != 0)
+  if (memcmp (&xdata[12], "LIST", 4) != 0)
     return prev;
-  if (memcmp(&xdata[20],
-	     "hdrlavih",
-	     8) != 0)
+  if (memcmp (&xdata[20], "hdrlavih", 8) != 0)
     return prev;
 
 
-  blockLen = fread_le(&xdata[28]);
+  blockLen = fread_le (&xdata[28]);
 
   /* begin of AVI header at 32 */
-  fps = (unsigned int) round_double((double) 1.0e6 / fread_le(&xdata[32]));
-  duration = (unsigned int) round_double((double) fread_le(&xdata[48])
-					 * 1000 / fps);
-  width = fread_le(&xdata[64]);
-  height = fread_le(&xdata[68]);
+  fps = (unsigned int) round_double ((double) 1.0e6 / fread_le (&xdata[32]));
+  duration = (unsigned int) round_double ((double) fread_le (&xdata[48])
+                                          * 1000 / fps);
+  width = fread_le (&xdata[64]);
+  height = fread_le (&xdata[68]);
 
 
   /* pos: begin of video stream header */
   pos = blockLen + 32;
 
-  if ( (pos < blockLen) ||
-       (pos + 32 > xsize) ||
-       (pos > xsize) )
+  if ((pos < blockLen) || (pos + 32 > xsize) || (pos > xsize))
     return prev;
 
-  if (memcmp(&xdata[pos],
-	     "LIST",
-	     4) != 0)
+  if (memcmp (&xdata[pos], "LIST", 4) != 0)
     return prev;
-  blockLen = fread_le(&xdata[pos+4]);
-  if (memcmp(&xdata[pos+8],
-	     "strlstrh",
-	     8) != 0)
+  blockLen = fread_le (&xdata[pos + 4]);
+  if (memcmp (&xdata[pos + 8], "strlstrh", 8) != 0)
     return prev;
-  if (memcmp(&xdata[pos+20],
-	     "vids",
-	     4) != 0)
+  if (memcmp (&xdata[pos + 20], "vids", 4) != 0)
     return prev;
   /* pos + 24: video stream header */
-  memcpy(codec,
-	 &xdata[pos+24],
-	 4);
+  memcpy (codec, &xdata[pos + 24], 4);
   codec[4] = '\0';
 
-  format = malloc(256);
-  snprintf(format,
-	   256,
-	   _("codec: %s, %u fps, %u ms"),
-	   codec,
-	   fps,
-	   duration);
-  addKeyword(&prev,
-	     format,
-	     EXTRACTOR_FORMAT);
-  format = malloc(256);
-  snprintf(format,
-	   256,
-	   "%ux%u",
-	   width,
-	   height);
-  addKeyword(&prev,
-	     format,
-	     EXTRACTOR_SIZE);
-  addKeyword(&prev,
-	     strdup("video/x-msvideo"),
-	     EXTRACTOR_MIMETYPE);
+  format = malloc (256);
+  snprintf (format, 256, _("codec: %s, %u fps, %u ms"), codec, fps, duration);
+  addKeyword (&prev, format, EXTRACTOR_FORMAT);
+  format = malloc (256);
+  snprintf (format, 256, "%ux%u", width, height);
+  addKeyword (&prev, format, EXTRACTOR_SIZE);
+  addKeyword (&prev, strdup ("video/x-msvideo"), EXTRACTOR_MIMETYPE);
   return prev;
 }
-

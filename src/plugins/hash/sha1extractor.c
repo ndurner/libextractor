@@ -53,17 +53,17 @@ typedef uintptr_t md5_uintptr;
 # define UINT_MAX_32_BITS 4294967295U
 
 # if UINT_MAX == UINT_MAX_32_BITS
-   typedef unsigned int md5_uint32;
+typedef unsigned int md5_uint32;
 # else
 #  if USHRT_MAX == UINT_MAX_32_BITS
-    typedef unsigned short md5_uint32;
+typedef unsigned short md5_uint32;
 #  else
 #   if ULONG_MAX == UINT_MAX_32_BITS
-     typedef unsigned long md5_uint32;
+typedef unsigned long md5_uint32;
 #   else
      /* The following line is intended to evoke an error.
         Using #error is not portable enough.  */
-     "Cannot determine unsigned 32-bit data type."
+"Cannot determine unsigned 32-bit data type."
 #   endif
 #  endif
 # endif
@@ -125,10 +125,9 @@ struct sha_ctx
 /* FIXME-someday (soon?): use #error instead of this kludge.  */
 "invalid BLOCKSIZE"
 #endif
-
 /* This array contains the bytes used to pad the buffer to the next
    64-byte boundary.  (RFC 1321, 3.1: Step 1)  */
-static const unsigned char fillbuf[64] = { 0x80, 0 /* , 0, 0, ...  */ };
+static const unsigned char fillbuf[64] = { 0x80, 0 /* , 0, 0, ...  */  };
 
 
 
@@ -173,91 +172,91 @@ sha_process_block (const void *buffer, size_t len, struct sha_ctx *ctx)
       int t;
       /* FIXME: see sha1.c for a better implementation.  */
       for (t = 0; t < 16; t++)
-	{
-	  x[t] = NOTSWAP (*words);
-	  words++;
-	}
+        {
+          x[t] = NOTSWAP (*words);
+          words++;
+        }
 
-      R( a, b, c, d, e, F1, K1, x[ 0] );
-      R( e, a, b, c, d, F1, K1, x[ 1] );
-      R( d, e, a, b, c, F1, K1, x[ 2] );
-      R( c, d, e, a, b, F1, K1, x[ 3] );
-      R( b, c, d, e, a, F1, K1, x[ 4] );
-      R( a, b, c, d, e, F1, K1, x[ 5] );
-      R( e, a, b, c, d, F1, K1, x[ 6] );
-      R( d, e, a, b, c, F1, K1, x[ 7] );
-      R( c, d, e, a, b, F1, K1, x[ 8] );
-      R( b, c, d, e, a, F1, K1, x[ 9] );
-      R( a, b, c, d, e, F1, K1, x[10] );
-      R( e, a, b, c, d, F1, K1, x[11] );
-      R( d, e, a, b, c, F1, K1, x[12] );
-      R( c, d, e, a, b, F1, K1, x[13] );
-      R( b, c, d, e, a, F1, K1, x[14] );
-      R( a, b, c, d, e, F1, K1, x[15] );
-      R( e, a, b, c, d, F1, K1, M(16) );
-      R( d, e, a, b, c, F1, K1, M(17) );
-      R( c, d, e, a, b, F1, K1, M(18) );
-      R( b, c, d, e, a, F1, K1, M(19) );
-      R( a, b, c, d, e, F2, K2, M(20) );
-      R( e, a, b, c, d, F2, K2, M(21) );
-      R( d, e, a, b, c, F2, K2, M(22) );
-      R( c, d, e, a, b, F2, K2, M(23) );
-      R( b, c, d, e, a, F2, K2, M(24) );
-      R( a, b, c, d, e, F2, K2, M(25) );
-      R( e, a, b, c, d, F2, K2, M(26) );
-      R( d, e, a, b, c, F2, K2, M(27) );
-      R( c, d, e, a, b, F2, K2, M(28) );
-      R( b, c, d, e, a, F2, K2, M(29) );
-      R( a, b, c, d, e, F2, K2, M(30) );
-      R( e, a, b, c, d, F2, K2, M(31) );
-      R( d, e, a, b, c, F2, K2, M(32) );
-      R( c, d, e, a, b, F2, K2, M(33) );
-      R( b, c, d, e, a, F2, K2, M(34) );
-      R( a, b, c, d, e, F2, K2, M(35) );
-      R( e, a, b, c, d, F2, K2, M(36) );
-      R( d, e, a, b, c, F2, K2, M(37) );
-      R( c, d, e, a, b, F2, K2, M(38) );
-      R( b, c, d, e, a, F2, K2, M(39) );
-      R( a, b, c, d, e, F3, K3, M(40) );
-      R( e, a, b, c, d, F3, K3, M(41) );
-      R( d, e, a, b, c, F3, K3, M(42) );
-      R( c, d, e, a, b, F3, K3, M(43) );
-      R( b, c, d, e, a, F3, K3, M(44) );
-      R( a, b, c, d, e, F3, K3, M(45) );
-      R( e, a, b, c, d, F3, K3, M(46) );
-      R( d, e, a, b, c, F3, K3, M(47) );
-      R( c, d, e, a, b, F3, K3, M(48) );
-      R( b, c, d, e, a, F3, K3, M(49) );
-      R( a, b, c, d, e, F3, K3, M(50) );
-      R( e, a, b, c, d, F3, K3, M(51) );
-      R( d, e, a, b, c, F3, K3, M(52) );
-      R( c, d, e, a, b, F3, K3, M(53) );
-      R( b, c, d, e, a, F3, K3, M(54) );
-      R( a, b, c, d, e, F3, K3, M(55) );
-      R( e, a, b, c, d, F3, K3, M(56) );
-      R( d, e, a, b, c, F3, K3, M(57) );
-      R( c, d, e, a, b, F3, K3, M(58) );
-      R( b, c, d, e, a, F3, K3, M(59) );
-      R( a, b, c, d, e, F4, K4, M(60) );
-      R( e, a, b, c, d, F4, K4, M(61) );
-      R( d, e, a, b, c, F4, K4, M(62) );
-      R( c, d, e, a, b, F4, K4, M(63) );
-      R( b, c, d, e, a, F4, K4, M(64) );
-      R( a, b, c, d, e, F4, K4, M(65) );
-      R( e, a, b, c, d, F4, K4, M(66) );
-      R( d, e, a, b, c, F4, K4, M(67) );
-      R( c, d, e, a, b, F4, K4, M(68) );
-      R( b, c, d, e, a, F4, K4, M(69) );
-      R( a, b, c, d, e, F4, K4, M(70) );
-      R( e, a, b, c, d, F4, K4, M(71) );
-      R( d, e, a, b, c, F4, K4, M(72) );
-      R( c, d, e, a, b, F4, K4, M(73) );
-      R( b, c, d, e, a, F4, K4, M(74) );
-      R( a, b, c, d, e, F4, K4, M(75) );
-      R( e, a, b, c, d, F4, K4, M(76) );
-      R( d, e, a, b, c, F4, K4, M(77) );
-      R( c, d, e, a, b, F4, K4, M(78) );
-      R( b, c, d, e, a, F4, K4, M(79) );
+      R (a, b, c, d, e, F1, K1, x[0]);
+      R (e, a, b, c, d, F1, K1, x[1]);
+      R (d, e, a, b, c, F1, K1, x[2]);
+      R (c, d, e, a, b, F1, K1, x[3]);
+      R (b, c, d, e, a, F1, K1, x[4]);
+      R (a, b, c, d, e, F1, K1, x[5]);
+      R (e, a, b, c, d, F1, K1, x[6]);
+      R (d, e, a, b, c, F1, K1, x[7]);
+      R (c, d, e, a, b, F1, K1, x[8]);
+      R (b, c, d, e, a, F1, K1, x[9]);
+      R (a, b, c, d, e, F1, K1, x[10]);
+      R (e, a, b, c, d, F1, K1, x[11]);
+      R (d, e, a, b, c, F1, K1, x[12]);
+      R (c, d, e, a, b, F1, K1, x[13]);
+      R (b, c, d, e, a, F1, K1, x[14]);
+      R (a, b, c, d, e, F1, K1, x[15]);
+      R (e, a, b, c, d, F1, K1, M (16));
+      R (d, e, a, b, c, F1, K1, M (17));
+      R (c, d, e, a, b, F1, K1, M (18));
+      R (b, c, d, e, a, F1, K1, M (19));
+      R (a, b, c, d, e, F2, K2, M (20));
+      R (e, a, b, c, d, F2, K2, M (21));
+      R (d, e, a, b, c, F2, K2, M (22));
+      R (c, d, e, a, b, F2, K2, M (23));
+      R (b, c, d, e, a, F2, K2, M (24));
+      R (a, b, c, d, e, F2, K2, M (25));
+      R (e, a, b, c, d, F2, K2, M (26));
+      R (d, e, a, b, c, F2, K2, M (27));
+      R (c, d, e, a, b, F2, K2, M (28));
+      R (b, c, d, e, a, F2, K2, M (29));
+      R (a, b, c, d, e, F2, K2, M (30));
+      R (e, a, b, c, d, F2, K2, M (31));
+      R (d, e, a, b, c, F2, K2, M (32));
+      R (c, d, e, a, b, F2, K2, M (33));
+      R (b, c, d, e, a, F2, K2, M (34));
+      R (a, b, c, d, e, F2, K2, M (35));
+      R (e, a, b, c, d, F2, K2, M (36));
+      R (d, e, a, b, c, F2, K2, M (37));
+      R (c, d, e, a, b, F2, K2, M (38));
+      R (b, c, d, e, a, F2, K2, M (39));
+      R (a, b, c, d, e, F3, K3, M (40));
+      R (e, a, b, c, d, F3, K3, M (41));
+      R (d, e, a, b, c, F3, K3, M (42));
+      R (c, d, e, a, b, F3, K3, M (43));
+      R (b, c, d, e, a, F3, K3, M (44));
+      R (a, b, c, d, e, F3, K3, M (45));
+      R (e, a, b, c, d, F3, K3, M (46));
+      R (d, e, a, b, c, F3, K3, M (47));
+      R (c, d, e, a, b, F3, K3, M (48));
+      R (b, c, d, e, a, F3, K3, M (49));
+      R (a, b, c, d, e, F3, K3, M (50));
+      R (e, a, b, c, d, F3, K3, M (51));
+      R (d, e, a, b, c, F3, K3, M (52));
+      R (c, d, e, a, b, F3, K3, M (53));
+      R (b, c, d, e, a, F3, K3, M (54));
+      R (a, b, c, d, e, F3, K3, M (55));
+      R (e, a, b, c, d, F3, K3, M (56));
+      R (d, e, a, b, c, F3, K3, M (57));
+      R (c, d, e, a, b, F3, K3, M (58));
+      R (b, c, d, e, a, F3, K3, M (59));
+      R (a, b, c, d, e, F4, K4, M (60));
+      R (e, a, b, c, d, F4, K4, M (61));
+      R (d, e, a, b, c, F4, K4, M (62));
+      R (c, d, e, a, b, F4, K4, M (63));
+      R (b, c, d, e, a, F4, K4, M (64));
+      R (a, b, c, d, e, F4, K4, M (65));
+      R (e, a, b, c, d, F4, K4, M (66));
+      R (d, e, a, b, c, F4, K4, M (67));
+      R (c, d, e, a, b, F4, K4, M (68));
+      R (b, c, d, e, a, F4, K4, M (69));
+      R (a, b, c, d, e, F4, K4, M (70));
+      R (e, a, b, c, d, F4, K4, M (71));
+      R (d, e, a, b, c, F4, K4, M (72));
+      R (c, d, e, a, b, F4, K4, M (73));
+      R (b, c, d, e, a, F4, K4, M (74));
+      R (a, b, c, d, e, F4, K4, M (75));
+      R (e, a, b, c, d, F4, K4, M (76));
+      R (d, e, a, b, c, F4, K4, M (77));
+      R (c, d, e, a, b, F4, K4, M (78));
+      R (b, c, d, e, a, F4, K4, M (79));
 
       a = ctx->A += a;
       b = ctx->B += b;
@@ -283,14 +282,14 @@ sha_process_bytes (const void *buffer, size_t len, struct sha_ctx *ctx)
       ctx->buflen += add;
 
       if (ctx->buflen > 64)
-	{
-	  sha_process_block (ctx->buffer, ctx->buflen & ~63, ctx);
+        {
+          sha_process_block (ctx->buffer, ctx->buflen & ~63, ctx);
 
-	  ctx->buflen &= 63;
-	  /* The regions in the following copy operation cannot overlap.  */
-	  memcpy (ctx->buffer, &ctx->buffer[(left_over + add) & ~63],
-		  ctx->buflen);
-	}
+          ctx->buflen &= 63;
+          /* The regions in the following copy operation cannot overlap.  */
+          memcpy (ctx->buffer, &ctx->buffer[(left_over + add) & ~63],
+                  ctx->buflen);
+        }
 
       buffer = (const char *) buffer + add;
       len -= add;
@@ -308,19 +307,19 @@ sha_process_bytes (const void *buffer, size_t len, struct sha_ctx *ctx)
 #  define UNALIGNED_P(p) (((md5_uintptr) p) % sizeof (md5_uint32) != 0)
 # endif
       if (UNALIGNED_P (buffer))
-	while (len > 64)
-	  {
-	    sha_process_block (memcpy (ctx->buffer, buffer, 64), 64, ctx);
-	    buffer = (const char *) buffer + 64;
-	    len -= 64;
-	  }
+        while (len > 64)
+          {
+            sha_process_block (memcpy (ctx->buffer, buffer, 64), 64, ctx);
+            buffer = (const char *) buffer + 64;
+            len -= 64;
+          }
       else
 #endif
-	{
-	  sha_process_block (buffer, len & ~63, ctx);
-	  buffer = (const char *) buffer + (len & ~63);
-	  len &= 63;
-	}
+        {
+          sha_process_block (buffer, len & ~63, ctx);
+          buffer = (const char *) buffer + (len & ~63);
+          len &= 63;
+        }
     }
 
   /* Move remaining bytes in internal buffer.  */
@@ -331,11 +330,11 @@ sha_process_bytes (const void *buffer, size_t len, struct sha_ctx *ctx)
       memcpy (&ctx->buffer[left_over], buffer, len);
       left_over += len;
       if (left_over >= 64)
-	{
-	  sha_process_block (ctx->buffer, 64, ctx);
-	  left_over -= 64;
-	  memcpy (ctx->buffer, &ctx->buffer[64], left_over);
-	}
+        {
+          sha_process_block (ctx->buffer, 64, ctx);
+          left_over -= 64;
+          memcpy (ctx->buffer, &ctx->buffer[64], left_over);
+        }
       ctx->buflen = left_over;
     }
 }
@@ -397,9 +396,10 @@ sha_finish_ctx (struct sha_ctx *ctx, void *resbuf)
   memcpy (&ctx->buffer[bytes], fillbuf, pad);
 
   /* Put the 64-bit file length in *bits* at the end of the buffer.  */
-  *(md5_uint32 *) &ctx->buffer[bytes + pad + 4] = NOTSWAP (ctx->total[0] << 3);
-  *(md5_uint32 *) &ctx->buffer[bytes + pad] = NOTSWAP ((ctx->total[1] << 3) |
-						    (ctx->total[0] >> 29));
+  *(md5_uint32 *) & ctx->buffer[bytes + pad + 4] =
+    NOTSWAP (ctx->total[0] << 3);
+  *(md5_uint32 *) & ctx->buffer[bytes + pad] =
+    NOTSWAP ((ctx->total[1] << 3) | (ctx->total[0] >> 29));
 
   /* Process last bytes.  */
   sha_process_block (ctx->buffer, bytes + pad + 8, ctx);
@@ -433,16 +433,17 @@ sha_buffer (const char *buffer, size_t len, void *resblock)
 
 
 
-static struct EXTRACTOR_Keywords * addKeyword(EXTRACTOR_KeywordList *oldhead,
-					      const char *phrase,
-					      EXTRACTOR_KeywordType type) {
+static struct EXTRACTOR_Keywords *
+addKeyword (EXTRACTOR_KeywordList * oldhead,
+            const char *phrase, EXTRACTOR_KeywordType type)
+{
 
-   EXTRACTOR_KeywordList * keyword;
-   keyword = (EXTRACTOR_KeywordList*) malloc(sizeof(EXTRACTOR_KeywordList));
-   keyword->next = oldhead;
-   keyword->keyword = strdup(phrase);
-   keyword->keywordType = type;
-   return keyword;
+  EXTRACTOR_KeywordList *keyword;
+  keyword = (EXTRACTOR_KeywordList *) malloc (sizeof (EXTRACTOR_KeywordList));
+  keyword->next = oldhead;
+  keyword->keyword = strdup (phrase);
+  keyword->keywordType = type;
+  return keyword;
 }
 
 #define DIGEST_BITS 160
@@ -451,27 +452,24 @@ static struct EXTRACTOR_Keywords * addKeyword(EXTRACTOR_KeywordList *oldhead,
 
 #define MAX_DIGEST_BIN_BYTES DIGEST_BIN_BYTES
 
-struct EXTRACTOR_Keywords * libextractor_hash_sha1_extract(const char * filename,
-							   char * data,
-							   size_t size,
-							   struct EXTRACTOR_Keywords * prev) {
+struct EXTRACTOR_Keywords *
+libextractor_hash_sha1_extract (const char *filename,
+                                char *data,
+                                size_t size, struct EXTRACTOR_Keywords *prev)
+{
   unsigned char bin_buffer[MAX_DIGEST_BIN_BYTES];
   char hash[8 * MAX_DIGEST_BIN_BYTES];
   char buf[16];
   int i;
 
-  sha_buffer(data, size, bin_buffer);
+  sha_buffer (data, size, bin_buffer);
 
   hash[0] = '\0';
-  for (i=0;i<DIGEST_HEX_BYTES / 2; i++) {
-    snprintf(buf,
-	     16,
-	     "%02x",
-	     bin_buffer[i]);
-    strcat(hash, buf);
-  }
-  prev = addKeyword(prev,
-		    hash,
-		    EXTRACTOR_HASH_SHA1);
+  for (i = 0; i < DIGEST_HEX_BYTES / 2; i++)
+    {
+      snprintf (buf, 16, "%02x", bin_buffer[i]);
+      strcat (hash, buf);
+    }
+  prev = addKeyword (prev, hash, EXTRACTOR_HASH_SHA1);
   return prev;
 }

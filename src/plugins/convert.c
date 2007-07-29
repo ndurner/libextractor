@@ -30,41 +30,36 @@
  *  if conversion fails, a copy of the orignal
  *  string is returned.
  */
-char * convertToUtf8(const char * input,
-		     size_t len,
-		     const char * charset) {
+char *
+convertToUtf8 (const char *input, size_t len, const char *charset)
+{
   size_t tmpSize;
   size_t finSize;
-  char * tmp;
-  char * ret;
-  char * itmp;
-  const char * i;
+  char *tmp;
+  char *ret;
+  char *itmp;
+  const char *i;
   iconv_t cd;
 
   i = input;
-  cd = iconv_open("UTF-8", charset);
-  if (cd == (iconv_t) -1)
-    return strdup(i);
+  cd = iconv_open ("UTF-8", charset);
+  if (cd == (iconv_t) - 1)
+    return strdup (i);
   tmpSize = 3 * len + 4;
-  tmp = malloc(tmpSize);
+  tmp = malloc (tmpSize);
   itmp = tmp;
   finSize = tmpSize;
-  if (iconv(cd,
-	    (char**) &input,
-	    &len,
-	    &itmp,
-	    &finSize) == (size_t)-1) {
-    iconv_close(cd);
-    free(tmp);
-    return strdup(i);
-  }
-  ret = malloc(tmpSize - finSize + 1);
-  memcpy(ret,
-	 tmp,
-	 tmpSize - finSize);
+  if (iconv (cd, (char **) &input, &len, &itmp, &finSize) == (size_t) - 1)
+    {
+      iconv_close (cd);
+      free (tmp);
+      return strdup (i);
+    }
+  ret = malloc (tmpSize - finSize + 1);
+  memcpy (ret, tmp, tmpSize - finSize);
   ret[tmpSize - finSize] = '\0';
-  free(tmp);
-  iconv_close(cd);
+  free (tmp);
+  iconv_close (cd);
   return ret;
 }
 

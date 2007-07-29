@@ -24,18 +24,20 @@
 
 #define DEBUG 0
 
-static void addKeyword(struct EXTRACTOR_Keywords ** list,
-		       char * keyword,
-		       EXTRACTOR_KeywordType type) {
-  EXTRACTOR_KeywordList * next;
-  next = malloc(sizeof(EXTRACTOR_KeywordList));
+static void
+addKeyword (struct EXTRACTOR_Keywords **list,
+            char *keyword, EXTRACTOR_KeywordType type)
+{
+  EXTRACTOR_KeywordList *next;
+  next = malloc (sizeof (EXTRACTOR_KeywordList));
   next->next = *list;
   next->keyword = keyword;
   next->keywordType = type;
   *list = next;
 }
 
-typedef struct {
+typedef struct
+{
   unsigned short byteorder;
   unsigned short fourty_two;
   unsigned int ifd_offset;
@@ -45,12 +47,13 @@ typedef struct {
   &(p)->byteorder,	      \
     &(p)->fourty_two,	      \
     &(p)->ifd_offset
-static char * TIFF_HEADER_SPECS[] = {
+static char *TIFF_HEADER_SPECS[] = {
   "hhw",
   "HHW",
 };
 
-typedef struct {
+typedef struct
+{
   unsigned short tag;
   unsigned short type;
   unsigned int count;
@@ -62,7 +65,7 @@ typedef struct {
     &(p)->type,					\
     &(p)->count,				\
     &(p)->value_or_offset
-static char * DIRECTORY_ENTRY_SPECS[] = {
+static char *DIRECTORY_ENTRY_SPECS[] = {
   "hhww",
   "HHWW"
 };
@@ -85,178 +88,154 @@ static char * DIRECTORY_ENTRY_SPECS[] = {
 #define TYPE_LONG 4
 #define TYPE_RATIONAL 5
 
-static void addASCII(struct EXTRACTOR_Keywords ** prev,
-		     char * data,
-		     size_t size,
-		     DIRECTORY_ENTRY * entry,
-		     EXTRACTOR_KeywordType type) {
+static void
+addASCII (struct EXTRACTOR_Keywords **prev,
+          char *data,
+          size_t size, DIRECTORY_ENTRY * entry, EXTRACTOR_KeywordType type)
+{
   if (entry->count > size)
-    return; /* invalid! */
+    return;                     /* invalid! */
   if (entry->type != TYPE_ASCII)
-    return; /* huh? */
-  if (entry->count+entry->value_or_offset > size)
+    return;                     /* huh? */
+  if (entry->count + entry->value_or_offset > size)
     return;
-  if (data[entry->value_or_offset+entry->count-1] != 0)
+  if (data[entry->value_or_offset + entry->count - 1] != 0)
     return;
-  addKeyword(prev,
-	     strdup(&data[entry->value_or_offset]),
-	     EXTRACTOR_SOFTWARE);
+  addKeyword (prev,
+              strdup (&data[entry->value_or_offset]), EXTRACTOR_SOFTWARE);
 }
 
 
-struct EXTRACTOR_Keywords * libextractor_tiff_extract(char * filename,
-						      char * data,
-						      size_t size,
-						      struct EXTRACTOR_Keywords * prev) {
+struct EXTRACTOR_Keywords *
+libextractor_tiff_extract (char *filename,
+                           char *data,
+                           size_t size, struct EXTRACTOR_Keywords *prev)
+{
   TIFF_HEADER hdr;
-  int byteOrder; /* 0: do not convert;
-		    1: do convert */
+  int byteOrder;                /* 0: do not convert;
+                                   1: do convert */
   int current_ifd;
   long long length = -1;
   long long width = -1;
 
   if (size < TIFF_HEADER_SIZE)
-    return prev; /*  can not be tiff */
-  if ( (data[0] == 0x49) &&
-       (data[1] == 0x49) )
+    return prev;                /*  can not be tiff */
+  if ((data[0] == 0x49) && (data[1] == 0x49))
     byteOrder = 0;
-  else if ( (data[0] == 0x4D) &&
-	    (data[1] == 0x4D) )
+  else if ((data[0] == 0x4D) && (data[1] == 0x4D))
     byteOrder = 1;
   else
-    return prev; /* can not be tiff */
+    return prev;                /* can not be tiff */
 #if __BYTE_ORDER == __BIG_ENDIAN
-  byteOrder = 1-byteOrder;
+  byteOrder = 1 - byteOrder;
 #endif
-  cat_unpack(data,
-	     TIFF_HEADER_SPECS[byteOrder],
-	     TIFF_HEADER_FIELDS(&hdr));
+  cat_unpack (data, TIFF_HEADER_SPECS[byteOrder], TIFF_HEADER_FIELDS (&hdr));
   if (hdr.fourty_two != 42)
-    return prev; /* can not be tiff */
+    return prev;                /* can not be tiff */
   if (hdr.ifd_offset + 6 > size)
-    return prev; /* malformed tiff */
-  addKeyword(&prev,
-	     strdup("image/tiff"),
-	     EXTRACTOR_MIMETYPE);
+    return prev;                /* malformed tiff */
+  addKeyword (&prev, strdup ("image/tiff"), EXTRACTOR_MIMETYPE);
   current_ifd = hdr.ifd_offset;
-  while (current_ifd != 0) {
-    unsigned short len;
-    unsigned int off;
-    int i;
-    if (current_ifd + 6 > size)
-      return prev;
-    if (byteOrder == 0)
-      len = data[current_ifd+1] << 8 | data[current_ifd];
-    else
-      len = data[current_ifd] << 8 | data[current_ifd+1];
-    if (len * DIRECTORY_ENTRY_SIZE + 2 + 4 > size) {
+  while (current_ifd != 0)
+    {
+      unsigned short len;
+      unsigned int off;
+      int i;
+      if (current_ifd + 6 > size)
+        return prev;
+      if (byteOrder == 0)
+        len = data[current_ifd + 1] << 8 | data[current_ifd];
+      else
+        len = data[current_ifd] << 8 | data[current_ifd + 1];
+      if (len * DIRECTORY_ENTRY_SIZE + 2 + 4 > size)
+        {
 #if DEBUG
-      printf("WARNING: malformed tiff\n");
+          printf ("WARNING: malformed tiff\n");
 #endif
-      return prev;
-    }
-    for (i=0;i<len;i++) {
-      DIRECTORY_ENTRY entry;
-      off = current_ifd + 2 + DIRECTORY_ENTRY_SIZE*i;
+          return prev;
+        }
+      for (i = 0; i < len; i++)
+        {
+          DIRECTORY_ENTRY entry;
+          off = current_ifd + 2 + DIRECTORY_ENTRY_SIZE * i;
 
-      cat_unpack(&data[off],
-		 DIRECTORY_ENTRY_SPECS[byteOrder],
-		 DIRECTORY_ENTRY_FIELDS(&entry));
-      switch (entry.tag) {
-      case TAG_LENGTH:
-	if ( (entry.type == TYPE_SHORT) &&
-	     (byteOrder == 1) ) {
-	  length = entry.value_or_offset >> 16;
-	} else {
-	  length = entry.value_or_offset;
-	}
-	if (width != -1) {
-	  char * tmp;
-	  tmp = malloc(128);
-	  sprintf(tmp, "%ux%u",
-		  (unsigned int) width,
-		  (unsigned int) length);
-	  addKeyword(&prev,
-		     strdup(tmp),
-		     EXTRACTOR_SIZE);
-	  free(tmp);
-	}
-	break;
-      case TAG_WIDTH:
-	if ( (entry.type == TYPE_SHORT) &&
-	     (byteOrder == 1) )
-	  width = entry.value_or_offset >> 16;
-	else
-	  width = entry.value_or_offset;
-	if (length != -1) {
-	  char * tmp;
-	  tmp = malloc(128);
-	  sprintf(tmp, "%ux%u",
-		  (unsigned int) width,
-		  (unsigned int) length);
-	  addKeyword(&prev,
-		     strdup(tmp),
-		     EXTRACTOR_SIZE);
-	  free(tmp);
-	}
-	break;
-      case TAG_SOFTWARE:
-	addASCII(&prev,
-		 data, size,
-		 &entry,
-		 EXTRACTOR_SOFTWARE);
-	break;
-      case TAG_ARTIST:
-	addASCII(&prev,
-		 data, size,
-		 &entry,
-		 EXTRACTOR_ARTIST);
-	break;
-      case TAG_DOCUMENT_NAME:
-	addASCII(&prev,
-		 data, size,
-		 &entry,
-		 EXTRACTOR_TITLE);
-	break;
-      case TAG_COPYRIGHT:
-	addASCII(&prev,
-		 data, size,
-		 &entry,
-		 EXTRACTOR_COPYRIGHT);
-	break;
-      case TAG_DESCRIPTION:
-	addASCII(&prev,
-		 data, size,
-		 &entry,
-		 EXTRACTOR_DESCRIPTION);
-	break;
-      case TAG_HOST:
-	addASCII(&prev,
-		 data, size,
-		 &entry,
-		 EXTRACTOR_BUILDHOST);
-	break;
-      case TAG_SCANNER:
-	addASCII(&prev,
-		 data, size,
-		 &entry,
-		 EXTRACTOR_SOURCE);
-	break;
-      case TAG_DAYTIME:
-	addASCII(&prev,
-		 data, size,
-		 &entry,
-		 EXTRACTOR_CREATION_DATE);
-	break;
-      }
-    }
+          cat_unpack (&data[off],
+                      DIRECTORY_ENTRY_SPECS[byteOrder],
+                      DIRECTORY_ENTRY_FIELDS (&entry));
+          switch (entry.tag)
+            {
+            case TAG_LENGTH:
+              if ((entry.type == TYPE_SHORT) && (byteOrder == 1))
+                {
+                  length = entry.value_or_offset >> 16;
+                }
+              else
+                {
+                  length = entry.value_or_offset;
+                }
+              if (width != -1)
+                {
+                  char *tmp;
+                  tmp = malloc (128);
+                  sprintf (tmp, "%ux%u",
+                           (unsigned int) width, (unsigned int) length);
+                  addKeyword (&prev, strdup (tmp), EXTRACTOR_SIZE);
+                  free (tmp);
+                }
+              break;
+            case TAG_WIDTH:
+              if ((entry.type == TYPE_SHORT) && (byteOrder == 1))
+                width = entry.value_or_offset >> 16;
+              else
+                width = entry.value_or_offset;
+              if (length != -1)
+                {
+                  char *tmp;
+                  tmp = malloc (128);
+                  sprintf (tmp, "%ux%u",
+                           (unsigned int) width, (unsigned int) length);
+                  addKeyword (&prev, strdup (tmp), EXTRACTOR_SIZE);
+                  free (tmp);
+                }
+              break;
+            case TAG_SOFTWARE:
+              addASCII (&prev, data, size, &entry, EXTRACTOR_SOFTWARE);
+              break;
+            case TAG_ARTIST:
+              addASCII (&prev, data, size, &entry, EXTRACTOR_ARTIST);
+              break;
+            case TAG_DOCUMENT_NAME:
+              addASCII (&prev, data, size, &entry, EXTRACTOR_TITLE);
+              break;
+            case TAG_COPYRIGHT:
+              addASCII (&prev, data, size, &entry, EXTRACTOR_COPYRIGHT);
+              break;
+            case TAG_DESCRIPTION:
+              addASCII (&prev, data, size, &entry, EXTRACTOR_DESCRIPTION);
+              break;
+            case TAG_HOST:
+              addASCII (&prev, data, size, &entry, EXTRACTOR_BUILDHOST);
+              break;
+            case TAG_SCANNER:
+              addASCII (&prev, data, size, &entry, EXTRACTOR_SOURCE);
+              break;
+            case TAG_DAYTIME:
+              addASCII (&prev, data, size, &entry, EXTRACTOR_CREATION_DATE);
+              break;
+            }
+        }
 
-    off = current_ifd + 2 + DIRECTORY_ENTRY_SIZE * len;
-    if (byteOrder == 0)
-      current_ifd = data[off+3]<<24|data[off+2]<<16|data[off+1]<<8|data[off];
-    else
-      current_ifd = data[off]<<24|data[off+1]<<16|data[off+2]<<8|data[off+3];
-  }
+      off = current_ifd + 2 + DIRECTORY_ENTRY_SIZE * len;
+      if (byteOrder == 0)
+        current_ifd =
+          data[off + 3] << 24 | data[off + 2] << 16 | data[off +
+                                                           1] << 8 |
+          data[off];
+      else
+        current_ifd =
+          data[off] << 24 | data[off + 1] << 16 | data[off +
+                                                       2] << 8 | data[off +
+                                                                      3];
+    }
   return prev;
 }
-

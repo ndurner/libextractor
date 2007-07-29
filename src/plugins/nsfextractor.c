@@ -44,38 +44,35 @@
 
 struct header
 {
-	char magicid[ 5 ];
-	char nsfversion;
-	char songs;
-	char firstsong;
-	UINT16 loadaddr;
-	UINT16 initaddr;
-	UINT16 playaddr;
-	char title[ 32 ];
-	char artist[ 32 ];
-	char copyright[ 32 ];
-	UINT16 ntscspeed;
-	char bankswitch[ 8 ];
-	UINT16 palspeed;
-	char tvflags;
-	char chipflags;
+  char magicid[5];
+  char nsfversion;
+  char songs;
+  char firstsong;
+  UINT16 loadaddr;
+  UINT16 initaddr;
+  UINT16 playaddr;
+  char title[32];
+  char artist[32];
+  char copyright[32];
+  UINT16 ntscspeed;
+  char bankswitch[8];
+  UINT16 palspeed;
+  char tvflags;
+  char chipflags;
 };
 
 
-static struct EXTRACTOR_Keywords * addkword
-(
-	EXTRACTOR_KeywordList *oldhead,
-	const char * phrase,
-	EXTRACTOR_KeywordType type
-)
+static struct EXTRACTOR_Keywords *addkword
+  (EXTRACTOR_KeywordList * oldhead,
+   const char *phrase, EXTRACTOR_KeywordType type)
 {
-	EXTRACTOR_KeywordList * keyword;
+  EXTRACTOR_KeywordList *keyword;
 
-	keyword = malloc( sizeof( EXTRACTOR_KeywordList ) );
-	keyword->next = oldhead;
-	keyword->keyword = strdup( phrase );
-	keyword->keywordType = type;
-	return( keyword );
+  keyword = malloc (sizeof (EXTRACTOR_KeywordList));
+  keyword->next = oldhead;
+  keyword->keyword = strdup (phrase);
+  keyword->keywordType = type;
+  return (keyword);
 }
 
 
@@ -86,123 +83,119 @@ static struct EXTRACTOR_Keywords * addkword
  * written.
  *
  */
-struct EXTRACTOR_Keywords * libextractor_nsf_extract
-(
-	const char * filename,
-	char * data,
-	size_t size,
-	struct EXTRACTOR_Keywords * prev
-)
+struct EXTRACTOR_Keywords *libextractor_nsf_extract
+  (const char *filename,
+   char *data, size_t size, struct EXTRACTOR_Keywords *prev)
 {
-	char album[ 33 ];
-	char artist[ 33 ];
-	char copyright[ 33 ];
-	char songs[ 32 ];
-	char startingsong[ 32 ];
-	char nsfversion[ 32 ];
-	struct header *head;
+  char album[33];
+  char artist[33];
+  char copyright[33];
+  char songs[32];
+  char startingsong[32];
+  char nsfversion[32];
+  struct header *head;
 
-	/* Check header size */
+  /* Check header size */
 
-	if( size < HEADER_SIZE )
-	{
-		return( prev );
-	}
+  if (size < HEADER_SIZE)
+    {
+      return (prev);
+    }
 
-	head = ( struct header * ) data;
+  head = (struct header *) data;
 
-	/* Check "magic" id bytes */
+  /* Check "magic" id bytes */
 
-	if( memcmp( head->magicid, "NESM\x1a", 5 ) )
-	{
-		return( prev );
-	}
-
-
-	/* Mime-type */
-
-	prev = addkword( prev, "audio/x-nsf", EXTRACTOR_MIMETYPE );
+  if (memcmp (head->magicid, "NESM\x1a", 5))
+    {
+      return (prev);
+    }
 
 
-	/* Version of NSF format */
+  /* Mime-type */
 
-	sprintf( nsfversion, "%d", head->nsfversion );
-	prev = addkword( prev, nsfversion, EXTRACTOR_FORMAT_VERSION );
-
-
-	/* Get song count */
-
-	sprintf( songs, "%d", head->songs );
-	prev = addkword( prev, songs, EXTRACTOR_SONG_COUNT );
+  prev = addkword (prev, "audio/x-nsf", EXTRACTOR_MIMETYPE);
 
 
-	/* Get number of the first song to be played */
+  /* Version of NSF format */
 
-	sprintf( startingsong, "%d", head->firstsong );
-	prev = addkword( prev, startingsong, EXTRACTOR_STARTING_SONG );
-
-
-	/* name, artist, copyright fields */
-
-	memcpy( &album, head->title, 32 );
-	memcpy( &artist, head->artist, 32 );
-	memcpy( &copyright, head->copyright, 32 );
-
-	album[ 32 ] = '\0';
-	artist[ 32 ] = '\0';
-	copyright[ 32 ] = '\0';
-
-	prev = addkword( prev, album, EXTRACTOR_ALBUM );
-	prev = addkword( prev, artist, EXTRACTOR_ARTIST );
-	prev = addkword( prev, copyright, EXTRACTOR_COPYRIGHT );
+  sprintf (nsfversion, "%d", head->nsfversion);
+  prev = addkword (prev, nsfversion, EXTRACTOR_FORMAT_VERSION);
 
 
-	/* PAL or NTSC */
+  /* Get song count */
 
-	if( head->tvflags & DUAL_FLAG )
-	{
-		prev = addkword( prev, "PAL/NTSC", EXTRACTOR_TELEVISION_SYSTEM );
-	}
-	else
-	{
-		if( head->tvflags & PAL_FLAG )
-		{
-			prev = addkword( prev, "PAL", EXTRACTOR_TELEVISION_SYSTEM );
-		}
-		else
-		{
-			prev = addkword( prev, "NTSC", EXTRACTOR_TELEVISION_SYSTEM );
-		}
-	}
+  sprintf (songs, "%d", head->songs);
+  prev = addkword (prev, songs, EXTRACTOR_SONG_COUNT);
 
 
-	/* Detect Extra Sound Chips needed to play the files */
+  /* Get number of the first song to be played */
 
-	if( head->chipflags & VRCVI_FLAG )
-	{
-		prev = addkword( prev, "VRCVI", EXTRACTOR_HARDWARE_DEPENDENCY );
-	}
-	if( head->chipflags & VRCVII_FLAG )
-	{
-		prev = addkword( prev, "VRCVII", EXTRACTOR_HARDWARE_DEPENDENCY );
-	}
-	if( head->chipflags & FDS_FLAG )
-	{
-		prev = addkword( prev, "FDS Sound", EXTRACTOR_HARDWARE_DEPENDENCY );
-	}
-	if( head->chipflags & MMC5_FLAG )
-	{
-		prev = addkword( prev, "MMC5 audio", EXTRACTOR_HARDWARE_DEPENDENCY );
-	}
-	if( head->chipflags & NAMCO_FLAG )
-	{
-		prev = addkword( prev, "Namco 106", EXTRACTOR_HARDWARE_DEPENDENCY );
-	}
-	if( head->chipflags & SUNSOFT_FLAG )
-	{
-		prev = addkword( prev, "Sunsoft FME-07", EXTRACTOR_HARDWARE_DEPENDENCY );
-	}
+  sprintf (startingsong, "%d", head->firstsong);
+  prev = addkword (prev, startingsong, EXTRACTOR_STARTING_SONG);
 
-	return( prev );
+
+  /* name, artist, copyright fields */
+
+  memcpy (&album, head->title, 32);
+  memcpy (&artist, head->artist, 32);
+  memcpy (&copyright, head->copyright, 32);
+
+  album[32] = '\0';
+  artist[32] = '\0';
+  copyright[32] = '\0';
+
+  prev = addkword (prev, album, EXTRACTOR_ALBUM);
+  prev = addkword (prev, artist, EXTRACTOR_ARTIST);
+  prev = addkword (prev, copyright, EXTRACTOR_COPYRIGHT);
+
+
+  /* PAL or NTSC */
+
+  if (head->tvflags & DUAL_FLAG)
+    {
+      prev = addkword (prev, "PAL/NTSC", EXTRACTOR_TELEVISION_SYSTEM);
+    }
+  else
+    {
+      if (head->tvflags & PAL_FLAG)
+        {
+          prev = addkword (prev, "PAL", EXTRACTOR_TELEVISION_SYSTEM);
+        }
+      else
+        {
+          prev = addkword (prev, "NTSC", EXTRACTOR_TELEVISION_SYSTEM);
+        }
+    }
+
+
+  /* Detect Extra Sound Chips needed to play the files */
+
+  if (head->chipflags & VRCVI_FLAG)
+    {
+      prev = addkword (prev, "VRCVI", EXTRACTOR_HARDWARE_DEPENDENCY);
+    }
+  if (head->chipflags & VRCVII_FLAG)
+    {
+      prev = addkword (prev, "VRCVII", EXTRACTOR_HARDWARE_DEPENDENCY);
+    }
+  if (head->chipflags & FDS_FLAG)
+    {
+      prev = addkword (prev, "FDS Sound", EXTRACTOR_HARDWARE_DEPENDENCY);
+    }
+  if (head->chipflags & MMC5_FLAG)
+    {
+      prev = addkword (prev, "MMC5 audio", EXTRACTOR_HARDWARE_DEPENDENCY);
+    }
+  if (head->chipflags & NAMCO_FLAG)
+    {
+      prev = addkword (prev, "Namco 106", EXTRACTOR_HARDWARE_DEPENDENCY);
+    }
+  if (head->chipflags & SUNSOFT_FLAG)
+    {
+      prev = addkword (prev, "Sunsoft FME-07", EXTRACTOR_HARDWARE_DEPENDENCY);
+    }
+
+  return (prev);
 
 }

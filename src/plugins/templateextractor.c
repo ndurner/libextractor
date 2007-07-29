@@ -21,25 +21,26 @@
 #include "platform.h"
 #include "extractor.h"
 
-static EXTRACTOR_KeywordList * addKeyword(EXTRACTOR_KeywordType type,
-					  char * keyword,
-					  EXTRACTOR_KeywordList * next) {
-  EXTRACTOR_KeywordList * result;
+static EXTRACTOR_KeywordList *
+addKeyword (EXTRACTOR_KeywordType type,
+            char *keyword, EXTRACTOR_KeywordList * next)
+{
+  EXTRACTOR_KeywordList *result;
 
   if (keyword == NULL)
     return next;
-  result = malloc(sizeof(EXTRACTOR_KeywordList));
+  result = malloc (sizeof (EXTRACTOR_KeywordList));
   result->next = next;
   result->keyword = keyword;
   result->keywordType = type;
   return result;
 }
 
-struct EXTRACTOR_Keywords * libextractor_TEMPLATE_extract(const char * filename,
-							  char * data,
-							  size_t size,
-							  struct EXTRACTOR_Keywords * prev) {
+struct EXTRACTOR_Keywords *
+libextractor_TEMPLATE_extract (const char *filename,
+                               char *data,
+                               size_t size, struct EXTRACTOR_Keywords *prev)
+{
 
   return prev;
 }
-

@@ -36,53 +36,49 @@
 #define MOS6581_FLAG     0x10
 #define MOS8580_FLAG     0x20
 
-typedef char sidwrd[ 2 ];
-typedef char sidlongwrd[ 4 ];
+typedef char sidwrd[2];
+typedef char sidlongwrd[4];
 
 struct header
 {
-	char magicid[ 4 ];
-	sidwrd sidversion;
-	sidwrd dataoffset;
-	sidwrd loadaddr;
-	sidwrd initaddr;
-	sidwrd playaddr;
-	sidwrd songs;
-	sidwrd firstsong;
-	sidlongwrd speed;
-	char title[ 32 ];
-	char artist[ 32 ];
-	char copyright[ 32 ];
-	sidwrd flags; /* version 2 specific fields start */
-	char startpage;
-	char pagelength;
-	sidwrd reserved;
+  char magicid[4];
+  sidwrd sidversion;
+  sidwrd dataoffset;
+  sidwrd loadaddr;
+  sidwrd initaddr;
+  sidwrd playaddr;
+  sidwrd songs;
+  sidwrd firstsong;
+  sidlongwrd speed;
+  char title[32];
+  char artist[32];
+  char copyright[32];
+  sidwrd flags;                 /* version 2 specific fields start */
+  char startpage;
+  char pagelength;
+  sidwrd reserved;
 };
 
-int sidword( sidwrd data  )
+int
+sidword (sidwrd data)
 {
-	int value =
-		( unsigned char ) data[ 0 ] * 0x100 +
-		( unsigned char ) data[ 1 ];
+  int value = (unsigned char) data[0] * 0x100 + (unsigned char) data[1];
 
-	return( value );
+  return (value);
 
 }
 
-static struct EXTRACTOR_Keywords * addkword
-(
-	EXTRACTOR_KeywordList *oldhead,
-	const char * phrase,
-	EXTRACTOR_KeywordType type
-)
+static struct EXTRACTOR_Keywords *addkword
+  (EXTRACTOR_KeywordList * oldhead,
+   const char *phrase, EXTRACTOR_KeywordType type)
 {
-	EXTRACTOR_KeywordList * keyword;
+  EXTRACTOR_KeywordList *keyword;
 
-	keyword = malloc( sizeof( EXTRACTOR_KeywordList ) );
-	keyword->next = oldhead;
-	keyword->keyword = strdup( phrase );
-	keyword->keywordType = type;
-	return( keyword );
+  keyword = malloc (sizeof (EXTRACTOR_KeywordList));
+  keyword->next = oldhead;
+  keyword->keyword = strdup (phrase);
+  keyword->keywordType = type;
+  return (keyword);
 }
 
 
@@ -91,155 +87,148 @@ static struct EXTRACTOR_Keywords * addkword
  *  This plugin is based on the nsf extractor
  *
  */
-struct EXTRACTOR_Keywords * libextractor_sid_extract
-(
-	const char * filename,
-	char * data,
-	size_t size,
-	struct EXTRACTOR_Keywords * prev
-)
+struct EXTRACTOR_Keywords *libextractor_sid_extract
+  (const char *filename,
+   char *data, size_t size, struct EXTRACTOR_Keywords *prev)
 {
-	unsigned int flags;
-	int version;
-	char album[ 33 ];
-	char artist[ 33 ];
-	char copyright[ 33 ];
-	char songs[ 32 ];
-	char startingsong[ 32 ];
-	char sidversion[ 32 ];
-	struct header *head;
+  unsigned int flags;
+  int version;
+  char album[33];
+  char artist[33];
+  char copyright[33];
+  char songs[32];
+  char startingsong[32];
+  char sidversion[32];
+  struct header *head;
 
-	/* Check header size */
+  /* Check header size */
 
-	if( size < SID1_HEADER_SIZE )
-	{
-		return( prev );
-	}
+  if (size < SID1_HEADER_SIZE)
+    {
+      return (prev);
+    }
 
-	head = ( struct header * ) data;
+  head = (struct header *) data;
 
-	/* Check "magic" id bytes */
+  /* Check "magic" id bytes */
 
-	if
-	(
-		memcmp( head->magicid, "PSID", 4 ) &&
-		memcmp( head->magicid, "RSID", 4 )
-	)
-	{
-		return( prev );
-	}
+  if (memcmp (head->magicid, "PSID", 4) && memcmp (head->magicid, "RSID", 4))
+    {
+      return (prev);
+    }
 
 
-	/* Mime-type */
+  /* Mime-type */
 
-	prev = addkword( prev, "audio/prs.sid", EXTRACTOR_MIMETYPE );
-
-
-	/* Version of SID format */
-
-	version = sidword( head->sidversion );
-	sprintf( sidversion, "%d", version );
-	prev = addkword( prev, sidversion, EXTRACTOR_FORMAT_VERSION );
+  prev = addkword (prev, "audio/prs.sid", EXTRACTOR_MIMETYPE);
 
 
-	/* Get song count */
+  /* Version of SID format */
 
-	sprintf( songs, "%d", sidword( head->songs ) );
-	prev = addkword( prev, songs, EXTRACTOR_SONG_COUNT );
-
-
-	/* Get number of the first song to be played */
-
-	sprintf( startingsong, "%d", sidword( head->firstsong ) );
-	prev = addkword( prev, startingsong, EXTRACTOR_STARTING_SONG );
+  version = sidword (head->sidversion);
+  sprintf (sidversion, "%d", version);
+  prev = addkword (prev, sidversion, EXTRACTOR_FORMAT_VERSION);
 
 
-	/* name, artist, copyright fields */
+  /* Get song count */
 
-	memcpy( &album, head->title, 32 );
-	memcpy( &artist, head->artist, 32 );
-	memcpy( &copyright, head->copyright, 32 );
-
-	album[ 32 ] = '\0';
-	artist[ 32 ] = '\0';
-	copyright[ 32 ] = '\0';
-
-	prev = addkword( prev, album, EXTRACTOR_ALBUM );
-	prev = addkword( prev, artist, EXTRACTOR_ARTIST );
-	prev = addkword( prev, copyright, EXTRACTOR_COPYRIGHT );
+  sprintf (songs, "%d", sidword (head->songs));
+  prev = addkword (prev, songs, EXTRACTOR_SONG_COUNT);
 
 
-	if( version < 2 || size < SID2_HEADER_SIZE )
-	{
-		return( prev );
-	}
+  /* Get number of the first song to be played */
 
-	/* Version 2 specific options follow
-	 *
-	 * Note: Had some troubles understanding specification
-	 * on the flags in version 2. I hope this is correct.
-	 *
-	 */
-
-	flags = sidword( head->flags );
+  sprintf (startingsong, "%d", sidword (head->firstsong));
+  prev = addkword (prev, startingsong, EXTRACTOR_STARTING_SONG);
 
 
-	/* MUS data */
+  /* name, artist, copyright fields */
 
-	if( flags & MUSPLAYER_FLAG )
-	{
-		prev = addkword( prev, "Compute!'s Sidplayer", EXTRACTOR_DEPENDENCY );
-	}
+  memcpy (&album, head->title, 32);
+  memcpy (&artist, head->artist, 32);
+  memcpy (&copyright, head->copyright, 32);
 
-	/* PlaySID data */
+  album[32] = '\0';
+  artist[32] = '\0';
+  copyright[32] = '\0';
 
-	if( flags & PLAYSID_FLAG )
-	{
-		prev = addkword( prev, "PlaySID", EXTRACTOR_DEPENDENCY );
-	}
+  prev = addkword (prev, album, EXTRACTOR_ALBUM);
+  prev = addkword (prev, artist, EXTRACTOR_ARTIST);
+  prev = addkword (prev, copyright, EXTRACTOR_COPYRIGHT);
 
 
-	/* PAL or NTSC */
+  if (version < 2 || size < SID2_HEADER_SIZE)
+    {
+      return (prev);
+    }
 
-	if( flags & PAL_FLAG )
-	{
-		if( flags & NTSC_FLAG )
-		{
-			prev = addkword( prev, "PAL/NTSC", EXTRACTOR_TELEVISION_SYSTEM );
-		}
-		else
-		{
-			prev = addkword( prev, "PAL", EXTRACTOR_TELEVISION_SYSTEM );
-		}
-	}
-	else
-	{
-		if( flags & NTSC_FLAG )
-		{
-			prev = addkword( prev, "NTSC", EXTRACTOR_TELEVISION_SYSTEM );
-		}
-	}
+  /* Version 2 specific options follow
+   *
+   * Note: Had some troubles understanding specification
+   * on the flags in version 2. I hope this is correct.
+   *
+   */
 
-	/* Detect SID Chips suitable for play the files */
+  flags = sidword (head->flags);
 
-	if( flags & MOS6581_FLAG )
-	{
-		if( flags & MOS8580_FLAG )
-		{
-			prev = addkword( prev, "MOS6581/MOS8580", EXTRACTOR_HARDWARE_DEPENDENCY );
-		}
-		else
-		{
-			prev = addkword( prev, "MOS6581", EXTRACTOR_HARDWARE_DEPENDENCY );
-		}
-	}
-	else
-	{
-		if( flags & MOS8580_FLAG )
-		{
-			prev = addkword( prev, "MOS8580", EXTRACTOR_HARDWARE_DEPENDENCY );
-		}
-	}
 
-	return( prev );
+  /* MUS data */
+
+  if (flags & MUSPLAYER_FLAG)
+    {
+      prev = addkword (prev, "Compute!'s Sidplayer", EXTRACTOR_DEPENDENCY);
+    }
+
+  /* PlaySID data */
+
+  if (flags & PLAYSID_FLAG)
+    {
+      prev = addkword (prev, "PlaySID", EXTRACTOR_DEPENDENCY);
+    }
+
+
+  /* PAL or NTSC */
+
+  if (flags & PAL_FLAG)
+    {
+      if (flags & NTSC_FLAG)
+        {
+          prev = addkword (prev, "PAL/NTSC", EXTRACTOR_TELEVISION_SYSTEM);
+        }
+      else
+        {
+          prev = addkword (prev, "PAL", EXTRACTOR_TELEVISION_SYSTEM);
+        }
+    }
+  else
+    {
+      if (flags & NTSC_FLAG)
+        {
+          prev = addkword (prev, "NTSC", EXTRACTOR_TELEVISION_SYSTEM);
+        }
+    }
+
+  /* Detect SID Chips suitable for play the files */
+
+  if (flags & MOS6581_FLAG)
+    {
+      if (flags & MOS8580_FLAG)
+        {
+          prev =
+            addkword (prev, "MOS6581/MOS8580", EXTRACTOR_HARDWARE_DEPENDENCY);
+        }
+      else
+        {
+          prev = addkword (prev, "MOS6581", EXTRACTOR_HARDWARE_DEPENDENCY);
+        }
+    }
+  else
+    {
+      if (flags & MOS8580_FLAG)
+        {
+          prev = addkword (prev, "MOS8580", EXTRACTOR_HARDWARE_DEPENDENCY);
+        }
+    }
+
+  return (prev);
 }

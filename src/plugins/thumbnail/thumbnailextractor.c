@@ -35,19 +35,21 @@
 
 
 /* using libgobject, needs init! */
-void __attribute__ ((constructor)) ole_gobject_init(void) {
-  g_type_init();
+void __attribute__ ((constructor)) ole_gobject_init (void)
+{
+  g_type_init ();
 }
 
 
-static EXTRACTOR_KeywordList * addKeyword(EXTRACTOR_KeywordType type,
-					  char * keyword,
-					  EXTRACTOR_KeywordList * next) {
-  EXTRACTOR_KeywordList * result;
+static EXTRACTOR_KeywordList *
+addKeyword (EXTRACTOR_KeywordType type,
+            char *keyword, EXTRACTOR_KeywordList * next)
+{
+  EXTRACTOR_KeywordList *result;
 
   if (keyword == NULL)
     return next;
-  result = malloc(sizeof(EXTRACTOR_KeywordList));
+  result = malloc (sizeof (EXTRACTOR_KeywordList));
   result->next = next;
   result->keyword = keyword;
   result->keywordType = type;
@@ -60,7 +62,7 @@ static EXTRACTOR_KeywordList * addKeyword(EXTRACTOR_KeywordType type,
    crashes and/or prints errors for bad
    formats, so we need to be rather
    conservative here) */
-static char * whitelist[] = {
+static char *whitelist[] = {
   "image/jpeg",
   "image/gif",
   "image/miff",
@@ -76,120 +78,100 @@ static char * whitelist[] = {
 };
 
 struct EXTRACTOR_Keywords *
-libextractor_thumbnailgtk_extract(const char * filename,
-				  const unsigned char * data,
-				  size_t size,
-				  struct EXTRACTOR_Keywords * prev) {
-  GdkPixbufLoader * loader;
-  GdkPixbuf * in;
-  GdkPixbuf * out;
+libextractor_thumbnailgtk_extract (const char *filename,
+                                   const unsigned char *data,
+                                   size_t size,
+                                   struct EXTRACTOR_Keywords *prev)
+{
+  GdkPixbufLoader *loader;
+  GdkPixbuf *in;
+  GdkPixbuf *out;
   size_t length;
-  char * thumb;
+  char *thumb;
   unsigned long width;
   unsigned long height;
-  char * binary;
-  const char * mime;
+  char *binary;
+  const char *mime;
   int j;
-  char * format;
+  char *format;
 
   /* if the mime-type of the file is not whitelisted
      do not run the thumbnail extactor! */
-  mime = EXTRACTOR_extractLast(EXTRACTOR_MIMETYPE,
-			       prev);
+  mime = EXTRACTOR_extractLast (EXTRACTOR_MIMETYPE, prev);
   if (mime == NULL)
     return prev;
   j = 0;
-  while (whitelist[j] != NULL) {
-    if (0 == strcmp(whitelist[j], mime))
-      break;
-    j++;
-  }
+  while (whitelist[j] != NULL)
+    {
+      if (0 == strcmp (whitelist[j], mime))
+        break;
+      j++;
+    }
   if (whitelist[j] == NULL)
     return prev;
 
-  loader = gdk_pixbuf_loader_new();
-  gdk_pixbuf_loader_write(loader,
-			  data,
-			  size,
-			  NULL);
-  in = gdk_pixbuf_loader_get_pixbuf(loader);
-  gdk_pixbuf_loader_close(loader,
-			  NULL);
-  if (in == NULL) {
-    g_object_unref(loader);
-    return prev;
-  }
-  g_object_ref(in);
-  g_object_unref(loader);
-  height = gdk_pixbuf_get_height(in);
-  width = gdk_pixbuf_get_width(in);
-  format = malloc(64);
-  snprintf(format,
-	   64,
-	   "%ux%u",
-	   (unsigned int) width,
-	   (unsigned int) height);
-  prev
-    = addKeyword(EXTRACTOR_SIZE,
-		 format,
-		 prev);
+  loader = gdk_pixbuf_loader_new ();
+  gdk_pixbuf_loader_write (loader, data, size, NULL);
+  in = gdk_pixbuf_loader_get_pixbuf (loader);
+  gdk_pixbuf_loader_close (loader, NULL);
+  if (in == NULL)
+    {
+      g_object_unref (loader);
+      return prev;
+    }
+  g_object_ref (in);
+  g_object_unref (loader);
+  height = gdk_pixbuf_get_height (in);
+  width = gdk_pixbuf_get_width (in);
+  format = malloc (64);
+  snprintf (format, 64, "%ux%u", (unsigned int) width, (unsigned int) height);
+  prev = addKeyword (EXTRACTOR_SIZE, format, prev);
   if (height == 0)
     height = 1;
   if (width == 0)
     width = 1;
-  if ( (height <= THUMBSIZE) &&
-       (width <= THUMBSIZE) ) {
-    g_object_unref(in);
-    return prev;
-  }
-  if (height > THUMBSIZE) {
-    width = width * THUMBSIZE / height;
-    height = THUMBSIZE;
-  }
-  if (width > THUMBSIZE) {
-    height = height * THUMBSIZE / width;
-    width = THUMBSIZE;
-  }
-  out = gdk_pixbuf_scale_simple(in,
-				width,
-				height,
-				GDK_INTERP_BILINEAR);
-  g_object_unref(in);
+  if ((height <= THUMBSIZE) && (width <= THUMBSIZE))
+    {
+      g_object_unref (in);
+      return prev;
+    }
+  if (height > THUMBSIZE)
+    {
+      width = width * THUMBSIZE / height;
+      height = THUMBSIZE;
+    }
+  if (width > THUMBSIZE)
+    {
+      height = height * THUMBSIZE / width;
+      width = THUMBSIZE;
+    }
+  out = gdk_pixbuf_scale_simple (in, width, height, GDK_INTERP_BILINEAR);
+  g_object_unref (in);
   thumb = NULL;
-  if (! gdk_pixbuf_save_to_buffer(out,
-				  &thumb,
-				  &length,
-				  "png",
-				  NULL,
-				  NULL)) {
-    g_object_unref(out);
-    return prev;
-  }
-  g_object_unref(out);
+  if (!gdk_pixbuf_save_to_buffer (out, &thumb, &length, "png", NULL, NULL))
+    {
+      g_object_unref (out);
+      return prev;
+    }
+  g_object_unref (out);
   if (thumb == NULL)
     return prev;
 
-  binary
-    = EXTRACTOR_binaryEncode((const unsigned char*) thumb,
-			     length);
-  free(thumb);
+  binary = EXTRACTOR_binaryEncode ((const unsigned char *) thumb, length);
+  free (thumb);
   if (binary == NULL)
     return prev;
-  return addKeyword(EXTRACTOR_THUMBNAIL_DATA,
-		    binary,
-		    prev);
+  return addKeyword (EXTRACTOR_THUMBNAIL_DATA, binary, prev);
 }
 
-struct EXTRACTOR_Keywords * 
-libextractor_thumbnail_extract(const char * filename,
-			       const unsigned char * data,
-			       size_t size,
-			       struct EXTRACTOR_Keywords * prev,
-			       const char * options) {
-  return libextractor_thumbnailgtk_extract(filename,
-					   data,
-					   size,
-					   prev);
+struct EXTRACTOR_Keywords *
+libextractor_thumbnail_extract (const char *filename,
+                                const unsigned char *data,
+                                size_t size,
+                                struct EXTRACTOR_Keywords *prev,
+                                const char *options)
+{
+  return libextractor_thumbnailgtk_extract (filename, data, size, prev);
 }
 
 /* end of thumbnailextractor.c */

@@ -32,8 +32,9 @@
  * @param bitArray memory area to set the bit in
  * @param bitIdx which bit to set
  */
-static void setBit(unsigned char * bitArray,
-		   unsigned int bitIdx) {
+static void
+setBit (unsigned char *bitArray, unsigned int bitIdx)
+{
   unsigned int arraySlot;
   unsigned int targetBit;
 
@@ -49,11 +50,10 @@ static void setBit(unsigned char * bitArray,
  * @param bit the bit to increment
  * @param arg not used
  */
-static void setBitCallback(Bloomfilter * bf,
-			   unsigned int bit,
-			   void * arg) {
-  setBit(bf->bitArray,
-	 bit);
+static void
+setBitCallback (Bloomfilter * bf, unsigned int bit, void *arg)
+{
+  setBit (bf->bitArray, bit);
 }
 
 /**
@@ -62,150 +62,130 @@ static void setBitCallback(Bloomfilter * bf,
  * @param bf the filter
  * @param e the element
  */
-static void addToBloomfilter(Bloomfilter * bf,
-		             const HashCode160 * e) {
+static void
+addToBloomfilter (Bloomfilter * bf, const HashCode160 * e)
+{
 
   if (NULL == bf)
     return;
-  iterateBits(bf,
-	      &setBitCallback,
-	      NULL,
-	      e);
+  iterateBits (bf, &setBitCallback, NULL, e);
 }
 
 
 #define ADDR_PER_ELEMENT 46
 
 
-int main(int argc,
-	 char ** argv) {
+int
+main (int argc, char **argv)
+{
   Bloomfilter bf;
   HashCode160 hc;
   int i;
   int j;
   int cnt;
-  char * fn;
-  char ** words;
-  char line[2048]; /* buffer overflow, here we go */
+  char *fn;
+  char **words;
+  char line[2048];              /* buffer overflow, here we go */
   FILE *dictin;
-  char * bn;
-  char * charset = NULL;
+  char *bn;
+  char *charset = NULL;
 #define ALLOCSIZE 1024*1024
 
-  if (argc<3) {
-    fprintf(stderr,
-	    _("Please provide the name of the language you are building\n"
-	      "a dictionary for.  For example:\n"));
-    fprintf(stderr, "$ ./dictionary-builder ./en en > en.c\n");
-    exit(-1);
-  }
-
-  fn = malloc(strlen(argv[1]) + 6);
-  strcpy(fn, argv[1]);
-  strcat(fn, ".txt");
-  dictin=fopen(fn,"r");
-  free(fn);
-  if (dictin==NULL) {
-    fprintf(stderr,
-	    _("Error opening file `%s': %s\n"),
-	    argv[1],strerror(errno));
-    exit(-1);
-  }
-
-  words = malloc(sizeof(char*) * ALLOCSIZE); /* don't we LOVE constant size buffers? */
-  if (words == NULL) {
-    fprintf(stderr,
-	    _("Error allocating: %s\n."),
-	    strerror(errno));
-    exit(-1);
-  }
-  cnt = 0;
-  memset(&line[0], 0, 2048);
-  fscanf(dictin, "%s", (char*)&line);
-  charset = strdup(line); /* not used (yet) */
-  while (1 == fscanf(dictin, "%s", (char*)&line)) {
-    words[cnt] = strdup(line);
-    cnt++;
-    memset(&line[0], 0, 2048);
-    if (cnt >= ALLOCSIZE) {
-      fprintf(stderr,
-	      _("Increase ALLOCSIZE (in %s).\n"),
-	      __FILE__);      
-      exit(-1);
+  if (argc < 3)
+    {
+      fprintf (stderr,
+               _("Please provide the name of the language you are building\n"
+                 "a dictionary for.  For example:\n"));
+      fprintf (stderr, "$ ./dictionary-builder ./en en > en.c\n");
+      exit (-1);
     }
-  }
+
+  fn = malloc (strlen (argv[1]) + 6);
+  strcpy (fn, argv[1]);
+  strcat (fn, ".txt");
+  dictin = fopen (fn, "r");
+  free (fn);
+  if (dictin == NULL)
+    {
+      fprintf (stderr,
+               _("Error opening file `%s': %s\n"), argv[1], strerror (errno));
+      exit (-1);
+    }
+
+  words = malloc (sizeof (char *) * ALLOCSIZE); /* don't we LOVE constant size buffers? */
+  if (words == NULL)
+    {
+      fprintf (stderr, _("Error allocating: %s\n."), strerror (errno));
+      exit (-1);
+    }
+  cnt = 0;
+  memset (&line[0], 0, 2048);
+  fscanf (dictin, "%s", (char *) &line);
+  charset = strdup (line);      /* not used (yet) */
+  while (1 == fscanf (dictin, "%s", (char *) &line))
+    {
+      words[cnt] = strdup (line);
+      cnt++;
+      memset (&line[0], 0, 2048);
+      if (cnt >= ALLOCSIZE)
+        {
+          fprintf (stderr, _("Increase ALLOCSIZE (in %s).\n"), __FILE__);
+          exit (-1);
+        }
+    }
 
   bf.addressesPerElement = ADDR_PER_ELEMENT;
-  bf.bitArraySize = (1 + (cnt / SUBTABLES)) * sizeof(int) * SUBTABLES;
-  bf.bitArray = malloc(bf.bitArraySize);
-  memset(bf.bitArray, 0, bf.bitArraySize);
+  bf.bitArraySize = (1 + (cnt / SUBTABLES)) * sizeof (int) * SUBTABLES;
+  bf.bitArray = malloc (bf.bitArraySize);
+  memset (bf.bitArray, 0, bf.bitArraySize);
 
-  for (i=0;i<cnt;i++) {
-    hash(words[i],
-	 strlen(words[i]),
-	 &hc);
-    addToBloomfilter(&bf, &hc);
-  }
+  for (i = 0; i < cnt; i++)
+    {
+      hash (words[i], strlen (words[i]), &hc);
+      addToBloomfilter (&bf, &hc);
+    }
 
-  fprintf(stdout,
-	  "#include \"bloomfilter-def.h\"\n");
+  fprintf (stdout, "#include \"bloomfilter-def.h\"\n");
 
   /* use int[] instead of char[] since it cuts the memory use of
      gcc down to a quarter; don't use long long since various
      gcc versions then output tons of warnings about "decimal constant
      is so large that it is unsigned" (even for unsigned long long[]
      that warning is generated and dramatically increases compile times). */
-  for (j=0;j<SUBTABLES;j++) {
-    char fn[64];
-    FILE * btfile;
+  for (j = 0; j < SUBTABLES; j++)
+    {
+      char fn[64];
+      FILE *btfile;
 
-    snprintf(fn, 64, "%s_%d.c", argv[1], j);
-    btfile = fopen(fn, "w+");
-    if (btfile == NULL) {
-      fprintf(stderr,
-	      _("Error opening file `%s': %s\n"),
-	      fn, strerror(errno));
-      exit(-1);
+      snprintf (fn, 64, "%s_%d.c", argv[1], j);
+      btfile = fopen (fn, "w+");
+      if (btfile == NULL)
+        {
+          fprintf (stderr,
+                   _("Error opening file `%s': %s\n"), fn, strerror (errno));
+          exit (-1);
+        }
+      fprintf (btfile, "int %s_bits_%d[] = { ", argv[2], j);
+      for (i = j * (bf.bitArraySize / sizeof (int) / SUBTABLES);
+           i < (j + 1) * (bf.bitArraySize / sizeof (int) / SUBTABLES); i++)
+        fprintf (btfile, "%dL,", (((int *) bf.bitArray)[i]));
+      fprintf (btfile, "};\n");
+      fclose (btfile);
+      fprintf (stdout, "extern int %s_bits_%d[];\n", argv[2], j);
     }
-    fprintf(btfile,
-	    "int %s_bits_%d[] = { ", argv[2], j);
-    for (i= j    * (bf.bitArraySize/sizeof(int)/SUBTABLES);
-	 i<(j+1) * (bf.bitArraySize/sizeof(int)/SUBTABLES);
-	 i++)
-      fprintf(btfile,
-	      "%dL,",
-	      (((int*)bf.bitArray)[i]));
-    fprintf(btfile,
-	    "};\n");
-    fclose(btfile);
-    fprintf(stdout,
-	    "extern int %s_bits_%d[];\n", argv[2], j);
-  }
 
-  fprintf(stdout,
-	  "static int * bits[] = { ");
-  for (i=0;i<SUBTABLES;i++)
-    fprintf(stdout,
-	    "%s_bits_%d,",
-	    argv[2],
-	    i);
-  fprintf(stdout,
-	  "};\n");
-  bn = &argv[1][strlen(argv[1])];
-  while ( (bn != argv[1]) &&
-	  (bn[0] != '/') )
+  fprintf (stdout, "static int * bits[] = { ");
+  for (i = 0; i < SUBTABLES; i++)
+    fprintf (stdout, "%s_bits_%d,", argv[2], i);
+  fprintf (stdout, "};\n");
+  bn = &argv[1][strlen (argv[1])];
+  while ((bn != argv[1]) && (bn[0] != '/'))
     bn--;
   if (bn[0] == '/')
     bn++;
-  fprintf(stdout,
-	  "Bloomfilter libextractor_printable_%s_filter = {\n"
-	  "  %u,\n"
-	  "  NULL,\n" /* bitarray */
-	  "  (unsigned char **)bits,\n" /* sbitArray */
-	  "  %u };\n",
-	  bn,
-	  ADDR_PER_ELEMENT,
-	  bf.bitArraySize);
-  free(charset);
+  fprintf (stdout, "Bloomfilter libextractor_printable_%s_filter = {\n" "  %u,\n" "  NULL,\n"   /* bitarray */
+           "  (unsigned char **)bits,\n"        /* sbitArray */
+           "  %u };\n", bn, ADDR_PER_ELEMENT, bf.bitArraySize);
+  free (charset);
   return 0;
 }

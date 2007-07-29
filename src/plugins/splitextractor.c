@@ -24,7 +24,7 @@
 /**
  * Default split characters.
  */
-static const char * TOKENIZERS = "._ ,%@-\n_[](){}";
+static const char *TOKENIZERS = "._ ,%@-\n_[](){}";
 
 /**
  * Do not use keywords shorter than this minimum
@@ -32,79 +32,125 @@ static const char * TOKENIZERS = "._ ,%@-\n_[](){}";
  */
 static int MINIMUM_KEYWORD_LENGTH = 4;
 
-static void addKeyword(struct EXTRACTOR_Keywords ** list,
-		       const char * keyword) {
-  EXTRACTOR_KeywordList * next;
-  next = malloc(sizeof(EXTRACTOR_KeywordList));
+static void
+addKeyword (struct EXTRACTOR_Keywords **list, const char *keyword)
+{
+  EXTRACTOR_KeywordList *next;
+  next = malloc (sizeof (EXTRACTOR_KeywordList));
   next->next = *list;
-  next->keyword = strdup(keyword);
+  next->keyword = strdup (keyword);
   next->keywordType = EXTRACTOR_SPLIT;
   *list = next;
 }
 
-static int token(char letter,
-		 const char * options) {
+static int
+token (char letter, const char *options)
+{
   size_t i;
 
   i = 0;
-  while (options[i] != '\0') {
-    if (letter == options[i])
-      return 1;
-    i++;
-  }
+  while (options[i] != '\0')
+    {
+      if (letter == options[i])
+        return 1;
+      i++;
+    }
   return 0;
 }
 
-static void splitKeywords(const char * keyword,
-			  struct EXTRACTOR_Keywords ** list,
-			  const char * options) {
-  char * dp;
+static void
+splitKeywords (const char *keyword,
+               struct EXTRACTOR_Keywords **list, const char *options)
+{
+  char *dp;
   size_t pos;
   size_t last;
   size_t len;
 
-  dp = strdup(keyword);
-  len = strlen(dp);
+  dp = strdup (keyword);
+  len = strlen (dp);
   pos = 0;
   last = 0;
-  while (pos < len) {
-    while ( (0 == token(dp[pos], options)) &&
-	    (pos < len) )
-      pos++;
-    dp[pos++] = '\0';
-    if ( (pos - last > MINIMUM_KEYWORD_LENGTH) &&
-	 (0 != strcmp(keyword,
-		      &dp[last])) )	  
-      addKeyword(list,
-		 &dp[last]);
-    while ( (pos < len) &&
-	    (1 == token(dp[pos], options)) )
-      pos++;
-    last = pos;
-  }
-  free(dp);
+  while (pos < len)
+    {
+      while ((0 == token (dp[pos], options)) && (pos < len))
+        pos++;
+      dp[pos++] = '\0';
+      if ((pos - last > MINIMUM_KEYWORD_LENGTH) &&
+          (0 != strcmp (keyword, &dp[last])))
+        addKeyword (list, &dp[last]);
+      while ((pos < len) && (1 == token (dp[pos], options)))
+        pos++;
+      last = pos;
+    }
+  free (dp);
 }
 
 /* split other keywords into multiple keywords */
 struct EXTRACTOR_Keywords *
-libextractor_split_extract(const char * filename,
-			   const char * data,
-			   size_t size,
-			   struct EXTRACTOR_Keywords * prev,
-			   const char * options) {
-  struct EXTRACTOR_Keywords * pos;
+libextractor_split_extract (const char *filename,
+                            const char *data,
+                            size_t size,
+                            struct EXTRACTOR_Keywords *prev,
+                            const char *options)
+{
+  struct EXTRACTOR_Keywords *kpos;
+  char *opt;
+  char *pos;
 
   if (options == NULL)
-    options = TOKENIZERS;
-  pos = prev;
-  while (pos != NULL) {
-    if (pos->keywordType != EXTRACTOR_FILE_SIZE)
-      splitKeywords(pos->keyword,		
-  		  &prev,
-  		  options);
-    
-    pos = pos->next;
-  }
+    {
+      opt = strdup (TOKENIZERS);
+    }
+  else
+    {
+      opt = strdup (options);
+      pos = opt;
+      while (pos[0] != '\0')
+        {
+          if (pos[0] == '\\')
+            {
+              switch (pos[1])
+                {
+                case 'n':
+                  pos[0] = '\n';
+                  memmove (&pos[1], &pos[2], strlen (&pos[2]));
+                  continue;
+                case 'r':
+                  pos[0] = '\r';
+                  memmove (&pos[1], &pos[2], strlen (&pos[2]));
+                  continue;
+                case 'b':
+                  pos[0] = '\b';
+                  memmove (&pos[1], &pos[2], strlen (&pos[2]));
+                  continue;
+                case 't':
+                  pos[0] = '\t';
+                  memmove (&pos[1], &pos[2], strlen (&pos[2]));
+                  continue;
+                case '\\':
+                  memmove (&pos[1], &pos[2], strlen (&pos[2]));
+                  continue;
+                case '\0':     /* invalid escape, ignore */
+                  pos[0] = '\0';
+                  break;
+                default:       /* invalid escape, skip */
+                  memmove (&pos[0], &pos[2], strlen (&pos[2]));
+                  continue;
+                }
+            }
+          pos++;
+        }
+    }
+  kpos = prev;
+  while (kpos != NULL)
+    {
+      if (kpos->keywordType != EXTRACTOR_FILE_SIZE)
+        splitKeywords (kpos->keyword, &prev, options);
+
+      kpos = kpos->next;
+    }
+  free (opt);
   return prev;
 }
 
