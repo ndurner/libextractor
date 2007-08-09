@@ -1,14 +1,14 @@
 # Swedish translation of libextractor
-# Copyright (C) 2006 Free Software Foundation, Inc.
+# Copyright (C) 2006, 2007 Free Software Foundation, Inc.
 # This file is distributed under the same license as the libextractor package.
-# Daniel Nylander <po@danielnylander.se>, 2006.
+# Daniel Nylander <po@danielnylander.se>, 2006, 2007.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: libextractor 0.5.14\n"
+"Project-Id-Version: libextractor 0.5.18a\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
 "POT-Creation-Date: 2007-07-04 17:53-0600\n"
-"PO-Revision-Date: 2006-05-23 22:17+0100\n"
+"PO-Revision-Date: 2007-08-09 20:38+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "MIME-Version: 1.0\n"
@@ -28,11 +28,8 @@ msgstr ""
 
 #: src/main/extract.c:52
 #, c-format
-msgid ""
-"Arguments mandatory for long options are also mandatory for short options.\n"
-msgstr ""
-"Argument som är obligatoriska för långa flaggor är också obligatoriska för "
-"korta flaggor.\n"
+msgid "Arguments mandatory for long options are also mandatory for short options.\n"
+msgstr "Argument som är obligatoriska för långa flaggor är också obligatoriska för korta flaggor.\n"
 
 #: src/main/extract.c:126
 msgid "do not remove any duplicates"
@@ -43,24 +40,20 @@ msgid "print output in bibtex format"
 msgstr "skriv ut i bibtex-format"
 
 #: src/main/extract.c:130
-msgid ""
-"use the generic plaintext extractor for the language with the 2-letter "
-"language code LANG"
-msgstr ""
-"använd den generiska klartextuppackare för språket med 2-bokstavskoden i LANG"
+msgid "use the generic plaintext extractor for the language with the 2-letter language code LANG"
+msgstr "använd den generiska klartextuppackare för språket med 2-bokstavskoden i LANG"
 
 #: src/main/extract.c:132
 msgid "remove duplicates only if types match"
-msgstr "ta bort dubbletter endast om typen stämmer"
+msgstr "ta bort dubletter endast om typen stämmer"
 
 #: src/main/extract.c:134
 msgid "use the filename as a keyword (loads filename-extractor plugin)"
-msgstr ""
-"använd filnamnet som ett nyckelord (läser in insticket filename-extractor)"
+msgstr "använd filnamnet som ett nyckelord (läser in insticket filename-extractor)"
 
 #: src/main/extract.c:136
 msgid "produce grep-friendly output (all results on one line per file)"
-msgstr ""
+msgstr "producera grep-vänligt utdata (alla resultat på en rad per fil)"
 
 #: src/main/extract.c:138
 msgid "print this help"
@@ -88,7 +81,7 @@ msgstr "skriv endast ut nyckelord av angiven TYP (använd -L för lista)"
 
 #: src/main/extract.c:150
 msgid "remove duplicates even if keyword types do not match"
-msgstr "ta bort dubbletter även om nyckelordstyp inte stämmer"
+msgstr "ta bort dubletter även om nyckelordstyp inte stämmer"
 
 #: src/main/extract.c:152
 msgid "use keyword splitting (loads split-extractor plugin)"
@@ -112,7 +105,7 @@ msgstr "extract [FLAGGOR] [FILNAMN]*"
 
 #: src/main/extract.c:162
 msgid "Extract metadata from files."
-msgstr "Plocka ut metadata från filer."
+msgstr "Extrahera metadata från filer."
 
 #: src/main/extract.c:190 src/main/extractor.c:1437
 #, c-format
@@ -188,9 +181,9 @@ msgid "%% BiBTeX file\n"
 msgstr "%% BiBTeX-fil\n"
 
 #: src/main/extract.c:682
-#, fuzzy, c-format
+#, c-format
 msgid "Keywords for file %s:"
-msgstr "Nyckelord för fil %s:\n"
+msgstr "Nyckelord för filen %s:"
 
 #: src/main/extractor.c:44
 msgid "unknown"
@@ -612,81 +605,71 @@ msgstr "kapitel"
 
 #: src/main/extractor.c:159
 msgid "year"
-msgstr ""
+msgstr "år"
 
 #: src/main/extractor.c:160
 msgid "link"
-msgstr ""
+msgstr "länk"
 
 #: src/main/extractor.c:161
-#, fuzzy
 msgid "music CD identifier"
-msgstr "resursidentifierare"
+msgstr "Identifierare för musik-cd"
 
 #: src/main/extractor.c:162
-#, fuzzy
 msgid "play counter"
-msgstr "sidantal"
+msgstr "antal spelningar"
 
 #: src/main/extractor.c:163
 msgid "popularity meter"
-msgstr ""
+msgstr "popularitetsmätare"
 
 #: src/main/extractor.c:164
 msgid "content type"
-msgstr ""
+msgstr "innehållstyp"
 
 #: src/main/extractor.c:165
 msgid "encoded by"
-msgstr ""
+msgstr "kodad av"
 
 #: src/main/extractor.c:166
-#, fuzzy
 msgid "time"
-msgstr "titel"
+msgstr "tid"
 
 #: src/main/extractor.c:167
 msgid "musician credits list"
-msgstr ""
+msgstr "lista över medverkande musiker"
 
 #: src/main/extractor.c:168
-#, fuzzy
 msgid "mood"
-msgstr "mono"
+msgstr "sinnesstämning"
 
 #: src/main/extractor.c:169
-#, fuzzy
 msgid "format version"
-msgstr "information"
+msgstr "formatversion"
 
 #: src/main/extractor.c:170
-#, fuzzy
 msgid "television system"
-msgstr "operativsystem"
+msgstr "tv-system"
 
 #: src/main/extractor.c:171
-#, fuzzy
 msgid "song count"
-msgstr "sidantal"
+msgstr "låtantal"
 
 #: src/main/extractor.c:172
 msgid "starting song"
-msgstr ""
+msgstr "startlåt"
 
 #: src/main/extractor.c:173
-#, fuzzy
 msgid "hardware dependency"
-msgstr "beroende av"
+msgstr "hårdvaruberoende"
 
 #: src/main/extractor.c:174
-#, fuzzy
 msgid "ripper"
-msgstr "Trailer"
+msgstr "rippare"
 
 #: src/main/extractor.c:175
-#, fuzzy
 msgid "filesize"
-msgstr "storlek"
+msgstr "filstorlek"
 
 #: src/main/extractor.c:522
 #, c-format
@@ -695,12 +678,8 @@ msgstr "Initiering av insticksmekanism misslyckades: %s!\n"
 
 #: src/main/extractor.c:676
 #, c-format
-msgid ""
-"Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
-"failed also.  Errors are: `%s' and `%s'.\n"
-msgstr ""
-"Uppslag av symbol \"%s\" i bibliotek \"%s\" misslyckades så jag försökte med "
-"\"%s\" men det misslyckades också.  Felen är: \"%s\" och \"%s\".\n"
+msgid "Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that failed also.  Errors are: `%s' and `%s'.\n"
+msgstr "Uppslag av symbol \"%s\" i bibliotek \"%s\" misslyckades så jag försökte med \"%s\" men det misslyckades också.  Felen är: \"%s\" och \"%s\".\n"
 
 #: src/main/extractor.c:705
 #, c-format
@@ -769,20 +748,19 @@ msgstr "%s: flagga \"-W %s\" tillåter inte ett argument\n"
 
 #: src/plugins/filenameextractor.c:60
 msgid "GB"
-msgstr ""
+msgstr "GB"
 
 #: src/plugins/filenameextractor.c:62
 msgid "MB"
-msgstr ""
+msgstr "MB"
 
 #: src/plugins/filenameextractor.c:64
 msgid "KB"
-msgstr ""
+msgstr "KB"
 
 #: src/plugins/filenameextractor.c:66
-#, fuzzy
 msgid "Bytes"
-msgstr "Blues"
+msgstr "Byte"
 
 #: src/plugins/jpegextractor.c:178
 #, c-format
