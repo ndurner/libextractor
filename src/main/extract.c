@@ -619,6 +619,7 @@ main (int argc, char *argv[])
 #ifdef MINGW
   		ShutdownWinEnv();
 #endif
+      free (print);
       return -1;
     }
 

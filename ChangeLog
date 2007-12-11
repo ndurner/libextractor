@@ -1,3 +1,6 @@
+Mon Dec 10 17:27:28 MST 2007
+	Disable libgsf logging (for corrupt files).
+
 Sun Jul 29 02:30:40 MDT 2007
 	Added escape (\n) handling to split extractor.
 

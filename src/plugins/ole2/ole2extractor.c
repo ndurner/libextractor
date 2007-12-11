@@ -555,12 +555,19 @@ libextractor_ole2_extract(const char * filename,
 
   return prev;
 }
+static void nolog (const gchar *log_domain,
+		   GLogLevelFlags log_level,
+		   const gchar *message,
+		   gpointer user_data) {
+}
 
 void __attribute__ ((constructor)) ole2_ltdl_init() {
  g_type_init();
 #ifdef HAVE_GSF_INIT
   gsf_init();
 #endif
+  /* disable logging -- thanks, Jody! */
+  g_log_set_handler ("libgsf:msole", G_LOG_LEVEL_CRITICAL | G_LOG_LEVEL_WARNING,  &nolog, NULL);
   // gsf_init_dynamic(NULL);
 }
 
