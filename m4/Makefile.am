@@ -21,7 +21,6 @@ EXTRA_DIST = glibc2.m4 intl.m4 intldir.m4 lock.m4 visibility.m4 \
  lib-prefix.m4 \
  longdouble.m4 \
  longlong.m4 \
- mkdirp.m4 \
  nls.m4 \
  pkg.m4 \
  po.m4 \
