@@ -25,6 +25,162 @@
 
 #define DEBUG 0
 
+/* verbatim from mp3extractor */
+static const char *const genre_names[] = {
+  gettext_noop ("Blues"),
+  gettext_noop ("Classic Rock"),
+  gettext_noop ("Country"),
+  gettext_noop ("Dance"),
+  gettext_noop ("Disco"),
+  gettext_noop ("Funk"),
+  gettext_noop ("Grunge"),
+  gettext_noop ("Hip-Hop"),
+  gettext_noop ("Jazz"),
+  gettext_noop ("Metal"),
+  gettext_noop ("New Age"),
+  gettext_noop ("Oldies"),
+  gettext_noop ("Other"),
+  gettext_noop ("Pop"),
+  gettext_noop ("R&B"),
+  gettext_noop ("Rap"),
+  gettext_noop ("Reggae"),
+  gettext_noop ("Rock"),
+  gettext_noop ("Techno"),
+  gettext_noop ("Industrial"),
+  gettext_noop ("Alternative"),
+  gettext_noop ("Ska"),
+  gettext_noop ("Death Metal"),
+  gettext_noop ("Pranks"),
+  gettext_noop ("Soundtrack"),
+  gettext_noop ("Euro-Techno"),
+  gettext_noop ("Ambient"),
+  gettext_noop ("Trip-Hop"),
+  gettext_noop ("Vocal"),
+  gettext_noop ("Jazz+Funk"),
+  gettext_noop ("Fusion"),
+  gettext_noop ("Trance"),
+  gettext_noop ("Classical"),
+  gettext_noop ("Instrumental"),
+  gettext_noop ("Acid"),
+  gettext_noop ("House"),
+  gettext_noop ("Game"),
+  gettext_noop ("Sound Clip"),
+  gettext_noop ("Gospel"),
+  gettext_noop ("Noise"),
+  gettext_noop ("Alt. Rock"),
+  gettext_noop ("Bass"),
+  gettext_noop ("Soul"),
+  gettext_noop ("Punk"),
+  gettext_noop ("Space"),
+  gettext_noop ("Meditative"),
+  gettext_noop ("Instrumental Pop"),
+  gettext_noop ("Instrumental Rock"),
+  gettext_noop ("Ethnic"),
+  gettext_noop ("Gothic"),
+  gettext_noop ("Darkwave"),
+  gettext_noop ("Techno-Industrial"),
+  gettext_noop ("Electronic"),
+  gettext_noop ("Pop-Folk"),
+  gettext_noop ("Eurodance"),
+  gettext_noop ("Dream"),
+  gettext_noop ("Southern Rock"),
+  gettext_noop ("Comedy"),
+  gettext_noop ("Cult"),
+  gettext_noop ("Gangsta Rap"),
+  gettext_noop ("Top 40"),
+  gettext_noop ("Christian Rap"),
+  gettext_noop ("Pop/Funk"),
+  gettext_noop ("Jungle"),
+  gettext_noop ("Native American"),
+  gettext_noop ("Cabaret"),
+  gettext_noop ("New Wave"),
+  gettext_noop ("Psychedelic"),
+  gettext_noop ("Rave"),
+  gettext_noop ("Showtunes"),
+  gettext_noop ("Trailer"),
+  gettext_noop ("Lo-Fi"),
+  gettext_noop ("Tribal"),
+  gettext_noop ("Acid Punk"),
+  gettext_noop ("Acid Jazz"),
+  gettext_noop ("Polka"),
+  gettext_noop ("Retro"),
+  gettext_noop ("Musical"),
+  gettext_noop ("Rock & Roll"),
+  gettext_noop ("Hard Rock"),
+  gettext_noop ("Folk"),
+  gettext_noop ("Folk/Rock"),
+  gettext_noop ("National Folk"),
+  gettext_noop ("Swing"),
+  gettext_noop ("Fast-Fusion"),
+  gettext_noop ("Bebob"),
+  gettext_noop ("Latin"),
+  gettext_noop ("Revival"),
+  gettext_noop ("Celtic"),
+  gettext_noop ("Bluegrass"),
+  gettext_noop ("Avantgarde"),
+  gettext_noop ("Gothic Rock"),
+  gettext_noop ("Progressive Rock"),
+  gettext_noop ("Psychedelic Rock"),
+  gettext_noop ("Symphonic Rock"),
+  gettext_noop ("Slow Rock"),
+  gettext_noop ("Big Band"),
+  gettext_noop ("Chorus"),
+  gettext_noop ("Easy Listening"),
+  gettext_noop ("Acoustic"),
+  gettext_noop ("Humour"),
+  gettext_noop ("Speech"),
+  gettext_noop ("Chanson"),
+  gettext_noop ("Opera"),
+  gettext_noop ("Chamber Music"),
+  gettext_noop ("Sonata"),
+  gettext_noop ("Symphony"),
+  gettext_noop ("Booty Bass"),
+  gettext_noop ("Primus"),
+  gettext_noop ("Porn Groove"),
+  gettext_noop ("Satire"),
+  gettext_noop ("Slow Jam"),
+  gettext_noop ("Club"),
+  gettext_noop ("Tango"),
+  gettext_noop ("Samba"),
+  gettext_noop ("Folklore"),
+  gettext_noop ("Ballad"),
+  gettext_noop ("Power Ballad"),
+  gettext_noop ("Rhythmic Soul"),
+  gettext_noop ("Freestyle"),
+  gettext_noop ("Duet"),
+  gettext_noop ("Punk Rock"),
+  gettext_noop ("Drum Solo"),
+  gettext_noop ("A Cappella"),
+  gettext_noop ("Euro-House"),
+  gettext_noop ("Dance Hall"),
+  gettext_noop ("Goa"),
+  gettext_noop ("Drum & Bass"),
+  gettext_noop ("Club-House"),
+  gettext_noop ("Hardcore"),
+  gettext_noop ("Terror"),
+  gettext_noop ("Indie"),
+  gettext_noop ("BritPop"),
+  gettext_noop ("Negerpunk"),
+  gettext_noop ("Polsk Punk"),
+  gettext_noop ("Beat"),
+  gettext_noop ("Christian Gangsta Rap"),
+  gettext_noop ("Heavy Metal"),
+  gettext_noop ("Black Metal"),
+  gettext_noop ("Crossover"),
+  gettext_noop ("Contemporary Christian"),
+  gettext_noop ("Christian Rock"),
+  gettext_noop ("Merengue"),
+  gettext_noop ("Salsa"),
+  gettext_noop ("Thrash Metal"),
+  gettext_noop ("Anime"),
+  gettext_noop ("JPop"),
+  gettext_noop ("Synthpop"),
+};
+
+#define GENRE_NAME_COUNT \
+    ((unsigned int)(sizeof genre_names / sizeof (const char *const)))
+
+
 typedef struct
 {
   unsigned int size;
@@ -136,22 +292,32 @@ typedef int (*AtomHandler) (const char *input,
                             size_t size,
                             size_t pos, struct EXTRACTOR_Keywords ** list);
 
+typedef struct
+{
+  char *name;
+  AtomHandler handler;
+} HandlerEntry;
+
 /**
  * Call the handler for the atom at the given position.
  * Will check validity of the given atom.
  *
  * @return 0 on error, 1 for success, -1 for unknown atom type
  */
-static int handleAtom (const char *input,
+static int handleAtom (HandlerEntry *handlers,
+                       const char *input,
                        size_t size,
                        size_t pos, struct EXTRACTOR_Keywords **list);
 
+static HandlerEntry all_handlers[];
+static HandlerEntry ilst_handlers[];
+
 /**
- * Process all atoms.
+ * Process atoms.
  * @return 0 on error, 1 for success, -1 for unknown atom type
  */
 static int
-processAllAtoms (const char *input,
+processAtoms (HandlerEntry *handlers, const char *input,
                  size_t size, struct EXTRACTOR_Keywords **list)
 {
   size_t pos;
@@ -161,11 +327,22 @@ processAllAtoms (const char *input,
   pos = 0;
   while (pos < size - sizeof (Atom))
     {
-      if (0 == handleAtom (input, size, pos, list))
+      if (0 == handleAtom (handlers, input, size, pos, list))
         return 0;
       pos += getAtomSize (&input[pos]);
     }
   return 1;
+}
+
+/**
+ * Process all atoms.
+ * @return 0 on error, 1 for success, -1 for unknown atom type
+ */
+static int
+processAllAtoms (const char *input,
+                 size_t size, struct EXTRACTOR_Keywords **list)
+{
+  processAtoms(all_handlers, input, size, list);
 }
 
 /**
@@ -181,6 +358,7 @@ moovHandler (const char *input,
                           getAtomSize (&input[pos]) - hdr, list);
 }
 
+/* see http://developer.apple.com/documentation/QuickTime/QTFF/QTFFChap1/chapter_2_section_5.html */
 typedef struct
 {
   Atom header;
@@ -198,9 +376,12 @@ typedef struct
   const char *mime;
 } C2M;
 
+/* see http://www.mp4ra.org/filetype.html 
+ *     http://www.ftyps.com/ */
 static C2M ftMap[] = {
   {"qt  ", "video/quicktime"},
   {"isom", "video/mp4"},        /* ISO Base Media files */
+  {"iso2", "video/mp4"},
   {"mp41", "video/mp4"},        /* MPEG-4 (ISO/IEC 14491-1) version 1 */
   {"mp42", "video/mp4"},        /* MPEG-4 (ISO/IEC 14491-1) version 2 */
   {"3gp1", "video/3gpp"},
@@ -210,9 +391,12 @@ static C2M ftMap[] = {
   {"3gp5", "video/3gpp"},
   {"3g2a", "video/3gpp2"},
   {"mmp4", "video/mp4"},        /* Mobile MPEG-4 */
-  {"M4A ", "video/mp4"},
-  {"M4P ", "video/mp4"},
-  {"mjp2", "video/mj2"},        /* Motion JPEG 2000 */
+  {"M4A ", "audio/mp4"},
+  {"M4B ", "audio/mp4"},
+  {"M4P ", "audio/mp4"},
+  {"M4V ", "video/mp4"},
+  {"mj2s", "video/mj2"},        /* Motion JPEG 2000 */
+  {"mjp2", "video/mj2"},
   {NULL, NULL},
 };
 
@@ -223,8 +407,9 @@ ftypHandler (const char *input,
   const FileType *ft;
   int i;
 
-  if (getAtomSize (&input[pos]) != sizeof (FileType))
+  if (getAtomSize (&input[pos]) < sizeof (FileType)) {
     return 0;
+  }
   ft = (const FileType *) &input[pos];
 
   i = 0;
@@ -344,7 +529,7 @@ cmovHandler (const char *input,
       free (buf);
       return 0;                 /* decode error? */
     }
-  ret = handleAtom (buf, s, 0, list);
+  ret = handleAtom (all_handlers, buf, s, 0, list);
   free (buf);
   return ret;
 }
@@ -645,18 +830,147 @@ udtaHandler (const char *input,
                           getAtomSize (&input[pos]) - hdr, list);
 }
 
+static int
+processDataAtom (const char *input,
+                size_t size, /* parent atom size */
+                size_t pos,
+                const char *patom,
+                EXTRACTOR_KeywordType type,
+                struct EXTRACTOR_Keywords **list)
+{
+  char *meta;
+  unsigned char version;
+  unsigned int flags;
+  unsigned long long asize;
+  unsigned int len;
+  unsigned int hdr;
+  int i;
+
+  hdr = getAtomHeaderSize (&input[pos]);
+  asize = getAtomSize (&input[pos]);
+  if (memcmp(&input[pos+4], "data", 4) != 0)
+    return -1;
+
+  if (asize < hdr + 8 || /* header + u32 flags + u32 reserved */
+      asize > (getAtomSize(&patom[0]) - 8))
+    return 0;
+
+  len = (unsigned int)(asize - (hdr + 8));
+
+  version = input[pos+8];
+  flags = ((unsigned char)input[pos+9]<<16) |
+          ((unsigned char)input[pos+10]<<8) | 
+          (unsigned char)input[pos+11];
+#if DEBUG
+  printf("[data] version:%02x flags:%08x txtlen:%d\n", version, flags, len);
+#endif
+
+  if (version != 0)
+    return -1;
+
+  if (flags == 0x0) { /* binary data */
+    if (memcmp(&patom[4], "gnre", 4) == 0) {
+      if (len >= 2) {
+        short genre = ((unsigned char)input[pos+16] << 8) |
+                               (unsigned char)input[pos+17];
+        if (genre > 0 && genre < GENRE_NAME_COUNT)
+          addKeyword(EXTRACTOR_GENRE, genre_names[genre-1], list);
+      }
+      return 1;
+    }
+    else {
+      return -1;
+    }
+  }
+  else if (flags == 0x1) { /* text data */
+    meta = malloc (len + 1);
+    memcpy (meta, &input[pos+16], len);
+    meta[len] = '\0';
+    for (i = 0; i < len; i++)
+      if (meta[i] == '\r')
+        meta[i] = '\n';
+    addKeyword (type, meta, list);
+    free (meta);
+    return 1;
+  }
+
+  return -1;
+}
+
 typedef struct
 {
-  char *name;
-  AtomHandler handler;
-} HandlerEntry;
+  const char *atom_type;
+  EXTRACTOR_KeywordType type;
+} ITTagConversionEntry;
 
-static HandlerEntry handlers[] = {
+/* iTunes Tags:
+ * see http://atomicparsley.sourceforge.net/mpeg-4files.html */
+static ITTagConversionEntry it_to_extr_table[] = {
+  {"\xa9" "alb", EXTRACTOR_ALBUM,},
+  {"\xa9" "ART", EXTRACTOR_ARTIST,},
+  {"aART", EXTRACTOR_ARTIST,},
+  {"\xa9" "cmt", EXTRACTOR_COMMENT,},
+  {"\xa9" "day", EXTRACTOR_YEAR,},
+  {"\xa9" "nam", EXTRACTOR_TITLE,},
+  {"\xa9" "gen", EXTRACTOR_GENRE,},
+  {"gnre", EXTRACTOR_GENRE,},
+  {"\xa9" "wrt", EXTRACTOR_AUTHOR,},
+  {"\xa9" "too", EXTRACTOR_ENCODED_BY,},
+  {"cprt", EXTRACTOR_COPYRIGHT,},
+  {"\xa9" "grp", EXTRACTOR_GROUP,},
+  {"catg", EXTRACTOR_CATEGORY,},
+  {"keyw", EXTRACTOR_KEYWORDS,},
+  {"desc", EXTRACTOR_DESCRIPTION,},
+  {"tvnn", EXTRACTOR_PUBLISHER,}, /* TV Network Name */
+  {"tvsh", EXTRACTOR_TITLE,}, /* TV Show Name */
+/*  {"tven", EXTRACTOR_i,},*/ /* TV Network Name */
+  {NULL, EXTRACTOR_UNKNOWN},
+};
+
+static int
+iTunesTagHandler (const char *input,
+           size_t size, size_t pos, struct EXTRACTOR_Keywords **list)
+{
+  unsigned long long asize;
+  unsigned int hdr;
+  int i;
+
+  hdr = getAtomHeaderSize (&input[pos]);
+  asize = getAtomSize (&input[pos]);
+
+  if (asize < hdr + 8) /* header + at least one atom */
+    return 0;
+
+  i = 0;
+  while ((it_to_extr_table[i].atom_type != NULL) && 
+         (0 != memcmp (&input[pos+4], it_to_extr_table[i].atom_type, 4)))
+    i++;
+  if (it_to_extr_table[i].atom_type != NULL)
+    return processDataAtom(input, asize, pos+hdr, &input[pos],  
+                           it_to_extr_table[i].type, list);
+
+  return -1;
+}
+
+
+static int 
+ilstHandler (const char *input,
+             size_t size, size_t pos, struct EXTRACTOR_Keywords **list)
+{
+  int i;
+  unsigned int hdr = getAtomHeaderSize (&input[pos]);
+  return processAtoms(ilst_handlers, &input[pos + hdr],
+                      getAtomSize(&input[pos]) - hdr, list);
+}
+
+
+static HandlerEntry all_handlers[] = {
   {"moov", &moovHandler},
   {"cmov", &cmovHandler},
   {"mvhd", &mvhdHandler},
   {"trak", &trakHandler},
   {"tkhd", &tkhdHandler},
+  {"ilst", &ilstHandler},
   {"meta", &metaHandler},
   {"udta", &udtaHandler},
   {"ftyp", &ftypHandler},
@@ -695,12 +1009,49 @@ static HandlerEntry handlers[] = {
   {NULL, NULL},
 };
 
+static HandlerEntry ilst_handlers[] = {
+  {"\xa9" "alb", &iTunesTagHandler},
+  {"\xa9" "ART", &iTunesTagHandler},
+  {"aART", &iTunesTagHandler},
+  {"\xa9" "cmt", &iTunesTagHandler},
+  {"\xa9" "day", &iTunesTagHandler},
+  {"\xa9" "nam", &iTunesTagHandler},
+  {"\xa9" "gen", &iTunesTagHandler},
+  {"gnre", &iTunesTagHandler},
+  {"trkn", &iTunesTagHandler},
+  {"disk", &iTunesTagHandler},
+  {"\xa9" "wrt", &iTunesTagHandler},
+  {"\xa9" "too", &iTunesTagHandler},
+  {"tmpo", &iTunesTagHandler},
+  {"cprt", &iTunesTagHandler},
+  {"cpil", &iTunesTagHandler},
+  {"covr", &iTunesTagHandler},
+  {"rtng", &iTunesTagHandler},
+  {"\xa9" "grp", &iTunesTagHandler},
+  {"stik", &iTunesTagHandler},
+  {"pcst", &iTunesTagHandler},
+  {"catg", &iTunesTagHandler},
+  {"keyw", &iTunesTagHandler},
+  {"purl", &iTunesTagHandler},
+  {"egid", &iTunesTagHandler},
+  {"desc", &iTunesTagHandler},
+  {"\xa9" "lyr", &iTunesTagHandler},
+  {"tvnn", &iTunesTagHandler},
+  {"tvsh", &iTunesTagHandler},
+  {"tven", &iTunesTagHandler},
+  {"tvsn", &iTunesTagHandler},
+  {"tves", &iTunesTagHandler},
+  {"purd", &iTunesTagHandler},
+  {"pgap", &iTunesTagHandler},
+  {NULL, NULL},
+};
+
 /**
  * Call the handler for the atom at the given position.
  * @return 0 on error, 1 for success, -1 for unknown atom type
  */
 static int
-handleAtom (const char *input,
+handleAtom (HandlerEntry *handlers, const char *input,
             size_t size, size_t pos, struct EXTRACTOR_Keywords **list)
 {
   int i;
