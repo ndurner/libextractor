@@ -1,3 +1,6 @@
+Mon Dec 24 18:26:56 MST 2007
+	Add support for some common iTunes tags to qtextractor.
+
 Mon Dec 10 17:27:28 MST 2007
 	Disable libgsf logging (for corrupt files).
 

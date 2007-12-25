@@ -26,6 +26,7 @@ tar.gz        - core team using zlib
 deb           - core team using zlib
 man           - core team using zlib (for man.gz)
 id3v2         - core team with Milan <milan@skoid.org>
+qt            - core team with Heikki Lindholm 
 hash          - core team using GNU coreutils/textutils and GPL'ed RMD160 code.
 translit      - Nils Durner <durner@gnunet.org>
 thumbnail     - core team using GTK
