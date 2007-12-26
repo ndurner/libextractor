@@ -74,6 +74,7 @@ plugin_LTLIBRARIES = $(pdfplugin) \
   libextractor_dvi.la \
   libextractor_elf.la \
   libextractor_filename.la \
+  libextractor_flv.la \
   libextractor_gif.la \
   libextractor_html.la \
   libextractor_id3v2.la \
@@ -242,6 +243,11 @@ libextractor_html_la_LDFLAGS = \
 libextractor_html_la_LIBADD = \
   $(top_builddir)/src/main/libextractor.la \
   libconvert.la 
+
+libextractor_flv_la_SOURCES = \
+  flvextractor.c
+libextractor_flv_la_LDFLAGS = \
+  $(PLUGINFLAGS)  $(retaincommand)
 
 libextractor_real_la_SOURCES = \
   realextractor.c 

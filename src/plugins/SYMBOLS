@@ -3,6 +3,7 @@ libextractor_deb_extract
 libextractor_dvi_extract
 libextractor_elf_extract
 libextractor_filename_extract
+libextractor_flv_extract
 libextractor_gif_extract
 libextractor_html_extract
 libextractor_id3v23_extract

@@ -238,6 +238,7 @@ libextractor_deb:\
 libextractor_png:\
 libextractor_gif:\
 libextractor_wav:\
+libextractor_flv:\
 libextractor_real:\
 libextractor_jpeg:\
 libextractor_tiff:\
