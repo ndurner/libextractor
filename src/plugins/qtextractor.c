@@ -725,7 +725,12 @@ static const char *languages[] = {
   "JavaneseRom",
 };
 
-
+/*
+ * see http://developer.apple.com/documentation/QuickTime/QTFF/QTFFChap2/chapter
+_3_section_2.html
+ *   "User Data Text Strings and Language Codes"
+ * TODO: make conformant
+ */
 static int
 processTextTag (const char *input,
                 size_t size,
@@ -752,9 +757,7 @@ processTextTag (const char *input,
   if (lang >= sizeof (languages) / sizeof (char *))
     return 0;                   /* invalid */
   addKeyword (EXTRACTOR_LANGUAGE, languages[lang], list);
-  /* TODO: what is the character set encoding here?
-     For now, let's assume it is Utf-8 (cannot find
-     anything in the public documentation) */
+
   meta = malloc (len + 1);
   memcpy (meta, &txt[1], len);
   meta[len] = '\0';
@@ -927,6 +930,9 @@ static ITTagConversionEntry it_to_extr_table[] = {
   {NULL, EXTRACTOR_UNKNOWN},
 };
 
+/* NOTE: iTunes tag processing should, in theory, be limited to iTunes
+ * file types (from ftyp), but, in reality, it seems that there are other
+ * files, like 3gpp, out in the wild with iTunes tags. */
 static int
 iTunesTagHandler (const char *input,
            size_t size, size_t pos, struct EXTRACTOR_Keywords **list)
