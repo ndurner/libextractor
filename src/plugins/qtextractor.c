@@ -814,7 +814,7 @@ c_Handler (const char *input,
   int i;
 
   i = 0;
-  while ((cHm[i].pfx != NULL) && (0 != memcmp (&input[5], cHm[i].pfx, 3)))
+  while ((cHm[i].pfx != NULL) && (0 != memcmp (&input[pos+5], cHm[i].pfx, 3)))
     i++;
   if (cHm[i].pfx != NULL)
     return processTextTag (input, size, pos, cHm[i].type, list);
