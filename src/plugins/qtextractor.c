@@ -342,7 +342,7 @@ static int
 processAllAtoms (const char *input,
                  size_t size, struct EXTRACTOR_Keywords **list)
 {
-  processAtoms(all_handlers, input, size, list);
+  return processAtoms(all_handlers, input, size, list);
 }
 
 /**
@@ -963,7 +963,6 @@ static int
 ilstHandler (const char *input,
              size_t size, size_t pos, struct EXTRACTOR_Keywords **list)
 {
-  int i;
   unsigned int hdr = getAtomHeaderSize (&input[pos]);
   return processAtoms(ilst_handlers, &input[pos + hdr],
                       getAtomSize(&input[pos]) - hdr, list);
