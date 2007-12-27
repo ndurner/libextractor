@@ -213,6 +213,7 @@ static Pattern patterns[] = {
   {"P6", 2, "image/x-portable-pixmap", DEFAULT},
   {"P7", 2, "image/x-portable-anymap", DEFAULT},
   {"BM", 2, "image/x-bmp", DEFAULT},
+  {"fLaC", 4, "audio/flac", DEFAULT},
   {"\x89PNG", 4, "image/x-png", DEFAULT},
   {"id=ImageMagick", 14, "application/x-imagemagick-image", DEFAULT},
   {"hsi1", 4, "image/x-jpeg-proprietary", DEFAULT},

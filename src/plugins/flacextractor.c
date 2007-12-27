@@ -68,7 +68,7 @@ flac_read (const FLAC__StreamDecoder *decoder,
   memcpy(buffer,
 	 &ctx->data[ctx->pos],
 	 *bytes);
-  ctx->pos += *bytes;
+  ctx->pos += *bytes;  
   return FLAC__STREAM_DECODER_READ_STATUS_CONTINUE;
 }
 
@@ -113,7 +113,7 @@ flac_eof(const FLAC__StreamDecoder *decoder, void *client_data)
 static FLAC__StreamDecoderWriteStatus
 flac_write(const FLAC__StreamDecoder *decoder, const FLAC__Frame *frame, const FLAC__int32 *const buffer[], void *client_data) 
 {
-  return FLAC__STREAM_DECODER_WRITE_STATUS_ABORT;
+  return FLAC__STREAM_DECODER_WRITE_STATUS_CONTINUE;
 }
 
 typedef struct
@@ -173,6 +173,8 @@ flac_metadata(const FLAC__StreamDecoder *decoder, const FLAC__StreamMetadata *me
 {
   struct Context * ctx = client_data;
   
+  fprintf(stderr,
+	  "Meta!\n");
   switch (metadata->type)
     {
     case FLAC__METADATA_TYPE_STREAMINFO:
@@ -249,9 +251,11 @@ flac_metadata(const FLAC__StreamDecoder *decoder, const FLAC__StreamMetadata *me
 static void
 flac_error(const FLAC__StreamDecoder *decoder, FLAC__StreamDecoderErrorStatus status, void *client_data) 
 {
+  fprintf(stderr,
+	  "Got error: %u\n", status);
 }
 
-/* mimetype = application/flac */
+/* mimetype = audio/flac */
 struct EXTRACTOR_Keywords *
 libextractor_flac_extract (const char *filename,
 			   const char *data,
@@ -269,38 +273,58 @@ libextractor_flac_extract (const char *filename,
   decoder = FLAC__stream_decoder_new();
   if (NULL == decoder)
     return prev;
-  FLAC__stream_decoder_set_metadata_respond_all(decoder);
+  FLAC__stream_decoder_set_md5_checking(decoder, false);
+  FLAC__stream_decoder_set_metadata_ignore_all(decoder);
+  if (false == FLAC__stream_decoder_set_metadata_respond_all(decoder))
+    {
+      FLAC__stream_decoder_delete(decoder);     
+      return le_cls.prev;
+    }
+  le_cls.prev = prev;
   le_cls.prev = prev;
   le_cls.size = size;
   le_cls.data = data;
   le_cls.pos = 0;
-  FLAC__stream_decoder_init_ogg_stream(decoder,
-				       &flac_read,
-				       &flac_seek,
-				       &flac_tell,
-				       &flac_length,
-				       &flac_eof,
-				       &flac_write,
-				       &flac_metadata,
-				       &flac_error,
-				       &le_cls);
-  FLAC__stream_decoder_process_until_end_of_metadata(decoder);
-  switch (FLAC__stream_decoder_get_state(decoder))
+  if (FLAC__STREAM_DECODER_INIT_STATUS_OK !=
+      FLAC__stream_decoder_init_ogg_stream(decoder,
+					       &flac_read,
+					       &flac_seek,
+					       &flac_tell,
+					       &flac_length,
+					       &flac_eof,
+					       &flac_write,
+					       &flac_metadata,
+					       &flac_error,
+					   &le_cls))
     {
-    case FLAC__STREAM_DECODER_SEARCH_FOR_FRAME_SYNC:
-    case FLAC__STREAM_DECODER_SEARCH_FOR_METADATA:
-    case FLAC__STREAM_DECODER_READ_METADATA:
-    case FLAC__STREAM_DECODER_END_OF_STREAM:
-    case FLAC__STREAM_DECODER_READ_FRAME:
-      le_cls.prev = addKeyword(EXTRACTOR_MIMETYPE,
-			       strdup("audio/flac"),
-			       le_cls.prev);
-      break;
-    default:
-      /* not so sure... */
-      break;
+      FLAC__stream_decoder_delete(decoder);     
+      return le_cls.prev;
     }
-
+  if (FLAC__stream_decoder_get_state(decoder) != FLAC__STREAM_DECODER_SEARCH_FOR_METADATA)
+    {
+      FLAC__stream_decoder_delete(decoder);     
+      return le_cls.prev;
+    }
+  if (! FLAC__stream_decoder_process_until_end_of_metadata(decoder))
+    {
+      FLAC__stream_decoder_delete(decoder);     
+      return le_cls.prev;
+    }
+  switch (FLAC__stream_decoder_get_state(decoder))
+   {
+   case FLAC__STREAM_DECODER_SEARCH_FOR_FRAME_SYNC:
+   case FLAC__STREAM_DECODER_READ_METADATA:
+   case FLAC__STREAM_DECODER_END_OF_STREAM:
+   case FLAC__STREAM_DECODER_READ_FRAME:
+     le_cls.prev = addKeyword(EXTRACTOR_MIMETYPE,
+			      strdup("audio/flac"),
+			      le_cls.prev);
+     break;
+   default:
+     /* not so sure... */
+     break;
+   }
+  FLAC__stream_decoder_finish (decoder); 
   FLAC__stream_decoder_delete(decoder);
   return le_cls.prev;
 }
