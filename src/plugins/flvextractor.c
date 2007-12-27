@@ -27,6 +27,8 @@
 
 #define DEBUG 0
 
+#define FLV_SIGNATURE "FLV"
+
 static struct EXTRACTOR_Keywords *
 addKeyword (EXTRACTOR_KeywordType type,
             char *keyword, struct EXTRACTOR_Keywords *next)
@@ -107,6 +109,8 @@ static int readFLVHeader(const unsigned char **data,
   hdr->version = *ptr++;
   hdr->flags = *ptr++;
   hdr->offset = readBEInt32(&ptr);
+  if (hdr->offset != FLV_HEADER_SIZE)
+    return -1;
 
   *data = ptr;
   return 0;
@@ -319,7 +323,7 @@ libextractor_flv_extract (const char *filename,
   if (readFLVHeader(&ptr, end, &header) == -1)
     return prev;
 
-  if (memcmp(header.signature, "FLV", 3) != 0)
+  if (memcmp(header.signature, FLV_SIGNATURE, 3) != 0)
     return prev;
 
   result = prev;
