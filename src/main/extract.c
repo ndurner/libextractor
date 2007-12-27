@@ -680,7 +680,7 @@ main (int argc, char *argv[])
       if (grepfriendly == YES)
 	printf ("%s ", argv[i]);
       else
-	printf (_("Keywords for file %s:"),
+	printf (_("Keywords for file %s:\n"),
 		argv[i]);
     }
     if (bibtex == YES)
