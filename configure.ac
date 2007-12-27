@@ -153,6 +153,10 @@ AC_CHECK_LIB(vorbisfile, ov_open_callbacks,
         [AM_CONDITIONAL(HAVE_VORBISFILE, true)
          AC_DEFINE(HAVE_VORBISFILE,1,[Have vorbisfile])],
         [AM_CONDITIONAL(HAVE_VORBISFILE, false)])
+AC_CHECK_LIB(FLAC, FLAC__stream_decoder_init_stream,
+        [AM_CONDITIONAL(HAVE_FLAC, true)
+         AC_DEFINE(HAVE_FLAC,1,[Have flac])],
+        [AM_CONDITIONAL(HAVE_FLAC, false)])
 AC_CHECK_LIB(vorbisfile, vorbis_comment_query,
         [AM_CONDITIONAL(NEED_VORBIS, false)],
         [AM_CONDITIONAL(NEED_VORBIS, true)])
@@ -200,6 +204,8 @@ AC_CHECK_HEADERS([ltdl.h iconv.h bzlib.h mpeg2dec/mpeg2.h])
 # fixme, we need to die here if a header is not found!
 
 AC_CHECK_HEADERS([vorbis/vorbisfile.h])
+
+AC_CHECK_HEADERS([FLAC/all.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST

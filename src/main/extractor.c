@@ -201,6 +201,12 @@ static const char *keywordTypes[] = {
 #define OGGSO ""
 #endif
 
+#if HAVE_FLAC
+#define FLACSO "libextractor_flac:"
+#else
+#define FLACSO ""
+#endif
+
 #if HAVE_ZLIB
 #define QTSO "libextractor_qt:"
 #else
@@ -252,7 +258,7 @@ libextractor_sid:\
 libextractor_nsfe:\
 libextractor_nsf"
 
-#define DEFAULT_LIBRARIES MPEGSO EXSO OLESO OGGSO QTSO DEFSO
+#define DEFAULT_LIBRARIES MPEGSO EXSO OLESO OGGSO FLACSO QTSO DEFSO
 
 const char * EXTRACTOR_getDefaultLibraries() {
   return DEFAULT_LIBRARIES;

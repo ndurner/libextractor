@@ -12,6 +12,7 @@ g++
 libltdl3-dev
 libgtk2.0-dev
 libvorbis-dev
+libflac-dev
 zlib1g-dev
 libbz2-dev
 libgsf-1-dev

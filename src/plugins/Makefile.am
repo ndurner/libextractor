@@ -59,6 +59,10 @@ if HAVE_VORBISFILE
  extraogg = libextractor_ogg.la
 endif
 
+if HAVE_FLAC
+ extraflac = libextractor_flac.la
+endif
+
 if NEED_VORBIS
  vorbisflag = -lvorbis
 endif
@@ -74,6 +78,7 @@ plugin_LTLIBRARIES = $(pdfplugin) \
   libextractor_dvi.la \
   libextractor_elf.la \
   libextractor_filename.la \
+  $(extraflac) \
   libextractor_flv.la \
   libextractor_gif.la \
   libextractor_html.la \
@@ -108,6 +113,14 @@ libextractor_ogg_la_SOURCES = \
   oggextractor.c
 libextractor_ogg_la_LDFLAGS = \
  -lvorbisfile $(vorbisflag) $(PLUGINFLAGS)  $(retaincommand)
+endif
+
+
+if HAVE_FLAC
+libextractor_flac_la_SOURCES = \
+  flacextractor.c
+libextractor_flac_la_LDFLAGS = \
+ -lFLAC $(PLUGINFLAGS)  $(retaincommand)
 endif
 
 noinst_LTLIBRARIES = \
