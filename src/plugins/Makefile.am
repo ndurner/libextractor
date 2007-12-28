@@ -125,8 +125,8 @@ endif
 
 noinst_LTLIBRARIES = \
   libpack.la \
-  libconvert.la
-
+  libconvert.la \
+  libconvert_numeric.la
 
 if HAVE_ZLIB
 libextractor_qt_la_LDFLAGS = \
@@ -237,6 +237,10 @@ libconvert_la_SOURCES = \
   convert.h 
 libconvert_la_LDFLAGS = \
   $(LIBICONV)
+
+libconvert_numeric_la_SOURCES = \
+  convert_numeric.c \
+  convert_numeric.h 
 
 libextractor_zip_la_SOURCES = \
   zipextractor.c
