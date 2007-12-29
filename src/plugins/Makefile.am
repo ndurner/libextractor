@@ -126,7 +126,8 @@ endif
 noinst_LTLIBRARIES = \
   libpack.la \
   libconvert.la \
-  libconvert_numeric.la
+  libconvert_numeric.la \
+  libamfparser.la
 
 if HAVE_ZLIB
 libextractor_qt_la_LDFLAGS = \
@@ -242,6 +243,12 @@ libconvert_numeric_la_SOURCES = \
   convert_numeric.c \
   convert_numeric.h 
 
+libamfparser_la_SOURCES = \
+  amfparser.c \
+  amfparser.h 
+libamfparser_la_LIBADD = \
+  libconvert_numeric.la
+
 libextractor_zip_la_SOURCES = \
   zipextractor.c
 libextractor_zip_la_LDFLAGS = \
@@ -265,6 +272,8 @@ libextractor_flv_la_SOURCES = \
   flvextractor.c
 libextractor_flv_la_LDFLAGS = \
   $(PLUGINFLAGS)  $(retaincommand)
+libextractor_flv_la_LIBADD = \
+  libamfparser.la
 
 libextractor_real_la_SOURCES = \
   realextractor.c 

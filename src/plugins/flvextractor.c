@@ -24,6 +24,8 @@
  */
 #include "platform.h"
 #include "extractor.h"
+#include "amfparser.h"
+#include <string.h>
 
 #define DEBUG 0
 
@@ -42,6 +44,118 @@ addKeyword (EXTRACTOR_KeywordType type,
   result->keyword = keyword;
   result->keywordType = type;
   return result;
+}
+
+/* from tarextractor, modified to take timezone */
+/* TODO: check that the output date is correct */
+static int
+flv_to_iso_date (double timeval, short timezone,
+                 char *rtime, unsigned int rsize)
+{
+  int retval = 0;
+
+  /*
+   * shift epoch to proleptic times
+   * to make subsequent modulo operations safer.
+   */
+  long long my_timeval = (timeval/1000)
+    + ((long long) ((1970 * 365) + 478) * (long long) 86400);
+
+  unsigned int seconds = (unsigned int) (my_timeval % 60);
+  unsigned int minutes = (unsigned int) ((my_timeval / 60) % 60);
+  unsigned int hours = (unsigned int) ((my_timeval / 3600) % 24);
+
+  int zone_sign;
+  int zone_hours;
+  unsigned int zone_minutes;
+
+  unsigned int year = 0;
+  unsigned int month = 1;
+
+  unsigned int days = (unsigned int) (my_timeval / (24 * 3600));
+
+  unsigned int days_in_month[] =
+    { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+  unsigned int diff = 0;
+
+  if ((long long) 0 > my_timeval)
+    return EDOM;
+
+  /*
+   * 400-year periods
+   */
+  year += (400 * (days / ((365 * 400) + 97)));
+  days %= ((365 * 400) + 97);
+
+  /*
+   * 100-year periods
+   */
+  diff = (days / ((365 * 100) + 24));
+  if (4 <= diff)
+    {
+      year += 399;
+      days = 364;
+    }
+  else
+    {
+      year += (100 * diff);
+      days %= ((365 * 100) + 24);
+    }
+
+  /*
+   * remaining leap years
+   */
+  year += (4 * (days / ((365 * 4) + 1)));
+  days %= ((365 * 4) + 1);
+
+  while (1)
+    {
+      if ((0 == (year % 400)) || ((0 == (year % 4)) && (0 != (year % 100))))
+        {
+          if (366 > days)
+            {
+              break;
+            }
+          else
+            {
+              days -= 366;
+              year++;
+            }
+        }
+      else
+        {
+          if (365 > days)
+            {
+              break;
+            }
+          else
+            {
+              days -= 365;
+              year++;
+            }
+        }
+    }
+
+  if ((0 == (year % 400)) || ((0 == (year % 4)) && (0 != (year % 100))))
+    days_in_month[1] = 29;
+
+  for (month = 0; (month < 12) && (days >= days_in_month[month]); month += 1)
+    days -= days_in_month[month];
+
+  zone_sign = 0;
+  if (timezone < 0)
+    {
+      zone_sign = -1;
+      timezone = -timezone;
+    }
+  zone_hours = timezone/60;
+  zone_minutes = timezone - zone_hours*60;
+
+  retval = snprintf (rtime, rsize, "%04u-%02u-%02uT%02u:%02u:%02u%c%02d:%02u",
+                     year, month + 1, days + 1, hours, minutes, seconds,
+                     ((zone_sign < 0) ? '-' : '+'), zone_hours, zone_minutes);
+
+  return (retval < rsize) ? 0 : EOVERFLOW;
 }
 
 static inline unsigned long readBEInt32(const unsigned char **data)
@@ -65,9 +179,6 @@ static inline unsigned long readBEInt24(const unsigned char **data)
   *data = ptr;
   return val;
 }
-
-/* AMF parser */
-/*TODO*/
 
 /* FLV parser */
 
@@ -151,14 +262,226 @@ static int readFLVTagHeader(const unsigned char **data,
 }
 
 typedef struct {
-  int videoCodec;;
-  int lastFrameType;
+  int videoCodec;
+  int videoWidth;
+  int videoHeight;
+  double videoDataRate;
+  double videoFrameRate;
 
   int audioCodec;
+  double audioDataRate;
   int audioChannels;
   int audioSampleBits;
   int audioRate;
 } FLVStreamState;
+
+typedef enum {
+  FLV_NONE = 0,
+  FLV_WIDTH,
+  FLV_HEIGHT,
+  FLV_FRAMERATE,
+  FLV_VDATARATE,
+  FLV_ADATARATE,
+} FLVStreamAttribute;
+
+typedef struct {
+  const char *key;
+  FLVStreamAttribute attribute;
+} MetaKeyToStreamAttribute;
+
+static MetaKeyToStreamAttribute key_to_attribute_map[] = {
+  { "width", FLV_WIDTH },
+  { "height", FLV_HEIGHT },
+  { "framerate", FLV_FRAMERATE },
+  { "videodatarate", FLV_VDATARATE },
+  { "audiodatarate", FLV_ADATARATE },
+  { NULL, FLV_NONE }
+};
+
+typedef struct {
+  const char *key;
+  EXTRACTOR_KeywordType type;
+} MetaKeyToExtractorItem;
+
+static MetaKeyToExtractorItem key_to_extractor_map[] = {
+  { "duration", EXTRACTOR_DURATION },
+  { "creator", EXTRACTOR_CREATOR },
+  { "metadatacreator", EXTRACTOR_CREATOR },
+  { "creationdate", EXTRACTOR_CREATION_DATE },
+  { "metadatadate", EXTRACTOR_MODIFICATION_DATE },
+  { NULL, EXTRACTOR_UNKNOWN }
+};
+
+typedef struct {
+  int onMetaData;
+  int parsingDepth;
+  /* mixed array keys mapped to something readily usable */
+  EXTRACTOR_KeywordType currentKeyType;
+  FLVStreamAttribute currentAttribute;
+
+  struct EXTRACTOR_Keywords *keywords;
+  FLVStreamState *streamState;
+} FLVMetaParserState;
+
+static void handleASBegin(unsigned char type, void * userdata)
+{
+  FLVMetaParserState *state = (FLVMetaParserState *)userdata;
+#if DEBUG
+  printf("handleASBeginCallback %p\n", state);
+#endif
+  if (state->onMetaData && state->parsingDepth == 0 && 
+      type != ASTYPE_MIXEDARRAY)
+    state->onMetaData = 0;
+
+  if (type == ASTYPE_ARRAY || type == ASTYPE_MIXEDARRAY || 
+      type == ASTYPE_OBJECT)
+    state->parsingDepth++;
+}
+
+static void handleASKey(char * key, void * userdata)
+{
+  FLVMetaParserState *state = (FLVMetaParserState *)userdata;
+  int i;
+#if DEBUG
+  printf("handleASKeyCallback %p [%s]\n", state, key);
+#endif
+  if (key == NULL)
+    return;
+
+  i = 0;
+  while ((key_to_extractor_map[i].key != NULL) && 
+         (strcasecmp(key, key_to_extractor_map[i].key) != 0))
+    i++;
+  state->currentKeyType = key_to_extractor_map[i].type;
+
+  i = 0;
+  while ((key_to_attribute_map[i].key != NULL) && 
+         (strcasecmp(key, key_to_attribute_map[i].key) != 0))
+    i++;
+  state->currentAttribute = key_to_attribute_map[i].attribute;
+}
+
+static void handleASEnd(unsigned char type, void * value, void * userdata)
+{
+  FLVMetaParserState *state = (FLVMetaParserState *)userdata;
+  char *s;
+#if DEBUG
+  printf("handleASEndCallback %p %p\n", state, value);
+#endif
+  if ((state->parsingDepth == 0) && (type == ASTYPE_STRING)) {
+    s = (char *)value;
+    if (!strcmp(s, "onMetaData"))
+      state->onMetaData = 1;
+  }
+
+  /* we expect usable metadata to reside in a MIXEDARRAY container
+   * right after a "onMetaData" STRING */
+
+  /* stream info related metadata */
+  if (state->onMetaData && (state->parsingDepth == 1) && 
+      (state->currentAttribute != FLV_NONE) && 
+      (type == ASTYPE_NUMBER))
+  {
+    double n = *((double *)value);
+    switch (state->currentAttribute) {
+      case FLV_WIDTH:
+        if (state->streamState->videoWidth == -1)
+          state->streamState->videoWidth = n;
+        break;
+      case FLV_HEIGHT:
+        if (state->streamState->videoHeight == -1)
+          state->streamState->videoHeight = n;
+        break;
+      case FLV_FRAMERATE:
+        state->streamState->videoFrameRate = n;
+        break; 
+      case FLV_VDATARATE:
+        state->streamState->videoDataRate = n;
+        break; 
+      case FLV_ADATARATE:
+        state->streamState->audioDataRate = n;
+        break;
+    }
+  }
+
+  /* metadata that maps straight to extractor keys */
+  if (state->onMetaData && (state->parsingDepth == 1) && 
+      (state->currentKeyType != EXTRACTOR_UNKNOWN))
+  {
+    s = NULL;
+    switch (type) {
+      case ASTYPE_NUMBER:
+      {
+        double n = *((double *)value);
+        s = malloc(30);
+	if (s == NULL)
+	  break;
+	if (state->currentKeyType == EXTRACTOR_DURATION)
+          snprintf(s, 30, "%.4f s", n);
+	else
+          snprintf(s, 30, "%f", n);
+	break;
+      }
+      case ASTYPE_STRING:
+      {
+        s = (char *)value;
+	if (s != NULL)
+	  s = strdup(s);
+        break;
+      }
+      case ASTYPE_DATE:
+      {
+        void **tmp = (void **)value;
+	double *millis;
+	short *tz;
+        millis = (double *)tmp[0];
+	tz = (short *)tmp[1];
+	s = malloc(30);
+	if (s == NULL)
+	  break;
+	flv_to_iso_date(*millis, *tz, s, 30);
+        break;
+      }
+    }
+
+    if (s != NULL)
+      state->keywords = addKeyword (state->currentKeyType, 
+                                    s,
+                                    state->keywords);
+  }
+  state->currentKeyType = EXTRACTOR_UNKNOWN;
+  state->currentAttribute = FLV_NONE;
+
+  if (type == ASTYPE_ARRAY || type == ASTYPE_MIXEDARRAY || 
+      type == ASTYPE_OBJECT)
+    state->parsingDepth--;
+}
+
+static struct EXTRACTOR_Keywords *
+handleMetaBody(const unsigned char *data, size_t len, 
+                FLVStreamState *state,
+                struct EXTRACTOR_Keywords *prev) 
+{
+  AMFParserHandler handler;
+  FLVMetaParserState pstate;
+#if DEBUG
+  printf("handleMetaBody()\n");
+#endif
+
+  pstate.onMetaData = 0;
+  pstate.currentKeyType = EXTRACTOR_UNKNOWN;
+  pstate.parsingDepth = 0;
+  pstate.keywords = prev;
+  pstate.streamState = state;
+  handler.userdata = &pstate;
+  handler.as_begin_callback = &handleASBegin;
+  handler.as_key_callback = &handleASKey;
+  handler.as_end_callback = &handleASEnd;
+
+  while (len > 0 && parse_amf(&data, &len, &handler) == 0);
+
+  return pstate.keywords;
+}
 
 static char *FLVAudioCodecs[] = {
   "Uncompressed",
@@ -200,32 +523,7 @@ handleAudioBody(const unsigned char *data, size_t len,
   soundRate = (*data & 0x0C) >> 2;
   soundFormat = (*data & 0xF0) >> 4;
 
-  if (state->audioCodec != soundFormat)
-  {
-    if (FLVAudioCodecs[soundFormat] != NULL) 
-    {
-#if DEBUG
-      printf("FLV: New AUDIO Codec: %s\n", FLVAudioCodecs[soundFormat]);
-#endif
-      prev = addKeyword (EXTRACTOR_FORMAT, 
-                         strdup (FLVAudioCodecs[soundFormat]),
-                         prev);
-    }
-  }
   state->audioCodec = soundFormat;
-
-  if (state->audioRate != soundRate ||
-        state->audioChannels != soundType ||
-        state->audioSampleBits != soundSize) {
-    char s[48];
-#if DEBUG
-    printf("FLV: New AUDIO Format\n");
-#endif
-    snprintf (s, 32, "%s Hz, %s, %s", FLVAudioSampleRates[soundRate], 
-                                   FLVAudioSampleSizes[soundSize],
-                                   FLVAudioChannels[soundType]);
-    prev = addKeyword (EXTRACTOR_FORMAT, strdup (s), prev);
-  }
   state->audioRate = soundRate;
   state->audioChannels = soundType;
   state->audioSampleBits = soundSize;
@@ -254,18 +552,6 @@ handleVideoBody(const unsigned char *data, size_t len,
   codecId = *data & 0x0F;
   frameType = (*data & 0xF0) >> 4;
 
-  if (state->videoCodec != codecId)
-  {
-    if (FLVVideoCodecs[codecId] != NULL)
-    {
-#if DEBUG
-      printf("FLV: New VIDEO Codec: %s\n", FLVVideoCodecs[codecId]);
-#endif
-      prev = addKeyword (EXTRACTOR_FORMAT, 
-                         strdup (FLVVideoCodecs[codecId]),
-                         prev);
-    }
-  }
   state->videoCodec = codecId;
   return prev;
 }
@@ -294,6 +580,9 @@ static int readFLVTag(const unsigned char **data,
       head = handleVideoBody(ptr, header.bodyLength, state, head);
       break;
     case FLV_TAG_TYPE_META:
+      head = handleMetaBody(ptr, header.bodyLength, state, head);
+      break;
+    default:
       break;
   }
 
@@ -302,6 +591,119 @@ static int readFLVTag(const unsigned char **data,
   *list = head;
   *data = ptr;
   return 0;
+}
+
+#define MAX_FLV_FORMAT_LINE 80
+static char * printVideoFormat(FLVStreamState *state)
+{
+  char *s;
+  int n;
+  size_t len = MAX_FLV_FORMAT_LINE;
+
+  s = malloc(len);
+  if (s == NULL)
+    return NULL;
+
+  n = 0;
+  if (state->videoWidth != -1 || state->videoHeight != -1) {
+    if (n < len) {
+      if (state->videoWidth != -1)
+        n += snprintf(s+n, len-n, "%dx", state->videoWidth);
+      else
+        n += snprintf(s+n, len-n, "?x", state->videoWidth);
+    }
+
+    if (n < len) {
+      if (state->videoHeight != -1)
+        n += snprintf(s+n, len-n, "%d", state->videoHeight);
+      else
+        n += snprintf(s+n, len-n, "?", state->videoHeight);
+    }
+  }
+
+  if (state->videoFrameRate != 0.0 && n < len) {
+    if (n > 0)
+      n += snprintf(s+n, len-n, ", ");
+    if (n < len)
+      n += snprintf(s+n, len-n, "%0.2f fps", state->videoFrameRate);
+  }
+
+  if (state->videoCodec != -1 && FLVVideoCodecs[state->videoCodec] != NULL &&
+      n < len) {
+    if (n > 0)
+      n += snprintf(s+n, len-n, ", ");
+    if (n < len)
+      n += snprintf(s+n, len-n, "%s", FLVVideoCodecs[state->videoCodec]);
+  }
+
+  if (state->videoDataRate != 0.0 && n < len) {
+    if (n > 0)
+      n += snprintf(s+n, len-n, ", ");
+    if (n < len)
+      n += snprintf(s+n, len-n, "%.4f kbps", state->videoDataRate);
+  }
+
+  if (n == 0) {
+    free(s);
+    s = NULL;
+  }
+
+  return s;
+}
+
+static char * printAudioFormat(FLVStreamState *state)
+{
+  char *s;
+  int n;
+  size_t len = MAX_FLV_FORMAT_LINE;
+
+  s = malloc(len);
+  if (s == NULL)
+    return NULL;
+
+  n = 0;
+
+  if (state->audioRate != -1 && n < len) {
+      n += snprintf(s+n, len-n, "%s Hz", FLVAudioSampleRates[state->audioRate]);
+  }
+
+  if (state->audioSampleBits != -1 && n < len) {
+    if (n > 0)
+      n += snprintf(s+n, len-n, ", ");
+    if (n < len)
+      n += snprintf(s+n, len-n, "%s", 
+                    FLVAudioSampleSizes[state->audioSampleBits]);
+  }
+
+  if (state->audioChannels != -1 && n < len) {
+    if (n > 0)
+      n += snprintf(s+n, len-n, ", ");
+    if (n < len)
+      n += snprintf(s+n, len-n, "%s", 
+                    FLVAudioChannels[state->audioChannels]);
+  }
+
+  if (state->audioCodec != -1 && FLVAudioCodecs[state->audioCodec] != NULL &&
+      n < len) {
+    if (n > 0)
+      n += snprintf(s+n, len-n, ", ");
+    if (n < len)
+      n += snprintf(s+n, len-n, "%s", FLVAudioCodecs[state->audioCodec]);
+  }
+
+  if (state->audioDataRate != 0.0 && n < len) {
+    if (n > 0)
+      n += snprintf(s+n, len-n, ", ");
+    if (n < len)
+      n += snprintf(s+n, len-n, "%.4f kbps", state->audioDataRate);
+  }
+
+  if (n == 0) {
+    free(s);
+    s = NULL;
+  }
+
+  return s;
 }
 
 struct EXTRACTOR_Keywords *
@@ -316,6 +718,7 @@ libextractor_flv_extract (const char *filename,
   FLVStreamState state;
   FLVHeader header;
   unsigned long prev_tag_size;
+  char *s;
 
   ptr = data;
   end = ptr + size;
@@ -332,17 +735,32 @@ libextractor_flv_extract (const char *filename,
   if (header.version != 1)
     return result;
 
-  if (readPreviousTagSize(&ptr, end, &prev_tag_size) == -1)
+  if (readPreviousTagSize (&ptr, end, &prev_tag_size) == -1)
     return result;
 
   state.videoCodec = -1;
+  state.videoWidth = -1;
+  state.videoHeight = -1;
+  state.videoFrameRate = 0.0;
+  state.videoDataRate = 0.0;
   state.audioCodec = -1;
   state.audioRate = -1;
+  state.audioSampleBits = -1;
+  state.audioChannels = -1;
+  state.audioDataRate = 0.0;
   while (ptr < end) {
-    if (readFLVTag(&ptr, end, &state, &result) == -1)
+    if (readFLVTag (&ptr, end, &state, &result) == -1)
       break;
-    if (readPreviousTagSize(&ptr, end, &prev_tag_size) == -1)
+    if (readPreviousTagSize (&ptr, end, &prev_tag_size) == -1)
       break;
   }
+
+  s = printVideoFormat (&state);
+  if (s != NULL)
+    result = addKeyword (EXTRACTOR_FORMAT, s, result);
+  s = printAudioFormat (&state);
+  if (s != NULL)
+    result = addKeyword (EXTRACTOR_FORMAT, s, result);
+
   return result;
 }
