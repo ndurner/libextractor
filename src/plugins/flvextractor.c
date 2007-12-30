@@ -157,9 +157,6 @@ static int readASBoolean(const unsigned char **data,
     return -1;
 
   val = (*ptr != 0x00);
-#if DEBUG
-  printf("asbool: %d\n", val);
-#endif
   ptr += 1;
   *len -= 1;
 
@@ -183,10 +180,6 @@ static int readASDate(const unsigned char **data,
 
   *zone = readInt(&ptr);
   len -= 2;
-
-#if DEBUG
-  printf("asdate: %f tz: %d\n", *millis, *zone);
-#endif
 
   *data = ptr;
   return 0;
@@ -213,9 +206,6 @@ static int readASString(const unsigned char **data,
     return -1;
   memcpy(ret, ptr, slen);
   ret[slen] = '\0';
-#if DEBUG
-  printf("asstring: %p %s\n", ret, ret);
-#endif
   ptr += slen;
   *len -= (2 + slen);
 
@@ -291,25 +281,16 @@ static int parse_amf(const unsigned char **data,
     case ASTYPE_ENDOFOBJECT:
       ret = 0;
       (*(handler->as_end_callback))(astype, NULL, handler->userdata);
-#if DEBUG
-      printf("asendofboject\n");
-#endif
       break;
     case ASTYPE_ARRAY:
     {
       long i, alen;
-#if DEBUG
-      printf("asarray:\n");
-#endif
       if (*len < 4) {
         ret = -1;
         break;
       }
       alen = readLong(&ptr);
       *len -= 4;
-#if DEBUG
-      printf(" len: %ld\n", alen);
-#endif
       for (i = 0; i < alen; i++) {
         ret = parse_amf(&ptr, len, handler);
         if (ret == -1)
@@ -318,18 +299,13 @@ static int parse_amf(const unsigned char **data,
       (*(handler->as_end_callback))(ASTYPE_ARRAY, 
                                     NULL, 
                                     handler->userdata);
-#if DEBUG
-      printf("asarray: END\n");
-#endif
       break;
     }  
     case ASTYPE_OBJECT:
     {
       char *key;
       unsigned char type;
-#if DEBUG
-      printf("asobject:\n");
-#endif
+
       ret = readASString(&ptr, len, &key);
       if (ret == -1)
         break;
@@ -353,9 +329,6 @@ static int parse_amf(const unsigned char **data,
         (*(handler->as_end_callback))(ASTYPE_OBJECT, 
                                       NULL, 
                                       handler->userdata);
-#if DEBUG
-      printf("asobject END:\n");
-#endif
       break;
     }  
     case ASTYPE_MIXEDARRAY:
@@ -363,18 +336,13 @@ static int parse_amf(const unsigned char **data,
       char *key;
       unsigned char type;
       long max_index;
-#if DEBUG
-      printf("asmixedarray:\n");
-#endif
+
       if (*len < 4) {
         ret = -1;
         break;
       }
       max_index = readLong(&ptr);
       *len -= 4;
-#if DEBUG
-      printf(" max index: %ld\n", max_index);
-#endif
       ret = readASString(&ptr, len, &key);
       if (ret == -1)
         break;
@@ -398,9 +366,6 @@ static int parse_amf(const unsigned char **data,
         (*(handler->as_end_callback))(astype, 
                                       NULL, 
                                       handler->userdata);
-#if DEBUG
-      printf("asmixedarray: END\n");
-#endif
       break;
     }  
     default:
@@ -409,7 +374,7 @@ static int parse_amf(const unsigned char **data,
                                     NULL, 
                                     handler->userdata);
 #if DEBUG
-      printf("asunknown %x\n", astype);
+      printf("parse_amf: Unknown type %02x", astype);
 #endif
       break;
   }
@@ -678,9 +643,7 @@ typedef struct {
 static void handleASBegin(unsigned char type, void * userdata)
 {
   FLVMetaParserState *state = (FLVMetaParserState *)userdata;
-#if DEBUG
-  printf("handleASBeginCallback %p\n", state);
-#endif
+
   if (state->onMetaData && state->parsingDepth == 0 && 
       type != ASTYPE_MIXEDARRAY)
     state->onMetaData = 0;
@@ -694,9 +657,7 @@ static void handleASKey(char * key, void * userdata)
 {
   FLVMetaParserState *state = (FLVMetaParserState *)userdata;
   int i;
-#if DEBUG
-  printf("handleASKeyCallback %p [%s]\n", state, key);
-#endif
+
   if (key == NULL)
     return;
 
@@ -717,9 +678,7 @@ static void handleASEnd(unsigned char type, void * value, void * userdata)
 {
   FLVMetaParserState *state = (FLVMetaParserState *)userdata;
   char *s;
-#if DEBUG
-  printf("handleASEndCallback %p %p\n", state, value);
-#endif
+  
   if ((state->parsingDepth == 0) && (type == ASTYPE_STRING)) {
     s = (char *)value;
     if (!strcmp(s, "onMetaData"))
@@ -818,9 +777,6 @@ handleMetaBody(const unsigned char *data, size_t len,
 {
   AMFParserHandler handler;
   FLVMetaParserState pstate;
-#if DEBUG
-  printf("handleMetaBody()\n");
-#endif
 
   pstate.onMetaData = 0;
   pstate.currentKeyType = EXTRACTOR_UNKNOWN;
