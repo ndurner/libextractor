@@ -419,7 +419,7 @@ static void handleASEnd(unsigned char type, void * value, void * userdata)
 	if (s == NULL)
 	  break;
 	if (state->currentKeyType == EXTRACTOR_DURATION)
-          snprintf(s, 30, "%.4f s", n);
+          snprintf(s, 30, "%.2f s", n);
 	else
           snprintf(s, 30, "%f", n);
 	break;
