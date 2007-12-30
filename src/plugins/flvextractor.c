@@ -24,7 +24,7 @@
  */
 #include "platform.h"
 #include "extractor.h"
-#include "amfparser.h"
+#include "convert_numeric.h"
 #include <string.h>
 
 #define DEBUG 0
@@ -45,6 +45,382 @@ addKeyword (EXTRACTOR_KeywordType type,
   result->keywordType = type;
   return result;
 }
+
+/*
+ * AMF parser
+ */
+
+/* Actionscript types */
+#define ASTYPE_NUMBER       0x00
+#define ASTYPE_BOOLEAN      0x01
+#define ASTYPE_STRING       0x02
+#define ASTYPE_OBJECT       0x03
+#define ASTYPE_MOVIECLIP    0x04
+#define ASTYPE_NULL         0x05
+#define ASTYPE_UNDEFINED    0x06
+#define ASTYPE_REFERENCE    0x07
+#define ASTYPE_MIXEDARRAY   0x08
+#define ASTYPE_ENDOFOBJECT  0x09
+#define ASTYPE_ARRAY        0x0a
+#define ASTYPE_DATE         0x0b
+#define ASTYPE_LONGSTRING   0x0c
+#define ASTYPE_UNSUPPORTED  0x0d
+#define ASTYPE_RECORDSET    0x0e
+#define ASTYPE_XML          0x0f
+#define ASTYPE_TYPEDOBJECT  0x10
+#define ASTYPE_AMF3DATA     0x11
+
+typedef struct {
+  void * userdata;
+  void (*as_begin_callback)(unsigned char type, void * userdata);
+  void (*as_key_callback)(char * key, void * userdata);
+  void (*as_end_callback)(unsigned char type, void * value, void * userdata);
+} AMFParserHandler;
+
+/* core datatypes */
+
+static inline unsigned long readLong(const unsigned char **data)
+{
+  const unsigned char *ptr = *data;
+  unsigned long val;
+
+  val = (ptr[0] << 24) | (ptr[1] << 16) | (ptr[2] << 8) | ptr[3];
+  ptr += 4;
+  *data = ptr;
+  return val;
+}
+
+static inline unsigned long readMediumInt(const unsigned char **data)
+{
+  const unsigned char *ptr = *data;
+  unsigned long val;
+
+  val = (ptr[0] << 16) | (ptr[1] << 8) | ptr[2];
+  ptr += 3;
+  *data = ptr;
+  return val;
+}
+
+static inline unsigned short readInt(const unsigned char **data)
+{
+  const unsigned char *ptr = *data;
+  unsigned short val;
+
+  val = (ptr[0] << 8) | ptr[1];
+  ptr += 2;
+  *data = ptr;
+  return val;
+}
+
+static inline double readDouble(const unsigned char **data)
+{
+  const unsigned char *ptr = *data;
+  double val;
+
+  floatformat_to_double(&floatformat_ieee_double_big, 
+                        (const void *)ptr, 
+                        &val);
+  ptr += 8;
+  *data = ptr;
+  return val;
+}
+
+
+/* actionscript types */
+
+static int readASNumber(const unsigned char **data,
+                               size_t *len,
+                               double *retval)
+{
+  const unsigned char *ptr = *data;
+  double val;
+
+  if (*len < 8)
+    return -1;
+
+  val = readDouble(&ptr);
+  *len -= 8;
+
+  *retval = val;
+  *data = ptr;
+  return 0;
+}
+
+static int readASBoolean(const unsigned char **data,
+                                size_t *len,
+                                int *retval)
+{
+  const unsigned char *ptr = *data;
+  int val;
+  
+  if (*len < 1)
+    return -1;
+
+  val = (*ptr != 0x00);
+#if DEBUG
+  printf("asbool: %d\n", val);
+#endif
+  ptr += 1;
+  *len -= 1;
+
+  *retval = val;
+  *data = ptr;
+  return 0;
+}
+
+static int readASDate(const unsigned char **data,
+                             size_t *len,
+                             double *millis,
+                             short *zone)
+{
+  const unsigned char *ptr = *data;
+
+  if (*len < 10)
+    return -1;
+
+  *millis = readDouble(&ptr);
+  *len -= 8;
+
+  *zone = readInt(&ptr);
+  len -= 2;
+
+#if DEBUG
+  printf("asdate: %f tz: %d\n", *millis, *zone);
+#endif
+
+  *data = ptr;
+  return 0;
+}
+
+static int readASString(const unsigned char **data,
+                               size_t *len,
+                               char **retval)
+{
+  const unsigned char *ptr = *data;
+  char *ret;
+  int slen;
+ 
+  if (*len < 2)
+    return -1;
+
+  slen = readInt(&ptr);
+
+  if (*len < (2 + slen))
+    return -1;
+
+  ret = malloc(slen+1);
+  if (ret == NULL)
+    return -1;
+  memcpy(ret, ptr, slen);
+  ret[slen] = '\0';
+#if DEBUG
+  printf("asstring: %p %s\n", ret, ret);
+#endif
+  ptr += slen;
+  *len -= (2 + slen);
+
+  *retval = ret;
+  *data = ptr;
+  return 0;
+}
+
+static int parse_amf(const unsigned char **data, 
+              size_t *len,
+              AMFParserHandler *handler) 
+{
+  const unsigned char *ptr = *data;
+  unsigned char astype;
+  int ret;
+
+  ret = 0;
+  astype = *ptr++;
+  (*(handler->as_begin_callback))(astype, handler->userdata);
+  switch (astype) {
+    case ASTYPE_NUMBER:
+    {
+      double val;
+      ret = readASNumber(&ptr, len, &val);
+      if (ret == 0)
+        (*(handler->as_end_callback))(astype, 
+                                      &val, 
+                                      handler->userdata);
+      break;
+    }
+    case ASTYPE_BOOLEAN:
+    {
+      int val;
+      ret = readASBoolean(&ptr, len, &val);
+      if (ret == 0)
+        (*(handler->as_end_callback))(astype, 
+                                      &val, 
+                                      handler->userdata);
+      break;
+    }
+    case ASTYPE_STRING:
+    {
+      char *val;
+      ret = readASString(&ptr, len, &val);
+      if (ret == 0) {
+        (*(handler->as_end_callback))(astype, 
+                                      val, 
+                                      handler->userdata);
+        free(val);
+      }
+      break;
+    }
+    case ASTYPE_DATE:
+    {
+      void *tmp[2];
+      double millis;
+      short tz;
+      ret = readASDate(&ptr, len, &millis, &tz);
+      tmp[0] = &millis;
+      tmp[1] = &tz;
+      if (ret == 0)
+        (*(handler->as_end_callback))(astype, 
+                                      &tmp, 
+                                      handler->userdata);
+      break;
+    }
+    case ASTYPE_NULL:
+    case ASTYPE_UNDEFINED:
+    case ASTYPE_UNSUPPORTED:
+      ret = 0;
+      (*(handler->as_end_callback))(astype, NULL, handler->userdata);
+      break;
+    case ASTYPE_ENDOFOBJECT:
+      ret = 0;
+      (*(handler->as_end_callback))(astype, NULL, handler->userdata);
+#if DEBUG
+      printf("asendofboject\n");
+#endif
+      break;
+    case ASTYPE_ARRAY:
+    {
+      long i, alen;
+#if DEBUG
+      printf("asarray:\n");
+#endif
+      if (*len < 4) {
+        ret = -1;
+        break;
+      }
+      alen = readLong(&ptr);
+      *len -= 4;
+#if DEBUG
+      printf(" len: %ld\n", alen);
+#endif
+      for (i = 0; i < alen; i++) {
+        ret = parse_amf(&ptr, len, handler);
+        if (ret == -1)
+	  break;
+      }
+      (*(handler->as_end_callback))(ASTYPE_ARRAY, 
+                                    NULL, 
+                                    handler->userdata);
+#if DEBUG
+      printf("asarray: END\n");
+#endif
+      break;
+    }  
+    case ASTYPE_OBJECT:
+    {
+      char *key;
+      unsigned char type;
+#if DEBUG
+      printf("asobject:\n");
+#endif
+      ret = readASString(&ptr, len, &key);
+      if (ret == -1)
+        break;
+      (*(handler->as_key_callback))(key, 
+                                    handler->userdata);
+      free(key);
+      type = *ptr;
+      while (type != ASTYPE_ENDOFOBJECT) {
+        ret = parse_amf(&ptr, len, handler);
+        if (ret == -1)
+          break;
+        ret = readASString(&ptr, len, &key);
+        if (ret == -1)
+          break;
+        (*(handler->as_key_callback))(key, 
+                                      handler->userdata);
+        free(key);
+        type = *ptr;      
+      }
+      if (ret == 0)
+        (*(handler->as_end_callback))(ASTYPE_OBJECT, 
+                                      NULL, 
+                                      handler->userdata);
+#if DEBUG
+      printf("asobject END:\n");
+#endif
+      break;
+    }  
+    case ASTYPE_MIXEDARRAY:
+    {
+      char *key;
+      unsigned char type;
+      long max_index;
+#if DEBUG
+      printf("asmixedarray:\n");
+#endif
+      if (*len < 4) {
+        ret = -1;
+        break;
+      }
+      max_index = readLong(&ptr);
+      *len -= 4;
+#if DEBUG
+      printf(" max index: %ld\n", max_index);
+#endif
+      ret = readASString(&ptr, len, &key);
+      if (ret == -1)
+        break;
+      (*(handler->as_key_callback))(key, 
+                                    handler->userdata);
+      free(key);
+      type = *ptr;
+      while (type != ASTYPE_ENDOFOBJECT) {
+        ret = parse_amf(&ptr, len, handler);
+        if (ret == -1)
+          break;
+        ret = readASString(&ptr, len, &key);
+        if (ret == -1)
+          break;
+        (*(handler->as_key_callback))(key, 
+                                      handler->userdata);
+        free(key);
+        type = *ptr;      
+      }
+      if (ret == 0)
+        (*(handler->as_end_callback))(astype, 
+                                      NULL, 
+                                      handler->userdata);
+#if DEBUG
+      printf("asmixedarray: END\n");
+#endif
+      break;
+    }  
+    default:
+      ret = -1;
+      (*(handler->as_end_callback))(astype, 
+                                    NULL, 
+                                    handler->userdata);
+#if DEBUG
+      printf("asunknown %x\n", astype);
+#endif
+      break;
+  }
+
+  *data = ptr;
+  return ret;
+}
+
+/*
+ * FLV parser
+ */
 
 /* from tarextractor, modified to take timezone */
 /* TODO: check that the output date is correct */
@@ -158,30 +534,6 @@ flv_to_iso_date (double timeval, short timezone,
   return (retval < rsize) ? 0 : EOVERFLOW;
 }
 
-static inline unsigned long readBEInt32(const unsigned char **data)
-{
-  const unsigned char *ptr = *data;
-  unsigned long val;
-
-  val = (ptr[0] << 24) | (ptr[1] << 16) | (ptr[2] << 8) | ptr[3];
-  ptr += 4;
-  *data = ptr;
-  return val;
-}
-
-static inline unsigned long readBEInt24(const unsigned char **data)
-{
-  const unsigned char *ptr = *data;
-  unsigned long val;
-
-  val = (ptr[0] << 16) | (ptr[1] << 8) | ptr[2];
-  ptr += 3;
-  *data = ptr;
-  return val;
-}
-
-/* FLV parser */
-
 typedef struct
 {
   char signature[3];
@@ -219,7 +571,7 @@ static int readFLVHeader(const unsigned char **data,
   ptr += 3;
   hdr->version = *ptr++;
   hdr->flags = *ptr++;
-  hdr->offset = readBEInt32(&ptr);
+  hdr->offset = readLong(&ptr);
   if (hdr->offset != FLV_HEADER_SIZE)
     return -1;
 
@@ -236,7 +588,7 @@ static int readPreviousTagSize(const unsigned char **data,
   if ((ptr + 4) > end)
     return -1;
 
-  *prev_size = readBEInt32(&ptr);
+  *prev_size = readLong(&ptr);
 
   *data = ptr;
   return 0;
@@ -252,10 +604,10 @@ static int readFLVTagHeader(const unsigned char **data,
     return -1;
 
   hdr->type = *ptr++;
-  hdr->bodyLength = readBEInt24(&ptr);
-  hdr->timestamp = readBEInt24(&ptr);
+  hdr->bodyLength = readMediumInt(&ptr);
+  hdr->timestamp = readMediumInt(&ptr);
   hdr->timestamp = (*ptr++ << 24) | hdr->timestamp;
-  hdr->streamId = readBEInt24(&ptr);
+  hdr->streamId = readMediumInt(&ptr);
 
   *data = ptr;
   return 0;
