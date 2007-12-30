@@ -218,6 +218,8 @@ static Pattern patterns[] = {
   {"id=ImageMagick", 14, "application/x-imagemagick-image", DEFAULT},
   {"hsi1", 4, "image/x-jpeg-proprietary", DEFAULT},
   {"FLV", 3, "video/x-flv", DEFAULT},
+  {"FWS", 3, "application/x-shockwave-flash", DEFAULT},
+  {"CWS", 3, "application/x-shockwave-flash", DEFAULT},
   {"\x2E\x52\x4d\x46", 4, "video/real", DEFAULT},
   {"\x2e\x72\x61\xfd", 4, "audio/real", DEFAULT},
   {"\177ELF", 4, "application/elf", DEFAULT},
