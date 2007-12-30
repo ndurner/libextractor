@@ -603,19 +603,21 @@ static char * printVideoFormat(FLVStreamState *state)
   size_t len = MAX_FLV_FORMAT_LINE;
 
   n = 0;
+  /* some files seem to specify only the width or the height, print '?' for
+   * the unknown dimension */
   if (state->videoWidth != -1 || state->videoHeight != -1) {
     if (n < len) {
       if (state->videoWidth != -1)
         n += snprintf(s+n, len-n, "%d", state->videoWidth);
       else
-        n += snprintf(s+n, len-n, "%d", state->videoWidth);
+        n += snprintf(s+n, len-n, "?");
     }
 
     if (n < len) {
       if (state->videoHeight != -1)
-        n += snprintf(s+n, len-n, "%d", state->videoHeight);
+        n += snprintf(s+n, len-n, "x%d", state->videoHeight);
       else
-        n += snprintf(s+n, len-n, "%d", state->videoHeight);
+        n += snprintf(s+n, len-n, "x?");
     }
   }
 
@@ -648,16 +650,11 @@ static char * printVideoFormat(FLVStreamState *state)
 
 static char * printAudioFormat(FLVStreamState *state)
 {
-  char *s;
+  char s[MAX_FLV_FORMAT_LINE+1];
   int n;
   size_t len = MAX_FLV_FORMAT_LINE;
 
-  s = malloc(len);
-  if (s == NULL)
-    return NULL;
-
   n = 0;
-
   if (state->audioRate != -1 && n < len) {
       n += snprintf(s+n, len-n, "%s Hz", FLVAudioSampleRates[state->audioRate]);
   }
@@ -693,12 +690,9 @@ static char * printAudioFormat(FLVStreamState *state)
       n += snprintf(s+n, len-n, "%.4f kbps", state->audioDataRate);
   }
 
-  if (n == 0) {
-    free(s);
-    s = NULL;
-  }
-
-  return s;
+  if (n == 0) 
+    return NULL;
+  return strdup(s);
 }
 
 struct EXTRACTOR_Keywords *
