@@ -173,8 +173,6 @@ flac_metadata(const FLAC__StreamDecoder *decoder, const FLAC__StreamMetadata *me
 {
   struct Context * ctx = client_data;
   
-  fprintf(stderr,
-	  "Meta!\n");
   switch (metadata->type)
     {
     case FLAC__METADATA_TYPE_STREAMINFO:
@@ -286,16 +284,16 @@ libextractor_flac_extract (const char *filename,
   le_cls.data = data;
   le_cls.pos = 0;
   if (FLAC__STREAM_DECODER_INIT_STATUS_OK !=
-      FLAC__stream_decoder_init_ogg_stream(decoder,
-					       &flac_read,
-					       &flac_seek,
-					       &flac_tell,
-					       &flac_length,
-					       &flac_eof,
-					       &flac_write,
-					       &flac_metadata,
-					       &flac_error,
-					   &le_cls))
+      FLAC__stream_decoder_init_stream(decoder,
+				       &flac_read,
+				       &flac_seek,
+				       &flac_tell,
+				       &flac_length,
+				       &flac_eof,
+				       &flac_write,
+				       &flac_metadata,
+				       &flac_error,
+				       &le_cls))
     {
       FLAC__stream_decoder_delete(decoder);     
       return le_cls.prev;
