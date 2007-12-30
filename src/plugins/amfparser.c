@@ -83,7 +83,6 @@ static int readASNumber(const unsigned char **data,
                                double *retval)
 {
   const unsigned char *ptr = *data;
-  char *ret;
   double val;
 
   if (*len < 8)
@@ -102,7 +101,6 @@ static int readASBoolean(const unsigned char **data,
                                 int *retval)
 {
   const unsigned char *ptr = *data;
-  char *ret;
   int val;
   
   if (*len < 1)
@@ -126,7 +124,6 @@ static int readASDate(const unsigned char **data,
                              short *zone)
 {
   const unsigned char *ptr = *data;
-  char *ret;
 
   if (*len < 10)
     return -1;

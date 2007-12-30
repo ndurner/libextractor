@@ -384,6 +384,8 @@ static void handleASEnd(unsigned char type, void * value, void * userdata)
   {
     double n = *((double *)value);
     switch (state->currentAttribute) {
+      case FLV_NONE:
+        break;
       case FLV_WIDTH:
         if (state->streamState->videoWidth == -1)
           state->streamState->videoWidth = n;
@@ -596,28 +598,24 @@ static int readFLVTag(const unsigned char **data,
 #define MAX_FLV_FORMAT_LINE 80
 static char * printVideoFormat(FLVStreamState *state)
 {
-  char *s;
+  char s[MAX_FLV_FORMAT_LINE+1];
   int n;
   size_t len = MAX_FLV_FORMAT_LINE;
-
-  s = malloc(len);
-  if (s == NULL)
-    return NULL;
 
   n = 0;
   if (state->videoWidth != -1 || state->videoHeight != -1) {
     if (n < len) {
       if (state->videoWidth != -1)
-        n += snprintf(s+n, len-n, "%dx", state->videoWidth);
+        n += snprintf(s+n, len-n, "%d", state->videoWidth);
       else
-        n += snprintf(s+n, len-n, "?x", state->videoWidth);
+        n += snprintf(s+n, len-n, "%d", state->videoWidth);
     }
 
     if (n < len) {
       if (state->videoHeight != -1)
         n += snprintf(s+n, len-n, "%d", state->videoHeight);
       else
-        n += snprintf(s+n, len-n, "?", state->videoHeight);
+        n += snprintf(s+n, len-n, "%d", state->videoHeight);
     }
   }
 
@@ -643,12 +641,9 @@ static char * printVideoFormat(FLVStreamState *state)
       n += snprintf(s+n, len-n, "%.4f kbps", state->videoDataRate);
   }
 
-  if (n == 0) {
-    free(s);
-    s = NULL;
-  }
-
-  return s;
+  if (n == 0) 
+    return NULL;
+  return strdup(s);
 }
 
 static char * printAudioFormat(FLVStreamState *state)
