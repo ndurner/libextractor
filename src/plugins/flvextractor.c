@@ -597,8 +597,11 @@ typedef enum {
   FLV_WIDTH,
   FLV_HEIGHT,
   FLV_FRAMERATE,
+  FLV_STEREO,
   FLV_VDATARATE,
   FLV_ADATARATE,
+  FLV_VCODECID,
+  FLV_ACODECID,
 } FLVStreamAttribute;
 
 typedef struct {
@@ -610,8 +613,11 @@ static MetaKeyToStreamAttribute key_to_attribute_map[] = {
   { "width", FLV_WIDTH },
   { "height", FLV_HEIGHT },
   { "framerate", FLV_FRAMERATE },
+  { "stereo", FLV_STEREO },
   { "videodatarate", FLV_VDATARATE },
   { "audiodatarate", FLV_ADATARATE },
+  { "videocodecid", FLV_VCODECID },
+  { "audiocodecid", FLV_ACODECID },
   { NULL, FLV_NONE }
 };
 
@@ -714,7 +720,28 @@ static void handleASEnd(unsigned char type, void * value, void * userdata)
       case FLV_ADATARATE:
         state->streamInfo->audioDataRate = n;
         break;
+      case FLV_VCODECID:
+        if (state->streamInfo->videoCodec == -1) {
+          state->streamInfo->videoCodec = n;
+          state->streamInfo->videoCodec &= 0x07; /* prevent index overflows */
+        }
+        break;
+      case FLV_ACODECID:
+        if (state->streamInfo->audioCodec == -1) {
+          state->streamInfo->audioCodec = n;
+          state->streamInfo->audioCodec &= 0x07; /* prevent index overflows */
+        }
+        break;
     }
+  }
+
+  if (state->onMetaData && (state->parsingDepth == 1) && 
+      (state->currentAttribute == FLV_STEREO) && 
+      (type == ASTYPE_BOOLEAN))
+  {
+    int n = *((int *)value);
+    if (state->streamInfo->audioChannels == -1)
+      state->streamInfo->audioChannels = (n == 0) ? 0 : 1;
   }
 
   /* metadata that maps straight to extractor keys */
@@ -832,6 +859,7 @@ handleAudioBody(const unsigned char *data, size_t len,
   soundSize = (*data & 0x02) >> 1;
   soundRate = (*data & 0x0C) >> 2;
   soundFormat = (*data & 0xF0) >> 4;
+  soundFormat &= 0x07;  /* prevent index overflow */
 
   stinfo->audioCodec = soundFormat;
   stinfo->audioRate = soundRate;
@@ -872,6 +900,7 @@ handleVideoBody(const unsigned char *data, size_t len,
 
   codecId = *data & 0x0F;
   frameType = (*data & 0xF0) >> 4;
+  codecId &= 0x07; /* prevent index overflow */
   data++;
 
   /* try to get video dimensions */
