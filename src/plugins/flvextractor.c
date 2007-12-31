@@ -590,7 +590,7 @@ typedef struct {
   int audioChannels;
   int audioSampleBits;
   int audioRate;
-} FLVStreamState;
+} FLVStreamInfo;
 
 typedef enum {
   FLV_NONE = 0,
@@ -637,7 +637,7 @@ typedef struct {
   FLVStreamAttribute currentAttribute;
 
   struct EXTRACTOR_Keywords *keywords;
-  FLVStreamState *streamState;
+  FLVStreamInfo *streamInfo;
 } FLVMetaParserState;
 
 static void handleASBegin(unsigned char type, void * userdata)
@@ -698,21 +698,21 @@ static void handleASEnd(unsigned char type, void * value, void * userdata)
       case FLV_NONE:
         break;
       case FLV_WIDTH:
-        if (state->streamState->videoWidth == -1)
-          state->streamState->videoWidth = n;
+        if (state->streamInfo->videoWidth == -1)
+          state->streamInfo->videoWidth = n;
         break;
       case FLV_HEIGHT:
-        if (state->streamState->videoHeight == -1)
-          state->streamState->videoHeight = n;
+        if (state->streamInfo->videoHeight == -1)
+          state->streamInfo->videoHeight = n;
         break;
       case FLV_FRAMERATE:
-        state->streamState->videoFrameRate = n;
+        state->streamInfo->videoFrameRate = n;
         break; 
       case FLV_VDATARATE:
-        state->streamState->videoDataRate = n;
+        state->streamInfo->videoDataRate = n;
         break; 
       case FLV_ADATARATE:
-        state->streamState->audioDataRate = n;
+        state->streamInfo->audioDataRate = n;
         break;
     }
   }
@@ -772,7 +772,7 @@ static void handleASEnd(unsigned char type, void * value, void * userdata)
 
 static struct EXTRACTOR_Keywords *
 handleMetaBody(const unsigned char *data, size_t len, 
-                FLVStreamState *state,
+                FLVStreamInfo *stinfo,
                 struct EXTRACTOR_Keywords *prev) 
 {
   AMFParserHandler handler;
@@ -782,7 +782,7 @@ handleMetaBody(const unsigned char *data, size_t len,
   pstate.currentKeyType = EXTRACTOR_UNKNOWN;
   pstate.parsingDepth = 0;
   pstate.keywords = prev;
-  pstate.streamState = state;
+  pstate.streamInfo = stinfo;
   handler.userdata = &pstate;
   handler.as_begin_callback = &handleASBegin;
   handler.as_key_callback = &handleASKey;
@@ -823,7 +823,7 @@ static char *FLVAudioSampleRates[] = {
 
 static struct EXTRACTOR_Keywords *
 handleAudioBody(const unsigned char *data, size_t len, 
-                FLVStreamState *state,
+                FLVStreamInfo *stinfo,
                 struct EXTRACTOR_Keywords *prev) 
 {
   int soundType, soundSize, soundRate, soundFormat;
@@ -833,10 +833,10 @@ handleAudioBody(const unsigned char *data, size_t len,
   soundRate = (*data & 0x0C) >> 2;
   soundFormat = (*data & 0xF0) >> 4;
 
-  state->audioCodec = soundFormat;
-  state->audioRate = soundRate;
-  state->audioChannels = soundType;
-  state->audioSampleBits = soundSize;
+  stinfo->audioCodec = soundFormat;
+  stinfo->audioRate = soundRate;
+  stinfo->audioChannels = soundType;
+  stinfo->audioSampleBits = soundSize;
 
   return prev;
 }
@@ -854,7 +854,7 @@ static char *FLVVideoCodecs[] = {
 
 static struct EXTRACTOR_Keywords *
 handleVideoBody(const unsigned char *data, size_t len, 
-                FLVStreamState *state,
+                FLVStreamInfo *stinfo,
                 struct EXTRACTOR_Keywords *prev) 
 {
   int codecId, frameType;
@@ -862,13 +862,13 @@ handleVideoBody(const unsigned char *data, size_t len,
   codecId = *data & 0x0F;
   frameType = (*data & 0xF0) >> 4;
 
-  state->videoCodec = codecId;
+  stinfo->videoCodec = codecId;
   return prev;
 }
 
 static int readFLVTag(const unsigned char **data,
                       const unsigned char *end,
-                      FLVStreamState *state,
+                      FLVStreamInfo *stinfo,
                       struct EXTRACTOR_Keywords **list)
 {
   const unsigned char *ptr = *data;
@@ -884,13 +884,13 @@ static int readFLVTag(const unsigned char **data,
   switch (header.type) 
   {
     case FLV_TAG_TYPE_AUDIO:
-      head = handleAudioBody(ptr, header.bodyLength, state, head);
+      head = handleAudioBody(ptr, header.bodyLength, stinfo, head);
       break;
     case FLV_TAG_TYPE_VIDEO:
-      head = handleVideoBody(ptr, header.bodyLength, state, head);
+      head = handleVideoBody(ptr, header.bodyLength, stinfo, head);
       break;
     case FLV_TAG_TYPE_META:
-      head = handleMetaBody(ptr, header.bodyLength, state, head);
+      head = handleMetaBody(ptr, header.bodyLength, stinfo, head);
       break;
     default:
       break;
@@ -904,7 +904,7 @@ static int readFLVTag(const unsigned char **data,
 }
 
 #define MAX_FLV_FORMAT_LINE 80
-static char * printVideoFormat(FLVStreamState *state)
+static char * printVideoFormat(FLVStreamInfo *stinfo)
 {
   char s[MAX_FLV_FORMAT_LINE+1];
   int n;
@@ -913,42 +913,42 @@ static char * printVideoFormat(FLVStreamState *state)
   n = 0;
   /* some files seem to specify only the width or the height, print '?' for
    * the unknown dimension */
-  if (state->videoWidth != -1 || state->videoHeight != -1) {
+  if (stinfo->videoWidth != -1 || stinfo->videoHeight != -1) {
     if (n < len) {
-      if (state->videoWidth != -1)
-        n += snprintf(s+n, len-n, "%d", state->videoWidth);
+      if (stinfo->videoWidth != -1)
+        n += snprintf(s+n, len-n, "%d", stinfo->videoWidth);
       else
         n += snprintf(s+n, len-n, "?");
     }
 
     if (n < len) {
-      if (state->videoHeight != -1)
-        n += snprintf(s+n, len-n, "x%d", state->videoHeight);
+      if (stinfo->videoHeight != -1)
+        n += snprintf(s+n, len-n, "x%d", stinfo->videoHeight);
       else
         n += snprintf(s+n, len-n, "x?");
     }
   }
 
-  if (state->videoFrameRate != 0.0 && n < len) {
+  if (stinfo->videoFrameRate != 0.0 && n < len) {
     if (n > 0)
       n += snprintf(s+n, len-n, ", ");
     if (n < len)
-      n += snprintf(s+n, len-n, "%0.2f fps", state->videoFrameRate);
+      n += snprintf(s+n, len-n, "%0.2f fps", stinfo->videoFrameRate);
   }
 
-  if (state->videoCodec != -1 && FLVVideoCodecs[state->videoCodec] != NULL &&
+  if (stinfo->videoCodec != -1 && FLVVideoCodecs[stinfo->videoCodec] != NULL &&
       n < len) {
     if (n > 0)
       n += snprintf(s+n, len-n, ", ");
     if (n < len)
-      n += snprintf(s+n, len-n, "%s", FLVVideoCodecs[state->videoCodec]);
+      n += snprintf(s+n, len-n, "%s", FLVVideoCodecs[stinfo->videoCodec]);
   }
 
-  if (state->videoDataRate != 0.0 && n < len) {
+  if (stinfo->videoDataRate != 0.0 && n < len) {
     if (n > 0)
       n += snprintf(s+n, len-n, ", ");
     if (n < len)
-      n += snprintf(s+n, len-n, "%.4f kbps", state->videoDataRate);
+      n += snprintf(s+n, len-n, "%.4f kbps", stinfo->videoDataRate);
   }
 
   if (n == 0) 
@@ -956,46 +956,46 @@ static char * printVideoFormat(FLVStreamState *state)
   return strdup(s);
 }
 
-static char * printAudioFormat(FLVStreamState *state)
+static char * printAudioFormat(FLVStreamInfo *stinfo)
 {
   char s[MAX_FLV_FORMAT_LINE+1];
   int n;
   size_t len = MAX_FLV_FORMAT_LINE;
 
   n = 0;
-  if (state->audioRate != -1 && n < len) {
-      n += snprintf(s+n, len-n, "%s Hz", FLVAudioSampleRates[state->audioRate]);
+  if (stinfo->audioRate != -1 && n < len) {
+      n += snprintf(s+n, len-n, "%s Hz", FLVAudioSampleRates[stinfo->audioRate]);
   }
 
-  if (state->audioSampleBits != -1 && n < len) {
+  if (stinfo->audioSampleBits != -1 && n < len) {
     if (n > 0)
       n += snprintf(s+n, len-n, ", ");
     if (n < len)
       n += snprintf(s+n, len-n, "%s", 
-                    FLVAudioSampleSizes[state->audioSampleBits]);
+                    FLVAudioSampleSizes[stinfo->audioSampleBits]);
   }
 
-  if (state->audioChannels != -1 && n < len) {
+  if (stinfo->audioChannels != -1 && n < len) {
     if (n > 0)
       n += snprintf(s+n, len-n, ", ");
     if (n < len)
       n += snprintf(s+n, len-n, "%s", 
-                    FLVAudioChannels[state->audioChannels]);
+                    FLVAudioChannels[stinfo->audioChannels]);
   }
 
-  if (state->audioCodec != -1 && FLVAudioCodecs[state->audioCodec] != NULL &&
+  if (stinfo->audioCodec != -1 && FLVAudioCodecs[stinfo->audioCodec] != NULL &&
       n < len) {
     if (n > 0)
       n += snprintf(s+n, len-n, ", ");
     if (n < len)
-      n += snprintf(s+n, len-n, "%s", FLVAudioCodecs[state->audioCodec]);
+      n += snprintf(s+n, len-n, "%s", FLVAudioCodecs[stinfo->audioCodec]);
   }
 
-  if (state->audioDataRate != 0.0 && n < len) {
+  if (stinfo->audioDataRate != 0.0 && n < len) {
     if (n > 0)
       n += snprintf(s+n, len-n, ", ");
     if (n < len)
-      n += snprintf(s+n, len-n, "%.4f kbps", state->audioDataRate);
+      n += snprintf(s+n, len-n, "%.4f kbps", stinfo->audioDataRate);
   }
 
   if (n == 0) 
@@ -1012,7 +1012,7 @@ libextractor_flv_extract (const char *filename,
   const unsigned char *ptr;
   const unsigned char *end;
 
-  FLVStreamState state;
+  FLVStreamInfo stinfo;
   FLVHeader header;
   unsigned long prev_tag_size;
   char *s;
@@ -1035,27 +1035,27 @@ libextractor_flv_extract (const char *filename,
   if (readPreviousTagSize (&ptr, end, &prev_tag_size) == -1)
     return result;
 
-  state.videoCodec = -1;
-  state.videoWidth = -1;
-  state.videoHeight = -1;
-  state.videoFrameRate = 0.0;
-  state.videoDataRate = 0.0;
-  state.audioCodec = -1;
-  state.audioRate = -1;
-  state.audioSampleBits = -1;
-  state.audioChannels = -1;
-  state.audioDataRate = 0.0;
+  stinfo.videoCodec = -1;
+  stinfo.videoWidth = -1;
+  stinfo.videoHeight = -1;
+  stinfo.videoFrameRate = 0.0;
+  stinfo.videoDataRate = 0.0;
+  stinfo.audioCodec = -1;
+  stinfo.audioRate = -1;
+  stinfo.audioSampleBits = -1;
+  stinfo.audioChannels = -1;
+  stinfo.audioDataRate = 0.0;
   while (ptr < end) {
-    if (readFLVTag (&ptr, end, &state, &result) == -1)
+    if (readFLVTag (&ptr, end, &stinfo, &result) == -1)
       break;
     if (readPreviousTagSize (&ptr, end, &prev_tag_size) == -1)
       break;
   }
 
-  s = printVideoFormat (&state);
+  s = printVideoFormat (&stinfo);
   if (s != NULL)
     result = addKeyword (EXTRACTOR_FORMAT, s, result);
-  s = printAudioFormat (&state);
+  s = printAudioFormat (&stinfo);
   if (s != NULL)
     result = addKeyword (EXTRACTOR_FORMAT, s, result);
 
