@@ -892,18 +892,22 @@ handleVideoBody(const unsigned char *data, size_t len,
           stinfo->videoHeight = ((data[5] & 0x7F) >> 1) | (data[6] >> 7);
         }
         else if (frame_size == 1) {
-          stinfo->videoWidth = ((data[4] & 0x7F) << 9) | 
-                               (data[5] << 1) |
+          stinfo->videoWidth = ((data[4] & 0x7F) << 9) | (data[5] << 1) |
                                (data[6] >> 7);
-          stinfo->videoHeight = ((data[6] & 0x7F) << 9) | 
-                               (data[7] << 1) |
-                               (data[8] >> 7);
+          stinfo->videoHeight = ((data[6] & 0x7F) << 9) | (data[7] << 1) |
+                                (data[8] >> 7);
         }
         else {
           stinfo->videoWidth = sorenson_predefined_res[frame_size][0];
           stinfo->videoHeight = sorenson_predefined_res[frame_size][1];
         }
       }
+      break;
+    case 0x03: /* ScreenVideo */
+      if (len < 5)
+        break;
+      stinfo->videoWidth = readInt(&data) & 0x0FFF;
+      stinfo->videoHeight = readInt(&data) & 0x0FFF;
       break;
     case 0x04: /* On2 VP6 */
     case 0x05:
