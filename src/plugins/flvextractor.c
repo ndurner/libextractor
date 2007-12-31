@@ -852,6 +852,17 @@ static char *FLVVideoCodecs[] = {
   NULL
 };
 
+static int sorenson_predefined_res[][2] = {
+  { -1, -1 },
+  { -1, -1 },
+  { 352, 288 },
+  { 176, 144 },
+  { 128, 96 },
+  { 320, 240 },
+  { 160, 120 },
+  { -1, -1 }
+};
+
 static struct EXTRACTOR_Keywords *
 handleVideoBody(const unsigned char *data, size_t len, 
                 FLVStreamInfo *stinfo,
@@ -861,6 +872,64 @@ handleVideoBody(const unsigned char *data, size_t len,
 
   codecId = *data & 0x0F;
   frameType = (*data & 0xF0) >> 4;
+  data++;
+
+  /* try to get video dimensions */
+  switch (codecId) {
+    case 0x02: /* Sorenson */
+      if (len < 9)
+        break;
+      if (frameType == 1) {
+        int start_code = (data[0] << 9) | (data[1] << 1) | ((data[2] >> 7)&0x1);
+        int version = (data[2] & 0x7C) >> 2;
+        int frame_size = ((data[3] & 0x03) << 1) | (data[4] >> 7);
+        if (start_code != 0x00000001)
+          break;
+        if (!(version == 0 || version == 1))
+          break;
+        if (frame_size == 0) {
+          stinfo->videoWidth = ((data[4] & 0x7F) >> 1) | (data[5] >> 7);
+          stinfo->videoHeight = ((data[5] & 0x7F) >> 1) | (data[6] >> 7);
+        }
+        else if (frame_size == 1) {
+          stinfo->videoWidth = ((data[4] & 0x7F) << 9) | 
+                               (data[5] << 1) |
+                               (data[6] >> 7);
+          stinfo->videoHeight = ((data[6] & 0x7F) << 9) | 
+                               (data[7] << 1) |
+                               (data[8] >> 7);
+        }
+        else {
+          stinfo->videoWidth = sorenson_predefined_res[frame_size][0];
+          stinfo->videoHeight = sorenson_predefined_res[frame_size][1];
+        }
+      }
+      break;
+    case 0x04: /* On2 VP6 */
+    case 0x05:
+    {
+      unsigned char dim_adj;
+      if (len < 10)
+        break;
+      dim_adj = *data++;
+      if ((frameType == 1) && ((data[0] & 0x80) == 0)) {
+        /* see ffmpeg vp6 decoder */
+        int separated_coeff = data[0] & 0x01;
+        int filter_header = data[1] & 0x06;
+        /*int interlaced = data[1] & 0x01; TODO: used in flv ever? */
+        if (separated_coeff || !filter_header) {
+          data += 2;
+        }
+        /* XXX encoded/displayed dimensions might vary, but which are the 
+         * right ones? */
+        stinfo->videoWidth = (data[3]*16) - (dim_adj>>4);
+        stinfo->videoHeight = (data[2]*16) - (dim_adj&0x0F);
+      }
+      break;
+    }
+    default:
+      break;
+  }
 
   stinfo->videoCodec = codecId;
   return prev;
