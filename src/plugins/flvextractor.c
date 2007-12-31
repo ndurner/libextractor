@@ -721,16 +721,12 @@ static void handleASEnd(unsigned char type, void * value, void * userdata)
         state->streamInfo->audioDataRate = n;
         break;
       case FLV_VCODECID:
-        if (state->streamInfo->videoCodec == -1) {
+        if (state->streamInfo->videoCodec == -1)
           state->streamInfo->videoCodec = n;
-          state->streamInfo->videoCodec &= 0x07; /* prevent index overflows */
-        }
         break;
       case FLV_ACODECID:
-        if (state->streamInfo->audioCodec == -1) {
+        if (state->streamInfo->audioCodec == -1)
           state->streamInfo->audioCodec = n;
-          state->streamInfo->audioCodec &= 0x07; /* prevent index overflows */
-        }
         break;
     }
   }
@@ -859,7 +855,6 @@ handleAudioBody(const unsigned char *data, size_t len,
   soundSize = (*data & 0x02) >> 1;
   soundRate = (*data & 0x0C) >> 2;
   soundFormat = (*data & 0xF0) >> 4;
-  soundFormat &= 0x07;  /* prevent index overflow */
 
   stinfo->audioCodec = soundFormat;
   stinfo->audioRate = soundRate;
@@ -900,7 +895,6 @@ handleVideoBody(const unsigned char *data, size_t len,
 
   codecId = *data & 0x0F;
   frameType = (*data & 0xF0) >> 4;
-  codecId &= 0x07; /* prevent index overflow */
   data++;
 
   /* try to get video dimensions */
@@ -1038,8 +1032,8 @@ static char * printVideoFormat(FLVStreamInfo *stinfo)
       n += snprintf(s+n, len-n, "%0.2f fps", stinfo->videoFrameRate);
   }
 
-  if (stinfo->videoCodec != -1 && FLVVideoCodecs[stinfo->videoCodec] != NULL &&
-      n < len) {
+  if (stinfo->videoCodec > -1 && stinfo->videoCodec < 8 &&
+      FLVVideoCodecs[stinfo->videoCodec] != NULL && n < len) {
     if (n > 0)
       n += snprintf(s+n, len-n, ", ");
     if (n < len)
@@ -1085,8 +1079,8 @@ static char * printAudioFormat(FLVStreamInfo *stinfo)
                     FLVAudioChannels[stinfo->audioChannels]);
   }
 
-  if (stinfo->audioCodec != -1 && FLVAudioCodecs[stinfo->audioCodec] != NULL &&
-      n < len) {
+  if (stinfo->audioCodec > -1 && stinfo->audioCodec < 8 &&
+      FLVAudioCodecs[stinfo->audioCodec] != NULL && n < len) {
     if (n > 0)
       n += snprintf(s+n, len-n, ", ");
     if (n < len)
