@@ -73,7 +73,8 @@ libextractor_lower_extract (char *filename,
         }
       pos = pos->next;
     }
-  free (lower);
+  if (lower != NULL)
+    free (lower);
 
   return prev;
 }

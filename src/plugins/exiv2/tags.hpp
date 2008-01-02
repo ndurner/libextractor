@@ -115,7 +115,7 @@ namespace Exiv2 {
      */
     struct TagDetails {
         long val_;                              //!< Tag value
-        char* label_;                           //!< Translation of the tag value
+        const char* label_;                           //!< Translation of the tag value
     }; // struct TagDetails
 
     /*!

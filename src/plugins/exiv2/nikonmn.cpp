@@ -682,7 +682,7 @@ namespace Exiv2 {
         //#
         //#"data from TAG 0x98" "ltyp""manuf" "lens name from manuf";
         //#
-        struct {unsigned char lid,stps,focs,focl,aps,apl,lfw, ltype; char *manuf, *lensname;}
+        struct {unsigned char lid,stps,focs,focl,aps,apl,lfw, ltype; const char *manuf, *lensname;}
         fmountlens[] = {
             {0x01,0x58,0x50,0x50,0x14,0x14,0x02,0x00, "Nikon", "AF Nikkor 50mm f/1.8"},
             {0x02,0x42,0x44,0x5C,0x2A,0x34,0x08,0x00, "Nikon", "AF Zoom-Nikkor 35-70mm f/3.3-4.5"},
