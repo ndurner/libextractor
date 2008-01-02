@@ -178,7 +178,7 @@ flac_metadata(const FLAC__StreamDecoder *decoder, const FLAC__StreamMetadata *me
     case FLAC__METADATA_TYPE_STREAMINFO:
       {
 	char buf[512];
-	sprintf(buf, 
+	snprintf(buf, 512,
 		_("%u Hz, %u channels"), 
 		metadata->data.stream_info.sample_rate,
 		metadata->data.stream_info.channels); 
