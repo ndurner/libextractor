@@ -702,6 +702,7 @@ static void handleASEnd(unsigned char type, void * value, void * userdata)
     double n = *((double *)value);
     switch (state->currentAttribute) {
       case FLV_NONE:
+      case FLV_STEREO:
         break;
       case FLV_WIDTH:
         if (state->streamInfo->videoWidth == -1)
