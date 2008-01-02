@@ -175,12 +175,10 @@ libextractor_tiff_extract (char *filename,
                 }
               if (width != -1)
                 {
-                  char *tmp;
-                  tmp = malloc (128);
-                  sprintf (tmp, "%ux%u",
+                  char tmp[128];
+                  snprintf (tmp, 128, "%ux%u",
                            (unsigned int) width, (unsigned int) length);
                   addKeyword (&prev, strdup (tmp), EXTRACTOR_SIZE);
-                  free (tmp);
                 }
               break;
             case TAG_WIDTH:
@@ -190,12 +188,10 @@ libextractor_tiff_extract (char *filename,
                 width = entry.value_or_offset;
               if (length != -1)
                 {
-                  char *tmp;
-                  tmp = malloc (128);
-                  sprintf (tmp, "%ux%u",
+                  char tmp[128];
+                  snprintf (tmp, 128, "%ux%u",
                            (unsigned int) width, (unsigned int) length);
                   addKeyword (&prev, strdup (tmp), EXTRACTOR_SIZE);
-                  free (tmp);
                 }
               break;
             case TAG_SOFTWARE:
