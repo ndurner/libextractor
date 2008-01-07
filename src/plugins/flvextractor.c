@@ -275,9 +275,6 @@ static int parse_amf(const unsigned char **data,
     case ASTYPE_NULL:
     case ASTYPE_UNDEFINED:
     case ASTYPE_UNSUPPORTED:
-      ret = 0;
-      (*(handler->as_end_callback))(astype, NULL, handler->userdata);
-      break;
     case ASTYPE_ENDOFOBJECT:
       ret = 0;
       (*(handler->as_end_callback))(astype, NULL, handler->userdata);
