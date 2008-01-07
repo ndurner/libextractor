@@ -847,17 +847,10 @@ handleAudioBody(const unsigned char *data, size_t len,
                 FLVStreamInfo *stinfo,
                 struct EXTRACTOR_Keywords *prev) 
 {
-  int soundType, soundSize, soundRate, soundFormat;
-
-  soundType = *data & 0x01;
-  soundSize = (*data & 0x02) >> 1;
-  soundRate = (*data & 0x0C) >> 2;
-  soundFormat = (*data & 0xF0) >> 4;
-
-  stinfo->audioCodec = soundFormat;
-  stinfo->audioRate = soundRate;
-  stinfo->audioChannels = soundType;
-  stinfo->audioSampleBits = soundSize;
+  stinfo->audioChannels = *data & 0x01;
+  stinfo->audioSampleBits = (*data & 0x02) >> 1;
+  stinfo->audioRate = (*data & 0x0C) >> 2;
+  stinfo->audioCodec = (*data & 0xF0) >> 4;
 
   return prev;
 }
