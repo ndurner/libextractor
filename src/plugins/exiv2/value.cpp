@@ -43,6 +43,7 @@ EXIV2_RCSID("@(#) $Id: value.cpp 560 2005-04-17 11:51:32Z ahuggel $");
 #include <sstream>
 #include <cassert>
 #include <ctime>
+#include <stdlib.h>
 
 // *****************************************************************************
 // class member definitions

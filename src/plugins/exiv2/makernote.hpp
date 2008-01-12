@@ -42,6 +42,7 @@
 #include <vector>
 #include <map>
 #include <memory>
+#include <string.h>
 
 // *****************************************************************************
 // namespace extensions

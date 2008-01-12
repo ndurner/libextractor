@@ -41,6 +41,7 @@
 #include <iostream>
 #include <sstream>
 #include <memory>
+#include <string.h>
 
 // *****************************************************************************
 // namespace extensions

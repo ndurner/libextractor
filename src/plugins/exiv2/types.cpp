@@ -40,6 +40,7 @@ EXIV2_RCSID("@(#) $Id: types.cpp 578 2005-06-07 15:01:11Z ahuggel $");
 #include <sstream>
 #include <utility>
 #include <cctype>
+#include <string.h>
 
 // *****************************************************************************
 // class member definitions

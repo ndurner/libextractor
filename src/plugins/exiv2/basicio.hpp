@@ -39,6 +39,9 @@
 #include <string>
 #include <vector>
 #include <cstdio>
+#include <memory>
+#include <string.h>
+#include <stdlib.h>
 
 // *****************************************************************************
 // namespace extensions
