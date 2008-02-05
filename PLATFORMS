@@ -31,6 +31,7 @@ OpenBSD 3.8:
 - unknown
 
 OS X (10.3, PowerPC):
+- LIBEXTRACTOR_PREFIX needs to be set properly for 'make check'
 - (X)PDF extractor does not work properly, especially with gcc 3.x
   (use the C-based pdfextractor (default now anyway))
 
