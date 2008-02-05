@@ -60,4 +60,9 @@
 #include <iconv.h>
 #include <langinfo.h>
 
+#if DARWIN
+#include <mach-o/dyld.h>
+#include <mach-o/ldsyms.h>
+#endif
+
 #endif

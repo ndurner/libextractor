@@ -386,6 +386,32 @@ static char * get_path_from_module_filename() {
 }
 #endif
 
+#if DARWIN
+static char * get_path_from_dyld_image() {
+  const char * path;
+  char * p, * s;
+  int i;
+  int c;
+
+  p = NULL;
+  c = _dyld_image_count();
+  for (i = 0; i < c; i++) {
+    if (_dyld_get_image_header(i) == &_mh_dylib_header) {
+      path = _dyld_get_image_name(i);
+      if (path != NULL) {
+        p = strdup(path);
+        s = p + strlen(p);
+        while ( (s > p) && (*s != '/') )
+          s--;
+        *s = '\0';
+      }
+      break;
+    }
+  }
+  return p;
+}
+#endif
+
 /**
  * This may also fail -- for example, if extract
  * is not also installed.
@@ -451,6 +477,7 @@ static char * os_get_installation_path() {
   char * lpref;
   char * pexe;
   char * modu;
+  char * dima;
   char * path;
 
   lpref = get_path_from_ENV_PREFIX();
@@ -464,6 +491,11 @@ static char * os_get_installation_path() {
 #else
   modu = NULL;
 #endif
+#if DARWIN
+  dima = get_path_from_dyld_image();
+#else
+  dima = NULL;
+#endif
   path = get_path_from_PATH();
   n = 1;
   if (lpref != NULL)
@@ -472,6 +504,8 @@ static char * os_get_installation_path() {
     n += strlen(pexe) + strlen("/lib/libextractor/:");
   if (modu != NULL)
     n += strlen(modu) + strlen("/lib/libextractor/:");
+  if (dima != NULL)
+    n += strlen(dima) + strlen("/libextractor/:");
   if (path != NULL)
     n += strlen(path) + strlen("/lib/libextractor/:");
   tmp = malloc(n);
@@ -490,6 +524,11 @@ static char * os_get_installation_path() {
     strcat(tmp, modu);
     strcat(tmp, "/lib/libextractor/:");
     free(modu);
+  }
+  if (dima != NULL) {
+    strcat(tmp, dima);
+    strcat(tmp, "/libextractor/:");
+    free(dima);
   }
   if (path != NULL) {
     strcat(tmp, path);
