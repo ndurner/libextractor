@@ -276,7 +276,7 @@ libextractor_flac_extract (const char *filename,
   if (false == FLAC__stream_decoder_set_metadata_respond_all(decoder))
     {
       FLAC__stream_decoder_delete(decoder);     
-      return le_cls.prev;
+      return prev;
     }
   le_cls.prev = prev;
   le_cls.prev = prev;

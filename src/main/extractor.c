@@ -339,8 +339,8 @@ get_path_from_proc_exe() {
 	return cut_lib(strdup(dir));
       }
     }
+    fclose(f);
   }
-  fclose(f);
   snprintf(fn,
 	   64,
 	   "/proc/%u/exe",

@@ -357,7 +357,10 @@ cat_unpack (const void *buf, const char *fmt, ...)
               len |= *bp++;
 
               if (len > maxlen)
-                return -1;
+		{
+		  va_end (ap);
+		  return -1;
+		}
 
               memmove (arr, bp, len);
               bp += len;
@@ -487,6 +490,7 @@ cat_unpack (const void *buf, const char *fmt, ...)
                   int j;
                   for (j = 0; j < i; j++)
                     free (cbvp[i].data);
+		  va_end (ap);
                   return -1;
                 }
 

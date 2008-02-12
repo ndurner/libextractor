@@ -50,6 +50,7 @@ Heikki Lindholm <holindho@cs.helsinki.fi>
 Heiko Wundram <modelnine@ceosg.de>
 Ronan MELENNEC <ronan.melennec@cena.fr>
 Vasil Dimov <vd@freebsd.org>
+Pavol Rusnak <prusnak@suse.cz>
 
 Translations:
 German - Karl Eichwalder <ke@gnu.franken.de>
@@ -77,3 +78,4 @@ ogg-vorbis  -
 glib        -
 libltdl     -
 gtk (pixbuf)-
+libflac     -

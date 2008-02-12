@@ -410,7 +410,8 @@ libextractor_pdf_extract (const char *filename,
           pos += 20 * xinfo - xstart;
           memcpy (buf, &data[pos], 20);
           buf[20] = '\0';
-          sscanf (buf, "%10llu %*5u %*c", &info_offset);
+          if (1 != sscanf (buf, "%10llu %*5u %*c", &info_offset))
+	    return prev;
           break;
         }
       xrefpos = 20 * xcount + pos;
