@@ -377,7 +377,7 @@ static char * get_path_from_module_filename() {
   char * path;
   char * idx;
 
-  path = malloc(4102); /* 4096+nil+5 for "lib/" catenation */
+  path = malloc(4103); /* 4096+nil+6 for "/lib/" catenation */
   GetModuleFileName(NULL, path, 4096);
   idx = path + strlen(path);
   while ( (idx > path) &&
@@ -386,7 +386,7 @@ static char * get_path_from_module_filename() {
     idx--;
   *idx = '\0';
   cut_bin(path);
-  strcat(path, "lib/"); /* guess "lib/" as the library dir */
+  strcat(path, "/lib/"); /* guess "lib/" as the library dir */
   return path;
 }
 #endif
@@ -403,11 +403,12 @@ static char * get_path_from_dyld_image() {
   for (i = 0; i < c; i++) {
     if (_dyld_get_image_header(i) == &_mh_dylib_header) {
       path = _dyld_get_image_name(i);
-      if (path != NULL) {
+      if (path != NULL && strlen(path) > 0) {
         p = strdup(path);
         s = p + strlen(p);
         while ( (s > p) && (*s != '/') )
           s--;
+        s++;
         *s = '\0';
       }
       break;
@@ -518,11 +519,6 @@ static char * os_get_installation_path() {
   dima = NULL;
 #endif
   path = get_path_from_PATH();
-  printf("PATH: env [%s]\n", lpref);
-  printf("PATH: proc_exe [%s]\n", pexe);
-  printf("PATH: module [%s]\n", modu);
-  printf("PATH: dyld [%s]\n", dima);
-  printf("PATH: path [%s]\n", path);
   n = 1;
   if (lpref != NULL)
     n += strlen(lpref) + strlen(PLUGINDIR "/:");
@@ -567,7 +563,6 @@ static char * os_get_installation_path() {
     free(tmp);
     return NULL;
   }
-  printf("PATH: result [%s]\n", tmp);
   return tmp;
 }
 
