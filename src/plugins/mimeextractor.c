@@ -224,7 +224,7 @@ static Pattern patterns[] = {
   {"\x2e\x72\x61\xfd", 4, "audio/real", DEFAULT},
   {"\x00\x05\x16\x00", 4, "application/applefile", DEFAULT},
   {"\x00\x05\x16\x07", 4, "application/applefile", DEFAULT},
-  {"\177ELF", 4, "application/elf", DEFAULT},
+  {"\177ELF", 4, "application/x-executable", DEFAULT},
   /* FIXME: correct MIME-type for an ELF!? */
   {"\xca\xfe\xba\xbe", 4, "application/java", DEFAULT},
   /* FIXME: correct MIME for a class-file? */
