@@ -337,7 +337,7 @@ get_path_from_proc_exe() {
 			   "libextractor")) ) {
 	strstr(dir, "libextractor")[0] = '\0';
 	fclose(f);
-	return cut_lib(strdup(dir));
+	return strdup(dir);
       }
     }
     fclose(f);
@@ -346,7 +346,7 @@ get_path_from_proc_exe() {
 	   64,
 	   "/proc/%u/exe",
 	   getpid());
-  lnk = malloc(1024);
+  lnk = malloc(1029); /* 1024 + 5 for "lib/" catenation */
   size = readlink(fn, lnk, 1023);
   if ( (size == 0) || (size >= 1024) ) {
     free(lnk);
@@ -363,7 +363,9 @@ get_path_from_proc_exe() {
     return NULL;
   }
   lnk[size] = '\0';
-  return cut_bin(lnk);
+  cut_bin(lnk);
+  strcat(lnk, "lib/"); /* guess "lib/" as the library dir */
+  return lnk;
 }
 #endif
 
@@ -375,7 +377,7 @@ static char * get_path_from_module_filename() {
   char * path;
   char * idx;
 
-  path = malloc(4097);
+  path = malloc(4102); /* 4096+nil+5 for "lib/" catenation */
   GetModuleFileName(NULL, path, 4096);
   idx = path + strlen(path);
   while ( (idx > path) &&
@@ -383,7 +385,9 @@ static char * get_path_from_module_filename() {
 	  (*idx != '/') )
     idx--;
   *idx = '\0';
-  return cut_bin(path);
+  cut_bin(path);
+  strcat(path, "lib/"); /* guess "lib/" as the library dir */
+  return path;
 }
 #endif
 
@@ -442,7 +446,9 @@ get_path_from_PATH() {
       pos = strdup(pos);
       free(buf);
       free(path);
-      return cut_bin(pos);
+      cut_bin(pos);
+      strcat(pos, "lib/");
+      return pos;
     }
     pos = end + 1;
   }
@@ -451,7 +457,9 @@ get_path_from_PATH() {
     pos = strdup(pos);
     free(buf);
     free(path);
-    return cut_bin(pos);
+    cut_bin(pos);
+    strcat(pos, "lib/");
+    return pos;
   }
   free(buf);
   free(path);
@@ -463,8 +471,20 @@ get_path_from_ENV_PREFIX() {
   const char * p;
 
   p = getenv("LIBEXTRACTOR_PREFIX");
-  if (p != NULL)
-    return cut_bin(cut_lib(strdup(p)));
+  if (p != NULL) {
+    char * s = malloc(strlen(p) + 6);
+    if (s != NULL) {
+      int len;
+      strcpy(s, p);
+      cut_bin(cut_lib(s));
+      len = strlen(s);
+      if (len > 0 && s[len-1] != '/')
+        strcat(s, "/lib/");
+      else
+        strcat(s, "lib/");
+      return s;
+    }
+  }
   return NULL;
 }
 
@@ -498,42 +518,47 @@ static char * os_get_installation_path() {
   dima = NULL;
 #endif
   path = get_path_from_PATH();
+  printf("PATH: env [%s]\n", lpref);
+  printf("PATH: proc_exe [%s]\n", pexe);
+  printf("PATH: module [%s]\n", modu);
+  printf("PATH: dyld [%s]\n", dima);
+  printf("PATH: path [%s]\n", path);
   n = 1;
   if (lpref != NULL)
-    n += strlen(lpref) + strlen("/lib/libextractor/:");
+    n += strlen(lpref) + strlen(PLUGINDIR "/:");
   if (pexe != NULL)
-    n += strlen(pexe) + strlen("/lib/libextractor/:");
+    n += strlen(pexe) + strlen(PLUGINDIR "/:");
   if (modu != NULL)
-    n += strlen(modu) + strlen("/lib/libextractor/:");
+    n += strlen(modu) + strlen(PLUGINDIR "/:");
   if (dima != NULL)
-    n += strlen(dima) + strlen("/libextractor/:");
+    n += strlen(dima) + strlen(PLUGINDIR "/:");
   if (path != NULL)
-    n += strlen(path) + strlen("/lib/libextractor/:");
+    n += strlen(path) + strlen(PLUGINDIR "/:");
   tmp = malloc(n);
   tmp[0] = '\0';
   if (lpref != NULL) {
     strcat(tmp, lpref);
-    strcat(tmp, "/lib/libextractor/:");
+    strcat(tmp, PLUGINDIR "/:");
     free(lpref);
   }
   if (pexe != NULL) {
     strcat(tmp, pexe);
-    strcat(tmp, "/lib/libextractor/:");
+    strcat(tmp, PLUGINDIR "/:");
     free(pexe);
   }
   if (modu != NULL) {
     strcat(tmp, modu);
-    strcat(tmp, "/lib/libextractor/:");
+    strcat(tmp, PLUGINDIR "/:");
     free(modu);
   }
   if (dima != NULL) {
     strcat(tmp, dima);
-    strcat(tmp, "/libextractor/:");
+    strcat(tmp, PLUGINDIR "/:");
     free(dima);
   }
   if (path != NULL) {
     strcat(tmp, path);
-    strcat(tmp, "/lib/libextractor/:");
+    strcat(tmp, PLUGINDIR "/:");
     free(path);
   }
   if (strlen(tmp) > 0)
@@ -542,6 +567,7 @@ static char * os_get_installation_path() {
     free(tmp);
     return NULL;
   }
+  printf("PATH: result [%s]\n", tmp);
   return tmp;
 }
 

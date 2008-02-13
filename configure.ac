@@ -118,6 +118,14 @@ ISOPFX=`pkg-config --variable=prefix iso-codes`
 pkg-config --variable=prefix iso-codes 2> /dev/null || ISOPFX=/usr
 AC_DEFINE_DIR([ISOLOCALEDIR], [$ISOPFX/share/locale], [iso-639 catalog])
 
+# relative plugin directory
+rplugindir="libextractor"
+AC_ARG_WITH(plugindirname,
+	AC_HELP_STRING(
+		[--with-plugindirname],
+		[install directory for plugins (always relative to libdir)]),
+	[rplugindir=$withval])
+AC_SUBST(RPLUGINDIR, $rplugindir)
 
 # large file support
 AC_SYS_LARGEFILE

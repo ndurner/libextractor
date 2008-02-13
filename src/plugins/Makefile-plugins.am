@@ -1,7 +1,7 @@
 INCLUDES = -I$(top_srcdir)/src/include
 
 # install plugins under:
-plugindir = $(libdir)/libextractor
+plugindir = $(libdir)/@RPLUGINDIR@
 
 EXTRA_DIST = \
  SYMBOLS 

@@ -3,7 +3,7 @@ SUBDIRS  = .
 INCLUDES = -I$(top_srcdir)/src/include $(LTDLINCL)
 
 # install plugins under:
-plugindir = $(libdir)/libextractor
+plugindir = $(libdir)/@RPLUGINDIR@
 
 LIBS = \
  @LTLIBINTL@ @LIBS@
@@ -50,6 +50,8 @@ EXTRA_DIST = \
 if MINGW
   winproc = winproc.c
 endif
+
+libextractor_la_CPPFLAGS = -DPLUGINDIR=\"@RPLUGINDIR@\" $(AM_CPPFLAGS)
 
 libextractor_la_SOURCES = \
   extractor.c \
