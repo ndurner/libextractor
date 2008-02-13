@@ -29,10 +29,10 @@ MODIFICATIONS.
 
 typedef unsigned char byte;
 typedef unsigned short half;
-typedef unsigned long word;
+typedef unsigned int word;
 typedef signed char sbyte;
 typedef signed short shalf;
-typedef signed long sword;
+typedef signed int sword;
 
 
 /*
