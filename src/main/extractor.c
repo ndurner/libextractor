@@ -251,6 +251,7 @@ libextractor_tiff:\
 libextractor_zip:\
 libextractor_rpm:\
 libextractor_riff:\
+libextractor_applefile:\
 libextractor_elf:\
 libextractor_oo:\
 libextractor_asf:\

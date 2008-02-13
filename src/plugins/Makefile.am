@@ -73,6 +73,7 @@ oodir = oo
 endif
 
 plugin_LTLIBRARIES = $(pdfplugin) \
+  libextractor_applefile.la \
   libextractor_asf.la \
   libextractor_deb.la \
   libextractor_dvi.la \
@@ -219,6 +220,13 @@ libextractor_tiff_la_SOURCES = \
 libextractor_tiff_la_LDFLAGS = \
   $(PLUGINFLAGS)  $(retaincommand)
 libextractor_tiff_la_LIBADD = \
+  libpack.la
+
+libextractor_applefile_la_SOURCES = \
+  applefileextractor.c
+libextractor_applefile_la_LDFLAGS = \
+  $(PLUGINFLAGS)  $(retaincommand)
+libextractor_applefile_la_LIBADD = \
   libpack.la
 
 libextractor_elf_la_SOURCES = \

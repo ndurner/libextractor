@@ -222,6 +222,8 @@ static Pattern patterns[] = {
   {"CWS", 3, "application/x-shockwave-flash", DEFAULT},
   {"\x2E\x52\x4d\x46", 4, "video/real", DEFAULT},
   {"\x2e\x72\x61\xfd", 4, "audio/real", DEFAULT},
+  {"\x00\x05\x16\x00", 4, "application/applefile", DEFAULT},
+  {"\x00\x05\x16\x07", 4, "application/applefile", DEFAULT},
   {"\177ELF", 4, "application/elf", DEFAULT},
   /* FIXME: correct MIME-type for an ELF!? */
   {"\xca\xfe\xba\xbe", 4, "application/java", DEFAULT},
