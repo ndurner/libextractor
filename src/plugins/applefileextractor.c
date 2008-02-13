@@ -156,9 +156,12 @@ libextractor_applefile_extract (const char *filename,
     if (readEntryDescriptor(data, &offset, size, &dsc) == -1)
       break;
 
+#if DEBUG
+    printf("applefile entry: %u %u %u\n", dsc.id, dsc.offset, dsc.length);
+#endif
     switch (dsc.id) {
       case AED_ID_REAL_NAME:
-        if (dsc.length < 2048 && dsc.offset + dsc.length < size) {
+        if (dsc.length < 2048 && (dsc.offset + dsc.length) < size) {
 	  char *s = malloc(dsc.length + 1);
 	  if (s != NULL) {
             memcpy(s, data + dsc.offset, dsc.length);
@@ -168,7 +171,7 @@ libextractor_applefile_extract (const char *filename,
 	}
 	break;
       case AED_ID_COMMENT:
-        if (dsc.length < 65536 && dsc.offset + dsc.length < size) {
+        if (dsc.length < 65536 && (dsc.offset + dsc.length) < size) {
 	  char *s = malloc(dsc.length + 1);
 	  if (s != NULL) {
             memcpy(s, data + dsc.offset, dsc.length);
@@ -177,6 +180,23 @@ libextractor_applefile_extract (const char *filename,
 	  }
 	}
 	break;
+      case AED_ID_FINDER_INFO:
+        if (dsc.length >= 16 && (dsc.offset + dsc.length) < size) {
+          char *s;
+          s = malloc(5);
+          if (s != NULL) {
+            memcpy(s, data + dsc.offset, 4);
+            s[4] = '\0';
+            result = addKeyword(EXTRACTOR_RESOURCE_TYPE, s, result);
+          }
+          s = malloc(5);
+          if (s != NULL) {
+            memcpy(s, data + dsc.offset + 4, 4);
+            s[4] = '\0';
+            result = addKeyword(EXTRACTOR_CREATOR, s, result);
+          }
+        }
+        break;
       default:
         break;
     }
