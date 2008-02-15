@@ -160,6 +160,24 @@ libextractor_applefile_extract (const char *filename,
     printf("applefile entry: %u %u %u\n", dsc.id, dsc.offset, dsc.length);
 #endif
     switch (dsc.id) {
+      case AED_ID_DATA_FORK:
+        {
+        /* same as in filenameextractor.c */
+        char * s = malloc (14);
+
+        if (dsc.length >= 1000000000)
+          snprintf (s, 13, "%.2f %s", dsc.length / 1000000000.0,
+                    _("GB"));
+        else if (dsc.length >= 1000000)
+          snprintf (s, 13, "%.2f %s", dsc.length / 1000000.0, _("MB"));
+        else if (dsc.length >= 1000)
+          snprintf (s, 13, "%.2f %s", dsc.length / 1000.0, _("KB"));
+        else
+          snprintf (s, 13, "%.2f %s", (double) dsc.length, _("Bytes"));
+
+        result = addKeyword(EXTRACTOR_FILE_SIZE, s, result); 
+        }
+        break;
       case AED_ID_REAL_NAME:
         if (dsc.length < 2048 && (dsc.offset + dsc.length) < size) {
 	  char *s = malloc(dsc.length + 1);
