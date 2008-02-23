@@ -363,7 +363,8 @@ get_path_from_proc_exe() {
     return NULL;
   }
   lnk[size] = '\0';
-  cut_bin(lnk);
+  lnk = cut_bin(lnk);
+  lnk = realloc(lnk, strlen(lnk) + 5);
   strcat(lnk, "lib/"); /* guess "lib/" as the library dir */
   return lnk;
 }
@@ -385,7 +386,8 @@ static char * get_path_from_module_filename() {
 	  (*idx != '/') )
     idx--;
   *idx = '\0';
-  cut_bin(path);
+  path = cut_bin(path);
+  path = realloc(path, strlen(path) + 6);
   strcat(path, "/lib/"); /* guess "lib/" as the library dir */
   return path;
 }
@@ -447,7 +449,8 @@ get_path_from_PATH() {
       pos = strdup(pos);
       free(buf);
       free(path);
-      cut_bin(pos);
+      pos = cut_bin(pos);
+      pos = realloc(pos, strlen(pos) + 5);
       strcat(pos, "lib/");
       return pos;
     }
@@ -458,7 +461,8 @@ get_path_from_PATH() {
     pos = strdup(pos);
     free(buf);
     free(path);
-    cut_bin(pos);
+    pos = cut_bin(pos);
+    pos = realloc(pos, strlen(pos) + 5);
     strcat(pos, "lib/");
     return pos;
   }
@@ -477,8 +481,9 @@ get_path_from_ENV_PREFIX() {
     if (s != NULL) {
       int len;
       strcpy(s, p);
-      cut_bin(cut_lib(s));
+      s = cut_bin(cut_lib(s));
       len = strlen(s);
+      s = realloc(s, len + 6);
       if (len > 0 && s[len-1] != '/')
         strcat(s, "/lib/");
       else
