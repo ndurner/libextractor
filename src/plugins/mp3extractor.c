@@ -209,13 +209,13 @@ enum
 enum
 { LAYER_ERR = 0, LAYER_1 = 1, LAYER_2 = 2, LAYER_3 = 3 };
 
-const unsigned int sync_mask = 0xE0FF;
-const unsigned int mpeg_ver_mask = 0x1800;
-const unsigned int mpeg_layer_mask = 0x600;
-const unsigned int bitrate_mask = 0xF00000;
-const unsigned int freq_mask = 0xC0000;
-const unsigned int ch_mask = 0xC0000000;
-const unsigned int pad_mask = 0x20000;
+#define sync_mask ((unsigned int) 0xE0FF)
+#define mpeg_ver_mask ((unsigned int) 0x1800)
+#define mpeg_layer_mask  ((unsigned int)0x600)
+#define bitrate_mask  ((unsigned int)0xF00000)
+#define freq_mask  ((unsigned int)0xC0000)
+#define ch_mask  ((unsigned int)0xC0000000)
+#define pad_mask  ((unsigned int)0x20000)
 
 unsigned int bitrate_table[16][6] = {
   {0, 0, 0, 0, 0, 0},

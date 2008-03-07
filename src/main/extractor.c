@@ -172,12 +172,14 @@ static const char *keywordTypes[] = {
   gettext_noop("starting song"),
   gettext_noop("hardware dependency"),
   gettext_noop("ripper"), /* 130 */
-  gettext_noop("filesize") /* 131 */,
+  gettext_noop("filesize"),
+  gettext_noop("track number"),
+  gettext_noop("international standard recording code"), /* 133 */
   NULL,
 };
 
 /* the number of keyword types (for bounds-checking) */
-#define HIGHEST_TYPE_NUMBER 132
+#define HIGHEST_TYPE_NUMBER 134
 
 #ifdef HAVE_LIBOGG
 #if HAVE_VORBIS
