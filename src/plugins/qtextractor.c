@@ -874,12 +874,22 @@ processDataAtom (const char *input,
   if (flags == 0x0) { /* binary data */
     if (memcmp(&patom[4], "gnre", 4) == 0) {
       if (len >= 2) {
-        short genre = ((unsigned char)input[pos+16] << 8) |
-                               (unsigned char)input[pos+17];
+        unsigned short genre = ((unsigned char)input[pos+16] << 8) |
+                                (unsigned char)input[pos+17];
         if (genre > 0 && genre < GENRE_NAME_COUNT)
-          addKeyword(EXTRACTOR_GENRE, genre_names[genre-1], list);
+          addKeyword(type, genre_names[genre-1], list);
       }
       return 1;
+    }
+    else if ((memcmp(&patom[4], "trkn", 4) == 0) || 
+        (memcmp(&patom[4], "disk", 4) == 0)) {
+      if (len >= 4) {
+        unsigned short n = ((unsigned char)input[pos+18] << 8) |
+                            (unsigned char)input[pos+19];
+        char s[8];
+	snprintf(s, 8, "%d", n);
+        addKeyword(type, s, list);
+      }
     }
     else {
       return -1;
@@ -915,6 +925,8 @@ static ITTagConversionEntry it_to_extr_table[] = {
   {"\xa9" "cmt", EXTRACTOR_COMMENT,},
   {"\xa9" "day", EXTRACTOR_YEAR,},
   {"\xa9" "nam", EXTRACTOR_TITLE,},
+  {"trkn", EXTRACTOR_TRACK_NUMBER,},
+  {"disk", EXTRACTOR_DISC_NUMBER,},
   {"\xa9" "gen", EXTRACTOR_GENRE,},
   {"gnre", EXTRACTOR_GENRE,},
   {"\xa9" "wrt", EXTRACTOR_AUTHOR,},
