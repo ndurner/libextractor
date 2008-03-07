@@ -124,6 +124,10 @@ libextractor_ogg_extract (const char *filename,
     addKeyword (EXTRACTOR_INTERPRET, get_comment (comments, "performer"),
                 prev);
   prev = addKeyword (EXTRACTOR_ALBUM, get_comment (comments, "album"), prev);
+  prev = addKeyword (EXTRACTOR_TRACK_NUMBER, 
+                     get_comment (comments, "tracknumber"), prev);
+  prev = addKeyword (EXTRACTOR_DISC_NUMBER,
+                     get_comment (comments, "discnumber"), prev);
   prev =
     addKeyword (EXTRACTOR_CONTACT, get_comment (comments, "contact"), prev);
   prev = addKeyword (EXTRACTOR_GENRE, get_comment (comments, "genre"), prev);
@@ -138,7 +142,7 @@ libextractor_ogg_extract (const char *filename,
     addKeyword (EXTRACTOR_VERSIONNUMBER, get_comment (comments, "version"),
                 prev);
   prev =
-    addKeyword (EXTRACTOR_RESOURCE_IDENTIFIER, get_comment (comments, "isrc"),
+    addKeyword (EXTRACTOR_ISRC, get_comment (comments, "isrc"),
                 prev);
   prev =
     addKeyword (EXTRACTOR_ORGANIZATION,
