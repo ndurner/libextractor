@@ -247,8 +247,10 @@ flac_metadata(const FLAC__StreamDecoder *decoder, const FLAC__StreamMetadata *me
 static void
 flac_error(const FLAC__StreamDecoder *decoder, FLAC__StreamDecoderErrorStatus status, void *client_data) 
 {
+#if 0
   fprintf(stderr,
 	  "Got error: %u\n", status);
+#endif
 }
 
 /* mimetype = audio/flac */

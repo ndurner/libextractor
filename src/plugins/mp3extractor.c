@@ -44,6 +44,7 @@ typedef struct
   char *year;
   char *comment;
   const char *genre;
+  unsigned int track_number;
 } id3tag;
 
 static const char *const genre_names[] = {
@@ -280,6 +281,16 @@ get_id3 (const char *data, size_t size, id3tag * id3)
   pos += 4;
   id3->comment = convertToUtf8 (pos, 30, "ISO-8859-1");
   trim (id3->comment);
+  if ( (pos[28] == '\0') &&
+       (pos[29] != '\0') )
+    {
+      /* ID3v1.1 */
+      id3->track_number = pos[29];
+    }
+  else
+    {
+      id3->track_number = 0;
+    }
   pos += 30;
   id3->genre = "";
   if (pos[0] < GENRE_NAME_COUNT)
@@ -446,6 +457,7 @@ libextractor_mp3_extract (const char *filename,
 {
   id3tag info;
   char *word;
+  char track[16];
 
   if (0 != get_id3 (data, size, &info))
     return klist;
@@ -462,14 +474,18 @@ libextractor_mp3_extract (const char *filename,
     klist = addkword (klist, info.genre, EXTRACTOR_GENRE);
   if (strlen (info.comment) > 0)
     klist = addkword (klist, info.comment, EXTRACTOR_COMMENT);
-
+  if (info.track_number != 0)
+    {
+      snprintf(track, 15, "%u", info.track_number);
+      klist = addkword (klist, track, EXTRACTOR_TRACK_NUMBER);
+    }
 
   /* A keyword that has all of the information together) */
-  word =
-    (char *) malloc (strlen (info.artist) + strlen (info.title) +
-                     strlen (info.album) + 6);
+  word = malloc (strlen (info.artist) + strlen (info.title) +
+		 strlen (info.album) + 6);
   sprintf (word, "%s: %s (%s)", info.artist, info.title, info.album);
   klist = addkword (klist, word, EXTRACTOR_DESCRIPTION);
+  
   free (word);
   free (info.title);
   free (info.year);
