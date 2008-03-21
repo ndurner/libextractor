@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.5.18a\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2008-01-07 08:48-0700\n"
+"POT-Creation-Date: 2008-03-20 23:53-0600\n"
 "PO-Revision-Date: 2007-08-09 20:38+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
@@ -114,12 +114,12 @@ msgstr "extract [FLAGGOR] [FILNAMN]*"
 msgid "Extract metadata from files."
 msgstr "Extrahera metadata från filer."
 
-#: src/main/extract.c:190 src/main/extractor.c:1444
+#: src/main/extract.c:190 src/main/extractor.c:1513
 #, c-format
 msgid "%s - (binary)\n"
 msgstr "%s - (binär)\n"
 
-#: src/main/extract.c:201 src/main/extractor.c:1449
+#: src/main/extract.c:201 src/main/extractor.c:1518
 #, c-format
 msgid "INVALID TYPE - %s\n"
 msgstr "OGILTIG TYP - %s\n"
@@ -678,12 +678,25 @@ msgstr "rippare"
 msgid "filesize"
 msgstr "filstorlek"
 
-#: src/main/extractor.c:529
+#: src/main/extractor.c:176
+msgid "track number"
+msgstr ""
+
+#: src/main/extractor.c:177
+msgid "international standard recording code"
+msgstr ""
+
+#: src/main/extractor.c:178
+#, fuzzy
+msgid "disc number"
+msgstr "disclaimer"
+
+#: src/main/extractor.c:598
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "Initiering av insticksmekanism misslyckades: %s!\n"
 
-#: src/main/extractor.c:683
+#: src/main/extractor.c:752
 #, c-format
 msgid ""
 "Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
@@ -692,12 +705,12 @@ msgstr ""
 "Uppslag av symbol \"%s\" i bibliotek \"%s\" misslyckades så jag försökte med "
 "\"%s\" men det misslyckades också.  Felen är: \"%s\" och \"%s\".\n"
 
-#: src/main/extractor.c:712
+#: src/main/extractor.c:781
 #, c-format
 msgid "Loading `%s' plugin failed: %s\n"
 msgstr "Inläsning av instick \"%s\" misslyckades: %s\n"
 
-#: src/main/extractor.c:917
+#: src/main/extractor.c:986
 #, c-format
 msgid "Unloading plugin `%s' failed!\n"
 msgstr "Urläsning av instick \"%s\" misslyckades!\n"
@@ -824,607 +837,607 @@ msgstr "Kommandon för systemhantering"
 msgid "Kernel routines"
 msgstr "Kärnrutiner"
 
-#: src/plugins/mp3extractor.c:50 src/plugins/qtextractor.c:30
+#: src/plugins/mp3extractor.c:51 src/plugins/qtextractor.c:30
 msgid "Blues"
 msgstr "Blues"
 
-#: src/plugins/mp3extractor.c:51 src/plugins/qtextractor.c:31
+#: src/plugins/mp3extractor.c:52 src/plugins/qtextractor.c:31
 msgid "Classic Rock"
 msgstr "Klassisk rock"
 
-#: src/plugins/mp3extractor.c:52 src/plugins/qtextractor.c:32
+#: src/plugins/mp3extractor.c:53 src/plugins/qtextractor.c:32
 msgid "Country"
 msgstr "Country"
 
-#: src/plugins/mp3extractor.c:53 src/plugins/qtextractor.c:33
+#: src/plugins/mp3extractor.c:54 src/plugins/qtextractor.c:33
 msgid "Dance"
 msgstr "Dans"
 
-#: src/plugins/mp3extractor.c:54 src/plugins/qtextractor.c:34
+#: src/plugins/mp3extractor.c:55 src/plugins/qtextractor.c:34
 msgid "Disco"
 msgstr "Disco"
 
-#: src/plugins/mp3extractor.c:55 src/plugins/qtextractor.c:35
+#: src/plugins/mp3extractor.c:56 src/plugins/qtextractor.c:35
 msgid "Funk"
 msgstr "Funk"
 
-#: src/plugins/mp3extractor.c:56 src/plugins/qtextractor.c:36
+#: src/plugins/mp3extractor.c:57 src/plugins/qtextractor.c:36
 msgid "Grunge"
 msgstr "Grunge"
 
-#: src/plugins/mp3extractor.c:57 src/plugins/qtextractor.c:37
+#: src/plugins/mp3extractor.c:58 src/plugins/qtextractor.c:37
 msgid "Hip-Hop"
 msgstr "Hip-Hop"
 
-#: src/plugins/mp3extractor.c:58 src/plugins/qtextractor.c:38
+#: src/plugins/mp3extractor.c:59 src/plugins/qtextractor.c:38
 msgid "Jazz"
 msgstr "Jazz"
 
-#: src/plugins/mp3extractor.c:59 src/plugins/qtextractor.c:39
+#: src/plugins/mp3extractor.c:60 src/plugins/qtextractor.c:39
 msgid "Metal"
 msgstr "Metal"
 
-#: src/plugins/mp3extractor.c:60 src/plugins/qtextractor.c:40
+#: src/plugins/mp3extractor.c:61 src/plugins/qtextractor.c:40
 msgid "New Age"
 msgstr "New Age"
 
-#: src/plugins/mp3extractor.c:61 src/plugins/qtextractor.c:41
+#: src/plugins/mp3extractor.c:62 src/plugins/qtextractor.c:41
 msgid "Oldies"
 msgstr "Gamla godingar"
 
-#: src/plugins/mp3extractor.c:62 src/plugins/qtextractor.c:42
+#: src/plugins/mp3extractor.c:63 src/plugins/qtextractor.c:42
 msgid "Other"
 msgstr "Övrigt"
 
-#: src/plugins/mp3extractor.c:63 src/plugins/qtextractor.c:43
+#: src/plugins/mp3extractor.c:64 src/plugins/qtextractor.c:43
 msgid "Pop"
 msgstr "Pop"
 
-#: src/plugins/mp3extractor.c:64 src/plugins/qtextractor.c:44
+#: src/plugins/mp3extractor.c:65 src/plugins/qtextractor.c:44
 msgid "R&B"
 msgstr "R&B"
 
-#: src/plugins/mp3extractor.c:65 src/plugins/qtextractor.c:45
+#: src/plugins/mp3extractor.c:66 src/plugins/qtextractor.c:45
 msgid "Rap"
 msgstr "Rap"
 
-#: src/plugins/mp3extractor.c:66 src/plugins/qtextractor.c:46
+#: src/plugins/mp3extractor.c:67 src/plugins/qtextractor.c:46
 msgid "Reggae"
 msgstr "Reggae"
 
-#: src/plugins/mp3extractor.c:67 src/plugins/qtextractor.c:47
+#: src/plugins/mp3extractor.c:68 src/plugins/qtextractor.c:47
 msgid "Rock"
 msgstr "Rock"
 
-#: src/plugins/mp3extractor.c:68 src/plugins/qtextractor.c:48
+#: src/plugins/mp3extractor.c:69 src/plugins/qtextractor.c:48
 msgid "Techno"
 msgstr "Techno"
 
-#: src/plugins/mp3extractor.c:69 src/plugins/qtextractor.c:49
+#: src/plugins/mp3extractor.c:70 src/plugins/qtextractor.c:49
 msgid "Industrial"
 msgstr "Industriell"
 
-#: src/plugins/mp3extractor.c:70 src/plugins/qtextractor.c:50
+#: src/plugins/mp3extractor.c:71 src/plugins/qtextractor.c:50
 msgid "Alternative"
 msgstr "Alternativ"
 
-#: src/plugins/mp3extractor.c:71 src/plugins/qtextractor.c:51
+#: src/plugins/mp3extractor.c:72 src/plugins/qtextractor.c:51
 msgid "Ska"
 msgstr "Ska"
 
-#: src/plugins/mp3extractor.c:72 src/plugins/qtextractor.c:52
+#: src/plugins/mp3extractor.c:73 src/plugins/qtextractor.c:52
 msgid "Death Metal"
 msgstr "Death Metal"
 
-#: src/plugins/mp3extractor.c:73 src/plugins/qtextractor.c:53
+#: src/plugins/mp3extractor.c:74 src/plugins/qtextractor.c:53
 msgid "Pranks"
 msgstr "Skämt"
 
-#: src/plugins/mp3extractor.c:74 src/plugins/qtextractor.c:54
+#: src/plugins/mp3extractor.c:75 src/plugins/qtextractor.c:54
 msgid "Soundtrack"
 msgstr "Soundtrack"
 
-#: src/plugins/mp3extractor.c:75 src/plugins/qtextractor.c:55
+#: src/plugins/mp3extractor.c:76 src/plugins/qtextractor.c:55
 msgid "Euro-Techno"
 msgstr "Euro-Techno"
 
-#: src/plugins/mp3extractor.c:76 src/plugins/qtextractor.c:56
+#: src/plugins/mp3extractor.c:77 src/plugins/qtextractor.c:56
 msgid "Ambient"
 msgstr "Ambient"
 
-#: src/plugins/mp3extractor.c:77 src/plugins/qtextractor.c:57
+#: src/plugins/mp3extractor.c:78 src/plugins/qtextractor.c:57
 msgid "Trip-Hop"
 msgstr "Trip-Hop"
 
-#: src/plugins/mp3extractor.c:78 src/plugins/qtextractor.c:58
+#: src/plugins/mp3extractor.c:79 src/plugins/qtextractor.c:58
 msgid "Vocal"
 msgstr "Vocal"
 
-#: src/plugins/mp3extractor.c:79 src/plugins/qtextractor.c:59
+#: src/plugins/mp3extractor.c:80 src/plugins/qtextractor.c:59
 msgid "Jazz+Funk"
 msgstr "Jazz+Funk"
 
-#: src/plugins/mp3extractor.c:80 src/plugins/qtextractor.c:60
+#: src/plugins/mp3extractor.c:81 src/plugins/qtextractor.c:60
 msgid "Fusion"
 msgstr "Fusion"
 
-#: src/plugins/mp3extractor.c:81 src/plugins/qtextractor.c:61
+#: src/plugins/mp3extractor.c:82 src/plugins/qtextractor.c:61
 msgid "Trance"
 msgstr "Trance"
 
-#: src/plugins/mp3extractor.c:82 src/plugins/qtextractor.c:62
+#: src/plugins/mp3extractor.c:83 src/plugins/qtextractor.c:62
 msgid "Classical"
 msgstr "Klassisk"
 
-#: src/plugins/mp3extractor.c:83 src/plugins/qtextractor.c:63
+#: src/plugins/mp3extractor.c:84 src/plugins/qtextractor.c:63
 msgid "Instrumental"
 msgstr "Instrumental"
 
-#: src/plugins/mp3extractor.c:84 src/plugins/qtextractor.c:64
+#: src/plugins/mp3extractor.c:85 src/plugins/qtextractor.c:64
 msgid "Acid"
 msgstr "Acid"
 
-#: src/plugins/mp3extractor.c:85 src/plugins/qtextractor.c:65
+#: src/plugins/mp3extractor.c:86 src/plugins/qtextractor.c:65
 msgid "House"
 msgstr "House"
 
-#: src/plugins/mp3extractor.c:86 src/plugins/qtextractor.c:66
+#: src/plugins/mp3extractor.c:87 src/plugins/qtextractor.c:66
 msgid "Game"
 msgstr "Spel"
 
-#: src/plugins/mp3extractor.c:87 src/plugins/qtextractor.c:67
+#: src/plugins/mp3extractor.c:88 src/plugins/qtextractor.c:67
 msgid "Sound Clip"
 msgstr "Ljudklipp"
 
-#: src/plugins/mp3extractor.c:88 src/plugins/qtextractor.c:68
+#: src/plugins/mp3extractor.c:89 src/plugins/qtextractor.c:68
 msgid "Gospel"
 msgstr "Gospel"
 
-#: src/plugins/mp3extractor.c:89 src/plugins/qtextractor.c:69
+#: src/plugins/mp3extractor.c:90 src/plugins/qtextractor.c:69
 msgid "Noise"
 msgstr "Noise"
 
-#: src/plugins/mp3extractor.c:90 src/plugins/qtextractor.c:70
+#: src/plugins/mp3extractor.c:91 src/plugins/qtextractor.c:70
 msgid "Alt. Rock"
 msgstr "Alt. Rock"
 
-#: src/plugins/mp3extractor.c:91 src/plugins/qtextractor.c:71
+#: src/plugins/mp3extractor.c:92 src/plugins/qtextractor.c:71
 msgid "Bass"
 msgstr "Bas"
 
-#: src/plugins/mp3extractor.c:92 src/plugins/qtextractor.c:72
+#: src/plugins/mp3extractor.c:93 src/plugins/qtextractor.c:72
 msgid "Soul"
 msgstr "Soul"
 
-#: src/plugins/mp3extractor.c:93 src/plugins/qtextractor.c:73
+#: src/plugins/mp3extractor.c:94 src/plugins/qtextractor.c:73
 msgid "Punk"
 msgstr "Punk"
 
-#: src/plugins/mp3extractor.c:94 src/plugins/qtextractor.c:74
+#: src/plugins/mp3extractor.c:95 src/plugins/qtextractor.c:74
 msgid "Space"
 msgstr "Space"
 
-#: src/plugins/mp3extractor.c:95 src/plugins/qtextractor.c:75
+#: src/plugins/mp3extractor.c:96 src/plugins/qtextractor.c:75
 msgid "Meditative"
 msgstr "Meditativ"
 
-#: src/plugins/mp3extractor.c:96 src/plugins/qtextractor.c:76
+#: src/plugins/mp3extractor.c:97 src/plugins/qtextractor.c:76
 msgid "Instrumental Pop"
 msgstr "Instrumental Pop"
 
-#: src/plugins/mp3extractor.c:97 src/plugins/qtextractor.c:77
+#: src/plugins/mp3extractor.c:98 src/plugins/qtextractor.c:77
 msgid "Instrumental Rock"
 msgstr "Instrumental Rock"
 
-#: src/plugins/mp3extractor.c:98 src/plugins/qtextractor.c:78
+#: src/plugins/mp3extractor.c:99 src/plugins/qtextractor.c:78
 msgid "Ethnic"
 msgstr "Ethnic"
 
-#: src/plugins/mp3extractor.c:99 src/plugins/qtextractor.c:79
+#: src/plugins/mp3extractor.c:100 src/plugins/qtextractor.c:79
 msgid "Gothic"
 msgstr "Gothic"
 
-#: src/plugins/mp3extractor.c:100 src/plugins/qtextractor.c:80
+#: src/plugins/mp3extractor.c:101 src/plugins/qtextractor.c:80
 msgid "Darkwave"
 msgstr "Darkwave"
 
-#: src/plugins/mp3extractor.c:101 src/plugins/qtextractor.c:81
+#: src/plugins/mp3extractor.c:102 src/plugins/qtextractor.c:81
 msgid "Techno-Industrial"
 msgstr "Techno-Industrial"
 
-#: src/plugins/mp3extractor.c:102 src/plugins/qtextractor.c:82
+#: src/plugins/mp3extractor.c:103 src/plugins/qtextractor.c:82
 msgid "Electronic"
 msgstr "Elektronisk"
 
-#: src/plugins/mp3extractor.c:103 src/plugins/qtextractor.c:83
+#: src/plugins/mp3extractor.c:104 src/plugins/qtextractor.c:83
 msgid "Pop-Folk"
 msgstr "Pop-Folk"
 
-#: src/plugins/mp3extractor.c:104 src/plugins/qtextractor.c:84
+#: src/plugins/mp3extractor.c:105 src/plugins/qtextractor.c:84
 msgid "Eurodance"
 msgstr "Eurodance"
 
-#: src/plugins/mp3extractor.c:105 src/plugins/qtextractor.c:85
+#: src/plugins/mp3extractor.c:106 src/plugins/qtextractor.c:85
 msgid "Dream"
 msgstr "Dream"
 
-#: src/plugins/mp3extractor.c:106 src/plugins/qtextractor.c:86
+#: src/plugins/mp3extractor.c:107 src/plugins/qtextractor.c:86
 msgid "Southern Rock"
 msgstr "Southern Rock"
 
-#: src/plugins/mp3extractor.c:107 src/plugins/qtextractor.c:87
+#: src/plugins/mp3extractor.c:108 src/plugins/qtextractor.c:87
 msgid "Comedy"
 msgstr "Komedi"
 
-#: src/plugins/mp3extractor.c:108 src/plugins/qtextractor.c:88
+#: src/plugins/mp3extractor.c:109 src/plugins/qtextractor.c:88
 msgid "Cult"
 msgstr "Kult"
 
-#: src/plugins/mp3extractor.c:109 src/plugins/qtextractor.c:89
+#: src/plugins/mp3extractor.c:110 src/plugins/qtextractor.c:89
 msgid "Gangsta Rap"
 msgstr "Gangsta Rap"
 
-#: src/plugins/mp3extractor.c:110 src/plugins/qtextractor.c:90
+#: src/plugins/mp3extractor.c:111 src/plugins/qtextractor.c:90
 msgid "Top 40"
 msgstr "Topp 40"
 
-#: src/plugins/mp3extractor.c:111 src/plugins/qtextractor.c:91
+#: src/plugins/mp3extractor.c:112 src/plugins/qtextractor.c:91
 msgid "Christian Rap"
 msgstr "Kristen rap"
 
-#: src/plugins/mp3extractor.c:112 src/plugins/qtextractor.c:92
+#: src/plugins/mp3extractor.c:113 src/plugins/qtextractor.c:92
 msgid "Pop/Funk"
 msgstr "Pop/Funk"
 
-#: src/plugins/mp3extractor.c:113 src/plugins/qtextractor.c:93
+#: src/plugins/mp3extractor.c:114 src/plugins/qtextractor.c:93
 msgid "Jungle"
 msgstr "Jungle"
 
-#: src/plugins/mp3extractor.c:114 src/plugins/qtextractor.c:94
+#: src/plugins/mp3extractor.c:115 src/plugins/qtextractor.c:94
 msgid "Native American"
 msgstr "Native American"
 
-#: src/plugins/mp3extractor.c:115 src/plugins/qtextractor.c:95
+#: src/plugins/mp3extractor.c:116 src/plugins/qtextractor.c:95
 msgid "Cabaret"
 msgstr "Kabaret"
 
-#: src/plugins/mp3extractor.c:116 src/plugins/qtextractor.c:96
+#: src/plugins/mp3extractor.c:117 src/plugins/qtextractor.c:96
 msgid "New Wave"
 msgstr "New Wave"
 
-#: src/plugins/mp3extractor.c:117 src/plugins/qtextractor.c:97
+#: src/plugins/mp3extractor.c:118 src/plugins/qtextractor.c:97
 msgid "Psychedelic"
 msgstr "Psykadelisk"
 
-#: src/plugins/mp3extractor.c:118 src/plugins/qtextractor.c:98
+#: src/plugins/mp3extractor.c:119 src/plugins/qtextractor.c:98
 msgid "Rave"
 msgstr "Rave"
 
-#: src/plugins/mp3extractor.c:119 src/plugins/qtextractor.c:99
+#: src/plugins/mp3extractor.c:120 src/plugins/qtextractor.c:99
 msgid "Showtunes"
 msgstr "Showtunes"
 
-#: src/plugins/mp3extractor.c:120 src/plugins/qtextractor.c:100
+#: src/plugins/mp3extractor.c:121 src/plugins/qtextractor.c:100
 msgid "Trailer"
 msgstr "Trailer"
 
-#: src/plugins/mp3extractor.c:121 src/plugins/qtextractor.c:101
+#: src/plugins/mp3extractor.c:122 src/plugins/qtextractor.c:101
 msgid "Lo-Fi"
 msgstr "Lo-Fi"
 
-#: src/plugins/mp3extractor.c:122 src/plugins/qtextractor.c:102
+#: src/plugins/mp3extractor.c:123 src/plugins/qtextractor.c:102
 msgid "Tribal"
 msgstr "Tribal"
 
-#: src/plugins/mp3extractor.c:123 src/plugins/qtextractor.c:103
+#: src/plugins/mp3extractor.c:124 src/plugins/qtextractor.c:103
 msgid "Acid Punk"
 msgstr "Acid Punk"
 
-#: src/plugins/mp3extractor.c:124 src/plugins/qtextractor.c:104
+#: src/plugins/mp3extractor.c:125 src/plugins/qtextractor.c:104
 msgid "Acid Jazz"
 msgstr "Acid Jazz"
 
-#: src/plugins/mp3extractor.c:125 src/plugins/qtextractor.c:105
+#: src/plugins/mp3extractor.c:126 src/plugins/qtextractor.c:105
 msgid "Polka"
 msgstr "Polka"
 
-#: src/plugins/mp3extractor.c:126 src/plugins/qtextractor.c:106
+#: src/plugins/mp3extractor.c:127 src/plugins/qtextractor.c:106
 msgid "Retro"
 msgstr "Retro"
 
-#: src/plugins/mp3extractor.c:127 src/plugins/qtextractor.c:107
+#: src/plugins/mp3extractor.c:128 src/plugins/qtextractor.c:107
 msgid "Musical"
 msgstr "Musikal"
 
-#: src/plugins/mp3extractor.c:128 src/plugins/qtextractor.c:108
+#: src/plugins/mp3extractor.c:129 src/plugins/qtextractor.c:108
 msgid "Rock & Roll"
 msgstr "Rock & Roll"
 
-#: src/plugins/mp3extractor.c:129 src/plugins/qtextractor.c:109
+#: src/plugins/mp3extractor.c:130 src/plugins/qtextractor.c:109
 msgid "Hard Rock"
 msgstr "Hårdrock"
 
-#: src/plugins/mp3extractor.c:130 src/plugins/qtextractor.c:110
+#: src/plugins/mp3extractor.c:131 src/plugins/qtextractor.c:110
 msgid "Folk"
 msgstr "Folk"
 
-#: src/plugins/mp3extractor.c:131 src/plugins/qtextractor.c:111
+#: src/plugins/mp3extractor.c:132 src/plugins/qtextractor.c:111
 msgid "Folk/Rock"
 msgstr "Folk/Rock"
 
-#: src/plugins/mp3extractor.c:132 src/plugins/qtextractor.c:112
+#: src/plugins/mp3extractor.c:133 src/plugins/qtextractor.c:112
 msgid "National Folk"
 msgstr "National Folk"
 
-#: src/plugins/mp3extractor.c:133 src/plugins/qtextractor.c:113
+#: src/plugins/mp3extractor.c:134 src/plugins/qtextractor.c:113
 msgid "Swing"
 msgstr "Swing"
 
-#: src/plugins/mp3extractor.c:134 src/plugins/qtextractor.c:114
+#: src/plugins/mp3extractor.c:135 src/plugins/qtextractor.c:114
 msgid "Fast-Fusion"
 msgstr "Fast-Fusion"
 
-#: src/plugins/mp3extractor.c:135 src/plugins/qtextractor.c:115
+#: src/plugins/mp3extractor.c:136 src/plugins/qtextractor.c:115
 msgid "Bebob"
 msgstr "Bebob"
 
-#: src/plugins/mp3extractor.c:136 src/plugins/qtextractor.c:116
+#: src/plugins/mp3extractor.c:137 src/plugins/qtextractor.c:116
 msgid "Latin"
 msgstr "Latin"
 
-#: src/plugins/mp3extractor.c:137 src/plugins/qtextractor.c:117
+#: src/plugins/mp3extractor.c:138 src/plugins/qtextractor.c:117
 msgid "Revival"
 msgstr "Revival"
 
-#: src/plugins/mp3extractor.c:138 src/plugins/qtextractor.c:118
+#: src/plugins/mp3extractor.c:139 src/plugins/qtextractor.c:118
 msgid "Celtic"
 msgstr "Keltisk"
 
-#: src/plugins/mp3extractor.c:139 src/plugins/qtextractor.c:119
+#: src/plugins/mp3extractor.c:140 src/plugins/qtextractor.c:119
 msgid "Bluegrass"
 msgstr "Bluegrass"
 
-#: src/plugins/mp3extractor.c:140 src/plugins/qtextractor.c:120
+#: src/plugins/mp3extractor.c:141 src/plugins/qtextractor.c:120
 msgid "Avantgarde"
 msgstr "Avantgarde"
 
-#: src/plugins/mp3extractor.c:141 src/plugins/qtextractor.c:121
+#: src/plugins/mp3extractor.c:142 src/plugins/qtextractor.c:121
 msgid "Gothic Rock"
 msgstr "Gothisk rock"
 
-#: src/plugins/mp3extractor.c:142 src/plugins/qtextractor.c:122
+#: src/plugins/mp3extractor.c:143 src/plugins/qtextractor.c:122
 msgid "Progressive Rock"
 msgstr "Progressiv rock"
 
-#: src/plugins/mp3extractor.c:143 src/plugins/qtextractor.c:123
+#: src/plugins/mp3extractor.c:144 src/plugins/qtextractor.c:123
 msgid "Psychedelic Rock"
 msgstr "Psykedelisk rock"
 
-#: src/plugins/mp3extractor.c:144 src/plugins/qtextractor.c:124
+#: src/plugins/mp3extractor.c:145 src/plugins/qtextractor.c:124
 msgid "Symphonic Rock"
 msgstr "Symfonisk rock"
 
-#: src/plugins/mp3extractor.c:145 src/plugins/qtextractor.c:125
+#: src/plugins/mp3extractor.c:146 src/plugins/qtextractor.c:125
 msgid "Slow Rock"
 msgstr "Långsam rock"
 
-#: src/plugins/mp3extractor.c:146 src/plugins/qtextractor.c:126
+#: src/plugins/mp3extractor.c:147 src/plugins/qtextractor.c:126
 msgid "Big Band"
 msgstr "Storband"
 
-#: src/plugins/mp3extractor.c:147 src/plugins/qtextractor.c:127
+#: src/plugins/mp3extractor.c:148 src/plugins/qtextractor.c:127
 msgid "Chorus"
 msgstr "Chorus"
 
-#: src/plugins/mp3extractor.c:148 src/plugins/qtextractor.c:128
+#: src/plugins/mp3extractor.c:149 src/plugins/qtextractor.c:128
 msgid "Easy Listening"
 msgstr "Lättsam lyssning"
 
-#: src/plugins/mp3extractor.c:149 src/plugins/qtextractor.c:129
+#: src/plugins/mp3extractor.c:150 src/plugins/qtextractor.c:129
 msgid "Acoustic"
 msgstr "Ackustisk"
 
-#: src/plugins/mp3extractor.c:150 src/plugins/qtextractor.c:130
+#: src/plugins/mp3extractor.c:151 src/plugins/qtextractor.c:130
 msgid "Humour"
 msgstr "Humor"
 
-#: src/plugins/mp3extractor.c:151 src/plugins/qtextractor.c:131
+#: src/plugins/mp3extractor.c:152 src/plugins/qtextractor.c:131
 msgid "Speech"
 msgstr "Tal"
 
-#: src/plugins/mp3extractor.c:152 src/plugins/qtextractor.c:132
+#: src/plugins/mp3extractor.c:153 src/plugins/qtextractor.c:132
 msgid "Chanson"
 msgstr "Chanson"
 
-#: src/plugins/mp3extractor.c:153 src/plugins/qtextractor.c:133
+#: src/plugins/mp3extractor.c:154 src/plugins/qtextractor.c:133
 msgid "Opera"
 msgstr "Opera"
 
-#: src/plugins/mp3extractor.c:154 src/plugins/qtextractor.c:134
+#: src/plugins/mp3extractor.c:155 src/plugins/qtextractor.c:134
 msgid "Chamber Music"
 msgstr "Kammarmusik"
 
-#: src/plugins/mp3extractor.c:155 src/plugins/qtextractor.c:135
+#: src/plugins/mp3extractor.c:156 src/plugins/qtextractor.c:135
 msgid "Sonata"
 msgstr "Sonata"
 
-#: src/plugins/mp3extractor.c:156 src/plugins/qtextractor.c:136
+#: src/plugins/mp3extractor.c:157 src/plugins/qtextractor.c:136
 msgid "Symphony"
 msgstr "Symfoni"
 
-#: src/plugins/mp3extractor.c:157 src/plugins/qtextractor.c:137
+#: src/plugins/mp3extractor.c:158 src/plugins/qtextractor.c:137
 msgid "Booty Bass"
 msgstr "Booty Bass"
 
-#: src/plugins/mp3extractor.c:158 src/plugins/qtextractor.c:138
+#: src/plugins/mp3extractor.c:159 src/plugins/qtextractor.c:138
 msgid "Primus"
 msgstr "Primus"
 
-#: src/plugins/mp3extractor.c:159 src/plugins/qtextractor.c:139
+#: src/plugins/mp3extractor.c:160 src/plugins/qtextractor.c:139
 msgid "Porn Groove"
 msgstr "Porn Groove"
 
-#: src/plugins/mp3extractor.c:160 src/plugins/qtextractor.c:140
+#: src/plugins/mp3extractor.c:161 src/plugins/qtextractor.c:140
 msgid "Satire"
 msgstr "Satir"
 
-#: src/plugins/mp3extractor.c:161 src/plugins/qtextractor.c:141
+#: src/plugins/mp3extractor.c:162 src/plugins/qtextractor.c:141
 msgid "Slow Jam"
 msgstr "Slow Jam"
 
-#: src/plugins/mp3extractor.c:162 src/plugins/qtextractor.c:142
+#: src/plugins/mp3extractor.c:163 src/plugins/qtextractor.c:142
 msgid "Club"
 msgstr "Club"
 
-#: src/plugins/mp3extractor.c:163 src/plugins/qtextractor.c:143
+#: src/plugins/mp3extractor.c:164 src/plugins/qtextractor.c:143
 msgid "Tango"
 msgstr "Tango"
 
-#: src/plugins/mp3extractor.c:164 src/plugins/qtextractor.c:144
+#: src/plugins/mp3extractor.c:165 src/plugins/qtextractor.c:144
 msgid "Samba"
 msgstr "Samba"
 
-#: src/plugins/mp3extractor.c:165 src/plugins/qtextractor.c:145
+#: src/plugins/mp3extractor.c:166 src/plugins/qtextractor.c:145
 msgid "Folklore"
 msgstr "Folklore"
 
-#: src/plugins/mp3extractor.c:166 src/plugins/qtextractor.c:146
+#: src/plugins/mp3extractor.c:167 src/plugins/qtextractor.c:146
 msgid "Ballad"
 msgstr "Ballad"
 
-#: src/plugins/mp3extractor.c:167 src/plugins/qtextractor.c:147
+#: src/plugins/mp3extractor.c:168 src/plugins/qtextractor.c:147
 msgid "Power Ballad"
 msgstr "Power Ballad"
 
-#: src/plugins/mp3extractor.c:168 src/plugins/qtextractor.c:148
+#: src/plugins/mp3extractor.c:169 src/plugins/qtextractor.c:148
 msgid "Rhythmic Soul"
 msgstr "Rhythmic Soul"
 
-#: src/plugins/mp3extractor.c:169 src/plugins/qtextractor.c:149
+#: src/plugins/mp3extractor.c:170 src/plugins/qtextractor.c:149
 msgid "Freestyle"
 msgstr "Freestyle"
 
-#: src/plugins/mp3extractor.c:170 src/plugins/qtextractor.c:150
+#: src/plugins/mp3extractor.c:171 src/plugins/qtextractor.c:150
 msgid "Duet"
 msgstr "Duet"
 
-#: src/plugins/mp3extractor.c:171 src/plugins/qtextractor.c:151
+#: src/plugins/mp3extractor.c:172 src/plugins/qtextractor.c:151
 msgid "Punk Rock"
 msgstr "Punk Rock"
 
-#: src/plugins/mp3extractor.c:172 src/plugins/qtextractor.c:152
+#: src/plugins/mp3extractor.c:173 src/plugins/qtextractor.c:152
 msgid "Drum Solo"
 msgstr "Trumsolo"
 
-#: src/plugins/mp3extractor.c:173 src/plugins/qtextractor.c:153
+#: src/plugins/mp3extractor.c:174 src/plugins/qtextractor.c:153
 msgid "A Cappella"
 msgstr "A cappella"
 
-#: src/plugins/mp3extractor.c:174 src/plugins/qtextractor.c:154
+#: src/plugins/mp3extractor.c:175 src/plugins/qtextractor.c:154
 msgid "Euro-House"
 msgstr "Euro-House"
 
-#: src/plugins/mp3extractor.c:175 src/plugins/qtextractor.c:155
+#: src/plugins/mp3extractor.c:176 src/plugins/qtextractor.c:155
 msgid "Dance Hall"
 msgstr "Dance Hall"
 
-#: src/plugins/mp3extractor.c:176 src/plugins/qtextractor.c:156
+#: src/plugins/mp3extractor.c:177 src/plugins/qtextractor.c:156
 msgid "Goa"
 msgstr "Goa"
 
-#: src/plugins/mp3extractor.c:177 src/plugins/qtextractor.c:157
+#: src/plugins/mp3extractor.c:178 src/plugins/qtextractor.c:157
 msgid "Drum & Bass"
 msgstr "Drum & Bass"
 
-#: src/plugins/mp3extractor.c:178 src/plugins/qtextractor.c:158
+#: src/plugins/mp3extractor.c:179 src/plugins/qtextractor.c:158
 msgid "Club-House"
 msgstr "Club-House"
 
-#: src/plugins/mp3extractor.c:179 src/plugins/qtextractor.c:159
+#: src/plugins/mp3extractor.c:180 src/plugins/qtextractor.c:159
 msgid "Hardcore"
 msgstr "Hardcore"
 
-#: src/plugins/mp3extractor.c:180 src/plugins/qtextractor.c:160
+#: src/plugins/mp3extractor.c:181 src/plugins/qtextractor.c:160
 msgid "Terror"
 msgstr "Terror"
 
-#: src/plugins/mp3extractor.c:181 src/plugins/qtextractor.c:161
+#: src/plugins/mp3extractor.c:182 src/plugins/qtextractor.c:161
 msgid "Indie"
 msgstr "Indie"
 
-#: src/plugins/mp3extractor.c:182 src/plugins/qtextractor.c:162
+#: src/plugins/mp3extractor.c:183 src/plugins/qtextractor.c:162
 msgid "BritPop"
 msgstr "BritPop"
 
-#: src/plugins/mp3extractor.c:183 src/plugins/qtextractor.c:163
+#: src/plugins/mp3extractor.c:184 src/plugins/qtextractor.c:163
 msgid "Negerpunk"
 msgstr "Negerpunk"
 
-#: src/plugins/mp3extractor.c:184 src/plugins/qtextractor.c:164
+#: src/plugins/mp3extractor.c:185 src/plugins/qtextractor.c:164
 msgid "Polsk Punk"
 msgstr "Polsk Punk"
 
-#: src/plugins/mp3extractor.c:185 src/plugins/qtextractor.c:165
+#: src/plugins/mp3extractor.c:186 src/plugins/qtextractor.c:165
 msgid "Beat"
 msgstr "Beat"
 
-#: src/plugins/mp3extractor.c:186 src/plugins/qtextractor.c:166
+#: src/plugins/mp3extractor.c:187 src/plugins/qtextractor.c:166
 msgid "Christian Gangsta Rap"
 msgstr "Christian Gangsta Rap"
 
-#: src/plugins/mp3extractor.c:187 src/plugins/qtextractor.c:167
+#: src/plugins/mp3extractor.c:188 src/plugins/qtextractor.c:167
 msgid "Heavy Metal"
 msgstr "Heavy Metal"
 
-#: src/plugins/mp3extractor.c:188 src/plugins/qtextractor.c:168
+#: src/plugins/mp3extractor.c:189 src/plugins/qtextractor.c:168
 msgid "Black Metal"
 msgstr "Black Metal"
 
-#: src/plugins/mp3extractor.c:189 src/plugins/qtextractor.c:169
+#: src/plugins/mp3extractor.c:190 src/plugins/qtextractor.c:169
 msgid "Crossover"
 msgstr "Crossover"
 
-#: src/plugins/mp3extractor.c:190 src/plugins/qtextractor.c:170
+#: src/plugins/mp3extractor.c:191 src/plugins/qtextractor.c:170
 msgid "Contemporary Christian"
 msgstr "Contemporary Christian"
 
-#: src/plugins/mp3extractor.c:191 src/plugins/qtextractor.c:171
+#: src/plugins/mp3extractor.c:192 src/plugins/qtextractor.c:171
 msgid "Christian Rock"
 msgstr "Kristen rock"
 
-#: src/plugins/mp3extractor.c:192 src/plugins/qtextractor.c:172
+#: src/plugins/mp3extractor.c:193 src/plugins/qtextractor.c:172
 msgid "Merengue"
 msgstr "Merengue"
 
-#: src/plugins/mp3extractor.c:193 src/plugins/qtextractor.c:173
+#: src/plugins/mp3extractor.c:194 src/plugins/qtextractor.c:173
 msgid "Salsa"
 msgstr "Salsa"
 
-#: src/plugins/mp3extractor.c:194 src/plugins/qtextractor.c:174
+#: src/plugins/mp3extractor.c:195 src/plugins/qtextractor.c:174
 msgid "Thrash Metal"
 msgstr "Thrash Metal"
 
-#: src/plugins/mp3extractor.c:195 src/plugins/qtextractor.c:175
+#: src/plugins/mp3extractor.c:196 src/plugins/qtextractor.c:175
 msgid "Anime"
 msgstr "Anime"
 
-#: src/plugins/mp3extractor.c:196 src/plugins/qtextractor.c:176
+#: src/plugins/mp3extractor.c:197 src/plugins/qtextractor.c:176
 msgid "JPop"
 msgstr "JPop"
 
-#: src/plugins/mp3extractor.c:197 src/plugins/qtextractor.c:177
+#: src/plugins/mp3extractor.c:198 src/plugins/qtextractor.c:177
 msgid "Synthpop"
 msgstr "Synthpop"
 
-#: src/plugins/mp3extractor.c:433 src/plugins/wavextractor.c:119
+#: src/plugins/mp3extractor.c:444 src/plugins/wavextractor.c:119
 msgid "stereo"
 msgstr "stereo"
 
-#: src/plugins/mp3extractor.c:433 src/plugins/wavextractor.c:119
+#: src/plugins/mp3extractor.c:444 src/plugins/wavextractor.c:119
 msgid "mono"
 msgstr "mono"
 
-#: src/plugins/mp3extractor.c:434
+#: src/plugins/mp3extractor.c:445
 msgid "(variable bps)"
 msgstr "(variabel bithastighet)"
 
