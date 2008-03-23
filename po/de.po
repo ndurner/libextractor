@@ -1,9 +1,8 @@
-# German translations for libextractor package
-# Copyright © 2004, 2005, 2006 Free Software Foundation, Inc.
-# Copyright © 2004 Christian Grothoff
+# German translations for libextractor package.
 # This file is distributed under the same license as the libextractor package.
-# Karl Eichwalder <ke@suse.de>, 2004, 2005, 2006.
 # Christian Grothoff <christian@grothoff.org>, 2004.
+# Karl Eichwalder <ke@suse.de>, 2004, 2005, 2006.
+# Nils Durner <durner@gnunet.org>, 2007
 #
 msgid ""
 msgstr ""
@@ -185,7 +184,8 @@ msgstr "Seitenanzahl"
 #, c-format
 msgid "You must specify an argument for the `%s' option (option ignored).\n"
 msgstr ""
-"Sie müssen ein Argument für die Option »%s« angeben (Option wird ignoriert).\n"
+"Sie müssen ein Argument für die Option »%s« angeben (Option wird "
+"ignoriert).\n"
 
 #: src/main/extract.c:607
 #, c-format
@@ -198,9 +198,9 @@ msgid "%% BiBTeX file\n"
 msgstr "%% BibTeX Datei\n"
 
 #: src/main/extract.c:683
-#, fuzzy, c-format
+#, c-format
 msgid "Keywords for file %s:\n"
-msgstr "Schlüsserwörter für die Datei %s:"
+msgstr "Schlüsserwörter für die Datei %s:\n"
 
 #: src/main/extractor.c:44
 msgid "unknown"
@@ -684,16 +684,15 @@ msgstr "Dateigröße"
 
 #: src/main/extractor.c:176
 msgid "track number"
-msgstr ""
+msgstr "Nummer des Stücks"
 
 #: src/main/extractor.c:177
 msgid "international standard recording code"
 msgstr ""
 
 #: src/main/extractor.c:178
-#, fuzzy
 msgid "disc number"
-msgstr "Haftungsausschluss"
+msgstr "Nummer der Platte"
 
 #: src/main/extractor.c:598
 #, c-format
