@@ -1,13 +1,13 @@
 # Irish translations for libextractor
 # Copyright (C) 2005 Free Software Foundation, Inc.
 # This file is distributed under the same license as the libextractor package.
-# Kevin Patrick Scannell <scannell@SLU.EDU>, 2005, 2006, 2007.
+# Kevin Patrick Scannell <scannell@SLU.EDU>, 2005, 2006, 2007, 2008.
 msgid ""
 msgstr ""
-"Project-Id-Version: libextractor 0.5.18a\n"
+"Project-Id-Version: libextractor 0.5.20\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
 "POT-Creation-Date: 2008-03-20 23:53-0600\n"
-"PO-Revision-Date: 2007-07-25 20:46-0700\n"
+"PO-Revision-Date: 2008-03-21 20:46-0700\n"
 "Last-Translator: Kevin Scannell <kscanne@gmail.com>\n"
 "Language-Team: Irish <gaeilge-gnulinux@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -27,11 +27,8 @@ msgstr ""
 
 #: src/main/extract.c:52
 #, c-format
-msgid ""
-"Arguments mandatory for long options are also mandatory for short options.\n"
-msgstr ""
-"Is riachtanach le rogha ghearr aon argóint atá riachtanach leis an rogha "
-"fhada.\n"
+msgid "Arguments mandatory for long options are also mandatory for short options.\n"
+msgstr "Is riachtanach le rogha ghearr aon argóint atá riachtanach leis an rogha fhada.\n"
 
 #: src/main/extract.c:126
 msgid "do not remove any duplicates"
@@ -42,12 +39,8 @@ msgid "print output in bibtex format"
 msgstr "priontáil aschur i bhformáid bibtex"
 
 #: src/main/extract.c:130
-msgid ""
-"use the generic plaintext extractor for the language with the 2-letter "
-"language code LANG"
-msgstr ""
-"úsáid an t-asbhainteoir ginearálta téacs le haghaidh na teanga leis an chód "
-"LANG de réir ISO-639-1"
+msgid "use the generic plaintext extractor for the language with the 2-letter language code LANG"
+msgstr "úsáid an t-asbhainteoir ginearálta téacs le haghaidh na teanga leis an chód LANG de réir ISO-639-1"
 
 #: src/main/extract.c:132
 msgid "remove duplicates only if types match"
@@ -55,14 +48,11 @@ msgstr "bain macasamhla amach má mheaitseálann na cineálacha"
 
 #: src/main/extract.c:134
 msgid "use the filename as a keyword (loads filename-extractor plugin)"
-msgstr ""
-"úsáid an comhadainm mar lorgfhocal (luchtófar breiseán asbhainteora na "
-"gcomhadainmneacha)"
+msgstr "úsáid an comhadainm mar lorgfhocal (luchtófar breiseán asbhainteora na gcomhadainmneacha)"
 
 #: src/main/extract.c:136
 msgid "produce grep-friendly output (all results on one line per file)"
-msgstr ""
-"aschur is féidir próiseáil le grep (gach toradh ar líne amháin sa chomhad)"
+msgstr "aschur is féidir próiseáil le grep (gach toradh ar líne amháin sa chomhad)"
 
 #: src/main/extract.c:138
 msgid "print this help"
@@ -86,9 +76,7 @@ msgstr "ná húsáid na breiseáin asbhainteora réamhshocraithe"
 
 #: src/main/extract.c:148
 msgid "print only keywords of the given TYPE (use -L to get a list)"
-msgstr ""
-"ná taispeáin ach lorgfhocail den CHINEÁL tugtha (úsáid -L chun liosta a "
-"fháil)"
+msgstr "ná taispeáin ach lorgfhocail den CHINEÁL tugtha (úsáid -L chun liosta a fháil)"
 
 #: src/main/extract.c:150
 msgid "remove duplicates even if keyword types do not match"
@@ -96,8 +84,7 @@ msgstr "bain macasamhla amach, fiú mura meaitseálann na cineálacha lorgfhocail"
 
 #: src/main/extract.c:152
 msgid "use keyword splitting (loads split-extractor plugin)"
-msgstr ""
-"úsáid scoilteadh lorgfhocal (luchtófar an breiseán asbhainteora scoilte)"
+msgstr "úsáid scoilteadh lorgfhocal (luchtófar an breiseán asbhainteora scoilte)"
 
 #: src/main/extract.c:154
 msgid "print the version number"
@@ -180,8 +167,7 @@ msgstr "líon na leathanach"
 #: src/main/extract.c:537
 #, c-format
 msgid "You must specify an argument for the `%s' option (option ignored).\n"
-msgstr ""
-"Ní mór duit argóint a thabhairt i ndiaidh na rogha `%s' (á ligean thart).\n"
+msgstr "Ní mór duit argóint a thabhairt i ndiaidh na rogha `%s' (á ligean thart).\n"
 
 #: src/main/extract.c:607
 #, c-format
@@ -194,9 +180,9 @@ msgid "%% BiBTeX file\n"
 msgstr "%% Comhad BiBTeX\n"
 
 #: src/main/extract.c:683
-#, fuzzy, c-format
+#, c-format
 msgid "Keywords for file %s:\n"
-msgstr "Lorgfhocail do chomhad %s:"
+msgstr "Lorgfhocail do chomhad %s:\n"
 
 #: src/main/extractor.c:44
 msgid "unknown"
@@ -680,16 +666,15 @@ msgstr "méid comhaid"
 
 #: src/main/extractor.c:176
 msgid "track number"
-msgstr ""
+msgstr "uimhir an riain"
 
 #: src/main/extractor.c:177
 msgid "international standard recording code"
-msgstr ""
+msgstr "cód caighdeánach idirnáisiúnta taifeadta"
 
 #: src/main/extractor.c:178
-#, fuzzy
 msgid "disc number"
-msgstr "séanadh"
+msgstr "uimhir an diosca"
 
 #: src/main/extractor.c:598
 #, c-format
@@ -698,13 +683,8 @@ msgstr "Theip ar thúsú meicníocht na mbreiseán: %s!\n"
 
 #: src/main/extractor.c:752
 #, c-format
-msgid ""
-"Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
-"failed also.  Errors are: `%s' and `%s'.\n"
-msgstr ""
-"Níorbh fhéidir siombail `%s' a réiteach i leabharlann `%s'.  Dá bhrí sin, "
-"bhain mé triail as `%s', ach theip ar an cheann sin freisin.  Na hearráidí: `"
-"%s' agus `%s'.\n"
+msgid "Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that failed also.  Errors are: `%s' and `%s'.\n"
+msgstr "Níorbh fhéidir siombail `%s' a réiteach i leabharlann `%s'.  Dá bhrí sin, bhain mé triail as `%s', ach theip ar an cheann sin freisin.  Na hearráidí: `%s' agus `%s'.\n"
 
 #: src/main/extractor.c:781
 #, c-format
