@@ -1,21 +1,22 @@
 # Vietnamese translation for LibExtractor.
-# Copyright © 2007 Free Software Foundation, Inc.
+# Copyright © 2008 Free Software Foundation, Inc.
 # Copyright © 2006 Christian Grothoff
-# Clytie Siddall <clytie@riverland.net.au>, 2005-2007.
-#
+# This file is distributed under the same license as the libextractor-0.5.20 package.
+# Clytie Siddall <clytie@riverland.net.au>, 2005-2008.
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: libextractor 0.5.18a\n"
+"Project-Id-Version: libextractor 0.5.20\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
 "POT-Creation-Date: 2008-03-20 23:53-0600\n"
-"PO-Revision-Date: 2007-07-09 16:23+0930\n"
+"PO-Revision-Date: 2008-03-30 21:44+1030\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: LocFactoryEditor 1.6.4a6\n"
+"X-Generator: LocFactoryEditor 1.7b3\n"
 
 #: src/main/extract.c:49
 #, c-format
@@ -30,11 +31,8 @@ msgstr ""
 
 #: src/main/extract.c:52
 #, c-format
-msgid ""
-"Arguments mandatory for long options are also mandatory for short options.\n"
-msgstr ""
-"Mọi đối số bắt buộc phải sử dụng với tùy chọn dài cũng bắt buộc với tùy chọn "
-"ngắn.\n"
+msgid "Arguments mandatory for long options are also mandatory for short options.\n"
+msgstr "Mọi đối số bắt buộc phải sử dụng với tùy chọn dài cũng bắt buộc với tùy chọn ngắn.\n"
 
 #: src/main/extract.c:126
 msgid "do not remove any duplicates"
@@ -45,12 +43,8 @@ msgid "print output in bibtex format"
 msgstr "hiển thị dữ liệu xuất có dạng bibtex"
 
 #: src/main/extract.c:130
-msgid ""
-"use the generic plaintext extractor for the language with the 2-letter "
-"language code LANG"
-msgstr ""
-"sử dụng trình rút văn bản thuần thuộc giống loại cho ngôn ngữ có mã ngôn ngữ "
-"bằng hai chữ là LANG"
+msgid "use the generic plaintext extractor for the language with the 2-letter language code LANG"
+msgstr "sử dụng trình rút văn bản thuần thuộc giống loại cho ngôn ngữ có mã ngôn ngữ bằng hai chữ là LANG"
 
 #: src/main/extract.c:132
 msgid "remove duplicates only if types match"
@@ -58,15 +52,11 @@ msgstr "gỡ bỏ bản sao chỉ nếu kiểu khớp thôi"
 
 #: src/main/extract.c:134
 msgid "use the filename as a keyword (loads filename-extractor plugin)"
-msgstr ""
-"dùng tên tập tin là một từ khoá (thì tải bổ sung « filename-extractor » [rút "
-"tên tập tin])"
+msgstr "dùng tên tập tin là một từ khoá (thì tải bổ sung « filename-extractor » [rút tên tập tin])"
 
 #: src/main/extract.c:136
 msgid "produce grep-friendly output (all results on one line per file)"
-msgstr ""
-"tạo ra kết xuất thân thiện với grep (mọi kết quả trên cùng dòng của mỗi tập "
-"tin)"
+msgstr "tạo ra kết xuất thân thiện với grep (mọi kết quả trên cùng dòng của mỗi tập tin)"
 
 #: src/main/extract.c:138
 msgid "print this help"
@@ -90,8 +80,7 @@ msgstr "đừng dùng bộ trình rút mặc định"
 
 #: src/main/extract.c:148
 msgid "print only keywords of the given TYPE (use -L to get a list)"
-msgstr ""
-"hiển thị chỉ từ khoá KIỂU (TYPE) đã cho thôi (dùng « -L » để xem danh sách)"
+msgstr "hiển thị chỉ từ khoá KIỂU (TYPE) đã cho thôi (dùng « -L » để xem danh sách)"
 
 #: src/main/extract.c:150
 msgid "remove duplicates even if keyword types do not match"
@@ -189,8 +178,7 @@ msgstr "Bạn phải ghi rõ một đối số cho tùy chọn « %s » (tùy ch
 #: src/main/extract.c:607
 #, c-format
 msgid "Use --help to get a list of options.\n"
-msgstr ""
-"Hãy sử dụng lệnh « --help » (trợ giúp) để xem một danh sách các tùy chọn.\n"
+msgstr "Hãy sử dụng lệnh « --help » (trợ giúp) để xem một danh sách các tùy chọn.\n"
 
 #: src/main/extract.c:663
 #, c-format
@@ -198,9 +186,9 @@ msgid "%% BiBTeX file\n"
 msgstr "%% tập tin BiBTeX\n"
 
 #: src/main/extract.c:683
-#, fuzzy, c-format
+#, c-format
 msgid "Keywords for file %s:\n"
-msgstr "Từ khoá cho tập tin %s:"
+msgstr "Từ khoá cho tập tin %s:\n"
 
 #: src/main/extractor.c:44
 msgid "unknown"
@@ -689,16 +677,15 @@ msgstr "cỡ tập tin"
 
 #: src/main/extractor.c:176
 msgid "track number"
-msgstr ""
+msgstr "số thứ tự rãnh"
 
 #: src/main/extractor.c:177
 msgid "international standard recording code"
-msgstr ""
+msgstr "mã thu tiêu chuẩn quốc tế"
 
 #: src/main/extractor.c:178
-#, fuzzy
 msgid "disc number"
-msgstr "từ chối trách nhiệm"
+msgstr "số thứ tự đĩa"
 
 #: src/main/extractor.c:598
 #, c-format
@@ -707,12 +694,8 @@ msgstr "Việc khởi động cơ chế cầm phít bị lỗi: %s\n"
 
 #: src/main/extractor.c:752
 #, c-format
-msgid ""
-"Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
-"failed also.  Errors are: `%s' and `%s'.\n"
-msgstr ""
-"Việc tháo gỡ ký hiệu « %s » trong thư viện « %s » bị lỗi, thì đã cố « %s », "
-"nhưng mà nó cũng không thành công. Gặp lỗi « %s » và « %s ».\n"
+msgid "Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that failed also.  Errors are: `%s' and `%s'.\n"
+msgstr "Việc tháo gỡ ký hiệu « %s » trong thư viện « %s » bị lỗi, thì đã cố « %s », nhưng mà nó cũng không thành công. Gặp lỗi « %s » và « %s ».\n"
 
 #: src/main/extractor.c:781
 #, c-format
@@ -1536,8 +1519,7 @@ msgstr "Bản sửa đổi #%u: Tác giả « %s » đã làm việc « %s »."
 msgid ""
 "Please provide the name of the language you are building\n"
 "a dictionary for.  For example:\n"
-msgstr ""
-"Hãy cung cấp tên ngôn ngữ mà bạn đang xây dựng từ điển cho nó. Lấy thí dụ :\n"
+msgstr "Hãy cung cấp tên ngôn ngữ mà bạn đang xây dựng từ điển cho nó. Lấy thí dụ :\n"
 
 #: src/plugins/printable/dictionary-builder.c:111
 #: src/plugins/printable/dictionary-builder.c:165
@@ -1573,147 +1555,3 @@ msgstr "RPM nguồn %d.%d"
 #, c-format
 msgid "Binary RPM %d.%d"
 msgstr "RPM nhị phân %d.%d"
-
-#~ msgid "os"
-#~ msgstr "hệ điều hành"
-
-#~ msgid "Arabic"
-#~ msgstr "Ả Rập"
-
-#~ msgid "Bulgarian"
-#~ msgstr "Bảo-gia-lơi"
-
-#~ msgid "Catalan"
-#~ msgstr "Ca-ta-lan"
-
-#~ msgid "Czech"
-#~ msgstr "Séc"
-
-#~ msgid "Danish"
-#~ msgstr "Đan Mạch"
-
-#~ msgid "German"
-#~ msgstr "Đức"
-
-#~ msgid "Greek"
-#~ msgstr "Hy Lạp"
-
-#~ msgid "Finnish"
-#~ msgstr "Phần-lan"
-
-#~ msgid "French"
-#~ msgstr "Pháp"
-
-#~ msgid "Hebrew"
-#~ msgstr "Do Thái"
-
-#~ msgid "Hungarian"
-#~ msgstr "Hung-gia-lợi"
-
-#~ msgid "Icelandic"
-#~ msgstr "Băng đảo"
-
-#~ msgid "Italian"
-#~ msgstr "Ý"
-
-#~ msgid "Japanese"
-#~ msgstr "Nhật Bản"
-
-#~ msgid "Korean"
-#~ msgstr "Triều Tiên"
-
-#~ msgid "Dutch"
-#~ msgstr "Hoà-lan"
-
-#~ msgid "Norwegian - Nynorsk"
-#~ msgstr "Na Uy (Ny-noa-x-kh)"
-
-#~ msgid "Polish"
-#~ msgstr "Ba Lan"
-
-#~ msgid "Brazilian Portuguese"
-#~ msgstr "Bồ Đào Nha của Bra-xin"
-
-#~ msgid "Portuguese"
-#~ msgstr "Bồ Đào Nha"
-
-#~ msgid "Romanian"
-#~ msgstr "Lỗ-má-ni"
-
-#~ msgid "Russian"
-#~ msgstr "Nga"
-
-#~ msgid "Slovak"
-#~ msgstr "Xlô-vác"
-
-#~ msgid "Albanian"
-#~ msgstr "An-ba-ni"
-
-#~ msgid "Swedish"
-#~ msgstr "Thuỵ Điển"
-
-#~ msgid "Thai"
-#~ msgstr "Thái"
-
-#~ msgid "Turkish"
-#~ msgstr "Thổ Nhĩ Kỳ"
-
-#~ msgid "Urdu"
-#~ msgstr "Ơ-đu"
-
-#~ msgid "Bahasa"
-#~ msgstr "Ba-ha-xa"
-
-#~ msgid "Ukrainian"
-#~ msgstr "U-cợ-rainh"
-
-#~ msgid "Byelorussian"
-#~ msgstr "Bie-lo-ru-xi"
-
-#~ msgid "Slovenian"
-#~ msgstr "Xlô-ven"
-
-#~ msgid "Estonian"
-#~ msgstr "Et-tô-ni-a"
-
-#~ msgid "Latvian"
-#~ msgstr "Lát-vi-a"
-
-#~ msgid "Lithuanian"
-#~ msgstr "Li-tu-a-ni"
-
-#~ msgid "Basque"
-#~ msgstr "Bax-quợ"
-
-#~ msgid "Macedonian"
-#~ msgstr "Ma-xê-đô-ni"
-
-#~ msgid "Afrikaans"
-#~ msgstr "Hoà-lan Nam Phi"
-
-#~ msgid "Malaysian"
-#~ msgstr "Ma-lay-xi-a"
-
-#~ msgid "%s (Build %s)"
-#~ msgstr "%s (Bản xây dựng %s)"
-
-#~ msgid "Please provide a list of klp files as arguments.\n"
-#~ msgstr "Hãy cung cấp danh sách các tập tin kiểu « klp » dạng đối số.\n"
-
-#~ msgid "demux_nsf.c: input not seekable, can not handle!\n"
-#~ msgstr ""
-#~ "demux_nsf.c: không thể tìm trong dữ liệu gõ nên không thể quản lý!\n"
-
-#~ msgid "demux_wc3movie: SHOT chunk referenced invalid palette (%d >= %d)\n"
-#~ msgstr ""
-#~ "demux_wc3movie: phần riêng SHOT đã tham chiếu đến bảng chọn không hợp lệ "
-#~ "(%d ≥ %d)\n"
-
-#~ msgid "demux_wc3movie: encountered unknown chunk: %c%c%c%c\n"
-#~ msgstr "demux_wc3movie: gặp phần riêng lạ: %c%c%c%c\n"
-
-#~ msgid "demux_wc3movie: There was a problem while loading palette chunks\n"
-#~ msgstr "demux_wc3movie: gặp lỗi trong khi tải các phần riêng bảng chọn\n"
-
-#~ msgid "Fatal: could not allocate (%s at %s:%d).\n"
-#~ msgstr "Nghiêm trọng: không thể cấp phát (%s lúc %s.%d).\n"
