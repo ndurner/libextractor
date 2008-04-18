@@ -1,14 +1,14 @@
 # Swedish translation of libextractor
-# Copyright (C) 2006, 2007 Free Software Foundation, Inc.
+# Copyright (C) 2006, 2007, 2008 Free Software Foundation, Inc.
 # This file is distributed under the same license as the libextractor package.
-# Daniel Nylander <po@danielnylander.se>, 2006, 2007.
+# Daniel Nylander <po@danielnylander.se>, 2006, 2007, 2008.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: libextractor 0.5.18a\n"
+"Project-Id-Version: libextractor 0.5.20\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
 "POT-Creation-Date: 2008-03-20 23:53-0600\n"
-"PO-Revision-Date: 2007-08-09 20:38+0100\n"
+"PO-Revision-Date: 2008-04-01 12:46+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "MIME-Version: 1.0\n"
@@ -28,11 +28,8 @@ msgstr ""
 
 #: src/main/extract.c:52
 #, c-format
-msgid ""
-"Arguments mandatory for long options are also mandatory for short options.\n"
-msgstr ""
-"Argument som är obligatoriska för långa flaggor är också obligatoriska för "
-"korta flaggor.\n"
+msgid "Arguments mandatory for long options are also mandatory for short options.\n"
+msgstr "Argument som är obligatoriska för långa flaggor är också obligatoriska för korta flaggor.\n"
 
 #: src/main/extract.c:126
 msgid "do not remove any duplicates"
@@ -43,11 +40,8 @@ msgid "print output in bibtex format"
 msgstr "skriv ut i bibtex-format"
 
 #: src/main/extract.c:130
-msgid ""
-"use the generic plaintext extractor for the language with the 2-letter "
-"language code LANG"
-msgstr ""
-"använd den generiska klartextuppackare för språket med 2-bokstavskoden i LANG"
+msgid "use the generic plaintext extractor for the language with the 2-letter language code LANG"
+msgstr "använd den generiska klartextuppackare för språket med 2-bokstavskoden i LANG"
 
 #: src/main/extract.c:132
 msgid "remove duplicates only if types match"
@@ -55,8 +49,7 @@ msgstr "ta bort dubletter endast om typen stämmer"
 
 #: src/main/extract.c:134
 msgid "use the filename as a keyword (loads filename-extractor plugin)"
-msgstr ""
-"använd filnamnet som ett nyckelord (läser in insticket filename-extractor)"
+msgstr "använd filnamnet som ett nyckelord (läser in insticket filename-extractor)"
 
 #: src/main/extract.c:136
 msgid "produce grep-friendly output (all results on one line per file)"
@@ -188,9 +181,9 @@ msgid "%% BiBTeX file\n"
 msgstr "%% BiBTeX-fil\n"
 
 #: src/main/extract.c:683
-#, fuzzy, c-format
+#, c-format
 msgid "Keywords for file %s:\n"
-msgstr "Nyckelord för filen %s:"
+msgstr "Nyckelord för filen %s:\n"
 
 #: src/main/extractor.c:44
 msgid "unknown"
@@ -680,16 +673,15 @@ msgstr "filstorlek"
 
 #: src/main/extractor.c:176
 msgid "track number"
-msgstr ""
+msgstr "spårnummer"
 
 #: src/main/extractor.c:177
 msgid "international standard recording code"
-msgstr ""
+msgstr "internationell standardkod för inspelning"
 
 #: src/main/extractor.c:178
-#, fuzzy
 msgid "disc number"
-msgstr "disclaimer"
+msgstr "skivnummer"
 
 #: src/main/extractor.c:598
 #, c-format
@@ -698,12 +690,8 @@ msgstr "Initiering av insticksmekanism misslyckades: %s!\n"
 
 #: src/main/extractor.c:752
 #, c-format
-msgid ""
-"Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
-"failed also.  Errors are: `%s' and `%s'.\n"
-msgstr ""
-"Uppslag av symbol \"%s\" i bibliotek \"%s\" misslyckades så jag försökte med "
-"\"%s\" men det misslyckades också.  Felen är: \"%s\" och \"%s\".\n"
+msgid "Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that failed also.  Errors are: `%s' and `%s'.\n"
+msgstr "Uppslag av symbol \"%s\" i bibliotek \"%s\" misslyckades så jag försökte med \"%s\" men det misslyckades också.  Felen är: \"%s\" och \"%s\".\n"
 
 #: src/main/extractor.c:781
 #, c-format
