@@ -184,8 +184,7 @@ msgstr "Seitenanzahl"
 #, c-format
 msgid "You must specify an argument for the `%s' option (option ignored).\n"
 msgstr ""
-"Sie müssen ein Argument für die Option »%s« angeben (Option wird "
-"ignoriert).\n"
+"Sie müssen ein Argument für die Option »%s« angeben (Option wird ignoriert).\n"
 
 #: src/main/extract.c:607
 #, c-format

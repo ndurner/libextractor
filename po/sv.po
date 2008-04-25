@@ -28,8 +28,11 @@ msgstr ""
 
 #: src/main/extract.c:52
 #, c-format
-msgid "Arguments mandatory for long options are also mandatory for short options.\n"
-msgstr "Argument som är obligatoriska för långa flaggor är också obligatoriska för korta flaggor.\n"
+msgid ""
+"Arguments mandatory for long options are also mandatory for short options.\n"
+msgstr ""
+"Argument som är obligatoriska för långa flaggor är också obligatoriska för "
+"korta flaggor.\n"
 
 #: src/main/extract.c:126
 msgid "do not remove any duplicates"
@@ -40,8 +43,11 @@ msgid "print output in bibtex format"
 msgstr "skriv ut i bibtex-format"
 
 #: src/main/extract.c:130
-msgid "use the generic plaintext extractor for the language with the 2-letter language code LANG"
-msgstr "använd den generiska klartextuppackare för språket med 2-bokstavskoden i LANG"
+msgid ""
+"use the generic plaintext extractor for the language with the 2-letter "
+"language code LANG"
+msgstr ""
+"använd den generiska klartextuppackare för språket med 2-bokstavskoden i LANG"
 
 #: src/main/extract.c:132
 msgid "remove duplicates only if types match"
@@ -49,7 +55,8 @@ msgstr "ta bort dubletter endast om typen stämmer"
 
 #: src/main/extract.c:134
 msgid "use the filename as a keyword (loads filename-extractor plugin)"
-msgstr "använd filnamnet som ett nyckelord (läser in insticket filename-extractor)"
+msgstr ""
+"använd filnamnet som ett nyckelord (läser in insticket filename-extractor)"
 
 #: src/main/extract.c:136
 msgid "produce grep-friendly output (all results on one line per file)"
@@ -690,8 +697,12 @@ msgstr "Initiering av insticksmekanism misslyckades: %s!\n"
 
 #: src/main/extractor.c:752
 #, c-format
-msgid "Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that failed also.  Errors are: `%s' and `%s'.\n"
-msgstr "Uppslag av symbol \"%s\" i bibliotek \"%s\" misslyckades så jag försökte med \"%s\" men det misslyckades också.  Felen är: \"%s\" och \"%s\".\n"
+msgid ""
+"Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
+"failed also.  Errors are: `%s' and `%s'.\n"
+msgstr ""
+"Uppslag av symbol \"%s\" i bibliotek \"%s\" misslyckades så jag försökte med "
+"\"%s\" men det misslyckades också.  Felen är: \"%s\" och \"%s\".\n"
 
 #: src/main/extractor.c:781
 #, c-format

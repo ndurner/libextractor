@@ -3,7 +3,7 @@
 # Copyright © 2006 Christian Grothoff
 # This file is distributed under the same license as the libextractor-0.5.20 package.
 # Clytie Siddall <clytie@riverland.net.au>, 2005-2008.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.5.20\n"
@@ -31,8 +31,11 @@ msgstr ""
 
 #: src/main/extract.c:52
 #, c-format
-msgid "Arguments mandatory for long options are also mandatory for short options.\n"
-msgstr "Mọi đối số bắt buộc phải sử dụng với tùy chọn dài cũng bắt buộc với tùy chọn ngắn.\n"
+msgid ""
+"Arguments mandatory for long options are also mandatory for short options.\n"
+msgstr ""
+"Mọi đối số bắt buộc phải sử dụng với tùy chọn dài cũng bắt buộc với tùy chọn "
+"ngắn.\n"
 
 #: src/main/extract.c:126
 msgid "do not remove any duplicates"
@@ -43,8 +46,12 @@ msgid "print output in bibtex format"
 msgstr "hiển thị dữ liệu xuất có dạng bibtex"
 
 #: src/main/extract.c:130
-msgid "use the generic plaintext extractor for the language with the 2-letter language code LANG"
-msgstr "sử dụng trình rút văn bản thuần thuộc giống loại cho ngôn ngữ có mã ngôn ngữ bằng hai chữ là LANG"
+msgid ""
+"use the generic plaintext extractor for the language with the 2-letter "
+"language code LANG"
+msgstr ""
+"sử dụng trình rút văn bản thuần thuộc giống loại cho ngôn ngữ có mã ngôn ngữ "
+"bằng hai chữ là LANG"
 
 #: src/main/extract.c:132
 msgid "remove duplicates only if types match"
@@ -52,11 +59,15 @@ msgstr "gỡ bỏ bản sao chỉ nếu kiểu khớp thôi"
 
 #: src/main/extract.c:134
 msgid "use the filename as a keyword (loads filename-extractor plugin)"
-msgstr "dùng tên tập tin là một từ khoá (thì tải bổ sung « filename-extractor » [rút tên tập tin])"
+msgstr ""
+"dùng tên tập tin là một từ khoá (thì tải bổ sung « filename-extractor » [rút "
+"tên tập tin])"
 
 #: src/main/extract.c:136
 msgid "produce grep-friendly output (all results on one line per file)"
-msgstr "tạo ra kết xuất thân thiện với grep (mọi kết quả trên cùng dòng của mỗi tập tin)"
+msgstr ""
+"tạo ra kết xuất thân thiện với grep (mọi kết quả trên cùng dòng của mỗi tập "
+"tin)"
 
 #: src/main/extract.c:138
 msgid "print this help"
@@ -80,7 +91,8 @@ msgstr "đừng dùng bộ trình rút mặc định"
 
 #: src/main/extract.c:148
 msgid "print only keywords of the given TYPE (use -L to get a list)"
-msgstr "hiển thị chỉ từ khoá KIỂU (TYPE) đã cho thôi (dùng « -L » để xem danh sách)"
+msgstr ""
+"hiển thị chỉ từ khoá KIỂU (TYPE) đã cho thôi (dùng « -L » để xem danh sách)"
 
 #: src/main/extract.c:150
 msgid "remove duplicates even if keyword types do not match"
@@ -178,7 +190,8 @@ msgstr "Bạn phải ghi rõ một đối số cho tùy chọn « %s » (tùy ch
 #: src/main/extract.c:607
 #, c-format
 msgid "Use --help to get a list of options.\n"
-msgstr "Hãy sử dụng lệnh « --help » (trợ giúp) để xem một danh sách các tùy chọn.\n"
+msgstr ""
+"Hãy sử dụng lệnh « --help » (trợ giúp) để xem một danh sách các tùy chọn.\n"
 
 #: src/main/extract.c:663
 #, c-format
@@ -694,8 +707,12 @@ msgstr "Việc khởi động cơ chế cầm phít bị lỗi: %s\n"
 
 #: src/main/extractor.c:752
 #, c-format
-msgid "Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that failed also.  Errors are: `%s' and `%s'.\n"
-msgstr "Việc tháo gỡ ký hiệu « %s » trong thư viện « %s » bị lỗi, thì đã cố « %s », nhưng mà nó cũng không thành công. Gặp lỗi « %s » và « %s ».\n"
+msgid ""
+"Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
+"failed also.  Errors are: `%s' and `%s'.\n"
+msgstr ""
+"Việc tháo gỡ ký hiệu « %s » trong thư viện « %s » bị lỗi, thì đã cố « %s », "
+"nhưng mà nó cũng không thành công. Gặp lỗi « %s » và « %s ».\n"
 
 #: src/main/extractor.c:781
 #, c-format
@@ -1519,7 +1536,8 @@ msgstr "Bản sửa đổi #%u: Tác giả « %s » đã làm việc « %s »."
 msgid ""
 "Please provide the name of the language you are building\n"
 "a dictionary for.  For example:\n"
-msgstr "Hãy cung cấp tên ngôn ngữ mà bạn đang xây dựng từ điển cho nó. Lấy thí dụ :\n"
+msgstr ""
+"Hãy cung cấp tên ngôn ngữ mà bạn đang xây dựng từ điển cho nó. Lấy thí dụ :\n"
 
 #: src/plugins/printable/dictionary-builder.c:111
 #: src/plugins/printable/dictionary-builder.c:165

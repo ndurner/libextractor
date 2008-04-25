@@ -30,8 +30,11 @@ msgstr ""
 
 #: src/main/extract.c:52
 #, c-format
-msgid "Arguments mandatory for long options are also mandatory for short options.\n"
-msgstr "Argumenten die verplicht zijn voor lange opties zijn dat ook voor korte opties.\n"
+msgid ""
+"Arguments mandatory for long options are also mandatory for short options.\n"
+msgstr ""
+"Argumenten die verplicht zijn voor lange opties zijn dat ook voor korte "
+"opties.\n"
 
 #: src/main/extract.c:126
 msgid "do not remove any duplicates"
@@ -42,7 +45,9 @@ msgid "print output in bibtex format"
 msgstr ""
 
 #: src/main/extract.c:130
-msgid "use the generic plaintext extractor for the language with the 2-letter language code LANG"
+msgid ""
+"use the generic plaintext extractor for the language with the 2-letter "
+"language code LANG"
 msgstr "de gewone-tekst-extractor voor deze (tweelettercode) taal gebruiken"
 
 #: src/main/extract.c:132
@@ -686,7 +691,9 @@ msgstr ""
 
 #: src/main/extractor.c:752
 #, c-format
-msgid "Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that failed also.  Errors are: `%s' and `%s'.\n"
+msgid ""
+"Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
+"failed also.  Errors are: `%s' and `%s'.\n"
 msgstr ""
 
 #: src/main/extractor.c:781
