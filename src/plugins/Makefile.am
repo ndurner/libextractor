@@ -120,6 +120,8 @@ endif
 if HAVE_FLAC
 libextractor_flac_la_SOURCES = \
   flacextractor.c
+libextractor_flac_la_LIBADD = \
+  $(top_builddir)/src/main/libextractor.la
 libextractor_flac_la_LDFLAGS = \
  -lFLAC $(PLUGINFLAGS)  $(retaincommand)
 endif
