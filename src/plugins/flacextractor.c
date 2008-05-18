@@ -29,6 +29,15 @@
 #error You must install the libflac header files!
 #endif
 
+static char * xstrndup(const char * s, size_t n){
+  char * d;
+
+  d= malloc(n+1);
+  memcpy(d,s,n);
+  d[n]='\0';
+  return d;
+}
+
 static struct EXTRACTOR_Keywords *
 addKeyword (EXTRACTOR_KeywordType type,
             char *keyword, struct EXTRACTOR_Keywords *next)
@@ -158,7 +167,7 @@ check(const char * type,
 			     type,
 			     type_length)) )
 	return addKeyword(tmap[i].type,
-			  strndup(value,
+			  xstrndup(value,
 				  value_length),
 			  prev);
       i++;
