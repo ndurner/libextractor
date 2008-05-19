@@ -11,8 +11,8 @@ LIBS = \
 
 if HAVE_GNU_LD
  makesymbolic=-Wl,-Bsymbolic
- retaincommand=-Wl,--retain-symbols-file -Wl,SYMBOLS
 endif
+retaincommand=-export-symbols-regex "libextractor_[a-zA-Z0-9_]+_extract"
 
 PLUGINFLAGS = $(makesymbolic) -avoid-version -module -no-undefined
 
