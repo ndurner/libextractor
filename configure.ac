@@ -23,6 +23,7 @@ AC_PROG_CPP
 AC_PROG_CXX
 AC_CHECK_PROG(HAVE_CXX, $CXX, yes, no)
 AM_CONDITIONAL(HAVE_CXX, test "x$HAVE_CXX" = "xyes")
+AC_GNU_SOURCE
 AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_PROG_MAKE_SET
@@ -238,7 +239,13 @@ AC_FUNC_ERROR_AT_LINE
 AC_CHECK_FUNCS([mkstemp strndup munmap strcasecmp strdup strncasecmp memmove memset strtoul floor getcwd pow setenv sqrt strchr strcspn strrchr strnlen strndup ftruncate])
 
 AM_GNU_GETTEXT_VERSION([0.16.1])
-AM_GNU_GETTEXT([external])
+AM_GNU_GETTEXT()
+if test "x$USE_INCLUDED_LIBINTL" == "xyes"
+then
+  CPPFLAGS='-I$(top_srcdir)/intl '"$CPPFLAGS" 
+else
+  CPPFLAGS="FOOBAR $CPPFLAGS"
+fi 
 
 # check for GNU LD
 AC_LIB_PROG_LD_GNU
