@@ -243,8 +243,6 @@ AM_GNU_GETTEXT()
 if test "x$USE_INCLUDED_LIBINTL" == "xyes"
 then
   CPPFLAGS='-I$(top_srcdir)/intl '"$CPPFLAGS" 
-else
-  CPPFLAGS="FOOBAR $CPPFLAGS"
 fi 
 
 # check for GNU LD
