@@ -275,7 +275,7 @@ ref-del.sed: $(srcdir)/ref-del.sin
 	sed -e '/^#/d' -e 's/@''PACKAGE''@/@PACKAGE@/g' $(srcdir)/ref-del.sin > t-ref-del.sed
 	mv t-ref-del.sed ref-del.sed
 
-INCLUDES = -I. -I$(srcdir) -I.. -I../src/include
+INCLUDES = -I. -I$(srcdir) -I.. 
 
 libgnuintl.h: $(srcdir)/libgnuintl.h.in
 	sed -e '/IN_LIBGLOCALE/d' \

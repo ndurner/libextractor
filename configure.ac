@@ -3,7 +3,7 @@ AC_PREREQ(2.57)
 AC_INIT([libextractor], [0.5.20b], [bug-libextractor@gnu.org])
 AC_REVISION($Revision: 1.67 $)
 AM_INIT_AUTOMAKE([libextractor], [0.5.20b])
-AM_CONFIG_HEADER(src/include/config.h)
+AM_CONFIG_HEADER(config.h)
 
 LIB_VERSION_CURRENT=2
 LIB_VERSION_REVISION=1
@@ -16,14 +16,13 @@ AH_TOP([#define _GNU_SOURCE  1])
 
 # Checks for programs.
 AC_CANONICAL_HOST
-
+AC_USE_SYSTEM_EXTENSIONS
 AC_PROG_AWK
 AC_PROG_CC
 AC_PROG_CPP
 AC_PROG_CXX
 AC_CHECK_PROG(HAVE_CXX, $CXX, yes, no)
 AM_CONDITIONAL(HAVE_CXX, test "x$HAVE_CXX" = "xyes")
-AC_GNU_SOURCE
 AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_PROG_MAKE_SET
