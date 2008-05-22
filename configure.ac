@@ -83,6 +83,7 @@ darwin*)
      AC_DEFINE_UNQUOTED(DARWIN,1,[This is a Darwin system])
      AM_CONDITIONAL(HAVE_GNU_LD, false)
      AM_CONDITIONAL(SOMEBSD, false)
+     CFLAGS="-fno-common $CFLAGS"
      LIBEXT=.dylib
      ;;
 cygwin*)
