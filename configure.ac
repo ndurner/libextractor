@@ -120,7 +120,7 @@ AM_ICONV
 # passed through the command line ("-DLOCALEDIR=..."). This would
 # lead to hard-coded paths ("C:\mingw\mingw\bin...") that do
 # not contain the actual installation.
-AC_DEFINE_DIR([LOCALEDIR], [datadir/locale], [gettext catalogs])
+AC_DEFINE_DIR([LOCALEDIR], [datarootdir/locale], [gettext catalogs])
 
 ISOPFX=`pkg-config --variable=prefix iso-codes`
 pkg-config --variable=prefix iso-codes 2> /dev/null || ISOPFX=/usr
