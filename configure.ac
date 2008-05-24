@@ -124,7 +124,7 @@ AC_DEFINE_DIR([LOCALEDIR], [datarootdir/locale], [gettext catalogs])
 
 ISOPFX=`pkg-config --variable=prefix iso-codes`
 pkg-config --variable=prefix iso-codes 2> /dev/null || ISOPFX=/usr
-AC_DEFINE_DIR([ISOLOCALEDIR], [$ISOPFX/share/locale], [iso-639 catalog])
+AC_DEFINE_DIR([ISOLOCALEDIR], [ISOPFX/share/locale], [iso-639 catalog])
 
 # relative plugin directory
 rplugindir="libextractor"
