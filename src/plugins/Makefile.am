@@ -113,7 +113,7 @@ if HAVE_VORBISFILE
 libextractor_ogg_la_SOURCES = \
   oggextractor.c
 libextractor_ogg_la_LDFLAGS = \
- -lvorbisfile $(vorbisflag) $(PLUGINFLAGS)  $(retaincommand)
+ -lvorbisfile $(vorbisflag) -logg $(PLUGINFLAGS)  $(retaincommand)
 endif
 
 
