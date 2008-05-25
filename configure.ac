@@ -173,7 +173,14 @@ AC_CHECK_LIB(vorbisfile, ov_open_callbacks,
 AC_CHECK_LIB(FLAC, FLAC__stream_decoder_init_stream,
         [AM_CONDITIONAL(HAVE_FLAC, true)
          AC_DEFINE(HAVE_FLAC,1,[Have flac])],
-        [AM_CONDITIONAL(HAVE_FLAC, false)])
+        [AM_CONDITIONAL(HAVE_FLAC, false)],
+        -logg)
+# test without -logg to see whether we really need it (libflac can be without)
+AC_CHECK_LIB(FLAC, FLAC__stream_decoder_init_ogg_stream,
+        [AM_CONDITIONAL(HAVE_FLAC, true)
+         AC_DEFINE(HAVE_FLAC,1,[Have flac])
+         AM_CONDITIONAL(NEED_OGG, false)],
+        [AM_CONDITIONAL(NEED_OGG, true)])
 AC_CHECK_LIB(vorbisfile, vorbis_comment_query,
         [AM_CONDITIONAL(NEED_VORBIS, false)],
         [AM_CONDITIONAL(NEED_VORBIS, true)],

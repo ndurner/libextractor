@@ -67,6 +67,10 @@ if NEED_VORBIS
  vorbisflag = -lvorbis
 endif
 
+if NEED_OGG
+ flacoggflag = -logg
+endif
+
 if HAVE_ZLIB
 extraqt = libextractor_qt.la
 oodir = oo
@@ -123,7 +127,7 @@ libextractor_flac_la_SOURCES = \
 libextractor_flac_la_LIBADD = \
   $(top_builddir)/src/main/libextractor.la
 libextractor_flac_la_LDFLAGS = \
- -lFLAC $(PLUGINFLAGS)  $(retaincommand)
+ -lFLAC $(flacoggflag) $(PLUGINFLAGS)  $(retaincommand)
 endif
 
 noinst_LTLIBRARIES = \
