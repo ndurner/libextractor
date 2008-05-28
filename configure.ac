@@ -486,6 +486,7 @@ AC_SUBST(LIBEXT)
 AC_CONFIG_FILES([Makefile po/Makefile.in m4/Makefile  intl/Makefile
 
 
+contrib/macosx/Info.plist
 doc/Makefile
 src/Makefile
 src/include/Makefile
