@@ -24,8 +24,6 @@ OPT_FLAGS="-O2 -g"
 BUILD_ARCHS_LIST="ppc i386"
 export MACOSX_DEPLOYMENT_TARGET=10.4
 
-PKGCONFIG_URL=http://pkgconfig.freedesktop.org/releases
-PKGCONFIG_NAME=pkg-config-0.23
 LIBTOOL_URL=ftp://ftp.gnu.org/gnu/libtool
 LIBTOOL_NAME=libtool-2.2.4
 GETTEXT_URL=ftp://ftp.gnu.org/gnu/gettext
@@ -65,7 +63,6 @@ fetch_package()
 
 fetch_all_packages()
 {
-	fetch_package "${PKGCONFIG_NAME}" "${PKGCONFIG_URL}"
 #	fetch_package "${LIBTOOL_NAME}" "${LIBTOOL_URL}"
 	fetch_package "${GETTEXT_NAME}" "${GETTEXT_URL}"
 	fetch_package "${LIBOGG_NAME}" "${LIBOGG_URL}"
@@ -79,17 +76,6 @@ fetch_all_packages()
 #
 build_toolchain()
 {
-	if [ ! -e "${BUILD_DIR}/toolchain/bin/dictionary-builder" ]
-	then
-		./configure --prefix="${BUILD_DIR}/toolchain"	\
-				--disable-gsf			\
-				--disable-gnome
-		make install
-		cp src/plugins/printable/dictionary-builder	\
-			"${BUILD_DIR}/toolchain/bin"
-		make clean
-	fi
-
 	if [ ! -e "${BUILD_DIR}/toolchain/bin/msgfmt" ]
 	then
 		cd contrib
@@ -107,18 +93,15 @@ build_toolchain()
 		cd ..
 	fi
 
-	if [ ! -e "${BUILD_DIR}/toolchain/bin/pkg-config" ]
+	if [ ! -e "${BUILD_DIR}/toolchain/bin/dictionary-builder" ]
 	then
-		cd contrib
-
-		tar xzf "${PKGCONFIG_NAME}.tar.gz"
-		cd "${PKGCONFIG_NAME}"
-		./configure --prefix="${BUILD_DIR}/toolchain"
+		./configure --prefix="${BUILD_DIR}/toolchain"	\
+				--disable-gsf			\
+				--disable-gnome
 		make install
-		cd ..
-		rm -rf "${PKGCONFIG_NAME}"
-
-		cd ..
+		cp src/plugins/printable/dictionary-builder	\
+			"${BUILD_DIR}/toolchain/bin"
+		make clean
 	fi
 
 #	if [ ! -e "${BUILD_DIR}/toolchain/bin/libtool" ]
@@ -525,6 +508,8 @@ do
 	install_executable_to_framework "$tfn"
 done
 install_file_to_framework 'include/extractor.h'
+install_file_to_framework 'share/info/dir'
+install_file_to_framework 'share/info/extractor.info'
 install_file_to_framework 'share/man/man1/extract.1'
 install_file_to_framework 'share/man/man3/libextractor.3'
 for tfn in $(find ./share/locale -name 'libextractor*')
