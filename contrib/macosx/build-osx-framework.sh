@@ -15,7 +15,7 @@
 SDK=MacOSX10.4u.sdk
 ORIG_SDK=/Developer/SDKs/${SDK}
 FW_NAME=Extractor.framework
-FW_BASE_DIR=/tmp/${FW_NAME}
+FW_BASE_DIR=/Library/Frameworks/${FW_NAME}
 BUILD_DIR=/tmp/Extractor-build
 FINAL_FW_BASE_DIR="${BUILD_DIR}/${FW_NAME}"
 SDK_PATH="${BUILD_DIR}/${SDK}"
@@ -145,6 +145,11 @@ prepare_sdk()
 	then
 		echo "error preparing sdk"
 		exit 1
+	fi
+
+	if [ -h "${SDK_PATH}/Library/Frameworks" ]
+	then
+		rm -f "${SDK_PATH}/Library/Frameworks"
 	fi
 }
 
@@ -352,11 +357,13 @@ create_directory_for()
 	if [ ! -e "${dst_dir}" ]
 	then
 		echo "MKDIR ${dst_dir}"
-		if ! ( mkdir -p "${dst_dir}" )
+		if ! ( mkdir -m 755 -p "${dst_dir}" )
 		then
 			echo "failed to create directory: ${dst_dir}"
 			exit 1
 		fi
+		# fix dir permissions
+		chmod 0755 `find ${FINAL_FW_BASE_DIR} -type d`
 	fi
 }
 
@@ -386,6 +393,7 @@ install_executable_to_framework()
 		then
 			echo "LIPO ${dst_file}"
 			lipo -create -o "${dst_file}" ${src_files}
+			chmod 0755 "${dst_file}"
 		fi
 	fi
 }
@@ -404,10 +412,11 @@ install_file_to_framework()
 			then
 				echo "CP ${dst_file}"
 				cp -PpR "${src_file}" "${dst_file}"
+				chmod 0755 "${dst_file}"
 			elif [ -f "${src_file}" ]
 			then
 				echo "INSTALL ${dst_file}"
-				install "${src_file}" "${dst_file}"
+				install -m 0644 "${src_file}" "${dst_file}"
 			else
 				echo "no such file: ${src_file}"
 				exit 1
@@ -415,7 +424,7 @@ install_file_to_framework()
 		else
 			if [ -f "${src_file}" ] && [ -f "${dst_file}" ]
 			then
-				diff "${src_file}" "${dst_file}"
+				diff -q "${src_file}" "${dst_file}"
 			fi
 		fi
 	done
@@ -428,7 +437,7 @@ copy_file_to_framework()
 	if [ ! -e "$dst_file" ]
 	then
 		create_directory_for "$dst_file"
-		install "$src_file" "$dst_file"
+		install -m 0644 "$src_file" "$dst_file"
 	fi
 }
 
@@ -462,9 +471,11 @@ FW_DIR="${FW_BASE_DIR}/${FW_VERSION_DIR}"
 FINAL_FW_DIR="${FINAL_FW_BASE_DIR}/${FW_VERSION_DIR}"
 export PKG_CONFIG_PATH=${FW_DIR}/lib/pkgconfig
 ORIG_DIR=$(pwd)
+old_umask=$(umask)
 
 # prepare build env
 fetch_all_packages
+umask 022
 prepare_sdk
 build_toolchain
 
@@ -525,4 +536,5 @@ make_framework_link "lib/libextractor" "PlugIns"
 make_framework_link "include" "Headers"
 make_framework_version_links
 
+umask ${old_umask}
 echo "done."
