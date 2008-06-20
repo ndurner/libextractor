@@ -135,6 +135,7 @@ struct MimeToDecoderMapping
 
 /* map mime image types to a decoder */
 static const struct MimeToDecoderMapping m2d_map[] = {
+  {"image/x-bmp", CODEC_ID_BMP},
   {"image/jpeg", CODEC_ID_MJPEG},
   {"image/png", CODEC_ID_PNG},
   {NULL, CODEC_ID_NONE}
