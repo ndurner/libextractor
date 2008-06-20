@@ -3,7 +3,7 @@ FIX:
   also investigate 500kb (!) allocation/leak in exiv2 on test/test.html
   (reported by valgrind)
 * 500 kb leak for each load/unload of exiv2 plugin (glibc?)
-
+* ffmpeg needs make 3.81: add configure check for it
 
 Core:
 * error reporting facilities
