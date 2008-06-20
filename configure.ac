@@ -477,6 +477,22 @@ AC_ARG_ENABLE(printable,
         printable=1])
 AM_CONDITIONAL(HAVE_PRINTABLE, test x$printable != x0)
 
+ffmpeg_enabled=0
+AC_MSG_CHECKING([whether to enable the FFmpeg thumbnail extractor])
+AC_ARG_ENABLE(ffmpeg,
+ [AC_HELP_STRING([--enable-ffmpeg],[Enable FFmpeg support])
+  AC_HELP_STRING([--disable-ffmpeg],[Disable FFmpeg support])],
+ [case "$enableval" in
+  no)	AC_MSG_RESULT(no)
+        ffmpeg_enabled=0
+	;;
+  *)    AC_MSG_RESULT(yes)
+        ffmpeg_enabled=1
+	;;
+  esac],
+  [     AC_MSG_RESULT(no)
+        ffmpeg_enabled=0])
+AM_CONDITIONAL(HAVE_FFMPEG, test x$ffmpeg_enabled != x0)
 
 AC_SUBST(CPPFLAGS)
 AC_SUBST(LDFLAGS)
@@ -499,6 +515,7 @@ src/plugins/rpm/Makefile
 src/plugins/printable/Makefile
 src/plugins/hash/Makefile
 src/plugins/thumbnail/Makefile
+src/plugins/thumbnailffmpeg/Makefile
 src/plugins/exiv2/Makefile
 src/test/Makefile
 ])
@@ -506,6 +523,38 @@ src/test/Makefile
 LIBEXTRACTOR_VERSION="0.5.18a"
 AX_CREATE_PKGCONFIG_INFO([libextractor.pc],,[-lextractor],[Metadata extraction library],,)
 
+if test "x$ffmpeg_enabled" = "x1"
+then
+ AC_MSG_NOTICE([configuring FFmpeg])
+ cd src/plugins/thumbnailffmpeg/ffmpeg/
+ if ! ./configure			\
+	--prefix=/tmp			\
+	--disable-mmx			\
+	--disable-altivec		\
+	--enable-shared			\
+	--enable-swscale		\
+	--enable-gpl			\
+	--disable-vhook			\
+	--disable-postproc		\
+	--disable-network		\
+	--disable-ffmpeg		\
+	--disable-ffserver		\
+	--disable-ffplay		\
+	--disable-devices		\
+	--disable-protocols		\
+	--disable-bsfs			\
+	--disable-parsers		\
+	--disable-muxers		\
+	--disable-demuxers		\
+	--disable-encoders		\
+	--disable-decoders		\
+	--enable-encoder=png		\
+	--enable-decoder=png
+  then
+    AC_MSG_ERROR([FFmpeg configure failed.])
+  fi
+  cd ../../../../
+fi
 
 AC_OUTPUT
 
@@ -534,7 +583,14 @@ then
  AC_MSG_NOTICE([NOTICE: libgsf not found, no OLE2 (MS Office) support])
 fi
 
-if test "x$without_gtk" = "xtrue" -a "x$qt" = "x0"
+if test "x$ffmpeg_enabled" = "x0"
+then
+ AC_MSG_NOTICE([NOTICE: FFmpeg thumbnailer plugin disabled])
+else 
+ AC_MSG_NOTICE([NOTICE: FFmpeg thumbnailer plugin enabled (security untested)])
+fi
+
+if test "x$without_gtk" = "xtrue" -a "x$qt" = "x0" -a "x$ffmpeg_enabled" = "x0"
 then
  AC_MSG_NOTICE([NOTICE: neither gtk nor Qt not found, no thumbnail support])
 fi

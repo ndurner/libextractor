@@ -2,6 +2,10 @@ include Makefile-plugins.am
 
 LIBEXT = @LIBEXT@
 
+if HAVE_FFMPEG
+thumbffmpeg=thumbnailffmpeg
+endif
+
 if HAVE_GLIB
 if WITH_GSF
  oledir=ole2
@@ -52,7 +56,7 @@ endif
 
 # toggle for development
 # SUBDIRS = . 
-SUBDIRS = $(thumbgtk) . $(oodir) $(printdir) hash $(oledir) rpm $(xpdfdir) $(exiv2dir)
+SUBDIRS = $(thumbgtk) $(thumbffmpeg) . $(oodir) $(printdir) hash $(oledir) rpm $(xpdfdir) $(exiv2dir)
 
 
 if HAVE_VORBISFILE
@@ -390,13 +394,18 @@ install-exec-hook:
 	mkdir -p $(DESTDIR)$(plugindir) &> /dev/null || true
 	rm -f $(DESTDIR)$(plugindir)/libextractor_thumbnail$(LIBEXT)
 	rm -f $(DESTDIR)$(plugindir)/libextractor_thumbnail.la
-	if test "$(thumbgtk)" != ""; then \
-		$(LN_S) $(plugindir)/libextractor_thumbnailgtk$(LIBEXT) \
+	if test "$(thumbffmpeg)" != ""; then \
+		$(LN_S) $(plugindir)/libextractor_thumbnailffmpeg$(LIBEXT) \
 			$(DESTDIR)$(plugindir)/libextractor_thumbnail$(LIBEXT); \
 	else \
-		if test "$(thumbqt)" != ""; then \
-			$(LN_S) $(plugindir)/libextractor_thumbnailqt$(LIBEXT) \
+		if test "$(thumbgtk)" != ""; then \
+			$(LN_S) $(plugindir)/libextractor_thumbnailgtk$(LIBEXT) \
 				$(DESTDIR)$(plugindir)/libextractor_thumbnail$(LIBEXT); \
-		fi; \
-	fi;
+		else \
+			if test "$(thumbqt)" != ""; then \
+				$(LN_S) $(plugindir)/libextractor_thumbnailqt$(LIBEXT) \
+					$(DESTDIR)$(plugindir)/libextractor_thumbnail$(LIBEXT); \
+			fi \
+		fi \
+	fi
 

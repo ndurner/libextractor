@@ -1,0 +1,72 @@
+This is a thumbnail extractor using the ffmpeg libraries that will eventually
+support extracting thumbnails from both image and video files. 
+
+A local ffmpeg tree is used, because
+(1) there are no recent official releases of the ffmpeg libs,
+(2) mainline ffmpeg is not reentrant,
+(3) security issues can be handled locally.
+
+Plan: test & enable ffmpeg decoders one by one
+tests:
+- multithreading test
+- zzuf test
+- random input test
+
+At least, the following should be eventually enabled:
+if ! ./configure			\
+	--prefix=/tmp/FF		\
+	--disable-mmx			\
+	--disable-altivec		\
+	--enable-shared			\
+	--enable-swscale		\
+	--enable-gpl			\
+	--disable-vhook			\
+	--disable-postproc		\
+	--disable-network		\
+	--disable-ffmpeg		\
+	--disable-ffserver		\
+	--disable-ffplay		\
+	--disable-devices		\
+	--disable-protocols		\
+	--disable-bsfs			\
+	--disable-parsers		\
+	--disable-muxers		\
+	--disable-demuxers		\
+	--disable-encoders		\
+	--disable-decoders		\
+	--enable-parser=h263		\
+	--enable-parser=h264		\
+	--enable-parser=mjpeg		\
+	--enable-parser=mpeg4video	\
+	--enable-parser=mpegvideo	\
+	--enable-encoder=png		\
+	--enable-encoder=mjpeg		\
+	--enable-decoder=bmp		\
+	--enable-decoder=pcx		\
+	--enable-decoder=png		\
+	--enable-decoder=mjpeg		\
+	--enable-decoder=mjpegb		\
+	--enable-decoder=targa		\
+	--enable-decoder=tiff		\
+	--enable-decoder=flashsv	\
+	--enable-decoder=h263		\
+	--enable-decoder=flv		\
+	--enable-decoder=h264		\
+	--enable-decoder=mpeg1video	\
+	--enable-decoder=mpeg2video	\
+	--enable-decoder=mpegvideo	\
+	--enable-decoder=mpeg4		\
+	--enable-decoder=vp6		\
+	--enable-decoder=vp6a		\
+	--enable-decoder=vp6f		\
+	--enable-demuxer=asf		\
+	--enable-demuxer=avi		\
+	--enable-demuxer=flv		\
+	--enable-demuxer=mjpeg		\
+	--enable-demuxer=mpegps		\
+	--enable-demuxer=mpegts		\
+	--enable-demuxer=mpegvideo	\
+	--enable-demuxer=mov		\
+	--enable-demuxer=ogg		\
+	--enable-demuxer=rm
+
