@@ -6,7 +6,7 @@ A local ffmpeg tree is used, because
 (2) mainline ffmpeg is not reentrant,
 (3) security issues can be handled locally.
 
-svn checkout svn://svn.mplayerhq.hu/ffmpeg/trunk ffmpeg
+svn export svn://svn.mplayerhq.hu/ffmpeg/trunk ffmpeg
 currently: 
 - libswscale rev 27100
 - ffmpeg rev 13836
