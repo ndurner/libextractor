@@ -4,7 +4,7 @@ SUBDIRS = .
 
 ELIBDIR = $(libdir)
 
-AM_CFLAGS = -DELIBDIR=\"$(ELIBDIR)\" -DPLUGIN_PATH="\"${libdir}\""
+AM_CFLAGS = -DELIBDIR=\"$(ELIBDIR)\" -DPLUGIN_PATH="\"${libdir}\"" -DTESTDATADIR="\"$(top_srcdir)/test\""
 
 LDADD = \
  $(top_builddir)/src/main/libextractor.la  
@@ -13,7 +13,8 @@ check_PROGRAMS = \
  trivialtest \
  keywordlisttest \
  plugintest \
- multiload
+ multiload \
+ multithreadtest
 
 TESTS = $(check_PROGRAMS)
 
@@ -28,4 +29,9 @@ keywordlisttest_SOURCES = \
 
 multiload_SOURCES = \
  multiload.c 
+
+multithreadtest_SOURCES = \
+ multithreadtest.c 
+multithreadtest_LDFLAGS = \
+ -lpthread
 
