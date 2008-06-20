@@ -31,7 +31,7 @@
 
 #define MAX_FILTER_SIZE 256
 
-#define VOFW 2048
+#define VOFW 8192
 #define VOF  (VOFW*2)
 
 typedef int (*SwsFunc)(struct SwsContext *context, uint8_t* src[], int srcStride[], int srcSliceY,
