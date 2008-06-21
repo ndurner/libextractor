@@ -1,5 +1,6 @@
 This is a thumbnail extractor using the ffmpeg libraries that will eventually
-support extracting thumbnails from both image and video files. 
+support extracting thumbnails from both image and video files. Compiling
+the ffmpeg libraries requires at least GNU make version 3.81.
 
 A local ffmpeg tree is used, because
 (1) there are no recent official releases of the ffmpeg libs,
@@ -16,6 +17,7 @@ tests:
 - multithreading test
 - zzuf test
 - random input test
+(- valgrind)
 
 At least, the following should be eventually enabled:
 if ! ./configure			\
