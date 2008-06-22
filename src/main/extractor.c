@@ -20,6 +20,7 @@
 
 #include "platform.h"
 #include "extractor.h"
+#include <pthread.h>
 
 #if HAVE_LTDL_H
 #include <ltdl.h>
@@ -725,6 +726,15 @@ EXTRACTOR_getKeywordTypeAsString(const EXTRACTOR_KeywordType type)
     return NULL;
 }
 
+static pthread_mutex_t ltdl_lock = PTHREAD_MUTEX_INITIALIZER;
+
+#define LTDL_MUTEX_LOCK                     \
+  if (pthread_mutex_lock (&ltdl_lock) != 0) \
+    abort();
+#define LTDL_MUTEX_UNLOCK                     \
+  if (pthread_mutex_unlock (&ltdl_lock) != 0) \
+    abort();
+
 static void *getSymbolWithPrefix(void *lib_handle,
                                  const char *lib_name,
                                  const char *sym_name)
@@ -743,6 +753,7 @@ static void *getSymbolWithPrefix(void *lib_handle,
 	   lib_name,
 	   sym_name);
 
+  LTDL_MUTEX_LOCK
   symbol=lt_dlsym(lib_handle,name+1 /* skip the '_' */);
   if (symbol==NULL) {
     first_error=strdup(lt_dlerror());
@@ -760,6 +771,7 @@ static void *getSymbolWithPrefix(void *lib_handle,
 #endif
     free(first_error);
   }
+  LTDL_MUTEX_UNLOCK
   free(name);
   return symbol;
 }
@@ -773,6 +785,7 @@ loadLibrary (const char *name,
 	     void **libHandle,
 	     ExtractMethod * method)
 {
+  LTDL_MUTEX_LOCK
   *libHandle = lt_dlopenext (name);
   if (*libHandle == NULL)
     {
@@ -782,12 +795,16 @@ loadLibrary (const char *name,
 	       name,
 	       lt_dlerror ());
 #endif
+      LTDL_MUTEX_UNLOCK
       return -1;
     }
+  LTDL_MUTEX_UNLOCK
 
   *method = (ExtractMethod) getSymbolWithPrefix (*libHandle, name, "_extract");
   if (*method == NULL) {
+    LTDL_MUTEX_LOCK
     lt_dlclose (*libHandle);
+    LTDL_MUTEX_UNLOCK
     return -1;
   }
   return 1;
@@ -976,8 +993,11 @@ EXTRACTOR_removeLibrary(EXTRACTOR_ExtractorList * prev,
       free (pos->libname);
       if( pos->options )
 	free (pos->options);
-      if( pos->libraryHandle )
+      if( pos->libraryHandle ) {
+        LTDL_MUTEX_LOCK
 	lt_dlclose (pos->libraryHandle);
+        LTDL_MUTEX_UNLOCK
+      }
       free (pos);
     }
 #if DEBUG
