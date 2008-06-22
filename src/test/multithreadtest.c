@@ -19,8 +19,8 @@ struct TaskData
   const struct FileData *file;
 };
 
-static int done = 0;
-static int failed = 0;
+static volatile int done = 0;
+static volatile int failed = 0;
 
 pthread_mutex_t reference_lock = PTHREAD_MUTEX_INITIALIZER;
 static EXTRACTOR_KeywordList *reference_list;
