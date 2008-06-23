@@ -14,7 +14,10 @@ check_PROGRAMS = \
  keywordlisttest \
  plugintest \
  multiload \
- multithreadtest
+ mt_plugintest1 \
+ mt_plugintest2 \
+ mt_extracttest1 \
+ mt_extracttest2
 
 TESTS = $(check_PROGRAMS)
 
@@ -30,8 +33,24 @@ keywordlisttest_SOURCES = \
 multiload_SOURCES = \
  multiload.c 
 
-multithreadtest_SOURCES = \
- multithreadtest.c 
-multithreadtest_LDFLAGS = \
+mt_plugintest1_SOURCES = \
+ mt_plugintest1.c 
+mt_plugintest1_LDFLAGS = \
  -lpthread
+
+mt_plugintest2_SOURCES = \
+ mt_plugintest2.c 
+mt_plugintest2_LDFLAGS = \
+ -lpthread
+
+mt_extracttest1_SOURCES = \
+ mt_extracttest1.c 
+mt_extracttest1_LDFLAGS = \
+ -lpthread
+
+mt_extracttest2_SOURCES = \
+ mt_extracttest2.c 
+mt_extracttest2_LDFLAGS = \
+ -lpthread
+
 

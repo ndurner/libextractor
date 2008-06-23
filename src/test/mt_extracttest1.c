@@ -1,22 +1,16 @@
 /**
- * @file test/multithreadtest.c
- * @brief test extractor plugins from multiple threads simultaneously
+ * @file test/mt_extracttest1.c
+ * @brief test keyword extraction from multiple threads simultaneously
  * @author Heikki Lindholm
  */
 #include "platform.h"
 #include "extractor.h"
 #include <pthread.h>
 
-struct FileData
-{
-  const char *filename;
-  int use_thumbnailer;
-};
-
 struct TaskData
 {
   int id;
-  const struct FileData *file;
+  const char *filename;
 };
 
 static volatile int done = 0;
@@ -78,27 +72,19 @@ compare_keywords_to_ref (EXTRACTOR_KeywordList * list)
 }
 
 static EXTRACTOR_KeywordList *
-get_keywords_for_file (const struct FileData *file)
+get_keywords_for_file (const char *filename)
 {
   EXTRACTOR_ExtractorList *el;
   EXTRACTOR_KeywordList *list;
 
-  if (file->use_thumbnailer) 
-    {
-      el = EXTRACTOR_addLibrary (NULL, "libextractor_mime");
-      el = EXTRACTOR_loadConfigLibraries (el, "-libextractor_thumbnail");
-    }
-  else
-    {
-      el = EXTRACTOR_loadDefaultLibraries ();
-    }
+  el = EXTRACTOR_loadDefaultLibraries ();
   if (el == NULL)
     {
       printf ("ERROR: failed to load plugins!\n");
       return NULL;
     }
   errno = 0;
-  list = EXTRACTOR_getKeywords (el, file->filename);
+  list = EXTRACTOR_getKeywords (el, filename);
   if (errno != 0) {
     printf("ERROR: EXTRACTOR_getKeywords: %s\n", strerror(errno));
   }
@@ -116,7 +102,7 @@ test_plugins (void *arg)
     {
       EXTRACTOR_KeywordList *list;
 
-      list = get_keywords_for_file (td->file);
+      list = get_keywords_for_file (td->filename);
 
       if ((list == NULL) || (compare_keywords_to_ref (list) != 0))
         {
@@ -129,15 +115,7 @@ test_plugins (void *arg)
   return 0;
 }
 
-static const struct FileData files[] = {
-  { TESTDATADIR "/test.bmp", 0 },
-  { TESTDATADIR "/test.jpg", 0 },
-  { TESTDATADIR "/test.png", 0 },
-  { TESTDATADIR "/test.sxw", 0 },
-  { TESTDATADIR "/test.bmp", 1 },
-  { TESTDATADIR "/test.png", 1 },
-  { NULL, 0 }
-};
+static const char *filename = TESTDATADIR "/text2.sxw";
 
 #define TEST_SECS 10
 
@@ -149,17 +127,14 @@ main (int argc, char *argv[])
   struct TaskData td[num_tasks];
   int ret = 0;
   int i;
-  int n;
 
-  n = 0;
-  while ((files[n].filename != NULL) && (!failed)) {
-    printf("testing with '%s' for %d seconds\n", files[n].filename, TEST_SECS);
-    reference_list = get_keywords_for_file (&files[n]);
+  printf("testing with '%s' for %d seconds\n", filename, TEST_SECS);
+  reference_list = get_keywords_for_file (filename);
 
     for (i = 0; i < num_tasks; i++)
       {
         td[i].id = i;
-        td[i].file = &files[n];
+        td[i].filename = filename;
         ret = pthread_create (&task_list[i], NULL, test_plugins, &td[i]);
         if (ret != 0)
           {
@@ -178,12 +153,8 @@ main (int argc, char *argv[])
           printf ("WARNING: pthread_join failed for thread %d\n", i);
       }
 
-    done = 0;
     if (reference_list != NULL)
       EXTRACTOR_freeKeywords (reference_list);
-  
-    n++;
-  }
 
   return failed;
 }
