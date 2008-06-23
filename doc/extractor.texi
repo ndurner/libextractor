@@ -176,7 +176,7 @@ man page gives a brief summary of the C API for
 When you install @acronym{libextractor}, various plugins will be
 installed in the @file{lib/libextractor/} directory.  The main library
 will be installed as @file{lib/libextractor.so}.  Note that
-@acronym{libextractor} will attempt to find the plugins relativ to the
+@acronym{libextractor} will attempt to find the plugins relative to the
 path of the main library.  Consequently, a package manager can move
 the library and its plugins to a different location later --- as long
 as the relative path between the main library and the plugins is
@@ -260,9 +260,6 @@ type.
 
 @findex EXTRACTOR_loadDefaultLibraries
 @findex EXTRACTOR_removeAll
-@cindex reentrant
-@cindex concurrency
-@cindex threads
 Clients should use the @verb{|EXTRACTOR_loadDefaultLibraries|}
 function to create an extractor list with the default set of plugins.
 Additional functions are provided for loading optional plugins.  Once
@@ -270,22 +267,43 @@ the meta data extraction is complete, clients should call
 @verb{|EXTRACTOR_removeAll|} to unload the plugins and free the
 extractor list.  Note that loading and unloading the plugins is a
 relatively costly operation.  If possible, programmers should avoid
-needlessly loading and unloading the plugins.  @acronym{libextractor}
-is reentrant, so the same set of plugins can be safely used
-concurrently by multiple threads.
+needlessly loading and unloading the plugins. 
 
+@cindex reentrant
+@cindex concurrency
+@cindex threads
+@cindex thread-safety
+All of the functions for loading and unloading plugins, including
+@verb{|EXTRACTOR_loadDefaultLibraries|} and @verb{|EXTRACTOR_removeAll|},
+are thread-safe, but not reentrant. The functions use operating system
+specific calls to dynamically load and unload objects, and in many cases,
+these calls are not thread-safe. In @acronym{libextractor} code, locking
+is used to protect access to these operating system specific calls. 
+
+Generally, @acronym{libextractor} is fully thread-safe and mostly reentrant.
+All plugin code is required to be reentrant, so the same set of plugins
+can be safely used concurrently by multiple threads. Reentrant functions, 
+naturally, do not protect their arguments (plugin or keyword lists) against
+concurrent access. For further information on @acronym{libextractor}'s
+thread-safety and reentrancy, also see the following chapters on
+@acronym{libextractor} usage.
 
 @node Extracting meta data
 @chapter Extracting meta data
 
 @findex EXTRACTOR_getKeywords
 @findex EXTRACTOR_getKeywords2
+@cindex reentrant
+@cindex concurrency
+@cindex threads
+@cindex thread-safety
 The main functions for extracting keywords with @acronym{libextractor}
 are @verb{|EXTRACTOR_getKeywords|} and
 @verb{|EXTRACTOR_getKeywords2|}.  The first argument to both functions
 is an extractor list which specifies the set of plugins that should be
 used for extracting meta data.   Both functions return a linked list
-of keywords (of type @verb{|EXTRACTOR_KeywordList|}).
+of keywords (of type @verb{|EXTRACTOR_KeywordList|}). Also, both
+functions are reentrant.
 
 The difference between the two functions is in how the file from which
 the meta data should be obtained is specified. The
@@ -325,6 +343,14 @@ more control than simply sticking to the default list.  It is recommended
 that clients start by loading the default plugins and then allow the user
 to perform further customizations using command-line options or a
 configuration file.
+
+@cindex reentrant
+@cindex concurrency
+@cindex threads
+@cindex thread-safety
+Like @verb{|EXTRACTOR_loadDefaultLibraries|} and 
+@verb{|EXTRACTOR_removeAll|}, these functions are thread-safe, but not
+reentrant. 
 
 @findex EXTRACTOR_addLibrary
 The @verb{|EXTRACTOR_addLibrary|} function can be used to add a
@@ -375,6 +401,13 @@ required before the binding can be installed.
 
 @node Utility functions
 @chapter Utility functions
+
+@cindex reentrant
+@cindex concurrency
+@cindex threads
+@cindex thread-safety
+This chapter describes various utility functions for
+@acronym{libextractor} usage. All of the functions are reentrant.
 
 @menu
 * Utility Constants::            Constants
