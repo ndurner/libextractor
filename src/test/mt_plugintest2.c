@@ -25,16 +25,25 @@ test_plugins (void *arg)
 
   while (!done)
     {
-      /* do some load/unload tests */
       el = EXTRACTOR_addLibrary (NULL, "libextractor_thumbnailgtk");
-      el = EXTRACTOR_addLibrary (el, "libextractor_thumbnailqt");
-      el = EXTRACTOR_addLibrary (el, "libextractor_thumbnailffmpeg");
-      el = EXTRACTOR_removeLibrary (el, "libextractor_thumbnailffmpeg");
-      el = EXTRACTOR_removeLibrary (el, "libextractor_thumbnailqt");
       el = EXTRACTOR_removeLibrary (el, "libextractor_thumbnailgtk");
       if (el != NULL)
         {
-          printf ("add-remove test failed in thread %d!\n", td->id);
+          printf ("add-remove test failed (gtk) in thread %d!\n", td->id);
+          failed = 1;
+        }
+      el = EXTRACTOR_addLibrary (NULL, "libextractor_thumbnailqt");
+      el = EXTRACTOR_removeLibrary (el, "libextractor_thumbnailqt");
+      if (el != NULL)
+        {
+          printf ("add-remove test failed (qt) in thread %d!\n", td->id);
+          failed = 1;
+        }
+      el = EXTRACTOR_addLibrary (NULL, "libextractor_thumbnailffmpeg");
+      el = EXTRACTOR_removeLibrary (el, "libextractor_thumbnailffmpeg");
+      if (el != NULL)
+        {
+          printf ("add-remove test failed (ffmpeg) in thread %d!\n", td->id);
           failed = 1;
         }
     }
