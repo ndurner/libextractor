@@ -119,6 +119,7 @@ build_toolchain()
 	if [ ! -e "${BUILD_DIR}/toolchain/bin/dictionary-builder" ]
 	then
 		echo "building toolchain: dictionary-builder..."
+		make clean
 		./configure --prefix="${BUILD_DIR}/toolchain"	\
 				--disable-gsf			\
 				--disable-gnome			\
@@ -127,7 +128,6 @@ build_toolchain()
 		make install
 		cp src/plugins/printable/dictionary-builder	\
 			"${BUILD_DIR}/toolchain/bin"
-		make clean
 	fi
 
 #	if [ ! -e "${BUILD_DIR}/toolchain/bin/libtool" ]
@@ -252,12 +252,6 @@ build_package()
 #
 build_dependencies()
 {
-	ARCH_CC="gcc -arch ${ARCH_NAME}"
-	ARCH_CXX="g++ -arch ${ARCH_NAME}"
-	ARCH_CPPFLAGS="-I${SDK_PATH}/${FW_DIR}/include -isysroot ${SDK_PATH}"
-	ARCH_CFLAGS="-arch ${ARCH_NAME} -isysroot ${SDK_PATH}"
-	ARCH_LDFLAGS="-L${SDK_PATH}/${FW_DIR}/lib -arch ${ARCH_NAME} -isysroot ${SDK_PATH} -Wl,-syslibroot,${SDK_PATH}"
-
 #	prepare_package "${GETTEXT_NAME}"
 #	build_package "${GETTEXT_NAME}"			\
 #			"${ARCH_HOSTSETTING}		\
@@ -312,16 +306,12 @@ build_extractor()
 	if [ ! -e "${BUILD_DIR}/built-Extractor-${ARCH_NAME}" ]
 	then
 		echo "building libextractor for ${ARCH_NAME}..."
-		ARCH_CC="gcc -arch ${ARCH_NAME} -isysroot ${SDK_PATH}"
-		ARCH_CXX="g++ -arch ${ARCH_NAME} -isysroot ${SDK_PATH}"
-		ARCH_CPPFLAGS="-isysroot ${SDK_PATH} -I${SDK_PATH}/${FW_DIR}/include"
-		ARCH_CFLAGS="-arch ${ARCH_NAME} -isysroot ${SDK_PATH}"
 		ARCH_LDFLAGS="-arch ${ARCH_NAME} -isysroot ${SDK_PATH} -Wl,-syslibroot,${SDK_PATH} -L${FW_DIR}/lib"
 		CFLAGS="${OPT_FLAGS} -no-cpp-precomp ${ARCH_CFLAGS}"
 		CPPFLAGS="${ARCH_CPPFLAGS}"
 		CXXFLAGS="${CFLAGS}"
 		LDFLAGS="${ARCH_LDFLAGS}"
-		if ! ( ./configure CC="${ARCH_CC}"		\
+		if ! ( make clean && ./configure CC="${ARCH_CC}"	\
 			CXX="${ARCH_CXX}"			\
 			CPPFLAGS="${CPPFLAGS}"			\
 			CFLAGS="${CFLAGS}"			\
@@ -332,6 +322,8 @@ build_extractor()
 			--enable-shared				\
 			--disable-gsf				\
 			--disable-gnome				\
+			--enable-ffmpeg				\
+			--with-ffmpeg-arch="unknown"		\
 			--with-libiconv-prefix=${SDK_PATH}/usr )
 		then
 			build_retval=1
@@ -346,10 +338,6 @@ else\\
 eval  depdepl=\"\$tmp\/lib\$tmp_libs.dylib\"\\
 fi|g" > ./libtool
 		rm ./libtool.tmp
-		#rm libtool
-		#ln -s "${BUILD_DIR}/toolchain/bin/libtool" ./libtool
-		#cp -Pp libtool libtool.orig
-		#cat libtool.orig | sed "s|sys_lib_search_path_spec=\"[^\"]*\"|sys_lib_search_path_spec=\"${SDK_PATH}/usr/lib\"|g" > libtool
 		# use native dictionary-builder instead of the cross-built one
 		find ./ -type f -name "Makefile" |	\
 			xargs perl -pi -w -e "s#./dictionary-builder #${BUILD_DIR}/toolchain/bin/dictionary-builder #g;"
@@ -508,28 +496,34 @@ build_toolchain
 # build deps and libextractor for all archs
 for arch in $BUILD_ARCHS_LIST
 do
-  ARCH_NAME=$arch
-  case "$arch" in
-    "ppc")
-      ARCH_HOSTSETTING="--host=powerpc-apple-darwin8"
-      ;;
-    "ppc64")
-      ARCH_HOSTSETTING="--host=powerpc64-apple-darwin8"
-      ;;
-    "i386")
-      ARCH_HOSTSETTING="--host=i686-apple-darwin8"
-      ;;
-    "x86_64")
-      ARCH_HOSTSETTING="--host=x86_64-apple-darwin8"
-      ;;
-    *)
-      echo "unknown architecture ${arch}"
-      exit 1
-      ;;
-  esac
-  build_dependencies
-  build_extractor
-  finalize_arch_build
+	ARCH_NAME=$arch
+	case "$arch" in
+	"ppc")
+		ARCH_HOSTSETTING="--host=powerpc-apple-darwin8"
+		;;
+	"ppc64")
+		ARCH_HOSTSETTING="--host=powerpc64-apple-darwin8"
+		;;
+	"i386")
+		ARCH_HOSTSETTING="--host=i686-apple-darwin8"
+		;;
+	"x86_64")
+		ARCH_HOSTSETTING="--host=x86_64-apple-darwin8"
+		;;
+	*)
+		echo "unknown architecture ${arch}"
+		exit 1
+		;;
+	esac
+	ARCH_CC="gcc -arch ${ARCH_NAME} -isysroot ${SDK_PATH}"
+	ARCH_CXX="g++ -arch ${ARCH_NAME} -isysroot ${SDK_PATH}"
+	ARCH_CPPFLAGS="-I${SDK_PATH}/${FW_DIR}/include -isysroot ${SDK_PATH}"
+	ARCH_CFLAGS="-arch ${ARCH_NAME} -isysroot ${SDK_PATH}"
+	ARCH_LDFLAGS="-L${SDK_PATH}/${FW_DIR}/lib -arch ${ARCH_NAME} -isysroot ${SDK_PATH} -Wl,-syslibroot,${SDK_PATH}"
+
+	build_dependencies
+	build_extractor
+	finalize_arch_build
 done
 
 # build framework structure
