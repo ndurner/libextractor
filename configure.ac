@@ -543,6 +543,7 @@ then
 	--cc="$CC"			\
 	$FFMPEGARCH			\
 	--prefix=/tmp			\
+	--disable-optimizations		\
 	--disable-mmx			\
 	--disable-altivec		\
 	--enable-shared			\
