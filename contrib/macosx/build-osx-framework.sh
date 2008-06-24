@@ -2,8 +2,11 @@
 
 #
 # A script to build Extractor.framework for Mac OS X
-# 
+#
 # Copyright (C) 2008 Heikki Lindholm
+#
+# Run from the libextractor top source dir, e.g. 
+# > ./contrib/macosx/build-osx-framework.sh
 #
 # - 64-bit archs won't build on Mac OS X 10.4 (too many missing deps)
 # 
@@ -24,6 +27,8 @@ OPT_FLAGS="-O2 -g"
 BUILD_ARCHS_LIST="ppc i386"
 export MACOSX_DEPLOYMENT_TARGET=10.4
 
+GNUMAKE_URL=http://ftp.gnu.org/pub/gnu/make
+GNUMAKE_NAME=make-3.81
 LIBTOOL_URL=ftp://ftp.gnu.org/gnu/libtool
 LIBTOOL_NAME=libtool-2.2.4
 GETTEXT_URL=ftp://ftp.gnu.org/gnu/gettext
@@ -37,7 +42,7 @@ LIBFLAC_NAME=flac-1.2.1
 LIBMPEG2_URL=http://libmpeg2.sourceforge.net/files
 LIBMPEG2_NAME=mpeg2dec-0.4.1
 
-export PATH=/usr/local/bin:/bin:/sbin:/usr/bin:/usr/sbin:${BUILD_DIR}/toolchain/bin
+export PATH=${BUILD_DIR}/toolchain/bin:/usr/local/bin:/bin:/sbin:/usr/bin:/usr/sbin
 
 #
 # Fetch necessary packages
@@ -64,6 +69,7 @@ fetch_package()
 fetch_all_packages()
 {
 #	fetch_package "${LIBTOOL_NAME}" "${LIBTOOL_URL}"
+	fetch_package "${GNUMAKE_NAME}" "${GNUMAKE_URL}"
 	fetch_package "${GETTEXT_NAME}" "${GETTEXT_URL}"
 	fetch_package "${LIBOGG_NAME}" "${LIBOGG_URL}"
 	fetch_package "${LIBVORBIS_NAME}" "${LIBVORBIS_URL}"
@@ -76,8 +82,25 @@ fetch_all_packages()
 #
 build_toolchain()
 {
+	
+	if [ ! -e "${BUILD_DIR}/toolchain/bin/make" ]
+	then
+		echo "building toolchain: ${GNUMAKE_NAME}..."
+		cd contrib
+
+		tar xzf "${GNUMAKE_NAME}.tar.gz"
+		cd "${GNUMAKE_NAME}"
+		./configure --prefix="${BUILD_DIR}/toolchain"
+		make install
+		cd ..
+		rm -rf "${GNUMAKE_NAME}"
+
+		cd ..
+	fi
+
 	if [ ! -e "${BUILD_DIR}/toolchain/bin/msgfmt" ]
 	then
+		echo "building toolchain: ${GETTEXT_NAME}..."
 		cd contrib
 
 		tar xzf "${GETTEXT_NAME}.tar.gz"
@@ -95,9 +118,12 @@ build_toolchain()
 
 	if [ ! -e "${BUILD_DIR}/toolchain/bin/dictionary-builder" ]
 	then
+		echo "building toolchain: dictionary-builder..."
 		./configure --prefix="${BUILD_DIR}/toolchain"	\
 				--disable-gsf			\
-				--disable-gnome
+				--disable-gnome			\
+				--disable-exiv2			\
+				--enable-printable
 		make install
 		cp src/plugins/printable/dictionary-builder	\
 			"${BUILD_DIR}/toolchain/bin"
