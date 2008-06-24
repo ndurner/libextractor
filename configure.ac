@@ -494,6 +494,13 @@ AC_ARG_ENABLE(ffmpeg,
         ffmpeg_enabled=0])
 AM_CONDITIONAL(HAVE_FFMPEG, test x$ffmpeg_enabled != x0)
 
+ffmpegarch=""
+AC_ARG_WITH(ffmpeg-arch,
+	AC_HELP_STRING(
+		[--with-ffmpeg-arch],
+		[set FFmpeg --arch setting for cross-compiling.]),
+	[ffmpegarch=$withval])
+
 AC_SUBST(CPPFLAGS)
 AC_SUBST(LDFLAGS)
 AC_SUBST(XTRA_CPPLIBS)
@@ -526,8 +533,15 @@ AX_CREATE_PKGCONFIG_INFO([libextractor.pc],,[-lextractor],[Metadata extraction l
 if test "x$ffmpeg_enabled" = "x1"
 then
  AC_MSG_NOTICE([configuring FFmpeg])
+ FFMPEGARCH=""
+ if test "x$ffmpegarch" != "x"
+ then
+   FFMPEGARCH="--enable-cross-compile --arch=$ffmpegarch"
+ fi
  cd src/plugins/thumbnailffmpeg/ffmpeg/
  if ! ./configure			\
+	--cc=$CC			\
+	$FFMPEGARCH			\
 	--prefix=/tmp			\
 	--disable-mmx			\
 	--disable-altivec		\
