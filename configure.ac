@@ -540,7 +540,7 @@ then
  fi
  cd src/plugins/thumbnailffmpeg/ffmpeg/
  if ! ./configure			\
-	--cc=$CC			\
+	--cc="$CC"			\
 	$FFMPEGARCH			\
 	--prefix=/tmp			\
 	--disable-mmx			\
