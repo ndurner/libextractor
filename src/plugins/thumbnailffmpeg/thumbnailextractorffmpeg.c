@@ -494,6 +494,8 @@ out:
     av_free (enc_codec_ctx);
   if (encoder_output_buffer != NULL)
     av_free (encoder_output_buffer);
+  if (scaler_ctx != NULL)
+    sws_freeContext(scaler_ctx);
   if (codec != NULL)
     avcodec_close (codec_ctx);
   if (format_ctx != NULL)
