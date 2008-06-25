@@ -36,7 +36,7 @@ GETTEXT_NAME=gettext-0.16.1
 LIBOGG_URL=http://downloads.xiph.org/releases/ogg
 LIBOGG_NAME=libogg-1.1.3
 LIBVORBIS_URL=http://downloads.xiph.org/releases/vorbis
-LIBVORBIS_NAME=libvorbis-1.1.2
+LIBVORBIS_NAME=libvorbis-1.2.0
 LIBFLAC_URL=http://switch.dl.sourceforge.net/sourceforge/flac
 LIBFLAC_NAME=flac-1.2.1
 LIBMPEG2_URL=http://libmpeg2.sourceforge.net/files
@@ -52,16 +52,19 @@ export PATH=${BUILD_DIR}/toolchain/bin:/usr/local/bin:/bin:/sbin:/usr/bin:/usr/s
 # $2 = base url
 fetch_package()
 {
-	cd contrib
-	if [ ! -e "$1.tar.gz" ]
+	if ! cd contrib 
 	then
-		echo "fetching $1..."
-		curl -O --url "$2/$1.tar.gz"
+		echo "missing 'contrib' dir"
+		exit 1
 	fi
 	if [ ! -e "$1.tar.gz" ]
 	then
-		echo "Could not fetch package: $1"
-		exit 1
+		echo "fetching $1..."
+		if ! ( curl -O --url "$2/$1.tar.gz" )
+		then
+			echo "error fetching $1"
+			exit 1
+		fi
 	fi
 	cd ..
 }
@@ -159,32 +162,44 @@ prepare_sdk()
 {
 	if [ ! -e "${BUILD_DIR}" ]
 	then
-		mkdir -p "${BUILD_DIR}"
+		if ! ( mkdir -p "${BUILD_DIR}" )
+		then
+			echo "error creating build dir"
+			exit 1
+		fi
 	fi
 
 	if [ ! -e "${SDK_PATH}" ]
 	then
-		cp -ipPR "${ORIG_SDK}" "${BUILD_DIR}"
-	fi
-
-	if [ ! -e "${SDK_PATH}" ]
-	then
-		echo "error preparing sdk"
-		exit 1
+		echo "copying SDK to build dir..."
+		if ! ( cp -ipPR "${ORIG_SDK}" "${BUILD_DIR}" )
+		then
+			echo "error preparing SDK"
+			exit 1
+		fi
 	fi
 
 	if [ -h "${SDK_PATH}/Library/Frameworks" ]
 	then
-		rm -f "${SDK_PATH}/Library/Frameworks"
+		if ! ( rm -f "${SDK_PATH}/Library/Frameworks" )
+		then
+			echo "error removing SDK 'Frameworks' symlink"
+			exit 1
+		fi
 	fi
 }
 
 prepare_package()
 {
-	prepare_retval=0
+	local prepare_retval=0
 	if [ ! -e "${BUILD_DIR}/built-$1-${ARCH_NAME}" ]
 	then
-		cd contrib
+		if ! cd contrib 
+		then
+			echo "missing 'contrib' dir"
+			exit 1
+		fi
+
 		if [ ! -e "$1" ]
 		then
 			if ! ( tar xzf "$1.tar.gz" )
@@ -193,6 +208,16 @@ prepare_package()
 				prepare_retval=1
 			fi
 		fi
+		for patchfile in $( ls $1-patch-* 2> /dev/null | sort )
+		do
+			echo "applying $patchfile..."
+			if ! ( cd $1 && cat "../$patchfile" | patch -p0 && cd .. )
+			then
+				echo "error patching $1"
+				prepare_retval=1
+			fi
+		done
+
 		cd ..
 		if [ $prepare_retval -eq 1 ] 
 		then
@@ -205,12 +230,15 @@ prepare_package()
 # $2 = configure options
 build_package()
 {
-	build_retval=0
+	local build_retval=0
 	if [ ! -e "${BUILD_DIR}/built-$1-${ARCH_NAME}" ]
 	then
 		echo "building $1 for ${ARCH_NAME}..."
-		cd contrib
-		cd "$1"
+		if ! cd contrib/"$1"
+		then
+			echo "missing \'contrib/$1\' dir"
+			exit 1
+		fi
 		CC="${ARCH_CC}"
 		CXX="${ARCH_CXX}"
 		CPPFLAGS="${ARCH_CPPFLAGS}"
@@ -302,7 +330,7 @@ build_dependencies()
 #
 build_extractor()
 {
-	build_retval=0
+	local build_retval=0
 	if [ ! -e "${BUILD_DIR}/built-Extractor-${ARCH_NAME}" ]
 	then
 		echo "building libextractor for ${ARCH_NAME}..."
@@ -361,13 +389,17 @@ finalize_arch_build()
 {
 	if [ ! -e "${SDK_PATH}/${FW_BASE_DIR}-${ARCH_NAME}" ]
 	then
-		mv "${SDK_PATH}/${FW_BASE_DIR}" "${SDK_PATH}/${FW_BASE_DIR}-${ARCH_NAME}"
+		if ! ( mv "${SDK_PATH}/${FW_BASE_DIR}" "${SDK_PATH}/${FW_BASE_DIR}-${ARCH_NAME}" )
+		then
+			echo "error finalizing arch build"
+			exit 1
+		fi
 	fi
 }
 
 create_directory_for()
 {
-	dst_dir=$(dirname "$1")
+	local dst_dir=$(dirname "$1")
 	if [ ! -e "${dst_dir}" ]
 	then
 		echo "MKDIR ${dst_dir}"
@@ -377,18 +409,22 @@ create_directory_for()
 			exit 1
 		fi
 		# fix dir permissions
-		chmod 0755 `find ${FINAL_FW_BASE_DIR} -type d`
+		if ! ( chmod 0755 `find ${FINAL_FW_BASE_DIR} -type d` )
+		then
+			echo "error setting permissions"
+			exit 1
+		fi
 	fi
 }
 
 install_executable_to_framework()
 {
-	src_name="$1"
-	src_files=""
-	dst_file="${FINAL_FW_DIR}/${src_name}"
+	local src_name="$1"
+	local src_files=""
+	local dst_file="${FINAL_FW_DIR}/${src_name}"
 	for arch in $BUILD_ARCHS_LIST 
 	do
-		tmpfile="${SDK_PATH}/${FW_BASE_DIR}-${arch}/${FW_VERSION_DIR}/${src_name}"
+		local tmpfile="${SDK_PATH}/${FW_BASE_DIR}-${arch}/${FW_VERSION_DIR}/${src_name}"
 		if [ -h "${tmpfile}" ]
 		then
 			install_file_to_framework $1
@@ -406,31 +442,51 @@ install_executable_to_framework()
 		if [ ! -e "${dst_file}" ] && [ ! -h "${dst_file}" ]
 		then
 			echo "LIPO ${dst_file}"
-			lipo -create -o "${dst_file}" ${src_files}
-			chmod 0755 "${dst_file}"
+			if ! ( lipo -create -o "${dst_file}" ${src_files} )
+			then
+				echo "error creating fat binary"
+				exit 1
+			fi
+			if ! ( chmod 0755 "${dst_file}" )
+			then
+				echo "error settings permissions"
+				exit 1
+			fi
 		fi
 	fi
 }
 
 install_file_to_framework()
 {
-	src_name="$1"
+	local src_name="$1"
 	for arch in $BUILD_ARCHS_LIST 
 	do
-		src_file="${SDK_PATH}/${FW_BASE_DIR}-${arch}/${FW_VERSION_DIR}/${src_name}"
-		dst_file="${FINAL_FW_DIR}/${src_name}"
+		local src_file="${SDK_PATH}/${FW_BASE_DIR}-${arch}/${FW_VERSION_DIR}/${src_name}"
+		local dst_file="${FINAL_FW_DIR}/${src_name}"
 		create_directory_for "${dst_file}"
 		if [ ! -e "${dst_file}" ] && [ ! -h "${dst_file}" ]
 		then
 			if [ -h "${src_file}" ]
 			then
 				echo "CP ${dst_file}"
-				cp -PpR "${src_file}" "${dst_file}"
-				chmod 0755 "${dst_file}"
+				if ! ( cp -PpR "${src_file}" "${dst_file}" )
+				then
+					echo "error copying file"
+					exit 1
+				fi
+				if ! ( chmod 0755 "${dst_file}" )
+				then
+					echo "error setting permissions"
+					exit 1
+				fi
 			elif [ -f "${src_file}" ]
 			then
 				echo "INSTALL ${dst_file}"
-				install -m 0644 "${src_file}" "${dst_file}"
+				if ! ( install -m 0644 "${src_file}" "${dst_file}" )
+				then
+					echo "error installing file"
+					exit 1
+				fi
 			else
 				echo "no such file: ${src_file}"
 				exit 1
@@ -446,37 +502,47 @@ install_file_to_framework()
 
 copy_file_to_framework()
 {
-	src_file="$1"
-	dst_file="${FINAL_FW_DIR}/$2"
+	local src_file="$1"
+	local dst_file="${FINAL_FW_DIR}/$2"
 	if [ ! -e "$dst_file" ]
 	then
 		create_directory_for "$dst_file"
-		install -m 0644 "$src_file" "$dst_file"
+		if ! ( install -m 0644 "$src_file" "$dst_file" )
+		then
+			echo "error installing file"
+			exit 1
+		fi
 	fi
 }
 
 make_framework_link()
 {
-	link_target="$1"
-	link_name="$2"
-	orig_dir=$(pwd)
-	cd "${FINAL_FW_DIR}"
+	local link_target="$1"
+	local link_name="$2"
+	local orig_dir=$(pwd)
 	echo "LN $link_name"
-	ln -sf "$link_target" "$link_name"
-	cd "${orig_dir}"
+	if ! ( cd "${FINAL_FW_DIR}" && ln -sf "$link_target" "$link_name" && cd "${orig_dir}" )
+	then
+		echo "error creating link"
+		exit 1
+	fi
 }
 
 make_framework_version_links()
 {
 	orig_dir=$(pwd)
-	cd "${FINAL_FW_BASE_DIR}/Versions"
-	ln -sf "${FW_VERSION}" "Current"
-	cd "${FINAL_FW_BASE_DIR}"
-	ln -sf "Versions/Current/Headers" "Headers"
-	ln -sf "Versions/Current/Extractor" "Extractor"
-	ln -sf "Versions/Current/PlugIns" "PlugIns"
-	ln -sf "Versions/Current/Resources" "Resources"
-	cd "${orig_dir}"
+	if ! ( cd "${FINAL_FW_BASE_DIR}/Versions" && \
+		ln -sf "${FW_VERSION}" "Current" && \
+		cd "${FINAL_FW_BASE_DIR}" && \
+		ln -sf "Versions/Current/Headers" "Headers" && \
+		ln -sf "Versions/Current/Extractor" "Extractor" && \
+		ln -sf "Versions/Current/PlugIns" "PlugIns" && \
+		ln -sf "Versions/Current/Resources" "Resources" && \
+		cd "${orig_dir}" )
+	then
+		echo "error creating standard framework links"
+		exit 1
+	fi
 }
 
 FW_VERSION=`grep "LIB_VERSION_CURRENT=[0123456789]*" ./configure | cut -d= -f2`
