@@ -538,7 +538,6 @@ FW_VERSION=`grep "LIB_VERSION_CURRENT=[0123456789]*" ./configure | cut -d= -f2`
 FW_VERSION_DIR="Versions/${FW_VERSION}"
 FW_DIR="${FW_BASE_DIR}/${FW_VERSION_DIR}"
 FINAL_FW_DIR="${FINAL_FW_BASE_DIR}/${FW_VERSION_DIR}"
-export PKG_CONFIG_PATH=${FW_DIR}/lib/pkgconfig
 ORIG_DIR=$(pwd)
 old_umask=$(umask)
 
