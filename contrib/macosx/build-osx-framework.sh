@@ -71,13 +71,43 @@ fetch_package()
 
 fetch_all_packages()
 {
-#	fetch_package "${LIBTOOL_NAME}" "${LIBTOOL_URL}"
 	fetch_package "${GNUMAKE_NAME}" "${GNUMAKE_URL}"
 	fetch_package "${GETTEXT_NAME}" "${GETTEXT_URL}"
 	fetch_package "${LIBOGG_NAME}" "${LIBOGG_URL}"
 	fetch_package "${LIBVORBIS_NAME}" "${LIBVORBIS_URL}"
 	fetch_package "${LIBFLAC_NAME}" "${LIBFLAC_URL}"
 	fetch_package "${LIBMPEG2_NAME}" "${LIBMPEG2_URL}"
+}
+
+# $1 = package name
+# $2 = configure options
+build_toolchain_package()
+{
+	local build_retval=0
+	echo "building toolchain: $1..."
+	if ! cd contrib
+	then
+		echo "missing 'contrib' dir"
+		exit 1
+	fi
+	if ! ( tar xzf "$1.tar.gz" )
+	then
+		echo "error extracting $1"
+		exit 1
+	fi
+	if ! ( cd $1 && ./configure --prefix="${BUILD_DIR}/toolchain"	\
+			$2 &&						\
+		make install )
+	then
+		echo "error building $1 for ${ARCH_NAME}"
+		build_retval=1
+	fi
+	rm -rf "$1"
+	cd ..
+	if [ $build_retval -eq 1 ] 
+	then
+		exit 1
+	fi
 }
 
 #
@@ -88,71 +118,33 @@ build_toolchain()
 	
 	if [ ! -e "${BUILD_DIR}/toolchain/bin/make" ]
 	then
-		echo "building toolchain: ${GNUMAKE_NAME}..."
-		cd contrib
-
-		tar xzf "${GNUMAKE_NAME}.tar.gz"
-		cd "${GNUMAKE_NAME}"
-		./configure --prefix="${BUILD_DIR}/toolchain"
-		make install
-		cd ..
-		rm -rf "${GNUMAKE_NAME}"
-
-		cd ..
+		build_toolchain_package ${GNUMAKE_NAME} ""
 	fi
 
 	if [ ! -e "${BUILD_DIR}/toolchain/bin/msgfmt" ]
 	then
-		echo "building toolchain: ${GETTEXT_NAME}..."
-		cd contrib
-
-		tar xzf "${GETTEXT_NAME}.tar.gz"
-		cd "${GETTEXT_NAME}"
-		./configure --prefix="${BUILD_DIR}/toolchain"	\
-				--disable-java			\
-				--disable-native-java		\
-				--without-emacs
-		make install
-		cd ..
-		rm -rf "${GETTEXT_NAME}"
-
-		cd ..
+		build_toolchain_package "${GETTEXT_NAME}"	\
+			"--disable-java				\
+			--disable-native-java			\
+			--without-emacs"
 	fi
 
 	if [ ! -e "${BUILD_DIR}/toolchain/bin/dictionary-builder" ]
 	then
 		echo "building toolchain: dictionary-builder..."
-		make clean
-		./configure --prefix="${BUILD_DIR}/toolchain"	\
-				--disable-gsf			\
-				--disable-gnome			\
-				--disable-exiv2			\
-				--enable-printable
-		make install
-		cp src/plugins/printable/dictionary-builder	\
-			"${BUILD_DIR}/toolchain/bin"
+		if ! ( make clean &&				\
+			./configure --prefix="${BUILD_DIR}/toolchain"	\
+					--disable-gsf			\
+					--disable-gnome			\
+					--disable-exiv2			\
+					--enable-printable &&		\
+			make install &&
+			cp src/plugins/printable/dictionary-builder	\
+				"${BUILD_DIR}/toolchain/bin" )
+		then
+			exit 1
+		fi
 	fi
-
-#	if [ ! -e "${BUILD_DIR}/toolchain/bin/libtool" ]
-#	then
-#		cd contrib
-
-#		tar xzf "${LIBTOOL_NAME}.tar.gz"
-#		cd "${LIBTOOL_NAME}"
-		# Make libfool unable to find ANY .la files, because they
-		# invariably cause linking havoc with sysroot although
-		# they really shouldn't
-#		cp libltdl/config/ltmain.sh libltdl/config/ltmain.sh.orig
-		# ugh, for the love of...
-#		chmod +w libltdl/config/ltmain.sh
-		# XXX works for the tested version only
-#		cat libltdl/config/ltmain.sh.orig | \
-#			sed "s/found=yes/found=no/g" > libltdl/config/ltmain.sh
-#		./configure --prefix="${BUILD_DIR}/toolchain"
-#		make install
-#		cd ..
-#		rm -rf "${LIBTOOL_NAME}"
-#	fi
 }
 
 #
@@ -211,7 +203,7 @@ prepare_package()
 		for patchfile in $( ls $1-patch-* 2> /dev/null | sort )
 		do
 			echo "applying $patchfile..."
-			if ! ( cd $1 && cat "../$patchfile" | patch -p0 && cd .. )
+			if ! ( cd $1 && cat "../$patchfile" | patch -p0 )
 			then
 				echo "error patching $1"
 				prepare_retval=1
@@ -234,9 +226,9 @@ build_package()
 	if [ ! -e "${BUILD_DIR}/built-$1-${ARCH_NAME}" ]
 	then
 		echo "building $1 for ${ARCH_NAME}..."
-		if ! cd contrib/"$1"
+		if ! cd contrib
 		then
-			echo "missing \'contrib/$1\' dir"
+			echo "missing 'contrib' dir"
 			exit 1
 		fi
 		CC="${ARCH_CC}"
@@ -245,7 +237,7 @@ build_package()
 		CFLAGS="${OPT_FLAGS} -no-cpp-precomp ${ARCH_CFLAGS}"
 		CXXFLAGS="${CFLAGS}"
 		LDFLAGS="${ARCH_LDFLAGS}"
-		if ! ( ./configure CC="${CC}"				\
+		if ! ( cd "$1" && ./configure CC="${CC}"		\
 			CXX="${CXX}"					\
 			CPPFLAGS="${CPPFLAGS}"				\
 			CFLAGS="${CFLAGS}"				\
@@ -258,7 +250,6 @@ build_package()
 			echo "error building $1 for ${ARCH_NAME}"
 			build_retval=1
 		fi
-		cd ..
 		rm -rf "$1"
 		rm -v `find "${SDK_PATH}" -name "*.la"`
 		unset CC
@@ -369,7 +360,8 @@ fi|g" > ./libtool
 		# use native dictionary-builder instead of the cross-built one
 		find ./ -type f -name "Makefile" |	\
 			xargs perl -pi -w -e "s#./dictionary-builder #${BUILD_DIR}/toolchain/bin/dictionary-builder #g;"
-		if ! ( make DESTDIR="${SDK_PATH}" install &&	\
+		if ! ( test $build_retval = 0 &&			\
+			make DESTDIR="${SDK_PATH}" install &&		\
 			touch "${BUILD_DIR}/built-Extractor-${ARCH_NAME}" )
 		then
 			build_retval=1
@@ -519,9 +511,8 @@ make_framework_link()
 {
 	local link_target="$1"
 	local link_name="$2"
-	local orig_dir=$(pwd)
 	echo "LN $link_name"
-	if ! ( cd "${FINAL_FW_DIR}" && ln -sf "$link_target" "$link_name" && cd "${orig_dir}" )
+	if ! ( cd "${FINAL_FW_DIR}" && ln -sf "$link_target" "$link_name" )
 	then
 		echo "error creating link"
 		exit 1
@@ -530,15 +521,13 @@ make_framework_link()
 
 make_framework_version_links()
 {
-	orig_dir=$(pwd)
 	if ! ( cd "${FINAL_FW_BASE_DIR}/Versions" && \
 		ln -sf "${FW_VERSION}" "Current" && \
 		cd "${FINAL_FW_BASE_DIR}" && \
 		ln -sf "Versions/Current/Headers" "Headers" && \
 		ln -sf "Versions/Current/Extractor" "Extractor" && \
 		ln -sf "Versions/Current/PlugIns" "PlugIns" && \
-		ln -sf "Versions/Current/Resources" "Resources" && \
-		cd "${orig_dir}" )
+		ln -sf "Versions/Current/Resources" "Resources" )
 	then
 		echo "error creating standard framework links"
 		exit 1
