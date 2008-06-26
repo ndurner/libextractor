@@ -84,7 +84,7 @@ darwin*)
      AM_CONDITIONAL(HAVE_GNU_LD, false)
      AM_CONDITIONAL(SOMEBSD, false)
      CFLAGS="-fno-common $CFLAGS"
-     LIBEXT=.dylib
+     LIBEXT=.so
      ;;
 cygwin*)
      AC_DEFINE_UNQUOTED(CYGWIN,1,[This is a CYGWIN system])
@@ -549,6 +549,7 @@ then
 	--enable-shared			\
 	--enable-swscale		\
 	--enable-gpl			\
+	--enable-hardcoded-tables	\
 	--disable-vhook			\
 	--disable-postproc		\
 	--disable-network		\
