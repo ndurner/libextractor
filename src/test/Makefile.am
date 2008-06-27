@@ -9,6 +9,13 @@ AM_CFLAGS = -DELIBDIR=\"$(ELIBDIR)\" -DPLUGIN_PATH="\"${libdir}\"" -DTESTDATADIR
 LDADD = \
  $(top_builddir)/src/main/libextractor.la  
 
+if HAVE_ZZUF
+fuzz_tests=fuzz_default.sh fuzz_thumbnail.sh
+endif
+
+TESTS_ENVIRONMENT = testdatadir=$(top_srcdir)/test
+TESTS_ENVIRONMENT += bindir=${bindir}
+
 check_PROGRAMS = \
  trivialtest \
  keywordlisttest \
@@ -19,7 +26,7 @@ check_PROGRAMS = \
  mt_extracttest1 \
  mt_extracttest2
 
-TESTS = $(check_PROGRAMS)
+TESTS = $(check_PROGRAMS) $(fuzz_tests)
 
 plugintest_SOURCES = \
  plugintest.c 

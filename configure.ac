@@ -460,6 +460,9 @@ ABI_GSF
 echo ""
 AC_CHECK_LIB(gsf-1, gsf_init, AC_DEFINE(HAVE_GSF_INIT,1,[gsf_init supported]))
 
+AC_CHECK_PROG([HAVE_ZZUF],[zzuf], 1, 0)
+AM_CONDITIONAL(HAVE_ZZUF, test 0 != $HAVE_ZZUF)
+
 printable=1
 AC_MSG_CHECKING([whether to enable printable extractors])
 AC_ARG_ENABLE(printable,
