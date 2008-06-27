@@ -25,11 +25,16 @@ do
       exit 1  
     fi
     seed=$ZZSTARTSEED
+    trap "echo crashed by $tmpfile ; exit 1" SEGV
     while [ $seed -lt $ZZSTOPSEED ]
     do
       echo "file $file seed $seed"
       zzuf -s $seed cat "$file" > "$tmpfile"
-      "$bindir/extract" -n -l libextractor_thumbnail:libextractor_mime "$tmpfile" > /dev/null
+      if ! "$bindir/extract" -n -l libextractor_thumbnail:libextractor_mime "$tmpfile" > /dev/null
+      then
+        rm -f "$tmpfile"
+	exit 1
+      fi
       seed=`expr $seed + 1`
     done
     rm -f "$tmpfile"

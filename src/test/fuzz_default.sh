@@ -25,6 +25,7 @@ do
       exit 1  
     fi
     seed=$ZZSTARTSEED
+    trap "echo crashed by $tmpfile ; exit 1" SEGV
     while [ $seed -lt $ZZSTOPSEED ]
     do
       echo "file $file seed $seed"
