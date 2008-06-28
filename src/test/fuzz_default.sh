@@ -25,11 +25,11 @@ do
     while [ $seed -lt $ZZSTOPSEED ]
     do
       echo "file $file seed $seed"
-      zzuf -s $seed cat "$file" > "$tmpfile"
+      zzuf -c -s $seed cat "$file" > "$tmpfile"
       if ! "$bindir/extract" "$tmpfile" > /dev/null
       then
         rm -f "$tmpfile"
-	exit 1
+        exit 1
       fi
       seed=`expr $seed + 1`
     done
