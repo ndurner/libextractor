@@ -19,11 +19,7 @@ for file in $testdatadir/*.bmp $testdatadir/*.png
 do
   if test -f "$file"
   then
-    tmpfile=`mktemp`
-    if ! test -f "$tmpfile"
-    then
-      exit 1  
-    fi
+    tmpfile=`mktemp extractortmp.XXXXXX` || exit 1
     seed=$ZZSTARTSEED
     trap "echo crashed by $tmpfile ; exit 1" SEGV
     while [ $seed -lt $ZZSTOPSEED ]
