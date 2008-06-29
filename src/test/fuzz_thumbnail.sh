@@ -21,14 +21,14 @@ do
   then
     tmpfile=`mktemp extractortmp.XXXXXX` || exit 1
     seed=$ZZSTARTSEED
-    trap "echo crashed by $tmpfile ; exit 1" SEGV
+    trap "echo $tmpfile caused SIGSEGV ; exit 1" SEGV
     while [ $seed -lt $ZZSTOPSEED ]
     do
       echo "file $file seed $seed"
       zzuf -c -s $seed cat "$file" > "$tmpfile"
       if ! "$bindir/extract" -n -l libextractor_thumbnail:libextractor_mime "$tmpfile" > /dev/null
       then
-        rm -f "$tmpfile"
+        echo "$tmpfile caused error exit"
         exit 1
       fi
       seed=`expr $seed + 1`
