@@ -7,10 +7,9 @@ A local ffmpeg tree is used, because
 (2) mainline ffmpeg is not reentrant,
 (3) security issues can be handled locally.
 
-svn export svn://svn.mplayerhq.hu/ffmpeg/trunk ffmpeg
-currently: 
-- libswscale rev 27100
-- ffmpeg rev 13836
+Current base version fetch:
+svn export -r 13836 --ignore-externals svn://svn.mplayerhq.hu/ffmpeg/trunk ffmpeg
+svn export -r 27100 svn://svn.mplayerhq.hu/mplayer/trunk/libswscale ffmpeg/libswscale
 
 Plan: test & enable ffmpeg decoders one by one
 tests:
