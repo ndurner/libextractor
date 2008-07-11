@@ -30,7 +30,7 @@ static const char *TOKENIZERS = "._ ,%@-\n_[](){}";
  * Do not use keywords shorter than this minimum
  * length.
  */
-static int MINIMUM_KEYWORD_LENGTH = 4;
+static int MINIMUM_KEYWORD_LENGTH = 3;
 
 static void
 addKeyword (struct EXTRACTOR_Keywords **list, const char *keyword)
