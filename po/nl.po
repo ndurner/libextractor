@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor-0.5.20a\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2008-03-20 23:53-0600\n"
+"POT-Creation-Date: 2008-07-13 15:09-0600\n"
 "PO-Revision-Date: 2008-04-28 14:52+0200\n"
 "Last-Translator: Benno Schulenberg <benno@vertaalt.nl>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
@@ -30,8 +30,11 @@ msgstr ""
 
 #: src/main/extract.c:52
 #, c-format
-msgid "Arguments mandatory for long options are also mandatory for short options.\n"
-msgstr "Argumenten die verplicht zijn voor lange opties zijn dat ook voor korte opties.\n"
+msgid ""
+"Arguments mandatory for long options are also mandatory for short options.\n"
+msgstr ""
+"Argumenten die verplicht zijn voor lange opties zijn dat ook voor korte "
+"opties.\n"
 
 #: src/main/extract.c:126
 msgid "do not remove any duplicates"
@@ -42,7 +45,9 @@ msgid "print output in bibtex format"
 msgstr "uitvoer in bibtex-indeling produceren"
 
 #: src/main/extract.c:130
-msgid "use the generic plaintext extractor for the language with the 2-letter language code LANG"
+msgid ""
+"use the generic plaintext extractor for the language with the 2-letter "
+"language code LANG"
 msgstr "de gewone-tekst-extractor voor deze (tweelettercode) taal gebruiken"
 
 #: src/main/extract.c:132
@@ -51,11 +56,15 @@ msgstr "duplicaten alleen verwijderen indien van hetzelfde type"
 
 #: src/main/extract.c:134
 msgid "use the filename as a keyword (loads filename-extractor plugin)"
-msgstr "de bestandsnaam als sleutelwoord gebruiken (laadt de bestandsnaamextractor-plugin)"
+msgstr ""
+"de bestandsnaam als sleutelwoord gebruiken (laadt de bestandsnaamextractor-"
+"plugin)"
 
 #: src/main/extract.c:136
 msgid "produce grep-friendly output (all results on one line per file)"
-msgstr "uitvoer produceren die makkelijk te greppen is (alle resultaten op één regel per bestand)"
+msgstr ""
+"uitvoer produceren die makkelijk te greppen is (alle resultaten op één regel "
+"per bestand)"
 
 #: src/main/extract.c:138
 msgid "print this help"
@@ -79,7 +88,8 @@ msgstr "de standaardset extractor-plugins niet gebruiken"
 
 #: src/main/extract.c:148
 msgid "print only keywords of the given TYPE (use -L to get a list)"
-msgstr "alleen sleutelwoorden van dit type tonen (gebruik '-L' voor een overzicht)"
+msgstr ""
+"alleen sleutelwoorden van dit type tonen (gebruik '-L' voor een overzicht)"
 
 #: src/main/extract.c:150
 msgid "remove duplicates even if keyword types do not match"
@@ -109,61 +119,61 @@ msgstr "extract [OPTIES] [BESTANDSNAAM]*"
 msgid "Extract metadata from files."
 msgstr "Metadata uit bestanden lezen."
 
-#: src/main/extract.c:190 src/main/extractor.c:1513
+#: src/main/extract.c:190 src/main/extractor.c:1533
 #, c-format
 msgid "%s - (binary)\n"
 msgstr "%s - (binair)\n"
 
-#: src/main/extract.c:201 src/main/extractor.c:1518
+#: src/main/extract.c:201 src/main/extractor.c:1538
 #, c-format
 msgid "INVALID TYPE - %s\n"
 msgstr "ONGELDIG TYPE - %s\n"
 
-#: src/main/extract.c:320 src/main/extractor.c:47
+#: src/main/extract.c:320 src/main/extractor.c:48
 msgid "title"
 msgstr "titel"
 
-#: src/main/extract.c:322 src/main/extractor.c:45
+#: src/main/extract.c:322 src/main/extractor.c:46
 msgid "filename"
 msgstr "bestandsnaam"
 
-#: src/main/extract.c:327 src/main/extractor.c:48
+#: src/main/extract.c:327 src/main/extractor.c:49
 msgid "author"
 msgstr "auteur"
 
-#: src/main/extract.c:331 src/main/extractor.c:50
+#: src/main/extract.c:331 src/main/extractor.c:51
 msgid "description"
 msgstr "omschrijving"
 
-#: src/main/extract.c:333 src/main/extractor.c:62
+#: src/main/extract.c:333 src/main/extractor.c:63
 msgid "keywords"
 msgstr "trefwoorden"
 
-#: src/main/extract.c:335 src/main/extractor.c:51
+#: src/main/extract.c:335 src/main/extractor.c:52
 msgid "comment"
 msgstr "opmerking"
 
-#: src/main/extract.c:339 src/main/extractor.c:52
+#: src/main/extract.c:339 src/main/extractor.c:53
 msgid "date"
 msgstr "datum"
 
-#: src/main/extract.c:341 src/main/extractor.c:74
+#: src/main/extract.c:341 src/main/extractor.c:75
 msgid "creation date"
 msgstr "aanmaakdatum"
 
-#: src/main/extract.c:369 src/main/extractor.c:53
+#: src/main/extract.c:369 src/main/extractor.c:54
 msgid "publisher"
 msgstr "uitgever"
 
-#: src/main/extract.c:373 src/main/extractor.c:59
+#: src/main/extract.c:373 src/main/extractor.c:60
 msgid "organization"
 msgstr "organisatie"
 
-#: src/main/extract.c:377 src/main/extractor.c:61
+#: src/main/extract.c:377 src/main/extractor.c:62
 msgid "subject"
 msgstr "onderwerp"
 
-#: src/main/extract.c:381 src/main/extractor.c:78
+#: src/main/extract.c:381 src/main/extractor.c:79
 msgid "page count"
 msgstr "aantal bladzijden"
 
@@ -187,517 +197,519 @@ msgstr "%% BiBTeX-bestand\n"
 msgid "Keywords for file %s:\n"
 msgstr "Trefwoorden voor bestand %s:\n"
 
-#: src/main/extractor.c:44
+#: src/main/extractor.c:45
 msgid "unknown"
 msgstr "onbekend"
 
-#: src/main/extractor.c:46
+#: src/main/extractor.c:47
 msgid "mimetype"
 msgstr "mime-type"
 
-#: src/main/extractor.c:49
+#: src/main/extractor.c:50
 msgid "artist"
 msgstr "artiest"
 
-#: src/main/extractor.c:54
+#: src/main/extractor.c:55
 msgid "language"
 msgstr "taal"
 
-#: src/main/extractor.c:55
+#: src/main/extractor.c:56
 msgid "album"
 msgstr "album"
 
-#: src/main/extractor.c:56
+#: src/main/extractor.c:57
 msgid "genre"
 msgstr "genre"
 
-#: src/main/extractor.c:57
+#: src/main/extractor.c:58
 msgid "location"
 msgstr "lokatie"
 
-#: src/main/extractor.c:58
+#: src/main/extractor.c:59
 msgid "version"
 msgstr "versie"
 
-#: src/main/extractor.c:60
+#: src/main/extractor.c:61 src/plugins/mp3extractor.c:478
 msgid "copyright"
 msgstr "copyright"
 
-#: src/main/extractor.c:63
+#: src/main/extractor.c:64
 msgid "contributor"
 msgstr "bijdrager"
 
-#: src/main/extractor.c:64
+#: src/main/extractor.c:65
 msgid "resource-type"
 msgstr ""
 
-#: src/main/extractor.c:65
+#: src/main/extractor.c:66
 msgid "format"
 msgstr "indeling"
 
-#: src/main/extractor.c:66
+#: src/main/extractor.c:67
 msgid "resource-identifier"
 msgstr ""
 
-#: src/main/extractor.c:67
+#: src/main/extractor.c:68
 msgid "source"
 msgstr "bron"
 
-#: src/main/extractor.c:68
+#: src/main/extractor.c:69
 msgid "relation"
 msgstr "relatie"
 
-#: src/main/extractor.c:69
+#: src/main/extractor.c:70
 msgid "coverage"
 msgstr "dekking"
 
-#: src/main/extractor.c:70
+#: src/main/extractor.c:71
 msgid "software"
 msgstr "software"
 
-#: src/main/extractor.c:71
+#: src/main/extractor.c:72
 msgid "disclaimer"
 msgstr "disclaimer"
 
-#: src/main/extractor.c:72
+#: src/main/extractor.c:73
 msgid "warning"
 msgstr "waarschuwing"
 
-#: src/main/extractor.c:73
+#: src/main/extractor.c:74
 msgid "translated"
 msgstr "vertaald"
 
-#: src/main/extractor.c:75
+#: src/main/extractor.c:76
 msgid "modification date"
 msgstr "wijzigingsdatum"
 
-#: src/main/extractor.c:76
+#: src/main/extractor.c:77
 msgid "creator"
 msgstr "maker"
 
-#: src/main/extractor.c:77
+#: src/main/extractor.c:78
 msgid "producer"
 msgstr "producer"
 
-#: src/main/extractor.c:79
+#: src/main/extractor.c:80
 msgid "page orientation"
 msgstr "paginastand"
 
-#: src/main/extractor.c:80
+#: src/main/extractor.c:81
 msgid "paper size"
 msgstr "papiergrootte"
 
-#: src/main/extractor.c:81
+#: src/main/extractor.c:82
 msgid "used fonts"
 msgstr "gebruikte lettertypes"
 
-#: src/main/extractor.c:82
+#: src/main/extractor.c:83
 msgid "page order"
 msgstr "paginavolgorde"
 
-#: src/main/extractor.c:83
+#: src/main/extractor.c:84
 msgid "created for"
 msgstr "gemaakt voor"
 
-#: src/main/extractor.c:84
+#: src/main/extractor.c:85
 msgid "magnification"
 msgstr "vergroting"
 
-#: src/main/extractor.c:85
+#: src/main/extractor.c:86
 msgid "release"
 msgstr "uitgave"
 
-#: src/main/extractor.c:86
+#: src/main/extractor.c:87
 msgid "group"
 msgstr "groep"
 
-#: src/main/extractor.c:87
+#: src/main/extractor.c:88
 msgid "size"
 msgstr "grootte"
 
-#: src/main/extractor.c:88
+#: src/main/extractor.c:89
 msgid "summary"
 msgstr "samenvatting"
 
-#: src/main/extractor.c:89
+#: src/main/extractor.c:90
 msgid "packager"
 msgstr "verpakker"
 
-#: src/main/extractor.c:90
+#: src/main/extractor.c:91
 msgid "vendor"
 msgstr "verkoper"
 
-#: src/main/extractor.c:91
+#: src/main/extractor.c:92
 msgid "license"
 msgstr "licentie"
 
-#: src/main/extractor.c:92
+#: src/main/extractor.c:93
 msgid "distribution"
 msgstr "distributie"
 
-#: src/main/extractor.c:93
+#: src/main/extractor.c:94
 msgid "build-host"
 msgstr ""
 
-#: src/main/extractor.c:94
+#: src/main/extractor.c:95
 msgid "operating system"
 msgstr "besturingssysteem"
 
-#: src/main/extractor.c:95
+#: src/main/extractor.c:96
 msgid "dependency"
 msgstr "afhankelijkheid"
 
-#: src/main/extractor.c:96
+#: src/main/extractor.c:97
 msgid "MD4"
 msgstr "MD4"
 
-#: src/main/extractor.c:97
+#: src/main/extractor.c:98
 msgid "MD5"
 msgstr "MD5"
 
-#: src/main/extractor.c:98
+#: src/main/extractor.c:99
 msgid "SHA-0"
 msgstr "SHA-0"
 
-#: src/main/extractor.c:99
+#: src/main/extractor.c:100
 msgid "SHA-1"
 msgstr "SHA-1"
 
-#: src/main/extractor.c:100
+#: src/main/extractor.c:101
 msgid "RipeMD160"
 msgstr "RipeMD160"
 
-#: src/main/extractor.c:101
+#: src/main/extractor.c:102
 msgid "resolution"
 msgstr "resolutie"
 
-#: src/main/extractor.c:102
+#: src/main/extractor.c:103
 msgid "category"
 msgstr "categorie"
 
-#: src/main/extractor.c:103
+#: src/main/extractor.c:104
 msgid "book title"
 msgstr "boektitel"
 
-#: src/main/extractor.c:104
+#: src/main/extractor.c:105
 msgid "priority"
 msgstr "prioriteit"
 
-#: src/main/extractor.c:105
+#: src/main/extractor.c:106
 msgid "conflicts"
 msgstr "conflicteert"
 
-#: src/main/extractor.c:106
+#: src/main/extractor.c:107
 msgid "replaces"
 msgstr "vervangt"
 
-#: src/main/extractor.c:107
+#: src/main/extractor.c:108
 msgid "provides"
 msgstr "levert"
 
-#: src/main/extractor.c:108
+#: src/main/extractor.c:109
 msgid "conductor"
 msgstr "dirigent"
 
-#: src/main/extractor.c:109
+#: src/main/extractor.c:110
 msgid "interpreter"
 msgstr "vertolker"
 
-#: src/main/extractor.c:110
+#: src/main/extractor.c:111
 msgid "owner"
 msgstr "eigenaar"
 
-#: src/main/extractor.c:111
+#: src/main/extractor.c:112
 msgid "lyrics"
 msgstr "tekst"
 
-#: src/main/extractor.c:112
+#: src/main/extractor.c:113
 msgid "media type"
 msgstr "soort drager"
 
-#: src/main/extractor.c:113
+#: src/main/extractor.c:114
 msgid "contact"
 msgstr "contact"
 
-#: src/main/extractor.c:114
+#: src/main/extractor.c:115
 msgid "binary thumbnail data"
 msgstr "binaire gegevens over miniatuur"
 
-#: src/main/extractor.c:115
+#: src/main/extractor.c:116
 msgid "publication date"
 msgstr "publicatiedatum"
 
-#: src/main/extractor.c:116
+#: src/main/extractor.c:117
 msgid "camera make"
 msgstr "cameramerk"
 
-#: src/main/extractor.c:117
+#: src/main/extractor.c:118
 msgid "camera model"
 msgstr "cameramodel"
 
-#: src/main/extractor.c:118
+#: src/main/extractor.c:119
 msgid "exposure"
 msgstr "belichtingstijd"
 
-#: src/main/extractor.c:119
+#: src/main/extractor.c:120
 msgid "aperture"
 msgstr "diafragma"
 
-#: src/main/extractor.c:120
+#: src/main/extractor.c:121
 msgid "exposure bias"
 msgstr ""
 
-#: src/main/extractor.c:121
+#: src/main/extractor.c:122
 msgid "flash"
 msgstr "flits"
 
-#: src/main/extractor.c:122
+#: src/main/extractor.c:123
 msgid "flash bias"
 msgstr ""
 
-#: src/main/extractor.c:123
+#: src/main/extractor.c:124
 msgid "focal length"
 msgstr "brandpuntsafstand"
 
-#: src/main/extractor.c:124
+#: src/main/extractor.c:125
 msgid "focal length (35mm equivalent)"
 msgstr "brandpuntsafstand (35mm-equivalent)"
 
-#: src/main/extractor.c:125
+#: src/main/extractor.c:126
 msgid "iso speed"
 msgstr "ISO-snelheid"
 
-#: src/main/extractor.c:126
+#: src/main/extractor.c:127
 msgid "exposure mode"
 msgstr "belichtingsmodus"
 
-#: src/main/extractor.c:127
+#: src/main/extractor.c:128
 msgid "metering mode"
 msgstr "meetmodus"
 
-#: src/main/extractor.c:128
+#: src/main/extractor.c:129
 msgid "macro mode"
 msgstr "macromodus"
 
-#: src/main/extractor.c:129
+#: src/main/extractor.c:130
 msgid "image quality"
 msgstr "beeldkwaliteit"
 
-#: src/main/extractor.c:130
+#: src/main/extractor.c:131
 msgid "white balance"
 msgstr "witbalans"
 
-#: src/main/extractor.c:131
+#: src/main/extractor.c:132
 msgid "orientation"
 msgstr "orientatie"
 
-#: src/main/extractor.c:132
+#: src/main/extractor.c:133
 msgid "template"
 msgstr "sjabloon"
 
-#: src/main/extractor.c:133
+#: src/main/extractor.c:134
 msgid "split"
 msgstr "gesplitst"
 
-#: src/main/extractor.c:134
+#: src/main/extractor.c:135
 msgid "product version"
 msgstr "productversie"
 
-#: src/main/extractor.c:135
+#: src/main/extractor.c:136
 msgid "last saved by"
 msgstr "laatst opgeslagen door"
 
-#: src/main/extractor.c:136
+#: src/main/extractor.c:137
 msgid "last printed"
 msgstr "laatst afgedrukt"
 
-#: src/main/extractor.c:137
+#: src/main/extractor.c:138
 msgid "word count"
 msgstr "aantal woorden"
 
-#: src/main/extractor.c:138
+#: src/main/extractor.c:139
 msgid "character count"
 msgstr "aantal tekens"
 
-#: src/main/extractor.c:139
+#: src/main/extractor.c:140
 msgid "total editing time"
 msgstr "totale bewerkingstijd"
 
-#: src/main/extractor.c:140
+#: src/main/extractor.c:141
 msgid "thumbnails"
 msgstr "miniaturen"
 
-#: src/main/extractor.c:141
+#: src/main/extractor.c:142
 msgid "security"
 msgstr "veiligheid"
 
-#: src/main/extractor.c:142
+#: src/main/extractor.c:143
 msgid "created by software"
 msgstr "door software gemaakt"
 
-#: src/main/extractor.c:143
+#: src/main/extractor.c:144
 msgid "modified by software"
 msgstr "door software bewerkt"
 
-#: src/main/extractor.c:144
+#: src/main/extractor.c:145
 msgid "revision history"
 msgstr "revisiegeschiedenis"
 
-#: src/main/extractor.c:145
+#: src/main/extractor.c:146
 msgid "lower case conversion"
 msgstr "omzetting naar kleine letters"
 
-#: src/main/extractor.c:146
+#: src/main/extractor.c:147
 msgid "company"
 msgstr "firma"
 
-#: src/main/extractor.c:147
+#: src/main/extractor.c:148
 msgid "generator"
 msgstr "generator"
 
-#: src/main/extractor.c:148
+#: src/main/extractor.c:149
 msgid "character set"
 msgstr "tekenset"
 
-#: src/main/extractor.c:149
+#: src/main/extractor.c:150
 msgid "line count"
 msgstr "aantal regels"
 
-#: src/main/extractor.c:150
+#: src/main/extractor.c:151
 msgid "paragraph count"
 msgstr "aantal alinea's"
 
-#: src/main/extractor.c:151
+#: src/main/extractor.c:152
 msgid "editing cycles"
 msgstr "bewerkingscycli"
 
-#: src/main/extractor.c:152
+#: src/main/extractor.c:153
 msgid "scale"
 msgstr "schaal"
 
-#: src/main/extractor.c:153
+#: src/main/extractor.c:154
 msgid "manager"
 msgstr "manager"
 
-#: src/main/extractor.c:154
+#: src/main/extractor.c:155
 msgid "director"
 msgstr "regisseur"
 
-#: src/main/extractor.c:155
+#: src/main/extractor.c:156
 msgid "duration"
 msgstr "duur"
 
-#: src/main/extractor.c:156
+#: src/main/extractor.c:157
 msgid "information"
 msgstr "informatie"
 
-#: src/main/extractor.c:157
+#: src/main/extractor.c:158
 msgid "full name"
 msgstr "naam"
 
-#: src/main/extractor.c:158
+#: src/main/extractor.c:159
 msgid "chapter"
 msgstr "hoofdstuk"
 
-#: src/main/extractor.c:159
+#: src/main/extractor.c:160
 msgid "year"
 msgstr "jaar"
 
-#: src/main/extractor.c:160
+#: src/main/extractor.c:161
 msgid "link"
 msgstr "link"
 
-#: src/main/extractor.c:161
+#: src/main/extractor.c:162
 msgid "music CD identifier"
 msgstr ""
 
-#: src/main/extractor.c:162
+#: src/main/extractor.c:163
 msgid "play counter"
 msgstr "aantal malen afgespeeld"
 
-#: src/main/extractor.c:163
+#: src/main/extractor.c:164
 msgid "popularity meter"
 msgstr "populariteitsmeter"
 
-#: src/main/extractor.c:164
+#: src/main/extractor.c:165
 msgid "content type"
 msgstr "inhoudssoort"
 
-#: src/main/extractor.c:165
+#: src/main/extractor.c:166
 msgid "encoded by"
 msgstr "gecodeerd door"
 
-#: src/main/extractor.c:166
+#: src/main/extractor.c:167
 msgid "time"
 msgstr "tijd"
 
-#: src/main/extractor.c:167
+#: src/main/extractor.c:168
 msgid "musician credits list"
 msgstr ""
 
-#: src/main/extractor.c:168
+#: src/main/extractor.c:169
 msgid "mood"
 msgstr "sfeer"
 
-#: src/main/extractor.c:169
+#: src/main/extractor.c:170
 msgid "format version"
 msgstr "indelingsversie"
 
-#: src/main/extractor.c:170
+#: src/main/extractor.c:171
 msgid "television system"
 msgstr "televisiesysteem"
 
-#: src/main/extractor.c:171
+#: src/main/extractor.c:172
 msgid "song count"
 msgstr "aantal songs"
 
-#: src/main/extractor.c:172
+#: src/main/extractor.c:173
 msgid "starting song"
 msgstr "beginsong"
 
-#: src/main/extractor.c:173
+#: src/main/extractor.c:174
 msgid "hardware dependency"
 msgstr "hardware-afhankelijkheid"
 
-#: src/main/extractor.c:174
+#: src/main/extractor.c:175
 msgid "ripper"
 msgstr "ripper"
 
-#: src/main/extractor.c:175
+#: src/main/extractor.c:176
 msgid "filesize"
 msgstr "bestandsgrootte"
 
-#: src/main/extractor.c:176
+#: src/main/extractor.c:177
 msgid "track number"
 msgstr "tracknummer"
 
-#: src/main/extractor.c:177
+#: src/main/extractor.c:178
 msgid "international standard recording code"
 msgstr "International Standard Recording Code"
 
-#: src/main/extractor.c:178
+#: src/main/extractor.c:179
 msgid "disc number"
 msgstr "CD-nummer"
 
-#: src/main/extractor.c:598
+#: src/main/extractor.c:599
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "Initialisatie van plugin-mechanisme is mislukt: %s\n"
 
-#: src/main/extractor.c:752
+#: src/main/extractor.c:763
 #, c-format
-msgid "Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that failed also.  Errors are: `%s' and `%s'.\n"
+msgid ""
+"Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
+"failed also.  Errors are: `%s' and `%s'.\n"
 msgstr ""
 "Het herleiden van symbool '%s' uit bibliotheek '%s' is mislukt;\n"
 "het herleiden van '%s' mislukte ook.\n"
 "De foutmeldingen waren: '%s' en '%s'.\n"
 
-#: src/main/extractor.c:781
+#: src/main/extractor.c:794
 #, c-format
 msgid "Loading `%s' plugin failed: %s\n"
 msgstr "Laden van plugin '%s' is mislukt: %s\n"
 
-#: src/main/extractor.c:986
+#: src/main/extractor.c:1006
 #, c-format
 msgid "Unloading plugin `%s' failed!\n"
 msgstr "Verwijderen van plugin '%s' is mislukt.\n"
@@ -1416,17 +1428,68 @@ msgstr "J-pop"
 msgid "Synthpop"
 msgstr "Synthipop"
 
-#: src/plugins/mp3extractor.c:444 src/plugins/wavextractor.c:119
+#: src/plugins/mp3extractor.c:252 src/plugins/wavextractor.c:119
 msgid "stereo"
 msgstr "stereo"
 
-#: src/plugins/mp3extractor.c:444 src/plugins/wavextractor.c:119
+#: src/plugins/mp3extractor.c:253
+#, fuzzy
+msgid "joint stereo"
+msgstr "stereo"
+
+#: src/plugins/mp3extractor.c:254
+msgid "dual channel"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:255 src/plugins/wavextractor.c:119
 msgid "mono"
 msgstr "mono"
 
-#: src/plugins/mp3extractor.c:445
-msgid "(variable bps)"
-msgstr "(variabele bps)"
+#: src/plugins/mp3extractor.c:258
+msgid "MPEG-1"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:259
+msgid "MPEG-2"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:260
+msgid "MPEG-2.5"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:263
+msgid "Layer I"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:264
+msgid "Layer II"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:265
+msgid "Layer III"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:475
+msgid "VBR"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:475
+msgid "CBR"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:478
+#, fuzzy
+msgid "no copyright"
+msgstr "copyright"
+
+#: src/plugins/mp3extractor.c:479
+msgid "original"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:479
+#, fuzzy
+msgid "copy"
+msgstr "firma"
 
 #: src/plugins/ole2/ole2extractor.c:252
 msgid "No Proofing"
@@ -1552,3 +1615,6 @@ msgstr "Source-RPM %d.%d"
 #, c-format
 msgid "Binary RPM %d.%d"
 msgstr "Binaire RPM %d.%d"
+
+#~ msgid "(variable bps)"
+#~ msgstr "(variabele bps)"

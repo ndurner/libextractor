@@ -44,7 +44,6 @@ src/plugins/tiffextractor.c
 src/plugins/translitextractor.c
 src/plugins/wavextractor.c
 src/plugins/zipextractor.c
-src/include/config.h
 src/include/extractor.h
 src/include/gettext.h
 src/include/platform.h

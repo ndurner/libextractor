@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.4.2\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2008-03-20 23:53-0600\n"
+"POT-Creation-Date: 2008-07-13 15:09-0600\n"
 "PO-Revision-Date: 2005-04-04 10:55-0700\n"
 "Last-Translator: Steven Michael Murphy <murf@e-tools.com>\n"
 "Language-Team: Kinyarwanda <translation-team-rw@lists.sourceforge.net>\n"
@@ -134,63 +134,63 @@ msgstr ""
 msgid "Extract metadata from files."
 msgstr "Bivuye Idosiye"
 
-#: src/main/extract.c:190 src/main/extractor.c:1513
+#: src/main/extract.c:190 src/main/extractor.c:1533
 #, fuzzy, c-format
 msgid "%s - (binary)\n"
 msgstr "%s-(Nyabibiri"
 
-#: src/main/extract.c:201 src/main/extractor.c:1518
+#: src/main/extract.c:201 src/main/extractor.c:1538
 #, c-format
 msgid "INVALID TYPE - %s\n"
 msgstr ""
 
-#: src/main/extract.c:320 src/main/extractor.c:47
+#: src/main/extract.c:320 src/main/extractor.c:48
 msgid "title"
 msgstr "umutwe"
 
-#: src/main/extract.c:322 src/main/extractor.c:45
+#: src/main/extract.c:322 src/main/extractor.c:46
 #, fuzzy
 msgid "filename"
 msgstr "Izina ry'idosiye"
 
 # sc/source\ui\miscdlgs\acredlin.src:RID_POPUP_CHANGES.SC_SUB_SORT.SC_SORT_AUTHOR.text
-#: src/main/extract.c:327 src/main/extractor.c:48
+#: src/main/extract.c:327 src/main/extractor.c:49
 #, fuzzy
 msgid "author"
 msgstr "Umwanditsi"
 
-#: src/main/extract.c:331 src/main/extractor.c:50
+#: src/main/extract.c:331 src/main/extractor.c:51
 msgid "description"
 msgstr "Isobanuramiterere"
 
 # sfx2/source\dialog\dinfdlg.src:TP_DOCINFODESC.FT_KEYWORDS.text
-#: src/main/extract.c:333 src/main/extractor.c:62
+#: src/main/extract.c:333 src/main/extractor.c:63
 #, fuzzy
 msgid "keywords"
 msgstr "Amagambo fatizo"
 
 # padmin/source\padialog.src:RID_TXT_TESTPAGE_COMMENT.text
-#: src/main/extract.c:335 src/main/extractor.c:51
+#: src/main/extract.c:335 src/main/extractor.c:52
 #, fuzzy
 msgid "comment"
 msgstr "Icyo wongeraho"
 
-#: src/main/extract.c:339 src/main/extractor.c:52
+#: src/main/extract.c:339 src/main/extractor.c:53
 msgid "date"
 msgstr "Itariki"
 
 # setup2/source\ui\app.src:FT_INSTINFO_MKDIR.text
-#: src/main/extract.c:341 src/main/extractor.c:74
+#: src/main/extract.c:341 src/main/extractor.c:75
 #, fuzzy
 msgid "creation date"
 msgstr "Irema ry'itariki"
 
-#: src/main/extract.c:369 src/main/extractor.c:53
+#: src/main/extract.c:369 src/main/extractor.c:54
 #, fuzzy
 msgid "publisher"
 msgstr "Uwasohoye inyandiko"
 
-#: src/main/extract.c:373 src/main/extractor.c:59
+#: src/main/extract.c:373 src/main/extractor.c:60
 #, fuzzy
 msgid "organization"
 msgstr "Ihuzagahunda"
@@ -205,12 +205,12 @@ msgstr "Ihuzagahunda"
 # officecfg/registry\schema\org\openoffice\Office\Writer.xcs:....Wizard.Fax.Save.DocInfoSubject.text
 # #-#-#-#-#  officecfg.pot (PACKAGE VERSION)  #-#-#-#-#
 # officecfg/registry\schema\org\openoffice\Office\Writer.xcs:....Wizard.Memo.Save.DocInfoSubject.text
-#: src/main/extract.c:377 src/main/extractor.c:61
+#: src/main/extract.c:377 src/main/extractor.c:62
 msgid "subject"
 msgstr "Ikivugwaho"
 
 # sw/source\ui\inc\swmn.hrc:_MN_INS.MN_SUB_FIELD.FN_INSERT_FLD_PGCOUNT.text
-#: src/main/extract.c:381 src/main/extractor.c:78
+#: src/main/extract.c:381 src/main/extractor.c:79
 #, fuzzy
 msgid "page count"
 msgstr "Kubara amapaje"
@@ -235,146 +235,146 @@ msgstr ""
 msgid "Keywords for file %s:\n"
 msgstr "kugirango IDOSIYE"
 
-#: src/main/extractor.c:44
+#: src/main/extractor.c:45
 msgid "unknown"
 msgstr "itazwi"
 
-#: src/main/extractor.c:46
+#: src/main/extractor.c:47
 msgid "mimetype"
 msgstr ""
 
-#: src/main/extractor.c:49
+#: src/main/extractor.c:50
 #, fuzzy
 msgid "artist"
 msgstr "Umuhanzi"
 
 # sc/source\ui\src\sortdlg.src:RID_SCPAGE_SORT_OPTIONS.FT_LANGUAGE.text
-#: src/main/extractor.c:54
+#: src/main/extractor.c:55
 #, fuzzy
 msgid "language"
 msgstr "Ururimi"
 
-#: src/main/extractor.c:55
+#: src/main/extractor.c:56
 msgid "album"
 msgstr ""
 
-#: src/main/extractor.c:56
+#: src/main/extractor.c:57
 msgid "genre"
 msgstr ""
 
-#: src/main/extractor.c:57
+#: src/main/extractor.c:58
 msgid "location"
 msgstr "Inturo"
 
 # goodies/source\filter.vcl\eps\dlgeps.src:DLG_EXPORT_EPS.GRP_VERSION.text
-#: src/main/extractor.c:58
+#: src/main/extractor.c:59
 #, fuzzy
 msgid "version"
 msgstr "Verisiyo"
 
-#: src/main/extractor.c:60
+#: src/main/extractor.c:61 src/plugins/mp3extractor.c:478
 #, fuzzy
 msgid "copyright"
 msgstr "Uburenganzira bw'umuhimbyi"
 
-#: src/main/extractor.c:63
+#: src/main/extractor.c:64
 msgid "contributor"
 msgstr ""
 
-#: src/main/extractor.c:64
+#: src/main/extractor.c:65
 #, fuzzy
 msgid "resource-type"
 msgstr "Ubwoko"
 
-#: src/main/extractor.c:65
+#: src/main/extractor.c:66
 #, fuzzy
 msgid "format"
 msgstr "Imiterere"
 
-#: src/main/extractor.c:66
+#: src/main/extractor.c:67
 #, fuzzy
 msgid "resource-identifier"
 msgstr "Ikiranga"
 
-#: src/main/extractor.c:67
+#: src/main/extractor.c:68
 #, fuzzy
 msgid "source"
 msgstr "Inkomoko"
 
 # 5033
-#: src/main/extractor.c:68
+#: src/main/extractor.c:69
 #, fuzzy
 msgid "relation"
 msgstr "Isano"
 
-#: src/main/extractor.c:69
+#: src/main/extractor.c:70
 msgid "coverage"
 msgstr ""
 
-#: src/main/extractor.c:70
+#: src/main/extractor.c:71
 msgid "software"
 msgstr ""
 
-#: src/main/extractor.c:71
+#: src/main/extractor.c:72
 msgid "disclaimer"
 msgstr ""
 
-#: src/main/extractor.c:72
+#: src/main/extractor.c:73
 #, fuzzy
 msgid "warning"
 msgstr "Iburira"
 
-#: src/main/extractor.c:73
+#: src/main/extractor.c:74
 msgid "translated"
 msgstr ""
 
 # 3880
-#: src/main/extractor.c:75
+#: src/main/extractor.c:76
 #, fuzzy
 msgid "modification date"
 msgstr "itariki y'ihindura"
 
-#: src/main/extractor.c:76
+#: src/main/extractor.c:77
 msgid "creator"
 msgstr ""
 
-#: src/main/extractor.c:77
+#: src/main/extractor.c:78
 #, fuzzy
 msgid "producer"
 msgstr "Umwanditsi"
 
-#: src/main/extractor.c:79
+#: src/main/extractor.c:80
 #, fuzzy
 msgid "page orientation"
 msgstr "Ipaji Icyerekezo"
 
 # padmin/source\rtsetup.src:RID_RTS_PAPERPAGE.RID_RTS_PAPER_PAPER_TXT.text
-#: src/main/extractor.c:80
+#: src/main/extractor.c:81
 #, fuzzy
 msgid "paper size"
 msgstr "Ingano y'urupapuro"
 
-#: src/main/extractor.c:81
+#: src/main/extractor.c:82
 #, fuzzy
 msgid "used fonts"
 msgstr "Imyandikire"
 
 # sc/source\ui\pagedlg\pagedlg.src:RID_SCPAGE_TABLE.FL_PAGEDIR.text
-#: src/main/extractor.c:82
+#: src/main/extractor.c:83
 #, fuzzy
 msgid "page order"
 msgstr "Ikurikirana rya paji"
 
-#: src/main/extractor.c:83
+#: src/main/extractor.c:84
 #, fuzzy
 msgid "created for"
 msgstr "Byaremwe kugirango"
 
-#: src/main/extractor.c:84
+#: src/main/extractor.c:85
 msgid "magnification"
 msgstr ""
 
-#: src/main/extractor.c:85
+#: src/main/extractor.c:86
 msgid "release"
 msgstr ""
 
@@ -382,76 +382,76 @@ msgstr ""
 # sc/source\ui\src\globstr.src:RID_GLOBSTR.STR_UNDO_MAKEOUTLINE.text
 # #-#-#-#-#  sc.pot (PACKAGE VERSION)  #-#-#-#-#
 # sc/source\ui\src\miscdlgs.src:RID_SCDLG_GROUP.text
-#: src/main/extractor.c:86
+#: src/main/extractor.c:87
 #, fuzzy
 msgid "group"
 msgstr "Itsinda"
 
-#: src/main/extractor.c:87
+#: src/main/extractor.c:88
 msgid "size"
 msgstr "ingano"
 
-#: src/main/extractor.c:88
+#: src/main/extractor.c:89
 #, fuzzy
 msgid "summary"
 msgstr "Inshamake"
 
-#: src/main/extractor.c:89
+#: src/main/extractor.c:90
 msgid "packager"
 msgstr ""
 
-#: src/main/extractor.c:90
+#: src/main/extractor.c:91
 #, fuzzy
 msgid "vendor"
 msgstr "Umucuruzi"
 
-#: src/main/extractor.c:91
+#: src/main/extractor.c:92
 msgid "license"
 msgstr ""
 
 # svx/source\dialog\dstribut.src:RID_SVXPAGE_DISTRIBUTE.text
-#: src/main/extractor.c:92
+#: src/main/extractor.c:93
 #, fuzzy
 msgid "distribution"
 msgstr "Ikwirakwiza"
 
-#: src/main/extractor.c:93
+#: src/main/extractor.c:94
 #, fuzzy
 msgid "build-host"
 msgstr "Ubuturo"
 
-#: src/main/extractor.c:94
+#: src/main/extractor.c:95
 msgid "operating system"
 msgstr ""
 
-#: src/main/extractor.c:95
+#: src/main/extractor.c:96
 msgid "dependency"
 msgstr ""
 
-#: src/main/extractor.c:96
+#: src/main/extractor.c:97
 msgid "MD4"
 msgstr ""
 
-#: src/main/extractor.c:97
+#: src/main/extractor.c:98
 msgid "MD5"
 msgstr ""
 
-#: src/main/extractor.c:98
+#: src/main/extractor.c:99
 #, fuzzy
 msgid "SHA-0"
 msgstr "0"
 
-#: src/main/extractor.c:99
+#: src/main/extractor.c:100
 #, fuzzy
 msgid "SHA-1"
 msgstr "1."
 
-#: src/main/extractor.c:100
+#: src/main/extractor.c:101
 msgid "RipeMD160"
 msgstr ""
 
 # officecfg/registry\schema\org\openoffice\Office\Common.xcs:....Filter.Graphic.Export.BMP.Resolution.text
-#: src/main/extractor.c:101
+#: src/main/extractor.c:102
 #, fuzzy
 msgid "resolution"
 msgstr "Imikemurire"
@@ -476,50 +476,50 @@ msgstr "Imikemurire"
 # officecfg/registry\schema\org\openoffice\Office\Writer.xcs:....Insert.Caption.OfficeObject.Impress.Settings.Category.text
 # #-#-#-#-#  officecfg.pot (PACKAGE VERSION)  #-#-#-#-#
 # officecfg/registry\schema\org\openoffice\Office\Writer.xcs:....Insert.Caption.OfficeObject.OLEMisc.Settings.Category.text
-#: src/main/extractor.c:102
+#: src/main/extractor.c:103
 #, fuzzy
 msgid "category"
 msgstr "Icyiciro"
 
-#: src/main/extractor.c:103
+#: src/main/extractor.c:104
 #, fuzzy
 msgid "book title"
 msgstr "Umutwe w'igitabo"
 
 # sw/source\ui\wizard\wizmmdlg.src:DLG_WIZARD_MM.DLG_MM2_Edit_Elem1.text
-#: src/main/extractor.c:104
+#: src/main/extractor.c:105
 msgid "priority"
 msgstr "Icyihutirwa"
 
-#: src/main/extractor.c:105
+#: src/main/extractor.c:106
 msgid "conflicts"
 msgstr ""
 
-#: src/main/extractor.c:106
+#: src/main/extractor.c:107
 msgid "replaces"
 msgstr ""
 
-#: src/main/extractor.c:107
+#: src/main/extractor.c:108
 msgid "provides"
 msgstr ""
 
-#: src/main/extractor.c:108
+#: src/main/extractor.c:109
 msgid "conductor"
 msgstr ""
 
-#: src/main/extractor.c:109
+#: src/main/extractor.c:110
 msgid "interpreter"
 msgstr ""
 
-#: src/main/extractor.c:110
+#: src/main/extractor.c:111
 msgid "owner"
 msgstr ""
 
-#: src/main/extractor.c:111
+#: src/main/extractor.c:112
 msgid "lyrics"
 msgstr ""
 
-#: src/main/extractor.c:112
+#: src/main/extractor.c:113
 #, fuzzy
 msgid "media type"
 msgstr "Ibitangazamakuru Ubwoko"
@@ -561,204 +561,204 @@ msgstr "Ibitangazamakuru Ubwoko"
 #
 # ***** END LICENSE BLOCK *****
 # Box Headings
-#: src/main/extractor.c:113
+#: src/main/extractor.c:114
 #, fuzzy
 msgid "contact"
 msgstr "Umuntu"
 
-#: src/main/extractor.c:114
+#: src/main/extractor.c:115
 #, fuzzy
 msgid "binary thumbnail data"
 msgstr "Nyabibiri Ibyatanzwe"
 
 # setup2/source\ui\app.src:FT_INSTINFO_MKDIR.text
-#: src/main/extractor.c:115
+#: src/main/extractor.c:116
 #, fuzzy
 msgid "publication date"
 msgstr "Irema ry'itariki"
 
-#: src/main/extractor.c:116
+#: src/main/extractor.c:117
 msgid "camera make"
 msgstr ""
 
-#: src/main/extractor.c:117
+#: src/main/extractor.c:118
 msgid "camera model"
 msgstr ""
 
-#: src/main/extractor.c:118
+#: src/main/extractor.c:119
 msgid "exposure"
 msgstr ""
 
-#: src/main/extractor.c:119
+#: src/main/extractor.c:120
 msgid "aperture"
 msgstr ""
 
-#: src/main/extractor.c:120
+#: src/main/extractor.c:121
 msgid "exposure bias"
 msgstr ""
 
-#: src/main/extractor.c:121
+#: src/main/extractor.c:122
 msgid "flash"
 msgstr ""
 
-#: src/main/extractor.c:122
+#: src/main/extractor.c:123
 msgid "flash bias"
 msgstr ""
 
-#: src/main/extractor.c:123
+#: src/main/extractor.c:124
 msgid "focal length"
 msgstr ""
 
-#: src/main/extractor.c:124
+#: src/main/extractor.c:125
 msgid "focal length (35mm equivalent)"
 msgstr ""
 
-#: src/main/extractor.c:125
+#: src/main/extractor.c:126
 msgid "iso speed"
 msgstr ""
 
-#: src/main/extractor.c:126
+#: src/main/extractor.c:127
 msgid "exposure mode"
 msgstr ""
 
-#: src/main/extractor.c:127
+#: src/main/extractor.c:128
 msgid "metering mode"
 msgstr ""
 
-#: src/main/extractor.c:128
+#: src/main/extractor.c:129
 msgid "macro mode"
 msgstr ""
 
-#: src/main/extractor.c:129
+#: src/main/extractor.c:130
 msgid "image quality"
 msgstr ""
 
-#: src/main/extractor.c:130
+#: src/main/extractor.c:131
 msgid "white balance"
 msgstr ""
 
-#: src/main/extractor.c:131
+#: src/main/extractor.c:132
 #, fuzzy
 msgid "orientation"
 msgstr "Ipaji Icyerekezo"
 
-#: src/main/extractor.c:132
+#: src/main/extractor.c:133
 msgid "template"
 msgstr ""
 
-#: src/main/extractor.c:133
+#: src/main/extractor.c:134
 msgid "split"
 msgstr ""
 
-#: src/main/extractor.c:134
+#: src/main/extractor.c:135
 #, fuzzy
 msgid "product version"
 msgstr "Umwanditsi"
 
-#: src/main/extractor.c:135
+#: src/main/extractor.c:136
 msgid "last saved by"
 msgstr ""
 
-#: src/main/extractor.c:136
+#: src/main/extractor.c:137
 msgid "last printed"
 msgstr ""
 
 # sw/source\ui\inc\swmn.hrc:_MN_INS.MN_SUB_FIELD.FN_INSERT_FLD_PGCOUNT.text
-#: src/main/extractor.c:137
+#: src/main/extractor.c:138
 #, fuzzy
 msgid "word count"
 msgstr "Kubara amapaje"
 
 # sw/source\ui\inc\swmn.hrc:_MN_INS.MN_SUB_FIELD.FN_INSERT_FLD_PGCOUNT.text
-#: src/main/extractor.c:138
+#: src/main/extractor.c:139
 #, fuzzy
 msgid "character count"
 msgstr "Kubara amapaje"
 
-#: src/main/extractor.c:139
+#: src/main/extractor.c:140
 msgid "total editing time"
 msgstr ""
 
-#: src/main/extractor.c:140
+#: src/main/extractor.c:141
 msgid "thumbnails"
 msgstr ""
 
-#: src/main/extractor.c:141
+#: src/main/extractor.c:142
 msgid "security"
 msgstr ""
 
-#: src/main/extractor.c:142
+#: src/main/extractor.c:143
 #, fuzzy
 msgid "created by software"
 msgstr "Byaremwe kugirango"
 
-#: src/main/extractor.c:143
+#: src/main/extractor.c:144
 msgid "modified by software"
 msgstr ""
 
-#: src/main/extractor.c:144
+#: src/main/extractor.c:145
 msgid "revision history"
 msgstr ""
 
-#: src/main/extractor.c:145
+#: src/main/extractor.c:146
 msgid "lower case conversion"
 msgstr ""
 
-#: src/main/extractor.c:146
+#: src/main/extractor.c:147
 msgid "company"
 msgstr ""
 
-#: src/main/extractor.c:147
+#: src/main/extractor.c:148
 msgid "generator"
 msgstr ""
 
-#: src/main/extractor.c:148
+#: src/main/extractor.c:149
 msgid "character set"
 msgstr ""
 
 # sw/source\ui\inc\swmn.hrc:_MN_INS.MN_SUB_FIELD.FN_INSERT_FLD_PGCOUNT.text
-#: src/main/extractor.c:149
+#: src/main/extractor.c:150
 #, fuzzy
 msgid "line count"
 msgstr "Kubara amapaje"
 
 # sw/source\ui\inc\swmn.hrc:_MN_INS.MN_SUB_FIELD.FN_INSERT_FLD_PGCOUNT.text
-#: src/main/extractor.c:150
+#: src/main/extractor.c:151
 #, fuzzy
 msgid "paragraph count"
 msgstr "Kubara amapaje"
 
-#: src/main/extractor.c:151
+#: src/main/extractor.c:152
 msgid "editing cycles"
 msgstr ""
 
-#: src/main/extractor.c:152
+#: src/main/extractor.c:153
 msgid "scale"
 msgstr ""
 
 # sc/source\ui\src\sortdlg.src:RID_SCPAGE_SORT_OPTIONS.FT_LANGUAGE.text
-#: src/main/extractor.c:153
+#: src/main/extractor.c:154
 #, fuzzy
 msgid "manager"
 msgstr "Ururimi"
 
-#: src/main/extractor.c:154
+#: src/main/extractor.c:155
 #, fuzzy
 msgid "director"
 msgstr "a bushyinguro"
 
 # 5033
-#: src/main/extractor.c:155
+#: src/main/extractor.c:156
 #, fuzzy
 msgid "duration"
 msgstr "Isano"
 
-#: src/main/extractor.c:156
+#: src/main/extractor.c:157
 #, fuzzy
 msgid "information"
 msgstr "Imiterere"
 
-#: src/main/extractor.c:157
+#: src/main/extractor.c:158
 #, fuzzy
 msgid "full name"
 msgstr "Izina ry'idosiye"
@@ -783,118 +783,118 @@ msgstr "Izina ry'idosiye"
 # officecfg/registry\schema\org\openoffice\Office\Writer.xcs:....Insert.Caption.OfficeObject.Impress.Settings.Category.text
 # #-#-#-#-#  officecfg.pot (PACKAGE VERSION)  #-#-#-#-#
 # officecfg/registry\schema\org\openoffice\Office\Writer.xcs:....Insert.Caption.OfficeObject.OLEMisc.Settings.Category.text
-#: src/main/extractor.c:158
+#: src/main/extractor.c:159
 #, fuzzy
 msgid "chapter"
 msgstr "Icyiciro"
 
-#: src/main/extractor.c:159
+#: src/main/extractor.c:160
 msgid "year"
 msgstr ""
 
-#: src/main/extractor.c:160
+#: src/main/extractor.c:161
 msgid "link"
 msgstr ""
 
-#: src/main/extractor.c:161
+#: src/main/extractor.c:162
 #, fuzzy
 msgid "music CD identifier"
 msgstr "Ikiranga"
 
 # sw/source\ui\inc\swmn.hrc:_MN_INS.MN_SUB_FIELD.FN_INSERT_FLD_PGCOUNT.text
-#: src/main/extractor.c:162
+#: src/main/extractor.c:163
 #, fuzzy
 msgid "play counter"
 msgstr "Kubara amapaje"
 
-#: src/main/extractor.c:163
+#: src/main/extractor.c:164
 msgid "popularity meter"
 msgstr ""
 
-#: src/main/extractor.c:164
+#: src/main/extractor.c:165
 msgid "content type"
 msgstr ""
 
-#: src/main/extractor.c:165
+#: src/main/extractor.c:166
 msgid "encoded by"
 msgstr ""
 
-#: src/main/extractor.c:166
+#: src/main/extractor.c:167
 #, fuzzy
 msgid "time"
 msgstr "umutwe"
 
-#: src/main/extractor.c:167
+#: src/main/extractor.c:168
 msgid "musician credits list"
 msgstr ""
 
-#: src/main/extractor.c:168
+#: src/main/extractor.c:169
 msgid "mood"
 msgstr ""
 
-#: src/main/extractor.c:169
+#: src/main/extractor.c:170
 #, fuzzy
 msgid "format version"
 msgstr "Imiterere"
 
-#: src/main/extractor.c:170
+#: src/main/extractor.c:171
 msgid "television system"
 msgstr ""
 
 # sw/source\ui\inc\swmn.hrc:_MN_INS.MN_SUB_FIELD.FN_INSERT_FLD_PGCOUNT.text
-#: src/main/extractor.c:171
+#: src/main/extractor.c:172
 #, fuzzy
 msgid "song count"
 msgstr "Kubara amapaje"
 
-#: src/main/extractor.c:172
+#: src/main/extractor.c:173
 msgid "starting song"
 msgstr ""
 
-#: src/main/extractor.c:173
+#: src/main/extractor.c:174
 msgid "hardware dependency"
 msgstr ""
 
-#: src/main/extractor.c:174
+#: src/main/extractor.c:175
 msgid "ripper"
 msgstr ""
 
-#: src/main/extractor.c:175
+#: src/main/extractor.c:176
 #, fuzzy
 msgid "filesize"
 msgstr "ingano"
 
-#: src/main/extractor.c:176
+#: src/main/extractor.c:177
 msgid "track number"
 msgstr ""
 
-#: src/main/extractor.c:177
+#: src/main/extractor.c:178
 msgid "international standard recording code"
 msgstr ""
 
-#: src/main/extractor.c:178
+#: src/main/extractor.c:179
 #, fuzzy
 msgid "disc number"
 msgstr "IDOSIYE Umubare"
 
-#: src/main/extractor.c:598
+#: src/main/extractor.c:599
 #, fuzzy, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "Bya Byanze"
 
-#: src/main/extractor.c:752
+#: src/main/extractor.c:763
 #, fuzzy, c-format
 msgid ""
 "Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
 "failed also.  Errors are: `%s' and `%s'.\n"
 msgstr "IKIMENYETSO in Isomero Byanze Byanze Na"
 
-#: src/main/extractor.c:781
+#: src/main/extractor.c:794
 #, fuzzy, c-format
 msgid "Loading `%s' plugin failed: %s\n"
 msgstr "Byanze"
 
-#: src/main/extractor.c:986
+#: src/main/extractor.c:1006
 #, fuzzy, c-format
 msgid "Unloading plugin `%s' failed!\n"
 msgstr "Byanze"
@@ -1620,18 +1620,67 @@ msgstr ""
 msgid "Synthpop"
 msgstr ""
 
-#: src/plugins/mp3extractor.c:444 src/plugins/wavextractor.c:119
+#: src/plugins/mp3extractor.c:252 src/plugins/wavextractor.c:119
 msgid "stereo"
 msgstr ""
 
-#: src/plugins/mp3extractor.c:444 src/plugins/wavextractor.c:119
+#: src/plugins/mp3extractor.c:253
+msgid "joint stereo"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:254
+msgid "dual channel"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:255 src/plugins/wavextractor.c:119
 msgid "mono"
 msgstr ""
 
-#: src/plugins/mp3extractor.c:445
+#: src/plugins/mp3extractor.c:258
+msgid "MPEG-1"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:259
+msgid "MPEG-2"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:260
+msgid "MPEG-2.5"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:263
+msgid "Layer I"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:264
+msgid "Layer II"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:265
+msgid "Layer III"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:475
+msgid "VBR"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:475
+msgid "CBR"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:478
 #, fuzzy
-msgid "(variable bps)"
-msgstr "(IMPINDURAGACIRO"
+msgid "no copyright"
+msgstr "Uburenganzira bw'umuhimbyi"
+
+#: src/plugins/mp3extractor.c:479
+msgid "original"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:479
+#, fuzzy
+msgid "copy"
+msgstr "Uburenganzira bw'umuhimbyi"
 
 #: src/plugins/ole2/ole2extractor.c:252
 msgid "No Proofing"
@@ -1754,6 +1803,10 @@ msgstr ""
 #, c-format
 msgid "Binary RPM %d.%d"
 msgstr ""
+
+#, fuzzy
+#~ msgid "(variable bps)"
+#~ msgstr "(IMPINDURAGACIRO"
 
 #~ msgid "No error"
 #~ msgstr "Nta kosa"

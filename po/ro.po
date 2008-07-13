@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.5.3\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2008-03-20 23:53-0600\n"
+"POT-Creation-Date: 2008-07-13 15:09-0600\n"
 "PO-Revision-Date: 2005-08-16 12:00-0500\n"
 "Last-Translator: Laurentiu Buzdugan <lbuz@rolix.org>\n"
 "Language-Team: Romanian <translation-team-ro@lists.sourceforge.net>\n"
@@ -126,61 +126,61 @@ msgstr "extract [OPÞIUNI] [NUME_FIªIER]*"
 msgid "Extract metadata from files."
 msgstr "Extrage metadata din fiºiere."
 
-#: src/main/extract.c:190 src/main/extractor.c:1513
+#: src/main/extract.c:190 src/main/extractor.c:1533
 #, c-format
 msgid "%s - (binary)\n"
 msgstr "%s - (binar)\n"
 
-#: src/main/extract.c:201 src/main/extractor.c:1518
+#: src/main/extract.c:201 src/main/extractor.c:1538
 #, c-format
 msgid "INVALID TYPE - %s\n"
 msgstr "TIP INVALID - %s\n"
 
-#: src/main/extract.c:320 src/main/extractor.c:47
+#: src/main/extract.c:320 src/main/extractor.c:48
 msgid "title"
 msgstr "titlu"
 
-#: src/main/extract.c:322 src/main/extractor.c:45
+#: src/main/extract.c:322 src/main/extractor.c:46
 msgid "filename"
 msgstr "nume_fiºier"
 
-#: src/main/extract.c:327 src/main/extractor.c:48
+#: src/main/extract.c:327 src/main/extractor.c:49
 msgid "author"
 msgstr "autor"
 
-#: src/main/extract.c:331 src/main/extractor.c:50
+#: src/main/extract.c:331 src/main/extractor.c:51
 msgid "description"
 msgstr "descriere"
 
-#: src/main/extract.c:333 src/main/extractor.c:62
+#: src/main/extract.c:333 src/main/extractor.c:63
 msgid "keywords"
 msgstr "cuvinte cheie"
 
-#: src/main/extract.c:335 src/main/extractor.c:51
+#: src/main/extract.c:335 src/main/extractor.c:52
 msgid "comment"
 msgstr "comentariu"
 
-#: src/main/extract.c:339 src/main/extractor.c:52
+#: src/main/extract.c:339 src/main/extractor.c:53
 msgid "date"
 msgstr "data"
 
-#: src/main/extract.c:341 src/main/extractor.c:74
+#: src/main/extract.c:341 src/main/extractor.c:75
 msgid "creation date"
 msgstr "data creãrii"
 
-#: src/main/extract.c:369 src/main/extractor.c:53
+#: src/main/extract.c:369 src/main/extractor.c:54
 msgid "publisher"
 msgstr "publicist"
 
-#: src/main/extract.c:373 src/main/extractor.c:59
+#: src/main/extract.c:373 src/main/extractor.c:60
 msgid "organization"
 msgstr "organizaþie"
 
-#: src/main/extract.c:377 src/main/extractor.c:61
+#: src/main/extract.c:377 src/main/extractor.c:62
 msgid "subject"
 msgstr "subiect"
 
-#: src/main/extract.c:381 src/main/extractor.c:78
+#: src/main/extract.c:381 src/main/extractor.c:79
 msgid "page count"
 msgstr "numãr de pagini"
 
@@ -205,529 +205,529 @@ msgstr "%% BiBTeX file\n"
 msgid "Keywords for file %s:\n"
 msgstr "Cuvinte cheie pentru fiºier %s:\n"
 
-#: src/main/extractor.c:44
+#: src/main/extractor.c:45
 msgid "unknown"
 msgstr "necunoscut"
 
-#: src/main/extractor.c:46
+#: src/main/extractor.c:47
 msgid "mimetype"
 msgstr "mimetype"
 
-#: src/main/extractor.c:49
+#: src/main/extractor.c:50
 msgid "artist"
 msgstr "artist"
 
-#: src/main/extractor.c:54
+#: src/main/extractor.c:55
 msgid "language"
 msgstr "limbã"
 
-#: src/main/extractor.c:55
+#: src/main/extractor.c:56
 msgid "album"
 msgstr "album"
 
-#: src/main/extractor.c:56
+#: src/main/extractor.c:57
 msgid "genre"
 msgstr "gen"
 
-#: src/main/extractor.c:57
+#: src/main/extractor.c:58
 msgid "location"
 msgstr "locaþie"
 
-#: src/main/extractor.c:58
+#: src/main/extractor.c:59
 msgid "version"
 msgstr "versiune"
 
-#: src/main/extractor.c:60
+#: src/main/extractor.c:61 src/plugins/mp3extractor.c:478
 msgid "copyright"
 msgstr "copyright"
 
-#: src/main/extractor.c:63
+#: src/main/extractor.c:64
 msgid "contributor"
 msgstr "contribuitor"
 
-#: src/main/extractor.c:64
+#: src/main/extractor.c:65
 msgid "resource-type"
 msgstr "tip-resursã"
 
-#: src/main/extractor.c:65
+#: src/main/extractor.c:66
 msgid "format"
 msgstr "format"
 
-#: src/main/extractor.c:66
+#: src/main/extractor.c:67
 msgid "resource-identifier"
 msgstr "identificator-resursã"
 
-#: src/main/extractor.c:67
+#: src/main/extractor.c:68
 msgid "source"
 msgstr "sursã"
 
-#: src/main/extractor.c:68
+#: src/main/extractor.c:69
 msgid "relation"
 msgstr "relaþie"
 
-#: src/main/extractor.c:69
+#: src/main/extractor.c:70
 msgid "coverage"
 msgstr "acoperire"
 
-#: src/main/extractor.c:70
+#: src/main/extractor.c:71
 msgid "software"
 msgstr "software"
 
-#: src/main/extractor.c:71
+#: src/main/extractor.c:72
 msgid "disclaimer"
 msgstr "repudiere"
 
-#: src/main/extractor.c:72
+#: src/main/extractor.c:73
 msgid "warning"
 msgstr "avertisment"
 
-#: src/main/extractor.c:73
+#: src/main/extractor.c:74
 msgid "translated"
 msgstr "tradus"
 
-#: src/main/extractor.c:75
+#: src/main/extractor.c:76
 msgid "modification date"
 msgstr "data modificãrii"
 
-#: src/main/extractor.c:76
+#: src/main/extractor.c:77
 msgid "creator"
 msgstr "creator"
 
-#: src/main/extractor.c:77
+#: src/main/extractor.c:78
 msgid "producer"
 msgstr "producãtor"
 
-#: src/main/extractor.c:79
+#: src/main/extractor.c:80
 msgid "page orientation"
 msgstr "orientare paginã"
 
-#: src/main/extractor.c:80
+#: src/main/extractor.c:81
 msgid "paper size"
 msgstr "dimensiune pagina"
 
-#: src/main/extractor.c:81
+#: src/main/extractor.c:82
 msgid "used fonts"
 msgstr "fonturi folosite"
 
-#: src/main/extractor.c:82
+#: src/main/extractor.c:83
 msgid "page order"
 msgstr "ordine pagini"
 
-#: src/main/extractor.c:83
+#: src/main/extractor.c:84
 msgid "created for"
 msgstr "creat pentru"
 
-#: src/main/extractor.c:84
+#: src/main/extractor.c:85
 msgid "magnification"
 msgstr "mãrire"
 
-#: src/main/extractor.c:85
+#: src/main/extractor.c:86
 msgid "release"
 msgstr "release"
 
-#: src/main/extractor.c:86
+#: src/main/extractor.c:87
 msgid "group"
 msgstr "grup"
 
-#: src/main/extractor.c:87
+#: src/main/extractor.c:88
 msgid "size"
 msgstr "mãrime"
 
-#: src/main/extractor.c:88
+#: src/main/extractor.c:89
 msgid "summary"
 msgstr "cuprins"
 
-#: src/main/extractor.c:89
+#: src/main/extractor.c:90
 msgid "packager"
 msgstr "împachetator"
 
-#: src/main/extractor.c:90
+#: src/main/extractor.c:91
 msgid "vendor"
 msgstr "vânzãtor"
 
-#: src/main/extractor.c:91
+#: src/main/extractor.c:92
 msgid "license"
 msgstr "licenþã"
 
-#: src/main/extractor.c:92
+#: src/main/extractor.c:93
 msgid "distribution"
 msgstr "distribuþie"
 
-#: src/main/extractor.c:93
+#: src/main/extractor.c:94
 msgid "build-host"
 msgstr "gazdã-contruit"
 
-#: src/main/extractor.c:94
+#: src/main/extractor.c:95
 msgid "operating system"
 msgstr ""
 
-#: src/main/extractor.c:95
+#: src/main/extractor.c:96
 msgid "dependency"
 msgstr "dependinþe"
 
-#: src/main/extractor.c:96
+#: src/main/extractor.c:97
 msgid "MD4"
 msgstr "MD4"
 
-#: src/main/extractor.c:97
+#: src/main/extractor.c:98
 msgid "MD5"
 msgstr "MD5"
 
-#: src/main/extractor.c:98
+#: src/main/extractor.c:99
 msgid "SHA-0"
 msgstr "SHA-0"
 
-#: src/main/extractor.c:99
+#: src/main/extractor.c:100
 msgid "SHA-1"
 msgstr "SHA-1"
 
-#: src/main/extractor.c:100
+#: src/main/extractor.c:101
 msgid "RipeMD160"
 msgstr "RipeMD160"
 
-#: src/main/extractor.c:101
+#: src/main/extractor.c:102
 msgid "resolution"
 msgstr "rezoluþie"
 
-#: src/main/extractor.c:102
+#: src/main/extractor.c:103
 msgid "category"
 msgstr "categorie"
 
-#: src/main/extractor.c:103
+#: src/main/extractor.c:104
 msgid "book title"
 msgstr "titlu de carte"
 
-#: src/main/extractor.c:104
+#: src/main/extractor.c:105
 msgid "priority"
 msgstr "prioritate"
 
-#: src/main/extractor.c:105
+#: src/main/extractor.c:106
 msgid "conflicts"
 msgstr "conflicte"
 
-#: src/main/extractor.c:106
+#: src/main/extractor.c:107
 msgid "replaces"
 msgstr "înlocuieºte"
 
-#: src/main/extractor.c:107
+#: src/main/extractor.c:108
 msgid "provides"
 msgstr "furnizeazã"
 
-#: src/main/extractor.c:108
+#: src/main/extractor.c:109
 msgid "conductor"
 msgstr "conducãtor"
 
-#: src/main/extractor.c:109
+#: src/main/extractor.c:110
 msgid "interpreter"
 msgstr "interpret(ã)"
 
-#: src/main/extractor.c:110
+#: src/main/extractor.c:111
 msgid "owner"
 msgstr "proprietar"
 
-#: src/main/extractor.c:111
+#: src/main/extractor.c:112
 msgid "lyrics"
 msgstr "versuri"
 
-#: src/main/extractor.c:112
+#: src/main/extractor.c:113
 msgid "media type"
 msgstr "tipul media"
 
-#: src/main/extractor.c:113
+#: src/main/extractor.c:114
 msgid "contact"
 msgstr "contact"
 
-#: src/main/extractor.c:114
+#: src/main/extractor.c:115
 msgid "binary thumbnail data"
 msgstr "data thumbnail binar"
 
-#: src/main/extractor.c:115
+#: src/main/extractor.c:116
 msgid "publication date"
 msgstr "data publicãrii"
 
-#: src/main/extractor.c:116
+#: src/main/extractor.c:117
 msgid "camera make"
 msgstr "producãtor"
 
-#: src/main/extractor.c:117
+#: src/main/extractor.c:118
 msgid "camera model"
 msgstr "model de camerã"
 
-#: src/main/extractor.c:118
+#: src/main/extractor.c:119
 msgid "exposure"
 msgstr "expunere"
 
-#: src/main/extractor.c:119
+#: src/main/extractor.c:120
 msgid "aperture"
 msgstr "aperturã"
 
-#: src/main/extractor.c:120
+#: src/main/extractor.c:121
 msgid "exposure bias"
 msgstr "predilecþie expunere"
 
-#: src/main/extractor.c:121
+#: src/main/extractor.c:122
 msgid "flash"
 msgstr "bliþ"
 
-#: src/main/extractor.c:122
+#: src/main/extractor.c:123
 msgid "flash bias"
 msgstr "predilecþie bliþ"
 
-#: src/main/extractor.c:123
+#: src/main/extractor.c:124
 msgid "focal length"
 msgstr "lungime focalã"
 
-#: src/main/extractor.c:124
+#: src/main/extractor.c:125
 msgid "focal length (35mm equivalent)"
 msgstr "lungime focalã (echivalent 35mm)"
 
-#: src/main/extractor.c:125
+#: src/main/extractor.c:126
 msgid "iso speed"
 msgstr "valoare iso"
 
-#: src/main/extractor.c:126
+#: src/main/extractor.c:127
 msgid "exposure mode"
 msgstr "mod expunere"
 
-#: src/main/extractor.c:127
+#: src/main/extractor.c:128
 msgid "metering mode"
 msgstr "mod de mãsurare"
 
-#: src/main/extractor.c:128
+#: src/main/extractor.c:129
 msgid "macro mode"
 msgstr "mod macro"
 
-#: src/main/extractor.c:129
+#: src/main/extractor.c:130
 msgid "image quality"
 msgstr "calitate imagine"
 
-#: src/main/extractor.c:130
+#: src/main/extractor.c:131
 msgid "white balance"
 msgstr "balanþã alb"
 
-#: src/main/extractor.c:131
+#: src/main/extractor.c:132
 msgid "orientation"
 msgstr "orientare"
 
-#: src/main/extractor.c:132
+#: src/main/extractor.c:133
 #, fuzzy
 msgid "template"
 msgstr "înlocuieºte"
 
-#: src/main/extractor.c:133
+#: src/main/extractor.c:134
 msgid "split"
 msgstr ""
 
-#: src/main/extractor.c:134
+#: src/main/extractor.c:135
 #, fuzzy
 msgid "product version"
 msgstr "producãtor"
 
-#: src/main/extractor.c:135
+#: src/main/extractor.c:136
 msgid "last saved by"
 msgstr ""
 
-#: src/main/extractor.c:136
+#: src/main/extractor.c:137
 msgid "last printed"
 msgstr ""
 
-#: src/main/extractor.c:137
+#: src/main/extractor.c:138
 #, fuzzy
 msgid "word count"
 msgstr "numãr de pagini"
 
-#: src/main/extractor.c:138
+#: src/main/extractor.c:139
 #, fuzzy
 msgid "character count"
 msgstr "numãr de pagini"
 
-#: src/main/extractor.c:139
+#: src/main/extractor.c:140
 msgid "total editing time"
 msgstr ""
 
-#: src/main/extractor.c:140
+#: src/main/extractor.c:141
 msgid "thumbnails"
 msgstr ""
 
-#: src/main/extractor.c:141
+#: src/main/extractor.c:142
 msgid "security"
 msgstr ""
 
-#: src/main/extractor.c:142
+#: src/main/extractor.c:143
 #, fuzzy
 msgid "created by software"
 msgstr "creat pentru"
 
-#: src/main/extractor.c:143
+#: src/main/extractor.c:144
 msgid "modified by software"
 msgstr ""
 
-#: src/main/extractor.c:144
+#: src/main/extractor.c:145
 msgid "revision history"
 msgstr ""
 
-#: src/main/extractor.c:145
+#: src/main/extractor.c:146
 msgid "lower case conversion"
 msgstr ""
 
-#: src/main/extractor.c:146
+#: src/main/extractor.c:147
 msgid "company"
 msgstr ""
 
-#: src/main/extractor.c:147
+#: src/main/extractor.c:148
 #, fuzzy
 msgid "generator"
 msgstr "creator"
 
-#: src/main/extractor.c:148
+#: src/main/extractor.c:149
 msgid "character set"
 msgstr ""
 
-#: src/main/extractor.c:149
+#: src/main/extractor.c:150
 #, fuzzy
 msgid "line count"
 msgstr "numãr de pagini"
 
-#: src/main/extractor.c:150
+#: src/main/extractor.c:151
 #, fuzzy
 msgid "paragraph count"
 msgstr "numãr de pagini"
 
-#: src/main/extractor.c:151
+#: src/main/extractor.c:152
 msgid "editing cycles"
 msgstr ""
 
-#: src/main/extractor.c:152
+#: src/main/extractor.c:153
 #, fuzzy
 msgid "scale"
 msgstr "Musical"
 
-#: src/main/extractor.c:153
+#: src/main/extractor.c:154
 #, fuzzy
 msgid "manager"
 msgstr "limbã"
 
-#: src/main/extractor.c:154
+#: src/main/extractor.c:155
 #, fuzzy
 msgid "director"
 msgstr "Este un director"
 
-#: src/main/extractor.c:155
+#: src/main/extractor.c:156
 #, fuzzy
 msgid "duration"
 msgstr "relaþie"
 
-#: src/main/extractor.c:156
+#: src/main/extractor.c:157
 #, fuzzy
 msgid "information"
 msgstr "format"
 
-#: src/main/extractor.c:157
+#: src/main/extractor.c:158
 #, fuzzy
 msgid "full name"
 msgstr "nume_fiºier"
 
-#: src/main/extractor.c:158
+#: src/main/extractor.c:159
 #, fuzzy
 msgid "chapter"
 msgstr "categorie"
 
-#: src/main/extractor.c:159
+#: src/main/extractor.c:160
 msgid "year"
 msgstr ""
 
-#: src/main/extractor.c:160
+#: src/main/extractor.c:161
 msgid "link"
 msgstr ""
 
-#: src/main/extractor.c:161
+#: src/main/extractor.c:162
 #, fuzzy
 msgid "music CD identifier"
 msgstr "identificator-resursã"
 
-#: src/main/extractor.c:162
+#: src/main/extractor.c:163
 #, fuzzy
 msgid "play counter"
 msgstr "numãr de pagini"
 
-#: src/main/extractor.c:163
+#: src/main/extractor.c:164
 msgid "popularity meter"
 msgstr ""
 
-#: src/main/extractor.c:164
+#: src/main/extractor.c:165
 msgid "content type"
 msgstr ""
 
-#: src/main/extractor.c:165
+#: src/main/extractor.c:166
 msgid "encoded by"
 msgstr ""
 
-#: src/main/extractor.c:166
+#: src/main/extractor.c:167
 #, fuzzy
 msgid "time"
 msgstr "Anime"
 
-#: src/main/extractor.c:167
+#: src/main/extractor.c:168
 msgid "musician credits list"
 msgstr ""
 
-#: src/main/extractor.c:168
+#: src/main/extractor.c:169
 #, fuzzy
 msgid "mood"
 msgstr "mono"
 
-#: src/main/extractor.c:169
+#: src/main/extractor.c:170
 #, fuzzy
 msgid "format version"
 msgstr "versiune"
 
-#: src/main/extractor.c:170
+#: src/main/extractor.c:171
 msgid "television system"
 msgstr ""
 
-#: src/main/extractor.c:171
+#: src/main/extractor.c:172
 #, fuzzy
 msgid "song count"
 msgstr "numãr de pagini"
 
-#: src/main/extractor.c:172
+#: src/main/extractor.c:173
 msgid "starting song"
 msgstr ""
 
-#: src/main/extractor.c:173
+#: src/main/extractor.c:174
 #, fuzzy
 msgid "hardware dependency"
 msgstr "dependinþe"
 
-#: src/main/extractor.c:174
+#: src/main/extractor.c:175
 #, fuzzy
 msgid "ripper"
 msgstr "Trailer"
 
-#: src/main/extractor.c:175
+#: src/main/extractor.c:176
 #, fuzzy
 msgid "filesize"
 msgstr "mãrime"
 
-#: src/main/extractor.c:176
+#: src/main/extractor.c:177
 msgid "track number"
 msgstr ""
 
-#: src/main/extractor.c:177
+#: src/main/extractor.c:178
 msgid "international standard recording code"
 msgstr ""
 
-#: src/main/extractor.c:178
+#: src/main/extractor.c:179
 #, fuzzy
 msgid "disc number"
 msgstr "Numãr de fiºier incorect"
 
-#: src/main/extractor.c:598
+#: src/main/extractor.c:599
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "iniþializare mecanismului de plugin a eºuat: %s!\n"
 
-#: src/main/extractor.c:752
+#: src/main/extractor.c:763
 #, fuzzy, c-format
 msgid ""
 "Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
@@ -736,12 +736,12 @@ msgstr ""
 "Rezolvarea simbolului '%s' în biblioteca '%s' a eºuat, aºa cã am încercat '%"
 "s', dar ºi acesta a eºuat.  Erorile sunt: '%s' ºi '%s'.\n"
 
-#: src/main/extractor.c:781
+#: src/main/extractor.c:794
 #, fuzzy, c-format
 msgid "Loading `%s' plugin failed: %s\n"
 msgstr "Încãrcarea plugin-ului '%s' a eºuat: %s\n"
 
-#: src/main/extractor.c:986
+#: src/main/extractor.c:1006
 #, fuzzy, c-format
 msgid "Unloading plugin `%s' failed!\n"
 msgstr "Descãrcarea plugin-ului '%s' a eºuat!\n"
@@ -1461,17 +1461,68 @@ msgstr "JPop"
 msgid "Synthpop"
 msgstr "Synthpop"
 
-#: src/plugins/mp3extractor.c:444 src/plugins/wavextractor.c:119
+#: src/plugins/mp3extractor.c:252 src/plugins/wavextractor.c:119
 msgid "stereo"
 msgstr "stereo"
 
-#: src/plugins/mp3extractor.c:444 src/plugins/wavextractor.c:119
+#: src/plugins/mp3extractor.c:253
+#, fuzzy
+msgid "joint stereo"
+msgstr "stereo"
+
+#: src/plugins/mp3extractor.c:254
+msgid "dual channel"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:255 src/plugins/wavextractor.c:119
 msgid "mono"
 msgstr "mono"
 
-#: src/plugins/mp3extractor.c:445
-msgid "(variable bps)"
-msgstr "(bps variabil)"
+#: src/plugins/mp3extractor.c:258
+msgid "MPEG-1"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:259
+msgid "MPEG-2"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:260
+msgid "MPEG-2.5"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:263
+msgid "Layer I"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:264
+msgid "Layer II"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:265
+msgid "Layer III"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:475
+msgid "VBR"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:475
+msgid "CBR"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:478
+#, fuzzy
+msgid "no copyright"
+msgstr "copyright"
+
+#: src/plugins/mp3extractor.c:479
+msgid "original"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:479
+#, fuzzy
+msgid "copy"
+msgstr "copyright"
 
 #: src/plugins/ole2/ole2extractor.c:252
 msgid "No Proofing"
@@ -1597,6 +1648,9 @@ msgstr "Sursã RPM %d.%d"
 #, c-format
 msgid "Binary RPM %d.%d"
 msgstr "Binar RPM %d.%d"
+
+#~ msgid "(variable bps)"
+#~ msgstr "(bps variabil)"
 
 #~ msgid "Fatal: could not allocate (%s at %s:%d).\n"
 #~ msgstr "Fatal: nu am putut aloca (%s la %s:%d).\n"

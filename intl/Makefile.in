@@ -82,7 +82,7 @@ DEFS = -DLOCALEDIR=\"$(localedir)\" -DLOCALE_ALIAS_PATH=\"$(aliaspath)\" \
 -Drelocate=libintl_relocate \
 -DDEPENDS_ON_LIBICONV=1 @DEFS@
 CPPFLAGS = @CPPFLAGS@
-CFLAGS = -fno-common @CFLAGS@ @CFLAG_VISIBILITY@
+CFLAGS = @CFLAGS@ @CFLAG_VISIBILITY@
 LDFLAGS = @LDFLAGS@ $(LDFLAGS_@WOE32DLL@)
 LDFLAGS_yes = -Wl,--export-all-symbols
 LDFLAGS_no =
@@ -275,7 +275,7 @@ ref-del.sed: $(srcdir)/ref-del.sin
 	sed -e '/^#/d' -e 's/@''PACKAGE''@/@PACKAGE@/g' $(srcdir)/ref-del.sin > t-ref-del.sed
 	mv t-ref-del.sed ref-del.sed
 
-INCLUDES = -I. -I$(srcdir) -I.. 
+INCLUDES = -I. -I$(srcdir) -I..
 
 libgnuintl.h: $(srcdir)/libgnuintl.h.in
 	sed -e '/IN_LIBGLOCALE/d' \
@@ -480,7 +480,7 @@ uninstall:
 
 info dvi ps pdf html:
 
-$(OBJECTS): ../src/include/config.h libgnuintl.h
+$(OBJECTS): ../config.h libgnuintl.h
 bindtextdom.$lo dcgettext.$lo dcigettext.$lo dcngettext.$lo dgettext.$lo dngettext.$lo finddomain.$lo gettext.$lo intl-compat.$lo loadmsgcat.$lo localealias.$lo ngettext.$lo textdomain.$lo: $(srcdir)/gettextP.h $(srcdir)/gmo.h $(srcdir)/loadinfo.h
 hash-string.$lo dcigettext.$lo loadmsgcat.$lo: $(srcdir)/hash-string.h
 explodename.$lo l10nflist.$lo: $(srcdir)/loadinfo.h
