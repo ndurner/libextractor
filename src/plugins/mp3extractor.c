@@ -210,15 +210,22 @@ enum
 enum
 { LAYER_ERR = 0, LAYER_1 = 1, LAYER_2 = 2, LAYER_3 = 3 };
 
-#define sync_mask ((unsigned int) 0xE0FF)
-#define mpeg_ver_mask ((unsigned int) 0x1800)
-#define mpeg_layer_mask  ((unsigned int)0x600)
-#define bitrate_mask  ((unsigned int)0xF00000)
-#define freq_mask  ((unsigned int)0xC0000)
-#define ch_mask  ((unsigned int)0xC0000000)
-#define pad_mask  ((unsigned int)0x20000)
+#define MPA_SYNC_MASK          ((unsigned int) 0xFFE00000)
+#define MPA_LAST_SYNC_BIT_MASK ((unsigned int) 0x00100000)
+#define MPA_VERSION_MASK       ((unsigned int) 0x00080000)
+#define MPA_LAYER_MASK         ((unsigned int) 0x3)
+#define MPA_LAYER_SHIFT        17
+#define MPA_BITRATE_MASK       ((unsigned int) 0xF)
+#define MPA_BITRATE_SHIFT      12
+#define MPA_FREQ_MASK          ((unsigned int) 0x3)
+#define MPA_FREQ_SHIFT         10
+#define MPA_CHMODE_MASK        ((unsigned int) 0x3)
+#define MPA_CHMODE_SHIFT       6
+#define MPA_PADDING_SHIFT      9
+#define MPA_COPYRIGHT_SHIFT    3
+#define MPA_ORIGINAL_SHIFT     2
 
-unsigned int bitrate_table[16][6] = {
+static const unsigned int bitrate_table[16][6] = {
   {0, 0, 0, 0, 0, 0},
   {32, 32, 32, 32, 32, 8},
   {64, 48, 40, 64, 48, 16},
@@ -236,10 +243,26 @@ unsigned int bitrate_table[16][6] = {
   {448, 384, 320, 448, 384, 320},
   {-1, -1, -1, -1, -1, -1}
 };
-int freq_table[4][3] = {
+static const int freq_table[4][3] = {
   {44100, 22050, 11025},
   {48000, 24000, 12000},
   {32000, 16000, 8000}
+};
+static const char * const channel_modes[4] = {
+  gettext_noop("stereo"),
+  gettext_noop("joint stereo"),
+  gettext_noop("dual channel"),
+  gettext_noop("mono")
+};
+static const char * const mpeg_versions[3] = {
+  gettext_noop("MPEG-1"),
+  gettext_noop("MPEG-2"),
+  gettext_noop("MPEG-2.5")
+};
+static const char * const layer_names[3] = {
+  gettext_noop("Layer I"),
+  gettext_noop("Layer II"),
+  gettext_noop("Layer III")
 };
 
 
@@ -314,16 +337,18 @@ addkword (EXTRACTOR_KeywordList * oldhead,
 
 
 static struct EXTRACTOR_Keywords *
-mp3parse (const char *data, size_t size, struct EXTRACTOR_Keywords *prev)
+mp3parse (const unsigned char *data, size_t size, struct EXTRACTOR_Keywords *prev)
 {
   unsigned int header;
   int counter = 0;
   char mpeg_ver = 0;
-  char layer_ver = 0;
+  char layer = 0;
   int idx_num = 0;
   int bitrate = 0;              /*used for each frame */
   int avg_bps = 0;              /*average bitrate */
   int vbr_flag = 0;
+  int copyright_flag = 0;
+  int original_flag = 0;
   int length = 0;
   int sample_rate = 0;
   int ch = 0;
@@ -339,8 +364,9 @@ mp3parse (const char *data, size_t size, struct EXTRACTOR_Keywords *prev)
         {
           return prev;
         }                       /*unable to find header */
-      memcpy (&header, &data[pos], sizeof (header));
-      if ((header & sync_mask) == sync_mask)
+      header = (data[pos] << 24) | (data[pos+1] << 16) |
+               (data[pos+2] << 8) | data[pos+3];
+      if ((header & MPA_SYNC_MASK) == MPA_SYNC_MASK)
         break;                  /*found header sync */
       pos++;
       counter++;                /*next try */
@@ -356,63 +382,63 @@ mp3parse (const char *data, size_t size, struct EXTRACTOR_Keywords *prev)
   do
     {                           /*ok, now we found a mp3 frame header */
       frames++;
-      switch (header & mpeg_ver_mask)
+      switch (header & (MPA_LAST_SYNC_BIT_MASK | MPA_VERSION_MASK))
         {
-        case 0x1000:
-          mpeg_ver = MPEG_ERR;  /*error */
-          break;
-        case 0x800:
-          prev = addkword (prev, "MPEG V2", EXTRACTOR_RESOURCE_TYPE);
-          mpeg_ver = MPEG_V2;
-          break;
-        case 0x1800:
-          prev = addkword (prev, "MPEG V1", EXTRACTOR_RESOURCE_TYPE);
+        case (MPA_LAST_SYNC_BIT_MASK | MPA_VERSION_MASK):
           mpeg_ver = MPEG_V1;
           break;
+        case (MPA_LAST_SYNC_BIT_MASK):
+          mpeg_ver = MPEG_V2;
+          break;
         case 0:
-          prev = addkword (prev, "MPEG V25", EXTRACTOR_RESOURCE_TYPE);
           mpeg_ver = MPEG_V25;
           break;
+        case (MPA_VERSION_MASK):
+        default:
+          mpeg_ver = MPEG_ERR;  /*error */
+          break;
         }
-      switch (header & mpeg_layer_mask)
+      switch (header & (MPA_LAYER_MASK << MPA_LAYER_SHIFT))
         {
-        case 0x400:
-          layer_ver = LAYER_2;
+        case (0x1 << MPA_LAYER_SHIFT):
+          layer = LAYER_3;
           break;
-        case 0x200:
-          layer_ver = LAYER_3;
+        case (0x2 << MPA_LAYER_SHIFT):
+          layer = LAYER_2;
           break;
-        case 0x600:
-          layer_ver = LAYER_1;
+        case (0x3 << MPA_LAYER_SHIFT):
+          layer = LAYER_1;
           break;
-        case 0:
-          layer_ver = LAYER_ERR;        /*error */
+        case 0x0:
+        default:
+          layer = LAYER_ERR;        /*error */
         }
-      if (!layer_ver || !mpeg_ver)
+      if (!layer || !mpeg_ver)
         return prev;            /*unknown mpeg type */
       if (mpeg_ver < 3)
-        idx_num = (mpeg_ver - 1) * 3 + layer_ver - 1;
+        idx_num = (mpeg_ver - 1) * 3 + layer - 1;
       else
-        idx_num = 2 + layer_ver;
-      bitrate = 1000 * bitrate_table[(header & bitrate_mask) >> 20][idx_num];
+        idx_num = 2 + layer;
+      bitrate = 1000 * bitrate_table[(header >> MPA_BITRATE_SHIFT) & 
+                                     MPA_BITRATE_MASK][idx_num];
       if (bitrate < 0)
         {
           frames--;
           break;
         }                       /*error in header */
-      sample_rate = freq_table[(header & freq_mask) >> 18][mpeg_ver - 1];
+      sample_rate = freq_table[(header >> MPA_FREQ_SHIFT) & 
+                               MPA_FREQ_MASK][mpeg_ver - 1];
       if (sample_rate < 0)
         {
           frames--;
           break;
         }                       /*error in header */
-      if ((header & ch_mask) == ch_mask)
-        ch = 1;
-      else
-        ch = 2;                 /*stereo non stereo select */
+      ch = ((header >> MPA_CHMODE_SHIFT) & MPA_CHMODE_MASK);
+      copyright_flag = (header >> MPA_COPYRIGHT_SHIFT) & 0x1;
+      original_flag = (header >> MPA_ORIGINAL_SHIFT) & 0x1;
       frame_size =
         144 * bitrate / (sample_rate ? sample_rate : 1) +
-        ((header & pad_mask) >> 17);
+        ((header >> MPA_PADDING_SHIFT) & 0x1);
       avg_bps += bitrate / 1000;
 
       pos += frame_size - 4;
@@ -422,9 +448,10 @@ mp3parse (const char *data, size_t size, struct EXTRACTOR_Keywords *prev)
         vbr_flag = 1;
       if (pos + sizeof (header) > size)
         break;                  /* EOF */
-      memcpy (&header, &data[pos], sizeof (header));
+      header = (data[pos] << 24) | (data[pos+1] << 16) |
+               (data[pos+2] << 8) | data[pos+3];
     }
-  while ((header & sync_mask) == sync_mask);
+  while ((header & MPA_SYNC_MASK) == MPA_SYNC_MASK);
 
   if (!frames)
     return prev;                /*no valid frames */
@@ -439,11 +466,21 @@ mp3parse (const char *data, size_t size, struct EXTRACTOR_Keywords *prev)
       length = 1152 * frames / (sample_rate ? sample_rate : 0xFFFFFFFF);
     }
 
+  prev = addkword (prev, mpeg_versions[mpeg_ver-1], EXTRACTOR_RESOURCE_TYPE);
   format = malloc (512);
-  snprintf (format, 512, "%d kbps, %d hz, %dm%02d %s %s", avg_bps, sample_rate, length / 60, length % 60,       /* minutes / seconds */
-            ch == 2 ? _("stereo") : _("mono"),
-            vbr_flag ? _("(variable bps)") : "");
+  snprintf (format, 512, "%s %s audio, %d kbps (%s), %d Hz, %s, %s, %s", 
+            mpeg_versions[mpeg_ver-1],
+            layer_names[layer-1],
+            avg_bps, 
+            vbr_flag ? _("VBR") : _("CBR"), 
+            sample_rate, 
+            channel_modes[ch],
+            copyright_flag ? _("copyright") : _("no copyright"), 
+            original_flag ? _("original") : _("copy") );
   prev = addkword (prev, format, EXTRACTOR_FORMAT);
+  snprintf (format, 512, "%dm%02d", 
+            length / 60, length % 60);
+  prev = addkword (prev, format, EXTRACTOR_DURATION);
   free (format);
   return prev;
 }
@@ -493,7 +530,7 @@ libextractor_mp3_extract (const char *filename,
   free (info.artist);
   free (info.comment);
 
-  return mp3parse (data, size, klist);
+  return mp3parse ((unsigned char *) data, size, klist);
 }
 
 /* end of mp3extractor.c */
