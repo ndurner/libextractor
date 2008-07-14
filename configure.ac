@@ -54,6 +54,7 @@ freebsd*)
      AC_CHECK_LIB(c_r, pthread_create)
      AM_CONDITIONAL(HAVE_GNU_LD, true)
      AM_CONDITIONAL(SOMEBSD, true)
+     XTRA_CPPLIBS=-lstdc++
      LIBEXT=.so
      ;;
 openbsd*)
@@ -61,6 +62,7 @@ openbsd*)
      AC_CHECK_LIB(c_r, pthread_create)
      AM_CONDITIONAL(HAVE_GNU_LD, true)
      AM_CONDITIONAL(SOMEBSD, true)
+     XTRA_CPPLIBS=-lstdc++
      LIBEXT=.so
      ;;
 netbsd*)
@@ -68,6 +70,7 @@ netbsd*)
      AC_CHECK_LIB(c_r, pthread_create)
      AM_CONDITIONAL(HAVE_GNU_LD, true)
      AM_CONDITIONAL(SOMEBSD, true)
+     XTRA_CPPLIBS=-lstdc++
      LIBEXT=.so
      ;;
 *solaris*)
