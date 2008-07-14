@@ -1,3 +1,9 @@
+Sun Jul 13 19:31:35 MDT 2008
+	Fixed endianess issues in mp3 extractor.
+	Fixed build issues (need to link C++ code explicitly against
+	libstdc++ on BSD).
+	Releasing libextractor 0.5.20c.
+
 Mon Jun 23 19:05:07 EET 2008
 	Fixed concurrency issues in plugin (un-)loading by adding locking
 	around libltdl functions.
@@ -5,39 +11,6 @@ Mon Jun 23 19:05:07 EET 2008
 Fri Jun 20 23:34:02 EET 2008
 	Added an FFmpeg-based thumbnail extractor plugin, initially
 	supporting only bmp and png files.
-
-2008-05-21  gettextize  <bug-gnu-gettext@gnu.org>
-
-	* m4/gettext.m4: Upgrade to gettext-0.16.1.
-	* m4/iconv.m4: Upgrade to gettext-0.16.1.
-	* m4/lib-ld.m4: Upgrade to gettext-0.16.1.
-	* m4/lib-link.m4: Upgrade to gettext-0.16.1.
-	* m4/lib-prefix.m4: Upgrade to gettext-0.16.1.
-	* m4/nls.m4: Upgrade to gettext-0.16.1.
-	* m4/po.m4: Upgrade to gettext-0.16.1.
-	* m4/progtest.m4: Upgrade to gettext-0.16.1.
-	* m4/codeset.m4: Upgrade to gettext-0.16.1.
-	* m4/glibc21.m4: Upgrade to gettext-0.16.1.
-	* m4/intdiv0.m4: Upgrade to gettext-0.16.1.
-	* m4/intl.m4: Upgrade to gettext-0.16.1.
-	* m4/intmax.m4: Upgrade to gettext-0.16.1.
-	* m4/inttypes_h.m4: Upgrade to gettext-0.16.1.
-	* m4/inttypes-pri.m4: Upgrade to gettext-0.16.1.
-	* m4/lcmessage.m4: Upgrade to gettext-0.16.1.
-	* m4/longdouble.m4: Upgrade to gettext-0.16.1.
-	* m4/longlong.m4: Upgrade to gettext-0.16.1.
-	* m4/printf-posix.m4: Upgrade to gettext-0.16.1.
-	* m4/size_max.m4: Upgrade to gettext-0.16.1.
-	* m4/stdint_h.m4: Upgrade to gettext-0.16.1.
-	* m4/uintmax_t.m4: Upgrade to gettext-0.16.1.
-	* m4/ulonglong.m4: Upgrade to gettext-0.16.1.
-	* m4/wchar_t.m4: Upgrade to gettext-0.16.1.
-	* m4/wint_t.m4: Upgrade to gettext-0.16.1.
-	* m4/xsize.m4: Upgrade to gettext-0.16.1.
-	* Makefile.am (SUBDIRS): Add intl.
-	(EXTRA_DIST): Add config.rpath.
-	* configure.ac (AC_CONFIG_FILES): Add intl/Makefile.
-	(AM_GNU_GETTEXT_VERSION): Bump to 0.16.1.
 
 Mon Apr 28 08:40:43 MDT 2008
 	Updated Dutch translation.

@@ -1,8 +1,8 @@
 # Process this file with autoconf to produce a configure script.
 AC_PREREQ(2.57)
-AC_INIT([libextractor], [0.5.20b], [bug-libextractor@gnu.org])
+AC_INIT([libextractor], [0.5.20c], [bug-libextractor@gnu.org])
 AC_REVISION($Revision: 1.67 $)
-AM_INIT_AUTOMAKE([libextractor], [0.5.20b])
+AM_INIT_AUTOMAKE([libextractor], [0.5.20c])
 AM_CONFIG_HEADER(config.h)
 
 LIB_VERSION_CURRENT=2
