@@ -32,7 +32,7 @@ extern "C" {
  * 0.2.6-1 => 0x00020601
  * 4.5.2-0 => 0x04050200
  */
-#define EXTRACTOR_VERSION 0x00052000
+#define EXTRACTOR_VERSION 0x00052003
 
 #include <stdio.h>
 
@@ -188,12 +188,14 @@ typedef enum {
   EXTRACTOR_TRACK_NUMBER = 132,
   EXTRACTOR_ISRC = 133,
   EXTRACTOR_DISC_NUMBER = 134,
+  EXTRACTOR_GNUNET_DISPLAY_TYPE = 135,
+  EXTRACTOR_GNUNET_ECBC_URI = 136,
 } EXTRACTOR_KeywordType;
 
 /**
  * Test if a given LE type contains binary data.
  */
-#define EXTRACTOR_isBinaryType(type) (type == EXTRACTOR_THUMBNAIL_DATA)
+#define EXTRACTOR_isBinaryType(type) (type == EXTRACTOR_THUMBNAIL_DATA) 
 
 /**
  * A linked list of keywords. This structure is passed around

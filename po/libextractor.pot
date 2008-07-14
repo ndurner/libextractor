@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2008-07-13 15:09-0600\n"
+"POT-Creation-Date: 2008-07-14 02:05-0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -108,12 +108,12 @@ msgstr ""
 msgid "Extract metadata from files."
 msgstr ""
 
-#: src/main/extract.c:190 src/main/extractor.c:1533
+#: src/main/extract.c:190 src/main/extractor.c:1535
 #, c-format
 msgid "%s - (binary)\n"
 msgstr ""
 
-#: src/main/extract.c:201 src/main/extractor.c:1538
+#: src/main/extract.c:201 src/main/extractor.c:1540
 #, c-format
 msgid "INVALID TYPE - %s\n"
 msgstr ""
@@ -678,24 +678,32 @@ msgstr ""
 msgid "disc number"
 msgstr ""
 
-#: src/main/extractor.c:599
+#: src/main/extractor.c:180
+msgid "preferred display style (GNUnet)"
+msgstr ""
+
+#: src/main/extractor.c:181
+msgid "GNUnet URI of ECBC data"
+msgstr ""
+
+#: src/main/extractor.c:601
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr ""
 
-#: src/main/extractor.c:763
+#: src/main/extractor.c:765
 #, c-format
 msgid ""
 "Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
 "failed also.  Errors are: `%s' and `%s'.\n"
 msgstr ""
 
-#: src/main/extractor.c:794
+#: src/main/extractor.c:796
 #, c-format
 msgid "Loading `%s' plugin failed: %s\n"
 msgstr ""
 
-#: src/main/extractor.c:1006
+#: src/main/extractor.c:1008
 #, c-format
 msgid "Unloading plugin `%s' failed!\n"
 msgstr ""

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.5.14\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2008-07-13 15:09-0600\n"
+"POT-Creation-Date: 2008-07-14 02:05-0600\n"
 "PO-Revision-Date: 2007-03-23 23:16+0100\n"
 "Last-Translator: Nils Durner <durner@gnunet.org>\n"
 "Language-Team: German <translation-team-de@lists.sourceforge.net>\n"
@@ -122,12 +122,12 @@ msgstr "extract [OPTIONEN] [DATEINAME]*"
 msgid "Extract metadata from files."
 msgstr "Metadaten aus den Dateien extrahieren."
 
-#: src/main/extract.c:190 src/main/extractor.c:1533
+#: src/main/extract.c:190 src/main/extractor.c:1535
 #, c-format
 msgid "%s - (binary)\n"
 msgstr "%s - (binär)\n"
 
-#: src/main/extract.c:201 src/main/extractor.c:1538
+#: src/main/extract.c:201 src/main/extractor.c:1540
 #, c-format
 msgid "INVALID TYPE - %s\n"
 msgstr "UNGÜLTIGE ART - %s\n"
@@ -693,12 +693,20 @@ msgstr ""
 msgid "disc number"
 msgstr "Nummer der Platte"
 
-#: src/main/extractor.c:599
+#: src/main/extractor.c:180
+msgid "preferred display style (GNUnet)"
+msgstr ""
+
+#: src/main/extractor.c:181
+msgid "GNUnet URI of ECBC data"
+msgstr ""
+
+#: src/main/extractor.c:601
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "Initialisierung des Plugin-Mechanismus' ist fehlgeschlagen: %s.\n"
 
-#: src/main/extractor.c:763
+#: src/main/extractor.c:765
 #, c-format
 msgid ""
 "Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
@@ -707,12 +715,12 @@ msgstr ""
 "Das Auflösen von Symbol `%s' in Bibliothek `%s' ist fehlgeschlagen, deshalb "
 "wurde `%s' versucht, was aber auch fehlschlug. Fehler sind: `%s' und `%s'.\n"
 
-#: src/main/extractor.c:794
+#: src/main/extractor.c:796
 #, c-format
 msgid "Loading `%s' plugin failed: %s\n"
 msgstr "Laden des »%s«-Plugins ist fehlgeschlagen: %s\n"
 
-#: src/main/extractor.c:1006
+#: src/main/extractor.c:1008
 #, c-format
 msgid "Unloading plugin `%s' failed!\n"
 msgstr "Entladen des »%s«-Plugins ist fehlgeschlagen!\n"
