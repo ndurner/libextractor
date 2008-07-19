@@ -896,6 +896,8 @@ void av_picture_copy(AVPicture *dst, const AVPicture *src,
         for(i = 0; i < pf->nb_channels; i++) {
             int w, h;
             int bwidth = ff_get_plane_bytewidth(pix_fmt, width, i);
+	    if (bwidth < 0)
+	      continue; /* unknown pixel type, ignore */
             w = width;
             h = height;
             if (i == 1 || i == 2) {
