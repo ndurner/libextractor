@@ -1256,7 +1256,10 @@ static inline int initFilter(int16_t **outFilter, int16_t **filterPos, int *outF
     filterSize= (minFilterSize +(filterAlign-1)) & (~(filterAlign-1));
     ASSERT(filterSize > 0)
     if (filterSize >= MAX_FILTER_SIZE)
+      {
+	av_free(filter2);
         return -1;
+      }
     filter= av_malloc(filterSize*dstW*sizeof(double));
     *outFilterSize= filterSize;
 
