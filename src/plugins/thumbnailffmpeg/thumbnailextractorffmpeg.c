@@ -32,7 +32,7 @@
 #include <avcodec.h>
 #include <swscale.h>
 
-#define DEBUG 1
+#define DEBUG 0
 
 struct StreamDescriptor
 {
