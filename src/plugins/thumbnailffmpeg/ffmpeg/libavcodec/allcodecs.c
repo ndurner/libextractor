@@ -78,6 +78,7 @@ void avcodec_register_all(void)
     REGISTER_DECODER (DSICINVIDEO, dsicinvideo);
     REGISTER_ENCDEC  (DVVIDEO, dvvideo);
     REGISTER_DECODER (DXA, dxa);
+    REGISTER_DECODER (EACMV, eacmv);
     REGISTER_DECODER (EIGHTBPS, eightbps);
     REGISTER_DECODER (EIGHTSVX_EXP, eightsvx_exp);
     REGISTER_DECODER (EIGHTSVX_FIB, eightsvx_fib);
@@ -109,6 +110,7 @@ void avcodec_register_all(void)
     REGISTER_ENCDEC  (MJPEG, mjpeg);
     REGISTER_DECODER (MJPEGB, mjpegb);
     REGISTER_DECODER (MMVIDEO, mmvideo);
+    REGISTER_DECODER (MOTIONPIXELS, motionpixels);
     REGISTER_DECODER (MPEG_XVMC, mpeg_xvmc);
     REGISTER_ENCDEC  (MPEG1VIDEO, mpeg1video);
     REGISTER_ENCDEC  (MPEG2VIDEO, mpeg2video);
@@ -189,6 +191,7 @@ void avcodec_register_all(void)
     REGISTER_DECODER (IMC, imc);
     REGISTER_DECODER (MACE3, mace3);
     REGISTER_DECODER (MACE6, mace6);
+    REGISTER_DECODER (MLP, mlp);
     REGISTER_ENCDEC  (MP2, mp2);
     REGISTER_DECODER (MP3, mp3);
     REGISTER_DECODER (MP3ADU, mp3adu);
@@ -310,6 +313,7 @@ void avcodec_register_all(void)
     REGISTER_PARSER  (MPEGVIDEO, mpegvideo);
     REGISTER_PARSER  (PNM, pnm);
     REGISTER_PARSER  (VC1, vc1);
+    REGISTER_PARSER  (VP3, vp3);
 
     /* bitstream filters */
     REGISTER_BSF     (DUMP_EXTRADATA, dump_extradata);

@@ -349,7 +349,7 @@ static int mxf_read_packet(AVFormatContext *s, AVPacket *pkt)
         if (IS_KLV_KEY(klv.key, mxf_essence_element_key)) {
             int index = mxf_get_stream_index(s, &klv);
             if (index < 0) {
-                av_log(s, AV_LOG_ERROR, "error getting stream index\n");
+                av_log(s, AV_LOG_ERROR, "error getting stream index %x\n", AV_RB32(klv.key+12));
                 goto skip;
             }
             if (s->streams[index]->discard == AVDISCARD_ALL)
@@ -1015,6 +1015,9 @@ static int mxf_read_close(AVFormatContext *s)
         case MaterialPackage:
             av_freep(&((MXFPackage *)mxf->metadata_sets[i])->tracks_refs);
             break;
+        case Track:
+            mxf->metadata_sets[i] = NULL; /* will be freed later */
+            break;
         default:
             break;
         }
@@ -1061,7 +1064,7 @@ static int mxf_read_seek(AVFormatContext *s, int stream_index, int64_t sample_ti
 
 AVInputFormat mxf_demuxer = {
     "mxf",
-    NULL_IF_CONFIG_SMALL("MXF format"),
+    NULL_IF_CONFIG_SMALL("Material eXchange Format"),
     sizeof(MXFContext),
     mxf_probe,
     mxf_read_header,

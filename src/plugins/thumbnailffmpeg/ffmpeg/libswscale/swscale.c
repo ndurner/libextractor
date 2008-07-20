@@ -72,7 +72,6 @@ untested special converters
 #include "rgb2rgb.h"
 #include "libavutil/x86_cpu.h"
 #include "libavutil/bswap.h"
-#include "libavcodec/opt.h"
 
 #undef MOVNTQ
 #undef PAVGB
@@ -87,12 +86,6 @@ untested special converters
 #define FAST_BGR2YV12 // use 7 bit coeffs instead of 15bit
 
 #define RET 0xC3 //near return opcode for X86
-
-#ifdef MP_DEBUG
-#define ASSERT(x) assert(x);
-#else
-#define ASSERT(x) ;
-#endif
 
 #ifdef M_PI
 #define PI M_PI
@@ -237,44 +230,6 @@ extern const uint8_t dither_2x2_8[2][8];
 extern const uint8_t dither_8x8_32[8][8];
 extern const uint8_t dither_8x8_73[8][8];
 extern const uint8_t dither_8x8_220[8][8];
-
-static const char * sws_context_to_name(void * ptr) {
-    return "swscaler";
-}
-
-#define OFFSET(x) offsetof(SwsContext, x)
-#define DEFAULT 0
-#define VE AV_OPT_FLAG_VIDEO_PARAM | AV_OPT_FLAG_ENCODING_PARAM
-
-static const AVOption options[] = {
-    { "sws_flags", "scaler/cpu flags", OFFSET(flags), FF_OPT_TYPE_FLAGS, DEFAULT, 0, UINT_MAX, VE, "sws_flags" },
-    { "fast_bilinear", "fast bilinear", 0, FF_OPT_TYPE_CONST, SWS_FAST_BILINEAR, INT_MIN, INT_MAX, VE, "sws_flags" },
-    { "bilinear", "bilinear", 0, FF_OPT_TYPE_CONST, SWS_BILINEAR, INT_MIN, INT_MAX, VE, "sws_flags" },
-    { "bicubic", "bicubic", 0, FF_OPT_TYPE_CONST, SWS_BICUBIC, INT_MIN, INT_MAX, VE, "sws_flags" },
-    { "experimental", "experimental", 0, FF_OPT_TYPE_CONST, SWS_X, INT_MIN, INT_MAX, VE, "sws_flags" },
-    { "neighbor", "nearest neighbor", 0, FF_OPT_TYPE_CONST, SWS_POINT, INT_MIN, INT_MAX, VE, "sws_flags" },
-    { "area", "averaging area", 0, FF_OPT_TYPE_CONST, SWS_AREA, INT_MIN, INT_MAX, VE, "sws_flags" },
-    { "bicublin", "luma bicubic, chroma bilinear", 0, FF_OPT_TYPE_CONST, SWS_BICUBLIN, INT_MIN, INT_MAX, VE, "sws_flags" },
-    { "gauss", "gaussian", 0, FF_OPT_TYPE_CONST, SWS_GAUSS, INT_MIN, INT_MAX, VE, "sws_flags" },
-    { "sinc", "sinc", 0, FF_OPT_TYPE_CONST, SWS_SINC, INT_MIN, INT_MAX, VE, "sws_flags" },
-    { "lanczos", "lanczos", 0, FF_OPT_TYPE_CONST, SWS_LANCZOS, INT_MIN, INT_MAX, VE, "sws_flags" },
-    { "spline", "natural bicubic spline", 0, FF_OPT_TYPE_CONST, SWS_SPLINE, INT_MIN, INT_MAX, VE, "sws_flags" },
-    { "print_info", "print info", 0, FF_OPT_TYPE_CONST, SWS_PRINT_INFO, INT_MIN, INT_MAX, VE, "sws_flags" },
-    { "accurate_rnd", "accurate rounding", 0, FF_OPT_TYPE_CONST, SWS_ACCURATE_RND, INT_MIN, INT_MAX, VE, "sws_flags" },
-    { "mmx", "MMX SIMD acceleration", 0, FF_OPT_TYPE_CONST, SWS_CPU_CAPS_MMX, INT_MIN, INT_MAX, VE, "sws_flags" },
-    { "mmx2", "MMX2 SIMD acceleration", 0, FF_OPT_TYPE_CONST, SWS_CPU_CAPS_MMX2, INT_MIN, INT_MAX, VE, "sws_flags" },
-    { "3dnow", "3DNOW SIMD acceleration", 0, FF_OPT_TYPE_CONST, SWS_CPU_CAPS_3DNOW, INT_MIN, INT_MAX, VE, "sws_flags" },
-    { "altivec", "AltiVec SIMD acceleration", 0, FF_OPT_TYPE_CONST, SWS_CPU_CAPS_ALTIVEC, INT_MIN, INT_MAX, VE, "sws_flags" },
-    { "bfin", "Blackfin SIMD acceleration", 0, FF_OPT_TYPE_CONST, SWS_CPU_CAPS_BFIN, INT_MIN, INT_MAX, VE, "sws_flags" },
-    { "full_chroma_int", "full chroma interpolation", 0 , FF_OPT_TYPE_CONST, SWS_FULL_CHR_H_INT, INT_MIN, INT_MAX, VE, "sws_flags" },
-    { "full_chroma_inp", "full chroma input", 0 , FF_OPT_TYPE_CONST, SWS_FULL_CHR_H_INP, INT_MIN, INT_MAX, VE, "sws_flags" },
-    { NULL }
-};
-
-#undef VE
-#undef DEFAULT
-
-static const AVClass sws_context_class = { "SWScaler", sws_context_to_name, options };
 
 const char *sws_format_name(enum PixelFormat format)
 {
@@ -1060,7 +1015,7 @@ static inline int initFilter(int16_t **outFilter, int16_t **filterPos, int *outF
         else if (flags&SWS_BILINEAR)     sizeFactor=  2.0;
         else {
             sizeFactor= 0.0; //GCC warning killer
-            ASSERT(0)
+            assert(0);
         }
 
         if (xInc1 <= 1.0)       filterSizeInSrc= sizeFactor; // upscale
@@ -1145,7 +1100,7 @@ static inline int initFilter(int16_t **outFilter, int16_t **filterPos, int *outF
                 }
                 else {
                     coeff= 0.0; //GCC warning killer
-                    ASSERT(0)
+                    assert(0);
                 }
 
                 filter[i*filterSize + j]= coeff;
@@ -1158,11 +1113,11 @@ static inline int initFilter(int16_t **outFilter, int16_t **filterPos, int *outF
     /* apply src & dst Filter to filter -> filter2
        av_free(filter);
     */
-    ASSERT(filterSize>0)
+    assert(filterSize>0);
     filter2Size= filterSize;
     if (srcFilter) filter2Size+= srcFilter->length - 1;
     if (dstFilter) filter2Size+= dstFilter->length - 1;
-    ASSERT(filter2Size>0)
+    assert(filter2Size>0);
     filter2= av_malloc(filter2Size*dstW*sizeof(double));
 
     for (i=0; i<dstW; i++)
@@ -1177,7 +1132,7 @@ static inline int initFilter(int16_t **outFilter, int16_t **filterPos, int *outF
         if (srcFilter) outVec= sws_getConvVec(srcFilter, &scaleFilter);
         else           outVec= &scaleFilter;
 
-        ASSERT(outVec->length == filter2Size)
+        assert(outVec->length == filter2Size);
         //FIXME dstFilter
 
         for (j=0; j<outVec->length; j++)
@@ -1252,14 +1207,14 @@ static inline int initFilter(int16_t **outFilter, int16_t **filterPos, int *outF
             filterAlign= 1;
     }
 
-    ASSERT(minFilterSize > 0)
+    assert(minFilterSize > 0);
     filterSize= (minFilterSize +(filterAlign-1)) & (~(filterAlign-1));
-    ASSERT(filterSize > 0)
+    assert(filterSize > 0);
     if (filterSize >= MAX_FILTER_SIZE)
-      {
-	av_free(filter2);
+    {
+        av_free(filter2);
         return -1;
-      }
+    }
     filter= av_malloc(filterSize*dstW*sizeof(double));
     *outFilterSize= filterSize;
 
@@ -1734,62 +1689,62 @@ static int yvu9toyv12Wrapper(SwsContext *c, uint8_t* src[], int srcStride[], int
 }
 
 /* unscaled copy like stuff (assumes nearly identical formats) */
-static int simpleCopy(SwsContext *c, uint8_t* src[], int srcStride[], int srcSliceY,
-                      int srcSliceH, uint8_t* dst[], int dstStride[]){
-
-    if (isPacked(c->srcFormat))
+static int packedCopy(SwsContext *c, uint8_t* src[], int srcStride[], int srcSliceY,
+                      int srcSliceH, uint8_t* dst[], int dstStride[])
+{
+    if (dstStride[0]==srcStride[0] && srcStride[0] > 0)
+        memcpy(dst[0] + dstStride[0]*srcSliceY, src[0], srcSliceH*dstStride[0]);
+    else
     {
-        if (dstStride[0]==srcStride[0] && srcStride[0] > 0)
-            memcpy(dst[0] + dstStride[0]*srcSliceY, src[0], srcSliceH*dstStride[0]);
-        else
+        int i;
+        uint8_t *srcPtr= src[0];
+        uint8_t *dstPtr= dst[0] + dstStride[0]*srcSliceY;
+        int length=0;
+
+        /* universal length finder */
+        while(length+c->srcW <= FFABS(dstStride[0])
+           && length+c->srcW <= FFABS(srcStride[0])) length+= c->srcW;
+        assert(length!=0);
+
+        for (i=0; i<srcSliceH; i++)
         {
-            int i;
-            uint8_t *srcPtr= src[0];
-            uint8_t *dstPtr= dst[0] + dstStride[0]*srcSliceY;
-            int length=0;
-
-            /* universal length finder */
-            while(length+c->srcW <= FFABS(dstStride[0])
-               && length+c->srcW <= FFABS(srcStride[0])) length+= c->srcW;
-            ASSERT(length!=0);
-
-            for (i=0; i<srcSliceH; i++)
-            {
-                memcpy(dstPtr, srcPtr, length);
-                srcPtr+= srcStride[0];
-                dstPtr+= dstStride[0];
-            }
+            memcpy(dstPtr, srcPtr, length);
+            srcPtr+= srcStride[0];
+            dstPtr+= dstStride[0];
         }
     }
-    else
-    { /* Planar YUV or gray */
-        int plane;
-        for (plane=0; plane<3; plane++)
-        {
-            int length= plane==0 ? c->srcW  : -((-c->srcW  )>>c->chrDstHSubSample);
-            int y=      plane==0 ? srcSliceY: -((-srcSliceY)>>c->chrDstVSubSample);
-            int height= plane==0 ? srcSliceH: -((-srcSliceH)>>c->chrDstVSubSample);
+    return srcSliceH;
+}
 
-            if ((isGray(c->srcFormat) || isGray(c->dstFormat)) && plane>0)
-            {
-                if (!isGray(c->dstFormat))
-                    memset(dst[plane], 128, dstStride[plane]*height);
-            }
+static int planarCopy(SwsContext *c, uint8_t* src[], int srcStride[], int srcSliceY,
+                      int srcSliceH, uint8_t* dst[], int dstStride[])
+{
+    int plane;
+    for (plane=0; plane<3; plane++)
+    {
+        int length= plane==0 ? c->srcW  : -((-c->srcW  )>>c->chrDstHSubSample);
+        int y=      plane==0 ? srcSliceY: -((-srcSliceY)>>c->chrDstVSubSample);
+        int height= plane==0 ? srcSliceH: -((-srcSliceH)>>c->chrDstVSubSample);
+
+        if ((isGray(c->srcFormat) || isGray(c->dstFormat)) && plane>0)
+        {
+            if (!isGray(c->dstFormat))
+                memset(dst[plane], 128, dstStride[plane]*height);
+        }
+        else
+        {
+            if (dstStride[plane]==srcStride[plane] && srcStride[plane] > 0)
+                memcpy(dst[plane] + dstStride[plane]*y, src[plane], height*dstStride[plane]);
             else
             {
-                if (dstStride[plane]==srcStride[plane] && srcStride[plane] > 0)
-                    memcpy(dst[plane] + dstStride[plane]*y, src[plane], height*dstStride[plane]);
-                else
+                int i;
+                uint8_t *srcPtr= src[plane];
+                uint8_t *dstPtr= dst[plane] + dstStride[plane]*y;
+                for (i=0; i<height; i++)
                 {
-                    int i;
-                    uint8_t *srcPtr= src[plane];
-                    uint8_t *dstPtr= dst[plane] + dstStride[plane]*y;
-                    for (i=0; i<height; i++)
-                    {
-                        memcpy(dstPtr, srcPtr, length);
-                        srcPtr+= srcStride[plane];
-                        dstPtr+= dstStride[plane];
-                    }
+                    memcpy(dstPtr, srcPtr, length);
+                    srcPtr+= srcStride[plane];
+                    dstPtr+= dstStride[plane];
                 }
             }
         }
@@ -2062,6 +2017,24 @@ SwsContext *sws_getContext(int srcW, int srcH, int srcFormat, int dstW, int dstH
         return NULL;
     }
 
+    i= flags & ( SWS_POINT
+                |SWS_AREA
+                |SWS_BILINEAR
+                |SWS_FAST_BILINEAR
+                |SWS_BICUBIC
+                |SWS_X
+                |SWS_GAUSS
+                |SWS_LANCZOS
+                |SWS_SINC
+                |SWS_SPLINE
+                |SWS_BICUBLIN);
+    if(!i || (i & (i-1)))
+    {
+        av_log(NULL, AV_LOG_ERROR, "swScaler: Exactly one scaler algorithm must be choosen\n");
+        return NULL;
+    }
+
+
     /* sanity check */
     if (srcW<4 || srcH<1 || dstW<8 || dstH<1) //FIXME check if these are enough and try to lowwer them after fixing the relevant parts of the code
     {
@@ -2211,7 +2184,10 @@ SwsContext *sws_getContext(int srcW, int srcH, int srcFormat, int dstW, int dstH
             || (isPlanarYUV(srcFormat) && isGray(dstFormat))
             || (isPlanarYUV(dstFormat) && isGray(srcFormat)))
         {
-            c->swScale= simpleCopy;
+            if (isPacked(c->srcFormat))
+                c->swScale= packedCopy;
+            else /* Planar YUV or gray */
+                c->swScale= planarCopy;
         }
 
         /* gray16{le,be} conversions */
@@ -2388,7 +2364,7 @@ SwsContext *sws_getContext(int srcW, int srcH, int srcFormat, int dstW, int dstH
 
     assert(2*VOFW == VOF);
 
-    ASSERT(c->chrDstH <= dstH)
+    assert(c->chrDstH <= dstH);
 
     if (flags&SWS_PRINT_INFO)
     {

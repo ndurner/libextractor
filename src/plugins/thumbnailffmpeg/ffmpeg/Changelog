@@ -122,6 +122,11 @@ version <next>
 - MAXIS EA XA (.xa) demuxer / decoder
 - BFI video decoder
 - OMA demuxer
+- MLP/TrueHD decoder
+- Electronic Arts CMV decoder
+- Motion Pixels Video decoder
+- Motion Pixels MVI demuxer
+- removed animated GIF decoder/demuxer
 
 version 0.4.9-pre1:
 

@@ -2200,7 +2200,11 @@ static av_cold int decode_init(AVCodecContext *avctx){
 //    s->decode_mb= ff_h263_decode_mb;
     s->quarter_sample = 1;
     s->low_delay= 1;
-    avctx->pix_fmt= PIX_FMT_YUV420P;
+
+    if(avctx->codec_id == CODEC_ID_SVQ3)
+        avctx->pix_fmt= PIX_FMT_YUVJ420P;
+    else
+        avctx->pix_fmt= PIX_FMT_YUV420P;
 
     decode_init_vlc();
 
@@ -2255,6 +2259,15 @@ static int frame_start(H264Context *h){
         memset(h->slice_table, -1, (s->mb_height*s->mb_stride-1) * sizeof(uint8_t));
 
 //    s->decode= (s->flags&CODEC_FLAG_PSNR) || !s->encoding || s->current_picture.reference /*|| h->contains_intra*/ || 1;
+
+    // We mark the current picture as non reference after allocating it, so
+    // that if we break out due to an error it can be released automatically
+    // in the next MPV_frame_start().
+    // SVQ3 as well as most other codecs have only last/next/current and thus
+    // get released even with set reference, besides SVQ3 and others do not
+    // mark frames as reference later "naturally".
+    if(s->codec_id != CODEC_ID_SVQ3)
+        s->current_picture_ptr->reference= 0;
     return 0;
 }
 
@@ -2726,9 +2739,10 @@ static void hl_decode_mb(H264Context *h){
     MpegEncContext * const s = &h->s;
     const int mb_xy= h->mb_xy;
     const int mb_type= s->current_picture.mb_type[mb_xy];
-    int is_complex = FRAME_MBAFF || MB_FIELD || IS_INTRA_PCM(mb_type) || s->codec_id != CODEC_ID_H264 || (ENABLE_GRAY && (s->flags&CODEC_FLAG_GRAY)) || s->encoding;
+    int is_complex = FRAME_MBAFF || MB_FIELD || IS_INTRA_PCM(mb_type) || s->codec_id != CODEC_ID_H264 ||
+                    (ENABLE_GRAY && (s->flags&CODEC_FLAG_GRAY)) || (ENABLE_H264_ENCODER && s->encoding) || ENABLE_SMALL;
 
-    if(!s->decode)
+    if(ENABLE_H264_ENCODER && !s->decode)
         return;
 
     if (is_complex)
@@ -3263,15 +3277,11 @@ static inline int unreference_pic(H264Context *h, Picture *pic, int refmask){
     if (pic->reference &= refmask) {
         return 0;
     } else {
-        if(pic == h->delayed_output_pic)
-            pic->reference=DELAYED_PIC_REF;
-        else{
-            for(i = 0; h->delayed_pic[i]; i++)
-                if(pic == h->delayed_pic[i]){
-                    pic->reference=DELAYED_PIC_REF;
-                    break;
-                }
-        }
+        for(i = 0; h->delayed_pic[i]; i++)
+            if(pic == h->delayed_pic[i]){
+                pic->reference=DELAYED_PIC_REF;
+                break;
+            }
         return 1;
     }
 }
@@ -3301,14 +3311,12 @@ static void idr(H264Context *h){
 static void flush_dpb(AVCodecContext *avctx){
     H264Context *h= avctx->priv_data;
     int i;
-    for(i=0; i<16; i++) {
+    for(i=0; i<MAX_DELAYED_PIC_COUNT; i++) {
         if(h->delayed_pic[i])
             h->delayed_pic[i]->reference= 0;
         h->delayed_pic[i]= NULL;
     }
-    if(h->delayed_output_pic)
-        h->delayed_output_pic->reference= 0;
-    h->delayed_output_pic= NULL;
+    h->outputed_poc= INT_MIN;
     idr(h);
     if(h->s.current_picture_ptr)
         h->s.current_picture_ptr->reference= 0;
@@ -3347,7 +3355,7 @@ static Picture * find_short(H264Context *h, int frame_num, int *idx){
  * @param i index into h->short_ref of picture to remove.
  */
 static void remove_short_at_index(H264Context *h, int i){
-    assert(i > 0 && i < h->short_ref_count);
+    assert(i >= 0 && i < h->short_ref_count);
     h->short_ref[i]= NULL;
     if (--h->short_ref_count)
         memmove(&h->short_ref[i], &h->short_ref[i+1], (h->short_ref_count - i)*sizeof(Picture*));
@@ -4351,12 +4359,11 @@ static int decode_residual(H264Context *h, GetBitContext *gb, DCTELEM *block, in
                 level_code= (prefix<<suffix_length) + get_bits(gb, suffix_length); //part
             else
                 level_code= prefix + get_bits(gb, 4); //part
-        }else if(prefix==15){
-            level_code= (prefix<<suffix_length) + get_bits(gb, 12); //part
-            if(suffix_length==0) level_code+=15; //FIXME doesn't make (much)sense
         }else{
-            av_log(h->s.avctx, AV_LOG_ERROR, "prefix too large at %d %d\n", s->mb_x, s->mb_y);
-            return -1;
+            level_code= (15<<suffix_length) + get_bits(gb, prefix-3); //part
+            if(suffix_length==0) level_code+=15; //FIXME doesn't make (much)sense
+            if(prefix>=16)
+                level_code += (1<<(prefix-3))-4096;
         }
 
         if(trailing_ones < 3) level_code += 2;
@@ -4374,11 +4381,10 @@ static int decode_residual(H264Context *h, GetBitContext *gb, DCTELEM *block, in
             prefix = get_level_prefix(gb);
             if(prefix<15){
                 level_code = (prefix<<suffix_length) + get_bits(gb, suffix_length);
-            }else if(prefix==15){
-                level_code =  (prefix<<suffix_length) + get_bits(gb, 12);
             }else{
-                av_log(h->s.avctx, AV_LOG_ERROR, "prefix too large at %d %d\n", s->mb_x, s->mb_y);
-                return -1;
+                level_code = (15<<suffix_length) + get_bits(gb, prefix-3);
+                if(prefix>=16)
+                    level_code += (1<<(prefix-3))-4096;
             }
             mask= -(level_code&1);
             level[i]= (((2+level_code)>>1) ^ mask) - mask;
@@ -5337,23 +5343,27 @@ static int decode_cabac_mb_mvd( H264Context *h, int list, int n, int l ) {
     return get_cabac_bypass_sign( &h->cabac, -mvd );
 }
 
-static inline int get_cabac_cbf_ctx( H264Context *h, int cat, int idx ) {
+static av_always_inline int get_cabac_cbf_ctx( H264Context *h, int cat, int idx, int is_dc ) {
     int nza, nzb;
     int ctx = 0;
 
-    if( cat == 0 ) {
-        nza = h->left_cbp&0x100;
-        nzb = h-> top_cbp&0x100;
-    } else if( cat == 1 || cat == 2 ) {
-        nza = h->non_zero_count_cache[scan8[idx] - 1];
-        nzb = h->non_zero_count_cache[scan8[idx] - 8];
-    } else if( cat == 3 ) {
-        nza = (h->left_cbp>>(6+idx))&0x01;
-        nzb = (h-> top_cbp>>(6+idx))&0x01;
+    if( is_dc ) {
+        if( cat == 0 ) {
+            nza = h->left_cbp&0x100;
+            nzb = h-> top_cbp&0x100;
+        } else {
+            nza = (h->left_cbp>>(6+idx))&0x01;
+            nzb = (h-> top_cbp>>(6+idx))&0x01;
+        }
     } else {
-        assert(cat == 4);
-        nza = h->non_zero_count_cache[scan8[16+idx] - 1];
-        nzb = h->non_zero_count_cache[scan8[16+idx] - 8];
+        if( cat == 4 ) {
+            nza = h->non_zero_count_cache[scan8[16+idx] - 1];
+            nzb = h->non_zero_count_cache[scan8[16+idx] - 8];
+        } else {
+            assert(cat == 1 || cat == 2);
+            nza = h->non_zero_count_cache[scan8[idx] - 1];
+            nzb = h->non_zero_count_cache[scan8[idx] - 8];
+        }
     }
 
     if( nza > 0 )
@@ -5372,7 +5382,7 @@ DECLARE_ASM_CONST(1, uint8_t, last_coeff_flag_offset_8x8[63]) = {
     5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7, 8, 8, 8
 };
 
-static void decode_cabac_residual( H264Context *h, DCTELEM *block, int cat, int n, const uint8_t *scantable, const uint32_t *qmul, int max_coeff) {
+static av_always_inline void decode_cabac_residual_internal( H264Context *h, DCTELEM *block, int cat, int n, const uint8_t *scantable, const uint32_t *qmul, int max_coeff, int is_dc ) {
     static const int significant_coeff_flag_offset[2][6] = {
       { 105+0, 105+15, 105+29, 105+44, 105+47, 402 },
       { 277+0, 277+15, 277+29, 277+44, 277+47, 436 }
@@ -5440,12 +5450,15 @@ static void decode_cabac_residual( H264Context *h, DCTELEM *block, int cat, int 
      */
 
     /* read coded block flag */
-    if( cat != 5 ) {
-        if( get_cabac( CC, &h->cabac_state[85 + get_cabac_cbf_ctx( h, cat, n ) ] ) == 0 ) {
-            if( cat == 1 || cat == 2 )
-                h->non_zero_count_cache[scan8[n]] = 0;
-            else if( cat == 4 )
-                h->non_zero_count_cache[scan8[16+n]] = 0;
+    if( is_dc || cat != 5 ) {
+        if( get_cabac( CC, &h->cabac_state[85 + get_cabac_cbf_ctx( h, cat, n, is_dc ) ] ) == 0 ) {
+            if( !is_dc ) {
+                if( cat == 4 )
+                    h->non_zero_count_cache[scan8[16+n]] = 0;
+                else
+                    h->non_zero_count_cache[scan8[n]] = 0;
+            }
+
 #ifdef CABAC_ON_STACK
             h->cabac.range     = cc.range     ;
             h->cabac.low       = cc.low       ;
@@ -5462,7 +5475,7 @@ static void decode_cabac_residual( H264Context *h, DCTELEM *block, int cat, int 
     abs_level_m1_ctx_base = h->cabac_state
         + coeff_abs_level_m1_offset[cat];
 
-    if( cat == 5 ) {
+    if( !is_dc && cat == 5 ) {
 #define DECODE_SIGNIFICANCE( coefs, sig_off, last_off ) \
         for(last= 0; last < coefs; last++) { \
             uint8_t *sig_ctx = significant_coeff_ctx_base + sig_off; \
@@ -5491,27 +5504,30 @@ static void decode_cabac_residual( H264Context *h, DCTELEM *block, int cat, int 
     }
     assert(coeff_count > 0);
 
-    if( cat == 0 )
-        h->cbp_table[h->mb_xy] |= 0x100;
-    else if( cat == 1 || cat == 2 )
-        h->non_zero_count_cache[scan8[n]] = coeff_count;
-    else if( cat == 3 )
-        h->cbp_table[h->mb_xy] |= 0x40 << n;
-    else if( cat == 4 )
-        h->non_zero_count_cache[scan8[16+n]] = coeff_count;
-    else {
-        assert( cat == 5 );
-        fill_rectangle(&h->non_zero_count_cache[scan8[n]], 2, 2, 8, coeff_count, 1);
+    if( is_dc ) {
+        if( cat == 0 )
+            h->cbp_table[h->mb_xy] |= 0x100;
+        else
+            h->cbp_table[h->mb_xy] |= 0x40 << n;
+    } else {
+        if( cat == 5 )
+            fill_rectangle(&h->non_zero_count_cache[scan8[n]], 2, 2, 8, coeff_count, 1);
+        else if( cat == 4 )
+            h->non_zero_count_cache[scan8[16+n]] = coeff_count;
+        else {
+            assert( cat == 1 || cat == 2 );
+            h->non_zero_count_cache[scan8[n]] = coeff_count;
+        }
     }
 
-    for( coeff_count--; coeff_count >= 0; coeff_count-- ) {
+    while( coeff_count-- ) {
         uint8_t *ctx = coeff_abs_level1_ctx[node_ctx] + abs_level_m1_ctx_base;
 
         int j= scantable[index[coeff_count]];
 
         if( get_cabac( CC, ctx ) == 0 ) {
             node_ctx = coeff_abs_level_transition[0][node_ctx];
-            if( !qmul ) {
+            if( is_dc ) {
                 block[j] = get_cabac_bypass_sign( CC, -1);
             }else{
                 block[j] = (get_cabac_bypass_sign( CC, -qmul[j]) + 32) >> 6;
@@ -5538,12 +5554,10 @@ static void decode_cabac_residual( H264Context *h, DCTELEM *block, int cat, int 
                 coeff_abs+= 14;
             }
 
-            if( !qmul ) {
-                if( get_cabac_bypass( CC ) ) block[j] = -coeff_abs;
-                else                                block[j] =  coeff_abs;
+            if( is_dc ) {
+                block[j] = get_cabac_bypass_sign( CC, -coeff_abs );
             }else{
-                if( get_cabac_bypass( CC ) ) block[j] = (-coeff_abs * qmul[j] + 32) >> 6;
-                else                                block[j] = ( coeff_abs * qmul[j] + 32) >> 6;
+                block[j] = (get_cabac_bypass_sign( CC, -coeff_abs ) * qmul[j] + 32) >> 6;
             }
         }
     }
@@ -5553,6 +5567,25 @@ static void decode_cabac_residual( H264Context *h, DCTELEM *block, int cat, int 
             h->cabac.bytestream= cc.bytestream;
 #endif
 
+}
+
+#ifndef CONFIG_SMALL
+static void decode_cabac_residual_dc( H264Context *h, DCTELEM *block, int cat, int n, const uint8_t *scantable, const uint32_t *qmul, int max_coeff ) {
+    decode_cabac_residual_internal(h, block, cat, n, scantable, qmul, max_coeff, 1);
+}
+
+static void decode_cabac_residual_nondc( H264Context *h, DCTELEM *block, int cat, int n, const uint8_t *scantable, const uint32_t *qmul, int max_coeff ) {
+    decode_cabac_residual_internal(h, block, cat, n, scantable, qmul, max_coeff, 0);
+}
+#endif
+
+static void decode_cabac_residual( H264Context *h, DCTELEM *block, int cat, int n, const uint8_t *scantable, const uint32_t *qmul, int max_coeff ) {
+#ifdef CONFIG_SMALL
+    decode_cabac_residual_internal(h, block, cat, n, scantable, qmul, max_coeff, cat == 0 || cat == 3);
+#else
+    if( cat == 0 || cat == 3 ) decode_cabac_residual_dc(h, block, cat, n, scantable, qmul, max_coeff);
+    else decode_cabac_residual_nondc(h, block, cat, n, scantable, qmul, max_coeff);
+#endif
 }
 
 static inline void compute_mb_neighbors(H264Context *h)
@@ -5720,6 +5753,7 @@ decode_intra_mb:
         // All coeffs are present
         memset(h->non_zero_count[mb_xy], 16, 16);
         s->current_picture.mb_type[mb_xy]= mb_type;
+        h->last_qscale_diff = 0;
         return 0;
     }
 
@@ -6461,7 +6495,7 @@ static void filter_mb_fast( H264Context *h, int mb_x, int mb_y, uint8_t *img_y, 
             int step = IS_8x8DCT(mb_type) ? 2 : 1;
             edges = (mb_type & MB_TYPE_16x16) && !(h->cbp & 15) ? 1 : 4;
             s->dsp.h264_loop_filter_strength( bS, h->non_zero_count_cache, h->ref_cache, h->mv_cache,
-                                              (h->slice_type == FF_B_TYPE), edges, step, mask_edge0, mask_edge1 );
+                                              (h->slice_type == FF_B_TYPE), edges, step, mask_edge0, mask_edge1, FIELD_PICTURE);
         }
         if( IS_INTRA(s->current_picture.mb_type[mb_xy-1]) )
             bSv[0][0] = 0x0004000400040004ULL;
@@ -7751,7 +7785,6 @@ static int decode_frame(AVCodecContext *avctx,
     if(!(s->flags2 & CODEC_FLAG2_CHUNKS) || (s->mb_y >= s->mb_height && s->mb_height)){
         Picture *out = s->current_picture_ptr;
         Picture *cur = s->current_picture_ptr;
-        Picture *prev = h->delayed_output_pic;
         int i, pics, cross_idr, out_of_order, out_idx;
 
         s->mb_y= 0;
@@ -7795,9 +7828,6 @@ static int decode_frame(AVCodecContext *avctx,
 
         //FIXME do something with unavailable reference frames
 
-#if 0 //decode order
-            *data_size = sizeof(AVFrame);
-#else
             /* Sort B-frames into display order */
 
             if(h->sps.bitstream_restriction_flag
@@ -7806,10 +7836,16 @@ static int decode_frame(AVCodecContext *avctx,
                 s->low_delay = 0;
             }
 
+            if(   s->avctx->strict_std_compliance >= FF_COMPLIANCE_STRICT
+               && !h->sps.bitstream_restriction_flag){
+                s->avctx->has_b_frames= MAX_DELAYED_PIC_COUNT;
+                s->low_delay= 0;
+            }
+
             pics = 0;
             while(h->delayed_pic[pics]) pics++;
 
-            assert(pics+1 < sizeof(h->delayed_pic) / sizeof(h->delayed_pic[0]));
+            assert(pics <= MAX_DELAYED_PIC_COUNT);
 
             h->delayed_pic[pics++] = cur;
             if(cur->reference == 0)
@@ -7828,41 +7864,32 @@ static int decode_frame(AVCodecContext *avctx,
                     out_idx = i;
                 }
 
-            out_of_order = !cross_idr && prev && out->poc < prev->poc;
+            out_of_order = !cross_idr && out->poc < h->outputed_poc;
+
             if(h->sps.bitstream_restriction_flag && s->avctx->has_b_frames >= h->sps.num_reorder_frames)
                 { }
-            else if(prev && pics <= s->avctx->has_b_frames)
-                out = prev;
-            else if((out_of_order && pics-1 == s->avctx->has_b_frames && pics < 15)
+            else if((out_of_order && pics-1 == s->avctx->has_b_frames && s->avctx->has_b_frames < MAX_DELAYED_PIC_COUNT)
                || (s->low_delay &&
-                ((!cross_idr && prev && out->poc > prev->poc + 2)
+                ((!cross_idr && out->poc > h->outputed_poc + 2)
                  || cur->pict_type == FF_B_TYPE)))
             {
                 s->low_delay = 0;
                 s->avctx->has_b_frames++;
-                out = prev;
             }
-            else if(out_of_order)
-                out = prev;
 
             if(out_of_order || pics > s->avctx->has_b_frames){
+                out->reference &= ~DELAYED_PIC_REF;
                 for(i=out_idx; h->delayed_pic[i]; i++)
                     h->delayed_pic[i] = h->delayed_pic[i+1];
             }
-
-            if(prev == out)
-                *data_size = 0;
-            else
+            if(!out_of_order && pics > s->avctx->has_b_frames){
                 *data_size = sizeof(AVFrame);
-            if(prev && prev != out && prev->reference == DELAYED_PIC_REF)
-                prev->reference = 0;
-            h->delayed_output_pic = out;
-#endif
 
-            if(out)
+                h->outputed_poc = out->poc;
                 *pict= *(AVFrame*)out;
-            else
+            }else{
                 av_log(avctx, AV_LOG_DEBUG, "no picture\n");
+            }
         }
     }
 

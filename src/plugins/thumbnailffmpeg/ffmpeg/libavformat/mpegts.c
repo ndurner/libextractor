@@ -63,8 +63,8 @@ typedef struct MpegTSSectionFilter {
     int section_index;
     int section_h_size;
     uint8_t *section_buf;
-    int check_crc:1;
-    int end_of_section_reached:1;
+    unsigned int check_crc:1;
+    unsigned int end_of_section_reached:1;
     SectionCallback *section_cb;
     void *opaque;
 } MpegTSSectionFilter;
@@ -334,8 +334,6 @@ static void mpegts_close_filter(MpegTSContext *ts, MpegTSFilter *filter)
     pid = filter->pid;
     if (filter->type == MPEGTS_SECTION)
         av_freep(&filter->u.section_filter.section_buf);
-    else if (filter->type == MPEGTS_PES)
-        av_freep(&filter->u.pes_filter.opaque);
 
     av_free(filter);
     ts->pids[pid] = NULL;
@@ -349,8 +347,8 @@ static int analyze(const uint8_t *buf, int size, int packet_size, int *index){
 
     memset(stat, 0, packet_size*sizeof(int));
 
-    for(x=i=0; i<size; i++){
-        if(buf[i] == 0x47){
+    for(x=i=0; i<size-3; i++){
+        if(buf[i] == 0x47 && !(buf[i+1] & 0x80) && (buf[i+3] & 0x30)){
             stat[x]++;
             if(stat[x] > best_score){
                 best_score= stat[x];

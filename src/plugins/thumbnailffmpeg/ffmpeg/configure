@@ -269,11 +269,13 @@ disable(){
 }
 
 enabled(){
-    eval test "x\$$1" = "xyes"
+    test "${1#!}" = "$1" && op== || op=!=
+    eval test "x\$${1#!}" $op "xyes"
 }
 
 disabled(){
-    eval test "x\$$1" = "xno"
+    test "${1#!}" = "$1" && op== || op=!=
+    eval test "x\$${1#!}" $op "xno"
 }
 
 enabled_all(){
@@ -317,6 +319,7 @@ is_in(){
 
 check_deps(){
     for cfg; do
+        cfg="${cfg#!}"
         enabled ${cfg}_checking && die "Circular dependency for $cfg."
         disabled ${cfg}_checking && continue
         enable ${cfg}_checking
@@ -827,11 +830,15 @@ neon_deps="armv4l"
 ssse3_deps="x86"
 vis_deps="sparc"
 
+# system headers and functions
+byteswap_h_deps="!armv4l"
+
 # decoders / encoders
-ac3_decoder_deps="gpl"
+ac3_decoder_deps="gpl !liba52"
 dxa_decoder_deps="zlib"
 flashsv_decoder_deps="zlib"
 flashsv_encoder_deps="zlib"
+mlp_decoder_deps="mlp_parser"
 mpeg_xvmc_decoder_deps="xvmc"
 png_decoder_deps="zlib"
 png_encoder_deps="zlib"
@@ -845,7 +852,7 @@ libamr_nb_decoder_deps="libamr_nb"
 libamr_nb_encoder_deps="libamr_nb"
 libamr_wb_decoder_deps="libamr_wb"
 libamr_wb_encoder_deps="libamr_wb"
-libdirac_decoder_deps="libdirac"
+libdirac_decoder_deps="libdirac !libschroedinger"
 libdirac_encoder_deps="libdirac"
 libfaac_encoder_deps="libfaac"
 libfaad_decoder_deps="libfaad"
@@ -955,7 +962,6 @@ vhook="default"
 # build settings
 SHFLAGS='-shared -Wl,-soname,$$(@F)'
 VHOOKSHFLAGS='$(SHFLAGS)'
-LDLATEFLAGS='-Wl,-rpath-link,\$(BUILD_ROOT)/libpostproc -Wl,-rpath-link,\$(BUILD_ROOT)/libswscale -Wl,-rpath-link,\$(BUILD_ROOT)/libavfilter -Wl,-rpath-link,\$(BUILD_ROOT)/libavdevice -Wl,-rpath-link,\$(BUILD_ROOT)/libavformat -Wl,-rpath-link,\$(BUILD_ROOT)/libavcodec -Wl,-rpath-link,\$(BUILD_ROOT)/libavutil'
 FFSERVERLDFLAGS=-Wl,-E
 LIBPREF="lib"
 LIBSUF=".a"
@@ -1286,7 +1292,6 @@ case $target_os in
         EXESUF=".exe"
         ;;
     linux)
-        LDLATEFLAGS="-Wl,--as-needed $LDLATEFLAGS"
         enable dv1394
         ;;
     irix*)
@@ -1399,7 +1404,7 @@ if test $target_os = darwin; then
     fi
 fi
 
-disabled optimizations || add_cflags -fomit-frame-pointer
+disabled optimizations || check_cflags -fomit-frame-pointer
 
 # Add processor-specific flags
 if test $cpu != "generic"; then
@@ -1684,12 +1689,6 @@ enabled libx264    && require  x264 x264.h x264_encoder_open -lx264 -lm
 enabled libxvid    && require  Xvid xvid.h xvid_global -lxvidcore
 enabled mlib       && require  mediaLib mlib_types.h mlib_VectorSub_S16_U8_Mod -lmlib
 
-# disable the native AC-3 decoder if liba52 is enabled
-enabled liba52 && disable ac3_decoder
-
-# disable the slower libdirac decoder if libschroedinger is enabled
-enabled libschroedinger && enabled libdirac && disable libdirac_decoder
-
 # libdc1394 check
 if enabled libdc1394; then
     { check_lib dc1394/dc1394.h dc1394_new -ldc1394 -lraw1394 &&
@@ -1830,7 +1829,8 @@ enabled extra_warnings && check_cflags -Winline
 
 # add some linker flags
 check_ldflags -Wl,--warn-common
-check_ldflags $LDLATEFLAGS
+check_ldflags -Wl,--as-needed
+check_ldflags '-Wl,-rpath-link,\$(BUILD_ROOT)/libpostproc -Wl,-rpath-link,\$(BUILD_ROOT)/libswscale -Wl,-rpath-link,\$(BUILD_ROOT)/libavfilter -Wl,-rpath-link,\$(BUILD_ROOT)/libavdevice -Wl,-rpath-link,\$(BUILD_ROOT)/libavformat -Wl,-rpath-link,\$(BUILD_ROOT)/libavcodec -Wl,-rpath-link,\$(BUILD_ROOT)/libavutil'
 check_ldflags -Wl,-Bsymbolic
 
 if enabled small; then
@@ -1868,7 +1868,7 @@ if enabled shared; then
     # LIBOBJFLAGS may have already been set in the OS configuration
     if test -z "$LIBOBJFLAGS" ; then
         case "$arch" in
-            x86_64|ia64|alpha|sparc*|power*) LIBOBJFLAGS='$(PIC)' ;;
+            x86_64|ia64|alpha|sparc*|power*|parisc*) LIBOBJFLAGS='$(PIC)' ;;
         esac
     fi
 fi
@@ -2019,6 +2019,7 @@ echo "#ifndef FFMPEG_CONFIG_H" >> $TMPH
 echo "#define FFMPEG_CONFIG_H" >> $TMPH
 echo "#define FFMPEG_CONFIGURATION \"$FFMPEG_CONFIGURATION\"" >> $TMPH
 
+echo "FFMPEG_CONFIGURATION=$FFMPEG_CONFIGURATION" >> config.mak
 echo "prefix=$prefix" >> config.mak
 echo "LIBDIR=\$(DESTDIR)$libdir" >> config.mak
 echo "SHLIBDIR=\$(DESTDIR)$shlibdir" >> config.mak
@@ -2211,8 +2212,8 @@ EOF
 cat <<EOF > $name/$name-uninstalled.pc
 prefix=
 exec_prefix=
-libdir=\${pcfiledir}/$name
-includedir=\${pcfiledir}
+libdir=\${pcfiledir}
+includedir=\${pcfiledir}/..
 
 Name: $name
 Description: $comment

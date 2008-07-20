@@ -98,7 +98,7 @@ static void common_init(MpegEncContext * s)
     case 3:
         if(s->workaround_bugs){
             s->y_dc_scale_table= old_ff_y_dc_scale_table;
-            s->c_dc_scale_table= old_ff_c_dc_scale_table;
+            s->c_dc_scale_table= wmv1_c_dc_scale_table;
         } else{
             s->y_dc_scale_table= ff_mpeg4_y_dc_scale_table;
             s->c_dc_scale_table= ff_mpeg4_c_dc_scale_table;
@@ -957,7 +957,7 @@ else
                             put_bits(&s->pb, s->esc3_level_length, level);
                         }else{
                             put_bits(&s->pb, 6, run);
-                            put_bits(&s->pb, 8, slevel & 0xff);
+                            put_sbits(&s->pb, 8, slevel);
                         }
                     } else {
                         /* second escape */

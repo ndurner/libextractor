@@ -249,7 +249,7 @@ void h263_encode_picture_header(MpegEncContext * s, int picture_number)
     put_bits(&s->pb, 22, 0x20); /* PSC */
     temp_ref= s->picture_number * (int64_t)coded_frame_rate * s->avctx->time_base.num / //FIXME use timestamp
                          (coded_frame_rate_base * (int64_t)s->avctx->time_base.den);
-    put_bits(&s->pb, 8, temp_ref & 0xff); /* TemporalReference */
+    put_sbits(&s->pb, 8, temp_ref); /* TemporalReference */
 
     put_bits(&s->pb, 1, 1);     /* marker */
     put_bits(&s->pb, 1, 0);     /* h263 id */
@@ -326,7 +326,7 @@ void h263_encode_picture_header(MpegEncContext * s, int picture_number)
                 put_bits(&s->pb, 1, best_clock_code);
                 put_bits(&s->pb, 7, best_divisor);
             }
-            put_bits(&s->pb, 2, (temp_ref>>8)&3);
+            put_sbits(&s->pb, 2, temp_ref>>8);
         }
 
         /* Unlimited Unrestricted Motion Vectors Indicator (UUI) */
@@ -2224,11 +2224,11 @@ static void h263_encode_block(MpegEncContext * s, DCTELEM * block, int n)
                 assert(slevel != 0);
 
                 if(level < 128)
-                    put_bits(&s->pb, 8, slevel & 0xff);
+                    put_sbits(&s->pb, 8, slevel);
                 else{
                     put_bits(&s->pb, 8, 128);
-                    put_bits(&s->pb, 5, slevel & 0x1f);
-                    put_bits(&s->pb, 6, (slevel>>5)&0x3f);
+                    put_sbits(&s->pb, 5, slevel);
+                    put_sbits(&s->pb, 6, slevel>>5);
                 }
               }else{
                 if(level < 64) { // 7-bit level
@@ -2236,14 +2236,14 @@ static void h263_encode_block(MpegEncContext * s, DCTELEM * block, int n)
                         put_bits(&s->pb, 1, last);
                         put_bits(&s->pb, 6, run);
 
-                        put_bits(&s->pb, 7, slevel & 0x7f);
+                        put_sbits(&s->pb, 7, slevel);
                     } else {
                         /* 11-bit level */
                         put_bits(&s->pb, 1, 1);
                         put_bits(&s->pb, 1, last);
                         put_bits(&s->pb, 6, run);
 
-                        put_bits(&s->pb, 11, slevel & 0x7ff);
+                        put_sbits(&s->pb, 11, slevel);
                     }
               }
             } else {
@@ -2804,7 +2804,7 @@ static inline void mpeg4_encode_block(MpegEncContext * s, DCTELEM * block, int n
                         put_bits(ac_pb, 1, last);
                         put_bits(ac_pb, 6, run);
                         put_bits(ac_pb, 1, 1);
-                        put_bits(ac_pb, 12, slevel & 0xfff);
+                        put_sbits(ac_pb, 12, slevel);
                         put_bits(ac_pb, 1, 1);
                     } else {
                         /* second escape */
@@ -2907,18 +2907,18 @@ void h263_decode_init_vlc(MpegEncContext *s)
     if (!done) {
         done = 1;
 
-        init_vlc(&intra_MCBPC_vlc, INTRA_MCBPC_VLC_BITS, 9,
+        INIT_VLC_STATIC(&intra_MCBPC_vlc, INTRA_MCBPC_VLC_BITS, 9,
                  intra_MCBPC_bits, 1, 1,
-                 intra_MCBPC_code, 1, 1, 1);
-        init_vlc(&inter_MCBPC_vlc, INTER_MCBPC_VLC_BITS, 28,
+                 intra_MCBPC_code, 1, 1, 72);
+        INIT_VLC_STATIC(&inter_MCBPC_vlc, INTER_MCBPC_VLC_BITS, 28,
                  inter_MCBPC_bits, 1, 1,
-                 inter_MCBPC_code, 1, 1, 1);
-        init_vlc(&cbpy_vlc, CBPY_VLC_BITS, 16,
+                 inter_MCBPC_code, 1, 1, 198);
+        INIT_VLC_STATIC(&cbpy_vlc, CBPY_VLC_BITS, 16,
                  &cbpy_tab[0][1], 2, 1,
-                 &cbpy_tab[0][0], 2, 1, 1);
-        init_vlc(&mv_vlc, MV_VLC_BITS, 33,
+                 &cbpy_tab[0][0], 2, 1, 64);
+        INIT_VLC_STATIC(&mv_vlc, MV_VLC_BITS, 33,
                  &mvtab[0][1], 2, 1,
-                 &mvtab[0][0], 2, 1, 1);
+                 &mvtab[0][0], 2, 1, 538);
         init_rl(&rl_inter, static_rl_table_store[0]);
         init_rl(&rl_intra, static_rl_table_store[1]);
         init_rl(&rvlc_rl_inter, static_rl_table_store[3]);
@@ -2929,24 +2929,24 @@ void h263_decode_init_vlc(MpegEncContext *s)
         INIT_VLC_RL(rvlc_rl_inter, 1072);
         INIT_VLC_RL(rvlc_rl_intra, 1072);
         INIT_VLC_RL(rl_intra_aic, 554);
-        init_vlc(&dc_lum, DC_VLC_BITS, 10 /* 13 */,
+        INIT_VLC_STATIC(&dc_lum, DC_VLC_BITS, 10 /* 13 */,
                  &DCtab_lum[0][1], 2, 1,
-                 &DCtab_lum[0][0], 2, 1, 1);
-        init_vlc(&dc_chrom, DC_VLC_BITS, 10 /* 13 */,
+                 &DCtab_lum[0][0], 2, 1, 512);
+        INIT_VLC_STATIC(&dc_chrom, DC_VLC_BITS, 10 /* 13 */,
                  &DCtab_chrom[0][1], 2, 1,
-                 &DCtab_chrom[0][0], 2, 1, 1);
-        init_vlc(&sprite_trajectory, SPRITE_TRAJ_VLC_BITS, 15,
+                 &DCtab_chrom[0][0], 2, 1, 512);
+        INIT_VLC_STATIC(&sprite_trajectory, SPRITE_TRAJ_VLC_BITS, 15,
                  &sprite_trajectory_tab[0][1], 4, 2,
-                 &sprite_trajectory_tab[0][0], 4, 2, 1);
-        init_vlc(&mb_type_b_vlc, MB_TYPE_B_VLC_BITS, 4,
+                 &sprite_trajectory_tab[0][0], 4, 2, 128);
+        INIT_VLC_STATIC(&mb_type_b_vlc, MB_TYPE_B_VLC_BITS, 4,
                  &mb_type_b_tab[0][1], 2, 1,
-                 &mb_type_b_tab[0][0], 2, 1, 1);
-        init_vlc(&h263_mbtype_b_vlc, H263_MBTYPE_B_VLC_BITS, 15,
+                 &mb_type_b_tab[0][0], 2, 1, 16);
+        INIT_VLC_STATIC(&h263_mbtype_b_vlc, H263_MBTYPE_B_VLC_BITS, 15,
                  &h263_mbtype_b_tab[0][1], 2, 1,
-                 &h263_mbtype_b_tab[0][0], 2, 1, 1);
-        init_vlc(&cbpc_b_vlc, CBPC_B_VLC_BITS, 4,
+                 &h263_mbtype_b_tab[0][0], 2, 1, 80);
+        INIT_VLC_STATIC(&cbpc_b_vlc, CBPC_B_VLC_BITS, 4,
                  &cbpc_b_tab[0][1], 2, 1,
-                 &cbpc_b_tab[0][0], 2, 1, 1);
+                 &cbpc_b_tab[0][0], 2, 1, 8);
     }
 }
 

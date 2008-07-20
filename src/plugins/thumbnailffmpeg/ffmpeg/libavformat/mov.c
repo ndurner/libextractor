@@ -1634,6 +1634,7 @@ static int mov_read_elst(MOVContext *c, ByteIOContext *pb, MOV_atom_t atom)
 }
 
 static const MOVParseTableEntry mov_default_parse_table[] = {
+{ MKTAG('a','v','s','s'), mov_read_extradata },
 { MKTAG('c','o','6','4'), mov_read_stco },
 { MKTAG('c','t','t','s'), mov_read_ctts }, /* composition time to sample */
 { MKTAG('d','i','n','f'), mov_read_default },
@@ -1698,6 +1699,7 @@ static int mov_probe(AVProbeData *p)
         case MKTAG('m','d','a','t'):
         case MKTAG('p','n','o','t'): /* detect movs with preview pics like ew.mov and april.mov */
         case MKTAG('u','d','t','a'): /* Packet Video PVAuthor adds this and a lot of more junk */
+        case MKTAG('f','t','y','p'):
             return AVPROBE_SCORE_MAX;
         /* those are more common words, so rate then a bit less */
         case MKTAG('e','d','i','w'): /* xdcam files have reverted first tags */
@@ -1706,8 +1708,7 @@ static int mov_probe(AVProbeData *p)
         case MKTAG('j','u','n','k'):
         case MKTAG('p','i','c','t'):
             return AVPROBE_SCORE_MAX - 5;
-        case MKTAG(0x82,0x82,0x7f,0x7d ):
-        case MKTAG('f','t','y','p'):
+        case MKTAG(0x82,0x82,0x7f,0x7d):
         case MKTAG('s','k','i','p'):
         case MKTAG('u','u','i','d'):
         case MKTAG('p','r','f','l'):
@@ -1899,7 +1900,6 @@ static int mov_read_close(AVFormatContext *s)
         av_freep(&sc->drefs);
         if (sc->pb && sc->pb != s->pb)
             url_fclose(sc->pb);
-        av_freep(&sc);
     }
     if(mov->dv_demux){
         for(i=0; i<mov->dv_fctx->nb_streams; i++){

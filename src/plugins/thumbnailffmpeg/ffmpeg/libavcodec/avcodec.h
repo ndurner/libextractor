@@ -30,8 +30,8 @@
 #include "libavutil/avutil.h"
 
 #define LIBAVCODEC_VERSION_MAJOR 51
-#define LIBAVCODEC_VERSION_MINOR 57
-#define LIBAVCODEC_VERSION_MICRO  2
+#define LIBAVCODEC_VERSION_MINOR 60
+#define LIBAVCODEC_VERSION_MICRO  0
 
 #define LIBAVCODEC_VERSION_INT  AV_VERSION_INT(LIBAVCODEC_VERSION_MAJOR, \
                                                LIBAVCODEC_VERSION_MINOR, \
@@ -186,6 +186,8 @@ enum CodecID {
     CODEC_ID_ESCAPE124,
     CODEC_ID_DIRAC,
     CODEC_ID_BFI,
+    CODEC_ID_CMV,
+    CODEC_ID_MOTIONPIXELS,
 
     /* various PCM "codecs" */
     CODEC_ID_PCM_S16LE= 0x10000,
@@ -310,6 +312,8 @@ enum CodecID {
 
     /* other specific kind of codecs (generally used for attachments) */
     CODEC_ID_TTF= 0x18000,
+
+    CODEC_ID_PROBE= 0x19000, ///< codec_id is not known (like CODEC_ID_NONE) but lavf should attempt to identify it
 
     CODEC_ID_MPEG2TS= 0x20000, /**< _FAKE_ codec to indicate a raw MPEG-2 TS
                                 * stream (only used by libavformat) */
@@ -1113,7 +1117,14 @@ typedef struct AVCodecContext {
     /**
      * strictly follow the standard (MPEG4, ...).
      * - encoding: Set by user.
-     * - decoding: unused
+     * - decoding: Set by user.
+     * Setting this to STRICT or higher means the encoder and decoder will
+     * generally do stupid things. While setting it to inofficial or lower
+     * will mean the encoder might use things that are not supported by all
+     * spec compliant decoders. Decoders make no difference between normal,
+     * inofficial and experimental, that is they always try to decode things
+     * when they can unless they are explicitly asked to behave stupid
+     * (=strictly conform to the specs)
      */
     int strict_std_compliance;
 #define FF_COMPLIANCE_VERY_STRICT   2 ///< Strictly conform to a older more strict version of the spec or reference software.
@@ -2514,8 +2525,10 @@ AVCodec *av_codec_next(AVCodec *c);
 
 /* returns LIBAVCODEC_VERSION_INT constant */
 unsigned avcodec_version(void);
+#if LIBAVCODEC_VERSION_INT < ((52<<16)+(0<<8)+0)
 /* returns LIBAVCODEC_BUILD constant */
-unsigned avcodec_build(void);
+attribute_deprecated unsigned avcodec_build(void);
+#endif
 
 /**
  * Initializes libavcodec.
