@@ -1461,15 +1461,20 @@ static long Eseek_file_func(voidpf opaque,
 
   switch (origin) {
   case ZLIB_FILEFUNC_SEEK_SET:
-    e->pos = offset;
+    if ( (offset > e->size) ||
+	 (offset < 0) )
+      return -1;
+    e->pos = offset;    
     break;
   case ZLIB_FILEFUNC_SEEK_END:
-    if (offset > e->size)
+    if ( (offset > e->size) ||
+	 (offset < 0) )
       return -1;
     e->pos = e->size - offset;
     break;
   case ZLIB_FILEFUNC_SEEK_CUR:
-    if (offset < - e->pos)
+    if ( (offset < - e->pos) ||
+	 (offset > e->size - e->pos) )
       return -1;
     e->pos += offset;
     break;
