@@ -1,3 +1,4 @@
+#if 0
 /*
  * copyright (c) 2007 Michael Niedermayer <michaelni@gmx.at>
  *
@@ -240,4 +241,5 @@ STOP_TIMER("aes")}
     }
     return 0;
 }
+#endif
 #endif

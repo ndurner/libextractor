@@ -1,3 +1,4 @@
+#if 0
 /*
  * copyright (c) 2007 Michael Niedermayer <michaelni@gmx.at>
  *
@@ -45,3 +46,4 @@ int av_aes_init(struct AVAES *a, const uint8_t *key, int key_bits, int decrypt);
 void av_aes_crypt(struct AVAES *a, uint8_t *dst, uint8_t *src, int count, uint8_t *iv, int decrypt);
 
 #endif /* FFMPEG_AES_H */
+#endif
