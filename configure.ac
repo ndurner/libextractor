@@ -572,6 +572,7 @@ then
 	--disable-decoders		\
 	--enable-encoder=png		\
 	--enable-decoder=bmp		\
+	--enable-decoder=gif		\
 	--enable-decoder=png
   then
     AC_MSG_ERROR([FFmpeg configure failed.])
