@@ -139,6 +139,7 @@ static const struct MimeToDecoderMapping m2d_map[] = {
   {"image/gif", CODEC_ID_GIF},
   {"image/jpeg", CODEC_ID_MJPEG},
   {"image/png", CODEC_ID_PNG},
+  {"image/x-portable-pixmap", CODEC_ID_PPM},
   {NULL, CODEC_ID_NONE}
 };
 

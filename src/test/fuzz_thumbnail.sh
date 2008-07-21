@@ -15,7 +15,7 @@ then
 fi
 
 
-for file in $testdatadir/*.bmp $testdatadir/*.gif $testdatadir/*.png
+for file in $testdatadir/*.bmp $testdatadir/*.gif $testdatadir/*.png $testdatadir/*.ppm
 do
   if test -f "$file"
   then
