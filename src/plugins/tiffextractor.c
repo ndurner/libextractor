@@ -147,7 +147,7 @@ libextractor_tiff_extract (char *filename,
         len = data[current_ifd + 1] << 8 | data[current_ifd];
       else
         len = data[current_ifd] << 8 | data[current_ifd + 1];
-      if (len * DIRECTORY_ENTRY_SIZE + 2 + 4 > size)
+      if (len * DIRECTORY_ENTRY_SIZE + 2 + 4 + current_ifd > size)
         {
 #if DEBUG
           printf ("WARNING: malformed tiff\n");
