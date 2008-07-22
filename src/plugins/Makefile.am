@@ -6,6 +6,10 @@ if HAVE_FFMPEG
 thumbffmpeg=thumbnailffmpeg
 endif
 
+if HAVE_LIBRPM
+rpm=rpm
+endif
+
 if HAVE_GLIB
 if WITH_GSF
  oledir=ole2
@@ -56,7 +60,7 @@ endif
 
 # toggle for development
 # SUBDIRS = . 
-SUBDIRS = $(thumbgtk) $(thumbffmpeg) . $(oodir) $(printdir) hash $(oledir) rpm $(xpdfdir) $(exiv2dir)
+SUBDIRS = $(thumbgtk) $(thumbffmpeg) . $(oodir) $(printdir) hash $(oledir) $(rpm) $(xpdfdir) $(exiv2dir) 
 
 
 if HAVE_VORBISFILE

@@ -24,7 +24,7 @@ do
     trap "echo $tmpfile caused SIGSEGV ; exit 1" SEGV
     while [ $seed -lt $ZZSTOPSEED ]
     do
-      echo "file $file seed $seed"
+#      echo "file $file seed $seed"
       zzuf -c -s $seed cat "$file" > "$tmpfile"
       if ! "$bindir/extract" "$tmpfile" > /dev/null
       then

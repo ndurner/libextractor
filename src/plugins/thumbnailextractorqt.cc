@@ -42,6 +42,8 @@
 extern "C"
 {
 
+
+#if 0
 QApplication *app;
 char *argv;
 
@@ -59,6 +61,7 @@ void __attribute__ ((destructor)) thumnailextractorqt_done()
     delete app;
   free(argv);
 }
+#endif
 
 static EXTRACTOR_KeywordList * addKeyword(EXTRACTOR_KeywordType type,
 					  char * keyword,
@@ -98,12 +101,11 @@ static char * whitelist[] = {
   NULL
 };
 
-struct EXTRACTOR_Keywords * 
-libextractor_thumbnailqt_extract(const char * filename,
-				 const unsigned char * data,
-				 size_t size,
-				 struct EXTRACTOR_Keywords * prev,
-				 const char * options) {
+static struct EXTRACTOR_Keywords * 
+extract(const unsigned char * data,
+	size_t size,
+	struct EXTRACTOR_Keywords * prev,
+	const char * options) {
   QImage *img;
   QByteArray bytes;
   QBuffer buffer;
@@ -236,6 +238,42 @@ libextractor_thumbnailqt_extract(const char * filename,
 		    binary,
 		    prev);
 }
+
+/* create new thread for C++ code (see Mantis #905) */
+
+struct X {
+  const unsigned char * data;
+  size_t size;
+  struct EXTRACTOR_Keywords * prev;
+  const char * options;
+};
+
+static void * run(void * arg) {
+  struct X * x = (struct X*) arg;
+  return extract(x->data, x->size, x->prev,
+		 x->options);
+}
+
+struct EXTRACTOR_Keywords * 
+libextractor_thumbnailqt_extract(const char * filename,
+				 const unsigned char * data,
+				 size_t size,
+				 struct EXTRACTOR_Keywords * prev,
+				 const char * options) {
+  pthread_t pt;
+  struct X cls;
+
+  void * ret;
+  cls.data = data;
+  cls.size = size;
+  cls.prev = prev;
+  cls.options = options;
+  if (0 == pthread_create(&pt, NULL, &run, &cls))
+    if (0 == pthread_join(pt, &ret))
+      return (struct EXTRACTOR_Keywords*) ret;
+  return prev; 
+}
+
 
 struct EXTRACTOR_Keywords * 
 libextractor_thumbnail_extract(const char * filename,

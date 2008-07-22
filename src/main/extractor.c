@@ -787,8 +787,20 @@ loadLibrary (const char *name,
 	     void **libHandle,
 	     ExtractMethod * method)
 {
+#if 0
+  lt_dladvise advise;
+#endif
+
   LTDL_MUTEX_LOCK
+#if 0
+  lt_dladvise_init(&advise);
+  lt_dladvise_ext(&advise);
+  lt_dladvise_local(&advise);
+  *libHandle = lt_dlopenadvise (name, &advise);
+  lt_dladvise_destroy(&advise);
+#else
   *libHandle = lt_dlopenext (name);
+#endif
   if (*libHandle == NULL)
     {
 #if DEBUG
@@ -1725,6 +1737,8 @@ int EXTRACTOR_binaryDecode(const char * in,
   }
 
   buf = malloc(inSize); /* slightly more than needed ;-) */
+  if (buf == NULL)
+    return 1; /* error */
   *out = buf;
 
   pos = 0;

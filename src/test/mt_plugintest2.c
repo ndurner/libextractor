@@ -14,6 +14,7 @@ struct TaskData
 };
 
 static volatile int done = 0;
+
 static volatile int failed = 0;
 
 static void *
@@ -52,34 +53,39 @@ test_plugins (void *arg)
 
 #define TEST_SECS 10
 
+#define NUM_TASKS 10
+
 int
 main (int argc, char *argv[])
 {
-  int num_tasks = 10;
-  pthread_t task_list[num_tasks];
-  struct TaskData td[num_tasks];
+  pthread_t task_list[NUM_TASKS];
+  struct TaskData td[NUM_TASKS];
   int ret = 0;
   int i;
+  int max = NUM_TASKS;
+  void * unused;
 
   printf("testing for %d seconds\n", TEST_SECS);
-  for (i = 0; i < num_tasks; i++)
+  for (i = 0; i < NUM_TASKS; i++)
     {
       td[i].id = i;
-      ret = pthread_create (&task_list[i], NULL, test_plugins, &td[i]);
+      ret = pthread_create (&task_list[i], NULL, &test_plugins, &td[i]);
       if (ret != 0)
         {
           printf ("ERROR: pthread_create failed for thread %d\n", i);
-          num_tasks = i;
+          max = i;
           done = 1;
           break;
         }
     }
+  printf("Threads running!\n");
   if (!done)
     sleep (TEST_SECS);
+  printf("Shutting down...\n");
   done = 1;
-  for (i = 0; i < num_tasks; i++)
+  for (i = 0; i < max; i++)
     {
-      if (pthread_join (task_list[i], NULL) != 0)
+      if (pthread_join (task_list[i], &unused) != 0)
         printf ("WARNING: pthread_join failed for thread %d\n", i);
     }
 

@@ -12,5 +12,6 @@ plugin_LTLIBRARIES = \
 libextractor_rpm_la_SOURCES = \
  rpmextractor.c
 libextractor_rpm_la_LDFLAGS = \
+ -lrpm \
  $(PLUGINFLAGS)  $(retaincommand) \
  $(WINFLAGS)

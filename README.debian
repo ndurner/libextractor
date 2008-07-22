@@ -18,6 +18,7 @@ libbz2-dev
 libgsf-1-dev
 libmpeg2-4-dev
 libqt4-dev
+librpm-dev
 
 For Subversion access and compilation:
 

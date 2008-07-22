@@ -194,6 +194,11 @@ AC_CHECK_LIB(z, inflate,
         AC_DEFINE(HAVE_ZLIB,1,[Have zlib])],
         [AM_CONDITIONAL(HAVE_ZLIB, false)])
 
+AC_CHECK_LIB(rpm, rpmReadPackageFile,
+        [AM_CONDITIONAL(HAVE_LIBRPM, true)
+        AC_DEFINE(HAVE_LIBRPM,1,[Have librpm])],
+        [AM_CONDITIONAL(HAVE_LIBRPM, false)])
+
 AC_CHECK_LIB(bz2, BZ2_decompress,
         [AM_CONDITIONAL(HAVE_BZ2, true)
         AC_DEFINE(HAVE_LIBBZ2,1,[Have libbz2])],
