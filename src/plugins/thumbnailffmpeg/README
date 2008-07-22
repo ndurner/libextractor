@@ -12,7 +12,7 @@ svn export -r 13836 --ignore-externals svn://svn.mplayerhq.hu/ffmpeg/trunk ffmpe
 svn export -r 27100 svn://svn.mplayerhq.hu/mplayer/trunk/libswscale ffmpeg/libswscale
 sync with ffmpeg:
 FFREV=14311
-SWSREV=27330
+SWSREV=27332
 cd /tmp
 svn co -r $FFREV --ignore-externals svn://svn.mplayerhq.hu/ffmpeg/trunk ffmpeg
 svn co -r $SWSREV svn://svn.mplayerhq.hu/mplayer/trunk/libswscale ffmpeg/libswscale
