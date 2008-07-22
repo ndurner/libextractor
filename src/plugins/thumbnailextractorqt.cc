@@ -42,27 +42,6 @@
 extern "C"
 {
 
-
-#if 0
-QApplication *app;
-char *argv;
-
-void __attribute__ ((constructor)) thumnailextractorqt_init()
-{
-  int argc = 0;
-
-  argv = strdup("");
-  app = qApp ? NULL : new QApplication(argc, &argv);
-}
-
-void __attribute__ ((destructor)) thumnailextractorqt_done()
-{
-  if (qApp == app)
-    delete app;
-  free(argv);
-}
-#endif
-
 static EXTRACTOR_KeywordList * addKeyword(EXTRACTOR_KeywordType type,
 					  char * keyword,
 					  EXTRACTOR_KeywordList * next) {
