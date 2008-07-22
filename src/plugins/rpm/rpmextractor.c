@@ -47,6 +47,7 @@ pipe_feeder(void * args)
 			    &p->data[p->pos],
 			    p->size - p->pos))) )
 	  p->pos += ret;
+  CLOSE(p->pi[1]);
   return NULL;			    
 }
 
@@ -274,9 +275,8 @@ libextractor_rpm_extract (const char *filename,
   sig.sa_handler = &sigalrmHandler;
   sigaction (SIGALRM, &sig, &old);
   parg.shutdown = 1;
-  CLOSE(parg.pi[1]);
   pthread_kill(pthr, SIGALRM);
-  pthread_join(pthr, &unused);
+  // pthread_join(pthr, &unused);
   sigaction (SIGALRM, &old, &sig);
   Fclose(fdi);
   CLOSE(parg.pi[0]);
