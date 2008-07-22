@@ -276,7 +276,7 @@ libextractor_rpm_extract (const char *filename,
   sigaction (SIGALRM, &sig, &old);
   parg.shutdown = 1;
   pthread_kill(pthr, SIGALRM);
-  // pthread_join(pthr, &unused);
+  pthread_join(pthr, &unused);
   sigaction (SIGALRM, &old, &sig);
   Fclose(fdi);
   CLOSE(parg.pi[0]);
