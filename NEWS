@@ -1,3 +1,5 @@
+	Added an IT (Impulse Tracker) plugin.
+
 Mon Jun 23 19:05:07 EET 2008
 	Fixed concurrency issues in plugin (un-)loading by adding locking
 	around libltdl functions.

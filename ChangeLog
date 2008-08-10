@@ -1,3 +1,6 @@
+Mon Aug 11 00:43:46 EEST 2008
+	Added an IT (Impulse Tracker) plugin.
+
 Tue Jul 22 02:51:33 MDT 2008
 	Changed RPM extractor to use librpm.
 	Fixed crash in OpenOffice extractor.

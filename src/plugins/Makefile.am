@@ -98,6 +98,7 @@ plugin_LTLIBRARIES = $(pdfplugin) \
   libextractor_id3v2.la \
   libextractor_id3v24.la \
   libextractor_id3v23.la \
+  libextractor_it.la \
   libextractor_jpeg.la \
   libextractor_lower.la \
   libextractor_man.la \
@@ -197,6 +198,13 @@ libextractor_id3v24_la_LDFLAGS = \
   $(PLUGINFLAGS)  $(retaincommand)
 libextractor_id3v24_la_LIBADD = \
   libconvert.la
+
+libextractor_it_la_SOURCES = \
+  itextractor.c 
+libextractor_it_la_LDFLAGS = \
+  $(PLUGINFLAGS)  $(retaincommand)
+libextractor_it_la_LIBADD = \
+  $(top_builddir)/src/main/libextractor.la
 
 libextractor_dvi_la_SOURCES = \
   dviextractor.c 
