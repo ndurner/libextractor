@@ -49,7 +49,7 @@ static struct EXTRACTOR_Keywords *addkword
 }
 
 
-/* "extract" keyword from an Impulse Tracker module
+/* "extract" keyword from an Extended Module
  *
  * The XM module format description for XM files
  * version $0104 that was written by Mr.H of Triton
