@@ -120,6 +120,7 @@ plugin_LTLIBRARIES = $(pdfplugin) \
   $(thumbqt) \
   libextractor_translit.la \
   libextractor_wav.la \
+  libextractor_xm.la \
   libextractor_zip.la 
 
 if HAVE_VORBISFILE
@@ -380,6 +381,13 @@ libextractor_nsfe_la_SOURCES = \
 libextractor_nsfe_la_LDFLAGS = \
   $(PLUGINFLAGS)  $(retaincommand)
 libextractor_nsfe_la_LIBADD = \
+  $(top_builddir)/src/main/libextractor.la
+
+libextractor_xm_la_SOURCES = \
+  xmextractor.c 
+libextractor_xm_la_LDFLAGS = \
+  $(PLUGINFLAGS)  $(retaincommand)
+libextractor_xm_la_LIBADD = \
   $(top_builddir)/src/main/libextractor.la
 
 libextractor_split_la_SOURCES = \

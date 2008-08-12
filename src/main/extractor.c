@@ -264,7 +264,8 @@ libextractor_asf:\
 libextractor_sid:\
 libextractor_nsfe:\
 libextractor_nsf:\
-libextractor_it"
+libextractor_it:\
+libextractor_xm"
 
 #define DEFAULT_LIBRARIES MPEGSO EXSO OLESO OGGSO FLACSO QTSO DEFSO
 
