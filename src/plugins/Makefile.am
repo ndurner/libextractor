@@ -113,6 +113,7 @@ plugin_LTLIBRARIES = $(pdfplugin) \
   $(extraqt) \
   libextractor_real.la \
   libextractor_riff.la \
+  libextractor_s3m.la \
   libextractor_sid.la \
   libextractor_split.la \
   libextractor_tar.la \
@@ -388,6 +389,13 @@ libextractor_xm_la_SOURCES = \
 libextractor_xm_la_LDFLAGS = \
   $(PLUGINFLAGS)  $(retaincommand)
 libextractor_xm_la_LIBADD = \
+  $(top_builddir)/src/main/libextractor.la
+
+libextractor_s3m_la_SOURCES = \
+  s3mextractor.c 
+libextractor_s3m_la_LDFLAGS = \
+  $(PLUGINFLAGS)  $(retaincommand)
+libextractor_s3m_la_LIBADD = \
   $(top_builddir)/src/main/libextractor.la
 
 libextractor_split_la_SOURCES = \
