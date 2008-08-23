@@ -173,7 +173,7 @@ libextractor_thumbnailffmpeg_extract (const char *filename,
   int64_t ts;
 
   struct SwsContext *scaler_ctx;
-  int sws_flags = SWS_BICUBIC;
+  int sws_flags = SWS_BILINEAR;
   uint8_t *thumb_buffer;
   int thumb_width, thumb_height;
   int sar_num, sar_den;
