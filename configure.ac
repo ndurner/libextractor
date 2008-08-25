@@ -1,9 +1,9 @@
 # Process this file with autoconf to produce a configure script.
-AC_PREREQ(2.57)
+AC_PREREQ(2.61)
 AC_INIT([libextractor], [0.5.20c], [bug-libextractor@gnu.org])
-AC_REVISION($Revision: 1.67 $)
 AM_INIT_AUTOMAKE([libextractor], [0.5.20c])
-AM_CONFIG_HEADER(config.h)
+AC_CONFIG_HEADERS([config.h])
+AH_TOP([#define _GNU_SOURCE  1])
 
 LIB_VERSION_CURRENT=2
 LIB_VERSION_REVISION=1
@@ -11,8 +11,6 @@ LIB_VERSION_AGE=1
 AC_SUBST(LIB_VERSION_CURRENT)
 AC_SUBST(LIB_VERSION_REVISION)
 AC_SUBST(LIB_VERSION_AGE)
-
-AH_TOP([#define _GNU_SOURCE  1])
 
 # Checks for programs.
 AC_CANONICAL_HOST
@@ -22,7 +20,6 @@ AC_PROG_CC
 AC_PROG_CPP
 AC_PROG_CXX
 AC_CHECK_PROG(HAVE_CXX, $CXX, yes, no)
-AM_CONDITIONAL(HAVE_CXX, test "x$HAVE_CXX" = "xyes")
 AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_PROG_MAKE_SET
@@ -151,6 +148,9 @@ then
  CFLAGS="-fno-strict-aliasing $CFLAGS"
 fi
 
+AM_CONDITIONAL(HAVE_CXX, test "x$HAVE_CXX" = "xyes")
+
+
 # Checks for libraries.
 
 # the library tests that follow should not result in every plugin linking to them,
@@ -168,45 +168,59 @@ LIBS=$LIBSOLD
 # test if we have vorbisfile
 # prior versions had ov_open_callbacks in libvorbis, test that, too.
 AC_CHECK_LIB(vorbisfile, ov_open_callbacks,
-        [AM_CONDITIONAL(HAVE_VORBISFILE, true)
-         AC_DEFINE(HAVE_VORBISFILE,1,[Have vorbisfile])],
-        [AM_CONDITIONAL(HAVE_VORBISFILE, false)],
+        [AC_CHECK_HEADERS([vorbis/vorbisfile.h],
+          AM_CONDITIONAL(HAVE_VORBISFILE, true)
+          AC_DEFINE(HAVE_VORBISFILE,1,[Have vorbisfile]),
+          AM_CONDITIONAL(HAVE_VORBISFILE, false)
+          AC_DEFINE(HAVE_VORBISFILE,0,[lacking vorbisfile])),
+        AM_CONDITIONAL(HAVE_VORBISFILE, false)],
         -lvorbis -logg)
 AC_CHECK_LIB(FLAC, FLAC__stream_decoder_init_stream,
-        [AM_CONDITIONAL(HAVE_FLAC, true)
-         AC_DEFINE(HAVE_FLAC,1,[Have flac])],
-        [AM_CONDITIONAL(HAVE_FLAC, false)],
+        [AC_CHECK_HEADERS([FLAC/all.h],
+         AM_CONDITIONAL(HAVE_FLAC, true)
+          AC_DEFINE(HAVE_FLAC,1,[Have flac]),
+         AM_CONDITIONAL(HAVE_FLAC, false))],
+        AM_CONDITIONAL(HAVE_FLAC, false),
         -logg)
 # test without -logg to see whether we really need it (libflac can be without)
 AC_CHECK_LIB(FLAC, FLAC__stream_decoder_init_ogg_stream,
-        [AM_CONDITIONAL(HAVE_FLAC, true)
+         AM_CONDITIONAL(HAVE_FLAC, true)
          AC_DEFINE(HAVE_FLAC,1,[Have flac])
-         AM_CONDITIONAL(NEED_OGG, false)],
+         AM_CONDITIONAL(NEED_OGG, false),
         [AM_CONDITIONAL(NEED_OGG, true)])
 AC_CHECK_LIB(vorbisfile, vorbis_comment_query,
-        [AM_CONDITIONAL(NEED_VORBIS, false)],
-        [AM_CONDITIONAL(NEED_VORBIS, true)],
+        AM_CONDITIONAL(NEED_VORBIS, false),
+        AM_CONDITIONAL(NEED_VORBIS, true),
         -logg)
 
 AC_CHECK_LIB(z, inflate,
-        [AM_CONDITIONAL(HAVE_ZLIB, true)
-        AC_DEFINE(HAVE_ZLIB,1,[Have zlib])],
-        [AM_CONDITIONAL(HAVE_ZLIB, false)])
-
-AC_CHECK_LIB(rpm, rpmReadPackageFile,
-        [AM_CONDITIONAL(HAVE_LIBRPM, true)
-        AC_DEFINE(HAVE_LIBRPM,1,[Have librpm])],
-        [AM_CONDITIONAL(HAVE_LIBRPM, false)])
+        [AC_CHECK_HEADERS([zlib.h],
+         AM_CONDITIONAL(HAVE_ZLIB, true)
+         AC_DEFINE(HAVE_ZLIB,1,[Have zlib]),
+         AM_CONDITIONAL(HAVE_ZLIB, false))],
+         AM_CONDITIONAL(HAVE_ZLIB, false))
 
 AC_CHECK_LIB(bz2, BZ2_decompress,
-        [AM_CONDITIONAL(HAVE_BZ2, true)
-        AC_DEFINE(HAVE_LIBBZ2,1,[Have libbz2])],
-        [AM_CONDITIONAL(HAVE_BZ2, false)])
+        [AC_CHECK_HEADERS([bzlib.h],
+          AM_CONDITIONAL(HAVE_BZ2, true)
+          AC_DEFINE(HAVE_LIBBZ2,1,[Have libbz2]),
+         AM_CONDITIONAL(HAVE_BZ2, false))],
+         AM_CONDITIONAL(HAVE_BZ2, false))
+
+AC_CHECK_LIB(rpm, rpmReadPackageFile,
+        [AC_CHECK_HEADERS([rpm/rpmlib.h rpm/rpmts.h],
+          AM_CONDITIONAL(HAVE_LIBRPM, true)
+          AC_DEFINE(HAVE_LIBRPM,1,[Have librpm]),
+         AM_CONDITIONAL(HAVE_LIBRPM, false))],
+         AM_CONDITIONAL(HAVE_LIBRPM, false))
 
 AC_CHECK_LIB(mpeg2, mpeg2_init,
-        [AM_CONDITIONAL(HAVE_MPEG2, true)
-        AC_DEFINE(HAVE_MPEG2,1,[Have libmpeg2])],
-        [AM_CONDITIONAL(HAVE_MPEG2, false)])
+        [AC_CHECK_HEADERS([mpeg2dec/mpeg2.h],
+           AM_CONDITIONAL(HAVE_MPEG2, true)
+           AC_DEFINE(HAVE_MPEG2,1,[Have libmpeg2]),
+         AM_CONDITIONAL(HAVE_MPEG2, false))],
+         AM_CONDITIONAL(HAVE_MPEG2, false))
+
 
 # restore LIBS
 LIBS=$LIBSOLD
@@ -231,13 +245,7 @@ fi
 AC_HEADER_STDC
 AC_HEADER_DIRENT
 AC_HEADER_STDBOOL
-AC_CHECK_HEADERS([fcntl.h netinet/in.h stdlib.h string.h unistd.h libintl.h limits.h stddef.h zlib.h])
-AC_CHECK_HEADERS([ltdl.h iconv.h bzlib.h mpeg2dec/mpeg2.h])
-# fixme, we need to die here if a header is not found!
-
-AC_CHECK_HEADERS([vorbis/vorbisfile.h])
-
-AC_CHECK_HEADERS([FLAC/all.h])
+AC_CHECK_HEADERS([ltdl.h iconv.h fcntl.h netinet/in.h stdlib.h string.h unistd.h libintl.h limits.h stddef.h zlib.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST
