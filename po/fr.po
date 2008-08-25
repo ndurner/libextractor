@@ -1,0 +1,1550 @@
+# translation of libextractor-0.5.20a to French.
+# Copyright (C) 2008 Free Software Foundation, Inc.
+# This file is distributed under the same license as the libextractor package.
+#
+# Nicolas Provost <nprovost@quadriv.com>, 2008.
+msgid ""
+msgstr ""
+"Project-Id-Version: libextractor-0.5.20a\n"
+"Report-Msgid-Bugs-To: libextractor@gnu.org\n"
+"POT-Creation-Date: 2008-03-20 23:53-0600\n"
+"PO-Revision-Date: 2008-08-24 19:08+0100\n"
+"Last-Translator: Nicolas Provost <nprovost@quadriv.com>\n"
+"Language-Team: French <traduc@traduc.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+
+#: src/main/extract.c:49
+#, c-format
+msgid ""
+"Usage: %s\n"
+"%s\n"
+"\n"
+msgstr ""
+"Usage: %s\n"
+"%s\n"
+"\n"
+
+#: src/main/extract.c:52
+#, c-format
+msgid "Arguments mandatory for long options are also mandatory for short options.\n"
+msgstr "Les arguments obligatoires pour les options longues le sont aussi pour les options courtes.\n"
+
+#: src/main/extract.c:126
+msgid "do not remove any duplicates"
+msgstr "ne pas enlever les doublons"
+
+#: src/main/extract.c:128
+msgid "print output in bibtex format"
+msgstr "sortie au format bibtex"
+
+#: src/main/extract.c:130
+msgid "use the generic plaintext extractor for the language with the 2-letter language code LANG"
+msgstr "utiliser l'extracteur de texte générique avec le code de langue LANG (deux lettres)"
+
+#: src/main/extract.c:132
+msgid "remove duplicates only if types match"
+msgstr "enlever les doublons seulement si les types correspondent"
+
+#: src/main/extract.c:134
+msgid "use the filename as a keyword (loads filename-extractor plugin)"
+msgstr "utiliser le nom de fichier comme un mot-clé (charge le module \"filename-extractor\")"
+
+#: src/main/extract.c:136
+msgid "produce grep-friendly output (all results on one line per file)"
+msgstr "produit une sortie exploitable avec \"grep\" (une ligne contenant tous les résultats d'un fichier)"
+
+#: src/main/extract.c:138
+msgid "print this help"
+msgstr "affiche cette aide"
+
+#: src/main/extract.c:140
+msgid "compute hash using the given ALGORITHM (currently sha1 or md5)"
+msgstr "calcule l'empreinte (hash) en utilisant l'ALGORITHME donné (pour l'instant \"sha1\" ou \"md5\")"
+
+#: src/main/extract.c:142
+msgid "load an extractor plugin named LIBRARY"
+msgstr "charge le module d'extraction nommé LIBRARY"
+
+#: src/main/extract.c:144
+msgid "list all keyword types"
+msgstr "liste tous les types de mots-clés"
+
+#: src/main/extract.c:146
+msgid "do not use the default set of extractor plugins"
+msgstr "ne pas utiliser les modules d'extraction par défaut"
+
+#: src/main/extract.c:148
+msgid "print only keywords of the given TYPE (use -L to get a list)"
+msgstr "affiche seulement les mots-clés du TYPE donné (utiliser -L pour avoir la liste)"
+
+#: src/main/extract.c:150
+msgid "remove duplicates even if keyword types do not match"
+msgstr "supprimer les doublons même si les types de mots-clés ne correspondent pas"
+
+#: src/main/extract.c:152
+msgid "use keyword splitting (loads split-extractor plugin)"
+msgstr "utiliser la césure des mots-clés (charge le module \"split-extractor\")"
+
+#: src/main/extract.c:154
+msgid "print the version number"
+msgstr "affiche le numéro de version"
+
+#: src/main/extract.c:156
+msgid "be verbose"
+msgstr "affichage détaillé"
+
+#: src/main/extract.c:158
+msgid "do not print keywords of the given TYPE"
+msgstr "ne pas afficher les mots-clés du TYPE donné"
+
+#: src/main/extract.c:161
+msgid "extract [OPTIONS] [FILENAME]*"
+msgstr "extract [OPTIONS] [FICHIER]*"
+
+#: src/main/extract.c:162
+msgid "Extract metadata from files."
+msgstr "Extraction des métadonnées des fichiers."
+
+#: src/main/extract.c:190 src/main/extractor.c:1513
+#, c-format
+msgid "%s - (binary)\n"
+msgstr "%s - (binaire)\n"
+
+#: src/main/extract.c:201 src/main/extractor.c:1518
+#, c-format
+msgid "INVALID TYPE - %s\n"
+msgstr "TYPE INCORRECT- %s\n"
+
+#: src/main/extract.c:320 src/main/extractor.c:47
+msgid "title"
+msgstr "titre"
+
+#: src/main/extract.c:322 src/main/extractor.c:45
+msgid "filename"
+msgstr "nom de fichier"
+
+#: src/main/extract.c:327 src/main/extractor.c:48
+msgid "author"
+msgstr "auteur"
+
+#: src/main/extract.c:331 src/main/extractor.c:50
+msgid "description"
+msgstr "description"
+
+#: src/main/extract.c:333 src/main/extractor.c:62
+msgid "keywords"
+msgstr "mots-clés"
+
+#: src/main/extract.c:335 src/main/extractor.c:51
+msgid "comment"
+msgstr "commentaire"
+
+#: src/main/extract.c:339 src/main/extractor.c:52
+msgid "date"
+msgstr "date"
+
+#: src/main/extract.c:341 src/main/extractor.c:74
+msgid "creation date"
+msgstr "date de création"
+
+#: src/main/extract.c:369 src/main/extractor.c:53
+msgid "publisher"
+msgstr "éditeur"
+
+#: src/main/extract.c:373 src/main/extractor.c:59
+msgid "organization"
+msgstr "organisation"
+
+#: src/main/extract.c:377 src/main/extractor.c:61
+msgid "subject"
+msgstr "sujet"
+
+#: src/main/extract.c:381 src/main/extractor.c:78
+msgid "page count"
+msgstr "nombre de pages"
+
+#: src/main/extract.c:537
+#, c-format
+msgid "You must specify an argument for the `%s' option (option ignored).\n"
+msgstr "Vous devez préciser un argument pour l'option `%s' (option ignorée).\n"
+
+#: src/main/extract.c:607
+#, c-format
+msgid "Use --help to get a list of options.\n"
+msgstr "Utilisez --help pour obtenir une liste d'options.\n"
+
+#: src/main/extract.c:663
+#, c-format
+msgid "%% BiBTeX file\n"
+msgstr "%% fichier BiBTeX\n"
+
+#: src/main/extract.c:683
+#, c-format
+msgid "Keywords for file %s:\n"
+msgstr "Mots-clés pour le fichier %s:\n"
+
+#: src/main/extractor.c:44
+msgid "unknown"
+msgstr "inconnu"
+
+#: src/main/extractor.c:46
+msgid "mimetype"
+msgstr "type mime"
+
+#: src/main/extractor.c:49
+msgid "artist"
+msgstr "artiste"
+
+#: src/main/extractor.c:54
+msgid "language"
+msgstr "langue"
+
+#: src/main/extractor.c:55
+msgid "album"
+msgstr "album"
+
+#: src/main/extractor.c:56
+msgid "genre"
+msgstr "genre"
+
+#: src/main/extractor.c:57
+msgid "location"
+msgstr "emplacement"
+
+#: src/main/extractor.c:58
+msgid "version"
+msgstr "version"
+
+#: src/main/extractor.c:60
+msgid "copyright"
+msgstr "copyright"
+
+#: src/main/extractor.c:63
+msgid "contributor"
+msgstr "contributeur"
+
+#: src/main/extractor.c:64
+msgid "resource-type"
+msgstr "type de ressource"
+
+#: src/main/extractor.c:65
+msgid "format"
+msgstr "format"
+
+#: src/main/extractor.c:66
+msgid "resource-identifier"
+msgstr "identifiant de ressource"
+
+#: src/main/extractor.c:67
+msgid "source"
+msgstr "source"
+
+#: src/main/extractor.c:68
+msgid "relation"
+msgstr "relation"
+
+#: src/main/extractor.c:69
+msgid "coverage"
+msgstr "couverture"
+
+#: src/main/extractor.c:70
+msgid "software"
+msgstr "logiciel"
+
+#: src/main/extractor.c:71
+msgid "disclaimer"
+msgstr "avertissement"
+
+#: src/main/extractor.c:72
+msgid "warning"
+msgstr "alerte"
+
+#: src/main/extractor.c:73
+msgid "translated"
+msgstr "traduit"
+
+#: src/main/extractor.c:75
+msgid "modification date"
+msgstr "date de modification"
+
+#: src/main/extractor.c:76
+msgid "creator"
+msgstr "créateur"
+
+#: src/main/extractor.c:77
+msgid "producer"
+msgstr "producteur"
+
+#: src/main/extractor.c:79
+msgid "page orientation"
+msgstr "orientation de la page"
+
+#: src/main/extractor.c:80
+msgid "paper size"
+msgstr "taille du papier"
+
+#: src/main/extractor.c:81
+msgid "used fonts"
+msgstr "polices de caractères utilisées"
+
+#: src/main/extractor.c:82
+msgid "page order"
+msgstr "ordre des pages"
+
+#: src/main/extractor.c:83
+msgid "created for"
+msgstr "crée pour"
+
+#: src/main/extractor.c:84
+msgid "magnification"
+msgstr "agrandissement"
+
+#: src/main/extractor.c:85
+msgid "release"
+msgstr "version du produit"
+
+#: src/main/extractor.c:86
+msgid "group"
+msgstr "groupe"
+
+#: src/main/extractor.c:87
+msgid "size"
+msgstr "taille"
+
+#: src/main/extractor.c:88
+msgid "summary"
+msgstr "résumé"
+
+#: src/main/extractor.c:89
+msgid "packager"
+msgstr "conditionneur"
+
+#: src/main/extractor.c:90
+msgid "vendor"
+msgstr "vendeur"
+
+#: src/main/extractor.c:91
+msgid "license"
+msgstr "licence"
+
+#: src/main/extractor.c:92
+msgid "distribution"
+msgstr "distribution"
+
+#: src/main/extractor.c:93
+msgid "build-host"
+msgstr "construit sur"
+
+#: src/main/extractor.c:94
+msgid "operating system"
+msgstr "système d'exploitation"
+
+#: src/main/extractor.c:95
+msgid "dependency"
+msgstr "dépendance"
+
+#: src/main/extractor.c:96
+msgid "MD4"
+msgstr "MD4"
+
+#: src/main/extractor.c:97
+msgid "MD5"
+msgstr "MD5"
+
+#: src/main/extractor.c:98
+msgid "SHA-0"
+msgstr "SHA-0"
+
+#: src/main/extractor.c:99
+msgid "SHA-1"
+msgstr "SHA-1"
+
+#: src/main/extractor.c:100
+msgid "RipeMD160"
+msgstr "RipeMD160"
+
+#: src/main/extractor.c:101
+msgid "resolution"
+msgstr "résolution"
+
+#: src/main/extractor.c:102
+msgid "category"
+msgstr "Catégorie"
+
+#: src/main/extractor.c:103
+msgid "book title"
+msgstr "titre du livre"
+
+#: src/main/extractor.c:104
+msgid "priority"
+msgstr "priorité"
+
+#: src/main/extractor.c:105
+msgid "conflicts"
+msgstr "conflits"
+
+#: src/main/extractor.c:106
+msgid "replaces"
+msgstr "remplace"
+
+#: src/main/extractor.c:107
+msgid "provides"
+msgstr ""
+
+#: src/main/extractor.c:108
+msgid "conductor"
+msgstr "conducteur"
+
+#: src/main/extractor.c:109
+msgid "interpreter"
+msgstr "interprète"
+
+#: src/main/extractor.c:110
+msgid "owner"
+msgstr "propriétaire"
+
+#: src/main/extractor.c:111
+msgid "lyrics"
+msgstr "paroles"
+
+#: src/main/extractor.c:112
+msgid "media type"
+msgstr "type de média"
+
+#: src/main/extractor.c:113
+msgid "contact"
+msgstr "contact"
+
+#: src/main/extractor.c:114
+msgid "binary thumbnail data"
+msgstr "données binaires de vignette"
+
+#: src/main/extractor.c:115
+msgid "publication date"
+msgstr "date de publication"
+
+#: src/main/extractor.c:116
+msgid "camera make"
+msgstr "fabricant de camera"
+
+#: src/main/extractor.c:117
+msgid "camera model"
+msgstr "modèle de camera"
+
+#: src/main/extractor.c:118
+msgid "exposure"
+msgstr "exposition"
+
+#: src/main/extractor.c:119
+msgid "aperture"
+msgstr "ouverture"
+
+#: src/main/extractor.c:120
+msgid "exposure bias"
+msgstr ""
+
+#: src/main/extractor.c:121
+msgid "flash"
+msgstr "flash"
+
+#: src/main/extractor.c:122
+msgid "flash bias"
+msgstr ""
+
+#: src/main/extractor.c:123
+msgid "focal length"
+msgstr "longueur de focale"
+
+#: src/main/extractor.c:124
+msgid "focal length (35mm equivalent)"
+msgstr "longueur de focale (équivalent 35mm)"
+
+#: src/main/extractor.c:125
+msgid "iso speed"
+msgstr "vitesse iso"
+
+#: src/main/extractor.c:126
+msgid "exposure mode"
+msgstr "mode d'exposition"
+
+#: src/main/extractor.c:127
+msgid "metering mode"
+msgstr "mode métrique"
+
+#: src/main/extractor.c:128
+msgid "macro mode"
+msgstr "mode macro"
+
+#: src/main/extractor.c:129
+msgid "image quality"
+msgstr "qualité d'image"
+
+#: src/main/extractor.c:130
+msgid "white balance"
+msgstr "balance des blancs"
+
+#: src/main/extractor.c:131
+msgid "orientation"
+msgstr "orientation"
+
+#: src/main/extractor.c:132
+msgid "template"
+msgstr ""
+
+#: src/main/extractor.c:133
+msgid "split"
+msgstr ""
+
+#: src/main/extractor.c:134
+msgid "product version"
+msgstr "version de produit"
+
+#: src/main/extractor.c:135
+msgid "last saved by"
+msgstr "dernière sauvegarde par"
+
+#: src/main/extractor.c:136
+msgid "last printed"
+msgstr "dernière impression par"
+
+#: src/main/extractor.c:137
+msgid "word count"
+msgstr "nombre de mots"
+
+#: src/main/extractor.c:138
+msgid "character count"
+msgstr "nombre de caractères"
+
+#: src/main/extractor.c:139
+msgid "total editing time"
+msgstr "temps total d'édition"
+
+#: src/main/extractor.c:140
+msgid "thumbnails"
+msgstr "vignettes"
+
+#: src/main/extractor.c:141
+msgid "security"
+msgstr "sécurité"
+
+#: src/main/extractor.c:142
+msgid "created by software"
+msgstr ""
+
+#: src/main/extractor.c:143
+msgid "modified by software"
+msgstr ""
+
+#: src/main/extractor.c:144
+msgid "revision history"
+msgstr "historique de révision"
+
+#: src/main/extractor.c:145
+msgid "lower case conversion"
+msgstr "conversion en minuscules"
+
+#: src/main/extractor.c:146
+msgid "company"
+msgstr "société"
+
+#: src/main/extractor.c:147
+msgid "generator"
+msgstr "générateur"
+
+#: src/main/extractor.c:148
+msgid "character set"
+msgstr "jeu de caractères"
+
+#: src/main/extractor.c:149
+msgid "line count"
+msgstr "nombre de lignes"
+
+#: src/main/extractor.c:150
+msgid "paragraph count"
+msgstr "nombre de paragraphes"
+
+#: src/main/extractor.c:151
+msgid "editing cycles"
+msgstr "cycles d'édition"
+
+#: src/main/extractor.c:152
+msgid "scale"
+msgstr "échelle"
+
+#: src/main/extractor.c:153
+msgid "manager"
+msgstr "directeur"
+
+#: src/main/extractor.c:154
+msgid "director"
+msgstr "directeur"
+
+#: src/main/extractor.c:155
+msgid "duration"
+msgstr "durée"
+
+#: src/main/extractor.c:156
+msgid "information"
+msgstr "information"
+
+#: src/main/extractor.c:157
+msgid "full name"
+msgstr "nom complet"
+
+#: src/main/extractor.c:158
+msgid "chapter"
+msgstr "chapitre"
+
+#: src/main/extractor.c:159
+msgid "year"
+msgstr "année"
+
+#: src/main/extractor.c:160
+msgid "link"
+msgstr "lien"
+
+#: src/main/extractor.c:161
+msgid "music CD identifier"
+msgstr ""
+
+#: src/main/extractor.c:162
+msgid "play counter"
+msgstr ""
+
+#: src/main/extractor.c:163
+msgid "popularity meter"
+msgstr ""
+
+#: src/main/extractor.c:164
+msgid "content type"
+msgstr "type de contenu"
+
+#: src/main/extractor.c:165
+msgid "encoded by"
+msgstr "encodé par"
+
+#: src/main/extractor.c:166
+msgid "time"
+msgstr "temps"
+
+#: src/main/extractor.c:167
+msgid "musician credits list"
+msgstr ""
+
+#: src/main/extractor.c:168
+msgid "mood"
+msgstr ""
+
+#: src/main/extractor.c:169
+msgid "format version"
+msgstr "version du format"
+
+#: src/main/extractor.c:170
+msgid "television system"
+msgstr ""
+
+#: src/main/extractor.c:171
+msgid "song count"
+msgstr "nombre de chansons"
+
+#: src/main/extractor.c:172
+msgid "starting song"
+msgstr ""
+
+#: src/main/extractor.c:173
+msgid "hardware dependency"
+msgstr ""
+
+#: src/main/extractor.c:174
+msgid "ripper"
+msgstr ""
+
+#: src/main/extractor.c:175
+msgid "filesize"
+msgstr "taille du fichier"
+
+#: src/main/extractor.c:176
+msgid "track number"
+msgstr "numéro de piste"
+
+#: src/main/extractor.c:177
+msgid "international standard recording code"
+msgstr ""
+
+#: src/main/extractor.c:178
+msgid "disc number"
+msgstr "numéro de disque"
+
+#: src/main/extractor.c:598
+#, c-format
+msgid "Initialization of plugin mechanism failed: %s!\n"
+msgstr "Echec de l'initialisation du module %s !\n"
+
+#: src/main/extractor.c:752
+#, c-format
+msgid "Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that failed also.  Errors are: `%s' and `%s'.\n"
+msgstr "Impossible de résoudre le symbole `%s' dans la librairie `%s'; essai avec `%s', échec. Erreurs : `%s' et `%s'.\n"
+
+#: src/main/extractor.c:781
+#, c-format
+msgid "Loading `%s' plugin failed: %s\n"
+msgstr "Le chargement du module `%s' a échoué : %s\n"
+
+#: src/main/extractor.c:986
+#, c-format
+msgid "Unloading plugin `%s' failed!\n"
+msgstr "Le déchargement du module `%s' a échoué !\n"
+
+#: src/main/getopt.c:684
+#, c-format
+msgid "%s: option `%s' is ambiguous\n"
+msgstr "%s: l'option `%s' est ambiguë\n"
+
+#: src/main/getopt.c:709
+#, c-format
+msgid "%s: option `--%s' doesn't allow an argument\n"
+msgstr "%s: l'option `--%s' ne prend pas d'argument\n"
+
+#: src/main/getopt.c:715
+#, c-format
+msgid "%s: option `%c%s' doesn't allow an argument\n"
+msgstr "%s: l'option `%c%s' ne prend pas d'argument\n"
+
+#: src/main/getopt.c:732 src/main/getopt.c:903
+#, c-format
+msgid "%s: option `%s' requires an argument\n"
+msgstr "%s: l'option `%s' requiert un argument\n"
+
+#: src/main/getopt.c:761
+#, c-format
+msgid "%s: unrecognized option `--%s'\n"
+msgstr "%s: option non reconnue `--%s'\n"
+
+#: src/main/getopt.c:765
+#, c-format
+msgid "%s: unrecognized option `%c%s'\n"
+msgstr "%s: option non reconnue `%c%s'\n"
+
+#: src/main/getopt.c:791
+#, c-format
+msgid "%s: illegal option -- %c\n"
+msgstr "%s: option illégale -- %c\n"
+
+#: src/main/getopt.c:793
+#, c-format
+msgid "%s: invalid option -- %c\n"
+msgstr "%s: option invalide -- %c\n"
+
+#: src/main/getopt.c:822 src/main/getopt.c:952
+#, c-format
+msgid "%s: option requires an argument -- %c\n"
+msgstr "%s: l'option requiert un argument -- %c\n"
+
+#: src/main/getopt.c:870
+#, c-format
+msgid "%s: option `-W %s' is ambiguous\n"
+msgstr "%s: l'option `-W %s' est ambiguë\n"
+
+#: src/main/getopt.c:888
+#, c-format
+msgid "%s: option `-W %s' doesn't allow an argument\n"
+msgstr "%s: l'option `-W %s' ne prend pas d'argument\n"
+
+#: src/plugins/filenameextractor.c:64
+msgid "GB"
+msgstr "Go"
+
+#: src/plugins/filenameextractor.c:66
+msgid "MB"
+msgstr "Mo"
+
+#: src/plugins/filenameextractor.c:68
+msgid "KB"
+msgstr "Ko"
+
+#: src/plugins/filenameextractor.c:70
+msgid "Bytes"
+msgstr "Octets"
+
+#: src/plugins/jpegextractor.c:188
+#, c-format
+msgid "%ux%u dots per inch"
+msgstr "%ux%u points par pouce"
+
+#: src/plugins/jpegextractor.c:196
+#, c-format
+msgid "%ux%u dots per cm"
+msgstr "%ux%u points par cm"
+
+#: src/plugins/jpegextractor.c:204
+#, c-format
+msgid "%ux%u dots per inch?"
+msgstr "%ux%u points par pouce ?"
+
+#: src/plugins/manextractor.c:150
+msgid "Commands"
+msgstr "Commandes"
+
+#: src/plugins/manextractor.c:154
+msgid "System calls"
+msgstr "Appels système"
+
+#: src/plugins/manextractor.c:158
+msgid "Library calls"
+msgstr "Appels de librairie"
+
+#: src/plugins/manextractor.c:162
+msgid "Special files"
+msgstr "Fichiers spéciaux"
+
+#: src/plugins/manextractor.c:166
+msgid "File formats and conventions"
+msgstr "Formats et préférences de fichier"
+
+#: src/plugins/manextractor.c:171
+msgid "Games"
+msgstr "Jeux"
+
+#: src/plugins/manextractor.c:175
+msgid "Conventions and miscellaneous"
+msgstr "Préférences - Divers"
+
+#: src/plugins/manextractor.c:180
+msgid "System management commands"
+msgstr "Commandes de gestion système"
+
+#: src/plugins/manextractor.c:185
+msgid "Kernel routines"
+msgstr "Fonctions du Noyau"
+
+#: src/plugins/mp3extractor.c:51 src/plugins/qtextractor.c:30
+msgid "Blues"
+msgstr "Blues"
+
+#: src/plugins/mp3extractor.c:52 src/plugins/qtextractor.c:31
+msgid "Classic Rock"
+msgstr "Rock classique"
+
+#: src/plugins/mp3extractor.c:53 src/plugins/qtextractor.c:32
+msgid "Country"
+msgstr "Country"
+
+#: src/plugins/mp3extractor.c:54 src/plugins/qtextractor.c:33
+msgid "Dance"
+msgstr "Dance"
+
+#: src/plugins/mp3extractor.c:55 src/plugins/qtextractor.c:34
+msgid "Disco"
+msgstr "Disco"
+
+#: src/plugins/mp3extractor.c:56 src/plugins/qtextractor.c:35
+msgid "Funk"
+msgstr "Funk"
+
+#: src/plugins/mp3extractor.c:57 src/plugins/qtextractor.c:36
+msgid "Grunge"
+msgstr "Grunge"
+
+#: src/plugins/mp3extractor.c:58 src/plugins/qtextractor.c:37
+msgid "Hip-Hop"
+msgstr "Hip-Hop"
+
+#: src/plugins/mp3extractor.c:59 src/plugins/qtextractor.c:38
+msgid "Jazz"
+msgstr "Jazz"
+
+#: src/plugins/mp3extractor.c:60 src/plugins/qtextractor.c:39
+msgid "Metal"
+msgstr "Metal"
+
+#: src/plugins/mp3extractor.c:61 src/plugins/qtextractor.c:40
+msgid "New Age"
+msgstr "New Age"
+
+#: src/plugins/mp3extractor.c:62 src/plugins/qtextractor.c:41
+msgid "Oldies"
+msgstr "Oldies"
+
+#: src/plugins/mp3extractor.c:63 src/plugins/qtextractor.c:42
+msgid "Other"
+msgstr "Autre"
+
+#: src/plugins/mp3extractor.c:64 src/plugins/qtextractor.c:43
+msgid "Pop"
+msgstr "Pop"
+
+#: src/plugins/mp3extractor.c:65 src/plugins/qtextractor.c:44
+msgid "R&B"
+msgstr "R&B"
+
+#: src/plugins/mp3extractor.c:66 src/plugins/qtextractor.c:45
+msgid "Rap"
+msgstr "Rap"
+
+#: src/plugins/mp3extractor.c:67 src/plugins/qtextractor.c:46
+msgid "Reggae"
+msgstr "Reggae"
+
+#: src/plugins/mp3extractor.c:68 src/plugins/qtextractor.c:47
+msgid "Rock"
+msgstr "Rock"
+
+#: src/plugins/mp3extractor.c:69 src/plugins/qtextractor.c:48
+msgid "Techno"
+msgstr "Techno"
+
+#: src/plugins/mp3extractor.c:70 src/plugins/qtextractor.c:49
+msgid "Industrial"
+msgstr "Industrial"
+
+#: src/plugins/mp3extractor.c:71 src/plugins/qtextractor.c:50
+msgid "Alternative"
+msgstr "Alternative"
+
+#: src/plugins/mp3extractor.c:72 src/plugins/qtextractor.c:51
+msgid "Ska"
+msgstr "Ska"
+
+#: src/plugins/mp3extractor.c:73 src/plugins/qtextractor.c:52
+msgid "Death Metal"
+msgstr "Death Metal"
+
+#: src/plugins/mp3extractor.c:74 src/plugins/qtextractor.c:53
+msgid "Pranks"
+msgstr "Pranks"
+
+#: src/plugins/mp3extractor.c:75 src/plugins/qtextractor.c:54
+msgid "Soundtrack"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:76 src/plugins/qtextractor.c:55
+msgid "Euro-Techno"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:77 src/plugins/qtextractor.c:56
+msgid "Ambient"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:78 src/plugins/qtextractor.c:57
+msgid "Trip-Hop"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:79 src/plugins/qtextractor.c:58
+msgid "Vocal"
+msgstr "Vocal"
+
+#: src/plugins/mp3extractor.c:80 src/plugins/qtextractor.c:59
+msgid "Jazz+Funk"
+msgstr "Jazz+Funk"
+
+#: src/plugins/mp3extractor.c:81 src/plugins/qtextractor.c:60
+msgid "Fusion"
+msgstr "Fusion"
+
+#: src/plugins/mp3extractor.c:82 src/plugins/qtextractor.c:61
+msgid "Trance"
+msgstr "Trance"
+
+#: src/plugins/mp3extractor.c:83 src/plugins/qtextractor.c:62
+msgid "Classical"
+msgstr "Classique"
+
+#: src/plugins/mp3extractor.c:84 src/plugins/qtextractor.c:63
+msgid "Instrumental"
+msgstr "Instrumental"
+
+#: src/plugins/mp3extractor.c:85 src/plugins/qtextractor.c:64
+msgid "Acid"
+msgstr "Acid"
+
+#: src/plugins/mp3extractor.c:86 src/plugins/qtextractor.c:65
+msgid "House"
+msgstr "House"
+
+#: src/plugins/mp3extractor.c:87 src/plugins/qtextractor.c:66
+msgid "Game"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:88 src/plugins/qtextractor.c:67
+msgid "Sound Clip"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:89 src/plugins/qtextractor.c:68
+msgid "Gospel"
+msgstr "Gospel"
+
+#: src/plugins/mp3extractor.c:90 src/plugins/qtextractor.c:69
+msgid "Noise"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:91 src/plugins/qtextractor.c:70
+msgid "Alt. Rock"
+msgstr "Alt. Rock"
+
+#: src/plugins/mp3extractor.c:92 src/plugins/qtextractor.c:71
+msgid "Bass"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:93 src/plugins/qtextractor.c:72
+msgid "Soul"
+msgstr "Soul"
+
+#: src/plugins/mp3extractor.c:94 src/plugins/qtextractor.c:73
+msgid "Punk"
+msgstr "Punk"
+
+#: src/plugins/mp3extractor.c:95 src/plugins/qtextractor.c:74
+msgid "Space"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:96 src/plugins/qtextractor.c:75
+msgid "Meditative"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:97 src/plugins/qtextractor.c:76
+msgid "Instrumental Pop"
+msgstr "Pop instrumentale"
+
+#: src/plugins/mp3extractor.c:98 src/plugins/qtextractor.c:77
+msgid "Instrumental Rock"
+msgstr "Rock instrumental"
+
+#: src/plugins/mp3extractor.c:99 src/plugins/qtextractor.c:78
+msgid "Ethnic"
+msgstr "Ethnique"
+
+#: src/plugins/mp3extractor.c:100 src/plugins/qtextractor.c:79
+msgid "Gothic"
+msgstr "Gothic"
+
+#: src/plugins/mp3extractor.c:101 src/plugins/qtextractor.c:80
+msgid "Darkwave"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:102 src/plugins/qtextractor.c:81
+msgid "Techno-Industrial"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:103 src/plugins/qtextractor.c:82
+msgid "Electronic"
+msgstr "Electronique"
+
+#: src/plugins/mp3extractor.c:104 src/plugins/qtextractor.c:83
+msgid "Pop-Folk"
+msgstr "Pop-Folk"
+
+#: src/plugins/mp3extractor.c:105 src/plugins/qtextractor.c:84
+msgid "Eurodance"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:106 src/plugins/qtextractor.c:85
+msgid "Dream"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:107 src/plugins/qtextractor.c:86
+msgid "Southern Rock"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:108 src/plugins/qtextractor.c:87
+msgid "Comedy"
+msgstr "Comédie"
+
+#: src/plugins/mp3extractor.c:109 src/plugins/qtextractor.c:88
+msgid "Cult"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:110 src/plugins/qtextractor.c:89
+msgid "Gangsta Rap"
+msgstr "Gangsta Rap"
+
+#: src/plugins/mp3extractor.c:111 src/plugins/qtextractor.c:90
+msgid "Top 40"
+msgstr "Top 40"
+
+#: src/plugins/mp3extractor.c:112 src/plugins/qtextractor.c:91
+msgid "Christian Rap"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:113 src/plugins/qtextractor.c:92
+msgid "Pop/Funk"
+msgstr "Pop/Funk"
+
+#: src/plugins/mp3extractor.c:114 src/plugins/qtextractor.c:93
+msgid "Jungle"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:115 src/plugins/qtextractor.c:94
+msgid "Native American"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:116 src/plugins/qtextractor.c:95
+msgid "Cabaret"
+msgstr "Cabaret"
+
+#: src/plugins/mp3extractor.c:117 src/plugins/qtextractor.c:96
+msgid "New Wave"
+msgstr "New Wave"
+
+#: src/plugins/mp3extractor.c:118 src/plugins/qtextractor.c:97
+msgid "Psychedelic"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:119 src/plugins/qtextractor.c:98
+msgid "Rave"
+msgstr "Rave"
+
+#: src/plugins/mp3extractor.c:120 src/plugins/qtextractor.c:99
+msgid "Showtunes"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:121 src/plugins/qtextractor.c:100
+msgid "Trailer"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:122 src/plugins/qtextractor.c:101
+msgid "Lo-Fi"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:123 src/plugins/qtextractor.c:102
+msgid "Tribal"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:124 src/plugins/qtextractor.c:103
+msgid "Acid Punk"
+msgstr "Acid Punk"
+
+#: src/plugins/mp3extractor.c:125 src/plugins/qtextractor.c:104
+msgid "Acid Jazz"
+msgstr "Acid Jazz"
+
+#: src/plugins/mp3extractor.c:126 src/plugins/qtextractor.c:105
+msgid "Polka"
+msgstr "Polka"
+
+#: src/plugins/mp3extractor.c:127 src/plugins/qtextractor.c:106
+msgid "Retro"
+msgstr "Retro"
+
+#: src/plugins/mp3extractor.c:128 src/plugins/qtextractor.c:107
+msgid "Musical"
+msgstr "Musical"
+
+#: src/plugins/mp3extractor.c:129 src/plugins/qtextractor.c:108
+msgid "Rock & Roll"
+msgstr "Rock & Roll"
+
+#: src/plugins/mp3extractor.c:130 src/plugins/qtextractor.c:109
+msgid "Hard Rock"
+msgstr "Hard Rock"
+
+#: src/plugins/mp3extractor.c:131 src/plugins/qtextractor.c:110
+msgid "Folk"
+msgstr "Folk"
+
+#: src/plugins/mp3extractor.c:132 src/plugins/qtextractor.c:111
+msgid "Folk/Rock"
+msgstr "Folk/Rock"
+
+#: src/plugins/mp3extractor.c:133 src/plugins/qtextractor.c:112
+msgid "National Folk"
+msgstr "National Folk"
+
+#: src/plugins/mp3extractor.c:134 src/plugins/qtextractor.c:113
+msgid "Swing"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:135 src/plugins/qtextractor.c:114
+msgid "Fast-Fusion"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:136 src/plugins/qtextractor.c:115
+msgid "Bebob"
+msgstr "Bebob"
+
+#: src/plugins/mp3extractor.c:137 src/plugins/qtextractor.c:116
+msgid "Latin"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:138 src/plugins/qtextractor.c:117
+msgid "Revival"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:139 src/plugins/qtextractor.c:118
+msgid "Celtic"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:140 src/plugins/qtextractor.c:119
+msgid "Bluegrass"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:141 src/plugins/qtextractor.c:120
+msgid "Avantgarde"
+msgstr "Avant-garde"
+
+#: src/plugins/mp3extractor.c:142 src/plugins/qtextractor.c:121
+msgid "Gothic Rock"
+msgstr "Gothic Rock"
+
+#: src/plugins/mp3extractor.c:143 src/plugins/qtextractor.c:122
+msgid "Progressive Rock"
+msgstr "Progressive Rock"
+
+#: src/plugins/mp3extractor.c:144 src/plugins/qtextractor.c:123
+msgid "Psychedelic Rock"
+msgstr "Psychedelic Rock"
+
+#: src/plugins/mp3extractor.c:145 src/plugins/qtextractor.c:124
+msgid "Symphonic Rock"
+msgstr "Symphonic Rock"
+
+#: src/plugins/mp3extractor.c:146 src/plugins/qtextractor.c:125
+msgid "Slow Rock"
+msgstr "Slow Rock"
+
+#: src/plugins/mp3extractor.c:147 src/plugins/qtextractor.c:126
+msgid "Big Band"
+msgstr "Big Band"
+
+#: src/plugins/mp3extractor.c:148 src/plugins/qtextractor.c:127
+msgid "Chorus"
+msgstr "Choeur"
+
+#: src/plugins/mp3extractor.c:149 src/plugins/qtextractor.c:128
+msgid "Easy Listening"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:150 src/plugins/qtextractor.c:129
+msgid "Acoustic"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:151 src/plugins/qtextractor.c:130
+msgid "Humour"
+msgstr "Humour"
+
+#: src/plugins/mp3extractor.c:152 src/plugins/qtextractor.c:131
+msgid "Speech"
+msgstr "Parole"
+
+#: src/plugins/mp3extractor.c:153 src/plugins/qtextractor.c:132
+msgid "Chanson"
+msgstr "Chanson"
+
+#: src/plugins/mp3extractor.c:154 src/plugins/qtextractor.c:133
+msgid "Opera"
+msgstr "Opera"
+
+#: src/plugins/mp3extractor.c:155 src/plugins/qtextractor.c:134
+msgid "Chamber Music"
+msgstr "Musique de chambre"
+
+#: src/plugins/mp3extractor.c:156 src/plugins/qtextractor.c:135
+msgid "Sonata"
+msgstr "Sonate"
+
+#: src/plugins/mp3extractor.c:157 src/plugins/qtextractor.c:136
+msgid "Symphony"
+msgstr "Symphonie"
+
+#: src/plugins/mp3extractor.c:158 src/plugins/qtextractor.c:137
+msgid "Booty Bass"
+msgstr "Booty Bass"
+
+#: src/plugins/mp3extractor.c:159 src/plugins/qtextractor.c:138
+msgid "Primus"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:160 src/plugins/qtextractor.c:139
+msgid "Porn Groove"
+msgstr "Porn Groove"
+
+#: src/plugins/mp3extractor.c:161 src/plugins/qtextractor.c:140
+msgid "Satire"
+msgstr "Satirique"
+
+#: src/plugins/mp3extractor.c:162 src/plugins/qtextractor.c:141
+msgid "Slow Jam"
+msgstr "Slow Jam"
+
+#: src/plugins/mp3extractor.c:163 src/plugins/qtextractor.c:142
+msgid "Club"
+msgstr "Club"
+
+#: src/plugins/mp3extractor.c:164 src/plugins/qtextractor.c:143
+msgid "Tango"
+msgstr "Tango"
+
+#: src/plugins/mp3extractor.c:165 src/plugins/qtextractor.c:144
+msgid "Samba"
+msgstr "Samba"
+
+#: src/plugins/mp3extractor.c:166 src/plugins/qtextractor.c:145
+msgid "Folklore"
+msgstr "Folklore"
+
+#: src/plugins/mp3extractor.c:167 src/plugins/qtextractor.c:146
+msgid "Ballad"
+msgstr "Ballade"
+
+#: src/plugins/mp3extractor.c:168 src/plugins/qtextractor.c:147
+msgid "Power Ballad"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:169 src/plugins/qtextractor.c:148
+msgid "Rhythmic Soul"
+msgstr "Rhythmic Soul"
+
+#: src/plugins/mp3extractor.c:170 src/plugins/qtextractor.c:149
+msgid "Freestyle"
+msgstr "Freestyle"
+
+#: src/plugins/mp3extractor.c:171 src/plugins/qtextractor.c:150
+msgid "Duet"
+msgstr "Duo"
+
+#: src/plugins/mp3extractor.c:172 src/plugins/qtextractor.c:151
+msgid "Punk Rock"
+msgstr "Punk Rock"
+
+#: src/plugins/mp3extractor.c:173 src/plugins/qtextractor.c:152
+msgid "Drum Solo"
+msgstr "Drum Solo"
+
+#: src/plugins/mp3extractor.c:174 src/plugins/qtextractor.c:153
+msgid "A Cappella"
+msgstr "A Cappella"
+
+#: src/plugins/mp3extractor.c:175 src/plugins/qtextractor.c:154
+msgid "Euro-House"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:176 src/plugins/qtextractor.c:155
+msgid "Dance Hall"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:177 src/plugins/qtextractor.c:156
+msgid "Goa"
+msgstr "Goa"
+
+#: src/plugins/mp3extractor.c:178 src/plugins/qtextractor.c:157
+msgid "Drum & Bass"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:179 src/plugins/qtextractor.c:158
+msgid "Club-House"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:180 src/plugins/qtextractor.c:159
+msgid "Hardcore"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:181 src/plugins/qtextractor.c:160
+msgid "Terror"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:182 src/plugins/qtextractor.c:161
+msgid "Indie"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:183 src/plugins/qtextractor.c:162
+msgid "BritPop"
+msgstr "BritPop"
+
+#: src/plugins/mp3extractor.c:184 src/plugins/qtextractor.c:163
+msgid "Negerpunk"
+msgstr "Negerpunk"
+
+#: src/plugins/mp3extractor.c:185 src/plugins/qtextractor.c:164
+msgid "Polsk Punk"
+msgstr "Polsk Punk"
+
+#: src/plugins/mp3extractor.c:186 src/plugins/qtextractor.c:165
+msgid "Beat"
+msgstr "Beat"
+
+#: src/plugins/mp3extractor.c:187 src/plugins/qtextractor.c:166
+msgid "Christian Gangsta Rap"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:188 src/plugins/qtextractor.c:167
+msgid "Heavy Metal"
+msgstr "Heavy Metal"
+
+#: src/plugins/mp3extractor.c:189 src/plugins/qtextractor.c:168
+msgid "Black Metal"
+msgstr "Black Metal"
+
+#: src/plugins/mp3extractor.c:190 src/plugins/qtextractor.c:169
+msgid "Crossover"
+msgstr "Crossover"
+
+#: src/plugins/mp3extractor.c:191 src/plugins/qtextractor.c:170
+msgid "Contemporary Christian"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:192 src/plugins/qtextractor.c:171
+msgid "Christian Rock"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:193 src/plugins/qtextractor.c:172
+msgid "Merengue"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:194 src/plugins/qtextractor.c:173
+msgid "Salsa"
+msgstr "Salsa"
+
+#: src/plugins/mp3extractor.c:195 src/plugins/qtextractor.c:174
+msgid "Thrash Metal"
+msgstr "Thrash Metal"
+
+#: src/plugins/mp3extractor.c:196 src/plugins/qtextractor.c:175
+msgid "Anime"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:197 src/plugins/qtextractor.c:176
+msgid "JPop"
+msgstr "JPop"
+
+#: src/plugins/mp3extractor.c:198 src/plugins/qtextractor.c:177
+msgid "Synthpop"
+msgstr "Synthpop"
+
+#: src/plugins/mp3extractor.c:444 src/plugins/wavextractor.c:119
+msgid "stereo"
+msgstr "stereo"
+
+#: src/plugins/mp3extractor.c:444 src/plugins/wavextractor.c:119
+msgid "mono"
+msgstr "mono"
+
+#: src/plugins/mp3extractor.c:445
+msgid "(variable bps)"
+msgstr "(taux bps variable)"
+
+#: src/plugins/ole2/ole2extractor.c:252
+msgid "No Proofing"
+msgstr ""
+
+#: src/plugins/ole2/ole2extractor.c:260
+msgid "Traditional Chinese"
+msgstr "Traditionnel Chinois"
+
+#: src/plugins/ole2/ole2extractor.c:262
+msgid "Simplified Chinese"
+msgstr "Chinois simplifié"
+
+#: src/plugins/ole2/ole2extractor.c:270
+msgid "Swiss German"
+msgstr "Allemand (Suisse)"
+
+#: src/plugins/ole2/ole2extractor.c:274
+msgid "U.S. English"
+msgstr "Anglais (US)"
+
+#: src/plugins/ole2/ole2extractor.c:276
+msgid "U.K. English"
+msgstr "Anglais"
+
+#: src/plugins/ole2/ole2extractor.c:278
+msgid "Australian English"
+msgstr "Anglais (Australie)"
+
+#: src/plugins/ole2/ole2extractor.c:280
+msgid "Castilian Spanish"
+msgstr "Espagnol (castillan)"
+
+#: src/plugins/ole2/ole2extractor.c:282
+msgid "Mexican Spanish"
+msgstr "Espagnol (mexicain)"
+
+#: src/plugins/ole2/ole2extractor.c:288
+msgid "Belgian French"
+msgstr "Français (Belgique)"
+
+#: src/plugins/ole2/ole2extractor.c:290
+msgid "Canadian French"
+msgstr "Français (Canada)"
+
+#: src/plugins/ole2/ole2extractor.c:292
+msgid "Swiss French"
+msgstr "Français (Suisse)"
+
+#: src/plugins/ole2/ole2extractor.c:302
+msgid "Swiss Italian"
+msgstr "Italien (Suisse)"
+
+#: src/plugins/ole2/ole2extractor.c:310
+msgid "Belgian Dutch"
+msgstr "Allemand (Belgique)"
+
+#: src/plugins/ole2/ole2extractor.c:312
+msgid "Norwegian Bokmal"
+msgstr "Bokmal (Norvège)"
+
+#: src/plugins/ole2/ole2extractor.c:322
+msgid "Rhaeto-Romanic"
+msgstr "Rhaeto-Romanic"
+
+#: src/plugins/ole2/ole2extractor.c:328
+msgid "Croato-Serbian (Latin)"
+msgstr "Serbo-Croate (latin)"
+
+#: src/plugins/ole2/ole2extractor.c:330
+msgid "Serbo-Croatian (Cyrillic)"
+msgstr "Serbo-Croate (cyrillique)"
+
+#: src/plugins/ole2/ole2extractor.c:358
+msgid "Farsi"
+msgstr "Farsi"
+
+#: src/plugins/ole2/ole2extractor.c:420
+#, c-format
+msgid "Revision #%u: Author '%s' worked on '%s'"
+msgstr "Révision #%u: Auteur '%s' sur '%s'"
+
+#: src/plugins/printable/dictionary-builder.c:97
+#, c-format
+msgid ""
+"Please provide the name of the language you are building\n"
+"a dictionary for.  For example:\n"
+msgstr ""
+"SVP précisez la langue du dictionnaire que vous construisez\n"
+"Par exemple: \n"
+
+#: src/plugins/printable/dictionary-builder.c:111
+#: src/plugins/printable/dictionary-builder.c:165
+#, c-format
+msgid "Error opening file `%s': %s\n"
+msgstr "Erreur d'ouverture du fichier `%s': %s\n"
+
+#: src/plugins/printable/dictionary-builder.c:118
+#, c-format
+msgid ""
+"Error allocating: %s\n"
+"."
+msgstr ""
+"Erreur d'allocation: %s\n"
+"."
+
+#: src/plugins/printable/dictionary-builder.c:132
+#, c-format
+msgid "Increase ALLOCSIZE (in %s).\n"
+msgstr "Augmenter ALLOCSIZE (%s).\n"
+
+#: src/plugins/riffextractor.c:151
+#, c-format
+msgid "codec: %s, %u fps, %u ms"
+msgstr "codec: %s, %u fps, %u ms"
+
+#: src/plugins/rpm/rpmextractor.c:3223
+#, c-format
+msgid "Source RPM %d.%d"
+msgstr "Paquet RPM source %d.%d"
+
+#: src/plugins/rpm/rpmextractor.c:3225
+#, c-format
+msgid "Binary RPM %d.%d"
+msgstr "Paquet RPM binaire %d.%d"
