@@ -1,4 +1,4 @@
-SUBDIRS  = intl m4 po libltdl src doc . 
+SUBDIRS  = intl m4 po src doc . 
 EXTRA_DIST = config.rpath  config.rpath \
   ABOUT-NLS mkinstalldirs install-sh \
   PLATFORMS README.debian 
