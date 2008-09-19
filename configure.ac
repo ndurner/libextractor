@@ -172,8 +172,8 @@ AC_CHECK_LIB(vorbisfile, ov_open_callbacks,
           AM_CONDITIONAL(HAVE_VORBISFILE, true)
           AC_DEFINE(HAVE_VORBISFILE,1,[Have vorbisfile]),
           AM_CONDITIONAL(HAVE_VORBISFILE, false)
-          AC_DEFINE(HAVE_VORBISFILE,0,[lacking vorbisfile])),
-        AM_CONDITIONAL(HAVE_VORBISFILE, false)],
+          AC_DEFINE(HAVE_VORBISFILE,0,[lacking vorbisfile]))],
+        AM_CONDITIONAL(HAVE_VORBISFILE, false),
         -lvorbis -logg)
 AC_CHECK_LIB(FLAC, FLAC__stream_decoder_init_stream,
         [AC_CHECK_HEADERS([FLAC/all.h],
