@@ -386,7 +386,7 @@ libextractor_thumbnailffmpeg_extract (const char *filename,
         }
     }
 
-  if (!frame_finished)
+  if (!frame_finished || codec_ctx->width == 0 || codec_ctx->height == 0)
     goto out;
 
   sar_num = codec_ctx->sample_aspect_ratio.num;
