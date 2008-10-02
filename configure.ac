@@ -264,10 +264,6 @@ AC_CHECK_FUNCS([mkstemp strndup munmap strcasecmp strdup strncasecmp memmove mem
 
 AM_GNU_GETTEXT_VERSION([0.16.1])
 AM_GNU_GETTEXT([external])
-if test "x$USE_INCLUDED_LIBINTL" == "xyes"
-then
-  CPPFLAGS='-I$(top_srcdir)/intl '"$CPPFLAGS" 
-fi 
 
 # check for GNU LD
 AC_LIB_PROG_LD_GNU
