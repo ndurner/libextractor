@@ -1,5 +1,5 @@
-SUBDIRS  = intl m4 po src doc . 
-EXTRA_DIST = config.rpath  config.rpath \
+SUBDIRS  = m4 po src doc . 
+EXTRA_DIST = config.rpath \
   ABOUT-NLS mkinstalldirs install-sh \
   PLATFORMS README.debian 
 # yayh: automake hacks!

@@ -263,7 +263,7 @@ AC_FUNC_ERROR_AT_LINE
 AC_CHECK_FUNCS([mkstemp strndup munmap strcasecmp strdup strncasecmp memmove memset strtoul floor getcwd pow setenv sqrt strchr strcspn strrchr strnlen strndup ftruncate])
 
 AM_GNU_GETTEXT_VERSION([0.16.1])
-AM_GNU_GETTEXT()
+AM_GNU_GETTEXT([external])
 if test "x$USE_INCLUDED_LIBINTL" == "xyes"
 then
   CPPFLAGS='-I$(top_srcdir)/intl '"$CPPFLAGS" 
@@ -524,7 +524,7 @@ AC_SUBST(LDFLAGS)
 AC_SUBST(XTRA_CPPLIBS)
 AC_SUBST(LIBEXT)
 
-AC_CONFIG_FILES([Makefile po/Makefile.in m4/Makefile  intl/Makefile
+AC_CONFIG_FILES([Makefile po/Makefile.in m4/Makefile
 
 
 contrib/macosx/Info.plist
