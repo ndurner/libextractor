@@ -271,28 +271,29 @@ build_package()
 #
 build_dependencies()
 {
-#	prepare_package "${GETTEXT_NAME}"
-#	build_package "${GETTEXT_NAME}"			\
-#			"${ARCH_HOSTSETTING}		\
-#			--prefix="${FW_DIR}"		\
-#			--enable-shared			\
-#			--disable-java			\
-#			--disable-native-java		\
-#			--without-emacs			\
-#			--with-libiconv-prefix=${SDK_PATH}/usr"
+	prepare_package "${GETTEXT_NAME}"
+	build_package "${GETTEXT_NAME}"			\
+			"${ARCH_HOSTSETTING}		\
+			--prefix="${FW_DIR}"		\
+			--disable-shared		\
+			--enable-static			\
+			--disable-java			\
+			--disable-native-java		\
+			--without-emacs			\
+			--with-libiconv-prefix=${SDK_PATH}/usr"
 
 	prepare_package "${LIBOGG_NAME}"
 	build_package "${LIBOGG_NAME}"			\
 			"${ARCH_HOSTSETTING}		\
 			--prefix="${FW_DIR}"		\
-			--disable-shared			\
+			--disable-shared		\
 			--enable-static"
  
 	prepare_package "${LIBVORBIS_NAME}"
 	build_package "${LIBVORBIS_NAME}"		\
 			"${ARCH_HOSTSETTING}		\
 			--prefix="${FW_DIR}"		\
-			--disable-shared			\
+			--disable-shared		\
 			--enable-static			\
 			--disable-oggtest"
 
@@ -337,6 +338,7 @@ build_extractor()
 			CXXFLAGS="${CXXFLAGS}"			\
 			LDFLAGS="${LDFLAGS}"			\
 			"${ARCH_HOSTSETTING}"			\
+			gt_cv_func_gnugettext1_libintl=yes	\
 			--prefix="${FW_DIR}"			\
 			--enable-shared				\
 			--disable-gsf				\
@@ -360,6 +362,9 @@ fi|g" > ./libtool
 		# use native dictionary-builder instead of the cross-built one
 		find ./ -type f -name "Makefile" |	\
 			xargs perl -pi -w -e "s#./dictionary-builder #${BUILD_DIR}/toolchain/bin/dictionary-builder #g;"
+		# add linking to libiconv where libintl is used
+		find ./ -type f -name "Makefile" |	\
+			xargs perl -pi -w -e "s#-lintl#-lintl -liconv#g;"
 		if ! ( test $build_retval = 0 &&			\
 			make DESTDIR="${SDK_PATH}" install &&		\
 			touch "${BUILD_DIR}/built-Extractor-${ARCH_NAME}" )
