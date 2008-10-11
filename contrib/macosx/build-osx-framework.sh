@@ -327,6 +327,7 @@ build_dependencies()
 	prepare_package "${LIBOGG_NAME}"
 	build_package "${LIBOGG_NAME}"			\
 			"${ARCH_HOSTSETTING}		\
+			ac_cv_func_memcmp_working=yes	\
 			--prefix="${FW_DIR}"		\
 			--disable-shared		\
 			--enable-static"
@@ -334,6 +335,7 @@ build_dependencies()
 	prepare_package "${LIBVORBIS_NAME}"
 	build_package "${LIBVORBIS_NAME}"		\
 			"${ARCH_HOSTSETTING}		\
+			ac_cv_func_memcmp_working=yes	\
 			--prefix="${FW_DIR}"		\
 			--disable-shared		\
 			--enable-static			\
@@ -381,6 +383,9 @@ build_extractor()
 			LDFLAGS="${LDFLAGS}"			\
 			"${ARCH_HOSTSETTING}"			\
 			gt_cv_func_gnugettext1_libintl=yes	\
+			ac_cv_func_memcmp_working=yes		\
+			ac_cv_func_mmap_fixed_mapped=yes	\
+			ac_cv_func_stat_empty_string_bug=no	\
 			--prefix="${FW_DIR}"			\
 			--enable-shared				\
 			--disable-gsf				\
