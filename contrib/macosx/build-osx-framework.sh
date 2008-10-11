@@ -27,17 +27,17 @@ OPT_FLAGS="-O2 -g"
 BUILD_ARCHS_LIST="ppc i386"
 export MACOSX_DEPLOYMENT_TARGET=10.4
 
-GNUMAKE_URL=http://ftp.gnu.org/pub/gnu/make
+GNUMAKE_URL=ftp://ftp.gnu.org/pub/gnu/make
 GNUMAKE_NAME=make-3.81
 LIBTOOL_URL=ftp://ftp.gnu.org/gnu/libtool
 LIBTOOL_NAME=libtool-2.2.4
 GETTEXT_URL=ftp://ftp.gnu.org/gnu/gettext
 GETTEXT_NAME=gettext-0.16.1
-LIBOGG_URL=http://downloads.xiph.org/releases/ogg
+LIBOGG_URL=ftp://downloads.xiph.org/pub/xiph/releases/ogg
 LIBOGG_NAME=libogg-1.1.3
-LIBVORBIS_URL=http://downloads.xiph.org/releases/vorbis
+LIBVORBIS_URL=ftp://downloads.xiph.org/pub/xiph/releases/vorbis
 LIBVORBIS_NAME=libvorbis-1.2.0
-LIBFLAC_URL=http://switch.dl.sourceforge.net/sourceforge/flac
+LIBFLAC_URL=http://kent.dl.sourceforge.net/sourceforge/flac
 LIBFLAC_NAME=flac-1.2.1
 LIBMPEG2_URL=http://libmpeg2.sourceforge.net/files
 LIBMPEG2_NAME=mpeg2dec-0.4.1
@@ -57,13 +57,16 @@ fetch_package()
 		echo "missing 'contrib' dir"
 		exit 1
 	fi
-	if [ ! -e "$1.tar.gz" ]
+	if [ ! -e "$1.tar.bz2" ] && [ ! -e "$1.tar.gz" ]
 	then
 		echo "fetching $1..."
-		if ! ( curl -O --url "$2/$1.tar.gz" )
+		if ! ( curl -f -L -O --url "$2/$1.tar.bz2" )
 		then
-			echo "error fetching $1"
-			exit 1
+			if ! ( curl -f -L -O --url "$2/$1.tar.gz" )
+			then
+				echo "error fetching $1"
+				exit 1
+			fi
 		fi
 	fi
 	cd ..
@@ -90,18 +93,37 @@ build_toolchain_package()
 		echo "missing 'contrib' dir"
 		exit 1
 	fi
-	if ! ( tar xzf "$1.tar.gz" )
+	if [ -e "$1.tar.bz2" ]
 	then
-		echo "error extracting $1"
+		if ! ( tar xjf "$1.tar.bz2" )
+		then
+			echo "error extracting $1"
+			exit 1
+		fi
+	elif [ -e "$1.tar.gz" ]
+	then
+		if ! ( tar xzf "$1.tar.gz" )
+		then
+			echo "error extracting $1"
+			exit 1
+		fi
+	else
+		echo "no such package $1"
 		exit 1
 	fi
+	CPPFLAGS="-I${BUILD_DIR}/toolchain/include"
+	LDFLAGS="-L${BUILD_DIR}/toolchain/lib"
 	if ! ( cd $1 && ./configure --prefix="${BUILD_DIR}/toolchain"	\
+			CPPFLAGS="${CPPFLAGS}"				\
+			LDFLAGS="${LDFLAGS}"				\
 			$2 &&						\
 		make install )
 	then
-		echo "error building $1 for ${ARCH_NAME}"
+		echo "error building $1 for toolchain"
 		build_retval=1
 	fi
+	unset CPPFLAGS
+	unset LDFLAGS
 	rm -rf "$1"
 	cd ..
 	if [ $build_retval -eq 1 ] 
@@ -178,6 +200,11 @@ prepare_sdk()
 			echo "error removing SDK 'Frameworks' symlink"
 			exit 1
 		fi
+		if ! ( mkdir -p "${SDK_PATH}/Library/Frameworks" )
+		then
+			echo "error creating SDK 'Frameworks' directory"
+			exit 1
+		fi
 	fi
 }
 
@@ -194,9 +221,22 @@ prepare_package()
 
 		if [ ! -e "$1" ]
 		then
-			if ! ( tar xzf "$1.tar.gz" )
+			if [ -e "$1.tar.bz2" ]
 			then
-				echo "error extracting $1"
+				if ! ( tar xjf "$1.tar.bz2" )
+				then
+					echo "error extracting $1"
+					prepare_retval=1
+				fi
+			elif [ -e "$1.tar.gz" ]
+			then
+				if ! ( tar xzf "$1.tar.gz" )
+				then
+					echo "error extracting $1"
+					prepare_retval=1
+				fi
+			else
+				echo "no such package $1"
 				prepare_retval=1
 			fi
 		fi
@@ -234,7 +274,7 @@ build_package()
 		CC="${ARCH_CC}"
 		CXX="${ARCH_CXX}"
 		CPPFLAGS="${ARCH_CPPFLAGS}"
-		CFLAGS="${OPT_FLAGS} -no-cpp-precomp ${ARCH_CFLAGS}"
+		CFLAGS="${OPT_FLAGS} -no-cpp-precomp -fno-common ${ARCH_CFLAGS}"
 		CXXFLAGS="${CFLAGS}"
 		LDFLAGS="${ARCH_LDFLAGS}"
 		if ! ( cd "$1" && ./configure CC="${CC}"		\
@@ -250,6 +290,8 @@ build_package()
 			echo "error building $1 for ${ARCH_NAME}"
 			build_retval=1
 		fi
+		cp -v "$1/config.log" "${BUILD_DIR}/config.log-$1-${ARCH_NAME}"
+		cp -v "$1/config.h" "${BUILD_DIR}/config.h-$1-${ARCH_NAME}"
 		rm -rf "$1"
 		rm -v `find "${SDK_PATH}" -name "*.la"`
 		unset CC
@@ -371,6 +413,8 @@ fi|g" > ./libtool
 		then
 			build_retval=1
 		fi
+		cp -v config.log "${BUILD_DIR}/config.log-Extractor-${ARCH_NAME}"
+		cp -v config.h "${BUILD_DIR}/config.h-Extractor-${ARCH_NAME}"
 		unset CPPFLAGS
 		unset CFLAGS
 		unset CXXFLAGS
@@ -489,7 +533,7 @@ install_file_to_framework()
 				exit 1
 			fi
 		else
-			if [ -f "${src_file}" ] && [ -f "${dst_file}" ]
+			if [ -f "${src_file}" ] && [ ! -h "${src_file}" ] && [ -f "${dst_file}" ] && [ ! -h "${dst_file}" ]
 			then
 				diff -q "${src_file}" "${dst_file}"
 			fi
