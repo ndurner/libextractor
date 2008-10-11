@@ -9,7 +9,7 @@
 	<key>CFBundleName</key>
 	<string>Extractor</string>
 	<key>CFBundleGetInfoString</key>
-	<string>@PACKAGE_STRING@, Copyright 2002-2008 Vidyut Samanta and Christian Grothoff</string>
+	<string>Extractor (@PACKAGE_STRING@), Copyright 2002-2008 Vidyut Samanta and Christian Grothoff</string>
         <key>CFBundleIconFile</key>
         <string></string>
 	<key>CFBundleIdentifier</key>
@@ -19,10 +19,10 @@
 	<key>CFBundlePackageType</key>
 	<string>FMWK</string>
 	<key>CFBundleShortVersionString</key>
-	<string>@PACKAGE_VERSION@-0</string>
+	<string>@PACKAGE_VERSION@</string>
         <key>CFBundleSignature</key>
         <string>????</string>
 	<key>CFBundleVersion</key>
-	<string>Extractor @PACKAGE_VERSION@-0</string>
+	<string>Extractor @PACKAGE_VERSION@-@FRAMEWORK_REVISION@</string>
 </dict>
 </plist>
