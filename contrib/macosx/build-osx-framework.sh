@@ -22,7 +22,7 @@ FW_BASE_DIR=/Library/Frameworks/${FW_NAME}
 BUILD_DIR=/tmp/Extractor-build
 FINAL_FW_BASE_DIR="${BUILD_DIR}/${FW_NAME}"
 SDK_PATH="${BUILD_DIR}/${SDK}"
-OPT_FLAGS="-O2 -g"
+OPT_FLAGS="-O2 -force_cpusubtype_ALL"
 
 BUILD_ARCHS_LIST="ppc i386"
 export MACOSX_DEPLOYMENT_TARGET=10.4
@@ -274,7 +274,7 @@ build_package()
 		CC="${ARCH_CC}"
 		CXX="${ARCH_CXX}"
 		CPPFLAGS="${ARCH_CPPFLAGS}"
-		CFLAGS="${OPT_FLAGS} -no-cpp-precomp -fno-common ${ARCH_CFLAGS}"
+		CFLAGS="${OPT_FLAGS} -no-cpp-precomp -fno-common -fPIC ${ARCH_CFLAGS}"
 		CXXFLAGS="${CFLAGS}"
 		LDFLAGS="${ARCH_LDFLAGS}"
 		if ! ( cd "$1" && CC="${CC}"				\
@@ -317,6 +317,7 @@ build_dependencies()
 	build_package "${GETTEXT_NAME}"			\
 			"${ARCH_HOSTSETTING}		\
 			--prefix="${FW_DIR}"		\
+			--with-pic			\
 			--disable-shared		\
 			--enable-static			\
 			--disable-java			\
@@ -329,6 +330,7 @@ build_dependencies()
 			"${ARCH_HOSTSETTING}		\
 			ac_cv_func_memcmp_working=yes	\
 			--prefix="${FW_DIR}"		\
+			--with-pic			\
 			--disable-shared		\
 			--enable-static"
  
@@ -337,6 +339,7 @@ build_dependencies()
 			"${ARCH_HOSTSETTING}		\
 			ac_cv_func_memcmp_working=yes	\
 			--prefix="${FW_DIR}"		\
+			--with-pic			\
 			--disable-shared		\
 			--enable-static			\
 			--disable-oggtest"
@@ -345,8 +348,10 @@ build_dependencies()
 	build_package "${LIBFLAC_NAME}"			\
 			"${ARCH_HOSTSETTING}		\
 			--prefix="${FW_DIR}"		\
+			--with-pic			\
 			--disable-shared		\
 			--enable-static			\
+			--disable-debug			\
 			--disable-asm-optimizations	\
 			--disable-cpplibs		\
 			--disable-oggtest		\
@@ -356,8 +361,10 @@ build_dependencies()
 	build_package "${LIBMPEG2_NAME}"		\
 			"${ARCH_HOSTSETTING}		\
 			--prefix="${FW_DIR}"		\
+			--with-pic			\
 			--disable-shared		\
-			--enable-static"
+			--enable-static			\
+			--disable-debug"
 
 }
 
@@ -371,7 +378,7 @@ build_extractor()
 	then
 		echo "building libextractor for ${ARCH_NAME}..."
 		ARCH_LDFLAGS="-arch ${ARCH_NAME} -isysroot ${SDK_PATH} -Wl,-syslibroot,${SDK_PATH} -L${FW_DIR}/lib"
-		CFLAGS="${OPT_FLAGS} -no-cpp-precomp ${ARCH_CFLAGS}"
+		CFLAGS="${OPT_FLAGS} -g -no-cpp-precomp ${ARCH_CFLAGS}"
 		CPPFLAGS="${ARCH_CPPFLAGS}"
 		CXXFLAGS="${CFLAGS}"
 		LDFLAGS="${ARCH_LDFLAGS}"
