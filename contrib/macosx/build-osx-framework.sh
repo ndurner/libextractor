@@ -113,9 +113,9 @@ build_toolchain_package()
 	fi
 	CPPFLAGS="-I${BUILD_DIR}/toolchain/include"
 	LDFLAGS="-L${BUILD_DIR}/toolchain/lib"
-	if ! ( cd $1 && ./configure --prefix="${BUILD_DIR}/toolchain"	\
-			CPPFLAGS="${CPPFLAGS}"				\
+	if ! ( cd $1 && CPPFLAGS="${CPPFLAGS}"				\
 			LDFLAGS="${LDFLAGS}"				\
+			./configure --prefix="${BUILD_DIR}/toolchain"	\
 			$2 &&						\
 		make install )
 	then
@@ -243,7 +243,7 @@ prepare_package()
 		for patchfile in $( ls $1-patch-* 2> /dev/null | sort )
 		do
 			echo "applying $patchfile..."
-			if ! ( cd $1 && cat "../$patchfile" | patch -p0 )
+			if ! ( cd $1 && cat "../$patchfile" | patch -p1 )
 			then
 				echo "error patching $1"
 				prepare_retval=1
@@ -277,13 +277,13 @@ build_package()
 		CFLAGS="${OPT_FLAGS} -no-cpp-precomp -fno-common ${ARCH_CFLAGS}"
 		CXXFLAGS="${CFLAGS}"
 		LDFLAGS="${ARCH_LDFLAGS}"
-		if ! ( cd "$1" && ./configure CC="${CC}"		\
+		if ! ( cd "$1" && CC="${CC}"				\
 			CXX="${CXX}"					\
 			CPPFLAGS="${CPPFLAGS}"				\
 			CFLAGS="${CFLAGS}"				\
 			CXXFLAGS="${CXXFLAGS}"				\
 			LDFLAGS="${LDFLAGS}"				\
-			$2 &&						\
+			./configure $2 &&				\
 			make DESTDIR="${SDK_PATH}" install &&		\
 			touch "${BUILD_DIR}/built-$1-${ARCH_NAME}" )
 		then
@@ -375,17 +375,17 @@ build_extractor()
 		CPPFLAGS="${ARCH_CPPFLAGS}"
 		CXXFLAGS="${CFLAGS}"
 		LDFLAGS="${ARCH_LDFLAGS}"
-		if ! ( make clean && ./configure CC="${ARCH_CC}"	\
+		if ! ( CC="${ARCH_CC}"				\
 			CXX="${ARCH_CXX}"			\
 			CPPFLAGS="${CPPFLAGS}"			\
 			CFLAGS="${CFLAGS}"			\
 			CXXFLAGS="${CXXFLAGS}"			\
 			LDFLAGS="${LDFLAGS}"			\
-			"${ARCH_HOSTSETTING}"			\
 			gt_cv_func_gnugettext1_libintl=yes	\
 			ac_cv_func_memcmp_working=yes		\
 			ac_cv_func_mmap_fixed_mapped=yes	\
 			ac_cv_func_stat_empty_string_bug=no	\
+			./configure "${ARCH_HOSTSETTING}"	\
 			--prefix="${FW_DIR}"			\
 			--enable-shared				\
 			--disable-gsf				\
@@ -412,7 +412,7 @@ fi|g" > ./libtool
 		# add linking to libiconv where libintl is used
 		find ./ -type f -name "Makefile" |	\
 			xargs perl -pi -w -e "s#-lintl#-lintl -liconv#g;"
-		if ! ( test $build_retval = 0 &&			\
+		if ! ( test $build_retval = 0 && make clean &&		\
 			make DESTDIR="${SDK_PATH}" install &&		\
 			touch "${BUILD_DIR}/built-Extractor-${ARCH_NAME}" )
 		then
@@ -485,6 +485,12 @@ install_executable_to_framework()
 	if [ "x${src_files}" != "x" ]
 	then
 		create_directory_for "${dst_file}"
+		local extralibs=$(otool -L ${src_files} | grep "compatibility version" |cut -d' ' -f 1 | sort | uniq -u)
+		if [ "x$extralibs" != "x" ]
+		then
+			echo "WARNING: linking difference"
+			echo "$extralibs"
+		fi
 		if [ ! -e "${dst_file}" ] && [ ! -h "${dst_file}" ]
 		then
 			echo "LIPO ${dst_file}"
