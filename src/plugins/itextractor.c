@@ -66,7 +66,7 @@ struct EXTRACTOR_Keywords *libextractor_it_extract
   (const char *filename,
    char *data, size_t size, struct EXTRACTOR_Keywords *prev)
 {
-  char title[26];
+  char title[27];
   char itversion[8];
   struct header *head;
 
