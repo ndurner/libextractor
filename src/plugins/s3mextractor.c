@@ -84,7 +84,7 @@ struct EXTRACTOR_Keywords *libextractor_s3m_extract
   /* Song title */
 
   memcpy (&title, head->title, 28);
-  title[29] = '\0';
+  title[28] = '\0';
   prev = addkword (prev, title, EXTRACTOR_TITLE);
 
   return (prev);
