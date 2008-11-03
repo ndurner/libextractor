@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: libextractor 0.5.20\n"
+"Project-Id-Version: libextractor 0.5.20a\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2008-07-14 02:05-0600\n"
-"PO-Revision-Date: 2008-04-01 12:46+0100\n"
+"POT-Creation-Date: 2008-03-20 23:53-0600\n"
+"PO-Revision-Date: 2008-05-19 21:21+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "MIME-Version: 1.0\n"
@@ -28,35 +28,28 @@ msgstr ""
 
 #: src/main/extract.c:52
 #, c-format
-msgid ""
-"Arguments mandatory for long options are also mandatory for short options.\n"
-msgstr ""
-"Argument som är obligatoriska för långa flaggor är också obligatoriska för "
-"korta flaggor.\n"
+msgid "Arguments mandatory for long options are also mandatory for short options.\n"
+msgstr "Argument som är obligatoriska för långa flaggor är också obligatoriska för korta flaggor.\n"
 
 #: src/main/extract.c:126
 msgid "do not remove any duplicates"
-msgstr "ta inte bort några dubletter"
+msgstr "ta inte bort några dubbletter"
 
 #: src/main/extract.c:128
 msgid "print output in bibtex format"
 msgstr "skriv ut i bibtex-format"
 
 #: src/main/extract.c:130
-msgid ""
-"use the generic plaintext extractor for the language with the 2-letter "
-"language code LANG"
-msgstr ""
-"använd den generiska klartextuppackare för språket med 2-bokstavskoden i LANG"
+msgid "use the generic plaintext extractor for the language with the 2-letter language code LANG"
+msgstr "använd den generiska klartextuppackaren för språket med 2-bokstavskoden i LANG"
 
 #: src/main/extract.c:132
 msgid "remove duplicates only if types match"
-msgstr "ta bort dubletter endast om typen stämmer"
+msgstr "ta bort dubbletter endast om typen stämmer"
 
 #: src/main/extract.c:134
 msgid "use the filename as a keyword (loads filename-extractor plugin)"
-msgstr ""
-"använd filnamnet som ett nyckelord (läser in insticket filename-extractor)"
+msgstr "använd filnamnet som ett nyckelord (läser in insticket filename-extractor)"
 
 #: src/main/extract.c:136
 msgid "produce grep-friendly output (all results on one line per file)"
@@ -88,7 +81,7 @@ msgstr "skriv endast ut nyckelord av angiven TYP (använd -L för lista)"
 
 #: src/main/extract.c:150
 msgid "remove duplicates even if keyword types do not match"
-msgstr "ta bort dubletter även om nyckelordstyp inte stämmer"
+msgstr "ta bort dubbletter även om nyckelordstyp inte stämmer"
 
 #: src/main/extract.c:152
 msgid "use keyword splitting (loads split-extractor plugin)"
@@ -114,61 +107,61 @@ msgstr "extract [FLAGGOR] [FILNAMN]*"
 msgid "Extract metadata from files."
 msgstr "Extrahera metadata från filer."
 
-#: src/main/extract.c:190 src/main/extractor.c:1535
+#: src/main/extract.c:190 src/main/extractor.c:1513
 #, c-format
 msgid "%s - (binary)\n"
 msgstr "%s - (binär)\n"
 
-#: src/main/extract.c:201 src/main/extractor.c:1540
+#: src/main/extract.c:201 src/main/extractor.c:1518
 #, c-format
 msgid "INVALID TYPE - %s\n"
 msgstr "OGILTIG TYP - %s\n"
 
-#: src/main/extract.c:320 src/main/extractor.c:48
+#: src/main/extract.c:320 src/main/extractor.c:47
 msgid "title"
 msgstr "titel"
 
-#: src/main/extract.c:322 src/main/extractor.c:46
+#: src/main/extract.c:322 src/main/extractor.c:45
 msgid "filename"
 msgstr "filnamn"
 
-#: src/main/extract.c:327 src/main/extractor.c:49
+#: src/main/extract.c:327 src/main/extractor.c:48
 msgid "author"
 msgstr "upphovsman"
 
-#: src/main/extract.c:331 src/main/extractor.c:51
+#: src/main/extract.c:331 src/main/extractor.c:50
 msgid "description"
 msgstr "beskrivning"
 
-#: src/main/extract.c:333 src/main/extractor.c:63
+#: src/main/extract.c:333 src/main/extractor.c:62
 msgid "keywords"
 msgstr "nyckelord"
 
-#: src/main/extract.c:335 src/main/extractor.c:52
+#: src/main/extract.c:335 src/main/extractor.c:51
 msgid "comment"
 msgstr "kommentar"
 
-#: src/main/extract.c:339 src/main/extractor.c:53
+#: src/main/extract.c:339 src/main/extractor.c:52
 msgid "date"
 msgstr "datum"
 
-#: src/main/extract.c:341 src/main/extractor.c:75
+#: src/main/extract.c:341 src/main/extractor.c:74
 msgid "creation date"
 msgstr "skapad den"
 
-#: src/main/extract.c:369 src/main/extractor.c:54
+#: src/main/extract.c:369 src/main/extractor.c:53
 msgid "publisher"
 msgstr "publicerad av"
 
-#: src/main/extract.c:373 src/main/extractor.c:60
+#: src/main/extract.c:373 src/main/extractor.c:59
 msgid "organization"
 msgstr "organisation"
 
-#: src/main/extract.c:377 src/main/extractor.c:62
+#: src/main/extract.c:377 src/main/extractor.c:61
 msgid "subject"
 msgstr "ämne"
 
-#: src/main/extract.c:381 src/main/extractor.c:79
+#: src/main/extract.c:381 src/main/extractor.c:78
 msgid "page count"
 msgstr "sidantal"
 
@@ -192,532 +185,520 @@ msgstr "%% BiBTeX-fil\n"
 msgid "Keywords for file %s:\n"
 msgstr "Nyckelord för filen %s:\n"
 
-#: src/main/extractor.c:45
+#: src/main/extractor.c:44
 msgid "unknown"
 msgstr "okänd"
 
-#: src/main/extractor.c:47
+#: src/main/extractor.c:46
 msgid "mimetype"
 msgstr "MIME-typ"
 
-#: src/main/extractor.c:50
+#: src/main/extractor.c:49
 msgid "artist"
 msgstr "artist"
 
-#: src/main/extractor.c:55
+#: src/main/extractor.c:54
 msgid "language"
 msgstr "språk"
 
-#: src/main/extractor.c:56
+#: src/main/extractor.c:55
 msgid "album"
 msgstr "album"
 
-#: src/main/extractor.c:57
+#: src/main/extractor.c:56
 msgid "genre"
 msgstr "genre"
 
-#: src/main/extractor.c:58
+#: src/main/extractor.c:57
 msgid "location"
 msgstr "plats"
 
-#: src/main/extractor.c:59
+#: src/main/extractor.c:58
 msgid "version"
 msgstr "version"
 
-#: src/main/extractor.c:61 src/plugins/mp3extractor.c:478
+#: src/main/extractor.c:60
 msgid "copyright"
 msgstr "copyright"
 
-#: src/main/extractor.c:64
+#: src/main/extractor.c:63
 msgid "contributor"
-msgstr "bidragare"
+msgstr "bidragsgivare"
 
-#: src/main/extractor.c:65
+#: src/main/extractor.c:64
 msgid "resource-type"
 msgstr "resurstyp"
 
-#: src/main/extractor.c:66
+#: src/main/extractor.c:65
 msgid "format"
 msgstr "format"
 
-#: src/main/extractor.c:67
+#: src/main/extractor.c:66
 msgid "resource-identifier"
 msgstr "resursidentifierare"
 
-#: src/main/extractor.c:68
+#: src/main/extractor.c:67
 msgid "source"
 msgstr "källa"
 
-#: src/main/extractor.c:69
+#: src/main/extractor.c:68
 msgid "relation"
 msgstr "relation"
 
-#: src/main/extractor.c:70
+#: src/main/extractor.c:69
 msgid "coverage"
 msgstr "täckning"
 
-#: src/main/extractor.c:71
+#: src/main/extractor.c:70
 msgid "software"
 msgstr "programvara"
 
-#: src/main/extractor.c:72
+#: src/main/extractor.c:71
 msgid "disclaimer"
 msgstr "disclaimer"
 
-#: src/main/extractor.c:73
+#: src/main/extractor.c:72
 msgid "warning"
 msgstr "varning"
 
-#: src/main/extractor.c:74
+#: src/main/extractor.c:73
 msgid "translated"
 msgstr "översatt"
 
-#: src/main/extractor.c:76
+#: src/main/extractor.c:75
 msgid "modification date"
-msgstr "modifieringsdatum"
+msgstr "ändringsdatum"
 
-#: src/main/extractor.c:77
+#: src/main/extractor.c:76
 msgid "creator"
 msgstr "skapare"
 
-#: src/main/extractor.c:78
+#: src/main/extractor.c:77
 msgid "producer"
 msgstr "producent"
 
-#: src/main/extractor.c:80
+#: src/main/extractor.c:79
 msgid "page orientation"
 msgstr "sidorientering"
 
-#: src/main/extractor.c:81
+#: src/main/extractor.c:80
 msgid "paper size"
 msgstr "pappersstorlek"
 
-#: src/main/extractor.c:82
+#: src/main/extractor.c:81
 msgid "used fonts"
 msgstr "använda typsnitt"
 
-#: src/main/extractor.c:83
+#: src/main/extractor.c:82
 msgid "page order"
 msgstr "sidordning"
 
-#: src/main/extractor.c:84
+#: src/main/extractor.c:83
 msgid "created for"
 msgstr "skapad för"
 
-#: src/main/extractor.c:85
+#: src/main/extractor.c:84
 msgid "magnification"
-msgstr "förstorning"
+msgstr "förstoring"
 
-#: src/main/extractor.c:86
+#: src/main/extractor.c:85
 msgid "release"
 msgstr "utgåva"
 
-#: src/main/extractor.c:87
+#: src/main/extractor.c:86
 msgid "group"
 msgstr "grupp"
 
-#: src/main/extractor.c:88
+#: src/main/extractor.c:87
 msgid "size"
 msgstr "storlek"
 
-#: src/main/extractor.c:89
+#: src/main/extractor.c:88
 msgid "summary"
 msgstr "sammanfattning"
 
-#: src/main/extractor.c:90
+#: src/main/extractor.c:89
 msgid "packager"
 msgstr "paketerare"
 
-#: src/main/extractor.c:91
+#: src/main/extractor.c:90
 msgid "vendor"
 msgstr "tillverkare"
 
-#: src/main/extractor.c:92
+#: src/main/extractor.c:91
 msgid "license"
 msgstr "licens"
 
-#: src/main/extractor.c:93
+#: src/main/extractor.c:92
 msgid "distribution"
 msgstr "distribution"
 
-#: src/main/extractor.c:94
+#: src/main/extractor.c:93
 msgid "build-host"
 msgstr "byggd på"
 
-#: src/main/extractor.c:95
+#: src/main/extractor.c:94
 msgid "operating system"
 msgstr "operativsystem"
 
-#: src/main/extractor.c:96
+#: src/main/extractor.c:95
 msgid "dependency"
 msgstr "beroende av"
 
-#: src/main/extractor.c:97
+#: src/main/extractor.c:96
 msgid "MD4"
 msgstr "MD4"
 
-#: src/main/extractor.c:98
+#: src/main/extractor.c:97
 msgid "MD5"
 msgstr "MD5"
 
-#: src/main/extractor.c:99
+#: src/main/extractor.c:98
 msgid "SHA-0"
 msgstr "SHA-0"
 
-#: src/main/extractor.c:100
+#: src/main/extractor.c:99
 msgid "SHA-1"
 msgstr "SHA-1"
 
-#: src/main/extractor.c:101
+#: src/main/extractor.c:100
 msgid "RipeMD160"
 msgstr "RipeMD160"
 
-#: src/main/extractor.c:102
+#: src/main/extractor.c:101
 msgid "resolution"
 msgstr "upplösning"
 
-#: src/main/extractor.c:103
+#: src/main/extractor.c:102
 msgid "category"
 msgstr "kategori"
 
-#: src/main/extractor.c:104
+#: src/main/extractor.c:103
 msgid "book title"
 msgstr "boktitel"
 
-#: src/main/extractor.c:105
+#: src/main/extractor.c:104
 msgid "priority"
 msgstr "prioritet"
 
-#: src/main/extractor.c:106
+#: src/main/extractor.c:105
 msgid "conflicts"
 msgstr "konflikt med"
 
-#: src/main/extractor.c:107
+#: src/main/extractor.c:106
 msgid "replaces"
 msgstr "ersätter"
 
-#: src/main/extractor.c:108
+#: src/main/extractor.c:107
 msgid "provides"
 msgstr "ger"
 
 # Osäker!
-#: src/main/extractor.c:109
+#: src/main/extractor.c:108
 msgid "conductor"
 msgstr "dirigent"
 
-#: src/main/extractor.c:110
+#: src/main/extractor.c:109
 msgid "interpreter"
-msgstr "tolk"
+msgstr "uttolkare"
 
-#: src/main/extractor.c:111
+#: src/main/extractor.c:110
 msgid "owner"
 msgstr "ägare"
 
-#: src/main/extractor.c:112
+#: src/main/extractor.c:111
 msgid "lyrics"
 msgstr "texter"
 
-#: src/main/extractor.c:113
+#: src/main/extractor.c:112
 msgid "media type"
 msgstr "mediatyp"
 
-#: src/main/extractor.c:114
+#: src/main/extractor.c:113
 msgid "contact"
 msgstr "kontakt"
 
 # Förslag på bättre önskas
-#: src/main/extractor.c:115
+#: src/main/extractor.c:114
 msgid "binary thumbnail data"
 msgstr "binär miniatyrbilddata"
 
-#: src/main/extractor.c:116
+#: src/main/extractor.c:115
 msgid "publication date"
-msgstr "publiseringsdatum"
+msgstr "publiceringsdatum"
 
-#: src/main/extractor.c:117
+#: src/main/extractor.c:116
 msgid "camera make"
 msgstr "kameratillverkare"
 
-#: src/main/extractor.c:118
+#: src/main/extractor.c:117
 msgid "camera model"
 msgstr "kameramodell"
 
-#: src/main/extractor.c:119
+#: src/main/extractor.c:118
 msgid "exposure"
 msgstr "exponering"
 
-#: src/main/extractor.c:120
+#: src/main/extractor.c:119
 msgid "aperture"
 msgstr "bländare"
 
 # Kallas även för slutartid
-#: src/main/extractor.c:121
+#: src/main/extractor.c:120
 msgid "exposure bias"
 msgstr "exponeringskompensation"
 
-#: src/main/extractor.c:122
+#: src/main/extractor.c:121
 msgid "flash"
 msgstr "blixt"
 
 # Hjälp! Är detta rätt?
-#: src/main/extractor.c:123
+#: src/main/extractor.c:122
 msgid "flash bias"
 msgstr "blixttidskompensation"
 
-#: src/main/extractor.c:124
+#: src/main/extractor.c:123
 msgid "focal length"
 msgstr "brännvidd"
 
-#: src/main/extractor.c:125
+#: src/main/extractor.c:124
 msgid "focal length (35mm equivalent)"
 msgstr "brännvidd (35mm motsvarande)"
 
-#: src/main/extractor.c:126
+#: src/main/extractor.c:125
 msgid "iso speed"
 msgstr "ISO-hastighet"
 
-#: src/main/extractor.c:127
+#: src/main/extractor.c:126
 msgid "exposure mode"
 msgstr "exponeringsläge"
 
-#: src/main/extractor.c:128
+#: src/main/extractor.c:127
 msgid "metering mode"
 msgstr "mätarläge"
 
-#: src/main/extractor.c:129
+#: src/main/extractor.c:128
 msgid "macro mode"
 msgstr "makroläge"
 
-#: src/main/extractor.c:130
+#: src/main/extractor.c:129
 msgid "image quality"
 msgstr "bildkvalitet"
 
-#: src/main/extractor.c:131
+#: src/main/extractor.c:130
 msgid "white balance"
 msgstr "vitbalans"
 
-#: src/main/extractor.c:132
+#: src/main/extractor.c:131
 msgid "orientation"
 msgstr "orientering"
 
-#: src/main/extractor.c:133
+#: src/main/extractor.c:132
 msgid "template"
 msgstr "mall"
 
 # Hjälp! En grovgissning.
-#: src/main/extractor.c:134
+#: src/main/extractor.c:133
 msgid "split"
 msgstr "delning"
 
-#: src/main/extractor.c:135
+#: src/main/extractor.c:134
 msgid "product version"
 msgstr "produktversion"
 
-#: src/main/extractor.c:136
+#: src/main/extractor.c:135
 msgid "last saved by"
 msgstr "senast sparad av"
 
-#: src/main/extractor.c:137
+#: src/main/extractor.c:136
 msgid "last printed"
 msgstr "senast utskriven"
 
-#: src/main/extractor.c:138
+#: src/main/extractor.c:137
 msgid "word count"
 msgstr "antal ord"
 
-#: src/main/extractor.c:139
+#: src/main/extractor.c:138
 msgid "character count"
 msgstr "teckenantal"
 
-#: src/main/extractor.c:140
+#: src/main/extractor.c:139
 msgid "total editing time"
 msgstr "total redigeringstid"
 
-#: src/main/extractor.c:141
+#: src/main/extractor.c:140
 msgid "thumbnails"
 msgstr "miniatyrbilder"
 
-#: src/main/extractor.c:142
+#: src/main/extractor.c:141
 msgid "security"
 msgstr "säkerhet"
 
-#: src/main/extractor.c:143
+#: src/main/extractor.c:142
 msgid "created by software"
 msgstr "skapad med programvaran"
 
-#: src/main/extractor.c:144
+#: src/main/extractor.c:143
 msgid "modified by software"
 msgstr "ändrad av programvaran"
 
-#: src/main/extractor.c:145
+#: src/main/extractor.c:144
 msgid "revision history"
 msgstr "revisionshistorik"
 
-#: src/main/extractor.c:146
+#: src/main/extractor.c:145
 msgid "lower case conversion"
 msgstr "gemenkonvertering"
 
-#: src/main/extractor.c:147
+#: src/main/extractor.c:146
 msgid "company"
 msgstr "företag"
 
-#: src/main/extractor.c:148
+#: src/main/extractor.c:147
 msgid "generator"
 msgstr "skapare"
 
-#: src/main/extractor.c:149
+#: src/main/extractor.c:148
 msgid "character set"
 msgstr "teckenuppsättning"
 
-#: src/main/extractor.c:150
+#: src/main/extractor.c:149
 msgid "line count"
 msgstr "radantal"
 
-#: src/main/extractor.c:151
+#: src/main/extractor.c:150
 msgid "paragraph count"
 msgstr "antal stycken"
 
-#: src/main/extractor.c:152
+#: src/main/extractor.c:151
 msgid "editing cycles"
 msgstr "redigeringscykler"
 
-#: src/main/extractor.c:153
+#: src/main/extractor.c:152
 msgid "scale"
 msgstr "skala"
 
-#: src/main/extractor.c:154
+#: src/main/extractor.c:153
 msgid "manager"
 msgstr "ansvarig"
 
-#: src/main/extractor.c:155
+#: src/main/extractor.c:154
 msgid "director"
 msgstr "regissör"
 
 # Detta rör sig om film och musik annars skulle det vara Varaktighet
-#: src/main/extractor.c:156
+#: src/main/extractor.c:155
 msgid "duration"
 msgstr "speltid"
 
-#: src/main/extractor.c:157
+#: src/main/extractor.c:156
 msgid "information"
 msgstr "information"
 
-#: src/main/extractor.c:158
+#: src/main/extractor.c:157
 msgid "full name"
 msgstr "fullständigt namn"
 
-#: src/main/extractor.c:159
+#: src/main/extractor.c:158
 msgid "chapter"
 msgstr "kapitel"
 
-#: src/main/extractor.c:160
+#: src/main/extractor.c:159
 msgid "year"
 msgstr "år"
 
-#: src/main/extractor.c:161
+#: src/main/extractor.c:160
 msgid "link"
 msgstr "länk"
 
-#: src/main/extractor.c:162
+#: src/main/extractor.c:161
 msgid "music CD identifier"
 msgstr "Identifierare för musik-cd"
 
-#: src/main/extractor.c:163
+#: src/main/extractor.c:162
 msgid "play counter"
 msgstr "antal spelningar"
 
-#: src/main/extractor.c:164
+#: src/main/extractor.c:163
 msgid "popularity meter"
 msgstr "popularitetsmätare"
 
-#: src/main/extractor.c:165
+#: src/main/extractor.c:164
 msgid "content type"
 msgstr "innehållstyp"
 
-#: src/main/extractor.c:166
+#: src/main/extractor.c:165
 msgid "encoded by"
 msgstr "kodad av"
 
-#: src/main/extractor.c:167
+#: src/main/extractor.c:166
 msgid "time"
 msgstr "tid"
 
-#: src/main/extractor.c:168
+#: src/main/extractor.c:167
 msgid "musician credits list"
 msgstr "lista över medverkande musiker"
 
-#: src/main/extractor.c:169
+#: src/main/extractor.c:168
 msgid "mood"
 msgstr "sinnesstämning"
 
-#: src/main/extractor.c:170
+#: src/main/extractor.c:169
 msgid "format version"
 msgstr "formatversion"
 
-#: src/main/extractor.c:171
+#: src/main/extractor.c:170
 msgid "television system"
 msgstr "tv-system"
 
-#: src/main/extractor.c:172
+#: src/main/extractor.c:171
 msgid "song count"
 msgstr "låtantal"
 
-#: src/main/extractor.c:173
+#: src/main/extractor.c:172
 msgid "starting song"
 msgstr "startlåt"
 
-#: src/main/extractor.c:174
+#: src/main/extractor.c:173
 msgid "hardware dependency"
 msgstr "hårdvaruberoende"
 
-#: src/main/extractor.c:175
+#: src/main/extractor.c:174
 msgid "ripper"
 msgstr "rippare"
 
-#: src/main/extractor.c:176
+#: src/main/extractor.c:175
 msgid "filesize"
 msgstr "filstorlek"
 
-#: src/main/extractor.c:177
+#: src/main/extractor.c:176
 msgid "track number"
 msgstr "spårnummer"
 
-#: src/main/extractor.c:178
+#: src/main/extractor.c:177
 msgid "international standard recording code"
 msgstr "internationell standardkod för inspelning"
 
-#: src/main/extractor.c:179
+#: src/main/extractor.c:178
 msgid "disc number"
 msgstr "skivnummer"
 
-#: src/main/extractor.c:180
-msgid "preferred display style (GNUnet)"
-msgstr ""
-
-#: src/main/extractor.c:181
-msgid "GNUnet URI of ECBC data"
-msgstr ""
-
-#: src/main/extractor.c:601
+#: src/main/extractor.c:598
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "Initiering av insticksmekanism misslyckades: %s!\n"
 
-#: src/main/extractor.c:765
+#: src/main/extractor.c:752
 #, c-format
-msgid ""
-"Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
-"failed also.  Errors are: `%s' and `%s'.\n"
-msgstr ""
-"Uppslag av symbol \"%s\" i bibliotek \"%s\" misslyckades så jag försökte med "
-"\"%s\" men det misslyckades också.  Felen är: \"%s\" och \"%s\".\n"
+msgid "Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that failed also.  Errors are: `%s' and `%s'.\n"
+msgstr "Uppslag av symbol \"%s\" i bibliotek \"%s\" misslyckades så jag försökte med \"%s\" men det misslyckades också.  Felen är: \"%s\" och \"%s\".\n"
 
-#: src/main/extractor.c:796
+#: src/main/extractor.c:781
 #, c-format
 msgid "Loading `%s' plugin failed: %s\n"
 msgstr "Inläsning av instick \"%s\" misslyckades: %s\n"
 
-#: src/main/extractor.c:1008
+#: src/main/extractor.c:986
 #, c-format
 msgid "Unloading plugin `%s' failed!\n"
 msgstr "Urläsning av instick \"%s\" misslyckades!\n"
@@ -1436,68 +1417,17 @@ msgstr "JPop"
 msgid "Synthpop"
 msgstr "Synthpop"
 
-#: src/plugins/mp3extractor.c:252 src/plugins/wavextractor.c:119
+#: src/plugins/mp3extractor.c:444 src/plugins/wavextractor.c:119
 msgid "stereo"
 msgstr "stereo"
 
-#: src/plugins/mp3extractor.c:253
-#, fuzzy
-msgid "joint stereo"
-msgstr "stereo"
-
-#: src/plugins/mp3extractor.c:254
-msgid "dual channel"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:255 src/plugins/wavextractor.c:119
+#: src/plugins/mp3extractor.c:444 src/plugins/wavextractor.c:119
 msgid "mono"
 msgstr "mono"
 
-#: src/plugins/mp3extractor.c:258
-msgid "MPEG-1"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:259
-msgid "MPEG-2"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:260
-msgid "MPEG-2.5"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:263
-msgid "Layer I"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:264
-msgid "Layer II"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:265
-msgid "Layer III"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:475
-msgid "VBR"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:475
-msgid "CBR"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:478
-#, fuzzy
-msgid "no copyright"
-msgstr "copyright"
-
-#: src/plugins/mp3extractor.c:479
-msgid "original"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:479
-#, fuzzy
-msgid "copy"
-msgstr "företag"
+#: src/plugins/mp3extractor.c:445
+msgid "(variable bps)"
+msgstr "(variabel bithastighet)"
 
 # Hjälp! Rätt översättning?
 #: src/plugins/ole2/ole2extractor.c:252
@@ -1560,7 +1490,6 @@ msgstr "Belgisk holländska"
 msgid "Norwegian Bokmal"
 msgstr "Norska (Bokmål)"
 
-# Hjälp! Detta är tydligen danska stavningen. Vad är den svenska?
 #: src/plugins/ole2/ole2extractor.c:322
 msgid "Rhaeto-Romanic"
 msgstr "Rätoromanska"
@@ -1625,9 +1554,6 @@ msgstr "Källkods-RPM %d.%d"
 #, c-format
 msgid "Binary RPM %d.%d"
 msgstr "Binär RPM %d.%d"
-
-#~ msgid "(variable bps)"
-#~ msgstr "(variabel bithastighet)"
 
 #~ msgid "Please provide a list of klp files as arguments.\n"
 #~ msgstr "Vänligen ange en lista av klp-filer som argument.\n"

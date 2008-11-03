@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2008-07-14 02:05-0600\n"
+"POT-Creation-Date: 2008-11-02 20:24-0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -108,12 +108,12 @@ msgstr ""
 msgid "Extract metadata from files."
 msgstr ""
 
-#: src/main/extract.c:190 src/main/extractor.c:1535
+#: src/main/extract.c:190 src/main/extractor.c:1550
 #, c-format
 msgid "%s - (binary)\n"
 msgstr ""
 
-#: src/main/extract.c:201 src/main/extractor.c:1540
+#: src/main/extract.c:201 src/main/extractor.c:1555
 #, c-format
 msgid "INVALID TYPE - %s\n"
 msgstr ""
@@ -686,24 +686,24 @@ msgstr ""
 msgid "GNUnet URI of ECBC data"
 msgstr ""
 
-#: src/main/extractor.c:601
+#: src/main/extractor.c:604
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr ""
 
-#: src/main/extractor.c:765
+#: src/main/extractor.c:768
 #, c-format
 msgid ""
 "Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
 "failed also.  Errors are: `%s' and `%s'.\n"
 msgstr ""
 
-#: src/main/extractor.c:796
+#: src/main/extractor.c:811
 #, c-format
 msgid "Loading `%s' plugin failed: %s\n"
 msgstr ""
 
-#: src/main/extractor.c:1008
+#: src/main/extractor.c:1023
 #, c-format
 msgid "Unloading plugin `%s' failed!\n"
 msgstr ""
@@ -1591,14 +1591,4 @@ msgstr ""
 #: src/plugins/riffextractor.c:151
 #, c-format
 msgid "codec: %s, %u fps, %u ms"
-msgstr ""
-
-#: src/plugins/rpm/rpmextractor.c:3223
-#, c-format
-msgid "Source RPM %d.%d"
-msgstr ""
-
-#: src/plugins/rpm/rpmextractor.c:3225
-#, c-format
-msgid "Binary RPM %d.%d"
 msgstr ""
