@@ -44,3 +44,8 @@ define(GNUPG_CHECK_ENDIAN,
                 [Defined if the host has big endian byte ordering])
     fi
   ])
+
+dnl Checks for all prerequisites of the intl subdirectory,
+dnl except for INTL_LIBTOOL_SUFFIX_PREFIX (and possibly LIBTOOL), INTLOBJS,
+dnl            USE_INCLUDED_LIBINTL, BUILD_INCLUDED_LIBINTL.
+    AC_DEFUN([AM_INTL_SUBDIR], [])
