@@ -587,7 +587,7 @@ then
   then
     AC_MSG_ERROR([FFmpeg configure failed.])
   fi
-  cd ../../../../
+  cd ../../../
 fi
 
 AC_OUTPUT
