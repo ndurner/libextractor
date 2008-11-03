@@ -208,7 +208,7 @@ AC_CHECK_LIB(bz2, BZ2_decompress,
          AM_CONDITIONAL(HAVE_BZ2, false))
 
 AC_CHECK_LIB(rpm, rpmReadPackageFile,
-        [AC_CHECK_HEADERS([rpm/rpmlib.h rpm/rpmts.h],
+        [AC_CHECK_HEADERS([rpm/rpmlib.h],
           AM_CONDITIONAL(HAVE_LIBRPM, true)
           AC_DEFINE(HAVE_LIBRPM,1,[Have librpm]),
          AM_CONDITIONAL(HAVE_LIBRPM, false))],
