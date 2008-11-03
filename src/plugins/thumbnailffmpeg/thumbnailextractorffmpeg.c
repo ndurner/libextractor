@@ -178,7 +178,6 @@ libextractor_thumbnailffmpeg_extract (const char *filename,
   int thumb_width, thumb_height;
   int sar_num, sar_den;
 
-  FILE *output = NULL;
   uint8_t *encoder_output_buffer;
   size_t encoder_output_buffer_size;
   AVCodecContext *enc_codec_ctx;

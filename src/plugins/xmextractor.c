@@ -94,13 +94,13 @@ struct EXTRACTOR_Keywords *libextractor_xm_extract
   /* Song title */
 
   memcpy (&title, head->title, 20);
-  title[21] = '\0';
+  title[20] = '\0';
   prev = addkword (prev, title, EXTRACTOR_TITLE);
 
   /* software used for creating the data */
 
   memcpy (&tracker, head->tracker, 20);
-  tracker[21] = '\0';
+  tracker[20] = '\0';
   prev = addkword (prev, tracker, EXTRACTOR_SOFTWARE);
 
   return (prev);
