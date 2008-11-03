@@ -1,4 +1,5 @@
 include ../Makefile-plugins.am
+include ffmpeg_distfiles.am
 
 plugin_LTLIBRARIES = \
  libextractor_thumbnailffmpeg.la
@@ -35,3 +36,7 @@ clean-local:
 	cd ffmpeg && $(MAKE) $(AM_MAKEFLAGS) clean
 distclean-local:
 	cd ffmpeg && $(MAKE) $(AM_MAKEFLAGS) distclean
+
+dist-hook: clean-local
+
+
