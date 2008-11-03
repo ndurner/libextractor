@@ -1,4 +1,5 @@
 include Makefile-plugins.am
+include ffmpeg_distfiles.am
 
 LIBEXT = @LIBEXT@
 

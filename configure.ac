@@ -552,7 +552,7 @@ then
  then
    FFMPEGARCH="--enable-cross-compile --arch=$ffmpegarch"
  fi
- cd src/plugins/thumbnailffmpeg/ffmpeg/
+ cd src/plugins/ffmpeg/
  if ! ./configure			\
 	--cc="$CC"			\
 	$FFMPEGARCH			\
