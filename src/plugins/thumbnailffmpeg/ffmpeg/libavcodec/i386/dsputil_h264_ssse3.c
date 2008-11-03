@@ -23,6 +23,9 @@
  * H264_CHROMA_MC8_TMPL must be defined to the desired function name
  * H264_CHROMA_MC8_MV0 must be defined to a (put|avg)_pixels8 function
  * AVG_OP must be defined to empty for put and the identify for avg
+ *
+ * This file used to be called "dsputil_h264_template_ssse3.c" but
+ * that filename is too long for our build process.
  */
 static void H264_CHROMA_MC8_TMPL(uint8_t *dst/*align 8*/, uint8_t *src/*align 1*/, int stride, int h, int x, int y, int rnd)
 {
