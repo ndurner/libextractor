@@ -6,10 +6,13 @@ plugindir = $(libdir)/@RPLUGINDIR@
 LIBS = \
  @LTLIBINTL@ @LIBS@
 
+if !MINGW
+  retaincommand=-export-symbols-regex "libextractor_[a-zA-Z0-9_]*_extract"
+endif
+
 if HAVE_GNU_LD
  makesymbolic=-Wl,-Bsymbolic
 endif
-retaincommand=-export-symbols-regex "libextractor_[a-zA-Z0-9_]*_extract"
 
 PLUGINFLAGS = $(makesymbolic) -avoid-version -module -no-undefined
 
