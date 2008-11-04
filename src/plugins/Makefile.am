@@ -22,7 +22,7 @@ endif
 
 if HAVE_QT
  thumbqt=libextractor_thumbnailqt.la
- qtflags=-lQtGui -lQtCore
+ qtflags=-lQtGui -lQtCore -lpthread
 else
 if HAVE_QT4
  thumbqt=libextractor_thumbnailqt.la

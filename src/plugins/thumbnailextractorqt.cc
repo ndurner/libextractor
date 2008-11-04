@@ -31,6 +31,7 @@
 #include <Qt/qbytearray.h>
 #include <Qt/qbuffer.h>
 #include <Qt/qapplication.h>
+#include <pthread.h>
 
 #ifdef HAVE_QT_SVG
   #include <Qt/qsvgrenderer.h>
@@ -80,7 +81,7 @@ static char * whitelist[] = {
   NULL
 };
 
-static struct EXTRACTOR_Keywords * 
+static struct EXTRACTOR_Keywords *
 extract(const unsigned char * data,
 	size_t size,
 	struct EXTRACTOR_Keywords * prev,
@@ -233,7 +234,7 @@ static void * run(void * arg) {
 		 x->options);
 }
 
-struct EXTRACTOR_Keywords * 
+struct EXTRACTOR_Keywords *
 libextractor_thumbnailqt_extract(const char * filename,
 				 const unsigned char * data,
 				 size_t size,
@@ -250,11 +251,11 @@ libextractor_thumbnailqt_extract(const char * filename,
   if (0 == pthread_create(&pt, NULL, &run, &cls))
     if (0 == pthread_join(pt, &ret))
       return (struct EXTRACTOR_Keywords*) ret;
-  return prev; 
+  return prev;
 }
 
 
-struct EXTRACTOR_Keywords * 
+struct EXTRACTOR_Keywords *
 libextractor_thumbnail_extract(const char * filename,
 			       const unsigned char * data,
 			       size_t size,
@@ -263,7 +264,7 @@ libextractor_thumbnail_extract(const char * filename,
   return libextractor_thumbnailqt_extract(filename,
 					  data,
 					  size,
-					  prev, 
+					  prev,
 					  options);
 }
 
