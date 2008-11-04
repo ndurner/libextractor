@@ -102,6 +102,9 @@ static ExtraPattern xpatterns[] = {
 #define ACON_XPATTERN 12
   {8, 4, "ACON"},
   {0, 0, NULL},
+#define CR2_PATTERN 14
+  {8, 3, "CR\x02"},
+  {0, 0, NULL},
 };
 
 /**
@@ -229,6 +232,7 @@ static Pattern patterns[] = {
   {"\xca\xfe\xba\xbe", 4, "application/java", DEFAULT},
   /* FIXME: correct MIME for a class-file? */
   {"gimp xcf", 8, "image/xcf", DEFAULT},
+  {"II\x2a\x00\x10", 5, "image/x-canon-cr2", XPATTERN (CR2_PATTERN)},
   {"IIN1", 4, "image/tiff", DEFAULT},
   {"MM\x00\x2a", 4, "image/tiff", DEFAULT},     /* big-endian */
   {"II\x2a\x00", 4, "image/tiff", DEFAULT},     /* little-endian */
