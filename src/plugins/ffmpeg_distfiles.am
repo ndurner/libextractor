@@ -1,912 +1,849 @@
 EXTRA_DIST = \
-ffmpeg/CREDITS\
-ffmpeg/tools/build_avopt\
-ffmpeg/tools/trasher.c\
-ffmpeg/tools/clean-diff\
-ffmpeg/tools/unwrap-diff\
-ffmpeg/tools/qt-faststart.c\
-ffmpeg/tools/cws2fws.c\
-ffmpeg/tools/pktdumper.c\
-ffmpeg/libswscale/yuv2rgb.d\
-ffmpeg/libswscale/yuv2rgb_vis.c\
-ffmpeg/libswscale/yuv2rgb.c\
-ffmpeg/libswscale/swscale_altivec_template.c\
-ffmpeg/libswscale/yuv2rgb_altivec.c\
-ffmpeg/libswscale/yuv2rgb_bfin.c\
-ffmpeg/libswscale/internal_bfin.S\
-ffmpeg/libswscale/swscale_avoption.d\
-ffmpeg/libswscale/Makefile\
-ffmpeg/libswscale/swscale_template.c\
-ffmpeg/libswscale/rgb2rgb_template.c\
-ffmpeg/libswscale/swscale.h\
-ffmpeg/libswscale/cs_test.c\
-ffmpeg/libswscale/swscale_bfin.c\
-ffmpeg/libswscale/swscale.c\
-ffmpeg/libswscale/swscale.d\
-ffmpeg/libswscale/yuv2rgb_mlib.c\
-ffmpeg/libswscale/swscale-example.c\
-ffmpeg/libswscale/libswscale.pc\
-ffmpeg/libswscale/swscale_internal.h\
-ffmpeg/libswscale/rgb2rgb.c\
-ffmpeg/libswscale/yuv2rgb_template.c\
-ffmpeg/libswscale/rgb2rgb.h\
-ffmpeg/libswscale/libswscale-uninstalled.pc\
-ffmpeg/libswscale/swscale_avoption.c\
-ffmpeg/libswscale/rgb2rgb.d\
-ffmpeg/no-indent\
-ffmpeg/MAINTAINERS\
-ffmpeg/ffserver.c\
-ffmpeg/README\
-ffmpeg/libpostproc/postprocess.h\
-ffmpeg/libpostproc/postprocess_template.c\
-ffmpeg/libpostproc/postprocess.c\
-ffmpeg/libpostproc/Makefile\
-ffmpeg/libpostproc/postprocess_altivec_template.c\
-ffmpeg/libpostproc/postprocess_internal.h\
-ffmpeg/cmdutils.d\
-ffmpeg/libavdevice/dv1394.h\
-ffmpeg/libavdevice/dv1394.c\
-ffmpeg/libavdevice/avdevice.h\
-ffmpeg/libavdevice/Makefile\
-ffmpeg/libavdevice/beosaudio.cpp\
-ffmpeg/libavdevice/bktr.c\
-ffmpeg/libavdevice/v4l.c\
-ffmpeg/libavdevice/audio.c\
-ffmpeg/libavdevice/alldevices.c\
-ffmpeg/libavdevice/alldevices.d\
-ffmpeg/libavdevice/libavdevice-uninstalled.pc\
-ffmpeg/libavdevice/vfwcap.c\
-ffmpeg/libavdevice/libavdevice.pc\
-ffmpeg/libavdevice/libdc1394.c\
-ffmpeg/libavdevice/x11grab.c\
-ffmpeg/libavdevice/v4l2.c\
-ffmpeg/cmdutils.h\
-ffmpeg/common.mak\
-ffmpeg/INSTALL\
-ffmpeg/libavfilter/allfilters.c\
-ffmpeg/libavfilter/formats.c\
-ffmpeg/libavfilter/Makefile\
-ffmpeg/libavfilter/avfilter.h\
-ffmpeg/libavfilter/avfiltergraph.h\
-ffmpeg/libavfilter/avfiltergraph.c\
-ffmpeg/libavfilter/defaults.c\
-ffmpeg/libavfilter/avfilter.c\
-ffmpeg/libavfilter/graphparser.h\
-ffmpeg/libavfilter/graphparser.c\
-ffmpeg/libavutil/adler32.c\
-ffmpeg/libavutil/base64.h\
-ffmpeg/libavutil/string.c\
-ffmpeg/libavutil/aes.c\
-ffmpeg/libavutil/md5.c\
-ffmpeg/libavutil/log.d\
-ffmpeg/libavutil/des.h\
-ffmpeg/libavutil/adler32.h\
-ffmpeg/libavutil/libavutil-uninstalled.pc\
-ffmpeg/libavutil/softfloat.h\
-ffmpeg/libavutil/sha1.c\
-ffmpeg/libavutil/integer.h\
-ffmpeg/libavutil/mathematics.c\
-ffmpeg/libavutil/avstring.h\
-ffmpeg/libavutil/base64.c\
-ffmpeg/libavutil/sha1.d\
-ffmpeg/libavutil/fifo.h\
-ffmpeg/libavutil/rc4.h\
-ffmpeg/libavutil/crc.d\
-ffmpeg/libavutil/crc.c\
-ffmpeg/libavutil/random.d\
-ffmpeg/libavutil/mem.c\
-ffmpeg/libavutil/rational.h\
-ffmpeg/libavutil/fifo.c\
-ffmpeg/libavutil/log.c\
-ffmpeg/libavutil/mathematics.d\
-ffmpeg/libavutil/log.h\
-ffmpeg/libavutil/intreadwrite.h\
-ffmpeg/libavutil/lzo.d\
-ffmpeg/libavutil/rational.c\
-ffmpeg/libavutil/tree.d\
-ffmpeg/libavutil/tree.c\
-ffmpeg/libavutil/string.d\
-ffmpeg/libavutil/integer.c\
-ffmpeg/libavutil/rational.d\
-ffmpeg/libavutil/lls.d\
-ffmpeg/libavutil/x86_cpu.h\
-ffmpeg/libavutil/Makefile\
-ffmpeg/libavutil/lls.h\
-ffmpeg/libavutil/md5.d\
-ffmpeg/libavutil/fifo.d\
-ffmpeg/libavutil/des.d\
-ffmpeg/libavutil/des.c\
-ffmpeg/libavutil/lls.c\
-ffmpeg/libavutil/crc.h\
-ffmpeg/libavutil/intfloat_readwrite.h\
-ffmpeg/libavutil/aes.h\
-ffmpeg/libavutil/crc_data.h\
-ffmpeg/libavutil/mem.h\
-ffmpeg/libavutil/internal.h\
-ffmpeg/libavutil/sha1.h\
-ffmpeg/libavutil/common.h\
-ffmpeg/libavutil/tree.h\
-ffmpeg/libavutil/adler32.d\
-ffmpeg/libavutil/softfloat.c\
-ffmpeg/libavutil/rc4.c\
-ffmpeg/libavutil/intfloat_readwrite.c\
-ffmpeg/libavutil/intfloat_readwrite.d\
-ffmpeg/libavutil/rc4.d\
-ffmpeg/libavutil/random.c\
-ffmpeg/libavutil/lzo.h\
-ffmpeg/libavutil/libavutil.pc\
-ffmpeg/libavutil/md5.h\
-ffmpeg/libavutil/random.h\
-ffmpeg/libavutil/aes.d\
-ffmpeg/libavutil/base64.d\
-ffmpeg/libavutil/mathematics.h\
-ffmpeg/libavutil/mem.d\
-ffmpeg/libavutil/bswap.h\
-ffmpeg/libavutil/avutil.h\
-ffmpeg/libavutil/lzo.c\
-ffmpeg/COPYING.GPL\
-ffmpeg/Changelog\
-ffmpeg/config.mak\
-ffmpeg/Doxyfile\
-ffmpeg/Makefile\
-ffmpeg/output_example.c\
-ffmpeg/libavcodec/mpc7.c\
-ffmpeg/libavcodec/h261.h\
-ffmpeg/libavcodec/imcdata.h\
-ffmpeg/libavcodec/png.h\
-ffmpeg/libavcodec/intrax8.c\
-ffmpeg/libavcodec/ac3.c\
-ffmpeg/libavcodec/cljr.c\
-ffmpeg/libavcodec/wmv2.c\
-ffmpeg/libavcodec/rl2.c\
-ffmpeg/libavcodec/atrac3.c\
-ffmpeg/libavcodec/ac3dec.h\
-ffmpeg/libavcodec/ulti_cb.h\
-ffmpeg/libavcodec/dvdata.h\
-ffmpeg/libavcodec/adxenc.c\
-ffmpeg/libavcodec/ac3.h\
-ffmpeg/libavcodec/jfdctfst.d\
-ffmpeg/libavcodec/indeo2.c\
-ffmpeg/libavcodec/rv30.c\
-ffmpeg/libavcodec/wma.c\
-ffmpeg/libavcodec/rle.c\
-ffmpeg/libavcodec/libdirac_libschro.c\
-ffmpeg/libavcodec/os2thread.c\
-ffmpeg/libavcodec/mlpdec.c\
-ffmpeg/libavcodec/remove_extradata_bsf.c\
-ffmpeg/libavcodec/h261.c\
-ffmpeg/libavcodec/parser.d\
-ffmpeg/libavcodec/ac3_parser.h\
-ffmpeg/libavcodec/cook.c\
-ffmpeg/libavcodec/vorbis_data.c\
-ffmpeg/libavcodec/truespeech_data.h\
-ffmpeg/libavcodec/resample.d\
-ffmpeg/libavcodec/targa.c\
-ffmpeg/libavcodec/sgi.h\
-ffmpeg/libavcodec/gifdec.c\
-ffmpeg/libavcodec/mjpegenc.h\
-ffmpeg/libavcodec/aac_ac3_parser.c\
-ffmpeg/libavcodec/simple_idct.c\
-ffmpeg/libavcodec/h264.c\
-ffmpeg/libavcodec/imgconvert.c\
-ffmpeg/libavcodec/alac.c\
-ffmpeg/libavcodec/dct-test.c\
-ffmpeg/libavcodec/mpc.h\
-ffmpeg/libavcodec/indeo3data.h\
-ffmpeg/libavcodec/rangecoder.c\
-ffmpeg/libavcodec/truemotion1.c\
-ffmpeg/libavcodec/pnmenc.c\
-ffmpeg/libavcodec/ra144.h\
-ffmpeg/libavcodec/mpc7data.h\
-ffmpeg/libavcodec/bmpenc.c\
-ffmpeg/libavcodec/mjpeg.c\
-ffmpeg/libavcodec/libdirac_libschro.h\
-ffmpeg/libavcodec/jpeglsenc.c\
-ffmpeg/libavcodec/vc1.c\
-ffmpeg/libavcodec/lclenc.c\
-ffmpeg/libavcodec/lcl.h\
-ffmpeg/libavcodec/dsputil.d\
-ffmpeg/libavcodec/svq1.c\
-ffmpeg/libavcodec/nellymoser.h\
-ffmpeg/libavcodec/aac_parser.c\
-ffmpeg/libavcodec/svq3.c\
-ffmpeg/libavcodec/libfaac.c\
-ffmpeg/libavcodec/libdiracenc.c\
-ffmpeg/libavcodec/intrax8huf.h\
-ffmpeg/libavcodec/cinepak.c\
-ffmpeg/libavcodec/adxdec.c\
-ffmpeg/libavcodec/nellymoserdec.c\
-ffmpeg/libavcodec/pnm.d\
-ffmpeg/libavcodec/acelp_math.c\
-ffmpeg/libavcodec/imgconvert.h\
-ffmpeg/libavcodec/utils.c\
-ffmpeg/libavcodec/cavs_parser.c\
-ffmpeg/libavcodec/ratecontrol.c\
-ffmpeg/libavcodec/tiff.h\
-ffmpeg/libavcodec/dirac_parser.c\
-ffmpeg/libavcodec/audioconvert.d\
-ffmpeg/libavcodec/opt.d\
-ffmpeg/libavcodec/mpcdata.h\
-ffmpeg/libavcodec/pnm.c\
-ffmpeg/libavcodec/sp5x.h\
-ffmpeg/libavcodec/cavs.c\
-ffmpeg/libavcodec/svq1dec.c\
-ffmpeg/libavcodec/pnm.h\
-ffmpeg/libavcodec/vmdav.c\
-ffmpeg/libavcodec/mpeg12.c\
-ffmpeg/libavcodec/xan.c\
-ffmpeg/libavcodec/mpegaudiodecheader.c\
-ffmpeg/libavcodec/wmv2enc.c\
-ffmpeg/libavcodec/truespeech.c\
-ffmpeg/libavcodec/ffv1.c\
-ffmpeg/libavcodec/libschroedingerdec.c\
-ffmpeg/libavcodec/simple_idct.h\
-ffmpeg/libavcodec/jrevdct.c\
-ffmpeg/libavcodec/sparc/vis.h\
-ffmpeg/libavcodec/sparc/dsputil_vis.c\
-ffmpeg/libavcodec/sparc/simple_idct_vis.c\
-ffmpeg/libavcodec/h264idct.c\
-ffmpeg/libavcodec/motion_est.c\
-ffmpeg/libavcodec/mpegaudio_parser.c\
-ffmpeg/libavcodec/libschroedingerenc.c\
-ffmpeg/libavcodec/jpeglsdec.h\
-ffmpeg/libavcodec/dv.c\
-ffmpeg/libavcodec/vp56data.c\
-ffmpeg/libavcodec/raw.h\
-ffmpeg/libavcodec/interplayvideo.c\
-ffmpeg/libavcodec/unary.h\
-ffmpeg/libavcodec/jpegls.h\
-ffmpeg/libavcodec/opt.h\
-ffmpeg/libavcodec/bfin/config_bfin.h\
-ffmpeg/libavcodec/bfin/dsputil_bfin.c\
-ffmpeg/libavcodec/bfin/mpegvideo_bfin.c\
-ffmpeg/libavcodec/bfin/vp3_bfin.c\
-ffmpeg/libavcodec/bfin/mathops.h\
-ffmpeg/libavcodec/bfin/pixels_bfin.S\
-ffmpeg/libavcodec/bfin/dsputil_bfin.h\
-ffmpeg/libavcodec/bfin/vp3_idct_bfin.S\
-ffmpeg/libavcodec/bfin/fdct_bfin.S\
-ffmpeg/libavcodec/bfin/idct_bfin.S\
-ffmpeg/libavcodec/pngdec.c\
-ffmpeg/libavcodec/mace.c\
-ffmpeg/libavcodec/pcx.c\
-ffmpeg/libavcodec/vp56.h\
-ffmpeg/libavcodec/h261data.h\
-ffmpeg/libavcodec/fraps.c\
-ffmpeg/libavcodec/zmbvenc.c\
-ffmpeg/libavcodec/dnxhddec.c\
-ffmpeg/libavcodec/dvbsubdec.c\
-ffmpeg/libavcodec/simple_idct.d\
-ffmpeg/libavcodec/raw.c\
-ffmpeg/libavcodec/flashsvenc.c\
-ffmpeg/libavcodec/flashsv.c\
-ffmpeg/libavcodec/mpeg4audio.h\
-ffmpeg/libavcodec/h264dspenc.c\
-ffmpeg/libavcodec/asv1.c\
-ffmpeg/libavcodec/snow.c\
-ffmpeg/libavcodec/kmvc.c\
-ffmpeg/libavcodec/faanidct.h\
-ffmpeg/libavcodec/rv34vlc.h\
-ffmpeg/libavcodec/acelp_filters.h\
-ffmpeg/libavcodec/sgidec.c\
-ffmpeg/libavcodec/indeo2data.h\
-ffmpeg/libavcodec/mp3_header_decompress_bsf.c\
-ffmpeg/libavcodec/msmpeg4data.h\
-ffmpeg/libavcodec/h264enc.c\
-ffmpeg/libavcodec/h263.c\
-ffmpeg/libavcodec/acelp_pitch_delay.c\
-ffmpeg/libavcodec/tiff.c\
-ffmpeg/libavcodec/wma.h\
-ffmpeg/libavcodec/resample2.d\
-ffmpeg/libavcodec/smacker.c\
-ffmpeg/libavcodec/msrle.c\
-ffmpeg/libavcodec/h264.h\
-ffmpeg/libavcodec/g726.c\
-ffmpeg/libavcodec/vp3.c\
-ffmpeg/libavcodec/mpegaudioenc.c\
-ffmpeg/libavcodec/vp56.c\
-ffmpeg/libavcodec/sunrast.c\
-ffmpeg/libavcodec/ra144.c\
-ffmpeg/libavcodec/roqvideo.c\
-ffmpeg/libavcodec/zmbv.c\
-ffmpeg/libavcodec/resample2.c\
-ffmpeg/libavcodec/mjpegbdec.c\
-ffmpeg/libavcodec/wnv1.c\
-ffmpeg/libavcodec/mjpegdec.c\
-ffmpeg/libavcodec/jfdctint.c\
-ffmpeg/libavcodec/elbg.h\
-ffmpeg/libavcodec/tiffenc.c\
-ffmpeg/libavcodec/mpeg4audio.c\
-ffmpeg/libavcodec/libvorbis.c\
-ffmpeg/libavcodec/faanidct.c\
-ffmpeg/libavcodec/libxvid_internal.h\
-ffmpeg/libavcodec/flacenc.c\
-ffmpeg/libavcodec/h263_parser.h\
-ffmpeg/libavcodec/resample.c\
-ffmpeg/libavcodec/h261dec.c\
-ffmpeg/libavcodec/vc1data.c\
-ffmpeg/libavcodec/audioconvert.c\
-ffmpeg/libavcodec/qtrleenc.c\
-ffmpeg/libavcodec/beosthread.c\
-ffmpeg/libavcodec/cavs.h\
-ffmpeg/libavcodec/truemotion1data.h\
-ffmpeg/libavcodec/motion-test.c\
-ffmpeg/libavcodec/cavsdata.h\
-ffmpeg/libavcodec/pnm_parser.d\
-ffmpeg/libavcodec/cabac.c\
-ffmpeg/libavcodec/golomb.h\
-ffmpeg/libavcodec/sh4/qpel.c\
-ffmpeg/libavcodec/sh4/dsputil_align.c\
-ffmpeg/libavcodec/sh4/dsputil_sh4.c\
-ffmpeg/libavcodec/sh4/idct_sh4.c\
-ffmpeg/libavcodec/smc.c\
-ffmpeg/libavcodec/rv34.c\
-ffmpeg/libavcodec/h261enc.c\
-ffmpeg/libavcodec/lzw.h\
-ffmpeg/libavcodec/libx264.c\
-ffmpeg/libavcodec/xiph.c\
-ffmpeg/libavcodec/colorspace.h\
-ffmpeg/libavcodec/ac3dec.c\
-ffmpeg/libavcodec/fft.c\
-ffmpeg/libavcodec/mpeg12decdata.h\
-ffmpeg/libavcodec/rv40vlc2.h\
-ffmpeg/libavcodec/parser.c\
-ffmpeg/libavcodec/pnm_parser.c\
-ffmpeg/libavcodec/lsp.h\
-ffmpeg/libavcodec/libfaad.c\
-ffmpeg/libavcodec/eval.d\
-ffmpeg/libavcodec/intrax8dsp.c\
-ffmpeg/libavcodec/huffman.h\
-ffmpeg/libavcodec/gifdec.d\
-ffmpeg/libavcodec/rle.h\
-ffmpeg/libavcodec/libschroedinger.c\
-ffmpeg/libavcodec/raw.d\
-ffmpeg/libavcodec/allcodecs.c\
-ffmpeg/libavcodec/bmp.d\
-ffmpeg/libavcodec/txd.c\
-ffmpeg/libavcodec/allcodecs.d\
-ffmpeg/libavcodec/aasc.c\
-ffmpeg/libavcodec/cavsdec.c\
-ffmpeg/libavcodec/s3tc.h\
-ffmpeg/libavcodec/svq1enc.c\
-ffmpeg/libavcodec/vorbis_enc.c\
-ffmpeg/libavcodec/faanidct.d\
-ffmpeg/libavcodec/adx.h\
-ffmpeg/libavcodec/rangecoder.h\
-ffmpeg/libavcodec/mjpegdec.h\
-ffmpeg/libavcodec/dvbsub.c\
-ffmpeg/libavcodec/8svx.c\
-ffmpeg/libavcodec/bitstream_filter.d\
-ffmpeg/libavcodec/pthread.c\
-ffmpeg/libavcodec/nuv.c\
-ffmpeg/libavcodec/mpegaudiotab.h\
-ffmpeg/libavcodec/bitstream.c\
-ffmpeg/libavcodec/qtrle.c\
-ffmpeg/libavcodec/vorbis_dec.c\
-ffmpeg/libavcodec/mp3_header_compress_bsf.c\
-ffmpeg/libavcodec/mpegaudiodecheader.h\
-ffmpeg/libavcodec/mathops.h\
-ffmpeg/libavcodec/acelp_math.h\
-ffmpeg/libavcodec/flac.c\
-ffmpeg/libavcodec/rv30data.h\
-ffmpeg/libavcodec/libxvid_rc.c\
-ffmpeg/libavcodec/bmp.c\
-ffmpeg/libavcodec/indeo3.c\
-ffmpeg/libavcodec/mpegvideo_common.h\
-ffmpeg/libavcodec/vb.c\
-ffmpeg/libavcodec/h264_mp4toannexb_bsf.c\
-ffmpeg/libavcodec/mdec.c\
-ffmpeg/libavcodec/lsp.c\
-ffmpeg/libavcodec/imx_dump_header_bsf.c\
-ffmpeg/libavcodec/imgresample.c\
-ffmpeg/libavcodec/Makefile\
-ffmpeg/libavcodec/atrac3data.h\
-ffmpeg/libavcodec/vc1acdata.h\
-ffmpeg/libavcodec/h264_parser.c\
-ffmpeg/libavcodec/eacmv.c\
-ffmpeg/libavcodec/vc1dsp.c\
-ffmpeg/libavcodec/bitstream_filter.c\
-ffmpeg/libavcodec/vorbis.c\
-ffmpeg/libavcodec/fdctref.c\
-ffmpeg/libavcodec/armv4l/mpegvideo_iwmmxt.c\
-ffmpeg/libavcodec/armv4l/float_arm_vfp.c\
-ffmpeg/libavcodec/armv4l/jrevdct_arm.S\
-ffmpeg/libavcodec/armv4l/dsputil_arm.c\
-ffmpeg/libavcodec/armv4l/dsputil_iwmmxt.c\
-ffmpeg/libavcodec/armv4l/mpegvideo_arm.c\
-ffmpeg/libavcodec/armv4l/mathops.h\
-ffmpeg/libavcodec/armv4l/simple_idct_arm.S\
-ffmpeg/libavcodec/armv4l/dsputil_arm_s.S\
-ffmpeg/libavcodec/armv4l/simple_idct_armv5te.S\
-ffmpeg/libavcodec/armv4l/mpegvideo_armv5te.c\
-ffmpeg/libavcodec/armv4l/simple_idct_armv6.S\
-ffmpeg/libavcodec/armv4l/dsputil_iwmmxt_rnd.h\
-ffmpeg/libavcodec/mpegvideo.c\
-ffmpeg/libavcodec/ac3dec_data.c\
-ffmpeg/libavcodec/h264_parser.h\
-ffmpeg/libavcodec/mpeg4video_parser.h\
-ffmpeg/libavcodec/dsputil.h\
-ffmpeg/libavcodec/mpegaudio.c\
-ffmpeg/libavcodec/vp3dsp.c\
-ffmpeg/libavcodec/apiexample.c\
-ffmpeg/libavcodec/h264pred.h\
-ffmpeg/libavcodec/ac3_parser.c\
-ffmpeg/libavcodec/svq1_vlc.h\
-ffmpeg/libavcodec/rawdec.c\
-ffmpeg/libavcodec/golomb.c\
-ffmpeg/libavcodec/parser.h\
-ffmpeg/libavcodec/h261_parser.c\
-ffmpeg/libavcodec/wmv2dec.c\
-ffmpeg/libavcodec/vp56data.h\
-ffmpeg/libavcodec/pngdec.d\
-ffmpeg/libavcodec/faandct.d\
-ffmpeg/libavcodec/mjpeg.h\
-ffmpeg/libavcodec/ws-snd1.c\
-ffmpeg/libavcodec/ulti.c\
-ffmpeg/libavcodec/pngenc.d\
-ffmpeg/libavcodec/dsicinav.c\
-ffmpeg/libavcodec/mdct.c\
-ffmpeg/libavcodec/acelp_vectors.h\
-ffmpeg/libavcodec/dvdsub_parser.c\
-ffmpeg/libavcodec/tta.c\
-ffmpeg/libavcodec/wavpack.c\
-ffmpeg/libavcodec/flac.h\
-ffmpeg/libavcodec/snow.h\
-ffmpeg/libavcodec/mjpeg_parser.c\
-ffmpeg/libavcodec/acelp_pitch_delay.h\
-ffmpeg/libavcodec/8bps.c\
-ffmpeg/libavcodec/mpegvideo.h\
-ffmpeg/libavcodec/motion_est_template.c\
-ffmpeg/libavcodec/mpegvideo_enc.c\
-ffmpeg/libavcodec/rtjpeg.c\
-ffmpeg/libavcodec/dca_parser.c\
-ffmpeg/libavcodec/libavcodec.pc\
-ffmpeg/libavcodec/rpza.c\
-ffmpeg/libavcodec/libavcodec-uninstalled.pc\
-ffmpeg/libavcodec/gif.c\
-ffmpeg/libavcodec/roqvideoenc.c\
-ffmpeg/libavcodec/roqvideo.h\
-ffmpeg/libavcodec/mpeg12enc.c\
-ffmpeg/libavcodec/vc1.h\
-ffmpeg/libavcodec/apedec.c\
-ffmpeg/libavcodec/utils.d\
-ffmpeg/libavcodec/pngenc.c\
-ffmpeg/libavcodec/bmp.h\
-ffmpeg/libavcodec/vp3data.h\
-ffmpeg/libavcodec/bitstream.d\
-ffmpeg/libavcodec/noise_bsf.c\
-ffmpeg/libavcodec/svq1.h\
-ffmpeg/libavcodec/mpeg4video_parser.c\
-ffmpeg/libavcodec/rv10.c\
-ffmpeg/libavcodec/error_resilience.c\
-ffmpeg/libavcodec/png.c\
-ffmpeg/libavcodec/vp6data.h\
-ffmpeg/libavcodec/movsub_bsf.c\
-ffmpeg/libavcodec/libamr.c\
-ffmpeg/libavcodec/rawenc.c\
-ffmpeg/libavcodec/h263_parser.c\
-ffmpeg/libavcodec/vqavideo.c\
-ffmpeg/libavcodec/faandct.h\
-ffmpeg/libavcodec/h264pred.c\
-ffmpeg/libavcodec/loco.c\
-ffmpeg/libavcodec/xvmcvideo.c\
-ffmpeg/libavcodec/libtheoraenc.c\
-ffmpeg/libavcodec/dxa.c\
-ffmpeg/libavcodec/xiph.h\
-ffmpeg/libavcodec/msmpeg4.c\
-ffmpeg/libavcodec/jpeglsdec.c\
-ffmpeg/libavcodec/dvdsubenc.c\
-ffmpeg/libavcodec/ac3tab.h\
-ffmpeg/libavcodec/xvmc_render.h\
-ffmpeg/libavcodec/rv34.h\
-ffmpeg/libavcodec/imgconvert_template.h\
-ffmpeg/libavcodec/rv34data.h\
-ffmpeg/libavcodec/msvideo1.c\
-ffmpeg/libavcodec/huffman.c\
-ffmpeg/libavcodec/dvdsubdec.c\
-ffmpeg/libavcodec/libdirac.h\
-ffmpeg/libavcodec/h264data.h\
-ffmpeg/libavcodec/qdrw.c\
-ffmpeg/libavcodec/h263.h\
-ffmpeg/libavcodec/ac3enc.c\
-ffmpeg/libavcodec/mpc8data.h\
-ffmpeg/libavcodec/tscc.c\
-ffmpeg/libavcodec/bethsoftvideo.h\
-ffmpeg/libavcodec/acelp_filters.c\
-ffmpeg/libavcodec/dpcm.c\
-ffmpeg/libavcodec/dump_extradata_bsf.c\
-ffmpeg/libavcodec/lcldec.c\
-ffmpeg/libavcodec/cookdata.h\
-ffmpeg/libavcodec/rv40.c\
-ffmpeg/libavcodec/mlp_parser.h\
-ffmpeg/libavcodec/rectangle.h\
-ffmpeg/libavcodec/bytestream.h\
-ffmpeg/libavcodec/targaenc.c\
-ffmpeg/libavcodec/truemotion2.c\
-ffmpeg/libavcodec/pcm.c\
-ffmpeg/libavcodec/faandct.c\
-ffmpeg/libavcodec/dsputil.c\
-ffmpeg/libavcodec/vorbis.h\
-ffmpeg/libavcodec/jfdctint.d\
-ffmpeg/libavcodec/ac3dec_data.h\
-ffmpeg/libavcodec/dcadata.h\
-ffmpeg/libavcodec/dvbsub_parser.c\
-ffmpeg/libavcodec/mpc8huff.h\
-ffmpeg/libavcodec/qdm2.c\
-ffmpeg/libavcodec/sp5xdec.c\
-ffmpeg/libavcodec/c93.c\
-ffmpeg/libavcodec/rtjpeg.h\
-ffmpeg/libavcodec/mpegaudiodectab.h\
-ffmpeg/libavcodec/msmpeg4.h\
-ffmpeg/libavcodec/bitstream.h\
-ffmpeg/libavcodec/mjpega_dump_header_bsf.c\
-ffmpeg/libavcodec/jfdctfst.c\
-ffmpeg/libavcodec/wmadata.h\
-ffmpeg/libavcodec/libschroedinger.h\
-ffmpeg/libavcodec/mjpegenc.c\
-ffmpeg/libavcodec/flicvideo.c\
-ffmpeg/libavcodec/vp6.c\
-ffmpeg/libavcodec/vp5.c\
-ffmpeg/libavcodec/eval.h\
-ffmpeg/libavcodec/dca.h\
-ffmpeg/libavcodec/opt.c\
-ffmpeg/libavcodec/liba52.c\
-ffmpeg/libavcodec/escape124.c\
-ffmpeg/libavcodec/bfi.c\
-ffmpeg/libavcodec/s3tc.c\
-ffmpeg/libavcodec/mimic.c\
-ffmpeg/libavcodec/ps2/idct_mmi.c\
-ffmpeg/libavcodec/ps2/dsputil_mmi.c\
-ffmpeg/libavcodec/ps2/mpegvideo_mmi.c\
-ffmpeg/libavcodec/ps2/mmi.h\
-ffmpeg/libavcodec/vorbis_enc_data.h\
-ffmpeg/libavcodec/qdm2data.h\
-ffmpeg/libavcodec/shorten.c\
-ffmpeg/libavcodec/dnxhddata.h\
-ffmpeg/libavcodec/intrax8.h\
-ffmpeg/libavcodec/ratecontrol.h\
-ffmpeg/libavcodec/png.d\
-ffmpeg/libavcodec/mpc8.c\
-ffmpeg/libavcodec/mpeg4data.h\
-ffmpeg/libavcodec/qpeg.c\
-ffmpeg/libavcodec/xl.c\
-ffmpeg/libavcodec/vp3_parser.c\
-ffmpeg/libavcodec/imc.c\
-ffmpeg/libavcodec/lzw.c\
-ffmpeg/libavcodec/w32thread.c\
-ffmpeg/libavcodec/rv30dsp.c\
-ffmpeg/libavcodec/mlp_parser.c\
-ffmpeg/libavcodec/pnmenc.d\
-ffmpeg/libavcodec/msmpeg4data.c\
-ffmpeg/libavcodec/lzwenc.c\
-ffmpeg/libavcodec/mpegaudio.h\
-ffmpeg/libavcodec/idcinvideo.c\
-ffmpeg/libavcodec/4xm.c\
-ffmpeg/libavcodec/tiertexseqv.c\
-ffmpeg/libavcodec/ptx.c\
-ffmpeg/libavcodec/vc1data.h\
-ffmpeg/libavcodec/svq1enc_cb.h\
-ffmpeg/libavcodec/dnxhddata.c\
-ffmpeg/libavcodec/mpeg12.h\
-ffmpeg/libavcodec/huffyuv.c\
-ffmpeg/libavcodec/h263data.h\
-ffmpeg/libavcodec/elbg.c\
-ffmpeg/libavcodec/ra288.c\
-ffmpeg/libavcodec/h263dec.c\
-ffmpeg/libavcodec/mlib/dsputil_mlib.c\
-ffmpeg/libavcodec/ppc/dsputil_altivec.h\
-ffmpeg/libavcodec/ppc/h264_template_altivec.c\
-ffmpeg/libavcodec/ppc/dsputil_ppc.h\
-ffmpeg/libavcodec/ppc/gmc_altivec.c\
-ffmpeg/libavcodec/ppc/idct_altivec.c\
-ffmpeg/libavcodec/ppc/util_altivec.h\
-ffmpeg/libavcodec/ppc/vc1dsp_altivec.c\
-ffmpeg/libavcodec/ppc/gcc_fixes.h\
-ffmpeg/libavcodec/ppc/int_altivec.c\
-ffmpeg/libavcodec/ppc/imgresample_altivec.c\
-ffmpeg/libavcodec/ppc/fft_altivec.c\
-ffmpeg/libavcodec/ppc/mathops.h\
-ffmpeg/libavcodec/ppc/imgresample_altivec.h\
-ffmpeg/libavcodec/ppc/dsputil_altivec.c\
-ffmpeg/libavcodec/ppc/mpegvideo_altivec.c\
-ffmpeg/libavcodec/ppc/h264_altivec.c\
-ffmpeg/libavcodec/ppc/fdct_altivec.c\
-ffmpeg/libavcodec/ppc/check_altivec.c\
-ffmpeg/libavcodec/ppc/float_altivec.c\
-ffmpeg/libavcodec/ppc/dsputil_ppc.c\
-ffmpeg/libavcodec/ppc/snow_altivec.c\
-ffmpeg/libavcodec/ppc/types_altivec.h\
-ffmpeg/libavcodec/mpeg12data.c\
-ffmpeg/libavcodec/dca.c\
-ffmpeg/libavcodec/wmv2.h\
-ffmpeg/libavcodec/mpegaudiodata.c\
-ffmpeg/libavcodec/mpegaudiodata.h\
-ffmpeg/libavcodec/nellymoser.c\
-ffmpeg/libavcodec/vc1_parser.c\
-ffmpeg/libavcodec/alpha/motion_est_mvi_asm.S\
-ffmpeg/libavcodec/alpha/mpegvideo_alpha.c\
-ffmpeg/libavcodec/alpha/motion_est_alpha.c\
-ffmpeg/libavcodec/alpha/dsputil_alpha_asm.S\
-ffmpeg/libavcodec/alpha/regdef.h\
-ffmpeg/libavcodec/alpha/dsputil_alpha.c\
-ffmpeg/libavcodec/alpha/asm.h\
-ffmpeg/libavcodec/alpha/simple_idct_alpha.c\
-ffmpeg/libavcodec/ac3tab.c\
-ffmpeg/libavcodec/cabac.h\
-ffmpeg/libavcodec/eval.c\
-ffmpeg/libavcodec/libdiracdec.c\
-ffmpeg/libavcodec/libgsm.c\
-ffmpeg/libavcodec/svq1_cb.h\
-ffmpeg/libavcodec/lzw.d\
-ffmpeg/libavcodec/sgienc.c\
-ffmpeg/libavcodec/mpegvideo_parser.c\
-ffmpeg/libavcodec/adpcm.c\
-ffmpeg/libavcodec/avs.c\
-ffmpeg/libavcodec/cscd.c\
-ffmpeg/libavcodec/vcr1.c\
-ffmpeg/libavcodec/ljpegenc.c\
-ffmpeg/libavcodec/vmnc.c\
-ffmpeg/libavcodec/rv40data.h\
-ffmpeg/libavcodec/roqaudioenc.c\
-ffmpeg/libavcodec/cyuv.c\
-ffmpeg/libavcodec/motionpixels.c\
-ffmpeg/libavcodec/dnxhdenc.c\
-ffmpeg/libavcodec/jrevdct.d\
-ffmpeg/libavcodec/mmvideo.c\
-ffmpeg/libavcodec/avcodec.h\
-ffmpeg/libavcodec/dcahuff.h\
-ffmpeg/libavcodec/vp5data.h\
-ffmpeg/libavcodec/xsubdec.c\
-ffmpeg/libavcodec/imgconvert.d\
-ffmpeg/libavcodec/roqvideodec.c\
-ffmpeg/libavcodec/mpegaudiodec.c\
-ffmpeg/libavcodec/mpeg12data.h\
-ffmpeg/libavcodec/libxvidff.c\
-ffmpeg/libavcodec/rl.h\
-ffmpeg/libavcodec/sonic.c\
-ffmpeg/libavcodec/ra288.h\
-ffmpeg/libavcodec/wmadec.c\
-ffmpeg/libavcodec/aac_ac3_parser.h\
-ffmpeg/libavcodec/i386/cavsdsp_mmx.c\
-ffmpeg/libavcodec/i386/vc1dsp_mmx.c\
-ffmpeg/libavcodec/i386/mpegvideo_mmx.c\
-ffmpeg/libavcodec/i386/mmx.h\
-ffmpeg/libavcodec/i386/dsputil_h264_ssse3.c\
-ffmpeg/libavcodec/i386/fft_3dn2.c\
-ffmpeg/libavcodec/i386/vp3dsp_sse2.c\
-ffmpeg/libavcodec/i386/h264_i386.h\
-ffmpeg/libavcodec/i386/idct_xvid.h\
-ffmpeg/libavcodec/i386/fdct_mmx.c\
-ffmpeg/libavcodec/i386/idct_mmx_xvid.c\
-ffmpeg/libavcodec/i386/snowdsp_mmx.c\
-ffmpeg/libavcodec/i386/dsputil_mmx.c\
-ffmpeg/libavcodec/i386/h264dsp_mmx.c\
-ffmpeg/libavcodec/i386/mathops.h\
-ffmpeg/libavcodec/i386/vp3dsp_sse2.h\
-ffmpeg/libavcodec/i386/dsputil_mmx_qns.h\
-ffmpeg/libavcodec/i386/simple_idct_mmx.c\
-ffmpeg/libavcodec/i386/vp3dsp_mmx.c\
-ffmpeg/libavcodec/i386/vp3dsp_mmx.h\
-ffmpeg/libavcodec/i386/dsputil_h264_template_mmx.c\
-ffmpeg/libavcodec/i386/motion_est_mmx.c\
-ffmpeg/libavcodec/i386/idct_mmx.c\
-ffmpeg/libavcodec/i386/dsputil_mmx.h\
-ffmpeg/libavcodec/i386/fft_3dn.c\
-ffmpeg/libavcodec/i386/flacdsp_mmx.c\
-ffmpeg/libavcodec/i386/fft_sse.c\
-ffmpeg/libavcodec/i386/cpuid.c\
-ffmpeg/libavcodec/i386/dsputilenc_mmx.c\
-ffmpeg/libavcodec/i386/dsputil_mmx_avg.h\
-ffmpeg/libavcodec/i386/mpegvideo_mmx_template.c\
-ffmpeg/libavcodec/i386/idct_sse2_xvid.c\
-ffmpeg/libavcodec/i386/dsputil_mmx_rnd.h\
-ffmpeg/libavcodec/bethsoftvideo.c\
-ffmpeg/libavcodec/jpegls.c\
-ffmpeg/libavcodec/acelp_vectors.c\
-ffmpeg/libavcodec/mpc.c\
-ffmpeg/libavcodec/fft-test.c\
-ffmpeg/libavcodec/wmaenc.c\
-ffmpeg/libavcodec/cavsdsp.c\
-ffmpeg/libavcodec/libmp3lame.c\
-ffmpeg/vhook/null.c\
-ffmpeg/vhook/fish.c\
-ffmpeg/vhook/ppm.c\
-ffmpeg/vhook/fish.d\
-ffmpeg/vhook/ppm.d\
-ffmpeg/vhook/watermark.c\
-ffmpeg/vhook/drawtext.d\
-ffmpeg/vhook/null.d\
-ffmpeg/vhook/imlib2.c\
-ffmpeg/vhook/drawtext.c\
-ffmpeg/vhook/watermark.d\
-ffmpeg/configure\
-ffmpeg/ffserver.h\
-ffmpeg/subdir.mak\
-ffmpeg/libavformat/lmlm4.c\
-ffmpeg/libavformat/voc.h\
-ffmpeg/libavformat/asf.h\
-ffmpeg/libavformat/rl2.c\
-ffmpeg/libavformat/sdp.c\
-ffmpeg/libavformat/rtp.h\
-ffmpeg/libavformat/avisynth.c\
-ffmpeg/libavformat/oggparseflac.c\
-ffmpeg/libavformat/os_support.c\
-ffmpeg/libavformat/ffm.h\
-ffmpeg/libavformat/voc.c\
-ffmpeg/libavformat/iff.c\
-ffmpeg/libavformat/libnut.c\
-ffmpeg/libavformat/apc.c\
-ffmpeg/libavformat/mtv.c\
-ffmpeg/libavformat/oggdec.c\
-ffmpeg/libavformat/wc3movie.c\
-ffmpeg/libavformat/avc.c\
-ffmpeg/libavformat/rmenc.c\
-ffmpeg/libavformat/isom.c\
-ffmpeg/libavformat/sdp.d\
-ffmpeg/libavformat/tiertexseq.c\
-ffmpeg/libavformat/crcenc.c\
-ffmpeg/libavformat/rtp.c\
-ffmpeg/libavformat/oggenc.c\
-ffmpeg/libavformat/matroskaenc.c\
-ffmpeg/libavformat/mxf.c\
-ffmpeg/libavformat/thp.c\
-ffmpeg/libavformat/aviobuf.c\
-ffmpeg/libavformat/utils.c\
-ffmpeg/libavformat/dv.h\
-ffmpeg/libavformat/sierravmd.c\
-ffmpeg/libavformat/rtpdec.c\
-ffmpeg/libavformat/asf.c\
-ffmpeg/libavformat/swfenc.c\
-ffmpeg/libavformat/gxf.h\
-ffmpeg/libavformat/xa.c\
-ffmpeg/libavformat/pva.c\
-ffmpeg/libavformat/flvdec.c\
-ffmpeg/libavformat/dv.c\
-ffmpeg/libavformat/raw.h\
-ffmpeg/libavformat/raw.c\
-ffmpeg/libavformat/bethsoftvid.c\
-ffmpeg/libavformat/mp3.c\
-ffmpeg/libavformat/avienc.c\
-ffmpeg/libavformat/rtp_mpv.h\
-ffmpeg/libavformat/rtsp.h\
-ffmpeg/libavformat/rtp_h264.h\
-ffmpeg/libavformat/avio.c\
-ffmpeg/libavformat/flv.h\
-ffmpeg/libavformat/rtsp.c\
-ffmpeg/libavformat/oggparsespeex.c\
-ffmpeg/libavformat/avi.h\
-ffmpeg/libavformat/smacker.c\
-ffmpeg/libavformat/gxf.c\
-ffmpeg/libavformat/flic.c\
-ffmpeg/libavformat/idcin.c\
-ffmpeg/libavformat/avio.h\
-ffmpeg/libavformat/rpl.c\
-ffmpeg/libavformat/isom.h\
-ffmpeg/libavformat/ipmovie.c\
-ffmpeg/libavformat/amr.c\
-ffmpeg/libavformat/avio.d\
-ffmpeg/libavformat/aviobuf.d\
-ffmpeg/libavformat/riff.h\
-ffmpeg/libavformat/wav.c\
-ffmpeg/libavformat/ffmenc.c\
-ffmpeg/libavformat/nut.h\
-ffmpeg/libavformat/allformats.c\
-ffmpeg/libavformat/framehook.h\
-ffmpeg/libavformat/img2.c\
-ffmpeg/libavformat/txd.c\
-ffmpeg/libavformat/oggdec.h\
-ffmpeg/libavformat/asfcrypt.h\
-ffmpeg/libavformat/framecrcenc.c\
-ffmpeg/libavformat/idroq.c\
-ffmpeg/libavformat/oggparsevorbis.c\
-ffmpeg/libavformat/avc.h\
-ffmpeg/libavformat/nuv.c\
-ffmpeg/libavformat/aiff.c\
-ffmpeg/libavformat/mpegts.c\
-ffmpeg/libavformat/mpeg.h\
-ffmpeg/libavformat/nsvdec.c\
-ffmpeg/libavformat/Makefile\
-ffmpeg/libavformat/swfdec.c\
-ffmpeg/libavformat/westwood.c\
-ffmpeg/libavformat/file.c\
-ffmpeg/libavformat/avformat.h\
-ffmpeg/libavformat/http.c\
-ffmpeg/libavformat/cutils.d\
-ffmpeg/libavformat/tta.c\
-ffmpeg/libavformat/mpeg.c\
-ffmpeg/libavformat/mov.c\
-ffmpeg/libavformat/nutenc.c\
-ffmpeg/libavformat/gif.c\
-ffmpeg/libavformat/framehook.c\
-ffmpeg/libavformat/rtp_aac.c\
-ffmpeg/libavformat/utils.d\
-ffmpeg/libavformat/mmf.c\
-ffmpeg/libavformat/rtpenc.c\
-ffmpeg/libavformat/matroskadec.c\
-ffmpeg/libavformat/os_support.d\
-ffmpeg/libavformat/vc1test.c\
-ffmpeg/libavformat/rtp_internal.h\
-ffmpeg/libavformat/rm.h\
-ffmpeg/libavformat/rtpproto.c\
-ffmpeg/libavformat/udp.c\
-ffmpeg/libavformat/dxa.c\
-ffmpeg/libavformat/libavformat.pc\
-ffmpeg/libavformat/avidec.c\
-ffmpeg/libavformat/oggparseogm.c\
-ffmpeg/libavformat/mm.c\
-ffmpeg/libavformat/asfcrypt.c\
-ffmpeg/libavformat/tcp.c\
-ffmpeg/libavformat/dvenc.c\
-ffmpeg/libavformat/cutils.c\
-ffmpeg/libavformat/mpegtsenc.c\
-ffmpeg/libavformat/rtp_h264.c\
-ffmpeg/libavformat/ffmdec.c\
-ffmpeg/libavformat/eacdata.c\
-ffmpeg/libavformat/matroska.h\
-ffmpeg/libavformat/allformats.d\
-ffmpeg/libavformat/siff.c\
-ffmpeg/libavformat/rtpenc_h264.c\
-ffmpeg/libavformat/segafilm.c\
-ffmpeg/libavformat/wv.c\
-ffmpeg/libavformat/au.c\
-ffmpeg/libavformat/adtsenc.c\
-ffmpeg/libavformat/rmdec.c\
-ffmpeg/libavformat/nutdec.c\
-ffmpeg/libavformat/c93.c\
-ffmpeg/libavformat/network.h\
-ffmpeg/libavformat/yuv4mpeg.c\
-ffmpeg/libavformat/movenc.c\
-ffmpeg/libavformat/gxfenc.c\
-ffmpeg/libavformat/bfi.c\
-ffmpeg/libavformat/vocenc.c\
-ffmpeg/libavformat/swf.h\
-ffmpeg/libavformat/asf-enc.c\
-ffmpeg/libavformat/matroska.c\
-ffmpeg/libavformat/mpc8.c\
-ffmpeg/libavformat/rtp_mpv.c\
-ffmpeg/libavformat/riff.c\
-ffmpeg/libavformat/oma.c\
-ffmpeg/libavformat/vocdec.c\
-ffmpeg/libavformat/sol.c\
-ffmpeg/libavformat/4xm.c\
-ffmpeg/libavformat/mpegenc.c\
-ffmpeg/libavformat/rtp_aac.h\
-ffmpeg/libavformat/mpegts.h\
-ffmpeg/libavformat/mvi.c\
-ffmpeg/libavformat/nut.c\
-ffmpeg/libavformat/mpjpeg.c\
-ffmpeg/libavformat/oggparsetheora.c\
-ffmpeg/libavformat/dsicin.c\
-ffmpeg/libavformat/msnwc_tcp.c\
-ffmpeg/libavformat/avs.c\
-ffmpeg/libavformat/rtspcodes.h\
-ffmpeg/libavformat/qtpalette.h\
-ffmpeg/libavformat/ape.c\
-ffmpeg/libavformat/libavformat-uninstalled.pc\
-ffmpeg/libavformat/daud.c\
-ffmpeg/libavformat/psxstr.c\
-ffmpeg/libavformat/electronicarts.c\
-ffmpeg/libavformat/flvenc.c\
-ffmpeg/libavformat/os_support.h\
-ffmpeg/libavformat/mpc.c\
-ffmpeg/version.sh\
-ffmpeg/COPYING.LGPL\
-ffmpeg/tests/seek_test.c\
-ffmpeg/tests/libav.regression.ref\
-ffmpeg/tests/regression.sh\
-ffmpeg/tests/test.conf\
-ffmpeg/tests/rotozoom.regression.ref\
-ffmpeg/tests/ffserver.regression.ref\
-ffmpeg/tests/lena.pnm\
-ffmpeg/tests/audiogen.c\
-ffmpeg/tests/videogen.c\
-ffmpeg/tests/seek.regression.ref\
-ffmpeg/tests/server-regression.sh\
-ffmpeg/tests/ffmpeg.regression.ref\
-ffmpeg/tests/seek_test.sh\
-ffmpeg/tests/tiny_psnr.c\
-ffmpeg/tests/rotozoom.c\
-ffmpeg/ffmpeg.c\
-ffmpeg/cmdutils.c\
-ffmpeg/ffplay.c
-
+ffmpeg/COPYING.GPL \
+ffmpeg/COPYING.LGPL \
+ffmpeg/CREDITS \
+ffmpeg/Changelog \
+ffmpeg/Doxyfile \
+ffmpeg/INSTALL \
+ffmpeg/MAINTAINERS \
+ffmpeg/Makefile \
+ffmpeg/README \
+ffmpeg/cmdutils.c \
+ffmpeg/cmdutils.h \
+ffmpeg/common.mak \
+ffmpeg/configure \
+ffmpeg/doc/TODO \
+ffmpeg/doc/avutil.txt \
+ffmpeg/doc/faq.texi \
+ffmpeg/doc/ffmpeg-doc.texi \
+ffmpeg/doc/ffmpeg_powerpc_performance_evaluation_howto.txt \
+ffmpeg/doc/ffplay-doc.texi \
+ffmpeg/doc/ffserver-doc.texi \
+ffmpeg/doc/ffserver.conf \
+ffmpeg/doc/general.texi \
+ffmpeg/doc/hooks.texi \
+ffmpeg/doc/issue_tracker.txt \
+ffmpeg/doc/optimization.txt \
+ffmpeg/doc/snow.txt \
+ffmpeg/doc/soc.txt \
+ffmpeg/doc/texi2pod.pl \
+ffmpeg/ffmpeg.c \
+ffmpeg/ffplay.c \
+ffmpeg/ffserver.c \
+ffmpeg/ffserver.h \
+ffmpeg/libavcodec/4xm.c \
+ffmpeg/libavcodec/8bps.c \
+ffmpeg/libavcodec/8svx.c \
+ffmpeg/libavcodec/Makefile \
+ffmpeg/libavcodec/aac_ac3_parser.c \
+ffmpeg/libavcodec/aac_ac3_parser.h \
+ffmpeg/libavcodec/aac_parser.c \
+ffmpeg/libavcodec/aasc.c \
+ffmpeg/libavcodec/ac3.c \
+ffmpeg/libavcodec/ac3.h \
+ffmpeg/libavcodec/ac3_parser.c \
+ffmpeg/libavcodec/ac3_parser.h \
+ffmpeg/libavcodec/ac3dec.c \
+ffmpeg/libavcodec/ac3dec.h \
+ffmpeg/libavcodec/ac3dec_data.c \
+ffmpeg/libavcodec/ac3dec_data.h \
+ffmpeg/libavcodec/ac3enc.c \
+ffmpeg/libavcodec/ac3tab.c \
+ffmpeg/libavcodec/ac3tab.h \
+ffmpeg/libavcodec/acelp_filters.c \
+ffmpeg/libavcodec/acelp_filters.h \
+ffmpeg/libavcodec/acelp_math.c \
+ffmpeg/libavcodec/acelp_math.h \
+ffmpeg/libavcodec/acelp_pitch_delay.c \
+ffmpeg/libavcodec/acelp_pitch_delay.h \
+ffmpeg/libavcodec/acelp_vectors.c \
+ffmpeg/libavcodec/acelp_vectors.h \
+ffmpeg/libavcodec/adpcm.c \
+ffmpeg/libavcodec/adx.h \
+ffmpeg/libavcodec/adxdec.c \
+ffmpeg/libavcodec/adxenc.c \
+ffmpeg/libavcodec/alac.c \
+ffmpeg/libavcodec/allcodecs.c \
+ffmpeg/libavcodec/alpha/asm.h \
+ffmpeg/libavcodec/alpha/dsputil_alpha.c \
+ffmpeg/libavcodec/alpha/dsputil_alpha_asm.S \
+ffmpeg/libavcodec/alpha/motion_est_alpha.c \
+ffmpeg/libavcodec/alpha/motion_est_mvi_asm.S \
+ffmpeg/libavcodec/alpha/mpegvideo_alpha.c \
+ffmpeg/libavcodec/alpha/regdef.h \
+ffmpeg/libavcodec/alpha/simple_idct_alpha.c \
+ffmpeg/libavcodec/apedec.c \
+ffmpeg/libavcodec/apiexample.c \
+ffmpeg/libavcodec/armv4l/dsputil_arm.c \
+ffmpeg/libavcodec/armv4l/dsputil_arm_s.S \
+ffmpeg/libavcodec/armv4l/dsputil_iwmmxt.c \
+ffmpeg/libavcodec/armv4l/dsputil_iwmmxt_rnd.h \
+ffmpeg/libavcodec/armv4l/float_arm_vfp.c \
+ffmpeg/libavcodec/armv4l/jrevdct_arm.S \
+ffmpeg/libavcodec/armv4l/mathops.h \
+ffmpeg/libavcodec/armv4l/mpegvideo_arm.c \
+ffmpeg/libavcodec/armv4l/mpegvideo_armv5te.c \
+ffmpeg/libavcodec/armv4l/mpegvideo_iwmmxt.c \
+ffmpeg/libavcodec/armv4l/simple_idct_arm.S \
+ffmpeg/libavcodec/armv4l/simple_idct_armv5te.S \
+ffmpeg/libavcodec/armv4l/simple_idct_armv6.S \
+ffmpeg/libavcodec/asv1.c \
+ffmpeg/libavcodec/atrac3.c \
+ffmpeg/libavcodec/atrac3data.h \
+ffmpeg/libavcodec/audioconvert.c \
+ffmpeg/libavcodec/avcodec.h \
+ffmpeg/libavcodec/avs.c \
+ffmpeg/libavcodec/beosthread.c \
+ffmpeg/libavcodec/bethsoftvideo.c \
+ffmpeg/libavcodec/bethsoftvideo.h \
+ffmpeg/libavcodec/bfi.c \
+ffmpeg/libavcodec/bfin/config_bfin.h \
+ffmpeg/libavcodec/bfin/dsputil_bfin.c \
+ffmpeg/libavcodec/bfin/dsputil_bfin.h \
+ffmpeg/libavcodec/bfin/fdct_bfin.S \
+ffmpeg/libavcodec/bfin/idct_bfin.S \
+ffmpeg/libavcodec/bfin/mathops.h \
+ffmpeg/libavcodec/bfin/mpegvideo_bfin.c \
+ffmpeg/libavcodec/bfin/pixels_bfin.S \
+ffmpeg/libavcodec/bfin/vp3_bfin.c \
+ffmpeg/libavcodec/bfin/vp3_idct_bfin.S \
+ffmpeg/libavcodec/bitstream.c \
+ffmpeg/libavcodec/bitstream.h \
+ffmpeg/libavcodec/bitstream_filter.c \
+ffmpeg/libavcodec/bmp.c \
+ffmpeg/libavcodec/bmp.h \
+ffmpeg/libavcodec/bmpenc.c \
+ffmpeg/libavcodec/bytestream.h \
+ffmpeg/libavcodec/c93.c \
+ffmpeg/libavcodec/cabac.c \
+ffmpeg/libavcodec/cabac.h \
+ffmpeg/libavcodec/cavs.c \
+ffmpeg/libavcodec/cavs.h \
+ffmpeg/libavcodec/cavs_parser.c \
+ffmpeg/libavcodec/cavsdata.h \
+ffmpeg/libavcodec/cavsdec.c \
+ffmpeg/libavcodec/cavsdsp.c \
+ffmpeg/libavcodec/cinepak.c \
+ffmpeg/libavcodec/cljr.c \
+ffmpeg/libavcodec/colorspace.h \
+ffmpeg/libavcodec/cook.c \
+ffmpeg/libavcodec/cookdata.h \
+ffmpeg/libavcodec/cscd.c \
+ffmpeg/libavcodec/cyuv.c \
+ffmpeg/libavcodec/dca.c \
+ffmpeg/libavcodec/dca.h \
+ffmpeg/libavcodec/dca_parser.c \
+ffmpeg/libavcodec/dcadata.h \
+ffmpeg/libavcodec/dcahuff.h \
+ffmpeg/libavcodec/dct-test.c \
+ffmpeg/libavcodec/dirac_parser.c \
+ffmpeg/libavcodec/dnxhddata.c \
+ffmpeg/libavcodec/dnxhddata.h \
+ffmpeg/libavcodec/dnxhddec.c \
+ffmpeg/libavcodec/dnxhdenc.c \
+ffmpeg/libavcodec/dpcm.c \
+ffmpeg/libavcodec/dsicinav.c \
+ffmpeg/libavcodec/dsputil.c \
+ffmpeg/libavcodec/dsputil.h \
+ffmpeg/libavcodec/dump_extradata_bsf.c \
+ffmpeg/libavcodec/dv.c \
+ffmpeg/libavcodec/dvbsub.c \
+ffmpeg/libavcodec/dvbsub_parser.c \
+ffmpeg/libavcodec/dvbsubdec.c \
+ffmpeg/libavcodec/dvdata.h \
+ffmpeg/libavcodec/dvdsub_parser.c \
+ffmpeg/libavcodec/dvdsubdec.c \
+ffmpeg/libavcodec/dvdsubenc.c \
+ffmpeg/libavcodec/dxa.c \
+ffmpeg/libavcodec/eacmv.c \
+ffmpeg/libavcodec/elbg.c \
+ffmpeg/libavcodec/elbg.h \
+ffmpeg/libavcodec/error_resilience.c \
+ffmpeg/libavcodec/escape124.c \
+ffmpeg/libavcodec/eval.c \
+ffmpeg/libavcodec/eval.h \
+ffmpeg/libavcodec/faandct.c \
+ffmpeg/libavcodec/faandct.h \
+ffmpeg/libavcodec/faanidct.c \
+ffmpeg/libavcodec/faanidct.h \
+ffmpeg/libavcodec/fdctref.c \
+ffmpeg/libavcodec/fft-test.c \
+ffmpeg/libavcodec/fft.c \
+ffmpeg/libavcodec/ffv1.c \
+ffmpeg/libavcodec/flac.c \
+ffmpeg/libavcodec/flac.h \
+ffmpeg/libavcodec/flacenc.c \
+ffmpeg/libavcodec/flashsv.c \
+ffmpeg/libavcodec/flashsvenc.c \
+ffmpeg/libavcodec/flicvideo.c \
+ffmpeg/libavcodec/fraps.c \
+ffmpeg/libavcodec/g726.c \
+ffmpeg/libavcodec/gif.c \
+ffmpeg/libavcodec/gifdec.c \
+ffmpeg/libavcodec/golomb.c \
+ffmpeg/libavcodec/golomb.h \
+ffmpeg/libavcodec/h261.c \
+ffmpeg/libavcodec/h261.h \
+ffmpeg/libavcodec/h261_parser.c \
+ffmpeg/libavcodec/h261data.h \
+ffmpeg/libavcodec/h261dec.c \
+ffmpeg/libavcodec/h261enc.c \
+ffmpeg/libavcodec/h263.c \
+ffmpeg/libavcodec/h263.h \
+ffmpeg/libavcodec/h263_parser.c \
+ffmpeg/libavcodec/h263_parser.h \
+ffmpeg/libavcodec/h263data.h \
+ffmpeg/libavcodec/h263dec.c \
+ffmpeg/libavcodec/h264.c \
+ffmpeg/libavcodec/h264.h \
+ffmpeg/libavcodec/h264_mp4toannexb_bsf.c \
+ffmpeg/libavcodec/h264_parser.c \
+ffmpeg/libavcodec/h264_parser.h \
+ffmpeg/libavcodec/h264data.h \
+ffmpeg/libavcodec/h264dspenc.c \
+ffmpeg/libavcodec/h264enc.c \
+ffmpeg/libavcodec/h264idct.c \
+ffmpeg/libavcodec/h264pred.c \
+ffmpeg/libavcodec/h264pred.h \
+ffmpeg/libavcodec/huffman.c \
+ffmpeg/libavcodec/huffman.h \
+ffmpeg/libavcodec/huffyuv.c \
+ffmpeg/libavcodec/i386/cavsdsp_mmx.c \
+ffmpeg/libavcodec/i386/cpuid.c \
+ffmpeg/libavcodec/i386/dsputil_h264_template_mmx.c \
+ffmpeg/libavcodec/i386/dsputil_h264_template_ssse3.c \
+ffmpeg/libavcodec/i386/dsputil_mmx.c \
+ffmpeg/libavcodec/i386/dsputil_mmx.h \
+ffmpeg/libavcodec/i386/dsputil_mmx_avg.h \
+ffmpeg/libavcodec/i386/dsputil_mmx_qns.h \
+ffmpeg/libavcodec/i386/dsputil_mmx_rnd.h \
+ffmpeg/libavcodec/i386/dsputilenc_mmx.c \
+ffmpeg/libavcodec/i386/fdct_mmx.c \
+ffmpeg/libavcodec/i386/fft_3dn.c \
+ffmpeg/libavcodec/i386/fft_3dn2.c \
+ffmpeg/libavcodec/i386/fft_sse.c \
+ffmpeg/libavcodec/i386/flacdsp_mmx.c \
+ffmpeg/libavcodec/i386/h264_i386.h \
+ffmpeg/libavcodec/i386/h264dsp_mmx.c \
+ffmpeg/libavcodec/i386/idct_mmx.c \
+ffmpeg/libavcodec/i386/idct_mmx_xvid.c \
+ffmpeg/libavcodec/i386/idct_sse2_xvid.c \
+ffmpeg/libavcodec/i386/idct_xvid.h \
+ffmpeg/libavcodec/i386/mathops.h \
+ffmpeg/libavcodec/i386/mmx.h \
+ffmpeg/libavcodec/i386/motion_est_mmx.c \
+ffmpeg/libavcodec/i386/mpegvideo_mmx.c \
+ffmpeg/libavcodec/i386/mpegvideo_mmx_template.c \
+ffmpeg/libavcodec/i386/simple_idct_mmx.c \
+ffmpeg/libavcodec/i386/snowdsp_mmx.c \
+ffmpeg/libavcodec/i386/vc1dsp_mmx.c \
+ffmpeg/libavcodec/i386/vp3dsp_mmx.c \
+ffmpeg/libavcodec/i386/vp3dsp_mmx.h \
+ffmpeg/libavcodec/i386/vp3dsp_sse2.c \
+ffmpeg/libavcodec/i386/vp3dsp_sse2.h \
+ffmpeg/libavcodec/idcinvideo.c \
+ffmpeg/libavcodec/imc.c \
+ffmpeg/libavcodec/imcdata.h \
+ffmpeg/libavcodec/imgconvert.c \
+ffmpeg/libavcodec/imgconvert.h \
+ffmpeg/libavcodec/imgconvert_template.h \
+ffmpeg/libavcodec/imgresample.c \
+ffmpeg/libavcodec/imx_dump_header_bsf.c \
+ffmpeg/libavcodec/indeo2.c \
+ffmpeg/libavcodec/indeo2data.h \
+ffmpeg/libavcodec/indeo3.c \
+ffmpeg/libavcodec/indeo3data.h \
+ffmpeg/libavcodec/interplayvideo.c \
+ffmpeg/libavcodec/intrax8.c \
+ffmpeg/libavcodec/intrax8.h \
+ffmpeg/libavcodec/intrax8dsp.c \
+ffmpeg/libavcodec/intrax8huf.h \
+ffmpeg/libavcodec/jfdctfst.c \
+ffmpeg/libavcodec/jfdctint.c \
+ffmpeg/libavcodec/jpegls.c \
+ffmpeg/libavcodec/jpegls.h \
+ffmpeg/libavcodec/jpeglsdec.c \
+ffmpeg/libavcodec/jpeglsdec.h \
+ffmpeg/libavcodec/jpeglsenc.c \
+ffmpeg/libavcodec/jrevdct.c \
+ffmpeg/libavcodec/kmvc.c \
+ffmpeg/libavcodec/lcl.h \
+ffmpeg/libavcodec/lcldec.c \
+ffmpeg/libavcodec/lclenc.c \
+ffmpeg/libavcodec/liba52.c \
+ffmpeg/libavcodec/libamr.c \
+ffmpeg/libavcodec/libdirac.h \
+ffmpeg/libavcodec/libdirac_libschro.c \
+ffmpeg/libavcodec/libdirac_libschro.h \
+ffmpeg/libavcodec/libdiracdec.c \
+ffmpeg/libavcodec/libdiracenc.c \
+ffmpeg/libavcodec/libfaac.c \
+ffmpeg/libavcodec/libfaad.c \
+ffmpeg/libavcodec/libgsm.c \
+ffmpeg/libavcodec/libmp3lame.c \
+ffmpeg/libavcodec/libschroedinger.c \
+ffmpeg/libavcodec/libschroedinger.h \
+ffmpeg/libavcodec/libschroedingerdec.c \
+ffmpeg/libavcodec/libschroedingerenc.c \
+ffmpeg/libavcodec/libtheoraenc.c \
+ffmpeg/libavcodec/libvorbis.c \
+ffmpeg/libavcodec/libx264.c \
+ffmpeg/libavcodec/libxvid_internal.h \
+ffmpeg/libavcodec/libxvid_rc.c \
+ffmpeg/libavcodec/libxvidff.c \
+ffmpeg/libavcodec/ljpegenc.c \
+ffmpeg/libavcodec/loco.c \
+ffmpeg/libavcodec/lsp.c \
+ffmpeg/libavcodec/lsp.h \
+ffmpeg/libavcodec/lzw.c \
+ffmpeg/libavcodec/lzw.h \
+ffmpeg/libavcodec/lzwenc.c \
+ffmpeg/libavcodec/mace.c \
+ffmpeg/libavcodec/mathops.h \
+ffmpeg/libavcodec/mdct.c \
+ffmpeg/libavcodec/mdec.c \
+ffmpeg/libavcodec/mimic.c \
+ffmpeg/libavcodec/mjpeg.c \
+ffmpeg/libavcodec/mjpeg.h \
+ffmpeg/libavcodec/mjpeg_parser.c \
+ffmpeg/libavcodec/mjpega_dump_header_bsf.c \
+ffmpeg/libavcodec/mjpegbdec.c \
+ffmpeg/libavcodec/mjpegdec.c \
+ffmpeg/libavcodec/mjpegdec.h \
+ffmpeg/libavcodec/mjpegenc.c \
+ffmpeg/libavcodec/mjpegenc.h \
+ffmpeg/libavcodec/mlib/dsputil_mlib.c \
+ffmpeg/libavcodec/mlp_parser.c \
+ffmpeg/libavcodec/mlp_parser.h \
+ffmpeg/libavcodec/mlpdec.c \
+ffmpeg/libavcodec/mmvideo.c \
+ffmpeg/libavcodec/motion-test.c \
+ffmpeg/libavcodec/motion_est.c \
+ffmpeg/libavcodec/motion_est_template.c \
+ffmpeg/libavcodec/motionpixels.c \
+ffmpeg/libavcodec/movsub_bsf.c \
+ffmpeg/libavcodec/mp3_header_compress_bsf.c \
+ffmpeg/libavcodec/mp3_header_decompress_bsf.c \
+ffmpeg/libavcodec/mpc.c \
+ffmpeg/libavcodec/mpc.h \
+ffmpeg/libavcodec/mpc7.c \
+ffmpeg/libavcodec/mpc7data.h \
+ffmpeg/libavcodec/mpc8.c \
+ffmpeg/libavcodec/mpc8data.h \
+ffmpeg/libavcodec/mpc8huff.h \
+ffmpeg/libavcodec/mpcdata.h \
+ffmpeg/libavcodec/mpeg12.c \
+ffmpeg/libavcodec/mpeg12.h \
+ffmpeg/libavcodec/mpeg12data.c \
+ffmpeg/libavcodec/mpeg12data.h \
+ffmpeg/libavcodec/mpeg12decdata.h \
+ffmpeg/libavcodec/mpeg12enc.c \
+ffmpeg/libavcodec/mpeg4audio.c \
+ffmpeg/libavcodec/mpeg4audio.h \
+ffmpeg/libavcodec/mpeg4data.h \
+ffmpeg/libavcodec/mpeg4video_parser.c \
+ffmpeg/libavcodec/mpeg4video_parser.h \
+ffmpeg/libavcodec/mpegaudio.c \
+ffmpeg/libavcodec/mpegaudio.h \
+ffmpeg/libavcodec/mpegaudio_parser.c \
+ffmpeg/libavcodec/mpegaudiodata.c \
+ffmpeg/libavcodec/mpegaudiodata.h \
+ffmpeg/libavcodec/mpegaudiodec.c \
+ffmpeg/libavcodec/mpegaudiodecheader.c \
+ffmpeg/libavcodec/mpegaudiodecheader.h \
+ffmpeg/libavcodec/mpegaudiodectab.h \
+ffmpeg/libavcodec/mpegaudioenc.c \
+ffmpeg/libavcodec/mpegaudiotab.h \
+ffmpeg/libavcodec/mpegvideo.c \
+ffmpeg/libavcodec/mpegvideo.h \
+ffmpeg/libavcodec/mpegvideo_common.h \
+ffmpeg/libavcodec/mpegvideo_enc.c \
+ffmpeg/libavcodec/mpegvideo_parser.c \
+ffmpeg/libavcodec/msmpeg4.c \
+ffmpeg/libavcodec/msmpeg4.h \
+ffmpeg/libavcodec/msmpeg4data.c \
+ffmpeg/libavcodec/msmpeg4data.h \
+ffmpeg/libavcodec/msrle.c \
+ffmpeg/libavcodec/msvideo1.c \
+ffmpeg/libavcodec/nellymoser.c \
+ffmpeg/libavcodec/nellymoser.h \
+ffmpeg/libavcodec/nellymoserdec.c \
+ffmpeg/libavcodec/noise_bsf.c \
+ffmpeg/libavcodec/nuv.c \
+ffmpeg/libavcodec/opt.c \
+ffmpeg/libavcodec/opt.h \
+ffmpeg/libavcodec/os2thread.c \
+ffmpeg/libavcodec/parser.c \
+ffmpeg/libavcodec/parser.h \
+ffmpeg/libavcodec/pcm.c \
+ffmpeg/libavcodec/pcx.c \
+ffmpeg/libavcodec/png.c \
+ffmpeg/libavcodec/png.h \
+ffmpeg/libavcodec/pngdec.c \
+ffmpeg/libavcodec/pngenc.c \
+ffmpeg/libavcodec/pnm.c \
+ffmpeg/libavcodec/pnm.h \
+ffmpeg/libavcodec/pnm_parser.c \
+ffmpeg/libavcodec/pnmenc.c \
+ffmpeg/libavcodec/ppc/check_altivec.c \
+ffmpeg/libavcodec/ppc/dsputil_altivec.c \
+ffmpeg/libavcodec/ppc/dsputil_altivec.h \
+ffmpeg/libavcodec/ppc/dsputil_ppc.c \
+ffmpeg/libavcodec/ppc/dsputil_ppc.h \
+ffmpeg/libavcodec/ppc/fdct_altivec.c \
+ffmpeg/libavcodec/ppc/fft_altivec.c \
+ffmpeg/libavcodec/ppc/float_altivec.c \
+ffmpeg/libavcodec/ppc/gcc_fixes.h \
+ffmpeg/libavcodec/ppc/gmc_altivec.c \
+ffmpeg/libavcodec/ppc/h264_altivec.c \
+ffmpeg/libavcodec/ppc/h264_template_altivec.c \
+ffmpeg/libavcodec/ppc/idct_altivec.c \
+ffmpeg/libavcodec/ppc/imgresample_altivec.c \
+ffmpeg/libavcodec/ppc/imgresample_altivec.h \
+ffmpeg/libavcodec/ppc/int_altivec.c \
+ffmpeg/libavcodec/ppc/mathops.h \
+ffmpeg/libavcodec/ppc/mpegvideo_altivec.c \
+ffmpeg/libavcodec/ppc/snow_altivec.c \
+ffmpeg/libavcodec/ppc/types_altivec.h \
+ffmpeg/libavcodec/ppc/util_altivec.h \
+ffmpeg/libavcodec/ppc/vc1dsp_altivec.c \
+ffmpeg/libavcodec/ps2/dsputil_mmi.c \
+ffmpeg/libavcodec/ps2/idct_mmi.c \
+ffmpeg/libavcodec/ps2/mmi.h \
+ffmpeg/libavcodec/ps2/mpegvideo_mmi.c \
+ffmpeg/libavcodec/pthread.c \
+ffmpeg/libavcodec/ptx.c \
+ffmpeg/libavcodec/qdm2.c \
+ffmpeg/libavcodec/qdm2data.h \
+ffmpeg/libavcodec/qdrw.c \
+ffmpeg/libavcodec/qpeg.c \
+ffmpeg/libavcodec/qtrle.c \
+ffmpeg/libavcodec/qtrleenc.c \
+ffmpeg/libavcodec/ra144.c \
+ffmpeg/libavcodec/ra144.h \
+ffmpeg/libavcodec/ra288.c \
+ffmpeg/libavcodec/ra288.h \
+ffmpeg/libavcodec/rangecoder.c \
+ffmpeg/libavcodec/rangecoder.h \
+ffmpeg/libavcodec/ratecontrol.c \
+ffmpeg/libavcodec/ratecontrol.h \
+ffmpeg/libavcodec/raw.c \
+ffmpeg/libavcodec/raw.h \
+ffmpeg/libavcodec/rawdec.c \
+ffmpeg/libavcodec/rawenc.c \
+ffmpeg/libavcodec/rectangle.h \
+ffmpeg/libavcodec/remove_extradata_bsf.c \
+ffmpeg/libavcodec/resample.c \
+ffmpeg/libavcodec/resample2.c \
+ffmpeg/libavcodec/rl.h \
+ffmpeg/libavcodec/rl2.c \
+ffmpeg/libavcodec/rle.c \
+ffmpeg/libavcodec/rle.h \
+ffmpeg/libavcodec/roqaudioenc.c \
+ffmpeg/libavcodec/roqvideo.c \
+ffmpeg/libavcodec/roqvideo.h \
+ffmpeg/libavcodec/roqvideodec.c \
+ffmpeg/libavcodec/roqvideoenc.c \
+ffmpeg/libavcodec/rpza.c \
+ffmpeg/libavcodec/rtjpeg.c \
+ffmpeg/libavcodec/rtjpeg.h \
+ffmpeg/libavcodec/rv10.c \
+ffmpeg/libavcodec/rv30.c \
+ffmpeg/libavcodec/rv30data.h \
+ffmpeg/libavcodec/rv30dsp.c \
+ffmpeg/libavcodec/rv34.c \
+ffmpeg/libavcodec/rv34.h \
+ffmpeg/libavcodec/rv34data.h \
+ffmpeg/libavcodec/rv34vlc.h \
+ffmpeg/libavcodec/rv40.c \
+ffmpeg/libavcodec/rv40data.h \
+ffmpeg/libavcodec/rv40vlc2.h \
+ffmpeg/libavcodec/s3tc.c \
+ffmpeg/libavcodec/s3tc.h \
+ffmpeg/libavcodec/sgi.h \
+ffmpeg/libavcodec/sgidec.c \
+ffmpeg/libavcodec/sgienc.c \
+ffmpeg/libavcodec/sh4/dsputil_align.c \
+ffmpeg/libavcodec/sh4/dsputil_sh4.c \
+ffmpeg/libavcodec/sh4/idct_sh4.c \
+ffmpeg/libavcodec/sh4/qpel.c \
+ffmpeg/libavcodec/shorten.c \
+ffmpeg/libavcodec/simple_idct.c \
+ffmpeg/libavcodec/simple_idct.h \
+ffmpeg/libavcodec/smacker.c \
+ffmpeg/libavcodec/smc.c \
+ffmpeg/libavcodec/snow.c \
+ffmpeg/libavcodec/snow.h \
+ffmpeg/libavcodec/sonic.c \
+ffmpeg/libavcodec/sp5x.h \
+ffmpeg/libavcodec/sp5xdec.c \
+ffmpeg/libavcodec/sparc/dsputil_vis.c \
+ffmpeg/libavcodec/sparc/simple_idct_vis.c \
+ffmpeg/libavcodec/sparc/vis.h \
+ffmpeg/libavcodec/sunrast.c \
+ffmpeg/libavcodec/svq1.c \
+ffmpeg/libavcodec/svq1.h \
+ffmpeg/libavcodec/svq1_cb.h \
+ffmpeg/libavcodec/svq1_vlc.h \
+ffmpeg/libavcodec/svq1dec.c \
+ffmpeg/libavcodec/svq1enc.c \
+ffmpeg/libavcodec/svq1enc_cb.h \
+ffmpeg/libavcodec/svq3.c \
+ffmpeg/libavcodec/targa.c \
+ffmpeg/libavcodec/targaenc.c \
+ffmpeg/libavcodec/tiertexseqv.c \
+ffmpeg/libavcodec/tiff.c \
+ffmpeg/libavcodec/tiff.h \
+ffmpeg/libavcodec/tiffenc.c \
+ffmpeg/libavcodec/truemotion1.c \
+ffmpeg/libavcodec/truemotion1data.h \
+ffmpeg/libavcodec/truemotion2.c \
+ffmpeg/libavcodec/truespeech.c \
+ffmpeg/libavcodec/truespeech_data.h \
+ffmpeg/libavcodec/tscc.c \
+ffmpeg/libavcodec/tta.c \
+ffmpeg/libavcodec/txd.c \
+ffmpeg/libavcodec/ulti.c \
+ffmpeg/libavcodec/ulti_cb.h \
+ffmpeg/libavcodec/unary.h \
+ffmpeg/libavcodec/utils.c \
+ffmpeg/libavcodec/vb.c \
+ffmpeg/libavcodec/vc1.c \
+ffmpeg/libavcodec/vc1.h \
+ffmpeg/libavcodec/vc1_parser.c \
+ffmpeg/libavcodec/vc1acdata.h \
+ffmpeg/libavcodec/vc1data.c \
+ffmpeg/libavcodec/vc1data.h \
+ffmpeg/libavcodec/vc1dsp.c \
+ffmpeg/libavcodec/vcr1.c \
+ffmpeg/libavcodec/vmdav.c \
+ffmpeg/libavcodec/vmnc.c \
+ffmpeg/libavcodec/vorbis.c \
+ffmpeg/libavcodec/vorbis.h \
+ffmpeg/libavcodec/vorbis_data.c \
+ffmpeg/libavcodec/vorbis_dec.c \
+ffmpeg/libavcodec/vorbis_enc.c \
+ffmpeg/libavcodec/vorbis_enc_data.h \
+ffmpeg/libavcodec/vp3.c \
+ffmpeg/libavcodec/vp3_parser.c \
+ffmpeg/libavcodec/vp3data.h \
+ffmpeg/libavcodec/vp3dsp.c \
+ffmpeg/libavcodec/vp5.c \
+ffmpeg/libavcodec/vp56.c \
+ffmpeg/libavcodec/vp56.h \
+ffmpeg/libavcodec/vp56data.c \
+ffmpeg/libavcodec/vp56data.h \
+ffmpeg/libavcodec/vp5data.h \
+ffmpeg/libavcodec/vp6.c \
+ffmpeg/libavcodec/vp6data.h \
+ffmpeg/libavcodec/vqavideo.c \
+ffmpeg/libavcodec/w32thread.c \
+ffmpeg/libavcodec/wavpack.c \
+ffmpeg/libavcodec/wma.c \
+ffmpeg/libavcodec/wma.h \
+ffmpeg/libavcodec/wmadata.h \
+ffmpeg/libavcodec/wmadec.c \
+ffmpeg/libavcodec/wmaenc.c \
+ffmpeg/libavcodec/wmv2.c \
+ffmpeg/libavcodec/wmv2.h \
+ffmpeg/libavcodec/wmv2dec.c \
+ffmpeg/libavcodec/wmv2enc.c \
+ffmpeg/libavcodec/wnv1.c \
+ffmpeg/libavcodec/ws-snd1.c \
+ffmpeg/libavcodec/xan.c \
+ffmpeg/libavcodec/xiph.c \
+ffmpeg/libavcodec/xiph.h \
+ffmpeg/libavcodec/xl.c \
+ffmpeg/libavcodec/xsubdec.c \
+ffmpeg/libavcodec/xvmc_render.h \
+ffmpeg/libavcodec/xvmcvideo.c \
+ffmpeg/libavcodec/zmbv.c \
+ffmpeg/libavcodec/zmbvenc.c \
+ffmpeg/libavdevice/Makefile \
+ffmpeg/libavdevice/alldevices.c \
+ffmpeg/libavdevice/audio.c \
+ffmpeg/libavdevice/avdevice.h \
+ffmpeg/libavdevice/beosaudio.cpp \
+ffmpeg/libavdevice/bktr.c \
+ffmpeg/libavdevice/dv1394.c \
+ffmpeg/libavdevice/dv1394.h \
+ffmpeg/libavdevice/libdc1394.c \
+ffmpeg/libavdevice/v4l.c \
+ffmpeg/libavdevice/v4l2.c \
+ffmpeg/libavdevice/vfwcap.c \
+ffmpeg/libavdevice/x11grab.c \
+ffmpeg/libavfilter/Makefile \
+ffmpeg/libavfilter/allfilters.c \
+ffmpeg/libavfilter/avfilter.c \
+ffmpeg/libavfilter/avfilter.h \
+ffmpeg/libavfilter/avfiltergraph.c \
+ffmpeg/libavfilter/avfiltergraph.h \
+ffmpeg/libavfilter/defaults.c \
+ffmpeg/libavfilter/formats.c \
+ffmpeg/libavfilter/graphparser.c \
+ffmpeg/libavfilter/graphparser.h \
+ffmpeg/libavformat/4xm.c \
+ffmpeg/libavformat/Makefile \
+ffmpeg/libavformat/adtsenc.c \
+ffmpeg/libavformat/aiff.c \
+ffmpeg/libavformat/allformats.c \
+ffmpeg/libavformat/amr.c \
+ffmpeg/libavformat/apc.c \
+ffmpeg/libavformat/ape.c \
+ffmpeg/libavformat/asf-enc.c \
+ffmpeg/libavformat/asf.c \
+ffmpeg/libavformat/asf.h \
+ffmpeg/libavformat/asfcrypt.c \
+ffmpeg/libavformat/asfcrypt.h \
+ffmpeg/libavformat/au.c \
+ffmpeg/libavformat/avc.c \
+ffmpeg/libavformat/avc.h \
+ffmpeg/libavformat/avformat.h \
+ffmpeg/libavformat/avi.h \
+ffmpeg/libavformat/avidec.c \
+ffmpeg/libavformat/avienc.c \
+ffmpeg/libavformat/avio.c \
+ffmpeg/libavformat/avio.h \
+ffmpeg/libavformat/aviobuf.c \
+ffmpeg/libavformat/avisynth.c \
+ffmpeg/libavformat/avs.c \
+ffmpeg/libavformat/bethsoftvid.c \
+ffmpeg/libavformat/bfi.c \
+ffmpeg/libavformat/c93.c \
+ffmpeg/libavformat/crcenc.c \
+ffmpeg/libavformat/cutils.c \
+ffmpeg/libavformat/daud.c \
+ffmpeg/libavformat/dsicin.c \
+ffmpeg/libavformat/dv.c \
+ffmpeg/libavformat/dv.h \
+ffmpeg/libavformat/dvenc.c \
+ffmpeg/libavformat/dxa.c \
+ffmpeg/libavformat/eacdata.c \
+ffmpeg/libavformat/electronicarts.c \
+ffmpeg/libavformat/ffm.h \
+ffmpeg/libavformat/ffmdec.c \
+ffmpeg/libavformat/ffmenc.c \
+ffmpeg/libavformat/file.c \
+ffmpeg/libavformat/flic.c \
+ffmpeg/libavformat/flv.h \
+ffmpeg/libavformat/flvdec.c \
+ffmpeg/libavformat/flvenc.c \
+ffmpeg/libavformat/framecrcenc.c \
+ffmpeg/libavformat/framehook.c \
+ffmpeg/libavformat/framehook.h \
+ffmpeg/libavformat/gif.c \
+ffmpeg/libavformat/gxf.c \
+ffmpeg/libavformat/gxf.h \
+ffmpeg/libavformat/gxfenc.c \
+ffmpeg/libavformat/http.c \
+ffmpeg/libavformat/idcin.c \
+ffmpeg/libavformat/idroq.c \
+ffmpeg/libavformat/iff.c \
+ffmpeg/libavformat/img2.c \
+ffmpeg/libavformat/ipmovie.c \
+ffmpeg/libavformat/isom.c \
+ffmpeg/libavformat/isom.h \
+ffmpeg/libavformat/libnut.c \
+ffmpeg/libavformat/lmlm4.c \
+ffmpeg/libavformat/matroska.c \
+ffmpeg/libavformat/matroska.h \
+ffmpeg/libavformat/matroskadec.c \
+ffmpeg/libavformat/matroskaenc.c \
+ffmpeg/libavformat/mm.c \
+ffmpeg/libavformat/mmf.c \
+ffmpeg/libavformat/mov.c \
+ffmpeg/libavformat/movenc.c \
+ffmpeg/libavformat/mp3.c \
+ffmpeg/libavformat/mpc.c \
+ffmpeg/libavformat/mpc8.c \
+ffmpeg/libavformat/mpeg.c \
+ffmpeg/libavformat/mpeg.h \
+ffmpeg/libavformat/mpegenc.c \
+ffmpeg/libavformat/mpegts.c \
+ffmpeg/libavformat/mpegts.h \
+ffmpeg/libavformat/mpegtsenc.c \
+ffmpeg/libavformat/mpjpeg.c \
+ffmpeg/libavformat/msnwc_tcp.c \
+ffmpeg/libavformat/mtv.c \
+ffmpeg/libavformat/mvi.c \
+ffmpeg/libavformat/mxf.c \
+ffmpeg/libavformat/network.h \
+ffmpeg/libavformat/nsvdec.c \
+ffmpeg/libavformat/nut.c \
+ffmpeg/libavformat/nut.h \
+ffmpeg/libavformat/nutdec.c \
+ffmpeg/libavformat/nutenc.c \
+ffmpeg/libavformat/nuv.c \
+ffmpeg/libavformat/oggdec.c \
+ffmpeg/libavformat/oggdec.h \
+ffmpeg/libavformat/oggenc.c \
+ffmpeg/libavformat/oggparseflac.c \
+ffmpeg/libavformat/oggparseogm.c \
+ffmpeg/libavformat/oggparsespeex.c \
+ffmpeg/libavformat/oggparsetheora.c \
+ffmpeg/libavformat/oggparsevorbis.c \
+ffmpeg/libavformat/oma.c \
+ffmpeg/libavformat/os_support.c \
+ffmpeg/libavformat/os_support.h \
+ffmpeg/libavformat/psxstr.c \
+ffmpeg/libavformat/pva.c \
+ffmpeg/libavformat/qtpalette.h \
+ffmpeg/libavformat/raw.c \
+ffmpeg/libavformat/raw.h \
+ffmpeg/libavformat/riff.c \
+ffmpeg/libavformat/riff.h \
+ffmpeg/libavformat/rl2.c \
+ffmpeg/libavformat/rm.h \
+ffmpeg/libavformat/rmdec.c \
+ffmpeg/libavformat/rmenc.c \
+ffmpeg/libavformat/rpl.c \
+ffmpeg/libavformat/rtp.c \
+ffmpeg/libavformat/rtp.h \
+ffmpeg/libavformat/rtp_aac.c \
+ffmpeg/libavformat/rtp_aac.h \
+ffmpeg/libavformat/rtp_h264.c \
+ffmpeg/libavformat/rtp_h264.h \
+ffmpeg/libavformat/rtp_internal.h \
+ffmpeg/libavformat/rtp_mpv.c \
+ffmpeg/libavformat/rtp_mpv.h \
+ffmpeg/libavformat/rtpdec.c \
+ffmpeg/libavformat/rtpenc.c \
+ffmpeg/libavformat/rtpenc_h264.c \
+ffmpeg/libavformat/rtpproto.c \
+ffmpeg/libavformat/rtsp.c \
+ffmpeg/libavformat/rtsp.h \
+ffmpeg/libavformat/rtspcodes.h \
+ffmpeg/libavformat/sdp.c \
+ffmpeg/libavformat/segafilm.c \
+ffmpeg/libavformat/sierravmd.c \
+ffmpeg/libavformat/siff.c \
+ffmpeg/libavformat/smacker.c \
+ffmpeg/libavformat/sol.c \
+ffmpeg/libavformat/swf.h \
+ffmpeg/libavformat/swfdec.c \
+ffmpeg/libavformat/swfenc.c \
+ffmpeg/libavformat/tcp.c \
+ffmpeg/libavformat/thp.c \
+ffmpeg/libavformat/tiertexseq.c \
+ffmpeg/libavformat/tta.c \
+ffmpeg/libavformat/txd.c \
+ffmpeg/libavformat/udp.c \
+ffmpeg/libavformat/utils.c \
+ffmpeg/libavformat/vc1test.c \
+ffmpeg/libavformat/voc.c \
+ffmpeg/libavformat/voc.h \
+ffmpeg/libavformat/vocdec.c \
+ffmpeg/libavformat/vocenc.c \
+ffmpeg/libavformat/wav.c \
+ffmpeg/libavformat/wc3movie.c \
+ffmpeg/libavformat/westwood.c \
+ffmpeg/libavformat/wv.c \
+ffmpeg/libavformat/xa.c \
+ffmpeg/libavformat/yuv4mpeg.c \
+ffmpeg/libavutil/Makefile \
+ffmpeg/libavutil/adler32.c \
+ffmpeg/libavutil/adler32.h \
+ffmpeg/libavutil/aes.c \
+ffmpeg/libavutil/aes.h \
+ffmpeg/libavutil/avstring.h \
+ffmpeg/libavutil/avutil.h \
+ffmpeg/libavutil/base64.c \
+ffmpeg/libavutil/base64.h \
+ffmpeg/libavutil/bswap.h \
+ffmpeg/libavutil/common.h \
+ffmpeg/libavutil/crc.c \
+ffmpeg/libavutil/crc.h \
+ffmpeg/libavutil/crc_data.h \
+ffmpeg/libavutil/des.c \
+ffmpeg/libavutil/des.h \
+ffmpeg/libavutil/fifo.c \
+ffmpeg/libavutil/fifo.h \
+ffmpeg/libavutil/integer.c \
+ffmpeg/libavutil/integer.h \
+ffmpeg/libavutil/internal.h \
+ffmpeg/libavutil/intfloat_readwrite.c \
+ffmpeg/libavutil/intfloat_readwrite.h \
+ffmpeg/libavutil/intreadwrite.h \
+ffmpeg/libavutil/lls.c \
+ffmpeg/libavutil/lls.h \
+ffmpeg/libavutil/log.c \
+ffmpeg/libavutil/log.h \
+ffmpeg/libavutil/lzo.c \
+ffmpeg/libavutil/lzo.h \
+ffmpeg/libavutil/mathematics.c \
+ffmpeg/libavutil/mathematics.h \
+ffmpeg/libavutil/md5.c \
+ffmpeg/libavutil/md5.h \
+ffmpeg/libavutil/mem.c \
+ffmpeg/libavutil/mem.h \
+ffmpeg/libavutil/random.c \
+ffmpeg/libavutil/random.h \
+ffmpeg/libavutil/rational.c \
+ffmpeg/libavutil/rational.h \
+ffmpeg/libavutil/rc4.c \
+ffmpeg/libavutil/rc4.h \
+ffmpeg/libavutil/sha1.c \
+ffmpeg/libavutil/sha1.h \
+ffmpeg/libavutil/softfloat.c \
+ffmpeg/libavutil/softfloat.h \
+ffmpeg/libavutil/string.c \
+ffmpeg/libavutil/tree.c \
+ffmpeg/libavutil/tree.h \
+ffmpeg/libavutil/x86_cpu.h \
+ffmpeg/libpostproc/Makefile \
+ffmpeg/libpostproc/postprocess.c \
+ffmpeg/libpostproc/postprocess.h \
+ffmpeg/libpostproc/postprocess_altivec_template.c \
+ffmpeg/libpostproc/postprocess_internal.h \
+ffmpeg/libpostproc/postprocess_template.c \
+ffmpeg/libswscale/Makefile \
+ffmpeg/libswscale/cs_test.c \
+ffmpeg/libswscale/internal_bfin.S \
+ffmpeg/libswscale/rgb2rgb.c \
+ffmpeg/libswscale/rgb2rgb.h \
+ffmpeg/libswscale/rgb2rgb_template.c \
+ffmpeg/libswscale/swscale-example.c \
+ffmpeg/libswscale/swscale.c \
+ffmpeg/libswscale/swscale.h \
+ffmpeg/libswscale/swscale_altivec_template.c \
+ffmpeg/libswscale/swscale_avoption.c \
+ffmpeg/libswscale/swscale_bfin.c \
+ffmpeg/libswscale/swscale_internal.h \
+ffmpeg/libswscale/swscale_template.c \
+ffmpeg/libswscale/yuv2rgb.c \
+ffmpeg/libswscale/yuv2rgb_altivec.c \
+ffmpeg/libswscale/yuv2rgb_bfin.c \
+ffmpeg/libswscale/yuv2rgb_mlib.c \
+ffmpeg/libswscale/yuv2rgb_template.c \
+ffmpeg/libswscale/yuv2rgb_vis.c \
+ffmpeg/output_example.c \
+ffmpeg/subdir.mak \
+ffmpeg/tests/audiogen.c \
+ffmpeg/tests/ffmpeg.regression.ref \
+ffmpeg/tests/ffserver.regression.ref \
+ffmpeg/tests/lena.pnm \
+ffmpeg/tests/libav.regression.ref \
+ffmpeg/tests/regression.sh \
+ffmpeg/tests/rotozoom.c \
+ffmpeg/tests/rotozoom.regression.ref \
+ffmpeg/tests/seek.regression.ref \
+ffmpeg/tests/seek_test.c \
+ffmpeg/tests/seek_test.sh \
+ffmpeg/tests/server-regression.sh \
+ffmpeg/tests/test.conf \
+ffmpeg/tests/tiny_psnr.c \
+ffmpeg/tests/videogen.c \
+ffmpeg/tools/build_avopt \
+ffmpeg/tools/clean-diff \
+ffmpeg/tools/cws2fws.c \
+ffmpeg/tools/pktdumper.c \
+ffmpeg/tools/qt-faststart.c \
+ffmpeg/tools/trasher.c \
+ffmpeg/tools/unwrap-diff \
+ffmpeg/version.sh \
+ffmpeg/vhook/drawtext.c \
+ffmpeg/vhook/fish.c \
+ffmpeg/vhook/imlib2.c \
+ffmpeg/vhook/null.c \
+ffmpeg/vhook/ppm.c \
+ffmpeg/vhook/watermark.c

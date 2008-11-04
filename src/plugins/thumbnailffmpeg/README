@@ -30,6 +30,14 @@ diff -qr . /tmp/ffmpeg -x .svn
 # check for additions
 <svn status, svn add>
 
+update ffmpeg_distfiles.am:
+svn list -R src/plugins/ffmpeg | \
+  sed '/\/$/d' | \
+  sed '$!s/$/ \\/g' | \
+  sed 's/^/ffmpeg\//' | \
+  grep -v "no-indent" | \
+  sed '1 i EXTRA_DIST = \\' > src/plugins/ffmpeg_distfiles.am
+
 Plan: test & enable ffmpeg decoders one by one
 tests:
 - multithreading test
