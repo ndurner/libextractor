@@ -18,9 +18,9 @@ extract_LDADD = \
 
 if !MINGW
   exportflag=-export-symbols-regex "EXTRACTOR_[a-zA-Z0-9_]*"
-  if !SOMEBSD
+if !SOMEBSD
     dlflag=-ldl
-  endif
+endif
 else
   winexportflag=-export-dynamic
 endif
