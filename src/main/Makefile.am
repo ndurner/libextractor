@@ -42,8 +42,6 @@ libextractor_la_LDFLAGS = \
   $(exportflag) $(winexportflag) -version-info @LIB_VERSION_CURRENT@:@LIB_VERSION_REVISION@:@LIB_VERSION_AGE@ $(LIBICONV)
 libextractor_la_LIBADD = \
   $(LIBLTDL) $(dlflag) $(zlib) $(bz2lib) $(GSF_LIBS_X) -lpthread
-libextractor_la_DEPENDENCIES = \
-  $(LIBLTDL) 
 
 
 EXTRA_DIST = \
