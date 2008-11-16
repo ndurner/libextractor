@@ -13,4 +13,5 @@ libextractor_oo_la_LDFLAGS = \
 
 libextractor_oo_la_LIBADD = \
  $(top_builddir)/src/main/libextractor.la \
+ $(top_builddir)/src/common/libextractor_common.la \
  -lz 

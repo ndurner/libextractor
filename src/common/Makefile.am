@@ -19,9 +19,11 @@ libextractor_common_la_LDFLAGS = \
   $(exportflag) $(winexportflag) -version-info @LIB_VERSION_CURRENT@:@LIB_VERSION_REVISION@:@LIB_VERSION_AGE@ $(LIBICONV)
 
 libextractor_common_la_LIBADD = \
-  $(LIBLTDL) $(dlflag)
+  $(LIBLTDL) $(dlflag) -lz
 
 libextractor_common_la_SOURCES = \
+  unzip.c \
+  unzip.h \
   pack.c \
   pack.h \
   convert.c \
