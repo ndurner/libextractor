@@ -117,7 +117,7 @@ static inline double readDouble(const unsigned char **data)
   const unsigned char *ptr = *data;
   double val;
 
-  EXTRACTOR_common_floatformat_to_double(&EXTRACTOR_common_floatformat_ieee_double_big,
+  EXTRACTOR_common_floatformat_to_double(&EXTRACTOR_floatformat_ieee_double_big,
                         (const void *)ptr,
                         &val);
   ptr += 8;
