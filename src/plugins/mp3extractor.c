@@ -290,19 +290,19 @@ get_id3 (const char *data, size_t size, id3tag * id3)
     return INVALID_ID3;
   pos += 3;
 
-  id3->title = convertToUtf8 (pos, 30, "ISO-8859-1");
+  id3->title = EXTRACTOR_common_convert_to_utf8 (pos, 30, "ISO-8859-1");
   trim (id3->title);
   pos += 30;
-  id3->artist = convertToUtf8 (pos, 30, "ISO-8859-1");
+  id3->artist = EXTRACTOR_common_convert_to_utf8 (pos, 30, "ISO-8859-1");
   trim (id3->artist);
   pos += 30;
-  id3->album = convertToUtf8 (pos, 30, "ISO-8859-1");
+  id3->album = EXTRACTOR_common_convert_to_utf8 (pos, 30, "ISO-8859-1");
   trim (id3->album);
   pos += 30;
-  id3->year = convertToUtf8 (pos, 4, "ISO-8859-1");
+  id3->year = EXTRACTOR_common_convert_to_utf8 (pos, 4, "ISO-8859-1");
   trim (id3->year);
   pos += 4;
-  id3->comment = convertToUtf8 (pos, 30, "ISO-8859-1");
+  id3->comment = EXTRACTOR_common_convert_to_utf8 (pos, 30, "ISO-8859-1");
   trim (id3->comment);
   if ( (pos[28] == '\0') &&
        (pos[29] != '\0') )
@@ -419,14 +419,14 @@ mp3parse (const unsigned char *data, size_t size, struct EXTRACTOR_Keywords *pre
         idx_num = (mpeg_ver - 1) * 3 + layer - 1;
       else
         idx_num = 2 + layer;
-      bitrate = 1000 * bitrate_table[(header >> MPA_BITRATE_SHIFT) & 
+      bitrate = 1000 * bitrate_table[(header >> MPA_BITRATE_SHIFT) &
                                      MPA_BITRATE_MASK][idx_num];
       if (bitrate < 0)
         {
           frames--;
           break;
         }                       /*error in header */
-      sample_rate = freq_table[(header >> MPA_FREQ_SHIFT) & 
+      sample_rate = freq_table[(header >> MPA_FREQ_SHIFT) &
                                MPA_FREQ_MASK][mpeg_ver - 1];
       if (sample_rate < 0)
         {
@@ -468,17 +468,17 @@ mp3parse (const unsigned char *data, size_t size, struct EXTRACTOR_Keywords *pre
 
   prev = addkword (prev, mpeg_versions[mpeg_ver-1], EXTRACTOR_RESOURCE_TYPE);
   format = malloc (512);
-  snprintf (format, 512, "%s %s audio, %d kbps (%s), %d Hz, %s, %s, %s", 
+  snprintf (format, 512, "%s %s audio, %d kbps (%s), %d Hz, %s, %s, %s",
             mpeg_versions[mpeg_ver-1],
             layer_names[layer-1],
-            avg_bps, 
-            vbr_flag ? _("VBR") : _("CBR"), 
-            sample_rate, 
+            avg_bps,
+            vbr_flag ? _("VBR") : _("CBR"),
+            sample_rate,
             channel_modes[ch],
-            copyright_flag ? _("copyright") : _("no copyright"), 
+            copyright_flag ? _("copyright") : _("no copyright"),
             original_flag ? _("original") : _("copy") );
   prev = addkword (prev, format, EXTRACTOR_FORMAT);
-  snprintf (format, 512, "%dm%02d", 
+  snprintf (format, 512, "%dm%02d",
             length / 60, length % 60);
   prev = addkword (prev, format, EXTRACTOR_DURATION);
   free (format);
@@ -522,7 +522,7 @@ libextractor_mp3_extract (const char *filename,
 		 strlen (info.album) + 6);
   sprintf (word, "%s: %s (%s)", info.artist, info.title, info.album);
   klist = addkword (klist, word, EXTRACTOR_DESCRIPTION);
-  
+
   free (word);
   free (info.title);
   free (info.year);

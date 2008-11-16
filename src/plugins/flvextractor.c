@@ -117,8 +117,8 @@ static inline double readDouble(const unsigned char **data)
   const unsigned char *ptr = *data;
   double val;
 
-  floatformat_to_double(&floatformat_ieee_double_big, 
-                        (const void *)ptr, 
+  EXTRACTOR_common_floatformat_to_double(&EXTRACTOR_common_floatformat_ieee_double_big,
+                        (const void *)ptr,
                         &val);
   ptr += 8;
   *data = ptr;
@@ -152,7 +152,7 @@ static int readASBoolean(const unsigned char **data,
 {
   const unsigned char *ptr = *data;
   int val;
-  
+
   if (*len < 1)
     return -1;
 
@@ -192,7 +192,7 @@ static int readASString(const unsigned char **data,
   const unsigned char *ptr = *data;
   char *ret;
   int slen;
- 
+
   if (*len < 2)
     return -1;
 
@@ -214,9 +214,9 @@ static int readASString(const unsigned char **data,
   return 0;
 }
 
-static int parse_amf(const unsigned char **data, 
+static int parse_amf(const unsigned char **data,
               size_t *len,
-              AMFParserHandler *handler) 
+              AMFParserHandler *handler)
 {
   const unsigned char *ptr = *data;
   unsigned char astype;
@@ -231,8 +231,8 @@ static int parse_amf(const unsigned char **data,
       double val;
       ret = readASNumber(&ptr, len, &val);
       if (ret == 0)
-        (*(handler->as_end_callback))(astype, 
-                                      &val, 
+        (*(handler->as_end_callback))(astype,
+                                      &val,
                                       handler->userdata);
       break;
     }
@@ -241,8 +241,8 @@ static int parse_amf(const unsigned char **data,
       int val;
       ret = readASBoolean(&ptr, len, &val);
       if (ret == 0)
-        (*(handler->as_end_callback))(astype, 
-                                      &val, 
+        (*(handler->as_end_callback))(astype,
+                                      &val,
                                       handler->userdata);
       break;
     }
@@ -251,8 +251,8 @@ static int parse_amf(const unsigned char **data,
       char *val;
       ret = readASString(&ptr, len, &val);
       if (ret == 0) {
-        (*(handler->as_end_callback))(astype, 
-                                      val, 
+        (*(handler->as_end_callback))(astype,
+                                      val,
                                       handler->userdata);
         free(val);
       }
@@ -267,8 +267,8 @@ static int parse_amf(const unsigned char **data,
       tmp[0] = &millis;
       tmp[1] = &tz;
       if (ret == 0)
-        (*(handler->as_end_callback))(astype, 
-                                      &tmp, 
+        (*(handler->as_end_callback))(astype,
+                                      &tmp,
                                       handler->userdata);
       break;
     }
@@ -293,11 +293,11 @@ static int parse_amf(const unsigned char **data,
         if (ret == -1)
 	  break;
       }
-      (*(handler->as_end_callback))(ASTYPE_ARRAY, 
-                                    NULL, 
+      (*(handler->as_end_callback))(ASTYPE_ARRAY,
+                                    NULL,
                                     handler->userdata);
       break;
-    }  
+    }
     case ASTYPE_OBJECT:
     {
       char *key;
@@ -306,7 +306,7 @@ static int parse_amf(const unsigned char **data,
       ret = readASString(&ptr, len, &key);
       if (ret == -1)
         break;
-      (*(handler->as_key_callback))(key, 
+      (*(handler->as_key_callback))(key,
                                     handler->userdata);
       free(key);
       type = *ptr;
@@ -317,17 +317,17 @@ static int parse_amf(const unsigned char **data,
         ret = readASString(&ptr, len, &key);
         if (ret == -1)
           break;
-        (*(handler->as_key_callback))(key, 
+        (*(handler->as_key_callback))(key,
                                       handler->userdata);
         free(key);
-        type = *ptr;      
+        type = *ptr;
       }
       if (ret == 0)
-        (*(handler->as_end_callback))(ASTYPE_OBJECT, 
-                                      NULL, 
+        (*(handler->as_end_callback))(ASTYPE_OBJECT,
+                                      NULL,
                                       handler->userdata);
       break;
-    }  
+    }
     case ASTYPE_MIXEDARRAY:
     {
       char *key;
@@ -343,7 +343,7 @@ static int parse_amf(const unsigned char **data,
       ret = readASString(&ptr, len, &key);
       if (ret == -1)
         break;
-      (*(handler->as_key_callback))(key, 
+      (*(handler->as_key_callback))(key,
                                     handler->userdata);
       free(key);
       type = *ptr;
@@ -354,21 +354,21 @@ static int parse_amf(const unsigned char **data,
         ret = readASString(&ptr, len, &key);
         if (ret == -1)
           break;
-        (*(handler->as_key_callback))(key, 
+        (*(handler->as_key_callback))(key,
                                       handler->userdata);
         free(key);
-        type = *ptr;      
+        type = *ptr;
       }
       if (ret == 0)
-        (*(handler->as_end_callback))(astype, 
-                                      NULL, 
+        (*(handler->as_end_callback))(astype,
+                                      NULL,
                                       handler->userdata);
       break;
-    }  
+    }
     default:
       ret = -1;
-      (*(handler->as_end_callback))(astype, 
-                                    NULL, 
+      (*(handler->as_end_callback))(astype,
+                                    NULL,
                                     handler->userdata);
 #if DEBUG
       printf("parse_amf: Unknown type %02x", astype);
@@ -647,11 +647,11 @@ static void handleASBegin(unsigned char type, void * userdata)
 {
   FLVMetaParserState *state = (FLVMetaParserState *)userdata;
 
-  if (state->onMetaData && state->parsingDepth == 0 && 
+  if (state->onMetaData && state->parsingDepth == 0 &&
       type != ASTYPE_MIXEDARRAY)
     state->onMetaData = 0;
 
-  if (type == ASTYPE_ARRAY || type == ASTYPE_MIXEDARRAY || 
+  if (type == ASTYPE_ARRAY || type == ASTYPE_MIXEDARRAY ||
       type == ASTYPE_OBJECT)
     state->parsingDepth++;
 }
@@ -665,13 +665,13 @@ static void handleASKey(char * key, void * userdata)
     return;
 
   i = 0;
-  while ((key_to_extractor_map[i].key != NULL) && 
+  while ((key_to_extractor_map[i].key != NULL) &&
          (strcasecmp(key, key_to_extractor_map[i].key) != 0))
     i++;
   state->currentKeyType = key_to_extractor_map[i].type;
 
   i = 0;
-  while ((key_to_attribute_map[i].key != NULL) && 
+  while ((key_to_attribute_map[i].key != NULL) &&
          (strcasecmp(key, key_to_attribute_map[i].key) != 0))
     i++;
   state->currentAttribute = key_to_attribute_map[i].attribute;
@@ -681,7 +681,7 @@ static void handleASEnd(unsigned char type, void * value, void * userdata)
 {
   FLVMetaParserState *state = (FLVMetaParserState *)userdata;
   char *s;
-  
+
   if ((state->parsingDepth == 0) && (type == ASTYPE_STRING)) {
     s = (char *)value;
     if (!strcmp(s, "onMetaData"))
@@ -692,8 +692,8 @@ static void handleASEnd(unsigned char type, void * value, void * userdata)
    * right after a "onMetaData" STRING */
 
   /* stream info related metadata */
-  if (state->onMetaData && (state->parsingDepth == 1) && 
-      (state->currentAttribute != FLV_NONE) && 
+  if (state->onMetaData && (state->parsingDepth == 1) &&
+      (state->currentAttribute != FLV_NONE) &&
       (type == ASTYPE_NUMBER))
   {
     double n = *((double *)value);
@@ -711,10 +711,10 @@ static void handleASEnd(unsigned char type, void * value, void * userdata)
         break;
       case FLV_FRAMERATE:
         state->streamInfo->videoFrameRate = n;
-        break; 
+        break;
       case FLV_VDATARATE:
         state->streamInfo->videoDataRate = n;
-        break; 
+        break;
       case FLV_ADATARATE:
         state->streamInfo->audioDataRate = n;
         break;
@@ -729,8 +729,8 @@ static void handleASEnd(unsigned char type, void * value, void * userdata)
     }
   }
 
-  if (state->onMetaData && (state->parsingDepth == 1) && 
-      (state->currentAttribute == FLV_STEREO) && 
+  if (state->onMetaData && (state->parsingDepth == 1) &&
+      (state->currentAttribute == FLV_STEREO) &&
       (type == ASTYPE_BOOLEAN))
   {
     int n = *((int *)value);
@@ -739,7 +739,7 @@ static void handleASEnd(unsigned char type, void * value, void * userdata)
   }
 
   /* metadata that maps straight to extractor keys */
-  if (state->onMetaData && (state->parsingDepth == 1) && 
+  if (state->onMetaData && (state->parsingDepth == 1) &&
       (state->currentKeyType != EXTRACTOR_UNKNOWN))
   {
     s = NULL;
@@ -779,22 +779,22 @@ static void handleASEnd(unsigned char type, void * value, void * userdata)
     }
 
     if (s != NULL)
-      state->keywords = addKeyword (state->currentKeyType, 
+      state->keywords = addKeyword (state->currentKeyType,
                                     s,
                                     state->keywords);
   }
   state->currentKeyType = EXTRACTOR_UNKNOWN;
   state->currentAttribute = FLV_NONE;
 
-  if (type == ASTYPE_ARRAY || type == ASTYPE_MIXEDARRAY || 
+  if (type == ASTYPE_ARRAY || type == ASTYPE_MIXEDARRAY ||
       type == ASTYPE_OBJECT)
     state->parsingDepth--;
 }
 
 static struct EXTRACTOR_Keywords *
-handleMetaBody(const unsigned char *data, size_t len, 
+handleMetaBody(const unsigned char *data, size_t len,
                 FLVStreamInfo *stinfo,
-                struct EXTRACTOR_Keywords *prev) 
+                struct EXTRACTOR_Keywords *prev)
 {
   AMFParserHandler handler;
   FLVMetaParserState pstate;
@@ -843,9 +843,9 @@ static char *FLVAudioSampleRates[] = {
 };
 
 static struct EXTRACTOR_Keywords *
-handleAudioBody(const unsigned char *data, size_t len, 
+handleAudioBody(const unsigned char *data, size_t len,
                 FLVStreamInfo *stinfo,
-                struct EXTRACTOR_Keywords *prev) 
+                struct EXTRACTOR_Keywords *prev)
 {
   stinfo->audioChannels = *data & 0x01;
   stinfo->audioSampleBits = (*data & 0x02) >> 1;
@@ -878,9 +878,9 @@ static int sorenson_predefined_res[][2] = {
 };
 
 static struct EXTRACTOR_Keywords *
-handleVideoBody(const unsigned char *data, size_t len, 
+handleVideoBody(const unsigned char *data, size_t len,
                 FLVStreamInfo *stinfo,
-                struct EXTRACTOR_Keywords *prev) 
+                struct EXTRACTOR_Keywords *prev)
 {
   int codecId, frameType;
 
@@ -938,7 +938,7 @@ handleVideoBody(const unsigned char *data, size_t len,
         if (separated_coeff || !filter_header) {
           data += 2;
         }
-        /* XXX encoded/displayed dimensions might vary, but which are the 
+        /* XXX encoded/displayed dimensions might vary, but which are the
          * right ones? */
         stinfo->videoWidth = (data[3]*16) - (dim_adj>>4);
         stinfo->videoHeight = (data[2]*16) - (dim_adj&0x0F);
@@ -968,7 +968,7 @@ static int readFLVTag(const unsigned char **data,
   if ((ptr + header.bodyLength) > end)
     return -1;
 
-  switch (header.type) 
+  switch (header.type)
   {
     case FLV_TAG_TYPE_AUDIO:
       head = handleAudioBody(ptr, header.bodyLength, stinfo, head);
@@ -984,7 +984,7 @@ static int readFLVTag(const unsigned char **data,
   }
 
   ptr += header.bodyLength;
-  
+
   *list = head;
   *data = ptr;
   return 0;
@@ -1038,7 +1038,7 @@ static char * printVideoFormat(FLVStreamInfo *stinfo)
       n += snprintf(s+n, len-n, "%.4f kbps", stinfo->videoDataRate);
   }
 
-  if (n == 0) 
+  if (n == 0)
     return NULL;
   return strdup(s);
 }
@@ -1058,7 +1058,7 @@ static char * printAudioFormat(FLVStreamInfo *stinfo)
     if (n > 0)
       n += snprintf(s+n, len-n, ", ");
     if (n < len)
-      n += snprintf(s+n, len-n, "%s", 
+      n += snprintf(s+n, len-n, "%s",
                     FLVAudioSampleSizes[stinfo->audioSampleBits]);
   }
 
@@ -1066,7 +1066,7 @@ static char * printAudioFormat(FLVStreamInfo *stinfo)
     if (n > 0)
       n += snprintf(s+n, len-n, ", ");
     if (n < len)
-      n += snprintf(s+n, len-n, "%s", 
+      n += snprintf(s+n, len-n, "%s",
                     FLVAudioChannels[stinfo->audioChannels]);
   }
 
@@ -1085,7 +1085,7 @@ static char * printAudioFormat(FLVStreamInfo *stinfo)
       n += snprintf(s+n, len-n, "%.4f kbps", stinfo->audioDataRate);
   }
 
-  if (n == 0) 
+  if (n == 0)
     return NULL;
   return strdup(s);
 }

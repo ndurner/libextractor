@@ -206,11 +206,11 @@ charsetDecode (const unsigned char *in, size_t size)
       /* TODO: extend glibc with
          character set that corresponds to
          Adobe's extended ISOLATIN1 encoding! */
-      return convertToUtf8 ((const char *) in, size, "CSISOLATIN1");
+      return EXTRACTOR_common_convert_to_utf8 ((const char *) in, size, "CSISOLATIN1");
     }
   else
     {
-      return convertToUtf8 ((const char *) &in[2], size - 2, "UTF-16BE");
+      return EXTRACTOR_common_convert_to_utf8 ((const char *) &in[2], size - 2, "UTF-16BE");
     }
 }
 

@@ -184,17 +184,17 @@ libextractor_id3v23_extract (const char *filename,
               switch (data[pos + 10])
                 {
                 case 0x00:
-                  word = convertToUtf8 ((const char *) &data[pos + 11],
+                  word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[pos + 11],
                                         csize, "ISO-8859-1");
                   break;
                 case 0x01:
-                  word = convertToUtf8 ((const char *) &data[pos + 11],
+                  word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[pos + 11],
                                         csize, "UCS-2");
                   break;
                 default:
                   /* bad encoding byte,
                      try to convert from iso-8859-1 */
-                  word = convertToUtf8 ((const char *) &data[pos + 11],
+                  word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[pos + 11],
                                         csize, "ISO-8859-1");
                   break;
                 }

@@ -99,7 +99,7 @@ static int readApplefileHeader(const unsigned char *data,
   if ((*offset + APPLEFILE_HEADER_SIZE) > size)
     return -1;
 
-  cat_unpack(data + *offset,
+  EXTRACTOR_common_cat_unpack(data + *offset,
              APPLEFILE_HEADER_SPEC,
              APPLEFILE_HEADER_FIELDS(hdr));
   *offset += APPLEFILE_HEADER_SIZE;
@@ -114,8 +114,8 @@ static int readEntryDescriptor(const unsigned char *data,
   if ((*offset + APPLEFILE_ENTRY_DESCRIPTOR_SIZE) > size)
     return -1;
 
-  cat_unpack(data + *offset,
-             APPLEFILE_ENTRY_DESCRIPTOR_SPEC, 
+  EXTRACTOR_common_cat_unpack(data + *offset,
+             APPLEFILE_ENTRY_DESCRIPTOR_SPEC,
              APPLEFILE_ENTRY_DESCRIPTOR_FIELDS(dsc));
   *offset += APPLEFILE_ENTRY_DESCRIPTOR_SIZE;
   return 0;
@@ -137,7 +137,7 @@ libextractor_applefile_extract (const char *filename,
   if (readApplefileHeader(data, &offset, size, &header) == -1)
     return prev;
 
-  if ((memcmp(header.magic, APPLESINGLE_SIGNATURE, 4) != 0) && 
+  if ((memcmp(header.magic, APPLESINGLE_SIGNATURE, 4) != 0) &&
         (memcmp(header.magic, APPLEDOUBLE_SIGNATURE, 4) != 0))
       return prev;
 
@@ -175,7 +175,7 @@ libextractor_applefile_extract (const char *filename,
         else
           snprintf (s, 13, "%.2f %s", (double) dsc.length, _("Bytes"));
 
-        result = addKeyword(EXTRACTOR_FILE_SIZE, s, result); 
+        result = addKeyword(EXTRACTOR_FILE_SIZE, s, result);
         }
         break;
       case AED_ID_REAL_NAME:

@@ -201,7 +201,7 @@ libextractor_gif_extract (const char *filename,
 
   if (size < GIF_HEADER_SIZE)
     return prev;
-  cat_unpack (data, GIF_HEADER_SPEC, GIF_HEADER_FIELDS (&header));
+  EXTRACTOR_common_cat_unpack (data, GIF_HEADER_SPEC, GIF_HEADER_FIELDS (&header));
   if (0 != strncmp (&header.gif[0], "GIF", 3))
     return prev;
   if (0 != strncmp (&header.version[0], "89a", 3))
@@ -222,7 +222,7 @@ libextractor_gif_extract (const char *filename,
         {
         case ',':              /* image descriptor block */
           PRINT ("skipping local color map %d\n", pos);
-          cat_unpack (&data[pos],
+          EXTRACTOR_common_cat_unpack (&data[pos],
                       GIF_DESCRIPTOR_SPEC, GIF_DESCRIPTOR_FIELDS (&gd));
           pos = skipLocalColorMap (data, pos, size, &gd);
           break;

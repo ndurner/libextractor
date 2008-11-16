@@ -35,7 +35,7 @@ extern "C" {
  * to UTF-8.
  * @return the converted string (0-terminated)
  */
-char * convertToUtf8(const char * input,
+char * EXTRACTOR_common_convert_to_utf8(const char * input,
 		     size_t len,
 		     const char * charset);
 

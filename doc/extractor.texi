@@ -648,10 +648,10 @@ file format has been established (beyond reasonable doubt).
 
 @cindex UTF-8
 @cindex character set
-@findex convertToUtf8
+@findex EXTRACTOR_common_convert_to_utf8
 Various @acronym{libextractor} plugins make use of the internal
 @file{convert.h} header which defines a function
-@verb{|convertToUtf8|} which can be used to easily convert text from
+@verb{|EXTRACTOR_common_convert_to_utf8|} which can be used to easily convert text from
 any character set to UTF-8.  This conversion is important since the
 linked list of keywords that is returned by @acronym{libextractor} is
 expected to contain only UTF-8 strings.  Naturally, proper conversion
@@ -659,12 +659,12 @@ may not always be possible since some file formats fail to specify the
 character set.  In that case, it is often better to not convert at
 all.
 
-The arguments to @verb{|convertToUtf8|} are the input string (which
+The arguments to @verb{|EXTRACTOR_common_convert_to_utf8|} are the input string (which
 does @emph{not} have to be zero-terminated), the length of the input
 string, and the character set (which @emph{must} be zero-terminated).
 Which character sets are supported depends on the platform, a list can
 generally be obtained using the @command{iconv -l} command.  The
-return value from @verb{|convertToUtf8|} is a zero-terminated string
+return value from @verb{|EXTRACTOR_common_convert_to_utf8|} is a zero-terminated string
 in UTF-8 format.  The responsibility to free the string is with the
 caller, so storing the string in the keyword list is acceptable.
 

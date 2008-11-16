@@ -31,7 +31,7 @@
  *  string is returned.
  */
 char *
-convertToUtf8 (const char *input, size_t len, const char *charset)
+EXTRACTOR_common_convert_to_utf8 (const char *input, size_t len, const char *charset)
 {
   size_t tmpSize;
   size_t finSize;

@@ -27,7 +27,7 @@
 
 #include "platform.h"
 #include "extractor.h"
-#include "../convert.h"
+#include "convert.h"
 
 #include <glib-object.h>
 #include <string.h>
@@ -394,14 +394,14 @@ history_extract(GsfInput * stream,
   // there are n strings, so n/2 revisions (author & file)
   nRev = (lbuffer[2] + (lbuffer[3] << 8)) / 2;
   where = 6;
-  for (i=0; i < nRev; i++) {	
+  for (i=0; i < nRev; i++) {
     if (where >= lcbSttbSavedBy)
       break;
     length = lbuffer[where++];
     if ( (where + 2 * length + 2 >= lcbSttbSavedBy) ||
 	 (where + 2 * length + 2 <= where) )
       break;
-    author = convertToUtf8((const char*) &lbuffer[where],
+    author = EXTRACTOR_common_convert_to_utf8((const char*) &lbuffer[where],
 			   length * 2,
 			   "UTF-16BE");
     where += length * 2 + 1;
@@ -411,9 +411,9 @@ history_extract(GsfInput * stream,
       free(author);
       break;
     }
-    filename = convertToUtf8((const char*) &lbuffer[where],
+    filename = EXTRACTOR_common_convert_to_utf8((const char*) &lbuffer[where],
 			     length * 2,
-			     "UTF-16BE");	
+			     "UTF-16BE");
     where += length * 2 + 1;
     rbuf = malloc(strlen(author) + strlen(filename) + 512);
     snprintf(rbuf, 512 + strlen(author) + strlen(filename),

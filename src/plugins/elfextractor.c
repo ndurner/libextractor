@@ -294,7 +294,7 @@ getSectionHdr (char *data,
   if (ehdr->e_shnum <= idx)
     return -1;
 
-  cat_unpack (&data[ehdr->e_shoff + ehdr->e_shentsize * idx],
+  EXTRACTOR_common_cat_unpack (&data[ehdr->e_shoff + ehdr->e_shentsize * idx],
               ELF_SECTION_SPECS[getByteorder (data[EI_CLASS])],
               ELF_SECTION_FIELDS (ret));
   return 0;
@@ -312,7 +312,7 @@ getDynTag (char *data,
 {
   if ((off + osize > size) || ((idx + 1) * ELF_DYN_SIZE > osize))
     return -1;
-  cat_unpack (&data[off + idx * ELF_DYN_SIZE],
+  EXTRACTOR_common_cat_unpack (&data[off + idx * ELF_DYN_SIZE],
               ELF_DYN_SPECS[getByteorder (data[EI_CLASS])],
               ELF_DYN_FIELDS (ret));
   return 0;
@@ -330,7 +330,7 @@ getProgramHdr (char *data,
   if (ehdr->e_phnum <= idx)
     return -1;
 
-  cat_unpack (&data[ehdr->e_phoff + ehdr->e_phensize * idx],
+  EXTRACTOR_common_cat_unpack (&data[ehdr->e_phoff + ehdr->e_phensize * idx],
               ELF_PHDR_SPECS[getByteorder (data[EI_CLASS])],
               ELF_PHDR_FIELDS (ret));
   return 0;
@@ -353,7 +353,7 @@ getELFHdr (char *data, size_t size, Elf32_Ehdr * ehdr)
     {
     case ELFDATA2LSB:
     case ELFDATA2MSB:
-      cat_unpack (&data[EI_NIDENT],
+      EXTRACTOR_common_cat_unpack (&data[EI_NIDENT],
                   ELF_HEADER_SPECS[getByteorder (data[EI_CLASS])],
                   ELF_HEADER_FIELDS (ehdr));
       break;

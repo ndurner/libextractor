@@ -421,7 +421,7 @@ libextractor_html_extract (const char *filename,
       if (tmp != NULL)
         {
           prev = addKeyword (tagmap[i].type,
-                             convertToUtf8 (tmp,
+              EXTRACTOR_common_convert_to_utf8 (tmp,
                                             strlen (tmp), charset), prev);
           free (tmp);
         }
@@ -434,7 +434,7 @@ libextractor_html_extract (const char *filename,
       t = tags;
       if (tagMatch ("title", t->tagStart, t->tagEnd))
         prev = addKeyword (EXTRACTOR_TITLE,
-                           convertToUtf8 (t->dataStart,
+            EXTRACTOR_common_convert_to_utf8 (t->dataStart,
                                           t->dataEnd - t->dataStart,
                                           charset), prev);
       tags = t->next;

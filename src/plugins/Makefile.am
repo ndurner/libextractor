@@ -142,11 +142,6 @@ libextractor_flac_la_LDFLAGS = \
  -lFLAC $(flacoggflag) $(PLUGINFLAGS)  $(retaincommand)
 endif
 
-noinst_LTLIBRARIES = \
-  libpack.la \
-  libconvert.la \
-  libconvert_numeric.la
-
 if HAVE_ZLIB
 libextractor_qt_la_LDFLAGS = \
   $(PLUGINFLAGS)  $(retaincommand)
@@ -172,35 +167,35 @@ libextractor_pdf_la_SOURCES = \
 libextractor_pdf_la_LDFLAGS = \
   $(PLUGINFLAGS)  $(retaincommand)
 libextractor_pdf_la_LIBADD = \
-  libconvert.la  
+  $(top_builddir)/src/common/libextractor_common.la
 
 libextractor_mp3_la_SOURCES = \
   mp3extractor.c 
 libextractor_mp3_la_LDFLAGS = \
   $(PLUGINFLAGS) $(retaincommand)
 libextractor_mp3_la_LIBADD = \
-  libconvert.la  
+  $(top_builddir)/src/common/libextractor_common.la
 
 libextractor_id3v2_la_SOURCES = \
   id3v2extractor.c 
 libextractor_id3v2_la_LDFLAGS = \
   $(PLUGINFLAGS)  $(retaincommand)
 libextractor_id3v2_la_LIBADD = \
-  libconvert.la
+  $(top_builddir)/src/common/libextractor_common.la
 
 libextractor_id3v23_la_SOURCES = \
   id3v23extractor.c 
 libextractor_id3v23_la_LDFLAGS = \
   $(PLUGINFLAGS)  $(retaincommand)
 libextractor_id3v23_la_LIBADD = \
-  libconvert.la 
+  $(top_builddir)/src/common/libextractor_common.la
 
 libextractor_id3v24_la_SOURCES = \
   id3v24extractor.c 
 libextractor_id3v24_la_LDFLAGS = \
   $(PLUGINFLAGS)  $(retaincommand)
 libextractor_id3v24_la_LIBADD = \
-  libconvert.la
+  $(top_builddir)/src/common/libextractor_common.la
 
 libextractor_it_la_SOURCES = \
   itextractor.c 
@@ -238,42 +233,28 @@ libextractor_gif_la_SOURCES = \
 libextractor_gif_la_LDFLAGS = \
   $(PLUGINFLAGS)  $(retaincommand)
 libextractor_gif_la_LIBADD = \
-  libpack.la
+  $(top_builddir)/src/common/libextractor_common.la
 
 libextractor_tiff_la_SOURCES = \
   tiffextractor.c 
 libextractor_tiff_la_LDFLAGS = \
   $(PLUGINFLAGS)  $(retaincommand)
 libextractor_tiff_la_LIBADD = \
-  libpack.la
+  $(top_builddir)/src/common/libextractor_common.la
 
 libextractor_applefile_la_SOURCES = \
   applefileextractor.c
 libextractor_applefile_la_LDFLAGS = \
   $(PLUGINFLAGS)  $(retaincommand)
 libextractor_applefile_la_LIBADD = \
-  libpack.la
+  $(top_builddir)/src/common/libextractor_common.la
 
 libextractor_elf_la_SOURCES = \
   elfextractor.c 
 libextractor_elf_la_LDFLAGS = \
   $(PLUGINFLAGS)  $(retaincommand)
 libextractor_elf_la_LIBADD = \
-  libpack.la
-
-libpack_la_SOURCES = \
-  pack.c \
-  pack.h 
-
-libconvert_la_SOURCES = \
-  convert.c \
-  convert.h 
-libconvert_la_LDFLAGS = \
-  $(LIBICONV)
-
-libconvert_numeric_la_SOURCES = \
-  convert_numeric.c \
-  convert_numeric.h 
+  $(top_builddir)/src/common/libextractor_common.la
 
 libextractor_zip_la_SOURCES = \
   zipextractor.c
@@ -292,14 +273,14 @@ libextractor_html_la_LDFLAGS = \
   $(PLUGINFLAGS)   $(retaincommand)
 libextractor_html_la_LIBADD = \
   $(top_builddir)/src/main/libextractor.la \
-  libconvert.la 
+  $(top_builddir)/src/common/libextractor_common.la
 
 libextractor_flv_la_SOURCES = \
   flvextractor.c
 libextractor_flv_la_LDFLAGS = \
   $(PLUGINFLAGS)  $(retaincommand)
 libextractor_flv_la_LIBADD = \
-  libconvert_numeric.la
+  $(top_builddir)/src/common/libextractor_common.la
 
 libextractor_real_la_SOURCES = \
   realextractor.c 
@@ -353,7 +334,7 @@ libextractor_png_la_LDFLAGS = \
   $(top_builddir)/src/main/libextractor.la \
   $(PLUGINFLAGS) $(retaincommand)
 libextractor_png_la_LIBADD = \
-  libconvert.la -lz
+  $(top_builddir)/src/common/libextractor_common.la -lz
 endif
 
 libextractor_filename_la_SOURCES = \
@@ -362,7 +343,7 @@ libextractor_filename_la_LDFLAGS = \
   $(PLUGINFLAGS)  $(retaincommand)
 libextractor_filename_la_LIBADD = \
   $(top_builddir)/src/main/libextractor.la \
-  libconvert.la
+  $(top_builddir)/src/common/libextractor_common.la
 
 libextractor_sid_la_SOURCES = \
   sidextractor.c 

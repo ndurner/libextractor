@@ -57,15 +57,15 @@ Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA 02110-1301, USA. 
 #endif
 
 static unsigned long get_field (const unsigned char *,
-                                enum floatformat_byteorders,
+                                enum EXTRACTOR_floatformat_byteorders,
                                 unsigned int,
                                 unsigned int,
                                 unsigned int);
-static int floatformat_always_valid (const struct floatformat *fmt,
+static int floatformat_always_valid (const struct EXTRACTOR_floatformat *fmt,
                                      const void *from);
 
 static int
-floatformat_always_valid (const struct floatformat *fmt /*ATTRIBUTE_UNUSED*/,
+floatformat_always_valid (const struct EXTRACTOR_floatformat *fmt /*ATTRIBUTE_UNUSED*/,
                           const void *from /*ATTRIBUTE_UNUSED*/)
 {
   return 1;
@@ -77,28 +77,28 @@ floatformat_always_valid (const struct floatformat *fmt /*ATTRIBUTE_UNUSED*/,
 #define FLOATFORMAT_CHAR_BIT 8
 
 /* floatformats for IEEE single and double, big and little endian.  */
-const struct floatformat floatformat_ieee_single_big =
+const struct EXTRACTOR_floatformat EXTRACTOR_floatformat_ieee_single_big =
 {
   floatformat_big, 32, 0, 1, 8, 127, 255, 9, 23,
   floatformat_intbit_no,
   "floatformat_ieee_single_big",
   floatformat_always_valid
 };
-const struct floatformat floatformat_ieee_single_little =
+const struct EXTRACTOR_floatformat EXTRACTOR_floatformat_ieee_single_little =
 {
   floatformat_little, 32, 0, 1, 8, 127, 255, 9, 23,
   floatformat_intbit_no,
   "floatformat_ieee_single_little",
   floatformat_always_valid
 };
-const struct floatformat floatformat_ieee_double_big =
+const struct EXTRACTOR_floatformat EXTRACTOR_floatformat_ieee_double_big =
 {
   floatformat_big, 64, 0, 1, 11, 1023, 2047, 12, 52,
   floatformat_intbit_no,
   "floatformat_ieee_double_big",
   floatformat_always_valid
 };
-const struct floatformat floatformat_ieee_double_little =
+const struct EXTRACTOR_floatformat EXTRACTOR_floatformat_ieee_double_little =
 {
   floatformat_little, 64, 0, 1, 11, 1023, 2047, 12, 52,
   floatformat_intbit_no,
@@ -109,7 +109,7 @@ const struct floatformat floatformat_ieee_double_little =
 /* floatformat for IEEE double, little endian byte order, with big endian word
    ordering, as on the ARM.  */
 
-const struct floatformat floatformat_ieee_double_littlebyte_bigword =
+const struct EXTRACTOR_floatformat EXTRACTOR_floatformat_ieee_double_littlebyte_bigword =
 {
   floatformat_littlebyte_bigword, 64, 0, 1, 11, 1023, 2047, 12, 52,
   floatformat_intbit_no,
@@ -119,21 +119,21 @@ const struct floatformat floatformat_ieee_double_littlebyte_bigword =
 
 /* floatformat for VAX.  Not quite IEEE, but close enough.  */
 
-const struct floatformat floatformat_vax_f =
+const struct EXTRACTOR_floatformat EXTRACTOR_floatformat_vax_f =
 {
   floatformat_vax, 32, 0, 1, 8, 129, 0, 9, 23,
   floatformat_intbit_no,
   "floatformat_vax_f",
   floatformat_always_valid
 };
-const struct floatformat floatformat_vax_d =
+const struct EXTRACTOR_floatformat EXTRACTOR_floatformat_vax_d =
 {
   floatformat_vax, 64, 0, 1, 8, 129, 0, 9, 55,
   floatformat_intbit_no,
   "floatformat_vax_d",
   floatformat_always_valid
 };
-const struct floatformat floatformat_vax_g =
+const struct EXTRACTOR_floatformat EXTRACTOR_floatformat_vax_g =
 {
   floatformat_vax, 64, 0, 1, 11, 1025, 0, 12, 52,
   floatformat_intbit_no,
@@ -141,11 +141,11 @@ const struct floatformat floatformat_vax_g =
   floatformat_always_valid
 };
 
-static int floatformat_i387_ext_is_valid (const struct floatformat *fmt,
+static int floatformat_i387_ext_is_valid (const struct EXTRACTOR_floatformat *fmt,
 					  const void *from);
 
 static int
-floatformat_i387_ext_is_valid (const struct floatformat *fmt, const void *from)
+floatformat_i387_ext_is_valid (const struct EXTRACTOR_floatformat *fmt, const void *from)
 {
   /* In the i387 double-extended format, if the exponent is all ones,
      then the integer bit must be set.  If the exponent is neither 0
@@ -165,14 +165,14 @@ floatformat_i387_ext_is_valid (const struct floatformat *fmt, const void *from)
     return 1;
 }
 
-const struct floatformat floatformat_i387_ext =
+const struct EXTRACTOR_floatformat EXTRACTOR_floatformat_i387_ext =
 {
   floatformat_little, 80, 0, 1, 15, 0x3fff, 0x7fff, 16, 64,
   floatformat_intbit_yes,
   "floatformat_i387_ext",
   floatformat_i387_ext_is_valid
 };
-const struct floatformat floatformat_m68881_ext =
+const struct EXTRACTOR_floatformat EXTRACTOR_floatformat_m68881_ext =
 {
   /* Note that the bits from 16 to 31 are unused.  */
   floatformat_big, 96, 0, 1, 15, 0x3fff, 0x7fff, 32, 64,
@@ -180,7 +180,7 @@ const struct floatformat floatformat_m68881_ext =
   "floatformat_m68881_ext",
   floatformat_always_valid
 };
-const struct floatformat floatformat_i960_ext =
+const struct EXTRACTOR_floatformat EXTRACTOR_floatformat_i960_ext =
 {
   /* Note that the bits from 0 to 15 are unused.  */
   floatformat_little, 96, 16, 17, 15, 0x3fff, 0x7fff, 32, 64,
@@ -188,14 +188,14 @@ const struct floatformat floatformat_i960_ext =
   "floatformat_i960_ext",
   floatformat_always_valid
 };
-const struct floatformat floatformat_m88110_ext =
+const struct EXTRACTOR_floatformat EXTRACTOR_floatformat_m88110_ext =
 {
   floatformat_big, 80, 0, 1, 15, 0x3fff, 0x7fff, 16, 64,
   floatformat_intbit_yes,
   "floatformat_m88110_ext",
   floatformat_always_valid
 };
-const struct floatformat floatformat_m88110_harris_ext =
+const struct EXTRACTOR_floatformat EXTRACTOR_floatformat_m88110_harris_ext =
 {
   /* Harris uses raw format 128 bytes long, but the number is just an ieee
      double, and the last 64 bits are wasted. */
@@ -204,7 +204,7 @@ const struct floatformat floatformat_m88110_harris_ext =
   "floatformat_m88110_ext_harris",
   floatformat_always_valid
 };
-const struct floatformat floatformat_arm_ext_big =
+const struct EXTRACTOR_floatformat EXTRACTOR_floatformat_arm_ext_big =
 {
   /* Bits 1 to 16 are unused.  */
   floatformat_big, 96, 0, 17, 15, 0x3fff, 0x7fff, 32, 64,
@@ -212,7 +212,7 @@ const struct floatformat floatformat_arm_ext_big =
   "floatformat_arm_ext_big",
   floatformat_always_valid
 };
-const struct floatformat floatformat_arm_ext_littlebyte_bigword =
+const struct EXTRACTOR_floatformat EXTRACTOR_floatformat_arm_ext_littlebyte_bigword =
 {
   /* Bits 1 to 16 are unused.  */
   floatformat_littlebyte_bigword, 96, 0, 17, 15, 0x3fff, 0x7fff, 32, 64,
@@ -220,35 +220,35 @@ const struct floatformat floatformat_arm_ext_littlebyte_bigword =
   "floatformat_arm_ext_littlebyte_bigword",
   floatformat_always_valid
 };
-const struct floatformat floatformat_ia64_spill_big =
+const struct EXTRACTOR_floatformat EXTRACTOR_floatformat_ia64_spill_big =
 {
   floatformat_big, 128, 0, 1, 17, 65535, 0x1ffff, 18, 64,
   floatformat_intbit_yes,
   "floatformat_ia64_spill_big",
   floatformat_always_valid
 };
-const struct floatformat floatformat_ia64_spill_little =
+const struct EXTRACTOR_floatformat EXTRACTOR_floatformat_ia64_spill_little =
 {
   floatformat_little, 128, 0, 1, 17, 65535, 0x1ffff, 18, 64,
   floatformat_intbit_yes,
   "floatformat_ia64_spill_little",
   floatformat_always_valid
 };
-const struct floatformat floatformat_ia64_quad_big =
+const struct EXTRACTOR_floatformat EXTRACTOR_floatformat_ia64_quad_big =
 {
   floatformat_big, 128, 0, 1, 15, 16383, 0x7fff, 16, 112,
   floatformat_intbit_no,
   "floatformat_ia64_quad_big",
   floatformat_always_valid
 };
-const struct floatformat floatformat_ia64_quad_little =
+const struct EXTRACTOR_floatformat EXTRACTOR_floatformat_ia64_quad_little =
 {
   floatformat_little, 128, 0, 1, 15, 16383, 0x7fff, 16, 112,
   floatformat_intbit_no,
   "floatformat_ia64_quad_little",
   floatformat_always_valid
 };
-
+
 
 #ifndef min
 #define min(a, b) ((a) < (b) ? (a) : (b))
@@ -257,7 +257,7 @@ const struct floatformat floatformat_ia64_quad_little =
 /* Extract a field which starts at START and is LEN bits long.  DATA and
    TOTAL_LEN are the thing we are extracting it from, in byteorder ORDER.  */
 static unsigned long
-get_field (const unsigned char *data, enum floatformat_byteorders order,
+get_field (const unsigned char *data, enum EXTRACTOR_floatformat_byteorders order,
            unsigned int total_len, unsigned int start, unsigned int len)
 {
   unsigned long result = 0;
@@ -276,7 +276,7 @@ get_field (const unsigned char *data, enum floatformat_byteorders order,
 
   lo_bit = start % FLOATFORMAT_CHAR_BIT;
   hi_bit = min (lo_bit + len, FLOATFORMAT_CHAR_BIT);
-  
+
   do
     {
       unsigned int shifted = *(data + cur_byte) >> lo_bit;
@@ -293,13 +293,13 @@ get_field (const unsigned char *data, enum floatformat_byteorders order,
 
   return result;
 }
-  
+
 /* Convert from FMT to a double.
    FROM is the address of the extended float.
    Store the double in *TO.  */
 
 void
-floatformat_to_double (const struct floatformat *fmt,
+EXTRACTOR_common_floatformat_to_double (const struct EXTRACTOR_floatformat *fmt,
                        const void *from, double *to)
 {
   const unsigned char *ufrom = (const unsigned char *) from;
@@ -411,8 +411,8 @@ floatformat_to_double (const struct floatformat *fmt,
     dto = -dto;
   *to = dto;
 }
-
-static void put_field (unsigned char *, enum floatformat_byteorders,
+
+static void put_field (unsigned char *, enum EXTRACTOR_floatformat_byteorders,
                        unsigned int,
                        unsigned int,
                        unsigned int,
@@ -421,7 +421,7 @@ static void put_field (unsigned char *, enum floatformat_byteorders,
 /* Set a field which starts at START and is LEN bits long.  DATA and
    TOTAL_LEN are the thing we are extracting it from, in byteorder ORDER.  */
 static void
-put_field (unsigned char *data, enum floatformat_byteorders order,
+put_field (unsigned char *data, enum EXTRACTOR_floatformat_byteorders order,
            unsigned int total_len, unsigned int start, unsigned int len,
            unsigned long stuff_to_put)
 {
@@ -440,7 +440,7 @@ put_field (unsigned char *data, enum floatformat_byteorders order,
 
   lo_bit = start % FLOATFORMAT_CHAR_BIT;
   hi_bit = min (lo_bit + len, FLOATFORMAT_CHAR_BIT);
-  
+
   do
     {
       unsigned char *byte_ptr = data + cur_byte;
@@ -461,7 +461,7 @@ put_field (unsigned char *data, enum floatformat_byteorders order,
    restrictions.  */
 
 void
-floatformat_from_double (const struct floatformat *fmt,
+EXTRACTOR_common_floatformat_from_double (const struct EXTRACTOR_floatformat *fmt,
                          const double *from, void *to)
 {
   double dfrom;
@@ -557,7 +557,7 @@ floatformat_from_double (const struct floatformat *fmt,
 /* Return non-zero iff the data at FROM is a valid number in format FMT.  */
 
 int
-floatformat_is_valid (const struct floatformat *fmt, const void *from)
+EXTRACTOR_common_floatformat_is_valid (const struct EXTRACTOR_floatformat *fmt, const void *from)
 {
   return fmt->is_valid (fmt, from);
 }

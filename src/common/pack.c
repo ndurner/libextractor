@@ -56,7 +56,7 @@ typedef signed int sword;
  */
 
 int
-cat_pack (void *buf, const char *fmt, ...)
+EXTRACTOR_common_cat_pack (void *buf, const char *fmt, ...)
 {
   va_list ap;
   word blen, val;
@@ -248,7 +248,7 @@ cat_pack (void *buf, const char *fmt, ...)
 
 
 int
-cat_unpack (const void *buf, const char *fmt, ...)
+EXTRACTOR_common_cat_unpack (const void *buf, const char *fmt, ...)
 {
   va_list ap;
   word maxlen, len, *wordp;

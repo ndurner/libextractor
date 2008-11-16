@@ -527,6 +527,7 @@ contrib/macosx/Info.plist
 doc/Makefile
 src/Makefile
 src/include/Makefile
+src/common/Makefile
 src/main/Makefile
 src/plugins/Makefile
 src/plugins/ole2/Makefile

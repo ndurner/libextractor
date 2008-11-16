@@ -31,7 +31,7 @@ Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA 02110-1301, USA. 
 
 /* What is the order of the bytes?  */
 
-enum floatformat_byteorders {
+enum EXTRACTOR_floatformat_byteorders {
   /* Standard little endian byte order.
      EX: 1.2345678e10 => 00 00 80 c5 e0 fe 06 42 */
   floatformat_little,
@@ -51,11 +51,11 @@ enum floatformat_byteorders {
   floatformat_vax
 };
 
-enum floatformat_intbit { floatformat_intbit_yes, floatformat_intbit_no };
+enum EXTRACTOR_floatformat_intbit { floatformat_intbit_yes, floatformat_intbit_no };
 
-struct floatformat
+struct EXTRACTOR_floatformat
 {
-  enum floatformat_byteorders byteorder;
+  enum EXTRACTOR_floatformat_byteorders byteorder;
   unsigned int totalsize;	/* Total size of number in bits */
 
   /* Sign bit is always one bit long.  1 means negative, 0 means positive.  */
@@ -78,63 +78,63 @@ struct floatformat
   unsigned int man_len;
 
   /* Is the integer bit explicit or implicit?  */
-  enum floatformat_intbit intbit;
+  enum EXTRACTOR_floatformat_intbit intbit;
 
   /* Internal name for debugging. */
   const char *name;
 
   /* Validator method.  */
-  int (*is_valid) (const struct floatformat *fmt, const void *from);
+  int (*is_valid) (const struct EXTRACTOR_floatformat *fmt, const void *from);
 };
 
 /* floatformats for IEEE single and double, big and little endian.  */
 
-extern const struct floatformat floatformat_ieee_single_big;
-extern const struct floatformat floatformat_ieee_single_little;
-extern const struct floatformat floatformat_ieee_double_big;
-extern const struct floatformat floatformat_ieee_double_little;
+extern const struct EXTRACTOR_floatformat EXTRACTOR_floatformat_ieee_single_big;
+extern const struct EXTRACTOR_floatformat EXTRACTOR_floatformat_ieee_single_little;
+extern const struct EXTRACTOR_floatformat EXTRACTOR_floatformat_ieee_double_big;
+extern const struct EXTRACTOR_floatformat EXTRACTOR_floatformat_ieee_double_little;
 
 /* floatformat for ARM IEEE double, little endian bytes and big endian words */
 
-extern const struct floatformat floatformat_ieee_double_littlebyte_bigword;
+extern const struct EXTRACTOR_floatformat EXTRACTOR_floatformat_ieee_double_littlebyte_bigword;
 
 /* floatformats for VAX.  */
 
-extern const struct floatformat floatformat_vax_f;
-extern const struct floatformat floatformat_vax_d;
-extern const struct floatformat floatformat_vax_g;
+extern const struct EXTRACTOR_floatformat EXTRACTOR_floatformat_vax_f;
+extern const struct EXTRACTOR_floatformat EXTRACTOR_floatformat_vax_d;
+extern const struct EXTRACTOR_floatformat EXTRACTOR_floatformat_vax_g;
 
 /* floatformats for various extendeds.  */
 
-extern const struct floatformat floatformat_i387_ext;
-extern const struct floatformat floatformat_m68881_ext;
-extern const struct floatformat floatformat_i960_ext;
-extern const struct floatformat floatformat_m88110_ext;
-extern const struct floatformat floatformat_m88110_harris_ext;
-extern const struct floatformat floatformat_arm_ext_big;
-extern const struct floatformat floatformat_arm_ext_littlebyte_bigword;
+extern const struct EXTRACTOR_floatformat EXTRACTOR_floatformat_i387_ext;
+extern const struct EXTRACTOR_floatformat EXTRACTOR_floatformat_m68881_ext;
+extern const struct EXTRACTOR_floatformat EXTRACTOR_floatformat_i960_ext;
+extern const struct EXTRACTOR_floatformat EXTRACTOR_floatformat_m88110_ext;
+extern const struct EXTRACTOR_floatformat EXTRACTOR_floatformat_m88110_harris_ext;
+extern const struct EXTRACTOR_floatformat EXTRACTOR_floatformat_arm_ext_big;
+extern const struct EXTRACTOR_floatformat EXTRACTOR_floatformat_arm_ext_littlebyte_bigword;
 /* IA-64 Floating Point register spilt into memory.  */
-extern const struct floatformat floatformat_ia64_spill_big;
-extern const struct floatformat floatformat_ia64_spill_little;
-extern const struct floatformat floatformat_ia64_quad_big;
-extern const struct floatformat floatformat_ia64_quad_little;
+extern const struct EXTRACTOR_floatformat EXTRACTOR_floatformat_ia64_spill_big;
+extern const struct EXTRACTOR_floatformat EXTRACTOR_floatformat_ia64_spill_little;
+extern const struct EXTRACTOR_floatformat EXTRACTOR_floatformat_ia64_quad_big;
+extern const struct EXTRACTOR_floatformat EXTRACTOR_floatformat_ia64_quad_little;
 
 /* Convert from FMT to a double.
    FROM is the address of the extended float.
    Store the double in *TO.  */
 
 extern void
-floatformat_to_double (const struct floatformat *, const void *, double *);
+EXTRACTOR_common_floatformat_to_double (const struct EXTRACTOR_floatformat *, const void *, double *);
 
 /* The converse: convert the double *FROM to FMT
    and store where TO points.  */
 
 extern void
-floatformat_from_double (const struct floatformat *, const double *, void *);
+EXTRACTOR_common_floatformat_from_double (const struct EXTRACTOR_floatformat *, const double *, void *);
 
 /* Return non-zero iff the data at FROM is a valid number in format FMT.  */
 
 extern int
-floatformat_is_valid (const struct floatformat *fmt, const void *from);
+EXTRACTOR_common_floatformat_is_valid (const struct EXTRACTOR_floatformat *fmt, const void *from);
 
 #endif	/* defined (FLOATFORMAT_H) */

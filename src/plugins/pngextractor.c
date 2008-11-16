@@ -115,7 +115,7 @@ processtEXt (const char *data,
   off = stnlen (data, length) + 1;
   if (off >= length)
     return prev;                /* failed to find '\0' */
-  keyword = convertToUtf8 (&data[off], length - off, "ISO-8859-1");
+  keyword = EXTRACTOR_common_convert_to_utf8 (&data[off], length - off, "ISO-8859-1");
   i = 0;
   while (tagmap[i].name != NULL)
     {
@@ -275,7 +275,7 @@ processzTXt (const char *data,
       if (ret != Z_BUF_ERROR)
         return prev;            /* unknown error, abort */
     }
-  keyword = convertToUtf8 (buf, bufLen, "ISO-8859-1");
+  keyword = EXTRACTOR_common_convert_to_utf8 (buf, bufLen, "ISO-8859-1");
   free (buf);
   i = 0;
   while (tagmap[i].name != NULL)

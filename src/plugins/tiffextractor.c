@@ -129,7 +129,7 @@ libextractor_tiff_extract (char *filename,
 #if __BYTE_ORDER == __BIG_ENDIAN
   byteOrder = 1 - byteOrder;
 #endif
-  cat_unpack (data, TIFF_HEADER_SPECS[byteOrder], TIFF_HEADER_FIELDS (&hdr));
+  EXTRACTOR_common_cat_unpack (data, TIFF_HEADER_SPECS[byteOrder], TIFF_HEADER_FIELDS (&hdr));
   if (hdr.fourty_two != 42)
     return prev;                /* can not be tiff */
   if (hdr.ifd_offset + 6 > size)
@@ -159,7 +159,7 @@ libextractor_tiff_extract (char *filename,
           DIRECTORY_ENTRY entry;
           off = current_ifd + 2 + DIRECTORY_ENTRY_SIZE * i;
 
-          cat_unpack (&data[off],
+          EXTRACTOR_common_cat_unpack (&data[off],
                       DIRECTORY_ENTRY_SPECS[byteOrder],
                       DIRECTORY_ENTRY_FIELDS (&entry));
           switch (entry.tag)

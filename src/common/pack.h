@@ -45,9 +45,9 @@ MODIFICATIONS.
        to hold the data.
  */
 
-int cat_pack(void * buf, const char *fmt, ... );
+int EXTRACTOR_common_cat_pack(void * buf, const char *fmt, ... );
 
-int cat_unpack(const void * buf, const char *fmt, ... );
+int EXTRACTOR_common_cat_unpack(const void * buf, const char *fmt, ... );
 
 struct cat_bvec {
   unsigned long len;

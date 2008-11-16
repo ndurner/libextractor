@@ -1,4 +1,4 @@
-INCLUDES = -I$(top_srcdir)/src/include
+INCLUDES = -I$(top_srcdir)/src/include -I$(top_srcdir)/src/common
 
 # install plugins under:
 plugindir = $(libdir)/@RPLUGINDIR@

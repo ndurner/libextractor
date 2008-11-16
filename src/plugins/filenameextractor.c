@@ -44,7 +44,7 @@ libextractor_filename_extract (const char *filename,
           }
       keyword = malloc (sizeof (EXTRACTOR_KeywordList));
       keyword->next = prev;
-      keyword->keyword = convertToUtf8 (filenameRoot,
+      keyword->keyword = EXTRACTOR_common_convert_to_utf8 (filenameRoot,
                                         strlen (filenameRoot),
                                         nl_langinfo (CODESET));
       keyword->keywordType = EXTRACTOR_FILENAME;

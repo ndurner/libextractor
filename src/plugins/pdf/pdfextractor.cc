@@ -24,7 +24,7 @@
 
 #include "platform.h"
 #include "extractor.h"
-#include "../convert.h"
+#include "convert.h"
 #include <math.h>
 
 #include "parseargs.h"
@@ -74,7 +74,7 @@ extern "C" {
 	  (((unsigned char)s[1]) & 0xff) == 0xff) {
 	char * result;
 
-	result = convertToUtf8((const char*) &s[2], s1->getLength() - 2, "UTF-16BE");
+	result = EXTRACTOR_common_convert_to_utf8((const char*) &s[2], s1->getLength() - 2, "UTF-16BE");
 	next = addKeyword(type,
 			  result,
 			  next);
@@ -108,7 +108,7 @@ extern "C" {
 
         if (0 < len) {
 	  next = addKeyword(type,
-	  		  convertToUtf8(s, len,
+	      EXTRACTOR_common_convert_to_utf8(s, len,
 					"ISO-8859-1"),
 			  next);
         }
@@ -135,7 +135,7 @@ extern "C" {
 	/* isUnicode */
 	char * result;
 
-	result = convertToUtf8((const char*)&s[2], s1->getLength() - 2, "UTF-16BE");
+	result = EXTRACTOR_common_convert_to_utf8((const char*)&s[2], s1->getLength() - 2, "UTF-16BE");
 	next = addKeyword(type,
 			  result,
 			  next);
