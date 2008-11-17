@@ -129,33 +129,37 @@ if HAVE_VORBISFILE
 libextractor_ogg_la_SOURCES = \
   oggextractor.c
 libextractor_ogg_la_LDFLAGS = \
- -lvorbisfile $(vorbisflag) -logg $(PLUGINFLAGS)
+  $(PLUGINFLAGS)
+libextractor_ogg_la_LIBADD = \
+  -lvorbisfile $(vorbisflag) -logg
 endif
 
 
 if HAVE_FLAC
 libextractor_flac_la_SOURCES = \
   flacextractor.c
-libextractor_flac_la_LIBADD = \
-  $(top_builddir)/src/main/libextractor.la
 libextractor_flac_la_LDFLAGS = \
- -lFLAC $(flacoggflag) $(PLUGINFLAGS)
+  $(PLUGINFLAGS)
+libextractor_flac_la_LIBADD = \
+  -lFLAC $(flacoggflag) \
+  $(top_builddir)/src/main/libextractor.la
 endif
 
 if HAVE_ZLIB
+libextractor_qt_la_SOURCES = \
+  qtextractor.c 
 libextractor_qt_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_qt_la_LIBADD = \
   -lz
-libextractor_qt_la_SOURCES = \
-  qtextractor.c 
 endif
 
 libextractor_ps_la_SOURCES = \
   psextractor.c
 libextractor_ps_la_LDFLAGS = \
-  $(top_builddir)/src/main/libextractor.la \
   $(PLUGINFLAGS)
+libextractor_ps_la_LIBADD = \
+  $(top_builddir)/src/main/libextractor.la
 
 libextractor_wav_la_SOURCES = \
   wavextractor.c
@@ -259,8 +263,9 @@ libextractor_elf_la_LIBADD = \
 libextractor_zip_la_SOURCES = \
   zipextractor.c
 libextractor_zip_la_LDFLAGS = \
-  $(top_builddir)/src/main/libextractor.la \
   $(PLUGINFLAGS)
+libextractor_zip_la_LIBADD = \
+  $(top_builddir)/src/main/libextractor.la
 
 libextractor_jpeg_la_SOURCES = \
   jpegextractor.c 
@@ -290,51 +295,54 @@ libextractor_real_la_LDFLAGS = \
 libextractor_mime_la_SOURCES = \
   mimeextractor.c 
 libextractor_mime_la_LDFLAGS = \
-  $(top_builddir)/src/main/libextractor.la \
   $(PLUGINFLAGS)
+libextractor_mime_la_LIBADD = \
+  $(top_builddir)/src/main/libextractor.la
 
 if HAVE_MPEG2
 libextractor_mpeg_la_SOURCES = \
   mpegextractor.c 
 libextractor_mpeg_la_LDFLAGS = \
-  $(top_builddir)/src/main/libextractor.la \
   $(PLUGINFLAGS)
 libextractor_mpeg_la_LIBADD = \
-  -lmpeg2
+  -lmpeg2 \
+  $(top_builddir)/src/main/libextractor.la
 endif
 
 libextractor_man_la_SOURCES = \
   manextractor.c 
 libextractor_man_la_LDFLAGS = \
-  $(top_builddir)/src/main/libextractor.la \
   $(PLUGINFLAGS)
+libextractor_man_la_LIBADD = \
+  $(top_builddir)/src/main/libextractor.la
 
 if HAVE_ZLIB
 libextractor_deb_la_SOURCES = \
   debextractor.c 
 libextractor_deb_la_LDFLAGS = \
-  $(top_builddir)/src/main/libextractor.la \
   $(PLUGINFLAGS)
 libextractor_deb_la_LIBADD = \
+  $(top_builddir)/src/main/libextractor.la \
   -lz
 endif
 
 libextractor_riff_la_SOURCES = \
   riffextractor.c 
 libextractor_riff_la_LDFLAGS = \
-  $(top_builddir)/src/main/libextractor.la \
   $(PLUGINFLAGS)
 libextractor_riff_la_LIBADD = \
+  $(top_builddir)/src/main/libextractor.la \
   -lm 
 
 if HAVE_ZLIB
 libextractor_png_la_SOURCES = \
   pngextractor.c
 libextractor_png_la_LDFLAGS = \
-  $(top_builddir)/src/main/libextractor.la \
   $(PLUGINFLAGS)
 libextractor_png_la_LIBADD = \
-  $(top_builddir)/src/common/libextractor_common.la -lz
+  $(top_builddir)/src/common/libextractor_common.la \
+  $(top_builddir)/src/main/libextractor.la \
+  -lz
 endif
 
 libextractor_filename_la_SOURCES = \
@@ -392,10 +400,11 @@ libextractor_translit_la_LDFLAGS = \
 
 libextractor_thumbnailqt_la_SOURCES = \
 	thumbnailextractorqt.cc
-libextractor_thumbnailqt_la_LIBADD = \
-  $(top_builddir)/src/main/libextractor.la
 libextractor_thumbnailqt_la_LDFLAGS = \
-  $(PLUGINFLAGS) $(qtflags) $(svgflags)
+  $(PLUGINFLAGS)
+libextractor_thumbnailqt_la_LIBADD = \
+  $(qtflags) $(svgflags) \
+  $(top_builddir)/src/main/libextractor.la
 libextractor_thumbnailqt_la_CPPFLAGS = \
   -I$(top_scrdir)/include \
   $(QT_CFLAGS) $(QT_SVG_CFLAGS)
