@@ -7,19 +7,16 @@ lib_LTLIBRARIES = \
   libextractor_common.la
 
 if !MINGW
-  exportflag=-export-symbols-regex "EXTRACTOR_.*"
 if !SOMEBSD
     dlflag=-ldl
 endif
-else
-  winexportflag=-export-dynamic
 endif
 
 libextractor_common_la_LDFLAGS = \
-  $(exportflag) $(winexportflag) -version-info @LIB_VERSION_CURRENT@:@LIB_VERSION_REVISION@:@LIB_VERSION_AGE@ $(LIBICONV)
+  $(LE_LIB_LDFLAGS)
 
 libextractor_common_la_LIBADD = \
-  $(LIBLTDL) $(dlflag) -lz
+  $(LIBLTDL) $(dlflag) $(LIBICONV) -lz
 
 libextractor_common_la_SOURCES = \
   unzip.c \

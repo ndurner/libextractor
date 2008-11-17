@@ -17,12 +17,9 @@ extract_LDADD = \
   $(top_builddir)/src/main/libextractor.la 
 
 if !MINGW
-  exportflag=-export-symbols-regex "EXTRACTOR_[a-zA-Z0-9_]*"
 if !SOMEBSD
     dlflag=-ldl
 endif
-else
-  winexportflag=-export-dynamic
 endif
 
 if HAVE_ZLIB
@@ -39,9 +36,9 @@ endif
 endif
 
 libextractor_la_LDFLAGS = \
-  $(exportflag) $(winexportflag) -version-info @LIB_VERSION_CURRENT@:@LIB_VERSION_REVISION@:@LIB_VERSION_AGE@ $(LIBICONV)
+  $(LE_LIB_LDFLAGS) -version-info @LIB_VERSION_CURRENT@:@LIB_VERSION_REVISION@:@LIB_VERSION_AGE@
 libextractor_la_LIBADD = \
-  $(LIBLTDL) $(dlflag) $(zlib) $(bz2lib) $(GSF_LIBS_X) -lpthread
+  $(LIBLTDL) $(dlflag) $(zlib) $(bz2lib) $(GSF_LIBS_X) $(LIBICONV) -lpthread
 
 
 EXTRA_DIST = \

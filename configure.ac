@@ -515,6 +515,26 @@ AC_ARG_WITH(ffmpeg-arch,
 		[set FFmpeg --arch setting for cross-compiling.]),
 	[ffmpegarch=$withval])
 
+
+LE_LIB_LDFLAGS="-export-dynamic -no-undefined"
+LE_PLUGIN_LDFLAGS="-export-dynamic -avoid-version -module -no-undefined"
+dnl TODO insert a proper check here
+AC_CACHE_CHECK([whether -export-symbols-regex works],
+ gn_cv_export_symbols_regex_works, 
+ [
+  case "$host_os" in
+  mingw*) gn_cv_export_symbols_regex_works=no;;
+  *) gn_cv_export_symbols_regex_works=yes;;
+  esac
+ ])
+if test "x$gn_cv_export_symbols_regex_works" = "xyes"
+then
+ LE_LIB_LDFLAGS="$LE_LIB_LDFLAGS -export-symbols-regex \"EXTRACTOR_@<:@a-zA-Z0-9_@:>@*\""
+ LE_PLUGIN_LDFLAGS="$LE_PLUGIN_LDFLAGS -export-symbols-regex \"libextractor_@<:@a-zA-Z0-9_@:>@*_extract\""
+fi
+AC_SUBST(LE_LIB_LDFLAGS)
+AC_SUBST(LE_PLUGIN_LDFLAGS)
+
 AC_SUBST(CPPFLAGS)
 AC_SUBST(LDFLAGS)
 AC_SUBST(XTRA_CPPLIBS)
@@ -542,7 +562,6 @@ src/plugins/exiv2/Makefile
 src/test/Makefile
 ])
 
-LIBEXTRACTOR_VERSION="0.5.18a"
 AX_CREATE_PKGCONFIG_INFO([libextractor.pc],,[-lextractor],[Metadata extraction library],,)
 
 if test "x$ffmpeg_enabled" = "x1"
