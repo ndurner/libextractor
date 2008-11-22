@@ -593,7 +593,6 @@ void __attribute__ ((constructor)) le_ltdl_init() {
   char * cpath;
 
 #if ENABLE_NLS
-  setlocale(LC_ALL, "");
   BINDTEXTDOMAIN(PACKAGE, LOCALEDIR);
   BINDTEXTDOMAIN("iso-639", ISOLOCALEDIR); /* used by wordextractor */
 #endif
