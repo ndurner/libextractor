@@ -538,7 +538,7 @@ typedef struct
 {
   short integer;
   short fraction;
-} Fixed;
+} QTFixed;
 
 typedef struct
 {
@@ -557,11 +557,11 @@ typedef struct
   unsigned short alternate_group;
   unsigned short volume;
   unsigned short reserved_3;
-  Fixed matrix[3][3];
+  QTFixed matrix[3][3];
   /* in pixels */
-  Fixed track_width;
+  QTFixed track_width;
   /* in pixels */
-  Fixed track_height;
+  QTFixed track_height;
 } TrackAtom;
 
 static int
