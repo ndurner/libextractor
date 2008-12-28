@@ -529,6 +529,7 @@ static char * os_get_installation_path() {
 #endif
 #if DARWIN
   dima = get_path_from_dyld_image();
+  path = NULL;
 #else
   dima = NULL;
   path = get_path_from_PATH();
