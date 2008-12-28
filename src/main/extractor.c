@@ -531,8 +531,8 @@ static char * os_get_installation_path() {
   dima = get_path_from_dyld_image();
 #else
   dima = NULL;
-#endif
   path = get_path_from_PATH();
+#endif
   n = 1;
   if (lpref != NULL)
     n += strlen(lpref) + strlen(PLUGINDIR "/:");
