@@ -1,7 +1,7 @@
 INCLUDES = -I$(top_srcdir)/src/include $(LTDLINCL)
 
 LIBS = \
- @LTLIBINTL@ @LIBS@
+ @LE_LIBINTL@ @LIBS@
 
 lib_LTLIBRARIES = \
   libextractor_common.la

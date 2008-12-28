@@ -4,7 +4,7 @@ INCLUDES = -I$(top_srcdir)/src/include -I$(top_srcdir)/src/common
 plugindir = $(libdir)/@RPLUGINDIR@
 
 LIBS = \
- @LTLIBINTL@ @LIBS@
+ @LE_LIBINTL@ @LIBS@
 
 if HAVE_GNU_LD
  makesymbolic=-Wl,-Bsymbolic

@@ -29,8 +29,13 @@
 #define PLATFORM_H
 
 #include "config.h"
+#ifndef FRAMEWORK_BUILD
 #include "gettext.h"
 #define _(a) dgettext(PACKAGE, a)
+#else
+#include "libintlemu.h"
+#define _(a) dgettext("org.gnunet.libextractor", a)
+#endif
 
 #include "plibc.h"
 
