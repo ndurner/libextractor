@@ -17,12 +17,10 @@ static CFMutableDictionaryRef intlemu_dict;
 
 static void intlemu_cstring_release(CFAllocatorRef allocator, const void *value)
 {
-	//printf("intlemu_cstring_release: %p\n", value);
 	free((void *)value);
 }
 
 void __attribute__ ((constructor)) intlemu_init_() {
-        //printf("intlemu: init\n");
 	CFDictionaryValueCallBacks cstring_value_callbacks =
 		{
 			0, /* version */
@@ -39,13 +37,11 @@ void __attribute__ ((constructor)) intlemu_init_() {
 		&kCFCopyStringDictionaryKeyCallBacks,
 		&cstring_value_callbacks);
 	if (intlemu_dict == NULL) {
-		//printf("Error creating dictionary\n");
 		return;
 	}
 }
 
 void __attribute__ ((destructor)) intlemu_fini_() {
-        //printf("intlemu: fini\n");
 	CFRelease(intlemu_dict);
 
 	pthread_mutex_destroy(&intlemu_lock);
@@ -74,7 +70,6 @@ char * intlemu_bgettext (CFBundleRef bundle, const char *msgid)
 	pthread_mutex_lock(&intlemu_lock);
 	value = (char *)CFDictionaryGetValue(intlemu_dict, key);
 	pthread_mutex_unlock(&intlemu_lock);
-	//printf("CFDictionaryGetValue: [%s]\n", value);
 	if (value != NULL) {
 		CFRelease(key);
 		return (char *)value;
@@ -87,7 +82,6 @@ char * intlemu_bgettext (CFBundleRef bundle, const char *msgid)
 		NULL,
 		NULL);
 	if (s == key) {
-		//printf("no translation found\n");
 		CFRelease(key);
 		return (char *)msgid;
 	}
@@ -106,7 +100,6 @@ char * intlemu_bgettext (CFBundleRef bundle, const char *msgid)
 		&len);
 	buf = NULL;
 	if (clen == r.length) {
-		//printf("allocate dictionary value: %d\n", len+1);
 		buf = malloc(len + 1);
 	}
 				
