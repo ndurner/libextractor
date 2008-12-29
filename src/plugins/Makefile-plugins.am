@@ -3,9 +3,6 @@ INCLUDES = -I$(top_srcdir)/src/include -I$(top_srcdir)/src/common
 # install plugins under:
 plugindir = $(libdir)/@RPLUGINDIR@
 
-LIBS = \
- @LE_LIBINTL@ @LIBS@
-
 if HAVE_GNU_LD
  makesymbolic=-Wl,-Bsymbolic
 endif

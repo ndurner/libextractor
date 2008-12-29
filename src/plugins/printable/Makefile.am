@@ -65,7 +65,7 @@ pesv.c:
 dictionary_builder_SOURCES = \
  dictionary-builder.c 
 dictionary_builder_LDADD = \
- $(LIBINTL) 
+ $(LE_LIBINTL) 
 
 plugin_LTLIBRARIES = \
  libextractor_printable_da.la \

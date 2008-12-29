@@ -142,7 +142,8 @@ libextractor_flac_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_flac_la_LIBADD = \
   -lFLAC $(flacoggflag) \
-  $(top_builddir)/src/main/libextractor.la
+  $(top_builddir)/src/main/libextractor.la \
+  $(LE_LIBINTL)
 endif
 
 if HAVE_ZLIB
@@ -165,6 +166,8 @@ libextractor_wav_la_SOURCES = \
   wavextractor.c
 libextractor_wav_la_LDFLAGS = \
   $(PLUGINFLAGS)
+libextractor_wav_la_LIBADD = \
+  $(LE_LIBINTL)
 
 libextractor_pdf_la_SOURCES = \
   pdfextractor.c
@@ -178,7 +181,8 @@ libextractor_mp3_la_SOURCES = \
 libextractor_mp3_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_mp3_la_LIBADD = \
-  $(top_builddir)/src/common/libextractor_common.la
+  $(top_builddir)/src/common/libextractor_common.la \
+  $(LE_LIBINTL)
 
 libextractor_id3v2_la_SOURCES = \
   id3v2extractor.c 
@@ -251,7 +255,8 @@ libextractor_applefile_la_SOURCES = \
 libextractor_applefile_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_applefile_la_LIBADD = \
-  $(top_builddir)/src/common/libextractor_common.la
+  $(top_builddir)/src/common/libextractor_common.la \
+  $(LE_LIBINTL)
 
 libextractor_elf_la_SOURCES = \
   elfextractor.c 
@@ -271,6 +276,8 @@ libextractor_jpeg_la_SOURCES = \
   jpegextractor.c 
 libextractor_jpeg_la_LDFLAGS = \
   $(PLUGINFLAGS)
+libextractor_jpeg_la_LIBADD = \
+  $(LE_LIBINTL)
 
 libextractor_html_la_SOURCES = \
   htmlextractor.c 
@@ -314,7 +321,8 @@ libextractor_man_la_SOURCES = \
 libextractor_man_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_man_la_LIBADD = \
-  $(top_builddir)/src/main/libextractor.la
+  $(top_builddir)/src/main/libextractor.la \
+  $(LE_LIBINTL)
 
 if HAVE_ZLIB
 libextractor_deb_la_SOURCES = \
@@ -332,6 +340,7 @@ libextractor_riff_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_riff_la_LIBADD = \
   $(top_builddir)/src/main/libextractor.la \
+  $(LE_LIBINTL) \
   -lm 
 
 if HAVE_ZLIB
@@ -351,7 +360,8 @@ libextractor_filename_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_filename_la_LIBADD = \
   $(top_builddir)/src/main/libextractor.la \
-  $(top_builddir)/src/common/libextractor_common.la
+  $(top_builddir)/src/common/libextractor_common.la \
+  $(LE_LIBINTL)
 
 libextractor_sid_la_SOURCES = \
   sidextractor.c 
