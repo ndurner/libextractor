@@ -29,20 +29,21 @@ void __attribute__ ((constructor)) intlemu_init_() {
 			NULL, /* copy description */
 			NULL /* equal */
 		};
-	pthread_mutex_init(&intlemu_lock, NULL);
+	if (pthread_mutex_init(&intlemu_lock, NULL) != 0)
+		abort();
 	
 	intlemu_dict = CFDictionaryCreateMutable(
 		kCFAllocatorDefault, 
 		0, 
 		&kCFCopyStringDictionaryKeyCallBacks,
 		&cstring_value_callbacks);
-	if (intlemu_dict == NULL) {
-		return;
-	}
+	if (intlemu_dict == NULL)
+		abort();
 }
 
 void __attribute__ ((destructor)) intlemu_fini_() {
-	CFRelease(intlemu_dict);
+	if (intlemu_dict)
+		CFRelease(intlemu_dict);
 
 	pthread_mutex_destroy(&intlemu_lock);
 }
@@ -67,9 +68,11 @@ char * intlemu_bgettext (CFBundleRef bundle, const char *msgid)
 		kCFStringEncodingUTF8,
 		false);
 	
-	pthread_mutex_lock(&intlemu_lock);
+	if (pthread_mutex_lock(&intlemu_lock) != 0)
+		abort();
 	value = (char *)CFDictionaryGetValue(intlemu_dict, key);
-	pthread_mutex_unlock(&intlemu_lock);
+	if (pthread_mutex_unlock(&intlemu_lock) != 0)
+		abort();
 	if (value != NULL) {
 		CFRelease(key);
 		return (char *)value;
@@ -120,9 +123,11 @@ char * intlemu_bgettext (CFBundleRef bundle, const char *msgid)
 		&len);
 	buf[len] = '\0';
 	if (clen == r.length) {
-		pthread_mutex_lock(&intlemu_lock);
+		if (pthread_mutex_lock(&intlemu_lock) != 0)
+			abort();
 		CFDictionaryAddValue(intlemu_dict, key, buf);
-		pthread_mutex_unlock(&intlemu_lock);
+		if (pthread_mutex_unlock(&intlemu_lock) != 0)
+			abort();
 		value = buf;
 	}
 	else {
