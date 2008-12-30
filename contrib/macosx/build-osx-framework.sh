@@ -730,10 +730,6 @@ install_file_to_framework 'share/info/dir'
 install_file_to_framework 'share/info/extractor.info'
 install_file_to_framework 'share/man/man1/extract.1'
 install_file_to_framework 'share/man/man3/libextractor.3'
-for tfn in $(find ./share/locale -name 'libextractor*')
-do
-	install_file_to_framework "$tfn"
-done
 cd "${ORIG_DIR}"
 copy_file_to_framework "./contrib/macosx/Info.plist" "Resources/Info.plist"
 fill_framework_revision "Resources/Info.plist"
