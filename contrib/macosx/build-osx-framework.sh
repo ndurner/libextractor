@@ -378,7 +378,7 @@ build_extractor()
 	then
 		echo "building libextractor for ${ARCH_NAME}..."
 		ARCH_LDFLAGS="-arch ${ARCH_NAME} -isysroot ${SDK_PATH} -Wl,-syslibroot,${SDK_PATH} -L${FW_DIR}/lib"
-		CFLAGS="${OPT_FLAGS} -g -no-cpp-precomp ${ARCH_CFLAGS}"
+		CFLAGS="${OPT_FLAGS} -no-cpp-precomp ${ARCH_CFLAGS}"
 		CPPFLAGS="${ARCH_CPPFLAGS}"
 		CXXFLAGS="${CFLAGS}"
 		LDFLAGS="${ARCH_LDFLAGS}"
