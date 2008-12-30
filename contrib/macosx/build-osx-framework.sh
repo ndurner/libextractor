@@ -388,7 +388,6 @@ build_extractor()
 			CFLAGS="${CFLAGS}"			\
 			CXXFLAGS="${CXXFLAGS}"			\
 			LDFLAGS="${LDFLAGS}"			\
-			xxgt_cv_func_gnugettext1_libintl=yes	\
 			ac_cv_func_memcmp_working=yes		\
 			ac_cv_func_mmap_fixed_mapped=yes	\
 			ac_cv_func_stat_empty_string_bug=no	\
@@ -743,7 +742,6 @@ do
 	install_message_catalog_to_framework "$tfn"
 done
 install_en_message_catalog_to_framework "./po/libextractor.pot"
-#copy_file_to_framework "./contrib/macosx/English.lproj/InfoPlist.strings" "Resources/English.lproj/InfoPlist.strings"
 make_framework_link "lib/libextractor.dylib" "Extractor"
 make_framework_link "lib" "Libraries"
 make_framework_link "lib/libextractor" "PlugIns"
