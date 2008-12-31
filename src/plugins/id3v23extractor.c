@@ -42,7 +42,7 @@ addKeyword (EXTRACTOR_KeywordList * oldhead,
 {
   EXTRACTOR_KeywordList *keyword;
 
-  keyword = (EXTRACTOR_KeywordList *) malloc (sizeof (EXTRACTOR_KeywordList));
+  keyword = malloc (sizeof (EXTRACTOR_KeywordList));
   keyword->next = oldhead;
   keyword->keyword = phrase;
   keyword->keywordType = type;
