@@ -1,6 +1,6 @@
 /*
      This file is part of libextractor.
-     (C) 2002, 2003, 2004, 2005, 2006 Vidyut Samanta and Christian Grothoff
+     (C) 2002, 2003, 2004, 2005, 2006, 2009 Vidyut Samanta and Christian Grothoff
 
      libextractor is free software; you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published
@@ -790,20 +790,14 @@ loadLibrary (const char *name,
 	     void **libHandle,
 	     ExtractMethod * method)
 {
-#if 0
   lt_dladvise advise;
-#endif
 
   LTDL_MUTEX_LOCK
-#if 0
   lt_dladvise_init(&advise);
   lt_dladvise_ext(&advise);
   lt_dladvise_local(&advise);
-  *libHandle = lt_dlopenadvise (name, &advise);
+  *libHandle = lt_dlopenadvise (name, advise);
   lt_dladvise_destroy(&advise);
-#else
-  *libHandle = lt_dlopenext (name);
-#endif
   if (*libHandle == NULL)
     {
 #if DEBUG
