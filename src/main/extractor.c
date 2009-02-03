@@ -1311,7 +1311,7 @@ EXTRACTOR_getKeywords (EXTRACTOR_ExtractorList * extractor,
     if (-1 == file)
       return NULL;
   
-    size = fstatbuf.st_size;
+    size = (fstatbuf.st_size > 0xFFFFFFFF) ? 0xFFFFFFFF : fstatbuf.st_size;
     if (size == 0) {
       close(file);
       return NULL;
