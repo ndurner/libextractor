@@ -5,7 +5,7 @@ prior to compiling libextractor.
 
 Basic compilation tools and dependencies:
 
-libtool
+libtool -- libtool2 is currently only in "experimental"!
 gcc
 make
 g++ 

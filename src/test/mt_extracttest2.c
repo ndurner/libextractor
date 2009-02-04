@@ -140,7 +140,7 @@ static const struct FileData files[] = {
   { NULL, 0 }
 };
 
-#define TEST_SECS 10
+#define TEST_SECS 1000
 
 int
 main (int argc, char *argv[])

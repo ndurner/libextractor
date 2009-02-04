@@ -28,7 +28,7 @@ include:
 * libvorbisfile
 * zlib (compression library)
 * c++ compiler
-* libltdl (from GNU libtool)
+* libltdl (from GNU libtool), libtool 2.0 or higher
 * GNU gettext
 * glib 2.6
 * gtk 2.6 (for thumbnails, gdk-pixbuf)
@@ -49,7 +49,7 @@ with this signature:
 
 
 KeywordList * <libraryname>_extract(const char * filename,
-                                    char * data,
+                                    const char * data,
                                     size_t size,
                                     KeywordList * prev,
                                     const char * options);
