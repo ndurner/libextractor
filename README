@@ -28,7 +28,8 @@ include:
 * libvorbisfile
 * zlib (compression library)
 * c++ compiler
-* libltdl (from GNU libtool), libtool 2.0 or higher
+* libltdl 2.2.x (from GNU libtool)
+* libtool 1.5 or higher
 * GNU gettext
 * glib 2.6
 * gtk 2.6 (for thumbnails, gdk-pixbuf)
