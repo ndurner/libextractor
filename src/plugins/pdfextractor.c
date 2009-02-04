@@ -452,6 +452,7 @@ libextractor_pdf_extract (const char *filename,
                      (!((data[pos] == '>') && (data[pos + 1] == '>'))))
                 pos++;
               meta = stndup (&data[spos], pos - spos);
+	      mlen = 0; /* make gcc happy */
               if (i == 0)
                 {
                   dmeta = dateDecode (meta);

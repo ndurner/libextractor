@@ -63,7 +63,7 @@ static EXTRACTOR_KeywordList * addKeyword(EXTRACTOR_KeywordType type,
    crashes and/or prints errors for bad
    formats, so we need to be rather
    conservative here) */
-static char * whitelist[] = {
+static const char * whitelist[] = {
   "image/x-bmp",
   "image/gif",
   "image/jpeg",

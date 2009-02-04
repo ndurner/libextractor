@@ -1,5 +1,3 @@
-AC_PREREQ(2.52)
-
 define(GNUPG_CHECK_ENDIAN,
   [ if test "$cross_compiling" = yes; then
         AC_MSG_WARN(cross compiling; assuming big endianess)
