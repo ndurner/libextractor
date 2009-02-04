@@ -148,6 +148,9 @@ libextractor_thumbnailgtk_extract (const char *filename,
   out = gdk_pixbuf_scale_simple (in, width, height, GDK_INTERP_BILINEAR);
   g_object_unref (in);
   thumb = NULL;
+  length = 0;
+  if (out == NULL)
+    return prev;
   if (!gdk_pixbuf_save_to_buffer (out, &thumb, &length, "png", NULL, 
 				  "compression", 9, NULL))
     {
