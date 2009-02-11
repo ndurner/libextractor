@@ -152,7 +152,7 @@ libextractor_thumbnailgtk_extract (const char *filename,
   if (out == NULL)
     return prev;
   if (!gdk_pixbuf_save_to_buffer (out, &thumb, &length, "png", NULL, 
-				  "compression", 9, NULL))
+				  "compression", "9", NULL))
     {
       g_object_unref (out);
       return prev;
