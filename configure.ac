@@ -1,6 +1,7 @@
 # Process this file with autoconf to produce a configure script.
 AC_PREREQ(2.61)
 AC_INIT([libextractor], [0.5.21], [bug-libextractor@gnu.org])
+AC_CONFIG_AUX_DIR([libltdl/config])
 AM_INIT_AUTOMAKE([libextractor], [0.5.21])
 AC_CONFIG_HEADERS([config.h])
 AH_TOP([#define _GNU_SOURCE  1])
@@ -23,6 +24,7 @@ AC_CHECK_PROG(HAVE_CXX, $CXX, yes, no)
 AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_PROG_MAKE_SET
+LT_CONFIG_LTDL_DIR([libltdl])
 AC_LIBTOOL_DLOPEN
 AC_DISABLE_STATIC
 AC_LIBTOOL_WIN32_DLL
@@ -30,6 +32,8 @@ AC_LIBLTDL_INSTALLABLE
 AC_PROG_LIBTOOL
 AC_LIB_LTDL
 AC_CANONICAL_HOST
+LT_INIT
+LTDL_INIT
 AC_SUBST(LTDLINCL)
 AC_SUBST(LIBLTDL)
 AC_SUBST(MKDIR_P)

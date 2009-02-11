@@ -16,7 +16,8 @@ dist-hook:
 	rm -f $(distdir)/src/plugins/printable/peno.c
 	rm -f $(distdir)/src/plugins/printable/pept.c
 
-ACLOCAL_AMFLAGS = -I m4
-
 pkgconfigdatadir = $(libdir)/pkgconfig
 pkgconfigdata_DATA = libextractor.pc
+
+
+ACLOCAL_AMFLAGS = -I m4 -I libltdl/m4
