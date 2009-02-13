@@ -40,7 +40,7 @@ LIBVORBIS_NAME=libvorbis-1.2.0
 LIBFLAC_URL=http://kent.dl.sourceforge.net/sourceforge/flac
 LIBFLAC_NAME=flac-1.2.1
 LIBMPEG2_URL=http://libmpeg2.sourceforge.net/files
-LIBMPEG2_NAME=mpeg2dec-0.4.1
+LIBMPEG2_NAME=libmpeg2-0.5.1
 
 export PATH=${BUILD_DIR}/toolchain/bin:/usr/local/bin:/bin:/sbin:/usr/bin:/usr/sbin
 
@@ -388,6 +388,7 @@ build_extractor()
 			CFLAGS="${CFLAGS}"			\
 			CXXFLAGS="${CXXFLAGS}"			\
 			LDFLAGS="${LDFLAGS}"			\
+			NM="/usr/bin/nm -p"			\
 			ac_cv_func_memcmp_working=yes		\
 			ac_cv_func_mmap_fixed_mapped=yes	\
 			ac_cv_func_stat_empty_string_bug=no	\
@@ -420,11 +421,24 @@ fi|g" > ./libtool
 		find ./ -type f -name "Makefile" |	\
 			xargs perl -pi -w -e "s#-lintl#-lintl -liconv#g;"
 		if ! ( test $build_retval = 0 && make clean &&		\
-			make DESTDIR="${SDK_PATH}" install &&		\
+			make DESTDIR="${SDK_PATH}" install )
+		then
+			build_retval=1
+		fi
+# XXX version info for fw
+		if ! ( test $build_retval = 0 && \
+			gcc -dynamiclib -install_name "${FW_DIR}/Extractor" \
+			-compatibility_version 1 -current_version 1.0 \
+			-o "${SDK_PATH}/${FW_DIR}/Extractor" \
+			${LDFLAGS} \
+			-L"${SDK_PATH}/${FW_DIR}/lib" \
+			-sub_library libextractor \
+			-lextractor && \
 			touch "${BUILD_DIR}/built-Extractor-${ARCH_NAME}" )
 		then
 			build_retval=1
 		fi
+
 		cp -v config.log "${BUILD_DIR}/config.log-Extractor-${ARCH_NAME}"
 		cp -v config.h "${BUILD_DIR}/config.h-Extractor-${ARCH_NAME}"
 		unset CPPFLAGS
@@ -721,6 +735,7 @@ for tfn in lib/libextractor*dylib
 do
 	install_executable_to_framework "$tfn"
 done
+install_executable_to_framework "Extractor"
 for tfn in lib/libextractor/libextractor*so
 do
 	install_executable_to_framework "$tfn"
@@ -738,7 +753,6 @@ do
 	install_message_catalog_to_framework "$tfn"
 done
 install_en_message_catalog_to_framework "./po/libextractor.pot"
-make_framework_link "lib/libextractor.dylib" "Extractor"
 make_framework_link "lib" "Libraries"
 make_framework_link "lib/libextractor" "PlugIns"
 make_framework_link "include" "Headers"
