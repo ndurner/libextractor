@@ -145,6 +145,11 @@ libextractor_thumbnailgtk_extract (const char *filename,
       height = height * THUMBSIZE / width;
       width = THUMBSIZE;
     }
+  if ( (height == 0) || (width == 0) )
+    {
+      g_object_unref (in);
+      return prev;
+    }
   out = gdk_pixbuf_scale_simple (in, width, height, GDK_INTERP_BILINEAR);
   g_object_unref (in);
   thumb = NULL;
