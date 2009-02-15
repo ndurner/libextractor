@@ -29,6 +29,7 @@
 
 #include "platform.h"
 #include "extractor.h"
+#include <glib.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
 #define THUMBSIZE 128
@@ -38,7 +39,7 @@
 void __attribute__ ((constructor)) ole_gobject_init (void)
 {
   g_type_init ();
-#if G_THREADS_ENABLED
+#ifdef G_THREADS_ENABLED
   if (! g_thread_supported () )
     g_thread_init (NULL);
 #endif
