@@ -10,7 +10,7 @@ libextractor_pdf_la_LDFLAGS = \
   $(XTRA_CPPLIBS)
 libextractor_pdf_la_LIBADD = \
   $(top_builddir)/src/main/libextractor.la \
-  $(top_builddir)/src/plugins/libconvert.la \
+  $(top_builddir)/src/common/libextractor_common.la \
   -lm 
 
 libextractor_pdf_la_SOURCES = \

@@ -61,7 +61,7 @@ endif
 
 # toggle for development
 # SUBDIRS = . 
-SUBDIRS = $(thumbgtk) $(thumbffmpeg) . $(oodir) $(printdir) hash $(oledir) $(rpm) $(xpdfdir) $(exiv2dir) 
+SUBDIRS = . $(thumbgtk) $(thumbffmpeg) $(oodir) $(printdir) hash $(oledir) $(rpm) $(xpdfdir) $(exiv2dir) 
 
 
 if HAVE_VORBISFILE
