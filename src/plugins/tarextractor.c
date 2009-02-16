@@ -1,6 +1,6 @@
 /*
      This file is part of libextractor.
-     (C) 2002, 2003, 2004, 2005 Vidyut Samanta and Christian Grothoff
+     (C) 2002, 2003, 2004, 2005, 2009 Vidyut Samanta and Christian Grothoff
 
      libextractor is free software; you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published
@@ -342,7 +342,7 @@ libextractor_tar_extract (const char *filename,
       unsigned format_member = 0;
       unsigned long long fmode;
       unsigned long long fsize;
-      long long ftime;
+      long long ftime = TAR_TIME_FENCE;
       char typeFlag = -1;
       const char *nul_pos;
       unsigned int tar_prefix_length = 0;

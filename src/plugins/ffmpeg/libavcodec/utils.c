@@ -138,11 +138,13 @@ void avcodec_align_dimensions(AVCodecContext *s, int *width, int *height){
             w_align=64;
             h_align=64;
         }
+	break;
     case PIX_FMT_RGB555:
         if(s->codec_id == CODEC_ID_RPZA){
             w_align=4;
             h_align=4;
         }
+	break;
     case PIX_FMT_PAL8:
         if(s->codec_id == CODEC_ID_SMC){
             w_align=4;

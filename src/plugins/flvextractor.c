@@ -521,8 +521,8 @@ typedef struct
 #define FLV_TAG_HEADER_SIZE 11
 
 static int readFLVHeader(const unsigned char **data,
-                          const unsigned char *end,
-                          FLVHeader *hdr)
+			 const unsigned char *end,
+			 FLVHeader *hdr)
 {
   const unsigned char *ptr = *data;
 
