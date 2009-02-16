@@ -75,7 +75,7 @@ GString *getCurrentDir() {
   return new GString();
 }
 
-GString *appendToPath(GString *path, char *fileName) {
+GString *appendToPath(GString *path, const char *fileName) {
 #if defined(WIN32)
   //---------- Win32 ----------
   GString *tmp;

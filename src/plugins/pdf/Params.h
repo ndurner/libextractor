@@ -31,7 +31,8 @@ extern DevFontMapEntry *devFontMap;
 // <userConfigFile> exists, read it; else if <sysConfigFile> exists,
 // read it.  <userConfigFile> is relative to the user's home
 // directory; <sysConfigFile> should be an absolute path.
-extern void initParams(char *userConfigFile, char *sysConfigFile);
+extern void initParams(const char *userConfigFile, 
+		       const char *sysConfigFile);
 
 // Free memory used for font path and font map.
 extern void freeParams();

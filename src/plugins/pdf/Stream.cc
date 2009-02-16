@@ -85,7 +85,7 @@ char *Stream::getLine(char *buf, int size) {
   return buf;
 }
 
-GString *Stream::getPSFilter(int psLevel, char *indent) {
+GString *Stream::getPSFilter(int psLevel, const char *indent) {
   return new GString();
 }
 
@@ -930,7 +930,7 @@ int ASCIIHexStream::lookChar() {
   return buf;
 }
 
-GString *ASCIIHexStream::getPSFilter(int psLevel, char *indent) {
+GString *ASCIIHexStream::getPSFilter(int psLevel, const char *indent) {
   GString *s;
 
   if (psLevel < 2) {
@@ -1011,7 +1011,7 @@ int ASCII85Stream::lookChar() {
   return b[index];
 }
 
-GString *ASCII85Stream::getPSFilter(int psLevel, char *indent) {
+GString *ASCII85Stream::getPSFilter(int psLevel, const char *indent) {
   GString *s;
 
   if (psLevel < 2) {
@@ -1197,7 +1197,7 @@ int LZWStream::getCode() {
   return code;
 }
 
-GString *LZWStream::getPSFilter(int psLevel, char *indent) {
+GString *LZWStream::getPSFilter(int psLevel, const char *indent) {
   GString *s;
 
   if (psLevel < 2 || pred) {
@@ -1234,7 +1234,7 @@ void RunLengthStream::reset() {
   eof = gFalse;
 }
 
-GString *RunLengthStream::getPSFilter(int psLevel, char *indent) {
+GString *RunLengthStream::getPSFilter(int psLevel, const char *indent) {
   GString *s;
 
   if (psLevel < 2) {
@@ -2388,7 +2388,7 @@ short CCITTFaxStream::lookBits(int n) {
 
 #endif
 
-GString *CCITTFaxStream::getPSFilter(int psLevel, char *indent) {
+GString *CCITTFaxStream::getPSFilter(int psLevel, const char *indent) {
   GString *s;
   char s1[50];
 
@@ -3829,7 +3829,7 @@ int DCTStream::read16() {
   return (c1 << 8) + c2;
 }
 
-GString *DCTStream::getPSFilter(int psLevel, char *indent) {
+GString *DCTStream::getPSFilter(int psLevel, const char *indent) {
   GString *s;
 
   if (psLevel < 2) {
@@ -4026,7 +4026,7 @@ int FlateStream::getRawChar() {
   return c;
 }
 
-GString *FlateStream::getPSFilter(int psLevel, char *indent) {
+GString *FlateStream::getPSFilter(int psLevel, const char *indent) {
   GString *s;
 
   if (psLevel < 3 || pred) {
@@ -4455,7 +4455,7 @@ void ASCIIHexEncoder::reset() {
 }
 
 GBool ASCIIHexEncoder::fillBuf() {
-  static char *hex = "0123456789abcdef";
+  static const char *hex = "0123456789abcdef";
   int c;
 
   if (eof) {

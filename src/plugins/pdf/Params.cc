@@ -19,7 +19,8 @@ static int fontPathLen, fontPathSize;
 DevFontMapEntry *devFontMap = NULL;
 static int devFontMapLen, devFontMapSize;
 
-void initParams(char *userConfigFile, char *sysConfigFile) {
+void initParams(const char *userConfigFile, 
+		const char *sysConfigFile) {
   GString *fileName;
   FILE *f;
   char buf[256];

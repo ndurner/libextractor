@@ -60,12 +60,12 @@ extern "C" {
 
 
   static struct EXTRACTOR_Keywords * printInfoString(Dict *infoDict,
-						     char *key,
+						     const char *key,
 						     EXTRACTOR_KeywordType type,
 						     struct EXTRACTOR_Keywords * next) {
     Object obj;
     GString *s1;
-    char * s;
+    const char * s;
 
     if (infoDict->lookup(key, &obj)->isString()) {
       s1 = obj.getString();
@@ -74,12 +74,12 @@ extern "C" {
 	  (((unsigned char)s[1]) & 0xff) == 0xff) {
 	char * result;
 
-	result = EXTRACTOR_common_convert_to_utf8((const char*) &s[2], s1->getLength() - 2, "UTF-16BE");
+	result = EXTRACTOR_common_convert_to_utf8(&s[2], s1->getLength() - 2, "UTF-16BE");
 	next = addKeyword(type,
 			  result,
 			  next);
       } else {
-        unsigned int len = (NULL == s) ? 0 : strlen(s);
+        size_t len = strlen(s);
 
         while(0 < len) {
         /*
@@ -119,7 +119,7 @@ extern "C" {
   }
 
   static struct EXTRACTOR_Keywords * printInfoDate(Dict *infoDict,
-						   char *key,
+						   const char *key,
 						   EXTRACTOR_KeywordType type,
 						   struct EXTRACTOR_Keywords * next) {
     Object obj;
@@ -154,7 +154,7 @@ extern "C" {
 
   /* which mime-types should not be subjected to
      the PDF extractor? (no use trying!) */
-  static char * blacklist[] = {
+  static const char * blacklist[] = {
     "image/jpeg",
     "image/gif",
     "image/png",

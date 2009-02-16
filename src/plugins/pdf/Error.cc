@@ -17,5 +17,5 @@
 #include <stdarg.h>
 #include "Error.h"
 
-void error(int pos, char *msg, ...) {
+void error(int pos, const char *msg, ...) {
 }

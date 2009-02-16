@@ -24,7 +24,7 @@
 // Object
 //------------------------------------------------------------------------
 
-char *objTypeNames[numObjTypes] = {
+const char *objTypeNames[numObjTypes] = {
   "boolean",
   "integer",
   "real",
@@ -141,75 +141,8 @@ void Object::free() {
   type = objNone;
 }
 
-char *Object::getTypeName() {
+const char *Object::getTypeName() {
   return objTypeNames[type];
-}
-
-void Object::print(FILE *f) {
-  Object obj;
-  int i;
-
-  switch (type) {
-  case objBool:
-    fprintf(f, "%s", booln ? "true" : "false");
-    break;
-  case objInt:
-    fprintf(f, "%d", intg);
-    break;
-  case objReal:
-    fprintf(f, "%g", real);
-    break;
-  case objString:
-    fprintf(f, "(");
-    fwrite(string->getCString(), 1, string->getLength(), stdout);
-    fprintf(f, ")");
-    break;
-  case objName:
-    fprintf(f, "/%s", name);
-    break;
-  case objNull:
-    fprintf(f, "null");
-    break;
-  case objArray:
-    fprintf(f, "[");
-    for (i = 0; i < arrayGetLength(); ++i) {
-      if (i > 0)
-	fprintf(f, " ");
-      arrayGetNF(i, &obj);
-      obj.print(f);
-      obj.free();
-    }
-    fprintf(f, "]");
-    break;
-  case objDict:
-    fprintf(f, "<<");
-    for (i = 0; i < dictGetLength(); ++i) {
-      fprintf(f, " /%s ", dictGetKey(i));
-      dictGetValNF(i, &obj);
-      obj.print(f);
-      obj.free();
-    }
-    fprintf(f, " >>");
-    break;
-  case objStream:
-    fprintf(f, "<stream>");
-    break;
-  case objRef:
-    fprintf(f, "%d %d R", ref.num, ref.gen);
-    break;
-  case objCmd:
-    fprintf(f, "%s", cmd);
-    break;
-  case objError:
-    fprintf(f, "<error>");
-    break;
-  case objEOF:
-    fprintf(f, "<EOF>");
-    break;
-  case objNone:
-    fprintf(f, "<none>");
-    break;
-  }
 }
 
 void Object::memCheck(FILE *f) {
