@@ -2212,6 +2212,8 @@ short CCITTFaxStream::getTwoDimCode() {
   code = 0; // make gcc happy
   if (endOfBlock) {
     code = lookBits(7);
+    if (code < 0)
+      return EOF;
     p = &twoDimTab1[code];
     if (p->bits > 0) {
       eatBits(p->bits);
@@ -2220,6 +2222,8 @@ short CCITTFaxStream::getTwoDimCode() {
   } else {
     for (n = 1; n <= 7; ++n) {
       code = lookBits(n);
+      if (code < 0)
+	return EOF;
       if (n < 7) {
 	code <<= 7 - n;
       }
