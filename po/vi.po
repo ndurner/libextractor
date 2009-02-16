@@ -3,12 +3,12 @@
 # Copyright © 2006 Christian Grothoff
 # This file is distributed under the same license as the libextractor-0.5.20a package.
 # Clytie Siddall <clytie@riverland.net.au>, 2005-2008.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.5.20a\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2008-03-20 23:53-0600\n"
+"POT-Creation-Date: 2009-02-15 22:36-0700\n"
 "PO-Revision-Date: 2008-04-22 17:51+0930\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
@@ -31,8 +31,11 @@ msgstr ""
 
 #: src/main/extract.c:52
 #, c-format
-msgid "Arguments mandatory for long options are also mandatory for short options.\n"
-msgstr "Mọi đối số bắt buộc phải sử dụng với tùy chọn dài cũng bắt buộc với tùy chọn ngắn.\n"
+msgid ""
+"Arguments mandatory for long options are also mandatory for short options.\n"
+msgstr ""
+"Mọi đối số bắt buộc phải sử dụng với tùy chọn dài cũng bắt buộc với tùy chọn "
+"ngắn.\n"
 
 #: src/main/extract.c:126
 msgid "do not remove any duplicates"
@@ -43,8 +46,12 @@ msgid "print output in bibtex format"
 msgstr "hiển thị dữ liệu xuất có dạng bibtex"
 
 #: src/main/extract.c:130
-msgid "use the generic plaintext extractor for the language with the 2-letter language code LANG"
-msgstr "sử dụng trình rút văn bản thuần thuộc giống loại cho ngôn ngữ có mã ngôn ngữ bằng hai chữ là LANG"
+msgid ""
+"use the generic plaintext extractor for the language with the 2-letter "
+"language code LANG"
+msgstr ""
+"sử dụng trình rút văn bản thuần thuộc giống loại cho ngôn ngữ có mã ngôn ngữ "
+"bằng hai chữ là LANG"
 
 #: src/main/extract.c:132
 msgid "remove duplicates only if types match"
@@ -52,11 +59,15 @@ msgstr "gỡ bỏ bản sao chỉ nếu kiểu khớp thôi"
 
 #: src/main/extract.c:134
 msgid "use the filename as a keyword (loads filename-extractor plugin)"
-msgstr "dùng tên tập tin là một từ khoá (thì tải bổ sung « filename-extractor » [rút tên tập tin])"
+msgstr ""
+"dùng tên tập tin là một từ khoá (thì tải bổ sung « filename-extractor » [rút "
+"tên tập tin])"
 
 #: src/main/extract.c:136
 msgid "produce grep-friendly output (all results on one line per file)"
-msgstr "tạo ra kết xuất thân thiện với grep (mọi kết quả trên cùng dòng của mỗi tập tin)"
+msgstr ""
+"tạo ra kết xuất thân thiện với grep (mọi kết quả trên cùng dòng của mỗi tập "
+"tin)"
 
 #: src/main/extract.c:138
 msgid "print this help"
@@ -80,7 +91,8 @@ msgstr "đừng dùng bộ trình rút mặc định"
 
 #: src/main/extract.c:148
 msgid "print only keywords of the given TYPE (use -L to get a list)"
-msgstr "hiển thị chỉ từ khoá KIỂU (TYPE) đã cho thôi (dùng « -L » để xem danh sách)"
+msgstr ""
+"hiển thị chỉ từ khoá KIỂU (TYPE) đã cho thôi (dùng « -L » để xem danh sách)"
 
 #: src/main/extract.c:150
 msgid "remove duplicates even if keyword types do not match"
@@ -112,61 +124,61 @@ msgstr ""
 msgid "Extract metadata from files."
 msgstr "Rút siêu dữ liệu ra tập tin."
 
-#: src/main/extract.c:190 src/main/extractor.c:1513
+#: src/main/extract.c:190 src/main/extractor.c:1544
 #, c-format
 msgid "%s - (binary)\n"
 msgstr "%s - (nhị phân)\n"
 
-#: src/main/extract.c:201 src/main/extractor.c:1518
+#: src/main/extract.c:201 src/main/extractor.c:1549
 #, c-format
 msgid "INVALID TYPE - %s\n"
 msgstr "KIỂU KHÔNG HỢP LỆ — %s\n"
 
-#: src/main/extract.c:320 src/main/extractor.c:47
+#: src/main/extract.c:320 src/main/extractor.c:48
 msgid "title"
 msgstr "tựa"
 
-#: src/main/extract.c:322 src/main/extractor.c:45
+#: src/main/extract.c:322 src/main/extractor.c:46
 msgid "filename"
 msgstr "tên tập tin"
 
-#: src/main/extract.c:327 src/main/extractor.c:48
+#: src/main/extract.c:327 src/main/extractor.c:49
 msgid "author"
 msgstr "tác giả"
 
-#: src/main/extract.c:331 src/main/extractor.c:50
+#: src/main/extract.c:331 src/main/extractor.c:51
 msgid "description"
 msgstr "mô tả"
 
-#: src/main/extract.c:333 src/main/extractor.c:62
+#: src/main/extract.c:333 src/main/extractor.c:63
 msgid "keywords"
 msgstr "từ khoá"
 
-#: src/main/extract.c:335 src/main/extractor.c:51
+#: src/main/extract.c:335 src/main/extractor.c:52
 msgid "comment"
 msgstr "chú thích"
 
-#: src/main/extract.c:339 src/main/extractor.c:52
+#: src/main/extract.c:339 src/main/extractor.c:53
 msgid "date"
 msgstr "ngày"
 
-#: src/main/extract.c:341 src/main/extractor.c:74
+#: src/main/extract.c:341 src/main/extractor.c:75
 msgid "creation date"
 msgstr "ngày tạo"
 
-#: src/main/extract.c:369 src/main/extractor.c:53
+#: src/main/extract.c:369 src/main/extractor.c:54
 msgid "publisher"
 msgstr "nhà xuất bản"
 
-#: src/main/extract.c:373 src/main/extractor.c:59
+#: src/main/extract.c:373 src/main/extractor.c:60
 msgid "organization"
 msgstr "tổ chức"
 
-#: src/main/extract.c:377 src/main/extractor.c:61
+#: src/main/extract.c:377 src/main/extractor.c:62
 msgid "subject"
 msgstr "chủ đề"
 
-#: src/main/extract.c:381 src/main/extractor.c:78
+#: src/main/extract.c:381 src/main/extractor.c:79
 msgid "page count"
 msgstr "tổng số trang"
 
@@ -178,7 +190,8 @@ msgstr "Bạn phải ghi rõ một đối số cho tùy chọn « %s » (tùy ch
 #: src/main/extract.c:607
 #, c-format
 msgid "Use --help to get a list of options.\n"
-msgstr "Hãy sử dụng lệnh « --help » (trợ giúp) để xem một danh sách các tùy chọn.\n"
+msgstr ""
+"Hãy sử dụng lệnh « --help » (trợ giúp) để xem một danh sách các tùy chọn.\n"
 
 #: src/main/extract.c:663
 #, c-format
@@ -190,519 +203,531 @@ msgstr "%% tập tin BiBTeX\n"
 msgid "Keywords for file %s:\n"
 msgstr "Từ khoá cho tập tin %s:\n"
 
-#: src/main/extractor.c:44
+#: src/main/extractor.c:45
 msgid "unknown"
 msgstr "không rõ"
 
-#: src/main/extractor.c:46
+#: src/main/extractor.c:47
 msgid "mimetype"
 msgstr "kiểu MIME"
 
-#: src/main/extractor.c:49
+#: src/main/extractor.c:50
 msgid "artist"
 msgstr "nhạc sĩ"
 
-#: src/main/extractor.c:54
+#: src/main/extractor.c:55
 msgid "language"
 msgstr "ngôn ngữ"
 
-#: src/main/extractor.c:55
+#: src/main/extractor.c:56
 msgid "album"
 msgstr "tập"
 
-#: src/main/extractor.c:56
+#: src/main/extractor.c:57
 msgid "genre"
 msgstr "thể loại"
 
-#: src/main/extractor.c:57
+#: src/main/extractor.c:58
 msgid "location"
 msgstr "địa điểm"
 
-#: src/main/extractor.c:58
+#: src/main/extractor.c:59
 msgid "version"
 msgstr "phiên bản"
 
-#: src/main/extractor.c:60
+#: src/main/extractor.c:61 src/plugins/mp3extractor.c:478
 msgid "copyright"
 msgstr "bản quyền"
 
-#: src/main/extractor.c:63
+#: src/main/extractor.c:64
 msgid "contributor"
 msgstr "người đóng góp"
 
-#: src/main/extractor.c:64
+#: src/main/extractor.c:65
 msgid "resource-type"
 msgstr "kiểu tài nguyên"
 
-#: src/main/extractor.c:65
+#: src/main/extractor.c:66
 msgid "format"
 msgstr "định dạng"
 
-#: src/main/extractor.c:66
+#: src/main/extractor.c:67
 msgid "resource-identifier"
 msgstr "điều nhận diện tài nguyên"
 
-#: src/main/extractor.c:67
+#: src/main/extractor.c:68
 msgid "source"
 msgstr "nguồn"
 
-#: src/main/extractor.c:68
+#: src/main/extractor.c:69
 msgid "relation"
 msgstr "liên quan"
 
-#: src/main/extractor.c:69
+#: src/main/extractor.c:70
 msgid "coverage"
 msgstr "phạm vị"
 
-#: src/main/extractor.c:70
+#: src/main/extractor.c:71
 msgid "software"
 msgstr "phần mềm"
 
-#: src/main/extractor.c:71
+#: src/main/extractor.c:72
 msgid "disclaimer"
 msgstr "từ chối trách nhiệm"
 
-#: src/main/extractor.c:72
+#: src/main/extractor.c:73
 msgid "warning"
 msgstr "cảnh báo"
 
-#: src/main/extractor.c:73
+#: src/main/extractor.c:74
 msgid "translated"
 msgstr "dịch"
 
-#: src/main/extractor.c:75
+#: src/main/extractor.c:76
 msgid "modification date"
 msgstr "ngày sửa đổi"
 
-#: src/main/extractor.c:76
+#: src/main/extractor.c:77
 msgid "creator"
 msgstr "người tạo"
 
-#: src/main/extractor.c:77
+#: src/main/extractor.c:78
 msgid "producer"
 msgstr "người cung cấp"
 
-#: src/main/extractor.c:79
+#: src/main/extractor.c:80
 msgid "page orientation"
 msgstr "hướng trang"
 
-#: src/main/extractor.c:80
+#: src/main/extractor.c:81
 msgid "paper size"
 msgstr "cỡ giấy"
 
-#: src/main/extractor.c:81
+#: src/main/extractor.c:82
 msgid "used fonts"
 msgstr "phông chữ đã dùng"
 
-#: src/main/extractor.c:82
+#: src/main/extractor.c:83
 msgid "page order"
 msgstr "thứ tự trang"
 
-#: src/main/extractor.c:83
+#: src/main/extractor.c:84
 msgid "created for"
 msgstr "tạo cho"
 
-#: src/main/extractor.c:84
+#: src/main/extractor.c:85
 msgid "magnification"
 msgstr "phóng to"
 
-#: src/main/extractor.c:85
+#: src/main/extractor.c:86
 msgid "release"
 msgstr "bản phát hành"
 
-#: src/main/extractor.c:86
+#: src/main/extractor.c:87
 msgid "group"
 msgstr "nhóm"
 
-#: src/main/extractor.c:87
+#: src/main/extractor.c:88
 msgid "size"
 msgstr "cỡ"
 
-#: src/main/extractor.c:88
+#: src/main/extractor.c:89
 msgid "summary"
 msgstr "tóm tắt"
 
-#: src/main/extractor.c:89
+#: src/main/extractor.c:90
 msgid "packager"
 msgstr "nhà đóng gói"
 
-#: src/main/extractor.c:90
+#: src/main/extractor.c:91
 msgid "vendor"
 msgstr "nhà bán"
 
-#: src/main/extractor.c:91
+#: src/main/extractor.c:92
 msgid "license"
 msgstr "quyền phép"
 
-#: src/main/extractor.c:92
+#: src/main/extractor.c:93
 msgid "distribution"
 msgstr "bản phân phối"
 
-#: src/main/extractor.c:93
+#: src/main/extractor.c:94
 msgid "build-host"
 msgstr "máy hỗ trợ xây dựng"
 
-#: src/main/extractor.c:94
+#: src/main/extractor.c:95
 msgid "operating system"
 msgstr "hệ điều hành"
 
-#: src/main/extractor.c:95
+#: src/main/extractor.c:96
 msgid "dependency"
 msgstr "phụ thuộc"
 
 # Name: don't translate / Tên: đừng dịch
-#: src/main/extractor.c:96
+#: src/main/extractor.c:97
 msgid "MD4"
 msgstr "MD4"
 
 # Name: don't translate / Tên: đừng dịch
-#: src/main/extractor.c:97
+#: src/main/extractor.c:98
 msgid "MD5"
 msgstr "MD5"
 
 # Name: don't translate / Tên: đừng dịch
-#: src/main/extractor.c:98
+#: src/main/extractor.c:99
 msgid "SHA-0"
 msgstr "SHA-0"
 
 # Name: don't translate / Tên: đừng dịch
-#: src/main/extractor.c:99
+#: src/main/extractor.c:100
 msgid "SHA-1"
 msgstr "SHA-1"
 
 # Name: don't translate / Tên: đừng dịch
-#: src/main/extractor.c:100
+#: src/main/extractor.c:101
 msgid "RipeMD160"
 msgstr "RipeMD160"
 
-#: src/main/extractor.c:101
+#: src/main/extractor.c:102
 msgid "resolution"
 msgstr "độ phân giải"
 
-#: src/main/extractor.c:102
+#: src/main/extractor.c:103
 msgid "category"
 msgstr "phân loại"
 
-#: src/main/extractor.c:103
+#: src/main/extractor.c:104
 msgid "book title"
 msgstr "tên sách"
 
-#: src/main/extractor.c:104
+#: src/main/extractor.c:105
 msgid "priority"
 msgstr "ưu tiên"
 
-#: src/main/extractor.c:105
+#: src/main/extractor.c:106
 msgid "conflicts"
 msgstr "xung đột"
 
-#: src/main/extractor.c:106
+#: src/main/extractor.c:107
 msgid "replaces"
 msgstr "thay thế"
 
-#: src/main/extractor.c:107
+#: src/main/extractor.c:108
 msgid "provides"
 msgstr "cung cấp"
 
-#: src/main/extractor.c:108
+#: src/main/extractor.c:109
 msgid "conductor"
 msgstr "người chỉ huy"
 
-#: src/main/extractor.c:109
+#: src/main/extractor.c:110
 msgid "interpreter"
 msgstr "người dịch"
 
-#: src/main/extractor.c:110
+#: src/main/extractor.c:111
 msgid "owner"
 msgstr "sở hữu"
 
-#: src/main/extractor.c:111
+#: src/main/extractor.c:112
 msgid "lyrics"
 msgstr "lời bài hát"
 
-#: src/main/extractor.c:112
+#: src/main/extractor.c:113
 msgid "media type"
 msgstr "kiểu vật chứa"
 
-#: src/main/extractor.c:113
+#: src/main/extractor.c:114
 msgid "contact"
 msgstr "liên lạc"
 
-#: src/main/extractor.c:114
+#: src/main/extractor.c:115
 msgid "binary thumbnail data"
 msgstr "dữ liệu hình thu nhỏ nhị phân"
 
-#: src/main/extractor.c:115
+#: src/main/extractor.c:116
 msgid "publication date"
 msgstr "ngày xuất bản"
 
-#: src/main/extractor.c:116
+#: src/main/extractor.c:117
 msgid "camera make"
 msgstr "nhà chế tạo máy ảnh"
 
-#: src/main/extractor.c:117
+#: src/main/extractor.c:118
 msgid "camera model"
 msgstr "mô hình máy ảnh"
 
-#: src/main/extractor.c:118
+#: src/main/extractor.c:119
 msgid "exposure"
 msgstr "sự phơi nắng"
 
-#: src/main/extractor.c:119
+#: src/main/extractor.c:120
 msgid "aperture"
 msgstr "lỗ ống kính"
 
-#: src/main/extractor.c:120
+#: src/main/extractor.c:121
 msgid "exposure bias"
 msgstr "khuynh hướng phơi nắng"
 
-#: src/main/extractor.c:121
+#: src/main/extractor.c:122
 msgid "flash"
 msgstr "đèn nháy"
 
-#: src/main/extractor.c:122
+#: src/main/extractor.c:123
 msgid "flash bias"
 msgstr "khuynh hướng đèn nháy"
 
-#: src/main/extractor.c:123
+#: src/main/extractor.c:124
 msgid "focal length"
 msgstr "tiêu cự"
 
-#: src/main/extractor.c:124
+#: src/main/extractor.c:125
 msgid "focal length (35mm equivalent)"
 msgstr "tiêu dự (35mm tương đương)"
 
-#: src/main/extractor.c:125
+#: src/main/extractor.c:126
 msgid "iso speed"
 msgstr "tốc độ ISO"
 
-#: src/main/extractor.c:126
+#: src/main/extractor.c:127
 msgid "exposure mode"
 msgstr "chế độ phơi nắng"
 
-#: src/main/extractor.c:127
+#: src/main/extractor.c:128
 msgid "metering mode"
 msgstr "chế độ do"
 
-#: src/main/extractor.c:128
+#: src/main/extractor.c:129
 msgid "macro mode"
 msgstr "chế độ macrô"
 
-#: src/main/extractor.c:129
+#: src/main/extractor.c:130
 msgid "image quality"
 msgstr "chất lượng ảnh"
 
-#: src/main/extractor.c:130
+#: src/main/extractor.c:131
 msgid "white balance"
 msgstr "cán cân trắng"
 
-#: src/main/extractor.c:131
+#: src/main/extractor.c:132
 msgid "orientation"
 msgstr "hướng"
 
-#: src/main/extractor.c:132
+#: src/main/extractor.c:133
 msgid "template"
 msgstr "mẫu"
 
-#: src/main/extractor.c:133
+#: src/main/extractor.c:134
 msgid "split"
 msgstr "phần"
 
-#: src/main/extractor.c:134
+#: src/main/extractor.c:135
 msgid "product version"
 msgstr "phiên bản sản phẩm"
 
-#: src/main/extractor.c:135
+#: src/main/extractor.c:136
 msgid "last saved by"
 msgstr "lưu cuối cùng bởi"
 
-#: src/main/extractor.c:136
+#: src/main/extractor.c:137
 msgid "last printed"
 msgstr "in cuối cùng"
 
-#: src/main/extractor.c:137
+#: src/main/extractor.c:138
 msgid "word count"
 msgstr "tổng số từ"
 
-#: src/main/extractor.c:138
+#: src/main/extractor.c:139
 msgid "character count"
 msgstr "tổng số ký tự"
 
-#: src/main/extractor.c:139
+#: src/main/extractor.c:140
 msgid "total editing time"
 msgstr "tổng thời gian sửa"
 
-#: src/main/extractor.c:140
+#: src/main/extractor.c:141
 msgid "thumbnails"
 msgstr "hình thu nhỏ"
 
-#: src/main/extractor.c:141
+#: src/main/extractor.c:142
 msgid "security"
 msgstr "giấy chứng khoán"
 
-#: src/main/extractor.c:142
+#: src/main/extractor.c:143
 msgid "created by software"
 msgstr "bị phần mềm tạo"
 
-#: src/main/extractor.c:143
+#: src/main/extractor.c:144
 msgid "modified by software"
 msgstr "bị phần mềm sửa đổi"
 
-#: src/main/extractor.c:144
+#: src/main/extractor.c:145
 msgid "revision history"
 msgstr "lược sử sửa đổi"
 
-#: src/main/extractor.c:145
+#: src/main/extractor.c:146
 msgid "lower case conversion"
 msgstr "chuyển đổi sang chữ hoa"
 
-#: src/main/extractor.c:146
+#: src/main/extractor.c:147
 msgid "company"
 msgstr "công ty"
 
-#: src/main/extractor.c:147
+#: src/main/extractor.c:148
 msgid "generator"
 msgstr "bộ tạo ra"
 
-#: src/main/extractor.c:148
+#: src/main/extractor.c:149
 msgid "character set"
 msgstr "bộ ký tự"
 
-#: src/main/extractor.c:149
+#: src/main/extractor.c:150
 msgid "line count"
 msgstr "số đếm trang"
 
-#: src/main/extractor.c:150
+#: src/main/extractor.c:151
 msgid "paragraph count"
 msgstr "số đếm đoạn văn"
 
-#: src/main/extractor.c:151
+#: src/main/extractor.c:152
 msgid "editing cycles"
 msgstr "chu kỳ hiệu chỉnh"
 
-#: src/main/extractor.c:152
+#: src/main/extractor.c:153
 msgid "scale"
 msgstr "tỷ lệ"
 
-#: src/main/extractor.c:153
+#: src/main/extractor.c:154
 msgid "manager"
 msgstr "nhà quản lý"
 
-#: src/main/extractor.c:154
+#: src/main/extractor.c:155
 msgid "director"
 msgstr "giám đốc"
 
-#: src/main/extractor.c:155
+#: src/main/extractor.c:156
 msgid "duration"
 msgstr "thời lượng"
 
-#: src/main/extractor.c:156
+#: src/main/extractor.c:157
 msgid "information"
 msgstr "thông tin"
 
-#: src/main/extractor.c:157
+#: src/main/extractor.c:158
 msgid "full name"
 msgstr "họ tên"
 
-#: src/main/extractor.c:158
+#: src/main/extractor.c:159
 msgid "chapter"
 msgstr "chương"
 
-#: src/main/extractor.c:159
+#: src/main/extractor.c:160
 msgid "year"
 msgstr "năm"
 
-#: src/main/extractor.c:160
+#: src/main/extractor.c:161
 msgid "link"
 msgstr "liên kết"
 
-#: src/main/extractor.c:161
+#: src/main/extractor.c:162
 msgid "music CD identifier"
 msgstr "bộ nhận diện đĩa CD nhạc"
 
-#: src/main/extractor.c:162
+#: src/main/extractor.c:163
 msgid "play counter"
 msgstr "bộ đếm chơi"
 
-#: src/main/extractor.c:163
+#: src/main/extractor.c:164
 msgid "popularity meter"
 msgstr "cái đo ưa thích"
 
-#: src/main/extractor.c:164
+#: src/main/extractor.c:165
 msgid "content type"
 msgstr "kiểu nội dung"
 
-#: src/main/extractor.c:165
+#: src/main/extractor.c:166
 msgid "encoded by"
 msgstr "má hoá theo"
 
-#: src/main/extractor.c:166
+#: src/main/extractor.c:167
 msgid "time"
 msgstr "giờ"
 
-#: src/main/extractor.c:167
+#: src/main/extractor.c:168
 msgid "musician credits list"
 msgstr "danh sách công trạng nhạc sĩ"
 
-#: src/main/extractor.c:168
+#: src/main/extractor.c:169
 msgid "mood"
 msgstr "tâm trạng"
 
-#: src/main/extractor.c:169
+#: src/main/extractor.c:170
 msgid "format version"
 msgstr "phiên bản định dạng"
 
-#: src/main/extractor.c:170
+#: src/main/extractor.c:171
 msgid "television system"
 msgstr "hệ thống TV"
 
-#: src/main/extractor.c:171
+#: src/main/extractor.c:172
 msgid "song count"
 msgstr "số đếm bài hát"
 
-#: src/main/extractor.c:172
+#: src/main/extractor.c:173
 msgid "starting song"
 msgstr "bài hát bắt đầu"
 
-#: src/main/extractor.c:173
+#: src/main/extractor.c:174
 msgid "hardware dependency"
 msgstr "phụ thuộc vào phần cứng"
 
-#: src/main/extractor.c:174
+#: src/main/extractor.c:175
 msgid "ripper"
 msgstr "bộ trích ra"
 
-#: src/main/extractor.c:175
+#: src/main/extractor.c:176
 msgid "filesize"
 msgstr "cỡ tập tin"
 
-#: src/main/extractor.c:176
+#: src/main/extractor.c:177
 msgid "track number"
 msgstr "số thứ tự rãnh"
 
-#: src/main/extractor.c:177
+#: src/main/extractor.c:178
 msgid "international standard recording code"
 msgstr "mã thu tiêu chuẩn quốc tế"
 
-#: src/main/extractor.c:178
+#: src/main/extractor.c:179
 msgid "disc number"
 msgstr "số thứ tự đĩa"
 
-#: src/main/extractor.c:598
+#: src/main/extractor.c:180
+msgid "preferred display style (GNUnet)"
+msgstr ""
+
+#: src/main/extractor.c:181
+msgid "GNUnet URI of ECBC data"
+msgstr ""
+
+#: src/main/extractor.c:604
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "Việc khởi động cơ chế cầm phít bị lỗi: %s\n"
 
-#: src/main/extractor.c:752
+#: src/main/extractor.c:768
 #, c-format
-msgid "Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that failed also.  Errors are: `%s' and `%s'.\n"
-msgstr "Việc tháo gỡ ký hiệu « %s » trong thư viện « %s » bị lỗi, thì đã cố « %s », nhưng mà nó cũng không thành công. Gặp lỗi « %s » và « %s ».\n"
+msgid ""
+"Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
+"failed also.  Errors are: `%s' and `%s'.\n"
+msgstr ""
+"Việc tháo gỡ ký hiệu « %s » trong thư viện « %s » bị lỗi, thì đã cố « %s », "
+"nhưng mà nó cũng không thành công. Gặp lỗi « %s » và « %s ».\n"
 
-#: src/main/extractor.c:781
+#: src/main/extractor.c:805
 #, c-format
 msgid "Loading `%s' plugin failed: %s\n"
 msgstr "Việc tải bổ sung « %s » bị lỗi: %s\n"
 
-#: src/main/extractor.c:986
+#: src/main/extractor.c:1017
 #, c-format
 msgid "Unloading plugin `%s' failed!\n"
 msgstr "Việc bỏ tải bổ sung « %s » bị lỗi.\n"
@@ -762,19 +787,19 @@ msgstr "%s: tùy chọn « -W %s » là mơ hồ\n"
 msgid "%s: option `-W %s' doesn't allow an argument\n"
 msgstr "%s: tùy chọn « -W %s » không cho phép đối số\n"
 
-#: src/plugins/filenameextractor.c:64
+#: src/plugins/filenameextractor.c:62
 msgid "GB"
 msgstr "GB"
 
-#: src/plugins/filenameextractor.c:66
+#: src/plugins/filenameextractor.c:64
 msgid "MB"
 msgstr "MB"
 
-#: src/plugins/filenameextractor.c:68
+#: src/plugins/filenameextractor.c:66
 msgid "KB"
 msgstr "KB"
 
-#: src/plugins/filenameextractor.c:70
+#: src/plugins/filenameextractor.c:68
 msgid "Bytes"
 msgstr "Byte"
 
@@ -1421,17 +1446,68 @@ msgstr "JPốp"
 msgid "Synthpop"
 msgstr "Pốp tổng hợp"
 
-#: src/plugins/mp3extractor.c:444 src/plugins/wavextractor.c:119
+#: src/plugins/mp3extractor.c:252 src/plugins/wavextractor.c:119
 msgid "stereo"
 msgstr "âm lập thể"
 
-#: src/plugins/mp3extractor.c:444 src/plugins/wavextractor.c:119
+#: src/plugins/mp3extractor.c:253
+#, fuzzy
+msgid "joint stereo"
+msgstr "âm lập thể"
+
+#: src/plugins/mp3extractor.c:254
+msgid "dual channel"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:255 src/plugins/wavextractor.c:119
 msgid "mono"
 msgstr "một nguồn"
 
-#: src/plugins/mp3extractor.c:445
-msgid "(variable bps)"
-msgstr "(bit/giây thay đổi)"
+#: src/plugins/mp3extractor.c:258
+msgid "MPEG-1"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:259
+msgid "MPEG-2"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:260
+msgid "MPEG-2.5"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:263
+msgid "Layer I"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:264
+msgid "Layer II"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:265
+msgid "Layer III"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:475
+msgid "VBR"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:475
+msgid "CBR"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:478
+#, fuzzy
+msgid "no copyright"
+msgstr "bản quyền"
+
+#: src/plugins/mp3extractor.c:479
+msgid "original"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:479
+#, fuzzy
+msgid "copy"
+msgstr "công ty"
 
 #: src/plugins/ole2/ole2extractor.c:252
 msgid "No Proofing"
@@ -1519,7 +1595,8 @@ msgstr "Bản sửa đổi #%u: Tác giả « %s » đã làm việc « %s »."
 msgid ""
 "Please provide the name of the language you are building\n"
 "a dictionary for.  For example:\n"
-msgstr "Hãy cung cấp tên ngôn ngữ mà bạn đang xây dựng từ điển cho nó. Lấy thí dụ :\n"
+msgstr ""
+"Hãy cung cấp tên ngôn ngữ mà bạn đang xây dựng từ điển cho nó. Lấy thí dụ :\n"
 
 #: src/plugins/printable/dictionary-builder.c:111
 #: src/plugins/printable/dictionary-builder.c:165
@@ -1546,12 +1623,11 @@ msgstr "Tăng lên ALLOCSIZE (kích cỡ cấp phát, theo %s).\n"
 msgid "codec: %s, %u fps, %u ms"
 msgstr "codec: %s, %u khung/giây, %u miligiây"
 
-#: src/plugins/rpm/rpmextractor.c:3223
-#, c-format
-msgid "Source RPM %d.%d"
-msgstr "RPM nguồn %d.%d"
+#~ msgid "(variable bps)"
+#~ msgstr "(bit/giây thay đổi)"
 
-#: src/plugins/rpm/rpmextractor.c:3225
-#, c-format
-msgid "Binary RPM %d.%d"
-msgstr "RPM nhị phân %d.%d"
+#~ msgid "Source RPM %d.%d"
+#~ msgstr "RPM nguồn %d.%d"
+
+#~ msgid "Binary RPM %d.%d"
+#~ msgstr "RPM nhị phân %d.%d"

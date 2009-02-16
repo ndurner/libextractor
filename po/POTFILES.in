@@ -5,7 +5,7 @@ src/main/getopt1.c
 src/main/iconv.c
 src/main/winproc.c
 src/plugins/asfextractor.c
-src/plugins/convert.c
+src/common/convert.c
 src/plugins/debextractor.c
 src/plugins/dviextractor.c
 src/plugins/elfextractor.c
@@ -27,7 +27,7 @@ src/plugins/mpegextractor.c
 src/plugins/oggextractor.c
 src/plugins/ole2/ole2extractor.c
 src/plugins/oo/ooextractor.c
-src/plugins/pack.c
+src/common/pack.c
 src/plugins/pngextractor.c
 src/plugins/printable/dictionary-builder.c
 src/plugins/printable/sha1.c
@@ -50,10 +50,10 @@ src/include/platform.h
 src/include/plibc.h
 src/include/winproc.h
 src/main/getopt.h
-src/plugins/convert.h
+src/common/convert.h
 src/plugins/exiv2/exv_msvc.h
 src/plugins/exiv2/exv_conf.h
-src/plugins/pack.h
+src/common/pack.h
 src/plugins/pdf/Array.h
 src/plugins/pdf/Catalog.h
 src/plugins/pdf/CompactFontInfo.h

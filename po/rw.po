@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.4.2\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2008-11-02 20:24-0700\n"
+"POT-Creation-Date: 2009-02-15 22:36-0700\n"
 "PO-Revision-Date: 2005-04-04 10:55-0700\n"
 "Last-Translator: Steven Michael Murphy <murf@e-tools.com>\n"
 "Language-Team: Kinyarwanda <translation-team-rw@lists.sourceforge.net>\n"
@@ -134,12 +134,12 @@ msgstr ""
 msgid "Extract metadata from files."
 msgstr "Bivuye Idosiye"
 
-#: src/main/extract.c:190 src/main/extractor.c:1550
+#: src/main/extract.c:190 src/main/extractor.c:1544
 #, fuzzy, c-format
 msgid "%s - (binary)\n"
 msgstr "%s-(Nyabibiri"
 
-#: src/main/extract.c:201 src/main/extractor.c:1555
+#: src/main/extract.c:201 src/main/extractor.c:1549
 #, c-format
 msgid "INVALID TYPE - %s\n"
 msgstr ""
@@ -897,12 +897,12 @@ msgid ""
 "failed also.  Errors are: `%s' and `%s'.\n"
 msgstr "IKIMENYETSO in Isomero Byanze Byanze Na"
 
-#: src/main/extractor.c:811
+#: src/main/extractor.c:805
 #, fuzzy, c-format
 msgid "Loading `%s' plugin failed: %s\n"
 msgstr "Byanze"
 
-#: src/main/extractor.c:1023
+#: src/main/extractor.c:1017
 #, fuzzy, c-format
 msgid "Unloading plugin `%s' failed!\n"
 msgstr "Byanze"
@@ -962,19 +962,19 @@ msgstr "%s:Ihitamo ni"
 msgid "%s: option `-W %s' doesn't allow an argument\n"
 msgstr "%s:Ihitamo Kwemerera"
 
-#: src/plugins/filenameextractor.c:64
+#: src/plugins/filenameextractor.c:62
 msgid "GB"
 msgstr ""
 
-#: src/plugins/filenameextractor.c:66
+#: src/plugins/filenameextractor.c:64
 msgid "MB"
 msgstr ""
 
-#: src/plugins/filenameextractor.c:68
+#: src/plugins/filenameextractor.c:66
 msgid "KB"
 msgstr ""
 
-#: src/plugins/filenameextractor.c:70
+#: src/plugins/filenameextractor.c:68
 msgid "Bytes"
 msgstr ""
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2008-11-02 20:24-0700\n"
+"POT-Creation-Date: 2009-02-15 22:36-0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -108,12 +108,12 @@ msgstr ""
 msgid "Extract metadata from files."
 msgstr ""
 
-#: src/main/extract.c:190 src/main/extractor.c:1550
+#: src/main/extract.c:190 src/main/extractor.c:1544
 #, c-format
 msgid "%s - (binary)\n"
 msgstr ""
 
-#: src/main/extract.c:201 src/main/extractor.c:1555
+#: src/main/extract.c:201 src/main/extractor.c:1549
 #, c-format
 msgid "INVALID TYPE - %s\n"
 msgstr ""
@@ -698,12 +698,12 @@ msgid ""
 "failed also.  Errors are: `%s' and `%s'.\n"
 msgstr ""
 
-#: src/main/extractor.c:811
+#: src/main/extractor.c:805
 #, c-format
 msgid "Loading `%s' plugin failed: %s\n"
 msgstr ""
 
-#: src/main/extractor.c:1023
+#: src/main/extractor.c:1017
 #, c-format
 msgid "Unloading plugin `%s' failed!\n"
 msgstr ""
@@ -763,19 +763,19 @@ msgstr ""
 msgid "%s: option `-W %s' doesn't allow an argument\n"
 msgstr ""
 
-#: src/plugins/filenameextractor.c:64
+#: src/plugins/filenameextractor.c:62
 msgid "GB"
 msgstr ""
 
-#: src/plugins/filenameextractor.c:66
+#: src/plugins/filenameextractor.c:64
 msgid "MB"
 msgstr ""
 
-#: src/plugins/filenameextractor.c:68
+#: src/plugins/filenameextractor.c:66
 msgid "KB"
 msgstr ""
 
-#: src/plugins/filenameextractor.c:70
+#: src/plugins/filenameextractor.c:68
 msgid "Bytes"
 msgstr ""
 

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.5.20\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2008-03-20 23:53-0600\n"
+"POT-Creation-Date: 2009-02-15 22:36-0700\n"
 "PO-Revision-Date: 2008-03-21 20:46-0700\n"
 "Last-Translator: Kevin Scannell <kscanne@gmail.com>\n"
 "Language-Team: Irish <gaeilge-gnulinux@lists.sourceforge.net>\n"
@@ -27,8 +27,11 @@ msgstr ""
 
 #: src/main/extract.c:52
 #, c-format
-msgid "Arguments mandatory for long options are also mandatory for short options.\n"
-msgstr "Is riachtanach le rogha ghearr aon argóint atá riachtanach leis an rogha fhada.\n"
+msgid ""
+"Arguments mandatory for long options are also mandatory for short options.\n"
+msgstr ""
+"Is riachtanach le rogha ghearr aon argóint atá riachtanach leis an rogha "
+"fhada.\n"
 
 #: src/main/extract.c:126
 msgid "do not remove any duplicates"
@@ -39,8 +42,12 @@ msgid "print output in bibtex format"
 msgstr "priontáil aschur i bhformáid bibtex"
 
 #: src/main/extract.c:130
-msgid "use the generic plaintext extractor for the language with the 2-letter language code LANG"
-msgstr "úsáid an t-asbhainteoir ginearálta téacs le haghaidh na teanga leis an chód LANG de réir ISO-639-1"
+msgid ""
+"use the generic plaintext extractor for the language with the 2-letter "
+"language code LANG"
+msgstr ""
+"úsáid an t-asbhainteoir ginearálta téacs le haghaidh na teanga leis an chód "
+"LANG de réir ISO-639-1"
 
 #: src/main/extract.c:132
 msgid "remove duplicates only if types match"
@@ -48,11 +55,14 @@ msgstr "bain macasamhla amach má mheaitseálann na cineálacha"
 
 #: src/main/extract.c:134
 msgid "use the filename as a keyword (loads filename-extractor plugin)"
-msgstr "úsáid an comhadainm mar lorgfhocal (luchtófar breiseán asbhainteora na gcomhadainmneacha)"
+msgstr ""
+"úsáid an comhadainm mar lorgfhocal (luchtófar breiseán asbhainteora na "
+"gcomhadainmneacha)"
 
 #: src/main/extract.c:136
 msgid "produce grep-friendly output (all results on one line per file)"
-msgstr "aschur is féidir próiseáil le grep (gach toradh ar líne amháin sa chomhad)"
+msgstr ""
+"aschur is féidir próiseáil le grep (gach toradh ar líne amháin sa chomhad)"
 
 #: src/main/extract.c:138
 msgid "print this help"
@@ -76,7 +86,9 @@ msgstr "ná húsáid na breiseáin asbhainteora réamhshocraithe"
 
 #: src/main/extract.c:148
 msgid "print only keywords of the given TYPE (use -L to get a list)"
-msgstr "ná taispeáin ach lorgfhocail den CHINEÁL tugtha (úsáid -L chun liosta a fháil)"
+msgstr ""
+"ná taispeáin ach lorgfhocail den CHINEÁL tugtha (úsáid -L chun liosta a "
+"fháil)"
 
 #: src/main/extract.c:150
 msgid "remove duplicates even if keyword types do not match"
@@ -84,7 +96,8 @@ msgstr "bain macasamhla amach, fiú mura meaitseálann na cineálacha lorgfhocail"
 
 #: src/main/extract.c:152
 msgid "use keyword splitting (loads split-extractor plugin)"
-msgstr "úsáid scoilteadh lorgfhocal (luchtófar an breiseán asbhainteora scoilte)"
+msgstr ""
+"úsáid scoilteadh lorgfhocal (luchtófar an breiseán asbhainteora scoilte)"
 
 #: src/main/extract.c:154
 msgid "print the version number"
@@ -106,68 +119,69 @@ msgstr "extract [ROGHANNA] [COMHADAINM]*"
 msgid "Extract metadata from files."
 msgstr "Bain meiteashonraí as comhaid."
 
-#: src/main/extract.c:190 src/main/extractor.c:1513
+#: src/main/extract.c:190 src/main/extractor.c:1544
 #, c-format
 msgid "%s - (binary)\n"
 msgstr "%s - (dénártha)\n"
 
-#: src/main/extract.c:201 src/main/extractor.c:1518
+#: src/main/extract.c:201 src/main/extractor.c:1549
 #, c-format
 msgid "INVALID TYPE - %s\n"
 msgstr "CINEÁL NEAMHBHAILÍ - %s\n"
 
-#: src/main/extract.c:320 src/main/extractor.c:47
+#: src/main/extract.c:320 src/main/extractor.c:48
 msgid "title"
 msgstr "teideal"
 
-#: src/main/extract.c:322 src/main/extractor.c:45
+#: src/main/extract.c:322 src/main/extractor.c:46
 msgid "filename"
 msgstr "comhadainm"
 
-#: src/main/extract.c:327 src/main/extractor.c:48
+#: src/main/extract.c:327 src/main/extractor.c:49
 msgid "author"
 msgstr "údar"
 
-#: src/main/extract.c:331 src/main/extractor.c:50
+#: src/main/extract.c:331 src/main/extractor.c:51
 msgid "description"
 msgstr "cur síos"
 
-#: src/main/extract.c:333 src/main/extractor.c:62
+#: src/main/extract.c:333 src/main/extractor.c:63
 msgid "keywords"
 msgstr "lorgfhocail"
 
-#: src/main/extract.c:335 src/main/extractor.c:51
+#: src/main/extract.c:335 src/main/extractor.c:52
 msgid "comment"
 msgstr "nóta tráchta"
 
-#: src/main/extract.c:339 src/main/extractor.c:52
+#: src/main/extract.c:339 src/main/extractor.c:53
 msgid "date"
 msgstr "dáta"
 
-#: src/main/extract.c:341 src/main/extractor.c:74
+#: src/main/extract.c:341 src/main/extractor.c:75
 msgid "creation date"
 msgstr "dáta a cruthaíodh"
 
-#: src/main/extract.c:369 src/main/extractor.c:53
+#: src/main/extract.c:369 src/main/extractor.c:54
 msgid "publisher"
 msgstr "foilsitheoir"
 
-#: src/main/extract.c:373 src/main/extractor.c:59
+#: src/main/extract.c:373 src/main/extractor.c:60
 msgid "organization"
 msgstr "eagras"
 
-#: src/main/extract.c:377 src/main/extractor.c:61
+#: src/main/extract.c:377 src/main/extractor.c:62
 msgid "subject"
 msgstr "ábhar"
 
-#: src/main/extract.c:381 src/main/extractor.c:78
+#: src/main/extract.c:381 src/main/extractor.c:79
 msgid "page count"
 msgstr "líon na leathanach"
 
 #: src/main/extract.c:537
 #, c-format
 msgid "You must specify an argument for the `%s' option (option ignored).\n"
-msgstr "Ní mór duit argóint a thabhairt i ndiaidh na rogha `%s' (á ligean thart).\n"
+msgstr ""
+"Ní mór duit argóint a thabhairt i ndiaidh na rogha `%s' (á ligean thart).\n"
 
 #: src/main/extract.c:607
 #, c-format
@@ -184,514 +198,527 @@ msgstr "%% Comhad BiBTeX\n"
 msgid "Keywords for file %s:\n"
 msgstr "Lorgfhocail do chomhad %s:\n"
 
-#: src/main/extractor.c:44
+#: src/main/extractor.c:45
 msgid "unknown"
 msgstr "anaithnid"
 
-#: src/main/extractor.c:46
+#: src/main/extractor.c:47
 msgid "mimetype"
 msgstr "Cineál MIME"
 
-#: src/main/extractor.c:49
+#: src/main/extractor.c:50
 msgid "artist"
 msgstr "ealaíontóir"
 
-#: src/main/extractor.c:54
+#: src/main/extractor.c:55
 msgid "language"
 msgstr "teanga"
 
-#: src/main/extractor.c:55
+#: src/main/extractor.c:56
 msgid "album"
 msgstr "albam"
 
-#: src/main/extractor.c:56
+#: src/main/extractor.c:57
 msgid "genre"
 msgstr "seánra"
 
-#: src/main/extractor.c:57
+#: src/main/extractor.c:58
 msgid "location"
 msgstr "suíomh"
 
-#: src/main/extractor.c:58
+#: src/main/extractor.c:59
 msgid "version"
 msgstr "leagan"
 
-#: src/main/extractor.c:60
+#: src/main/extractor.c:61 src/plugins/mp3extractor.c:478
 msgid "copyright"
 msgstr "cóipcheart"
 
-#: src/main/extractor.c:63
+#: src/main/extractor.c:64
 msgid "contributor"
 msgstr "cuiditheoir"
 
-#: src/main/extractor.c:64
+#: src/main/extractor.c:65
 msgid "resource-type"
 msgstr "cineál-acmhainne"
 
-#: src/main/extractor.c:65
+#: src/main/extractor.c:66
 msgid "format"
 msgstr "formáid"
 
-#: src/main/extractor.c:66
+#: src/main/extractor.c:67
 msgid "resource-identifier"
 msgstr "aitheantóir-acmhainne"
 
-#: src/main/extractor.c:67
+#: src/main/extractor.c:68
 msgid "source"
 msgstr "foinse"
 
-#: src/main/extractor.c:68
+#: src/main/extractor.c:69
 msgid "relation"
 msgstr "gaol"
 
-#: src/main/extractor.c:69
+#: src/main/extractor.c:70
 msgid "coverage"
 msgstr "clúdach"
 
-#: src/main/extractor.c:70
+#: src/main/extractor.c:71
 msgid "software"
 msgstr "bogearraí"
 
-#: src/main/extractor.c:71
+#: src/main/extractor.c:72
 msgid "disclaimer"
 msgstr "séanadh"
 
-#: src/main/extractor.c:72
+#: src/main/extractor.c:73
 msgid "warning"
 msgstr "rabhadh"
 
-#: src/main/extractor.c:73
+#: src/main/extractor.c:74
 msgid "translated"
 msgstr "aistrithe"
 
-#: src/main/extractor.c:75
+#: src/main/extractor.c:76
 msgid "modification date"
 msgstr "dáta mionathraithe"
 
-#: src/main/extractor.c:76
+#: src/main/extractor.c:77
 msgid "creator"
 msgstr "cruthaitheoir"
 
-#: src/main/extractor.c:77
+#: src/main/extractor.c:78
 msgid "producer"
 msgstr "táirgeoir"
 
-#: src/main/extractor.c:79
+#: src/main/extractor.c:80
 msgid "page orientation"
 msgstr "treoshuíomh an leathanaigh"
 
-#: src/main/extractor.c:80
+#: src/main/extractor.c:81
 msgid "paper size"
 msgstr "páipéarmhéid"
 
-#: src/main/extractor.c:81
+#: src/main/extractor.c:82
 msgid "used fonts"
 msgstr "clófhoirne úsáidte"
 
-#: src/main/extractor.c:82
+#: src/main/extractor.c:83
 msgid "page order"
 msgstr "ord na leathanach"
 
-#: src/main/extractor.c:83
+#: src/main/extractor.c:84
 msgid "created for"
 msgstr "cruthaithe ar son"
 
-#: src/main/extractor.c:84
+#: src/main/extractor.c:85
 msgid "magnification"
 msgstr "formhéadú"
 
-#: src/main/extractor.c:85
+#: src/main/extractor.c:86
 msgid "release"
 msgstr "scaoileadh"
 
-#: src/main/extractor.c:86
+#: src/main/extractor.c:87
 msgid "group"
 msgstr "grúpa"
 
-#: src/main/extractor.c:87
+#: src/main/extractor.c:88
 msgid "size"
 msgstr "méid"
 
-#: src/main/extractor.c:88
+#: src/main/extractor.c:89
 msgid "summary"
 msgstr "achoimre"
 
-#: src/main/extractor.c:89
+#: src/main/extractor.c:90
 msgid "packager"
 msgstr "pacáisteoir"
 
-#: src/main/extractor.c:90
+#: src/main/extractor.c:91
 msgid "vendor"
 msgstr "díoltóir"
 
-#: src/main/extractor.c:91
+#: src/main/extractor.c:92
 msgid "license"
 msgstr "ceadúnas"
 
-#: src/main/extractor.c:92
+#: src/main/extractor.c:93
 msgid "distribution"
 msgstr "dáileadh"
 
-#: src/main/extractor.c:93
+#: src/main/extractor.c:94
 msgid "build-host"
 msgstr "óstríomhaire-tógála"
 
-#: src/main/extractor.c:94
+#: src/main/extractor.c:95
 msgid "operating system"
 msgstr "córas oibriúcháin"
 
-#: src/main/extractor.c:95
+#: src/main/extractor.c:96
 msgid "dependency"
 msgstr "spleáchas"
 
-#: src/main/extractor.c:96
+#: src/main/extractor.c:97
 msgid "MD4"
 msgstr "MD4"
 
-#: src/main/extractor.c:97
+#: src/main/extractor.c:98
 msgid "MD5"
 msgstr "MD5"
 
-#: src/main/extractor.c:98
+#: src/main/extractor.c:99
 msgid "SHA-0"
 msgstr "SHA-0"
 
-#: src/main/extractor.c:99
+#: src/main/extractor.c:100
 msgid "SHA-1"
 msgstr "SHA-1"
 
-#: src/main/extractor.c:100
+#: src/main/extractor.c:101
 msgid "RipeMD160"
 msgstr "RipeMD160"
 
-#: src/main/extractor.c:101
+#: src/main/extractor.c:102
 msgid "resolution"
 msgstr "taifeach"
 
-#: src/main/extractor.c:102
+#: src/main/extractor.c:103
 msgid "category"
 msgstr "catagóir"
 
-#: src/main/extractor.c:103
+#: src/main/extractor.c:104
 msgid "book title"
 msgstr "teideal an leabhair"
 
-#: src/main/extractor.c:104
+#: src/main/extractor.c:105
 msgid "priority"
 msgstr "tosaíocht"
 
-#: src/main/extractor.c:105
+#: src/main/extractor.c:106
 msgid "conflicts"
 msgstr "coinbhleachtaí"
 
-#: src/main/extractor.c:106
+#: src/main/extractor.c:107
 msgid "replaces"
 msgstr "ionadaíonn"
 
-#: src/main/extractor.c:107
+#: src/main/extractor.c:108
 msgid "provides"
 msgstr "soláthraíonn"
 
-#: src/main/extractor.c:108
+#: src/main/extractor.c:109
 msgid "conductor"
 msgstr "stiúrthóir"
 
-#: src/main/extractor.c:109
+#: src/main/extractor.c:110
 msgid "interpreter"
 msgstr "léirmhínitheoir"
 
-#: src/main/extractor.c:110
+#: src/main/extractor.c:111
 msgid "owner"
 msgstr "úinéir"
 
-#: src/main/extractor.c:111
+#: src/main/extractor.c:112
 msgid "lyrics"
 msgstr "liricí"
 
-#: src/main/extractor.c:112
+#: src/main/extractor.c:113
 msgid "media type"
 msgstr "cineál an mheáin"
 
-#: src/main/extractor.c:113
+#: src/main/extractor.c:114
 msgid "contact"
 msgstr "teagmháil"
 
-#: src/main/extractor.c:114
+#: src/main/extractor.c:115
 msgid "binary thumbnail data"
 msgstr "sonraí dénártha mionsamhla"
 
-#: src/main/extractor.c:115
+#: src/main/extractor.c:116
 msgid "publication date"
 msgstr "dáta foilsithe"
 
-#: src/main/extractor.c:116
+#: src/main/extractor.c:117
 msgid "camera make"
 msgstr "déantús an cheamara"
 
-#: src/main/extractor.c:117
+#: src/main/extractor.c:118
 msgid "camera model"
 msgstr "déanamh an cheamara"
 
-#: src/main/extractor.c:118
+#: src/main/extractor.c:119
 msgid "exposure"
 msgstr "nochtadh"
 
-#: src/main/extractor.c:119
+#: src/main/extractor.c:120
 msgid "aperture"
 msgstr "cró"
 
-#: src/main/extractor.c:120
+#: src/main/extractor.c:121
 msgid "exposure bias"
 msgstr "laofacht nochta"
 
-#: src/main/extractor.c:121
+#: src/main/extractor.c:122
 msgid "flash"
 msgstr "splanc"
 
-#: src/main/extractor.c:122
+#: src/main/extractor.c:123
 msgid "flash bias"
 msgstr "laofacht splaince"
 
-#: src/main/extractor.c:123
+#: src/main/extractor.c:124
 msgid "focal length"
 msgstr "fad fócais"
 
-#: src/main/extractor.c:124
+#: src/main/extractor.c:125
 msgid "focal length (35mm equivalent)"
 msgstr "fad fócais (35mm coibhéiseach)"
 
-#: src/main/extractor.c:125
+#: src/main/extractor.c:126
 msgid "iso speed"
 msgstr "luas ISO"
 
-#: src/main/extractor.c:126
+#: src/main/extractor.c:127
 msgid "exposure mode"
 msgstr "mód nochta"
 
-#: src/main/extractor.c:127
+#: src/main/extractor.c:128
 msgid "metering mode"
 msgstr "mód méadrála"
 
-#: src/main/extractor.c:128
+#: src/main/extractor.c:129
 msgid "macro mode"
 msgstr "mód macra"
 
-#: src/main/extractor.c:129
+#: src/main/extractor.c:130
 msgid "image quality"
 msgstr "cáilíocht íomhá"
 
-#: src/main/extractor.c:130
+#: src/main/extractor.c:131
 msgid "white balance"
 msgstr "cothromaíocht bhán"
 
-#: src/main/extractor.c:131
+#: src/main/extractor.c:132
 msgid "orientation"
 msgstr "treoshuíomh"
 
-#: src/main/extractor.c:132
+#: src/main/extractor.c:133
 msgid "template"
 msgstr "teimpléad"
 
-#: src/main/extractor.c:133
+#: src/main/extractor.c:134
 msgid "split"
 msgstr "roinn"
 
-#: src/main/extractor.c:134
+#: src/main/extractor.c:135
 msgid "product version"
 msgstr "leagan an táirge"
 
-#: src/main/extractor.c:135
+#: src/main/extractor.c:136
 msgid "last saved by"
 msgstr "sábháilte is déanaí ag"
 
-#: src/main/extractor.c:136
+#: src/main/extractor.c:137
 msgid "last printed"
 msgstr "priontáilte"
 
-#: src/main/extractor.c:137
+#: src/main/extractor.c:138
 msgid "word count"
 msgstr "líon na bhfocal"
 
-#: src/main/extractor.c:138
+#: src/main/extractor.c:139
 msgid "character count"
 msgstr "líon na gcarachtar"
 
-#: src/main/extractor.c:139
+#: src/main/extractor.c:140
 msgid "total editing time"
 msgstr "am iomlán eagair"
 
-#: src/main/extractor.c:140
+#: src/main/extractor.c:141
 msgid "thumbnails"
 msgstr "mionsamhlacha"
 
-#: src/main/extractor.c:141
+#: src/main/extractor.c:142
 msgid "security"
 msgstr "slándáil"
 
-#: src/main/extractor.c:142
+#: src/main/extractor.c:143
 msgid "created by software"
 msgstr "cruthaithe ag bogearraí"
 
-#: src/main/extractor.c:143
+#: src/main/extractor.c:144
 msgid "modified by software"
 msgstr "mionathraithe ag bogearraí"
 
-#: src/main/extractor.c:144
+#: src/main/extractor.c:145
 msgid "revision history"
 msgstr "stair leasaithe"
 
-#: src/main/extractor.c:145
+#: src/main/extractor.c:146
 msgid "lower case conversion"
 msgstr "tiontú go cás íochtair"
 
-#: src/main/extractor.c:146
+#: src/main/extractor.c:147
 msgid "company"
 msgstr "comhlacht"
 
-#: src/main/extractor.c:147
+#: src/main/extractor.c:148
 msgid "generator"
 msgstr "gineadóir"
 
-#: src/main/extractor.c:148
+#: src/main/extractor.c:149
 msgid "character set"
 msgstr "tacar carachtar"
 
-#: src/main/extractor.c:149
+#: src/main/extractor.c:150
 msgid "line count"
 msgstr "líon na línte"
 
-#: src/main/extractor.c:150
+#: src/main/extractor.c:151
 msgid "paragraph count"
 msgstr "líon na n-alt"
 
-#: src/main/extractor.c:151
+#: src/main/extractor.c:152
 msgid "editing cycles"
 msgstr "timthriallta eagarthóireachta"
 
-#: src/main/extractor.c:152
+#: src/main/extractor.c:153
 msgid "scale"
 msgstr "scála"
 
-#: src/main/extractor.c:153
+#: src/main/extractor.c:154
 msgid "manager"
 msgstr "bainisteoir"
 
-#: src/main/extractor.c:154
+#: src/main/extractor.c:155
 msgid "director"
 msgstr "stiúrthóir"
 
-#: src/main/extractor.c:155
+#: src/main/extractor.c:156
 msgid "duration"
 msgstr "achar"
 
-#: src/main/extractor.c:156
+#: src/main/extractor.c:157
 msgid "information"
 msgstr "eolas"
 
-#: src/main/extractor.c:157
+#: src/main/extractor.c:158
 msgid "full name"
 msgstr "ainm iomlán"
 
-#: src/main/extractor.c:158
+#: src/main/extractor.c:159
 msgid "chapter"
 msgstr "caibidil"
 
-#: src/main/extractor.c:159
+#: src/main/extractor.c:160
 msgid "year"
 msgstr "bliain"
 
-#: src/main/extractor.c:160
+#: src/main/extractor.c:161
 msgid "link"
 msgstr "nasc"
 
-#: src/main/extractor.c:161
+#: src/main/extractor.c:162
 msgid "music CD identifier"
 msgstr "aitheantas dlúthdhiosca ceoil"
 
-#: src/main/extractor.c:162
+#: src/main/extractor.c:163
 msgid "play counter"
 msgstr "áiritheoir seinnte"
 
-#: src/main/extractor.c:163
+#: src/main/extractor.c:164
 msgid "popularity meter"
 msgstr "méadar éilimh"
 
-#: src/main/extractor.c:164
+#: src/main/extractor.c:165
 msgid "content type"
 msgstr "cineál an ábhair"
 
-#: src/main/extractor.c:165
+#: src/main/extractor.c:166
 msgid "encoded by"
 msgstr "ionchódaithe ag"
 
-#: src/main/extractor.c:166
+#: src/main/extractor.c:167
 msgid "time"
 msgstr "am"
 
-#: src/main/extractor.c:167
+#: src/main/extractor.c:168
 msgid "musician credits list"
 msgstr "admhálacha na gceoltóirí"
 
-#: src/main/extractor.c:168
+#: src/main/extractor.c:169
 msgid "mood"
 msgstr "fonn"
 
-#: src/main/extractor.c:169
+#: src/main/extractor.c:170
 msgid "format version"
 msgstr "leagan na formáide"
 
-#: src/main/extractor.c:170
+#: src/main/extractor.c:171
 msgid "television system"
 msgstr "córas teilifíse"
 
-#: src/main/extractor.c:171
+#: src/main/extractor.c:172
 msgid "song count"
 msgstr "líon na n-amhrán"
 
-#: src/main/extractor.c:172
+#: src/main/extractor.c:173
 msgid "starting song"
 msgstr "amhrán tosaigh"
 
-#: src/main/extractor.c:173
+#: src/main/extractor.c:174
 msgid "hardware dependency"
 msgstr "spleáchas crua-earraí"
 
-#: src/main/extractor.c:174
+#: src/main/extractor.c:175
 msgid "ripper"
 msgstr "sracaire"
 
-#: src/main/extractor.c:175
+#: src/main/extractor.c:176
 msgid "filesize"
 msgstr "méid comhaid"
 
-#: src/main/extractor.c:176
+#: src/main/extractor.c:177
 msgid "track number"
 msgstr "uimhir an riain"
 
-#: src/main/extractor.c:177
+#: src/main/extractor.c:178
 msgid "international standard recording code"
 msgstr "cód caighdeánach idirnáisiúnta taifeadta"
 
-#: src/main/extractor.c:178
+#: src/main/extractor.c:179
 msgid "disc number"
 msgstr "uimhir an diosca"
 
-#: src/main/extractor.c:598
+#: src/main/extractor.c:180
+msgid "preferred display style (GNUnet)"
+msgstr ""
+
+#: src/main/extractor.c:181
+msgid "GNUnet URI of ECBC data"
+msgstr ""
+
+#: src/main/extractor.c:604
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "Theip ar thúsú meicníocht na mbreiseán: %s!\n"
 
-#: src/main/extractor.c:752
+#: src/main/extractor.c:768
 #, c-format
-msgid "Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that failed also.  Errors are: `%s' and `%s'.\n"
-msgstr "Níorbh fhéidir siombail `%s' a réiteach i leabharlann `%s'.  Dá bhrí sin, bhain mé triail as `%s', ach theip ar an cheann sin freisin.  Na hearráidí: `%s' agus `%s'.\n"
+msgid ""
+"Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
+"failed also.  Errors are: `%s' and `%s'.\n"
+msgstr ""
+"Níorbh fhéidir siombail `%s' a réiteach i leabharlann `%s'.  Dá bhrí sin, "
+"bhain mé triail as `%s', ach theip ar an cheann sin freisin.  Na hearráidí: `"
+"%s' agus `%s'.\n"
 
-#: src/main/extractor.c:781
+#: src/main/extractor.c:805
 #, c-format
 msgid "Loading `%s' plugin failed: %s\n"
 msgstr "Theip ar luchtú an bhreiseáin `%s': %s\n"
 
-#: src/main/extractor.c:986
+#: src/main/extractor.c:1017
 #, c-format
 msgid "Unloading plugin `%s' failed!\n"
 msgstr "Theip ar dhíluchtú an bhreiseáin `%s'!\n"
@@ -751,19 +778,19 @@ msgstr "%s: Tá an rogha `-W %s' débhríoch\n"
 msgid "%s: option `-W %s' doesn't allow an argument\n"
 msgstr "%s: ní cheadaítear argóint i ndiaidh na rogha `-W %s'\n"
 
-#: src/plugins/filenameextractor.c:64
+#: src/plugins/filenameextractor.c:62
 msgid "GB"
 msgstr "GB"
 
-#: src/plugins/filenameextractor.c:66
+#: src/plugins/filenameextractor.c:64
 msgid "MB"
 msgstr "MB"
 
-#: src/plugins/filenameextractor.c:68
+#: src/plugins/filenameextractor.c:66
 msgid "KB"
 msgstr "kB"
 
-#: src/plugins/filenameextractor.c:70
+#: src/plugins/filenameextractor.c:68
 msgid "Bytes"
 msgstr "Beart"
 
@@ -1411,17 +1438,68 @@ msgstr "JPap"
 msgid "Synthpop"
 msgstr "Popcheol sintéiseach"
 
-#: src/plugins/mp3extractor.c:444 src/plugins/wavextractor.c:119
+#: src/plugins/mp3extractor.c:252 src/plugins/wavextractor.c:119
 msgid "stereo"
 msgstr "steirió"
 
-#: src/plugins/mp3extractor.c:444 src/plugins/wavextractor.c:119
+#: src/plugins/mp3extractor.c:253
+#, fuzzy
+msgid "joint stereo"
+msgstr "steirió"
+
+#: src/plugins/mp3extractor.c:254
+msgid "dual channel"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:255 src/plugins/wavextractor.c:119
 msgid "mono"
 msgstr "mona"
 
-#: src/plugins/mp3extractor.c:445
-msgid "(variable bps)"
-msgstr "(bss athraitheach)"
+#: src/plugins/mp3extractor.c:258
+msgid "MPEG-1"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:259
+msgid "MPEG-2"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:260
+msgid "MPEG-2.5"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:263
+msgid "Layer I"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:264
+msgid "Layer II"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:265
+msgid "Layer III"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:475
+msgid "VBR"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:475
+msgid "CBR"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:478
+#, fuzzy
+msgid "no copyright"
+msgstr "cóipcheart"
+
+#: src/plugins/mp3extractor.c:479
+msgid "original"
+msgstr ""
+
+#: src/plugins/mp3extractor.c:479
+#, fuzzy
+msgid "copy"
+msgstr "comhlacht"
 
 #: src/plugins/ole2/ole2extractor.c:252
 msgid "No Proofing"
@@ -1538,15 +1616,14 @@ msgstr "Méadaigh ALLOCSIZE (i %s).\n"
 msgid "codec: %s, %u fps, %u ms"
 msgstr "codec: %s, %u fss, %u ms"
 
-#: src/plugins/rpm/rpmextractor.c:3223
-#, c-format
-msgid "Source RPM %d.%d"
-msgstr "RPM Foinse %d.%d"
+#~ msgid "(variable bps)"
+#~ msgstr "(bss athraitheach)"
 
-#: src/plugins/rpm/rpmextractor.c:3225
-#, c-format
-msgid "Binary RPM %d.%d"
-msgstr "RPM Dénártha %d.%d"
+#~ msgid "Source RPM %d.%d"
+#~ msgstr "RPM Foinse %d.%d"
+
+#~ msgid "Binary RPM %d.%d"
+#~ msgstr "RPM Dénártha %d.%d"
 
 #~ msgid "os"
 #~ msgstr "córas"
