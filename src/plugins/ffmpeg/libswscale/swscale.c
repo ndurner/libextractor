@@ -1968,7 +1968,7 @@ static int handle_jpeg(int *format)
 }
 
 SwsContext *sws_getContext(int srcW, int srcH, int srcFormat, int dstW, int dstH, int dstFormat, int flags,
-                           SwsFilter *srcFilter, SwsFilter *dstFilter, double *param){
+                           SwsFilter *srcFilter, SwsFilter *dstFilter, const double *param){
 
     SwsContext *c;
     int i;
@@ -2906,7 +2906,7 @@ void sws_freeContext(SwsContext *c){
 struct SwsContext *sws_getCachedContext(struct SwsContext *context,
                                         int srcW, int srcH, int srcFormat,
                                         int dstW, int dstH, int dstFormat, int flags,
-                                        SwsFilter *srcFilter, SwsFilter *dstFilter, double *param)
+                                        SwsFilter *srcFilter, SwsFilter *dstFilter, const double *param)
 {
     static const double default_param[2] = {SWS_PARAM_DEFAULT, SWS_PARAM_DEFAULT};
 
