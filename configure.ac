@@ -1,8 +1,8 @@
 # Process this file with autoconf to produce a configure script.
 AC_PREREQ(2.61)
-AC_INIT([libextractor], [0.5.21], [bug-libextractor@gnu.org])
+AC_INIT([libextractor], [0.5.22], [bug-libextractor@gnu.org])
 AC_CONFIG_AUX_DIR([libltdl/config])
-AM_INIT_AUTOMAKE([libextractor], [0.5.21])
+AM_INIT_AUTOMAKE([libextractor], [0.5.22])
 AC_CONFIG_HEADERS([config.h])
 AH_TOP([#define _GNU_SOURCE  1])
 

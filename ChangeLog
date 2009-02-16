@@ -1,3 +1,7 @@
+Sun Feb 15 16:57:46 MST 2009
+	Upgraded to libtool 2.x (and the libltdl from that release).
+	Releasing libextractor 0.5.22.
+
 Sun Nov  2 20:19:02 MST 2008
 	Releasing libextractor 0.5.21.
 	
