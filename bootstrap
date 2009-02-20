@@ -1,4 +1,5 @@
 #!/bin/sh
+libtoolize --automake --ltdl --copy --force
 aclocal
 automake
 autoreconf -f -i
