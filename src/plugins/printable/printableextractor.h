@@ -121,7 +121,7 @@ static struct EXTRACTOR_Keywords * addKeyword(struct EXTRACTOR_Keywords * list,
  * @param word (alphabetic characters without spaces)
  * @return 0 if it is no word, 1 if it is
  */
-static int wordTest(char * word,
+static int wordTest(const char * word,
 		    double * strlenthreshold) {
   int i;
   HashCode160 hc;
@@ -208,15 +208,15 @@ static void addKeywordToList(char * keyword,
 }
 
 
-static int process(char * keyword,
-		   double * thresh,
-		   struct EXTRACTOR_Keywords ** head,
-		   struct EXTRACTOR_Keywords ** tail) {
-  int i;
-  int max = 0;
-  int len;
-  int p;
-  int skip;
+static size_t process(char * keyword,
+		      double * thresh,
+		      struct EXTRACTOR_Keywords ** head,
+		      struct EXTRACTOR_Keywords ** tail) {
+  size_t i;
+  size_t max;
+  size_t len;
+  size_t p;
+  size_t skip;
   char * sxdup;
 
   max = 0;
@@ -279,8 +279,8 @@ static void testKeyword(size_t start,
 			struct EXTRACTOR_Keywords ** head,
 			struct EXTRACTOR_Keywords ** tail) {
   char * keyword;
-  int i;
-  int len;
+  size_t i;
+  size_t len;
 
   len = end-start;
   keyword = malloc(len + 1);
@@ -323,7 +323,7 @@ static void processSentences(struct EXTRACTOR_Keywords ** head,
   struct EXTRACTOR_Keywords * rpos;
   struct EXTRACTOR_Keywords * last;
   char * sentence;
-  int i;
+  size_t i;
 
   start = NULL;
   last = NULL;
