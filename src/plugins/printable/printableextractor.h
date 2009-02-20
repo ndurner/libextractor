@@ -279,7 +279,7 @@ static void testKeyword(size_t start,
 			struct EXTRACTOR_Keywords ** head,
 			struct EXTRACTOR_Keywords ** tail) {
   char * keyword;
-  size_t i;
+  int i;
   size_t len;
 
   len = end-start;
