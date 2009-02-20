@@ -658,7 +658,7 @@ else
  AC_MSG_NOTICE([NOTICE: FFmpeg thumbnailer plugin enabled (security untested)])
 fi
 
-if test "x$without_gtk" = "xtrue" -a "x$qt" = "x0" -a "x$ffmpeg_enabled" = "x0"
+if test "x$without_gtk" = "xtrue" -a "x$qt" = "x0" -a "x$qt4" = "x0" -a "x$ffmpeg_enabled" = "x0"
 then
  AC_MSG_NOTICE([NOTICE: neither gtk nor Qt not found, no thumbnail support])
 fi
