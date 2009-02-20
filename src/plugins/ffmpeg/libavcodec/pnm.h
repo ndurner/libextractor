@@ -26,8 +26,8 @@
 
 typedef struct PNMContext {
     uint8_t *bytestream;
-    uint8_t *bytestream_start;
-    uint8_t *bytestream_end;
+    const uint8_t *bytestream_start;
+    const uint8_t *bytestream_end;
     AVFrame picture;
     int maxval;                 ///< maximum value of a pixel
 } PNMContext;

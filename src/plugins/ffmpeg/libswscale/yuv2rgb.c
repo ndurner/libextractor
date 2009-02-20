@@ -379,6 +379,7 @@ PROLOG(yuv2rgb_c_16, uint16_t)
     DST1(3);
 EPILOG(8)
 
+#if HAVE_DEAD_CODE
 // This is exactly the same code as yuv2rgb_c_32 except for the types of
 // r, g, b, dst_1, dst_2
 PROLOG(yuv2rgb_c_8, uint8_t)
@@ -398,6 +399,7 @@ PROLOG(yuv2rgb_c_8, uint8_t)
     DST2(3);
     DST1(3);
 EPILOG(8)
+#endif
 
 // r, g, b, dst_1, dst_2
 PROLOG(yuv2rgb_c_8_ordered_dither, uint8_t)
@@ -436,6 +438,7 @@ EPILOG(8)
 
 // This is exactly the same code as yuv2rgb_c_32 except for the types of
 // r, g, b, dst_1, dst_2
+#if HAVE_DEAD_CODE
 PROLOG(yuv2rgb_c_4, uint8_t)
     int acc;
 #define DST1_4(i)                   \
@@ -468,6 +471,7 @@ PROLOG(yuv2rgb_c_4, uint8_t)
     DST2_4(3);
     DST1_4(3);
 EPILOG(4)
+#endif
 
 PROLOG(yuv2rgb_c_4_ordered_dither, uint8_t)
     const uint8_t *d64= dither_8x8_73[y&7];
@@ -508,6 +512,7 @@ EPILOG(4)
 
 // This is exactly the same code as yuv2rgb_c_32 except for the types of
 // r, g, b, dst_1, dst_2
+#if HAVE_DEAD_CODE
 PROLOG(yuv2rgb_c_4b, uint8_t)
     RGB(0);
     DST1(0);
@@ -525,6 +530,7 @@ PROLOG(yuv2rgb_c_4b, uint8_t)
     DST2(3);
     DST1(3);
 EPILOG(8)
+#endif
 
 PROLOG(yuv2rgb_c_4b_ordered_dither, uint8_t)
     const uint8_t *d64= dither_8x8_73[y&7];

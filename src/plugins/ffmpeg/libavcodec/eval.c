@@ -47,8 +47,8 @@
 typedef struct Parser{
     int stack_index;
     char *s;
-    double *const_value;
-    const char **const_name;          // NULL terminated
+    const double *const_value;
+    const char *const*const_name;          // NULL terminated
     double (**func1)(void *, double a); // NULL terminated
     const char **func1_name;          // NULL terminated
     double (**func2)(void *, double a, double b); // NULL terminated
@@ -375,7 +375,7 @@ static int verify_expr(AVEvalExpr * e) {
     }
 }
 
-AVEvalExpr * ff_parse(const char *s, const char **const_name,
+AVEvalExpr * ff_parse(const char *s, const char *const *const_name,
                double (**func1)(void *, double), const char **func1_name,
                double (**func2)(void *, double, double), char **func2_name,
                const char **error){
@@ -404,7 +404,7 @@ AVEvalExpr * ff_parse(const char *s, const char **const_name,
     return e;
 }
 
-double ff_parse_eval(AVEvalExpr * e, double *const_value, void *opaque) {
+double ff_parse_eval(AVEvalExpr * e, const double *const_value, void *opaque) {
     Parser p;
 
     p.const_value= const_value;
@@ -412,7 +412,7 @@ double ff_parse_eval(AVEvalExpr * e, double *const_value, void *opaque) {
     return eval_expr(&p, e);
 }
 
-double ff_eval2(const char *s, double *const_value, const char **const_name,
+double ff_eval2(const char *s, const double *const_value, const char *const*const_name,
                double (**func1)(void *, double), const char **func1_name,
                double (**func2)(void *, double, double), char **func2_name,
                void *opaque, const char **error){

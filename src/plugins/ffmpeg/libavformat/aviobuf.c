@@ -538,8 +538,10 @@ int url_fdopen(ByteIOContext **s, URLContext *h)
 
     if (init_put_byte(*s, buffer, buffer_size,
                       (h->flags & URL_WRONLY || h->flags & URL_RDWR), h,
-                      url_read, url_write, url_seek) < 0) {
-        av_free(buffer);
+                      (int (*)(void *, uint8_t*,int)) url_read, 
+		      (int (*)(void *, uint8_t*,int)) url_write, 
+		      (offset_t (*)(void *, offset_t, int)) url_seek) < 0) {
+      av_free(buffer);
         av_freep(s);
         return AVERROR(EIO);
     }

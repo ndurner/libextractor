@@ -842,7 +842,7 @@ int attribute_align_arg avcodec_encode_audio(AVCodecContext *avctx, uint8_t *buf
         return -1;
     }
     if((avctx->codec->capabilities & CODEC_CAP_DELAY) || samples){
-        int ret = avctx->codec->encode(avctx, buf, buf_size, (void *)samples);
+      int ret = avctx->codec->encode(avctx, buf, buf_size, (void *) samples);
         avctx->frame_number++;
         return ret;
     }else
@@ -1331,7 +1331,11 @@ int av_tempfile(char *prefix, char **filename) {
         return -1;
     }
 #if !defined(HAVE_MKSTEMP)
-    fd = open(*filename, O_RDWR | O_BINARY | O_CREAT, 0444);
+    fd = open(*filename, O_RDWR | 
+#ifdef O_BINARY
+	      O_BINARY |
+#endif
+	      O_CREAT, 0444);
 #else
     snprintf(*filename, len, "/tmp/%sXXXXXX", prefix);
     fd = mkstemp(*filename);
@@ -1413,6 +1417,7 @@ int av_parse_video_frame_size(int *width_ptr, int *height_ptr, const char *str)
     int i;
     int n = sizeof(video_frame_size_abbrs) / sizeof(VideoFrameSizeAbbr);
     const char *p;
+    char *pp;
     int frame_width = 0, frame_height = 0;
 
     for(i=0;i<n;i++) {
@@ -1424,10 +1429,12 @@ int av_parse_video_frame_size(int *width_ptr, int *height_ptr, const char *str)
     }
     if (i == n) {
         p = str;
-        frame_width = strtol(p, (char **)&p, 10);
+        frame_width = strtol(p, &pp, 10);
+	p = pp;
         if (*p)
             p++;
-        frame_height = strtol(p, (char **)&p, 10);
+        frame_height = strtol(p, &pp, 10);
+	p = pp;
     }
     if (frame_width <= 0 || frame_height <= 0)
         return -1;

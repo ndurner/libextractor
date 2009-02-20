@@ -2821,6 +2821,7 @@ int64_t parse_date(const char *datestr, int duration)
         "%H%M%S",
     };
     const char *q;
+    char *qq;
     int is_utc, len;
     char lastch;
     int negative = 0;
@@ -2881,10 +2882,11 @@ int64_t parse_date(const char *datestr, int duration)
         q = small_strptime(p, time_fmt[0], &dt);
         if (!q) {
             /* parse datestr as S+ */
-            dt.tm_sec = strtol(p, (char **)&q, 10);
-            if (q == p)
+            dt.tm_sec = strtol(p, &qq, 10);
+            if (qq == p)
                 /* the parsing didn't succeed */
                 return INT64_MIN;
+	    q = qq;
             dt.tm_min = 0;
             dt.tm_hour = 0;
         }

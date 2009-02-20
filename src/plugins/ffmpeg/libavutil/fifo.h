@@ -91,7 +91,7 @@ attribute_deprecated void av_fifo_write(AVFifoBuffer *f, const uint8_t *buf, int
  * If func is NULL, src is interpreted as a simple byte array for source data.
  * @return the number of bytes written to the fifo.
  */
-int av_fifo_generic_write(AVFifoBuffer *f, void *src, int size, int (*func)(void*, void*, int));
+int av_fifo_generic_write(AVFifoBuffer *f, const void *src, int size, int (*func)(const void*, void*, int));
 
 /**
  * Resizes an AVFifoBuffer.

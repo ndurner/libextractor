@@ -95,7 +95,7 @@ static int pnm_decode_frame(AVCodecContext *avctx,
             } else if (upgrade == 2) {
                 unsigned int j, v, f = (65535*32768 + s->maxval/2) / s->maxval;
                 for (j=0; j<n/2; j++) {
-                    v = be2me_16(((uint16_t *)s->bytestream)[j]);
+                    v = be2me_16(((const uint16_t *)s->bytestream)[j]);
                     ((uint16_t *)ptr)[j] = (v * f + 16384) >> 15;
                 }
             }
@@ -238,6 +238,7 @@ static int pnm_encode_frame(AVCodecContext *avctx, unsigned char *outbuf, int bu
     return s->bytestream - s->bytestream_start;
 }
 
+#if HAVE_DEAD_CODE
 static int pam_encode_frame(AVCodecContext *avctx, unsigned char *outbuf, int buf_size, void *data){
     PNMContext *s = avctx->priv_data;
     AVFrame *pict = data;
@@ -318,6 +319,7 @@ static int pam_encode_frame(AVCodecContext *avctx, unsigned char *outbuf, int bu
     }
     return s->bytestream - s->bytestream_start;
 }
+#endif
 
 #if 0
 static int pnm_probe(AVProbeData *pd)

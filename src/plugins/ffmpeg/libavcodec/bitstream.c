@@ -46,9 +46,6 @@ const uint8_t ff_log2_run[32]={
  * @deprecated. Code which uses ff_realloc_static is broken/misdesigned
  * and should correctly use static arrays
  */
-attribute_deprecated av_alloc_size(2)
-static void *ff_realloc_static(void *ptr, unsigned int size);
-
 static void *ff_realloc_static(void *ptr, unsigned int size)
 {
     return av_realloc(ptr, size);

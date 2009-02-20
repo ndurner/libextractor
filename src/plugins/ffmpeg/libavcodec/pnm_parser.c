@@ -38,7 +38,7 @@ static int pnm_parse(AVCodecParserContext *s,
 retry:
     if(pc->index){
         pnmctx.bytestream_start=
-        pnmctx.bytestream= pc->buffer;
+	  pnmctx.bytestream= (uint8_t) pc->buffer;
         pnmctx.bytestream_end= pc->buffer + pc->index;
     }else{
         pnmctx.bytestream_start=

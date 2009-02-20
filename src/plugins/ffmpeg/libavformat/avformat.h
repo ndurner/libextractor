@@ -128,11 +128,10 @@ static inline void av_free_packet(AVPacket *pkt)
 /**
  * the exact value of the fractional number is: 'val + num / den'.
  * num is assumed to be such as 0 <= num < den
- * @deprecated Use AVRational instead
 */
 typedef struct AVFrac {
     int64_t val, num, den;
-} AVFrac attribute_deprecated;
+} AVFrac; 
 
 /*************************************************/
 /* input/output formats */

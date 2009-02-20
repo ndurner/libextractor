@@ -71,10 +71,10 @@ void av_fifo_realloc(AVFifoBuffer *f, unsigned int new_size) {
 
 void av_fifo_write(AVFifoBuffer *f, const uint8_t *buf, int size)
 {
-    av_fifo_generic_write(f, (void *)buf, size, NULL);
+    av_fifo_generic_write(f, buf, size, NULL);
 }
 
-int av_fifo_generic_write(AVFifoBuffer *f, void *src, int size, int (*func)(void*, void*, int))
+int av_fifo_generic_write(AVFifoBuffer *f, const void *src, int size, int (*func)(const void*, void*, int))
 {
     int total = size;
     do {
@@ -84,7 +84,7 @@ int av_fifo_generic_write(AVFifoBuffer *f, void *src, int size, int (*func)(void
                 break;
         } else {
             memcpy(f->wptr, src, len);
-            src = (uint8_t*)src + len;
+            src = (const uint8_t*)src + len;
         }
         f->wptr += len;
         if (f->wptr >= f->end)

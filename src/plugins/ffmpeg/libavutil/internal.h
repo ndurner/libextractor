@@ -277,24 +277,15 @@ if((y)<(x)){\
 }
 
 #ifndef HAVE_LLRINT
-av_always_inline av_const long long llrint(double x)
-{
-    return rint(x);
-}
+#define llrint(x) ((long long) rint(x))
 #endif /* HAVE_LLRINT */
 
 #ifndef HAVE_LRINT
-av_always_inline av_const long int lrint(double x)
-{
-    return rint(x);
-}
+#define lrint(x) ((long int) rint(x))
 #endif /* HAVE_LRINT */
 
 #ifndef HAVE_LRINTF
-av_always_inline av_const long int lrintf(float x)
-{
-    return (int)(rint(x));
-}
+#define lrintf(x) ((long int) rint(x))
 #endif /* HAVE_LRINTF */
 
 #ifndef HAVE_ROUND
