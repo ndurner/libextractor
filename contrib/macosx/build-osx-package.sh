@@ -28,6 +28,9 @@ if [ -e "${PACKAGE_NAME}" ] ; then
 fi
 $PACKAGEMAKER -build -v -p "${PACKAGE_NAME}" -f "${COMPONENT_DIR}" -r "${RESOURCE_DIR}" -i contrib/macosx/Pkg-Info.plist -d contrib/macosx/Pkg-Description.plist
 
+cp README "${PACKAGE_DIR}/README.txt"
+cp README.macosx "${PACKAGE_DIR}/README - Mac OS X.txt"
+
 # create disk image
 if [ -e "$DMG_NAME" ] ; then
 	rm -f "$DMG_NAME"
