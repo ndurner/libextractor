@@ -12,7 +12,7 @@ if ! [ -e "${RESOURCE_DIR}" ] ; then
 	mkdir -p "${RESOURCE_DIR}"
 fi
 	
-cp contrib/macosx/License.rtf "${RESOURCE_DIR}/"
+cp COPYING "${RESOURCE_DIR}/License.txt"
 
 if ! [ -e "${PACKAGE_DIR}" ] ; then
 	mkdir -p "${PACKAGE_DIR}"
