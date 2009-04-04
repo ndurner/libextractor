@@ -430,6 +430,11 @@ install-exec-hook:
 		if test "$(thumbqt)" != ""; then \
 			$(LN_S) $(plugindir)/libextractor_thumbnailqt$(LIBEXT) \
 				$(DESTDIR)$(plugindir)/libextractor_thumbnail$(LIBEXT); \
+		else \
+			if test "$(thumbffmpeg)" != ""; then \
+				$(LN_S) $(plugindir)/libextractor_thumbnailffmpeg$(LIBEXT) \
+					$(DESTDIR)$(plugindir)/libextractor_thumbnail$(LIBEXT); \
+			fi \
 		fi \
 	fi
 
