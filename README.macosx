@@ -1,0 +1,50 @@
+libextractor on Mac OS X
+========================
+
+libextractor has two installation methods on Mac OS X: it can be installed
+as a Mac OS X framework or with the standard `./configure; make; make install'
+shell commands. The framework package is self-contained, but currently omits
+some of the libextractor plugins that can be compiled in if libextractor is
+installed with ./configure; make; make install' (provided that the required
+dependencies exist.)
+
+In the framework, the 'extract' command line tool can be found at 
+/Library/Frameworks/Extractor.framework/Versions/Current/bin/extract
+
+The framework can be used in software projects as a framework or as a dynamic
+library. 
+Framework usage:
+>>> hello.c
+#include <Extractor/extractor.h>
+
+int main()
+{
+	EXTRACTOR_ExtractorList *el;
+	el = EXTRACTOR_loadDefaultLibraries ();
+	EXTRACTOR_removeAll (el);
+	return 0;
+}
+gcc -o hello hello.c -framework Extractor
+
+Dynamic library usage:
+>>> hello.c
+#include <extractor.h>
+
+int main()
+{
+	EXTRACTOR_ExtractorList *el;
+	el = EXTRACTOR_loadDefaultLibraries ();
+	EXTRACTOR_removeAll (el);
+	return 0;
+}
+gcc -I/Library/Frameworks/Extractor.framework/Versions/Current/include -o hello hello.c -L/Library/Frameworks/Extractor.framework/Versions/Current/lib -lextractor
+
+Notice the difference in the #include line.
+
+When using the framework in projects using autotools, one would most likely
+want to add 
+"-I/Library/Frameworks/Extractor.framework/Versions/Current/include"
+to CPPFLAGS and 
+"-L/Library/Frameworks/Extractor.framework/Versions/Current/lib"
+to LDFLAGS.
+

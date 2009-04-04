@@ -553,10 +553,14 @@ AC_SUBST(LDFLAGS)
 AC_SUBST(XTRA_CPPLIBS)
 AC_SUBST(LIBEXT)
 
+PACKAGE_VERSION_NOALPHA=`echo $PACKAGE_VERSION | sed "s/[A-Za-z]*//g;"`
+AC_SUBST(PACKAGE_VERSION_NOALPHA)
+
 AC_CONFIG_FILES([Makefile po/Makefile.in m4/Makefile
 
 
 contrib/macosx/Info.plist
+contrib/macosx/Pkg-Info.plist
 doc/Makefile
 src/Makefile
 src/include/Makefile
