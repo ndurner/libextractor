@@ -8,21 +8,23 @@ DMG_NAME="$BUILD_DIR/Extractor-${PACKAGE_VERSION}.dmg"
 
 PACKAGEMAKER="/Developer/Applications/Utilities/PackageMaker.app/Contents/MacOS/PackageMaker"
 
-if ! [ -e "${RESOURCE_DIR}" ] ; then
-	mkdir -p "${RESOURCE_DIR}"
-fi
-	
+# copy package/installer resources
+if [ -e "${RESOURCE_DIR}" ] ; then
+	rm -rf "${RESOURCE_DIR}" 
+fi	
+mkdir -p "${RESOURCE_DIR}"
 cp COPYING "${RESOURCE_DIR}/License.txt"
-
-if ! [ -e "${PACKAGE_DIR}" ] ; then
-	mkdir -p "${PACKAGE_DIR}"
-fi
 
 # final permissions
 chown -R root "${COMPONENT_DIR}"/*
 chgrp -R admin "${COMPONENT_DIR}"/*
 
 # create package
+if [ -e "${PACKAGE_DIR}" ] ; then
+	rm -rf "${PACKAGE_DIR}" 
+fi
+mkdir -p "${PACKAGE_DIR}"
+
 if [ -e "${PACKAGE_NAME}" ] ; then
 	rm -rf "${PACKAGE_NAME}" 
 fi
