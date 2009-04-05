@@ -470,7 +470,7 @@ create_directory_for()
 	if [ ! -e "${dst_dir}" ]
 	then
 		echo "MKDIR ${dst_dir}"
-		if ! ( mkdir -m 755 -p "${dst_dir}" )
+		if ! ( mkdir -m 775 -p "${dst_dir}" )
 		then
 			echo "failed to create directory: ${dst_dir}"
 			exit 1
