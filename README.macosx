@@ -8,6 +8,21 @@ some of the extractor plugins that can be compiled in if libextractor is
 installed with ./configure; make; make install' (provided that the required
 dependencies exist.)
 
+Installing and uninstalling the framework
+=========================================
+
+The binary framework is distributed as a disk image (Extractor-x.x.xx.dmg).
+Installation is done by opening the disk image and clicking Extractor.pkg
+inside it. The Mac OS X installer application will then run. The framework
+is installed to the root volume's /Library/Frameworks folder and installing
+will require admin privileges.
+
+The framework can be uninstalled by dragging
+/Library/Frameworks/Extractor.framework to Trash.
+
+Using the framework
+===================
+
 In the framework, the 'extract' command line tool can be found at 
 /Library/Frameworks/Extractor.framework/Versions/Current/bin/extract
 
