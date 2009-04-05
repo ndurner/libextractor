@@ -25,9 +25,6 @@ if [ -e "${PACKAGE_DIR}" ] ; then
 fi
 mkdir -p "${PACKAGE_DIR}"
 
-if [ -e "${PACKAGE_NAME}" ] ; then
-	rm -rf "${PACKAGE_NAME}" 
-fi
 $PACKAGEMAKER -build -v -p "${PACKAGE_NAME}" -f "${COMPONENT_DIR}" -r "${RESOURCE_DIR}" -i contrib/macosx/Pkg-Info.plist -d contrib/macosx/Pkg-Description.plist
 
 cp README "${PACKAGE_DIR}/README.txt"
