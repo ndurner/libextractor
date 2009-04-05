@@ -5,7 +5,7 @@
 	<key>CFBundleGetInfoString</key>
 	<string>Extractor (@PACKAGE_STRING@), Copyright 2002-2009 Vidyut Samanta and Christian Grothoff</string>
 	<key>CFBundleIdentifier</key>
-	<string>org.GNUnet.libextractor.pkg</string>
+	<string>org.gnunet.libextractor.pkg</string>
 	<key>CFBundleShortVersionString</key>
 	<string>@PACKAGE_VERSION_NOALPHA@</string>
 	<key>IFPkgFlagAllowBackRev</key>
