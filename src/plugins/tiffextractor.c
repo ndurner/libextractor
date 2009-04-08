@@ -102,7 +102,7 @@ addASCII (struct EXTRACTOR_Keywords **prev,
   if (data[entry->value_or_offset + entry->count - 1] != 0)
     return;
   addKeyword (prev,
-              strdup (&data[entry->value_or_offset]), EXTRACTOR_SOFTWARE);
+              strdup (&data[entry->value_or_offset]), type);
 }
 
 
