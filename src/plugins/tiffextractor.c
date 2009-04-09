@@ -114,9 +114,9 @@ libextractor_tiff_extract (char *filename,
   TIFF_HEADER hdr;
   int byteOrder;                /* 0: do not convert;
                                    1: do convert */
-  int current_ifd;
-  long long length = -1;
-  long long width = -1;
+  unsigned int current_ifd;
+  unsigned int length = -1;
+  unsigned int width = -1;
 
   if (size < TIFF_HEADER_SIZE)
     return prev;                /*  can not be tiff */
@@ -141,7 +141,8 @@ libextractor_tiff_extract (char *filename,
       unsigned short len;
       unsigned int off;
       int i;
-      if (current_ifd + 6 > size)
+      if ( (current_ifd + 6 > size) ||
+	   (current_ifd + 6 < current_ifd) )
         return prev;
       if (byteOrder == 0)
         len = data[current_ifd + 1] << 8 | data[current_ifd];
@@ -177,7 +178,7 @@ libextractor_tiff_extract (char *filename,
                 {
                   char tmp[128];
                   snprintf (tmp, 128, "%ux%u",
-                           (unsigned int) width, (unsigned int) length);
+			    width, length);
                   addKeyword (&prev, strdup (tmp), EXTRACTOR_SIZE);
                 }
               break;
@@ -190,7 +191,7 @@ libextractor_tiff_extract (char *filename,
                 {
                   char tmp[128];
                   snprintf (tmp, 128, "%ux%u",
-                           (unsigned int) width, (unsigned int) length);
+			    width, length);
                   addKeyword (&prev, strdup (tmp), EXTRACTOR_SIZE);
                 }
               break;
@@ -224,14 +225,12 @@ libextractor_tiff_extract (char *filename,
       off = current_ifd + 2 + DIRECTORY_ENTRY_SIZE * len;
       if (byteOrder == 0)
         current_ifd =
-          data[off + 3] << 24 | data[off + 2] << 16 | data[off +
-                                                           1] << 8 |
-          data[off];
+          data[off + 3] << 24 | data[off + 2] << 16 | 
+	  data[off + 1] << 8  | data[off];
       else
         current_ifd =
-          data[off] << 24 | data[off + 1] << 16 | data[off +
-                                                       2] << 8 | data[off +
-                                                                      3];
+          data[off] << 24 | data[off + 1] << 16 |
+	  data[off + 2] << 8 | data[off + 3];
     }
   return prev;
 }
