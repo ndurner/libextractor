@@ -32,9 +32,9 @@
 #include "platform.h"
 #include "extractor.h"
 
-#include "exif.hpp"
-#include "image.hpp"
-#include "futils.hpp"
+#include "exiv2/exif.hpp"
+#include "exiv2/image.hpp"
+#include "exiv2/futils.hpp"
 
 #define WORKAROUND_905 1
 #if WORKAROUND_905
