@@ -346,7 +346,6 @@ extern "C" {
         }
         result = newResult;
 
-#if 0
 	/* this can sometimes be wrong (corrupt exiv2 data?).
 	   Either way, we should get the data directly from
 	   the specific file format parser (i.e. jpeg, tiff). */
@@ -364,7 +363,6 @@ extern "C" {
                                 strdup(os.str().c_str()),
                                 result);
         }
-#endif
         // White balance
         // Todo: Implement this for other cameras
 
