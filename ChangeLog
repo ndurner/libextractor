@@ -1,3 +1,6 @@
+Sat Apr 11 20:46:14 MDT 2009
+	Removed code from libexiv2, linking against it instead.
+
 Fri Feb 20 00:28:00 MST 2009
 	Releasing libextractor 0.5.22.
 

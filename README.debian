@@ -19,6 +19,7 @@ libgsf-1-dev
 libmpeg2-4-dev
 libqt4-dev
 librpm-dev
+libexiv2-dev # if you compile with --enable-exiv2
 
 For Subversion access and compilation:
 
