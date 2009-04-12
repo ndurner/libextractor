@@ -189,7 +189,7 @@ extern "C" {
         // Flash bias
         // Todo: Implement this for other cameras
         newResult = addExiv2Tag(exifData,
-                                "Exif.CanonCs2.FlashBias",
+                                "Exif.CanonSi.FlashBias",
                                 EXTRACTOR_FLASH_BIAS,
                                 result);
         if (newResult == result) {
@@ -299,7 +299,7 @@ extern "C" {
         // Image quality setting (compression)
         // Todo: Implement this for other cameras
         newResult = addExiv2Tag(exifData,
-                                "Exif.CanonCs1.Quality",
+                                "Exif.CanonCs.Quality",
                                 EXTRACTOR_IMAGE_QUALITY,
                                 result);
         if (newResult == result) {
@@ -369,7 +369,7 @@ extern "C" {
         // Todo: Implement this for other cameras
 
         newResult = addExiv2Tag(exifData,
-                                "Exif.CanonCs2.WhiteBalance",
+                                "Exif.CanonSi.WhiteBalance",
                                 EXTRACTOR_WHITE_BALANCE,
                                 result);
         if (newResult == result) {
