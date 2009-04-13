@@ -41,6 +41,8 @@
 #include <pthread.h>
 #endif
 
+#define SUPPRESS_WARNINGS 1
+
 extern "C" {
 
     static struct EXTRACTOR_Keywords * addKeyword(EXTRACTOR_KeywordType type,
@@ -226,7 +228,7 @@ extern "C" {
                                 result);
         if (newResult == result) {
             newResult = addExiv2Tag(exifData,
-                                    "Exif.CanonCs1.ISOSpeed",
+                                    "Exif.CanonSi.ISOSpeed",
                                     EXTRACTOR_ISO_SPEED,
                                     result);
         }
@@ -258,7 +260,7 @@ extern "C" {
                                 result);
         if (newResult == result) {
             newResult = addExiv2Tag(exifData,
-                                    "Exif.CanonCs1.ExposureProgram",
+                                    "Exif.CanonCs.ExposureProgram",
                                     EXTRACTOR_EXPOSURE_MODE,
                                     result);
         }
@@ -273,7 +275,7 @@ extern "C" {
         // Macro mode
         // Todo: Implement this for other cameras
         newResult = addExiv2Tag(exifData,
-                                "Exif.CanonCs1.Macro",
+                                "Exif.CanonCs.Macro",
                                 EXTRACTOR_MACRO_MODE,
                                 result);
         if (newResult == result) {
