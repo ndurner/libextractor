@@ -20,6 +20,7 @@
 
 #include "platform.h"
 #include "extractor.h"
+#include <stdint.h>
 #include <rpm/rpmlib.h>
 #include <rpm/rpmts.h>
 #include <pthread.h>
@@ -77,7 +78,7 @@ addKeyword (EXTRACTOR_KeywordType type,
 
 typedef struct
 {
-  int_32 rtype;
+  int32_t rtype;
   EXTRACTOR_KeywordType type;
 } Matches;
 
@@ -91,7 +92,9 @@ static Matches tests[] = {
   {RPMTAG_SUMMARY, EXTRACTOR_SUMMARY},
   {RPMTAG_PACKAGER, EXTRACTOR_PACKAGER},
   {RPMTAG_BUILDTIME, EXTRACTOR_CREATION_DATE},
+#ifdef RPMTAG_COPYRIGHT
   {RPMTAG_COPYRIGHT, EXTRACTOR_COPYRIGHT},
+#endif
   {RPMTAG_LICENSE, EXTRACTOR_LICENSE},
   {RPMTAG_DISTRIBUTION, EXTRACTOR_DISTRIBUTION},
   {RPMTAG_BUILDHOST, EXTRACTOR_BUILDHOST},
@@ -114,12 +117,10 @@ libextractor_rpm_extract (const char *filename,
   struct PipeArgs parg;
   pthread_t pthr;
   void * unused;
+  const char *str;
   Header hdr;
   HeaderIterator hi;
-  int_32 tag;
-  int_32 type;
-  int_32 c;
-  hPTR_t p;
+  rpmtd p;
   int i;
   FD_t fdi;
   rpmRC rc;
@@ -161,82 +162,25 @@ libextractor_rpm_extract (const char *filename,
   prev = addKeyword (EXTRACTOR_MIMETYPE,
                      "application/x-rpm", prev);
   hi = headerInitIterator (hdr);
-  while (1 == headerNextIterator (hi, &tag, &type, &p, &c))
+  p = rpmtdNew ();
+  while (1 == headerNext (hi, p))
     {
       i = 0;
       while (tests[i].rtype != 0)
         {
-          if (tests[i].rtype == tag)
+          if (tests[i].rtype == p->tag)
             {
-              switch (type)
+              switch (p->type)
                 {
                 case RPM_STRING_ARRAY_TYPE:
-                  {
-                    char *tmp;
-                    const char *p2;
-                    int c2;
-                    int size;
-
-                    c2 = c;
-                    p2 = p;
-                    size = 0;
-                    while (c2--)
-                      {
-                        size += strlen (p2);
-                        p2 = strchr (p2, 0);
-                        p2++;
-                      }
-
-                    tmp = malloc (size + 1);
-                    tmp[0] = '\0';
-                    while (c--)
-                      {
-                        strcat (tmp, p);
-                        p = strchr (p, 0);
-                        p++;
-                      }
-                    prev = addKeyword (tests[i].type, tmp, prev);
-                    free (tmp);
-                    break;
-                  }
                 case RPM_I18NSTRING_TYPE:
-                  {
-                    char *tmp;
-                    const char *p2;
-                    int c2;
-                    int size;
-
-                    c2 = c;
-                    p2 = p;
-                    p2 += sizeof (char *) * c;
-                    size = 0;
-                    while (c2--)
-                      {
-                        size += strlen (p2);
-                        p2 = strchr (p2, 0);
-                        p2++;
-                      }
-
-                    tmp = malloc (size + 1);
-                    tmp[0] = '\0';
-                    p2 = p;
-                    p2 += sizeof (char *) * c;
-                    while (c--)
-                      {
-                        strcat (tmp, p2);
-                        p2 = strchr (p2, 0);
-                        p2++;
-                      }
-                    prev = addKeyword (tests[i].type, tmp, prev);
-                    free (tmp);
-                    break;
-                  }
                 case RPM_STRING_TYPE:
-                  prev = addKeyword (tests[i].type, (char *) p, prev);
-                  break;
+                    while (NULL != (str = rpmtdNextString (p))) 
+		      prev = addKeyword (tests[i].type, str, prev);
+                    break;
                 case RPM_INT32_TYPE:
                   {
-                    if (tag == RPMTAG_BUILDTIME)
+                    if (p->tag == RPMTAG_BUILDTIME)
                       {
                         char tmp[30];
 
@@ -257,13 +201,8 @@ libextractor_rpm_extract (const char *filename,
             }
           i++;
         }
-      if (((type == RPM_BIN_TYPE) ||
-           (type == RPM_I18NSTRING_TYPE) ||
-           (type == RPM_STRING_ARRAY_TYPE)) && (p != NULL))
-        {
-          free ((void *) p);
-        }
     }
+  rpmtdFree (p);
   headerFreeIterator (hi);
   headerFree (hdr);
   rpmtsFree(ts);
