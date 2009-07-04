@@ -32,7 +32,7 @@ extern "C" {
  * 0.2.6-1 => 0x00020601
  * 4.5.2-0 => 0x04050200
  */
-#define EXTRACTOR_VERSION 0x00052200
+#define EXTRACTOR_VERSION 0x00052300
 
 #include <stdio.h>
 
