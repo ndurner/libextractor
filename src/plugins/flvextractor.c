@@ -577,12 +577,14 @@ static int readFLVTagHeader(const unsigned char **data,
 
 typedef struct {
   int videoCodec;
+  char *videoCodecStr;
   int videoWidth;
   int videoHeight;
   double videoDataRate;
   double videoFrameRate;
 
   int audioCodec;
+  char *audioCodecStr;
   double audioDataRate;
   int audioChannels;
   int audioSampleBits;
@@ -595,10 +597,11 @@ typedef enum {
   FLV_HEIGHT,
   FLV_FRAMERATE,
   FLV_STEREO,
+  FLV_ACHANNELS,
   FLV_VDATARATE,
   FLV_ADATARATE,
   FLV_VCODECID,
-  FLV_ACODECID,
+  FLV_ACODECID
 } FLVStreamAttribute;
 
 typedef struct {
@@ -610,7 +613,9 @@ static MetaKeyToStreamAttribute key_to_attribute_map[] = {
   { "width", FLV_WIDTH },
   { "height", FLV_HEIGHT },
   { "framerate", FLV_FRAMERATE },
+  { "videoframerate", FLV_FRAMERATE },
   { "stereo", FLV_STEREO },
+  { "audiochannels", FLV_ACHANNELS },
   { "videodatarate", FLV_VDATARATE },
   { "audiodatarate", FLV_ADATARATE },
   { "videocodecid", FLV_VCODECID },
@@ -701,6 +706,9 @@ static void handleASEnd(unsigned char type, void * value, void * userdata)
       case FLV_NONE:
       case FLV_STEREO:
         break;
+      case FLV_ACHANNELS:
+        state->streamInfo->audioChannels = n;
+        break;
       case FLV_WIDTH:
         if (state->streamInfo->videoWidth == -1)
           state->streamInfo->videoWidth = n;
@@ -721,10 +729,42 @@ static void handleASEnd(unsigned char type, void * value, void * userdata)
       case FLV_VCODECID:
         if (state->streamInfo->videoCodec == -1)
           state->streamInfo->videoCodec = n;
+        /* prefer codec ids to fourcc codes */
+        if (state->streamInfo->videoCodecStr != NULL) {
+          free(state->streamInfo->videoCodecStr);
+          state->streamInfo->videoCodecStr = NULL;
+        }
         break;
       case FLV_ACODECID:
         if (state->streamInfo->audioCodec == -1)
           state->streamInfo->audioCodec = n;
+        /* prefer codec ids to fourcc codes */
+        if (state->streamInfo->audioCodecStr != NULL) {
+          free(state->streamInfo->audioCodecStr);
+          state->streamInfo->audioCodecStr = NULL;
+        }
+        break;
+    }
+  }
+
+  /* sometimes a/v codecs are as fourcc strings */
+  if (state->onMetaData && (state->parsingDepth == 1) &&
+      (state->currentAttribute != FLV_NONE) &&
+      (type == ASTYPE_STRING))
+  {
+    s = (char *)value;
+    switch (state->currentAttribute) {
+      case FLV_VCODECID:
+        if (s != NULL && state->streamInfo->videoCodecStr == NULL &&
+            state->streamInfo->videoCodec == -1)
+          state->streamInfo->videoCodecStr = strdup(s);
+        break;
+      case FLV_ACODECID:
+        if (s != NULL && state->streamInfo->audioCodecStr == NULL &&
+            state->streamInfo->audioCodec == -1)
+          state->streamInfo->audioCodecStr = strdup(s);
+        break;
+      default:
         break;
     }
   }
@@ -735,7 +775,7 @@ static void handleASEnd(unsigned char type, void * value, void * userdata)
   {
     int n = *((int *)value);
     if (state->streamInfo->audioChannels == -1)
-      state->streamInfo->audioChannels = (n == 0) ? 0 : 1;
+      state->streamInfo->audioChannels = (n == 0) ? 1 : 2;
   }
 
   /* metadata that maps straight to extractor keys */
@@ -822,7 +862,11 @@ static char *FLVAudioCodecs[] = {
   NULL,
   "Nellymoser 8kHz mono",
   "Nellymoser",
-  NULL
+  NULL,
+  NULL,
+  NULL,
+  "AAC",
+  "Speex"
 };
 
 static char *FLVAudioChannels[] = {
@@ -847,10 +891,14 @@ handleAudioBody(const unsigned char *data, size_t len,
                 FLVStreamInfo *stinfo,
                 struct EXTRACTOR_Keywords *prev)
 {
-  stinfo->audioChannels = *data & 0x01;
+  stinfo->audioChannels = (*data & 0x01) + 1;
   stinfo->audioSampleBits = (*data & 0x02) >> 1;
   stinfo->audioRate = (*data & 0x0C) >> 2;
   stinfo->audioCodec = (*data & 0xF0) >> 4;
+  if (stinfo->audioCodecStr != NULL) {
+    free(stinfo->audioCodecStr);
+    stinfo->audioCodecStr = NULL;
+  }
 
   return prev;
 }
@@ -863,7 +911,7 @@ static char *FLVVideoCodecs[] = {
   "On2 TrueMotion VP6",
   "On2 TrueMotion VP6 Alpha",
   "ScreenVideo 2",
-  NULL
+  "H.264" /* XXX not found in docs */
 };
 
 static int sorenson_predefined_res[][2] = {
@@ -950,6 +998,10 @@ handleVideoBody(const unsigned char *data, size_t len,
   }
 
   stinfo->videoCodec = codecId;
+  if (stinfo->videoCodecStr != NULL) {
+    free(stinfo->videoCodecStr);
+    stinfo->videoCodecStr = NULL;
+  }
   return prev;
 }
 
@@ -1030,6 +1082,12 @@ static char * printVideoFormat(FLVStreamInfo *stinfo)
     if (n < len)
       n += snprintf(s+n, len-n, "%s", FLVVideoCodecs[stinfo->videoCodec]);
   }
+  else if (stinfo->videoCodecStr != NULL && n < len) {
+    if (n > 0)
+      n += snprintf(s+n, len-n, ", ");
+    if (n < len)
+      n += snprintf(s+n, len-n, "%s", stinfo->videoCodecStr);    
+  }
 
   if (stinfo->videoDataRate != 0.0 && n < len) {
     if (n > 0)
@@ -1065,17 +1123,28 @@ static char * printAudioFormat(FLVStreamInfo *stinfo)
   if (stinfo->audioChannels != -1 && n < len) {
     if (n > 0)
       n += snprintf(s+n, len-n, ", ");
-    if (n < len)
-      n += snprintf(s+n, len-n, "%s",
-                    FLVAudioChannels[stinfo->audioChannels]);
+    if (n < len) {
+      if (stinfo->audioChannels >= 1 && stinfo->audioChannels <= 2)
+        n += snprintf(s+n, len-n, "%s",
+                      FLVAudioChannels[stinfo->audioChannels-1]);
+      else
+        n += snprintf(s+n, len-n, "%d",
+                      stinfo->audioChannels);
+    }
   }
 
-  if (stinfo->audioCodec > -1 && stinfo->audioCodec < 8 &&
+  if (stinfo->audioCodec > -1 && stinfo->audioCodec < 12 &&
       FLVAudioCodecs[stinfo->audioCodec] != NULL && n < len) {
     if (n > 0)
       n += snprintf(s+n, len-n, ", ");
     if (n < len)
       n += snprintf(s+n, len-n, "%s", FLVAudioCodecs[stinfo->audioCodec]);
+  }
+  else if (stinfo->audioCodecStr != NULL && n < len) {
+    if (n > 0)
+      n += snprintf(s+n, len-n, ", ");
+    if (n < len)
+      n += snprintf(s+n, len-n, "%s", stinfo->audioCodecStr);    
   }
 
   if (stinfo->audioDataRate != 0.0 && n < len) {
@@ -1123,11 +1192,13 @@ libextractor_flv_extract (const char *filename,
     return result;
 
   stinfo.videoCodec = -1;
+  stinfo.videoCodecStr = NULL;
   stinfo.videoWidth = -1;
   stinfo.videoHeight = -1;
   stinfo.videoFrameRate = 0.0;
   stinfo.videoDataRate = 0.0;
   stinfo.audioCodec = -1;
+  stinfo.audioCodecStr = NULL;
   stinfo.audioRate = -1;
   stinfo.audioSampleBits = -1;
   stinfo.audioChannels = -1;
