@@ -179,11 +179,12 @@ static const char *keywordTypes[] = {
   gettext_noop("disc number"), /* 134 */
   gettext_noop("preferred display style (GNUnet)"),
   gettext_noop("GNUnet URI of ECBC data"),
-  NULL,
+  gettext_noop("Complete file data (for non-binary files only)"),
+  NULL
 };
 
 /* the number of keyword types (for bounds-checking) */
-#define HIGHEST_TYPE_NUMBER 137
+#define HIGHEST_TYPE_NUMBER 138
 
 #ifdef HAVE_LIBOGG
 #if HAVE_VORBIS
