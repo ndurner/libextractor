@@ -1460,7 +1460,10 @@ EXTRACTOR_removeEmptyKeywords (EXTRACTOR_KeywordList * list) {
       allWhite = 1;
       for (i=strlen(pos->keyword)-1;i>=0;i--)
 	if (! isspace(pos->keyword[i]))
-	  allWhite = 0;
+  	    {
+	        allWhite = 0;
+		break;
+            }
       if (allWhite)
 	{
 	  EXTRACTOR_KeywordList * next;
