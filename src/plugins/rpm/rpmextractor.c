@@ -23,6 +23,7 @@
 #include <stdint.h>
 #include <rpm/rpmlib.h>
 #include <rpm/rpmts.h>
+#include <rpm/rpmlog.h>
 #include <pthread.h>
 #include <sys/types.h>
 #include <signal.h>
@@ -104,8 +105,9 @@ static Matches tests[] = {
   {0, 0},
 };
 
-static void discardCB() {
+static int discardCB(rpmlogRec rec, void *ctx) {
   /* do nothing! */
+  return 0;
 }
 
 /* mimetype = application/x-rpm */
@@ -144,7 +146,7 @@ libextractor_rpm_extract (const char *filename,
       CLOSE(parg.pi[1]);
       return prev;
     }
-  rpmlogSetCallback(&discardCB);
+  rpmlogSetCallback(&discardCB, NULL);
   fdi = fdDup(parg.pi[0]);
   ts = rpmtsCreate();
   rc = rpmReadPackageFile (ts, fdi, "GNU libextractor", &hdr);
@@ -197,6 +199,8 @@ libextractor_rpm_extract (const char *filename,
                       }
                     break;
                   }
+		default:
+			break;
                 }
             }
           i++;
