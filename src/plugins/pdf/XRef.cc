@@ -882,6 +882,7 @@ Object *XRef::fetch(int num, int gen, Object *obj) {
     if (!obj1.isInt() || obj1.getInt() != num ||
 	!obj2.isInt() || obj2.getInt() != gen ||
 	!obj3.isCmd("obj")) {
+      delete parser;
       goto err;
     }
 #ifndef NO_DECRYPTION

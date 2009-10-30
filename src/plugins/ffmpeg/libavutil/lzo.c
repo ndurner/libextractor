@@ -268,6 +268,7 @@ STOP_TIMER("lzod")
         av_log(NULL, AV_LOG_ERROR, "decompression incorrect\n");
     else
         av_log(NULL, AV_LOG_ERROR, "decompression ok\n");
+    fclose (in);
     return 0;
 }
 #endif

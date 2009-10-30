@@ -224,6 +224,7 @@ int main(int argc, char **argv){
 #endif
 
     selfTest(src, stride, W, H);
-
+    free (rgb_data);
+    free (data);
     return 123;
 }

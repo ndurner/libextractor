@@ -74,8 +74,6 @@ typedef struct rmd160_object *RMD160;
 #define RMD160_INIT3		0x10325476UL
 #define RMD160_INIT4		0xc3d2e1f0UL
 
-#define FUNCTION_NAME "rmd160_calc"
-
 static int
 _rmd160_calc (rmd160uint32 * state, rmd160uint32 * data)
 {
@@ -319,9 +317,6 @@ _rmd160_calc (rmd160uint32 * state, rmd160uint32 * data)
   return RMD160_OK;
 }
 
-#undef FUNCTION_NAME
-
-#define FUNCTION_NAME "rmd160_append"
 
 static int
 rmd160_append (RMD160 arg_obj, size_t arg_len, const unsigned char *arg_data)
@@ -435,9 +430,6 @@ rmd160_append (RMD160 arg_obj, size_t arg_len, const unsigned char *arg_data)
 
 }
 
-#undef FUNCTION_NAME
-
-#define FUNCTION_NAME "rmd160_destroy"
 
 static int
 rmd160_destroy (RMD160 ptr)
@@ -450,9 +442,7 @@ rmd160_destroy (RMD160 ptr)
   return RMD160_OK;
 }
 
-#undef FUNCTION_NAME
 
-#define FUNCTION_NAME "rmd160_copy"
 
 static RMD160
 rmd160_copy (RMD160 target_p, RMD160 source_p)
@@ -511,11 +501,7 @@ rmd160_copy (RMD160 target_p, RMD160 source_p)
   return target_p;
 }
 
-#undef FUNCTION_NAME
 
-
-
-#define FUNCTION_NAME "rmd160_sum_words"
 
 static rmd160uint32 *
 rmd160_sum_words (RMD160 arg_handle, rmd160uint32 * arg_result_p)
@@ -563,54 +549,33 @@ rmd160_sum_words (RMD160 arg_handle, rmd160uint32 * arg_result_p)
 
 }
 
-#undef FUNCTION_NAME
 
 
-
-#define FUNCTION_NAME "rmd160_sum_bytes"
-
-static unsigned char *
-rmd160_sum_bytes (RMD160 arg_handle, unsigned char *arg_result_p)
+static void
+rmd160_sum_bytes (RMD160 arg_handle, unsigned char *result_p)
 {
   rmd160uint32 temp[5];
-
   rmd160uint32 *ptemp;
-
   unsigned char *result_p;
 
-
-  if (!(result_p = arg_result_p))
-    {
-      if (!(result_p = (unsigned char *) malloc (20)))
-        return NULL;
-    }
-
   if (!rmd160_sum_words (arg_handle, temp))
-    {
-      if (!arg_result_p)
-        free (result_p);
-      return NULL;
-    }
+    return;    
 
   ptemp = temp;
   {
     int i;
     for (i = 0; i < 5; ++i)
       {
-        register rmd160uint32 w;
-        *(arg_result_p++) = 0xff & (w = *ptemp);
-        *(arg_result_p++) = 0xff & (w >> 8);
-        *(arg_result_p++) = 0xff & (w >> 16);
-        *(arg_result_p++) = 0xff & (w >> 24);
+	rmd160uint32 w;
+        *(result_p++) = 0xff & (w = *ptemp);
+        *(result_p++) = 0xff & (w >> 8);
+        *(result_p++) = 0xff & (w >> 16);
+        *(result_p++) = 0xff & (w >> 24);
         ++ptemp;
       }
   }
-
-  return arg_result_p;
-
 }
 
-#undef FUNCTION_NAME
 
 
 static struct EXTRACTOR_Keywords *
@@ -619,7 +584,7 @@ addKeyword (EXTRACTOR_KeywordList * oldhead,
 {
 
   EXTRACTOR_KeywordList *keyword;
-  keyword = (EXTRACTOR_KeywordList *) malloc (sizeof (EXTRACTOR_KeywordList));
+  keyword = malloc (sizeof (EXTRACTOR_KeywordList));
   keyword->next = oldhead;
   keyword->keyword = strdup (phrase);
   keyword->keywordType = type;

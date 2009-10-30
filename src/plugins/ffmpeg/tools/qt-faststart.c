@@ -257,6 +257,7 @@ int main(int argc, char *argv[])
     if (!outfile) {
         perror(argv[2]);
         fclose(outfile);
+	fclose(infile);
         free(moov_atom);
         return 1;
     }

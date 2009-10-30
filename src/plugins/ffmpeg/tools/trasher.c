@@ -65,6 +65,6 @@ int main(int argc, char** argv)
             fwrite(&val, 1, 1, f);
         }
     }
-
+    fclose (f);
     return 0;
 }
