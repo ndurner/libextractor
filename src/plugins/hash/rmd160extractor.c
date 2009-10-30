@@ -556,7 +556,6 @@ rmd160_sum_bytes (RMD160 arg_handle, unsigned char *result_p)
 {
   rmd160uint32 temp[5];
   rmd160uint32 *ptemp;
-  unsigned char *result_p;
 
   if (!rmd160_sum_words (arg_handle, temp))
     return;    
