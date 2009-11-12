@@ -62,57 +62,57 @@
 #include "extractor.h"
   
 #define DEBUG_EXTRACT_ZIP 0
-  
+  
 /* In a zipfile there are two kinds of comments. One is a big one for the
    entire .zip, it's usually a BBS ad. The other is a small comment on each
    individual file; most people don't use this.
  */ 
   
 /* TODO: zip_entry linked list is handeled kinda messily, should clean up (maybe) */ 
-  typedef struct
+  typedef struct
 {
-  char *filename;
-   char *comment;
-   void *next;
- } zip_entry;
-
+  char *filename;
+   char *comment;
+   void *next;
+ } zip_entry;
+
 /* mimetype = application/zip */ 
 struct EXTRACTOR_Keywords *
-libextractor_zip_extract (const char *filename, const unsigned char *data,
-                          size_t size, struct EXTRACTOR_Keywords *prev)
+libextractor_zip_extract (const char *filename, const unsigned char *data,
+                          size_t size, struct EXTRACTOR_Keywords *prev)
 {
-  void *tmp;
-  zip_entry * info;
-  zip_entry * start;
-  char *filecomment = NULL;
-  const unsigned char *pos;
-  unsigned int offset, stop;
-  unsigned int name_length, extra_length, comment_length;
-  unsigned int filecomment_length;
-  unsigned int entry_total, entry_count;
-  EXTRACTOR_KeywordList * keyword;
-  const char *mimetype;
-  mimetype = EXTRACTOR_extractLast (EXTRACTOR_MIMETYPE, prev);
-  if (NULL != mimetype)
+  void *tmp;
+  zip_entry * info;
+  zip_entry * start;
+  char *filecomment = NULL;
+  const unsigned char *pos;
+  unsigned int offset, stop;
+  unsigned int name_length, extra_length, comment_length;
+  unsigned int filecomment_length;
+  unsigned int entry_total, entry_count;
+  EXTRACTOR_KeywordList * keyword;
+  const char *mimetype;
+  mimetype = EXTRACTOR_extractLast (EXTRACTOR_MIMETYPE, prev);
+  if (NULL != mimetype)
     {
-      if ((0 != strcmp (mimetype, "application/x-zip")) && 
+      if ((0 != strcmp (mimetype, "application/x-zip")) && 
            (0 != strcmp (mimetype, "application/zip")))
         {
           
             /* we think we already know what's in here,
                and it is not a zip */ 
             return prev;
-        }
-    }
-  
+        }
+    }
+  
     /* I think the smallest zipfile you can have is about 120 bytes */ 
     if ((NULL == data) || (size < 100))
-    return prev;
-  if (!
+    return prev;
+  if (!
         (('P' == data[0]) && ('K' == data[1]) && (0x03 == data[2])
          && (0x04 == data[3])))
-    return prev;
-  
+    return prev;
+  
     /* The filenames for each file in a zipfile are stored in two locations.
      * There is one at the start of each entry, just before the compressed data,
      * and another at the end in a 'central directory structure'.
@@ -147,74 +147,74 @@ libextractor_zip_extract (const char *filename, const unsigned char *data,
      *  20-21  zipfile comment length          2 bytes
      *  22-??  zipfile comment (variable size) max length 65536 bytes
      */ 
-    
+    
     /*  the signature can't be more than 22 bytes from the end */ 
     offset = size - 22;
-  pos = &data[offset];
-  stop = 0;
-  if (((signed int) size - 65556) > 0)
-    stop = size - 65556;
-  
+  pos = &data[offset];
+  stop = 0;
+  if (((signed int) size - 65556) > 0)
+    stop = size - 65556;
+  
     /* not using int 0x06054b50 so that we don't have to deal with endianess issues.
        break out if we go more than 64K backwards and havn't found it, or if we hit the
        begining of the file. */ 
-    while ((!
+    while ((!
              (('P' == pos[0]) && ('K' == pos[1]) && (0x05 == pos[2])
-              && (0x06 == pos[3]))) && (offset > stop))
-    pos = &data[offset--];
-  if (offset == stop)
+              && (0x06 == pos[3]))) && (offset > stop))
+    pos = &data[offset--];
+  if (offset == stop)
     {
       
 #if DEBUG_EXTRACT_ZIP
         fprintf (stderr,
-                 "Did not find end of central directory structure signature. offset: %i\n",
-                 offset);
+                 "Did not find end of central directory structure signature. offset: %i\n",
+                 offset);
       
-#endif  /*  */
+#endif  /*  */
         return prev;
-    }
-  
+    }
+  
     /* offset should now point to the start of the end-of-central directory structure */ 
     /* and pos[0] should be pointing there too */ 
     /* so slurp down filecomment while here... */ 
-    filecomment_length = pos[20] + (pos[21] << 8);
-  if (filecomment_length + offset + 22 > size)
+    filecomment_length = pos[20] + (pos[21] << 8);
+  if (filecomment_length + offset + 22 > size)
     {
-      return prev;             /* invalid zip file format! */
-    }
-  filecomment = NULL;
-  if (filecomment_length > 0)
-    {
-      filecomment = malloc (filecomment_length + 1);
-      memcpy (filecomment, &pos[22], filecomment_length);
-      filecomment[filecomment_length] = '\0';
-    }
-  if ((0 != pos[4]) && (0 != pos[5]))
-    {
-      
-#if DEBUG_EXTRACT_ZIP
-        fprintf (stderr,
-                 "WARNING: This seems to be the last disk in a multi-volume"
-                  " ZIP archive, and so this might not work.\n");
-      
-#endif  /*  */
+      return prev;             /* invalid zip file format! */
     }
-  if ((pos[8] != pos[10]) && (pos[9] != pos[11]))
+  filecomment = NULL;
+  if (filecomment_length > 0)
+    {
+      filecomment = malloc (filecomment_length + 1);
+      memcpy (filecomment, &pos[22], filecomment_length);
+      filecomment[filecomment_length] = '\0';
+    }
+  if ((0 != pos[4]) && (0 != pos[5]))
     {
       
 #if DEBUG_EXTRACT_ZIP
         fprintf (stderr,
-                 "WARNING: May not be able to find all the files in this" 
+                 "WARNING: This seems to be the last disk in a multi-volume"
+                  " ZIP archive, and so this might not work.\n");
+      
+#endif  /*  */
+    }
+  if ((pos[8] != pos[10]) && (pos[9] != pos[11]))
+    {
+      
+#if DEBUG_EXTRACT_ZIP
+        fprintf (stderr,
+                 "WARNING: May not be able to find all the files in this" 
                  " ZIP archive (no multi-volume support right now).\n");
       
-#endif  /*  */
+#endif  /*  */
     }
-  entry_total = pos[10] + (pos[11] << 8);
-  entry_count = 0;
-  
+  entry_total = pos[10] + (pos[11] << 8);
+  entry_count = 0;
+  
     /* jump to start of central directory, ASSUMING that the starting disk that it's on is disk 0 */ 
     /* starting disk would otherwise be pos[6]+pos[7]<<8 */ 
-    offset = pos[16] + (pos[17] << 8) + (pos[18] << 16) + (pos[19] << 24);     /* offset of cent-dir from start of disk 0 */
+    offset = pos[16] + (pos[17] << 8) + (pos[18] << 16) + (pos[19] << 24);     /* offset of cent-dir from start of disk 0 */
   
     /* stop   = pos[12] + (pos[13]<<8) + (pos[14]<<16) + (pos[15]<<24); *//* length of central dir */ 
     if (offset + 46 > size)
@@ -222,11 +222,11 @@ libextractor_zip_extract (const char *filename, const unsigned char *data,
       
         /* not a zip */ 
         if (filecomment != NULL)
-        free (filecomment);
-      return prev;
-    }
-  pos = &data[offset];         /* jump */
-  
+        free (filecomment);
+      return prev;
+    }
+  pos = &data[offset];         /* jump */
+  
     /* we should now be at the begining of the central directory structure */ 
     
     /* from appnote.txt and appnote.iz (mostly)
@@ -253,101 +253,101 @@ libextractor_zip_extract (const char *filename, const unsigned char *data,
      *   ?- ?  extra field (variable size)
      *   ?- ?  file comment (variable size)
      */ 
-    if (!
+    if (!
          (('P' == pos[0]) && ('K' == pos[1]) && (0x01 == pos[2])
           && (0x02 == pos[3])))
     {
       
 #if DEBUG_EXTRACT_ZIP
         fprintf (stderr,
-                 "Did not find central directory structure signature. offset: %i\n",
-                 offset);
+                 "Did not find central directory structure signature. offset: %i\n",
+                 offset);
       
-#endif  /*  */
+#endif  /*  */
         if (filecomment != NULL)
-        free (filecomment);
-      return prev;
-    }
-  start = NULL;
-  info = NULL;
+        free (filecomment);
+      return prev;
+    }
+  start = NULL;
+  info = NULL;
   
   do
     {                           /* while ( (0x01==pos[2])&&(0x02==pos[3]) ) */
-      entry_count++;           /* check to make sure we found everything at the end */
-      name_length = pos[28] + (pos[29] << 8);
-      extra_length = pos[30] + (pos[31] << 8);
-      comment_length = pos[32] + (pos[33] << 8);
-      if (name_length + extra_length + comment_length + offset + 46 > size)
+      entry_count++;           /* check to make sure we found everything at the end */
+      name_length = pos[28] + (pos[29] << 8);
+      extra_length = pos[30] + (pos[31] << 8);
+      comment_length = pos[32] + (pos[33] << 8);
+      if (name_length + extra_length + comment_length + offset + 46 > size)
         {
           
             /* ok, invalid, abort! */ 
             break;
-        }
-      
-#if DEBUG_EXTRACT_ZIP
-        fprintf (stderr, "Found filename length %i  Comment length: %i\n",
-                 name_length, comment_length);
+        }
       
-#endif  /*  */
+#if DEBUG_EXTRACT_ZIP
+        fprintf (stderr, "Found filename length %i  Comment length: %i\n",
+                 name_length, comment_length);
+      
+#endif  /*  */
         
         /* yay, finally get filenames */ 
         if (start == NULL)
         {
-          start = malloc (sizeof (zip_entry));
-          start->next = NULL;
-          info = start;
-        }
+          start = malloc (sizeof (zip_entry));
+          start->next = NULL;
+          info = start;
+        }
       else
         {
-          info->next = malloc (sizeof (zip_entry));
-          info = info->next;
-          info->next = NULL;
-        }
-      info->filename = malloc (name_length + 1);
-      info->comment = malloc (comment_length + 1);
-      
-        /* (strings in zip files are not null terminated) */ 
-        memcpy (info->filename, &pos[46], name_length);
-      info->filename[name_length] = '\0';
-      memcpy (info->comment, &pos[46 + name_length + extra_length],
-               comment_length);
-      info->comment[comment_length] = '\0';
-      
-#if DEBUG_EXTRACT_ZIP
-        fprintf (stderr, "Found file %s, Comment: %s\n", info->filename,
-                 info->comment);
+          info->next = malloc (sizeof (zip_entry));
+          info = info->next;
+          info->next = NULL;
+        }
+      info->filename = malloc (name_length + 1);
+      info->comment = malloc (comment_length + 1);
       
-#endif  /*  */
-        offset += 46 + name_length + extra_length + comment_length;
-      pos = &data[offset];
-      
+        /* (strings in zip files are not null terminated) */ 
+        memcpy (info->filename, &pos[46], name_length);
+      info->filename[name_length] = '\0';
+      memcpy (info->comment, &pos[46 + name_length + extra_length],
+               comment_length);
+      info->comment[comment_length] = '\0';
+      
+#if DEBUG_EXTRACT_ZIP
+        fprintf (stderr, "Found file %s, Comment: %s\n", info->filename,
+                 info->comment);
+      
+#endif  /*  */
+        offset += 46 + name_length + extra_length + comment_length;
+      pos = &data[offset];
+      
         /* check for next header entry (0x02014b50) or (0x06054b50) if at end */ 
         if (('P' != pos[0]) && ('K' != pos[1]))
         {
           
 #if DEBUG_EXTRACT_ZIP
             fprintf (stderr,
-                     "Did not find next header in central directory.\n");
+                     "Did not find next header in central directory.\n");
           
-#endif  /*  */
+#endif  /*  */
             info = start;
-          while (info != NULL)
+          while (info != NULL)
             {
-              start = info->next;
-              free (info->filename);
-              free (info->comment);
-              free (info);
-              info = start;
-            }
-          if (filecomment != NULL)
-            free (filecomment);
-          return prev;
-        }
-    }
+              start = info->next;
+              free (info->filename);
+              free (info->comment);
+              free (info);
+              info = start;
+            }
+          if (filecomment != NULL)
+            free (filecomment);
+          return prev;
+        }
+    }
   while ((0x01 == pos[2]) && (0x02 == pos[3]));
-  
+  
     /* end list */ 
-    
+    
     /* TODO: should this return an error? indicates corrupt zipfile (or
        disk missing in middle of multi-disk)? */ 
     if (entry_count != entry_total)
@@ -355,61 +355,61 @@ libextractor_zip_extract (const char *filename, const unsigned char *data,
       
 #if DEBUG_EXTRACT_ZIP
         fprintf (stderr,
-                 "WARNING: Did not find all of the zipfile entries that we should have.\n");
+                 "WARNING: Did not find all of the zipfile entries that we should have.\n");
       
-#endif  /*  */
+#endif  /*  */
     }
-  
+  
     /* I'm only putting this in the else clause so that keyword has a local scope */ 
-    keyword  = malloc (sizeof (EXTRACTOR_KeywordList));
-  keyword->next = prev;
-  keyword->keyword = strdup ("application/zip");
-  keyword->keywordType = EXTRACTOR_MIMETYPE;
-  prev = keyword;
-  if (filecomment != NULL)
+    keyword  = malloc (sizeof (EXTRACTOR_KeywordList));
+  keyword->next = prev;
+  keyword->keyword = strdup ("application/zip");
+  keyword->keywordType = EXTRACTOR_MIMETYPE;
+  prev = keyword;
+  if (filecomment != NULL)
     {
-      EXTRACTOR_KeywordList * kw  = malloc (sizeof (EXTRACTOR_KeywordList));
-      kw->next = prev;
-      kw->keyword = strdup (filecomment);
-      kw->keywordType = EXTRACTOR_COMMENT;
-      prev = kw;
-      free (filecomment);
-    }
-  
+      EXTRACTOR_KeywordList * kw  = malloc (sizeof (EXTRACTOR_KeywordList));
+      kw->next = prev;
+      kw->keyword = strdup (filecomment);
+      kw->keywordType = EXTRACTOR_COMMENT;
+      prev = kw;
+      free (filecomment);
+    }
+  
     /* if we've gotten to here then there is at least one zip entry (see get_zipinfo call above) */ 
     /* note: this free()'s the info list as it goes */ 
     info = start;
-  while (NULL != info)
+  while (NULL != info)
     {
-      if (info->filename != NULL)
+      if (info->filename != NULL)
         {
-          if (strlen (info->filename))
+          if (strlen (info->filename))
             {
-              EXTRACTOR_KeywordList * keyword =
+              EXTRACTOR_KeywordList * keyword =
                 malloc (sizeof (EXTRACTOR_KeywordList));
-              keyword->next = prev;
-              keyword->keyword = strdup (info->filename);
-              keyword->keywordType = EXTRACTOR_FILENAME;
-              prev = keyword;
-            }
-          free (info->filename);
-        }
-      if (strlen (info->comment))
+              keyword->next = prev;
+              keyword->keyword = strdup (info->filename);
+              keyword->keywordType = EXTRACTOR_FILENAME;
+              prev = keyword;
+            }
+          free (info->filename);
+        }
+      if (strlen (info->comment))
         {
-          EXTRACTOR_KeywordList * keyword =
+          EXTRACTOR_KeywordList * keyword =
             malloc (sizeof (EXTRACTOR_KeywordList));
-          keyword->next = prev;
-          keyword->keyword = strdup (info->comment);
-          keyword->keywordType = EXTRACTOR_COMMENT;
-          prev = keyword;
-        }
-      if (info->comment != NULL)
-        free (info->comment);
-      tmp = info;
-      info = info->next;
-      free (tmp);
-    }
-  return prev;
-}
+          keyword->next = prev;
+          keyword->keyword = strdup (info->comment);
+          keyword->keywordType = EXTRACTOR_COMMENT;
+          prev = keyword;
+        }
+      if (info->comment != NULL)
+        free (info->comment);
+      tmp = info;
+      info = info->next;
+      free (tmp);
+    }
+  return prev;
+}
 
 
