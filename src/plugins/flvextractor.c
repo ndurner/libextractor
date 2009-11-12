@@ -179,7 +179,7 @@ static int readASDate(const unsigned char **data,
   *len -= 8;
 
   *zone = readInt(&ptr);
-  len -= 2;
+  *len -= 2;
 
   *data = ptr;
   return 0;
