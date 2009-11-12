@@ -317,7 +317,7 @@ libextractor_zip_extract (const char *filename, const unsigned char *data,
         fprintf (stderr, "Found file %s, Comment: %s\n", info->filename,
                  info->comment);
       
-#endif  /*  */
+#endif
         offset += 46 + name_length + extra_length + comment_length;
       pos = &data[offset];
       
@@ -329,7 +329,7 @@ libextractor_zip_extract (const char *filename, const unsigned char *data,
             fprintf (stderr,
                      "Did not find next header in central directory.\n");
           
-#endif  /*  */
+#endif
             info = start;
           while (info != NULL)
             {
@@ -394,17 +394,19 @@ libextractor_zip_extract (const char *filename, const unsigned char *data,
             }
           free (info->filename);
         }
-      if (strlen (info->comment))
-        {
-          EXTRACTOR_KeywordList * keyword =
-            malloc (sizeof (EXTRACTOR_KeywordList));
-          keyword->next = prev;
-          keyword->keyword = strdup (info->comment);
-          keyword->keywordType = EXTRACTOR_COMMENT;
-          prev = keyword;
-        }
       if (info->comment != NULL)
-        free (info->comment);
+	{
+	  if (strlen (info->comment) > 0)
+	    {
+	      EXTRACTOR_KeywordList * keyword =
+		malloc (sizeof (EXTRACTOR_KeywordList));
+	      keyword->next = prev;
+	      keyword->keyword = strdup (info->comment);
+	      keyword->keywordType = EXTRACTOR_COMMENT;
+	      prev = keyword;
+	    }
+	  free (info->comment);
+	}
       tmp = info;
       info = info->next;
       free (tmp);
