@@ -621,7 +621,7 @@ EXTRACTOR_unzip_file EXTRACTOR_common_unzip_open2 (path, pzlib_filefunc_def)
 
     if (unz_copyright[0]!=' ')
         return NULL;
-
+    memset (&us, 0, sizeof(us));	
     us.z_filefunc = *pzlib_filefunc_def;
 
     us.filestream= (*(us.z_filefunc.zopen_file))(us.z_filefunc.opaque,
