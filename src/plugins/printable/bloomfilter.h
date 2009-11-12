@@ -283,7 +283,7 @@ static void sha1_finish(struct sha1_context *ctx,
     padn = ( last < 56 ) ? ( 56 - last ) : ( 120 - last );
 
     sha1_update( ctx, sha1_padding, padn );
-    sha1_update( ctx, msglen, 8 );
+    sha1_update( ctx, msglen, sizeof (msglen) );
 
     PUT_UINT32( ctx->state[0], digest,  0 );
     PUT_UINT32( ctx->state[1], digest,  4 );
