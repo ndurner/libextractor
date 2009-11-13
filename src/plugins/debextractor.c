@@ -63,7 +63,7 @@ stndup (const char *str, size_t n)
 
 typedef struct
 {
-  char *text;
+  const char *text;
   EXTRACTOR_KeywordType type;
 } Matches;
 
@@ -242,13 +242,11 @@ static struct EXTRACTOR_Keywords *
 processControlTGZ (const unsigned char *data,
                    size_t size, struct EXTRACTOR_Keywords *prev)
 {
-  size_t bufSize;
+  uint32_t bufSize;
   char *buf;
   z_stream strm;
 
-  bufSize =
-    data[size - 4] + 256 * data[size - 3] + 65536 * data[size - 2] +
-    256 * 65536 * data[size - 1];
+  bufSize = data[size - 4] + (data[size - 3] << 8) + (data[size - 2] << 16) + (data[size - 1] << 24);
   if (bufSize > MAX_CONTROL_SIZE)
     return prev;
 

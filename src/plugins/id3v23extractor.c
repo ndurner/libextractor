@@ -18,7 +18,6 @@
      Boston, MA 02111-1307, USA.
 
  */
-
 #define DEBUG_EXTRACT_ID3v23 0
 
 #include "platform.h"
@@ -51,7 +50,7 @@ addKeyword (EXTRACTOR_KeywordList * oldhead,
 
 typedef struct
 {
-  char *text;
+  const char *text;
   EXTRACTOR_KeywordType type;
 } Matches;
 
@@ -110,10 +109,13 @@ libextractor_id3v23_extract (const char *filename,
   int unsync;
   int extendedHdr;
   int experimental;
-  unsigned int tsize;
-  unsigned int pos;
-  unsigned int ehdrSize;
-  unsigned int padding;
+  uint32_t tsize;
+  uint32_t pos;
+  uint32_t ehdrSize;
+  uint32_t padding;
+  uint32_t csize;
+  int i;
+  uint16_t flags;
 
   if ((size < 16) ||
       (data[0] != 0x49) ||
@@ -147,10 +149,6 @@ libextractor_id3v23_extract (const char *filename,
 
   while (pos < tsize)
     {
-      size_t csize;
-      int i;
-      unsigned short flags;
-
       if (pos + 10 > tsize)
         return prev;
       csize =
