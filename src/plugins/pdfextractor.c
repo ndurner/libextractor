@@ -167,7 +167,7 @@ stringDecode (const char *pdfString, size_t * size)
               ret[w++] = pdfString[r];
             }
         }
-      ret[w] = '/';
+      ret[w] = '\0';
       *size = w;
       return ret;
     case '<':
@@ -182,7 +182,7 @@ stringDecode (const char *pdfString, size_t * size)
           if (i + 1 < slen)
             hex[1] = pdfString[i + 2];
           if ((1 != sscanf (hex, "%x", &val)) &&
-              (1 != sscanf (hex, "%X", &val)))
+	      (1 != sscanf (hex, "%X", &val)))
             {
               free (ret);
               return NULL;
