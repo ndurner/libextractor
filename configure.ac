@@ -244,7 +244,6 @@ AC_HEADER_STDBOOL
 AC_CHECK_HEADERS([ltdl.h iconv.h fcntl.h netinet/in.h stdlib.h string.h unistd.h libintl.h limits.h stddef.h zlib.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
-AC_C_CONST
 AC_C_INLINE
 AC_TYPE_SIZE_T
 AC_TYPE_PID_T
