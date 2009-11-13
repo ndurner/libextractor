@@ -79,10 +79,10 @@ typedef struct {
 
 /* core datatypes */
 
-static inline unsigned long readLong(const unsigned char **data)
+static uint32_t readInt32(const unsigned char **data)
 {
   const unsigned char *ptr = *data;
-  unsigned long val;
+  uint32_t val;
 
   val = (ptr[0] << 24) | (ptr[1] << 16) | (ptr[2] << 8) | ptr[3];
   ptr += 4;
@@ -90,10 +90,10 @@ static inline unsigned long readLong(const unsigned char **data)
   return val;
 }
 
-static inline unsigned long readMediumInt(const unsigned char **data)
+static uint32_t readInt24(const unsigned char **data)
 {
   const unsigned char *ptr = *data;
-  unsigned long val;
+  uint32_t val;
 
   val = (ptr[0] << 16) | (ptr[1] << 8) | ptr[2];
   ptr += 3;
@@ -101,10 +101,10 @@ static inline unsigned long readMediumInt(const unsigned char **data)
   return val;
 }
 
-static inline unsigned short readInt(const unsigned char **data)
+static uint16_t readInt16(const unsigned char **data)
 {
   const unsigned char *ptr = *data;
-  unsigned short val;
+  uint16_t val;
 
   val = (ptr[0] << 8) | ptr[1];
   ptr += 2;
@@ -112,7 +112,7 @@ static inline unsigned short readInt(const unsigned char **data)
   return val;
 }
 
-static inline double readDouble(const unsigned char **data)
+static double readDouble(const unsigned char **data)
 {
   const unsigned char *ptr = *data;
   double val;
@@ -178,7 +178,7 @@ static int readASDate(const unsigned char **data,
   *millis = readDouble(&ptr);
   *len -= 8;
 
-  *zone = readInt(&ptr);
+  *zone = readInt16(&ptr);
   *len -= 2;
 
   *data = ptr;
@@ -196,7 +196,7 @@ static int readASString(const unsigned char **data,
   if (*len < 2)
     return -1;
 
-  slen = readInt(&ptr);
+  slen = readInt16(&ptr);
 
   if (*len < (2 + slen))
     return -1;
@@ -286,7 +286,7 @@ static int parse_amf(const unsigned char **data,
         ret = -1;
         break;
       }
-      alen = readLong(&ptr);
+      alen = readInt32(&ptr);
       *len -= 4;
       for (i = 0; i < alen; i++) {
         ret = parse_amf(&ptr, len, handler);
@@ -338,7 +338,7 @@ static int parse_amf(const unsigned char **data,
         ret = -1;
         break;
       }
-      max_index = readLong(&ptr);
+      max_index = readInt32(&ptr);
       *len -= 4;
       ret = readASString(&ptr, len, &key);
       if (ret == -1)
@@ -514,7 +514,7 @@ typedef struct
 {
   unsigned char type;
   unsigned long bodyLength;
-  unsigned long timestamp;
+  uint32_t timestamp;
   unsigned long streamId;
 } FLVTagHeader;
 
@@ -533,7 +533,7 @@ static int readFLVHeader(const unsigned char **data,
   ptr += 3;
   hdr->version = *ptr++;
   hdr->flags = *ptr++;
-  hdr->offset = readLong(&ptr);
+  hdr->offset = readInt32(&ptr);
   if (hdr->offset != FLV_HEADER_SIZE)
     return -1;
 
@@ -550,7 +550,7 @@ static int readPreviousTagSize(const unsigned char **data,
   if ((ptr + 4) > end)
     return -1;
 
-  *prev_size = readLong(&ptr);
+  *prev_size = readInt32(&ptr);
 
   *data = ptr;
   return 0;
@@ -566,10 +566,9 @@ static int readFLVTagHeader(const unsigned char **data,
     return -1;
 
   hdr->type = *ptr++;
-  hdr->bodyLength = readMediumInt(&ptr);
-  hdr->timestamp = readMediumInt(&ptr);
-  hdr->timestamp = (*ptr++ << 24) | hdr->timestamp;
-  hdr->streamId = readMediumInt(&ptr);
+  hdr->bodyLength = readInt24(&ptr);
+  hdr->timestamp = readInt32(&ptr);
+  hdr->streamId = readInt24(&ptr);
 
   *data = ptr;
   return 0;
@@ -968,8 +967,8 @@ handleVideoBody(const unsigned char *data, size_t len,
     case 0x03: /* ScreenVideo */
       if (len < 5)
         break;
-      stinfo->videoWidth = readInt(&data) & 0x0FFF;
-      stinfo->videoHeight = readInt(&data) & 0x0FFF;
+      stinfo->videoWidth = readInt16(&data) & 0x0FFF;
+      stinfo->videoHeight = readInt16(&data) & 0x0FFF;
       break;
     case 0x04: /* On2 VP6 */
     case 0x05:
