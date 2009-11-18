@@ -29,6 +29,7 @@ main (int argc, char *argv[])
   };
   EXTRACTOR_KeywordList *head;
   EXTRACTOR_KeywordList *pos;
+  const char *ret;
 
   head = NULL;
   i = 0;
@@ -41,9 +42,9 @@ main (int argc, char *argv[])
       i++;
       head = pos;
     }
-  if (0 != strcmp ("test",
-                   EXTRACTOR_extractLastByString
-                   (EXTRACTOR_getKeywordTypeAsString (0), head)))
+  ret = EXTRACTOR_extractLastByString (EXTRACTOR_getKeywordTypeAsString (0), head);
+  if ( (ret == NULL) ||
+       (0 != strcmp ("test", ret) ) )
     {
       printf ("Wrong keyword returned by extractLastByString\n");
       return -1;

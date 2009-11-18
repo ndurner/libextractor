@@ -36,7 +36,7 @@
 
 
 /* using libgobject, needs init! */
-void __attribute__ ((constructor)) ole_gobject_init (void)
+void __attribute__ ((constructor)) ole_gobject_init ()
 {
   g_type_init ();
   if (! g_thread_supported () )
