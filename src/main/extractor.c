@@ -187,11 +187,13 @@ static const char *keywordTypes[] = {
   gettext_noop("GPS latitude"),
   gettext_noop("GPS longitude ref"),
   gettext_noop("GPS longitude"),
+  gettext_noop("rating"), /* 145 */
+  gettext_noop("country code"),
   NULL
 };
 
 /* the number of keyword types (for bounds-checking) */
-#define HIGHEST_TYPE_NUMBER 145
+#define HIGHEST_TYPE_NUMBER 147
 
 #ifdef HAVE_LIBOGG
 #if HAVE_VORBIS

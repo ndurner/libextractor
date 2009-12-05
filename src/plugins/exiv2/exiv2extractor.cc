@@ -45,27 +45,30 @@
 
 extern "C" {
 
-    static struct EXTRACTOR_Keywords * addKeyword(EXTRACTOR_KeywordType type,
-                                                  char * keyword,
-                                                  struct EXTRACTOR_Keywords * next)
-    {
-        EXTRACTOR_KeywordList * result;
-
-        if (keyword == NULL)
-            return next;
-        result = (EXTRACTOR_KeywordList*) malloc(sizeof(EXTRACTOR_KeywordList));
-        result->next = next;
-        result->keyword = keyword;
-        result->keywordType = type;
-        return result;
-    }
-
+  static struct EXTRACTOR_Keywords * 
+  addKeyword(EXTRACTOR_KeywordType type,
+	     char * keyword,
+	     struct EXTRACTOR_Keywords * next)
+  {
+    EXTRACTOR_KeywordList * result;
+    
+    if (keyword == NULL)
+      return next;
+    result = (EXTRACTOR_KeywordList*) malloc(sizeof(EXTRACTOR_KeywordList));
+    result->next = next;
+    result->keyword = keyword;
+    result->keywordType = type;
+    return result;
+  }
+  
 }
 
-struct EXTRACTOR_Keywords * addExiv2Tag(const Exiv2::ExifData& exifData,
-                                        const std::string& key,
-                                        EXTRACTOR_KeywordType type,
-                                        struct EXTRACTOR_Keywords * result)
+
+static struct EXTRACTOR_Keywords * 
+addExiv2Tag(const Exiv2::ExifData& exifData,
+	    const std::string& key,
+	    EXTRACTOR_KeywordType type,
+	    struct EXTRACTOR_Keywords * result)
 {
     const char * str;
 	
@@ -85,16 +88,47 @@ struct EXTRACTOR_Keywords * addExiv2Tag(const Exiv2::ExifData& exifData,
 }
 
 
-struct EXTRACTOR_Keywords * addIptcData(const Exiv2::IptcData& iptcData,
-                                        const std::string& key,
-                                        EXTRACTOR_KeywordType type,
-                                        struct EXTRACTOR_Keywords * result)
+
+static struct EXTRACTOR_Keywords * 
+addIptcData(const Exiv2::IptcData& iptcData,
+	    const std::string& key,
+	    EXTRACTOR_KeywordType type,
+	    struct EXTRACTOR_Keywords * result)
 {
     const char * str;
 	
     Exiv2::IptcKey ek(key);
     Exiv2::IptcData::const_iterator md = iptcData.findKey(ek);
     while (md != iptcData.end()) 
+      {
+	if (0 != strcmp (Exiv2::toString(md->key()).c_str(), key.c_str()))
+	  break;
+	std::string ccstr = Exiv2::toString(*md);
+	str = ccstr.c_str();
+        while ( (strlen(str) > 0) && isspace(str[0])) str++;
+	if (strlen(str) > 0)
+        result = addKeyword(type,
+                            strdup(str),
+                            result);
+	md++;
+    }
+    return result;
+}
+
+
+
+
+static struct EXTRACTOR_Keywords * 
+addXmpData(const Exiv2::XmpData& xmpData,
+	    const std::string& key,
+	    EXTRACTOR_KeywordType type,
+	    struct EXTRACTOR_Keywords * result)
+{
+    const char * str;
+	
+    Exiv2::XmpKey ek(key);
+    Exiv2::XmpData::const_iterator md = xmpData.findKey(ek);
+    while (md != xmpData.end()) 
       {
 	if (0 != strcmp (Exiv2::toString(md->key()).c_str(), key.c_str()))
 	  break;
@@ -131,6 +165,7 @@ extern "C" {
 #endif
   {
     struct EXTRACTOR_Keywords * result = prev;
+    struct EXTRACTOR_Keywords * newResult;
     try 
       {	    
 	Exiv2::Image::AutoPtr image = Exiv2::ImageFactory::open(data, size);
@@ -165,7 +200,6 @@ extern "C" {
 	    
 	    // Exposure time
 	    // From ExposureTime, failing that, try ShutterSpeedValue
-	    struct EXTRACTOR_Keywords * newResult;
 	    newResult = addExiv2Tag(exifData,
 				    "Exif.Photo.ExposureTime",
 				    EXTRACTOR_EXPOSURE,
@@ -480,27 +514,68 @@ extern "C" {
 	  }
 
 	Exiv2::IptcData &iptcData = image->iptcData();
+	Exiv2::XmpData &xmpData = image->xmpData();
+
 	if (! iptcData.empty()) {
 	  result = addIptcData (iptcData,
 				"Iptc.Application2.Keywords",
 				EXTRACTOR_KEYWORDS,
 				result);
-	  result = addIptcData (iptcData,
-				"Iptc.Application2.City",
-				EXTRACTOR_LOCATION_CITY,
-				result);
+	  newResult = addIptcData (iptcData,
+				   "Iptc.Application2.City",
+				   EXTRACTOR_LOCATION_CITY,
+				   result);
+	  if ((result == newResult) && (!xmpData.empty()))
+	    result = addXmpData (xmpData,
+				 "Xmp.photoshop.City",
+				 EXTRACTOR_RATING,
+				 result);
+	  else
+	    result = newResult;
+
 	  result = addIptcData (iptcData,
 				"Iptc.Application2.SubLocation",
 				EXTRACTOR_LOCATION_SUBLOCATION,
 				result);
-	  result = addIptcData (iptcData,
-				"Iptc.Application2.CountryName",
-				EXTRACTOR_LOCATION_COUNTRY,
-				result);
+	  newResult = addIptcData (iptcData,
+				   "Iptc.Application2.CountryName",
+				   EXTRACTOR_LOCATION_COUNTRY,
+				   result);
+	  if ( (result == newResult) && (!xmpData.empty())) 
+	    result = addXmpData (xmpData,
+				 "Xmp.photoshop.Country",
+				 EXTRACTOR_RATING,
+				 result);
+	  else
+	    result = newResult;
 	  
 	}
 
-	
+	if (! xmpData.empty()) {
+	  newResult = addXmpData (xmpData,
+				  "Xmp.xmp.Rating",
+				  EXTRACTOR_RATING,
+				  result);
+	  if (result == newResult)
+	    result = addXmpData (xmpData,
+				 "Xmp.MicrosoftPhoto.Rating",
+				 EXTRACTOR_RATING,
+				 result);
+	  else
+	    result = newResult;
+	  result = addXmpData (xmpData,
+			       "Xmp.iptc.CountryCode",
+			       EXTRACTOR_COUNTRY_CODE,
+			       result);
+	  result = addXmpData (xmpData,
+			       "Xmp.xmp.CreatorTool",
+			       EXTRACTOR_CREATED_BY_SOFTWARE,
+			       result);
+	  result = addXmpData (xmpData,
+			       "Xmp.lr.hierarchicalSubject",
+			       EXTRACTOR_SUBJECT,
+			       result);
+	}	
       }
     catch (const Exiv2::AnyError& e) {
 #ifndef SUPPRESS_WARNINGS
