@@ -176,15 +176,22 @@ static const char *keywordTypes[] = {
   gettext_noop("filesize"),
   gettext_noop("track number"),
   gettext_noop("international standard recording code"),
-  gettext_noop("disc number"), /* 134 */
-  gettext_noop("preferred display style (GNUnet)"),
+  gettext_noop("disc number"), 
+  gettext_noop("preferred display style (GNUnet)"), /* 135 */
   gettext_noop("GNUnet URI of ECBC data"),
   gettext_noop("Complete file data (for non-binary files only)"),
+  gettext_noop("city"),
+  gettext_noop("country"),
+  gettext_noop("sublocation"), /* 140 */
+  gettext_noop("GPS latitude ref"),
+  gettext_noop("GPS latitude"),
+  gettext_noop("GPS longitude ref"),
+  gettext_noop("GPS longitude"),
   NULL
 };
 
 /* the number of keyword types (for bounds-checking) */
-#define HIGHEST_TYPE_NUMBER 138
+#define HIGHEST_TYPE_NUMBER 145
 
 #ifdef HAVE_LIBOGG
 #if HAVE_VORBIS
