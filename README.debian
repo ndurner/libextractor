@@ -9,7 +9,7 @@ libtool
 gcc
 make
 g++ 
-libltdl7-dev --- currently only in Debian experimental
+libltdl7-dev
 libgtk2.0-dev
 libvorbis-dev
 libflac-dev
