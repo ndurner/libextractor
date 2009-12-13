@@ -26,100 +26,37 @@
 
 static struct
 {
-  char *name;
-  EXTRACTOR_KeywordType type;
-} tagmap[] =
-{
-  {
-  "author", EXTRACTOR_AUTHOR},
-  {
-  "title", EXTRACTOR_TITLE},
-  {
-  "description", EXTRACTOR_DESCRIPTION},
-  {
-  "language", EXTRACTOR_LANGUAGE},
-  {
-  "rights", EXTRACTOR_COPYRIGHT},
-  {
-  "publisher", EXTRACTOR_PUBLISHER},
-  {
-  "formatter", EXTRACTOR_SOFTWARE},
-  {
-  "copyright", EXTRACTOR_COPYRIGHT},
-  {
-  "abstract", EXTRACTOR_SUMMARY},
-  {
-  "subject", EXTRACTOR_SUBJECT},
-  {
-  "abstract", EXTRACTOR_SUMMARY},
-  {
-  "date", EXTRACTOR_DATE},
-  {
-  "keywords", EXTRACTOR_KEYWORDS},
-  {
-  "dc.author", EXTRACTOR_AUTHOR},
-  {
-  "dc.title", EXTRACTOR_TITLE},
-  {
-  "dc.description", EXTRACTOR_DESCRIPTION},
-  {
-  "dc.subject", EXTRACTOR_SUBJECT},
-  {
-  "dc.creator", EXTRACTOR_CREATOR},
-  {
-  "dc.publisher", EXTRACTOR_PUBLISHER},
-  {
-  "dc.date", EXTRACTOR_DATE},
-  {
-  "dc.format", EXTRACTOR_FORMAT},
-  {
-  "dc.identifier", EXTRACTOR_RESOURCE_IDENTIFIER},
-  {
-  "dc.rights", EXTRACTOR_COPYRIGHT},
-  {
-NULL, EXTRACTOR_UNKNOWN},};
-
-static char *relevantTags[] = {
-  "title",
-  "meta",
-  NULL,
+  const char *name;
+  enum EXTRACTOR_MetaType type;
+} tagmap[] = {
+  { "author", EXTRACTOR_METATYPE_AUTHOR_NAME },
+  { "dc.author", EXTRACTOR_METATYPE_AUTHOR_NAME },
+  { "title", EXTRACTOR_METATYPE_TITLE },
+  { "dc.title", EXTRACTOR_METATYPE_TITLE},
+  { "description", EXTRACTOR_METATYPE_DESCRIPTION },
+  { "dc.description", EXTRACTOR_METATYPE_DESCRIPTION },
+  { "subject", EXTRACTOR_METATYPE_SUBJECT},
+  { "dc.subject", EXTRACTOR_METATYPE_SUBJECT},
+  { "date", EXTRACTOR_METATYPE_UNKNOWN_DATE },
+  { "dc.date", EXTRACTOR_METATYPE_UNKNOWN_DATE},
+  { "publisher", EXTRACTOR_METATYPE_PUBLISHER },
+  { "dc.publisher", EXTRACTOR_METATYPE_PUBLISHER},
+  { "rights", EXTRACTOR_METATYPE_RIGHTS },
+  { "dc.rights", EXTRACTOR_METATYPE_RIGHTS },
+  { "copyright", EXTRACTOR_METATYPE_COPYRIGHT },
+  { "language", EXTRACTOR_METATYPE_DOCUMENT_LANGUAGE },  
+  { "keywords", EXTRACTOR_METATYPE_KEYWORDS },
+  { "abstract", EXTRACTOR_METATYPE_ABSTRACT },
+  { "formatter", EXTRACTOR_METATYPE_CREATED_BY_SOFTWARE },
+  { "dc.creator", EXTRACTOR_METATYPE_CREATOR},
+  { "dc.identifier", EXTRACTOR_METATYPE_URI },
+  { "dc.format", EXTRACTOR_METATYPE_FORMAT },
+  { NULL, EXTRACTOR_METATYPE_RESERVED }
 };
 
-/* which mime-types should not be subjected to
-   the HTML extractor (no use trying & parsing
-   is expensive!) */
-static char *blacklist[] = {
-  "image/jpeg",
-  "image/gif",
-  "image/png",
-  "image/x-png",
-  "image/xcf",
-  "image/tiff",
-  "application/java",
-  "application/pdf",
-  "application/postscript",
-  "application/elf",
-  "application/gnunet-directory",
-  "application/x-gzip",
-  "application/bz2",
-  "application/x-rpm",
-  "application/x-rar",
-  "application/x-zip",
-  "application/x-arj",
-  "application/x-compress",
-  "application/x-tar",
-  "application/x-lha",
-  "application/x-gtar",
-  "application/x-dpkg",
-  "application/ogg",
-  "audio/real",
-  "audio/x-wav",
-  "audio/avi",
-  "audio/midi",
-  "audio/mpeg",
-  "video/real",
-  "video/asf",
-  "video/quicktime",
+static const char *relevantTags[] = {
+  "title",
+  "meta",
   NULL,
 };
 
@@ -132,21 +69,8 @@ typedef struct TI
   const char *dataEnd;
 } TagInfo;
 
-/**
- * Add a keyword.
- */
-static struct EXTRACTOR_Keywords *
-addKeyword (EXTRACTOR_KeywordType type,
-            char *keyword, struct EXTRACTOR_Keywords *next)
-{
-  EXTRACTOR_KeywordList *result;
 
-  result = malloc (sizeof (EXTRACTOR_KeywordList));
-  result->next = next;
-  result->keyword = keyword;
-  result->keywordType = type;
-  return result;
-}
+
 
 /* ******************** parser helper functions ************** */
 
@@ -294,13 +218,14 @@ findInTags (TagInfo * t,
 
 
 /* mimetype = text/html */
-struct EXTRACTOR_Keywords *
-libextractor_html_extract (const char *filename,
-                           const char *data,
-                           const size_t size, struct EXTRACTOR_Keywords *prev)
+int 
+EXTRACTOR_html_extract (const char *data,
+			size_t size,
+			EXTRACTOR_MetaDataProcessor proc,
+			void *proc_cls,
+			const char *options)
 {
   size_t xsize;
-  const char *mime;
   TagInfo *tags;
   TagInfo *t;
   TagInfo tag;
@@ -309,23 +234,12 @@ libextractor_html_extract (const char *filename,
   int i;
   char *charset;
   char *tmp;
+  char *xtmp;
+  int ret;
 
+  ret = 0;
   if (size == 0)
-    return prev;
-
-  mime = EXTRACTOR_extractLast (EXTRACTOR_MIMETYPE, prev);
-  if (mime != NULL)
-    {
-      int j;
-      j = 0;
-      while (blacklist[j] != NULL)
-        {
-          if (0 == strcmp (blacklist[j], mime))
-            return prev;
-          j++;
-        }
-    }
-
+    return 0;
   /* only scan first 32k */
   if (size > 1024 * 32)
     xsize = 1024 * 32;
@@ -390,10 +304,9 @@ libextractor_html_extract (const char *filename,
 
   /* fast exit */
   if (tags == NULL)
-    return prev;
+    return 0;
 
   charset = NULL;
-
   /* first, try to determine mime type and/or character set */
   tmp = findInTags (tags, "meta", "http-equiv", "content-type", "content");
   if (tmp != NULL)
@@ -402,45 +315,89 @@ libextractor_html_extract (const char *filename,
          if text/html is present, we take that as the mime-type; if charset=
          is present, we try to use that for character set conversion. */
       if (0 == strncmp (tmp, "text/html", strlen ("text/html")))
-        prev = addKeyword (EXTRACTOR_MIMETYPE, strdup ("text/html"), prev);
-
+        ret = proc (proc_cls, 
+		    "html",
+		    EXTRACTOR_METATYPE_MIMETYPE,
+		    EXTRACTOR_METAFORMAT_UTF8,
+		    "text/plain",
+		    "text/html",
+		    strlen ("text/html")+1);
       charset = strstr (tmp, "charset=");
-
       if (charset != NULL)
         charset = strdup (&charset[strlen ("charset=")]);
       free (tmp);
     }
-  if (charset == NULL)
-    charset = strdup ("ISO-8859-1");    /* try a sensible default */
-
-
   i = 0;
   while (tagmap[i].name != NULL)
     {
       tmp = findInTags (tags, "meta", "name", tagmap[i].name, "content");
-      if (tmp != NULL)
+      if ( (tmp != NULL) &&
+	   (ret == 0) )
         {
-          prev = addKeyword (tagmap[i].type,
-              EXTRACTOR_common_convert_to_utf8 (tmp,
-                                            strlen (tmp), charset), prev);
+	  if (charset == NULL)
+	    ret = proc (proc_cls,
+			"html",
+			tagmap[i].type,
+			EXTRACTOR_METAFORMAT_C_STRING,
+			"text/plain",
+			tmp,
+			strlen (tmp) + 1);
+	  else
+	    {
+	      xtmp = EXTRACTOR_common_convert_to_utf8 (tmp,
+						       strlen (tmp),
+						       charset);
+	      ret = proc (proc_cls,
+			  "html",
+			  tagmap[i].type,
+			  EXTRACTOR_METAFORMAT_UTF8,
+			  "text/plain",
+			  xtmp,
+			  strlen (xtmp) + 1);
+	      free (xtmp);
+	    }
           free (tmp);
         }
       i++;
     }
-
-
-  while (tags != NULL)
+  while (tags != NULL) 
     {
       t = tags;
-      if (tagMatch ("title", t->tagStart, t->tagEnd))
-        prev = addKeyword (EXTRACTOR_TITLE,
-            EXTRACTOR_common_convert_to_utf8 (t->dataStart,
-                                          t->dataEnd - t->dataStart,
-                                          charset), prev);
+      if ( (tagMatch ("title", t->tagStart, t->tagEnd)) &&
+	   (ret == 0) )
+	{
+	  if (charset == NULL)
+	    {
+	      xtmp = malloc (t->dataEnd - t->dataStart + 1);
+	      memcpy (xtmp, t->dataStart, t->dataEnd - t->dataStart);
+	      xtmp[t->dataEnd - t->dataStart] = '\0';
+	      ret = proc (proc_cls,
+			  "html",
+			  EXTRACTOR_METATYPE_TITLE,
+			  EXTRACTOR_METAFORMAT_C_STRING,
+			  "text/plain",
+			  xtmp,
+			  strlen (xtmp) + 1);
+	      free (xtmp);
+	    }
+	  else
+	    {
+	      xtmp = EXTRACTOR_common_convert_to_utf8 (tmp,
+						       strlen (tmp),
+						       charset);
+	      ret = proc (proc_cls,
+			  "html",
+			  EXTRACTOR_METATYPE_TITLE,
+			  EXTRACTOR_METAFORMAT_UTF8,
+			  "text/plain",
+			  xtmp,
+			  strlen (xtmp) + 1);
+	      free (xtmp);
+	    }
+	}
       tags = t->next;
       free (t);
     }
   free (charset);
-
-  return prev;
+  return ret;
 }

@@ -1,14 +1,14 @@
 # Process this file with autoconf to produce a configure script.
 AC_PREREQ(2.61)
-AC_INIT([libextractor], [0.5.23], [bug-libextractor@gnu.org])
+AC_INIT([libextractor], [0.6.0], [bug-libextractor@gnu.org])
 AC_CONFIG_AUX_DIR([libltdl/config])
-AM_INIT_AUTOMAKE([libextractor], [0.5.23])
+AM_INIT_AUTOMAKE([libextractor], [0.6.0])
 AC_CONFIG_HEADERS([config.h])
 AH_TOP([#define _GNU_SOURCE  1])
 
-LIB_VERSION_CURRENT=2
-LIB_VERSION_REVISION=1
-LIB_VERSION_AGE=1
+LIB_VERSION_CURRENT=3
+LIB_VERSION_REVISION=0
+LIB_VERSION_AGE=0
 AC_SUBST(LIB_VERSION_CURRENT)
 AC_SUBST(LIB_VERSION_REVISION)
 AC_SUBST(LIB_VERSION_AGE)
@@ -540,7 +540,7 @@ AC_CACHE_CHECK([whether -export-symbols-regex works],
 if test "x$gn_cv_export_symbols_regex_works" = "xyes"
 then
  LE_LIB_LDFLAGS="$LE_LIB_LDFLAGS -export-symbols-regex \"EXTRACTOR_@<:@a-zA-Z0-9_@:>@*\""
- LE_PLUGIN_LDFLAGS="$LE_PLUGIN_LDFLAGS -export-symbols-regex \"libextractor_@<:@a-zA-Z0-9_@:>@*_extract\""
+ LE_PLUGIN_LDFLAGS="$LE_PLUGIN_LDFLAGS -export-symbols-regex \"EXTRACTOR_@<:@a-zA-Z0-9_@:>@*_extract\""
 fi
 AC_SUBST(LE_LIB_LDFLAGS)
 AC_SUBST(LE_PLUGIN_LDFLAGS)

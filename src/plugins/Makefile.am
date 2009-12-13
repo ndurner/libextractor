@@ -60,8 +60,8 @@ if HAVE_MPEG2
 endif
 
 # toggle for development
-# SUBDIRS = . 
-SUBDIRS = . $(thumbgtk) $(thumbffmpeg) $(oodir) $(printdir) hash $(oledir) $(rpm) $(xpdfdir) $(exiv2dir) 
+SUBDIRS = . 
+# SUBDIRS = . $(thumbgtk) $(thumbffmpeg) $(oodir) $(printdir) hash $(oledir) $(rpm) $(xpdfdir) $(exiv2dir) 
 
 
 if HAVE_VORBISFILE
@@ -85,25 +85,46 @@ extraqt = libextractor_qt.la
 oodir = oo
 endif
 
-plugin_LTLIBRARIES = $(pdfplugin) \
+plugin_LTLIBRARIES = \
+  libextractor_html.la \
+  libextractor_it.la \
+  libextractor_mime.la 
+
+libextractor_html_la_SOURCES = \
+  html_extractor.c 
+libextractor_html_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+libextractor_html_la_LIBADD = \
+  $(top_builddir)/src/common/libextractor_common.la
+
+libextractor_it_la_SOURCES = \
+  it_extractor.c 
+libextractor_it_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+
+
+libextractor_mime_la_SOURCES = \
+  mime_extractor.c 
+libextractor_mime_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+
+
+
+OLD_LIBS = \
+  $(pdfplugin) \
   libextractor_applefile.la \
   libextractor_asf.la \
   libextractor_deb.la \
   libextractor_dvi.la \
   libextractor_elf.la \
-  libextractor_filename.la \
   $(extraflac) \
   libextractor_flv.la \
   libextractor_gif.la \
-  libextractor_html.la \
   libextractor_id3v2.la \
   libextractor_id3v24.la \
   libextractor_id3v23.la \
-  libextractor_it.la \
   libextractor_jpeg.la \
-  libextractor_lower.la \
   libextractor_man.la \
-  libextractor_mime.la \
   libextractor_mp3.la \
   $(extrampeg) \
   libextractor_nsf.la \
@@ -116,11 +137,9 @@ plugin_LTLIBRARIES = $(pdfplugin) \
   libextractor_riff.la \
   libextractor_s3m.la \
   libextractor_sid.la \
-  libextractor_split.la \
   libextractor_tar.la \
   libextractor_tiff.la \
   $(thumbqt) \
-  libextractor_translit.la \
   libextractor_wav.la \
   libextractor_xm.la \
   libextractor_zip.la 
@@ -205,13 +224,6 @@ libextractor_id3v24_la_LDFLAGS = \
 libextractor_id3v24_la_LIBADD = \
   $(top_builddir)/src/common/libextractor_common.la
 
-libextractor_it_la_SOURCES = \
-  itextractor.c 
-libextractor_it_la_LDFLAGS = \
-  $(PLUGINFLAGS)
-libextractor_it_la_LIBADD = \
-  $(top_builddir)/src/main/libextractor.la
-
 libextractor_dvi_la_SOURCES = \
   dviextractor.c 
 libextractor_dvi_la_LDFLAGS = \
@@ -230,11 +242,6 @@ libextractor_tar_la_LDFLAGS = \
 libextractor_tar_la_LIBADD = \
   $(top_builddir)/src/main/libextractor.la -lz
 endif
-
-libextractor_lower_la_SOURCES = \
-  lowerextractor.c
-libextractor_lower_la_LDFLAGS = \
-  $(PLUGINFLAGS)
 
 libextractor_gif_la_SOURCES = \
   gifextractor.c 
@@ -279,14 +286,6 @@ libextractor_jpeg_la_LDFLAGS = \
 libextractor_jpeg_la_LIBADD = \
   $(LE_LIBINTL)
 
-libextractor_html_la_SOURCES = \
-  htmlextractor.c 
-libextractor_html_la_LDFLAGS = \
-  $(PLUGINFLAGS)
-libextractor_html_la_LIBADD = \
-  $(top_builddir)/src/main/libextractor.la \
-  $(top_builddir)/src/common/libextractor_common.la
-
 libextractor_flv_la_SOURCES = \
   flvextractor.c
 libextractor_flv_la_LDFLAGS = \
@@ -298,13 +297,6 @@ libextractor_real_la_SOURCES = \
   realextractor.c 
 libextractor_real_la_LDFLAGS = \
   $(PLUGINFLAGS)
-
-libextractor_mime_la_SOURCES = \
-  mimeextractor.c 
-libextractor_mime_la_LDFLAGS = \
-  $(PLUGINFLAGS)
-libextractor_mime_la_LIBADD = \
-  $(top_builddir)/src/main/libextractor.la
 
 if HAVE_MPEG2
 libextractor_mpeg_la_SOURCES = \
@@ -354,15 +346,6 @@ libextractor_png_la_LIBADD = \
   -lz
 endif
 
-libextractor_filename_la_SOURCES = \
-  filenameextractor.c 
-libextractor_filename_la_LDFLAGS = \
-  $(PLUGINFLAGS)
-libextractor_filename_la_LIBADD = \
-  $(top_builddir)/src/main/libextractor.la \
-  $(top_builddir)/src/common/libextractor_common.la \
-  $(LE_LIBINTL)
-
 libextractor_sid_la_SOURCES = \
   sidextractor.c 
 libextractor_sid_la_LDFLAGS = \
@@ -398,18 +381,8 @@ libextractor_s3m_la_LDFLAGS = \
 libextractor_s3m_la_LIBADD = \
   $(top_builddir)/src/main/libextractor.la
 
-libextractor_split_la_SOURCES = \
-  splitextractor.c 
-libextractor_split_la_LDFLAGS = \
-  $(PLUGINFLAGS)
-
-libextractor_translit_la_SOURCES = \
-  translitextractor.c 
-libextractor_translit_la_LDFLAGS = \
-  $(PLUGINFLAGS)
-
 libextractor_thumbnailqt_la_SOURCES = \
-	thumbnailextractorqt.cc
+  thumbnailextractorqt.cc
 libextractor_thumbnailqt_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_thumbnailqt_la_LIBADD = \

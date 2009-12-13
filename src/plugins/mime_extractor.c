@@ -22,21 +22,6 @@
 #include "extractor.h"
 
 
-static EXTRACTOR_KeywordList *
-addKeyword (EXTRACTOR_KeywordType type,
-            char *keyword, EXTRACTOR_KeywordList * next)
-{
-  EXTRACTOR_KeywordList *result;
-
-  if (keyword == NULL)
-    return next;
-  result = malloc (sizeof (EXTRACTOR_KeywordList));
-  result->next = next;
-  result->keyword = keyword;
-  result->keywordType = type;
-  return result;
-}
-
 /**
  * Detect a file-type.
  * @param data the contents of the file
@@ -300,19 +285,16 @@ static Pattern patterns[] = {
   {NULL, 0, NULL, DISABLED},
 };
 
-struct EXTRACTOR_Keywords *
-libextractor_mime_extract (const char *filename,
-                           const char *data,
-                           size_t size, struct EXTRACTOR_Keywords *prev)
+
+int 
+EXTRACTOR_mime_extract (const char *data,
+			size_t size,
+			EXTRACTOR_MetaDataProcessor proc,
+			void *proc_cls,
+			const char *options)
 {
   int i;
-  const char *mime;
 
-  mime = EXTRACTOR_extractLast (EXTRACTOR_MIMETYPE, prev);
-  if (mime != NULL)
-    return prev;                /* if the mime-type has already
-                                   been determined, there is no need
-                                   to probe again (and potentially be wrong...) */
   i = 0;
   while (patterns[i].pattern != NULL)
     {
@@ -324,10 +306,15 @@ libextractor_mime_extract (const char *filename,
       if (0 == memcmp (patterns[i].pattern, data, patterns[i].size))
         {
           if (patterns[i].detector (data, size, patterns[i].arg))
-            return addKeyword (EXTRACTOR_MIMETYPE,
-                               strdup (patterns[i].mimetype), prev);
+            return proc (proc_cls,
+			 "mime",
+			 EXTRACTOR_METATYPE_MIMETYPE,
+			 EXTRACTOR_METAFORMAT_UTF8,
+			 "text/plain",
+			 patterns[i].mimetype,
+			 strlen(patterns[i].mimetype)+1);
         }
       i++;
     }
-  return prev;
+  return 0;
 }

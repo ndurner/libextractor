@@ -21,7 +21,6 @@
 
 #include "platform.h"
 #include "extractor.h"
-#include "convert.h"
 
 #define HEADER_SIZE  0xD0
 
@@ -40,21 +39,6 @@ struct header
   char special[2];
 };
 
-
-static struct EXTRACTOR_Keywords *addkword
-  (EXTRACTOR_KeywordList * oldhead,
-   const char *phrase, EXTRACTOR_KeywordType type)
-{
-  EXTRACTOR_KeywordList *keyword;
-
-  keyword = malloc (sizeof (EXTRACTOR_KeywordList));
-  keyword->next = oldhead;
-  keyword->keyword = strdup (phrase);
-  keyword->keywordType = type;
-  return (keyword);
-}
-
-
 /* "extract" keyword from an Impulse Tracker module
  *
  * ITTECH.TXT as taken from IT 2.14p5 was used,
@@ -62,46 +46,57 @@ static struct EXTRACTOR_Keywords *addkword
  * written.
  *
  */
-struct EXTRACTOR_Keywords *libextractor_it_extract
-  (const char *filename,
-   char *data, size_t size, struct EXTRACTOR_Keywords *prev)
+int 
+EXTRACTOR_mime_extract (const char *data,
+			size_t size,
+			EXTRACTOR_MetaDataProcessor proc,
+			void *proc_cls,
+			const char *options)
 {
   char title[27];
   char itversion[8];
   struct header *head;
 
   /* Check header size */
-
-  if (size < HEADER_SIZE)
-    {
-      return (prev);
-    }
-
+  if (size < HEADER_SIZE)    
+    return 0;
   head = (struct header *) data;
-
   /* Check "magic" id bytes */
-
   if (memcmp (head->magicid, "IMPM", 4))
-    {
-      return (prev);
-    }
-
+    return 0;
   /* Mime-type */
-
-  prev = addkword (prev, "audio/x-it", EXTRACTOR_MIMETYPE);
-
+  if (0 != proc (proc_cls,
+		 "it",
+		 EXTRACTOR_METATYPE_MIMETYPE,
+		 EXTRACTOR_METAFORMAT_UTF8,
+		 "text/plain",
+		 "audio/x-it",
+		 strlen("audio/x-it")+1))
+    return 1;
 
   /* Version of Tracker */
-
-  sprintf (itversion, "%d.%d", (head->version[0]& 0x01),head->version[1]);
-  prev = addkword (prev, itversion, EXTRACTOR_FORMAT_VERSION);
+  sprintf (itversion, 
+	   "%d.%d", 
+	   (head->version[0]& 0x01),head->version[1]);
+  if (0 != proc (proc_cls,
+		 "it",
+		 EXTRACTOR_METATYPE_FORMAT_VERSION,
+		 EXTRACTOR_METAFORMAT_C_STRING,
+		 "text/plain",
+		 itversion,
+		 strlen(itversion)+1))
+    return 1;
 
   /* Song title */
-
   memcpy (&title, head->title, 26);
   title[26] = '\0';
-  prev = addkword (prev, title, EXTRACTOR_TITLE);
-
-  return (prev);
-
+  if (0 != proc (proc_cls,
+		 "it",
+		 EXTRACTOR_METATYPE_TITLE,
+		 EXTRACTOR_METAFORMAT_C_STRING,
+		 "text/plain",
+		 title,
+		 strlen(title)+1))
+    return 1;
+  return 0;
 }

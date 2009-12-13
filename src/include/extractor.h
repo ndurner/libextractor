@@ -1,6 +1,6 @@
 /*
      This file is part of libextractor.
-     (C) 2002, 2003, 2004, 2005, 2006 Vidyut Samanta and Christian Grothoff
+     (C) 2002, 2003, 2004, 2005, 2006, 2009 Vidyut Samanta and Christian Grothoff
 
      libextractor is free software; you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published
@@ -32,432 +32,503 @@ extern "C" {
  * 0.2.6-1 => 0x00020601
  * 4.5.2-0 => 0x04050200
  */
-#define EXTRACTOR_VERSION 0x00052301
+#define EXTRACTOR_VERSION 0x00060000
 
 #include <stdio.h>
 
-/* ignore the 'type' of the keyword when eliminating duplicates */
-#define EXTRACTOR_DUPLICATES_TYPELESS 1
-/* remove type 'UNKNOWN' if there is a duplicate keyword of
-   known type, even if usually different types should be
-   preserved */
-#define EXTRACTOR_DUPLICATES_REMOVE_UNKNOWN 2
-
-#define EXTRACTOR_DEFAULT_LIBRARIES EXTRACTOR_getDefaultLibraries()
-
-const char * EXTRACTOR_getDefaultLibraries(void);
 
 /**
- * Enumeration defining various sources of keywords.
- * See also
+ * Options for how plugin execution should be done.
+ */
+enum EXTRACTOR_Options
+  {
+    /**
+     * Run plugins in-process.
+     */
+    EXTRACTOR_OPTION_NONE = 0,
+
+    /**
+     * Run plugins out-of-process, starting the process
+     * once at the time the plugin is loaded.  This will
+     * prevent the main process crashing if a plugin dies.
+     * Ignored on platforms where out-of-process starts
+     * are not supported.
+     */
+    EXTRACTOR_OPTION_OUT_OF_PROCESS = 1,
+
+    /**
+     * If a plugin crashes, automatically restart the respective
+     * process for the next file.  Implies
+     * EXTRACTOR_OPTION_OUT_OF_PROCESS.
+     */
+    EXTRACTOR_OPTION_AUTO_RESTART = 2
+
+  };
+
+
+/**
+ * Format in which the extracted meta data is presented.
+ */
+enum EXTRACTOR_MetaFormat
+  {
+    /**
+     * Format is unknown.
+     */
+    EXTRACTOR_METAFORMAT_UNKNOWN = 0,
+
+    /**
+     * 0-terminated, UTF-8 encoded string.  "data_len"
+     * is strlen(data)+1.
+     */
+    EXTRACTOR_METAFORMAT_UTF8 = 1,
+
+    /**
+     * Some kind of binary format, see given Mime type.
+     */
+    EXTRACTOR_METAFORMAT_BINARY = 2,
+
+    /**
+     * 0-terminated string.  The specific encoding is unknown.
+     * "data_len" is strlen(data)+1.
+     */
+    EXTRACTOR_METAFORMAT_C_STRING = 3
+  };
+
+
+/**
+ * Enumeration defining various sources of keywords.  See also
  * http://dublincore.org/documents/1998/09/dces/
  */
-typedef enum {
-  EXTRACTOR_UNKNOWN = 0,
-  EXTRACTOR_FILENAME = 1,
-  EXTRACTOR_MIMETYPE = 2,
-  EXTRACTOR_TITLE = 3,
-  EXTRACTOR_AUTHOR = 4,
-  EXTRACTOR_ARTIST = 5,
-  EXTRACTOR_DESCRIPTION = 6,
-  EXTRACTOR_COMMENT = 7,
-  EXTRACTOR_DATE = 8,
-  EXTRACTOR_PUBLISHER = 9,
-  EXTRACTOR_LANGUAGE = 10,
-  EXTRACTOR_ALBUM = 11,
-  EXTRACTOR_GENRE = 12,
-  EXTRACTOR_LOCATION = 13,
-  EXTRACTOR_VERSIONNUMBER = 14,
-  EXTRACTOR_ORGANIZATION = 15,
-  EXTRACTOR_COPYRIGHT = 16,
-  EXTRACTOR_SUBJECT = 17,
-  EXTRACTOR_KEYWORDS = 18,
-  EXTRACTOR_CONTRIBUTOR = 19,
-  EXTRACTOR_RESOURCE_TYPE = 20,
-  EXTRACTOR_FORMAT = 21,
-  EXTRACTOR_RESOURCE_IDENTIFIER = 22,
-  EXTRACTOR_SOURCE = 23,
-  EXTRACTOR_RELATION = 24,
-  EXTRACTOR_COVERAGE = 25,
-  EXTRACTOR_SOFTWARE = 26,
-  EXTRACTOR_DISCLAIMER = 27,
-  EXTRACTOR_WARNING = 28,
-  EXTRACTOR_TRANSLATED = 29,
-  EXTRACTOR_CREATION_DATE = 30,
-  EXTRACTOR_MODIFICATION_DATE = 31,
-  EXTRACTOR_CREATOR = 32,
-  EXTRACTOR_PRODUCER = 33,
-  EXTRACTOR_PAGE_COUNT = 34,
-  EXTRACTOR_PAGE_ORIENTATION = 35,
-  EXTRACTOR_PAPER_SIZE = 36,
-  EXTRACTOR_USED_FONTS = 37,
-  EXTRACTOR_PAGE_ORDER = 38,
-  EXTRACTOR_CREATED_FOR = 39,
-  EXTRACTOR_MAGNIFICATION = 40,
-  EXTRACTOR_RELEASE = 41,
-  EXTRACTOR_GROUP = 42,
-  EXTRACTOR_SIZE = 43,
-  EXTRACTOR_SUMMARY = 44,
-  EXTRACTOR_PACKAGER = 45,
-  EXTRACTOR_VENDOR = 46,
-  EXTRACTOR_LICENSE = 47,
-  EXTRACTOR_DISTRIBUTION = 48,
-  EXTRACTOR_BUILDHOST = 49,
-  EXTRACTOR_OS = 50,
-  EXTRACTOR_DEPENDENCY = 51,
-  EXTRACTOR_HASH_MD4 = 52,
-  EXTRACTOR_HASH_MD5 = 53,
-  EXTRACTOR_HASH_SHA0 = 54,
-  EXTRACTOR_HASH_SHA1 = 55,
-  EXTRACTOR_HASH_RMD160 = 56,
-  EXTRACTOR_RESOLUTION = 57,
-  EXTRACTOR_CATEGORY = 58,
-  EXTRACTOR_BOOKTITLE = 59,
-  EXTRACTOR_PRIORITY = 60,
-  EXTRACTOR_CONFLICTS = 61,
-  EXTRACTOR_REPLACES = 62,
-  EXTRACTOR_PROVIDES = 63,
-  EXTRACTOR_CONDUCTOR = 64,
-  EXTRACTOR_INTERPRET = 65,
-  EXTRACTOR_OWNER = 66,
-  EXTRACTOR_LYRICS = 67,
-  EXTRACTOR_MEDIA_TYPE = 68,
-  EXTRACTOR_CONTACT = 69,
-  EXTRACTOR_THUMBNAIL_DATA = 70,
-  EXTRACTOR_PUBLICATION_DATE = 71,
-  EXTRACTOR_CAMERA_MAKE = 72,
-  EXTRACTOR_CAMERA_MODEL = 73,
-  EXTRACTOR_EXPOSURE = 74,
-  EXTRACTOR_APERTURE = 75,
-  EXTRACTOR_EXPOSURE_BIAS = 76,
-  EXTRACTOR_FLASH = 77,
-  EXTRACTOR_FLASH_BIAS = 78,
-  EXTRACTOR_FOCAL_LENGTH = 79,
-  EXTRACTOR_FOCAL_LENGTH_35MM = 80,
-  EXTRACTOR_ISO_SPEED = 81,
-  EXTRACTOR_EXPOSURE_MODE = 82,
-  EXTRACTOR_METERING_MODE = 83,
-  EXTRACTOR_MACRO_MODE = 84,
-  EXTRACTOR_IMAGE_QUALITY = 85,
-  EXTRACTOR_WHITE_BALANCE = 86,
-  EXTRACTOR_ORIENTATION = 87,
-  EXTRACTOR_TEMPLATE = 88,
-  EXTRACTOR_SPLIT = 89,
-  EXTRACTOR_PRODUCTVERSION = 90,
-  EXTRACTOR_LAST_SAVED_BY = 91,
-  EXTRACTOR_LAST_PRINTED = 92,
-  EXTRACTOR_WORD_COUNT = 93,
-  EXTRACTOR_CHARACTER_COUNT = 94,
-  EXTRACTOR_TOTAL_EDITING_TIME = 95,
-  EXTRACTOR_THUMBNAILS = 96,
-  EXTRACTOR_SECURITY = 97,
-  EXTRACTOR_CREATED_BY_SOFTWARE = 98,
-  EXTRACTOR_MODIFIED_BY_SOFTWARE = 99,
-  EXTRACTOR_REVISION_HISTORY = 100,
-  EXTRACTOR_LOWERCASE = 101,
-  EXTRACTOR_COMPANY = 102,
-  EXTRACTOR_GENERATOR = 103,
-  EXTRACTOR_CHARACTER_SET = 104,
-  EXTRACTOR_LINE_COUNT = 105,
-  EXTRACTOR_PARAGRAPH_COUNT = 106,
-  EXTRACTOR_EDITING_CYCLES = 107,
-  EXTRACTOR_SCALE = 108,
-  EXTRACTOR_MANAGER = 109,
-  EXTRACTOR_MOVIE_DIRECTOR = 110,
-  EXTRACTOR_DURATION = 111,
-  EXTRACTOR_INFORMATION = 112,
-  EXTRACTOR_FULL_NAME = 113,
-  EXTRACTOR_CHAPTER = 114,
-  EXTRACTOR_YEAR = 115,
-  EXTRACTOR_LINK = 116,
-  EXTRACTOR_MUSIC_CD_IDENTIFIER = 117,
-  EXTRACTOR_PLAY_COUNTER = 118,
-  EXTRACTOR_POPULARITY_METER = 119,
-  EXTRACTOR_CONTENT_TYPE = 120,
-  EXTRACTOR_ENCODED_BY = 121,
-  EXTRACTOR_TIME = 122,
-  EXTRACTOR_MUSICIAN_CREDITS_LIST = 123,
-  EXTRACTOR_MOOD = 124, 
-  EXTRACTOR_FORMAT_VERSION = 125,
-  EXTRACTOR_TELEVISION_SYSTEM = 126,
-  EXTRACTOR_SONG_COUNT = 127,
-  EXTRACTOR_STARTING_SONG = 128,
-  EXTRACTOR_HARDWARE_DEPENDENCY = 129,
-  EXTRACTOR_RIPPER = 130,
-  EXTRACTOR_FILE_SIZE = 131,
-  EXTRACTOR_TRACK_NUMBER = 132,
-  EXTRACTOR_ISRC = 133,
-  EXTRACTOR_DISC_NUMBER = 134,
-  EXTRACTOR_GNUNET_DISPLAY_TYPE = 135,
-  EXTRACTOR_GNUNET_ECBC_URI = 136,
-  EXTRACTOR_GNUNET_FULL_DATA = 137,
-  EXTRACTOR_LOCATION_CITY = 138,
-  EXTRACTOR_LOCATION_COUNTRY = 139,
-  EXTRACTOR_LOCATION_SUBLOCATION = 140,
-  EXTRACTOR_GPS_LATITUDE_REF = 141,
-  EXTRACTOR_GPS_LATITUDE = 142,
-  EXTRACTOR_GPS_LONGITUDE_REF = 143,
-  EXTRACTOR_GPS_LONGITUDE = 144,
-  EXTRACTOR_RATING = 145,
-  EXTRACTOR_COUNTRY_CODE = 146
-} EXTRACTOR_KeywordType;
+enum EXTRACTOR_MetaType 
+  {
+    /* fundamental types */
+    EXTRACTOR_METATYPE_RESERVED = 0,
+    EXTRACTOR_METATYPE_MIMETYPE = 1,
+    EXTRACTOR_METATYPE_FILENAME = 2,
+    EXTRACTOR_METATYPE_COMMENT = 3,
+
+    /* Standard types from bibtex */
+    EXTRACTOR_METATYPE_TITLE = 4,
+    EXTRACTOR_METATYPE_BOOK_TITLE = 5,
+    EXTRACTOR_METATYPE_BOOK_EDITION = 6,
+    EXTRACTOR_METATYPE_BOOK_CHAPTER_NUMBER = 7,
+    EXTRACTOR_METATYPE_JOURNAL_NAME = 8,
+    EXTRACTOR_METATYPE_JOURNAL_VOLUME = 9,    
+    EXTRACTOR_METATYPE_JOURNAL_NUMBER = 10,
+    EXTRACTOR_METATYPE_PAGE_COUNT = 11,
+    EXTRACTOR_METATYPE_PAGE_RANGE = 12,
+    EXTRACTOR_METATYPE_AUTHOR_NAME = 13,
+    EXTRACTOR_METATYPE_AUTHOR_EMAIL = 14,
+    EXTRACTOR_METATYPE_AUTHOR_INSTITUTION = 15,
+    EXTRACTOR_METATYPE_PUBLISHER = 16,
+    EXTRACTOR_METATYPE_PUBLISHER_ADDRESS = 17,
+    EXTRACTOR_METATYPE_PUBLISHER_INSTITUTION = 18,
+    EXTRACTOR_METATYPE_PUBLISHER_SERIES = 19,
+    EXTRACTOR_METATYPE_PUBLICATION_TYPE = 20,
+    EXTRACTOR_METATYPE_PUBLICATION_YEAR = 21,
+    EXTRACTOR_METATYPE_PUBLICATION_MONTH = 22,
+    EXTRACTOR_METATYPE_PUBLICATION_DAY = 23,
+    EXTRACTOR_METATYPE_PUBLICATION_DATE = 24,
+    EXTRACTOR_METATYPE_BIBTEX_EPRINT = 25,
+    EXTRACTOR_METATYPE_BIBTEX_ENTRY_TYPE = 26,
+    EXTRACTOR_METATYPE_DOCUMENT_LANGUAGE = 27,
+    EXTRACTOR_METATYPE_CREATION_TIME = 28,
+    EXTRACTOR_METATYPE_URL = 29,
+
+    /* "unique" document identifiers */
+    EXTRACTOR_METATYPE_URI = 30, 
+    EXTRACTOR_METATYPE_ISRC = 31,
+    EXTRACTOR_METATYPE_HASH_MD4 = 32,
+    EXTRACTOR_METATYPE_HASH_MD5 = 33,
+    EXTRACTOR_METATYPE_HASH_SHA0 = 34,
+    EXTRACTOR_METATYPE_HASH_SHA1 = 35,
+    EXTRACTOR_METATYPE_HASH_RMD160 = 36,
+
+    /* identifiers of a location */
+    EXTRACTOR_METATYPE_GPS_LATITUDE_REF = 37,
+    EXTRACTOR_METATYPE_GPS_LATITUDE = 38,
+    EXTRACTOR_METATYPE_GPS_LONGITUDE_REF = 39,
+    EXTRACTOR_METATYPE_GPS_LONGITUDE = 40,
+    EXTRACTOR_METATYPE_LOCATION_CITY = 41,
+    EXTRACTOR_METATYPE_LOCATION_SUBLOCATION = 42,
+    EXTRACTOR_METATYPE_LOCATION_COUNTRY = 43,
+    EXTRACTOR_METATYPE_LOCATION_COUNTRY_CODE = 44,
+
+    /* generic attributes */
+    EXTRACTOR_METATYPE_UNKNOWN = 45,
+    EXTRACTOR_METATYPE_DESCRIPTION = 46,
+    EXTRACTOR_METATYPE_COPYRIGHT = 47,
+    EXTRACTOR_METATYPE_RIGHTS = 48,
+    EXTRACTOR_METATYPE_KEYWORDS = 49,
+    EXTRACTOR_METATYPE_ABSTRACT = 50,
+    EXTRACTOR_METATYPE_SUMMARY = 51,
+    EXTRACTOR_METATYPE_SUBJECT = 52,
+    EXTRACTOR_METATYPE_CREATOR = 53,
+    EXTRACTOR_METATYPE_FORMAT = 54,
+    EXTRACTOR_METATYPE_FORMAT_VERSION = 55,
+
+    /* processing history */
+    EXTRACTOR_METATYPE_CREATED_BY_SOFTWARE = 56, 
+    EXTRACTOR_METATYPE_UNKNOWN_DATE = 57, 
+    EXTRACTOR_METATYPE_CREATION_DATE = 58,
+    EXTRACTOR_METATYPE_MODIFICATION_DATE = 59,
+    EXTRACTOR_METATYPE_LAST_PRINTED = 60,
+    EXTRACTOR_METATYPE_LAST_SAVED_BY = 61,
+    EXTRACTOR_METATYPE_TOTAL_EDITING_TIME = 62,
+    EXTRACTOR_METATYPE_EDITING_CYCLES = 63,
+    EXTRACTOR_METATYPE_MODIFIED_BY_SOFTWARE = 64,
+    EXTRACTOR_METATYPE_REVISION_HISTORY = 65,
+
+    /* FIXME... */
+
+    /* software package specifics (deb, rpm, tgz) */
+    EXTRACTOR_METATYPE_PACKAGER = 45,
+    EXTRACTOR_METATYPE_VENDOR = 46,
+    EXTRACTOR_METATYPE_LICENSE = 47,
+    EXTRACTOR_METATYPE_DISTRIBUTION = 48,
+    EXTRACTOR_METATYPE_BUILDHOST = 49,
+    EXTRACTOR_METATYPE_TARGET_OS = 50,
+    EXTRACTOR_METATYPE_DEPENDENCY = 51,
+    EXTRACTOR_METATYPE_CONFLICTS = 61,
+    EXTRACTOR_METATYPE_REPLACES = 62,
+    EXTRACTOR_METATYPE_PROVIDES = 63,
+
+    /* (text) document processing specifics */
+    EXTRACTOR_METATYPE_CHARACTER_SET = 104,
+    EXTRACTOR_METATYPE_LINE_COUNT = 105,
+    EXTRACTOR_METATYPE_PARAGRAPH_COUNT = 106,
+    EXTRACTOR_METATYPE_WORD_COUNT = 93,
+    EXTRACTOR_METATYPE_CHARACTER_COUNT = 94,
+    EXTRACTOR_METATYPE_PAGE_ORIENTATION = 35,
+    EXTRACTOR_METATYPE_PAPER_SIZE = 36,
+    EXTRACTOR_METATYPE_USED_FONTS = 37,
+    EXTRACTOR_METATYPE_PAGE_ORDER = 38,
+
+    /* music / video specifics */
+    EXTRACTOR_METATYPE_LYRICS = 67,
+    EXTRACTOR_METATYPE_CONDUCTOR = 64,
+    EXTRACTOR_METATYPE_INTERPRET = 65,
+    EXTRACTOR_METATYPE_MUSIC_CD_IDENTIFIER = 117,
+    EXTRACTOR_METATYPE_PLAY_COUNTER = 118,
+    EXTRACTOR_METATYPE_DURATION = 111,
+    EXTRACTOR_METATYPE_MOVIE_DIRECTOR = 110,
+    EXTRACTOR_METATYPE_SONG_COUNT = 127,
+    EXTRACTOR_METATYPE_STARTING_SONG = 128,
+    EXTRACTOR_METATYPE_MUSICIAN_CREDITS_LIST = 123,
+    EXTRACTOR_METATYPE_TRACK_NUMBER = 132,
+    EXTRACTOR_METATYPE_DISC_NUMBER = 134,
+    EXTRACTOR_METATYPE_ALBUM = 11,
+    EXTRACTOR_METATYPE_ARTIST = 5,
+    EXTRACTOR_METATYPE_GENRE = 12,
+
+    /* image specifics */
+    EXTRACTOR_METATYPE_THUMBNAIL_DATA = 70,
+    EXTRACTOR_METATYPE_RESOLUTION = 57,
+    EXTRACTOR_METATYPE_IMAGE_DIMENSIONS = 43,
+    EXTRACTOR_METATYPE_SCALE = 108,
+
+    /* photography specifics */
+    EXTRACTOR_METATYPE_CAMERA_MAKE = 72,
+    EXTRACTOR_METATYPE_CAMERA_MODEL = 73,
+    EXTRACTOR_METATYPE_EXPOSURE = 74,
+    EXTRACTOR_METATYPE_APERTURE = 75,
+    EXTRACTOR_METATYPE_EXPOSURE_BIAS = 76,
+    EXTRACTOR_METATYPE_FLASH = 77,
+    EXTRACTOR_METATYPE_FLASH_BIAS = 78,
+    EXTRACTOR_METATYPE_FOCAL_LENGTH = 79,
+    EXTRACTOR_METATYPE_FOCAL_LENGTH_35MM = 80,
+    EXTRACTOR_METATYPE_ISO_SPEED = 81,
+    EXTRACTOR_METATYPE_EXPOSURE_MODE = 82,
+    EXTRACTOR_METATYPE_METERING_MODE = 83,
+    EXTRACTOR_METATYPE_MACRO_MODE = 84,
+    EXTRACTOR_METATYPE_IMAGE_QUALITY = 85,
+    EXTRACTOR_METATYPE_WHITE_BALANCE = 86,
+    EXTRACTOR_METATYPE_ORIENTATION = 87,
+    EXTRACTOR_METATYPE_MAGNIFICATION = 40,
+
+    /* numeric metrics */
+    EXTRACTOR_METATYPE_POPULARITY_METER = 119,
+    EXTRACTOR_METATYPE_RATING = 145,
+    EXTRACTOR_METATYPE_PRIORITY = 60,
+
+    /* gnunet specific attributes */
+    EXTRACTOR_METATYPE_GNUNET_DISPLAY_TYPE = 135,
+    EXTRACTOR_METATYPE_GNUNET_ECBC_URI = 136,
+
+
+    /* misc (see if these are still needed...) */
+
+    EXTRACTOR_METATYPE_GENERATOR = 103,
+    EXTRACTOR_METATYPE_ENCODED_BY = 121,
+    EXTRACTOR_METATYPE_PRODUCTVERSION = 90,
+
+    EXTRACTOR_METATYPE_DISCLAIMER = 27,
+    EXTRACTOR_METATYPE_FILE_SIZE = 131,
+    EXTRACTOR_METATYPE_FULL_DATA = 137,
+    EXTRACTOR_METATYPE_VERSIONNUMBER = 14,
+
+    EXTRACTOR_METATYPE_ORGANIZATION = 15,
+    EXTRACTOR_METATYPE_CONTRIBUTOR = 19,
+    EXTRACTOR_METATYPE_RESOURCE_TYPE = 20,
+    EXTRACTOR_METATYPE_SOURCE = 23,
+    EXTRACTOR_METATYPE_RELATION = 24,
+    EXTRACTOR_METATYPE_COVERAGE = 25,
+    EXTRACTOR_METATYPE_SOFTWARE = 26,
+    EXTRACTOR_METATYPE_WARNING = 28,
+    EXTRACTOR_METATYPE_TRANSLATED = 29,
+    EXTRACTOR_METATYPE_PRODUCER = 33,
+    EXTRACTOR_METATYPE_CREATED_FOR = 39,
+    EXTRACTOR_METATYPE_RELEASE = 41,
+    EXTRACTOR_METATYPE_GROUP = 42,
+    EXTRACTOR_METATYPE_CATEGORY = 58,
+    EXTRACTOR_METATYPE_OWNER = 66,
+    EXTRACTOR_METATYPE_MEDIA_TYPE = 68,
+    EXTRACTOR_METATYPE_CONTACT = 69,
+    EXTRACTOR_METATYPE_TEMPLATE = 88,
+    EXTRACTOR_METATYPE_SECURITY = 97,
+    EXTRACTOR_METATYPE_COMPANY = 102,
+    EXTRACTOR_METATYPE_MANAGER = 109,
+    EXTRACTOR_METATYPE_INFORMATION = 112,
+    EXTRACTOR_METATYPE_FULL_NAME = 113,
+    EXTRACTOR_METATYPE_LINK = 116,
+    EXTRACTOR_METATYPE_TIME = 122,
+    EXTRACTOR_METATYPE_MOOD = 124, 
+    EXTRACTOR_METATYPE_TELEVISION_SYSTEM = 126,
+    EXTRACTOR_METATYPE_HARDWARE_DEPENDENCY = 129,
+    EXTRACTOR_METATYPE_RIPPER = 130,
+  };
+
 
 /**
- * Test if a given LE type contains binary data.
+ * Get the textual name of the keyword.
+ *
+ * @param type meta type to get a UTF-8 string for
+ * @return NULL if the type is not known, otherwise
+ *         an English (locale: C) string describing the type;
+ *         translate using 'dgettext ("libextractor", rval)'
  */
-#define EXTRACTOR_isBinaryType(type) (type == EXTRACTOR_THUMBNAIL_DATA) 
+const char *
+EXTRACTOR_metatype_to_string(enum EXTRACTOR_MetaType type);
+
 
 /**
- * A linked list of keywords. This structure is passed around
- * in libExtractor and is typically the result of any keyword
- * extraction operation.
- * <p>
- * Each entry in the keyword list consists of a string (the
- * keyword) and the keyword type (of type KeywordType)
- * describing how/from where the keyword was obtained.
+ * Get a long description for the meta type.
+ *
+ * @param type meta type to get a UTF-8 description for
+ * @return NULL if the type is not known, otherwise
+ *         an English (locale: C) string describing the type;
+ *         translate using 'dgettext ("libextractor", rval)'
  */
-typedef struct EXTRACTOR_Keywords {
-  /* the keyword that was found */
-  char * keyword;
-  /* the type of the keyword (classification) */
-  EXTRACTOR_KeywordType keywordType;
-  /* the next entry in the list */
-  struct EXTRACTOR_Keywords * next;
-} EXTRACTOR_KeywordList;
+const char *
+EXTRACTOR_metatype_to_description(enum EXTRACTOR_MetaType type);
 
+
+/**
+ * Return the highest type number, exclusive as in [0,max).
+ *
+ * @return highest legal metatype number for this version of libextractor
+ */
+enum EXTRACTOR_MetaType
+EXTRACTOR_metatype_get_max (void);
+
+
+/**
+ * Type of a function that libextractor calls for each
+ * meta data item found.
+ *
+ * @param cls closure (user-defined)
+ * @param plugin_name name of the plugin that produced this value;
+ *        special values can be used (i.e. '<zlib>' for zlib being
+ *        used in the main libextractor library and yielding
+ *        meta data).
+ * @param type libextractor-type describing the meta data
+ * @param format basic format information about data 
+ * @param data_mime_type mime-type of data (not of the original file);
+ *        can be NULL (if mime-type is not known)
+ * @param data actual meta-data found
+ * @param data_len number of bytes in data
+ * @return 0 to continue extracting, 1 to abort
+ */ 
+typedef int (*EXTRACTOR_MetaDataProcessor)(void *cls,
+					   const char *plugin_name,
+					   enum EXTRACTOR_MetaType type,
+					   enum EXTRACTOR_MetaFormat format,
+					   const char *data_mime_type,
+					   const char *data,
+					   size_t data_len);
+
+					   
 /**
  * Signature of the extract method that each plugin
  * must provide.
  *
- * @param filename MAYBE NULL (!)
- * @param data must not be modified (!)
+ * @param data data to process
+ * @param datasize number of bytes available in data
+ * @param proc function to call for meta data found
+ * @param proc_cls cls argument to proc
+ * @param options options for this plugin; can be NULL
+ * @return 0 if all calls to proc returned 0, otherwise 1
  */
-typedef EXTRACTOR_KeywordList *
-(*ExtractMethod)(const char * filename,
-		 char * data,
-		 size_t filesize,
-		 EXTRACTOR_KeywordList * next,
-		 const char * options);
+typedef int (*EXTRACTOR_ExtractMethod)(const char *data,
+				       size_t datasize,
+				       EXTRACTOR_MetaDataProcessor proc,
+				       void *proc_cls,
+				       const char *options);
+
 
 /**
- * Linked list of extractor helper-libraries. An application
- * builds this list by telling libextractor to load various
- * keyword-extraction libraries. Libraries can also be unloaded
- * (removed from this list, see removeLibrary).
- * <p>
- * Client code should never be concerned with the internals of
- * this struct.
+ * Linked list of extractor plugins.  An application builds this list
+ * by telling libextractor to load various keyword-extraction
+ * plugins. Libraries can also be unloaded (removed from this list,
+ * see EXTRACTOR_plugin_remove).
  */
-typedef struct EXTRACTOR_Extractor {
-  void * libraryHandle;
-  char * libname;
-  ExtractMethod extractMethod;
-  struct EXTRACTOR_Extractor * next;
-  char * options;
-} EXTRACTOR_ExtractorList;
+struct EXTRACTOR_PluginList;
+
 
 /**
- * Load the default set of libraries.
- * @return the default set of libraries.
+ * Load the default set of plugins.  The default can be changed
+ * by setting the LIBEXTRACTOR_LIBRARIES environment variable;
+ * If it is set to "env", then this function will return
+ * EXTRACTOR_plugin_add_config (NULL, env, flags). 
+ *
+ * If LIBEXTRACTOR_LIBRARIES is not set, the function will attempt
+ * to locate the installed plugins and load all of them. 
+ * The directory where the code will search for plugins is typically
+ * automatically determined; it can be specified explicitly using the
+ * "LIBEXTRACTOR_PREFIX" environment variable.  
+ *
+ * This environment variable must be set to the precise directory with
+ * the plugins (i.e. "/usr/lib/libextractor", not "/usr").  Note that
+ * setting the environment variable will disable all of the methods
+ * that are typically used to determine the location of plugins.
+ * Multiple paths can be specified using ':' to separate them.
+ *
+ * @param flags options for all of the plugins loaded
+ * @return the default set of plugins, NULL if no plugins were found
  */
-EXTRACTOR_ExtractorList * EXTRACTOR_loadDefaultLibraries(void);
+struct EXTRACTOR_PluginList * 
+EXTRACTOR_plugin_add_defaults(enum EXTRACTOR_Options flags);
 
-/**
- * Get the textual name of the keyword.
- * @return NULL if the type is not known
- */
-const char *
-EXTRACTOR_getKeywordTypeAsString(EXTRACTOR_KeywordType type);
-
-/**
- * Return the highest type number, exclusive as in [0,highest).
- */
-EXTRACTOR_KeywordType
-EXTRACTOR_getHighestKeywordTypeNumber(void);
-
-/**
- * Load multiple libraries as specified by the user.
- * @param config a string given by the user that defines which
- *        libraries should be loaded. Has the format
- *        "[[-]LIBRARYNAME[(options)][:[-]LIBRARYNAME[(options)]]]*".
- *        For example,
- *        libextractor_mp3.so:libextractor_ogg.so loads the
- *        mp3 and the ogg library. The '-' before the LIBRARYNAME
- *        indicates that the library should be added to the end
- *        of the library list (addLibraryLast).
- * @param prev the  previous list of libraries, may be NULL
- * @return the new list of libraries, equal to prev iff an error occured
- *         or if config was empty (or NULL).
- */
-EXTRACTOR_ExtractorList *
-EXTRACTOR_loadConfigLibraries(EXTRACTOR_ExtractorList * prev,
-			      const char * config);
 
 /**
  * Add a library for keyword extraction.
+ *
  * @param prev the previous list of libraries, may be NULL
- * @param library the name of the library
+ * @param library the name of the library (full path)
+ * @param options options to give to the library
+ * @param flags options to use
  * @return the new list of libraries, equal to prev iff an error occured
  */
-EXTRACTOR_ExtractorList *
-EXTRACTOR_addLibrary(EXTRACTOR_ExtractorList * prev,
-		     const char * library);
+struct EXTRACTOR_PluginList *
+EXTRACTOR_plugin_add (struct EXTRACTOR_PluginList * prev,
+		      const char * library,
+		      const char *options,
+		      enum EXTRACTOR_Options flags);
+
 
 /**
  * Add a library for keyword extraction at the END of the list.
  * @param prev the previous list of libraries, may be NULL
- * @param library the name of the library
+ * @param library the name of the library (full path)
+ * @param options options to give to the library
+ * @param flags options to use
  * @return the new list of libraries, always equal to prev
  *         except if prev was NULL and no error occurs
  */
-EXTRACTOR_ExtractorList *
-EXTRACTOR_addLibraryLast(EXTRACTOR_ExtractorList * prev,
-			 const char * library);
+struct EXTRACTOR_PluginList *
+EXTRACTOR_plugin_add_last(struct EXTRACTOR_PluginList *prev,
+			  const char *library,
+			  const char *options,
+			  enum EXTRACTOR_Options flags);
+
+
+/**
+ * Load multiple libraries as specified by the user.
+ *
+ * @param config a string given by the user that defines which
+ *        libraries should be loaded. Has the format
+ *        "[[-]LIBRARYNAME[(options)][:[-]LIBRARYNAME[(options)]]]*".
+ *        For example,
+ *        /usr/lib/libextractor/libextractor_mp3.so:/usr/lib/libextractor/libextractor_ogg.so loads the
+ *        mp3 and the ogg library. The '-' before the LIBRARYNAME
+ *        indicates that the library should be added to the end
+ *        of the library list (addLibraryLast).
+ * @param prev the  previous list of libraries, may be NULL
+ * @param flags options to use
+ * @return the new list of libraries, equal to prev iff an error occured
+ *         or if config was empty (or NULL).
+ */
+struct EXTRACTOR_PluginList *
+EXTRACTOR_plugin_add_config (struct EXTRACTOR_PluginList * prev,
+			     const char *config,
+			     enum EXTRACTOR_Options flags);
+
 		
 /**
- * Remove a library for keyword extraction.
- * @param prev the current list of libraries
- * @param library the name of the library to remove
- * @return the reduced list, unchanged if the library was not loaded
+ * Remove a plugin from a list.
+ *
+ * @param prev the current list of plugins
+ * @param library the name of the plugin to remove (full path)
+ * @return the reduced list, unchanged if the plugin was not loaded
  */
-EXTRACTOR_ExtractorList *
-EXTRACTOR_removeLibrary(EXTRACTOR_ExtractorList * prev,
+struct EXTRACTOR_PluginList *
+EXTRACTOR_plugin_remove(struct EXTRACTOR_PluginList * prev,
 			const char * library);
 
-/**
- * Remove all extractors.
- * @param libraries the list of extractors
- */
-void EXTRACTOR_removeAll(EXTRACTOR_ExtractorList * libraries);
 
 /**
- * Extract keywords from a file using the available extractors.
- * @param extractor the list of extractor libraries
- * @param filename the name of the file
- * @return the list of keywords found in the file, NULL if none
- *         were found (or other errors)
- */
-EXTRACTOR_KeywordList *
-EXTRACTOR_getKeywords(EXTRACTOR_ExtractorList * extractor,
-		      const char * filename);
-
-
-/**
- * Extract keywords from a buffer in memory
- * using the available extractors.
+ * Remove all plugins from the given list (destroys the list).
  *
- * @param extractor the list of extractor libraries
- * @param data the data of the file
- * @param size the number of bytes in data
- * @return the list of keywords found in the file, NULL if none
- *         were found (or other errors)
+ * @param plugin the list of plugins
  */
-EXTRACTOR_KeywordList *
-EXTRACTOR_getKeywords2(EXTRACTOR_ExtractorList * extractor,
-		       const void * data,
-		       size_t size);
+void 
+EXTRACTOR_plugin_remove_all(struct EXTRACTOR_PluginList *plugins);
 
 
 /**
- * Remove duplicate keywords from the list.
- * @param list the original keyword list (destroyed in the process!)
- * @param options a set of options (DUPLICATES_XXXX)
- * @return a list of keywords without duplicates
- */
-EXTRACTOR_KeywordList *
-EXTRACTOR_removeDuplicateKeywords(EXTRACTOR_KeywordList * list,
-				  unsigned int options);
-
-
-/**
- * Remove empty (all-whitespace) keywords from the list.
- * @param list the original keyword list (destroyed in the process!)
- * @return a list of keywords without duplicates
- */
-EXTRACTOR_KeywordList *
-EXTRACTOR_removeEmptyKeywords (EXTRACTOR_KeywordList * list);
-
-/**
- * Remove keywords of a particular type from the list.
- * @param list the original keyword list (altered in the process!)
- * @param type the type to remove
- * @return a list of keywords without entries of given type
- */
-EXTRACTOR_KeywordList *
-EXTRACTOR_removeKeywordsOfType(EXTRACTOR_KeywordList * list,
-			       EXTRACTOR_KeywordType type);
-
-/**
- * Print a keyword list to a file.
- * For debugging.
- * @param handle the file to write to (stdout, stderr), must NOT be NULL
- * @param keywords the list of keywords to print, may be NULL
- */
-void EXTRACTOR_printKeywords(FILE * handle,
-			     EXTRACTOR_KeywordList * keywords);
-
-/**
- * Free the memory occupied by the keyword list (and the
- * keyword strings in it!)
- * @param keywords the list to free
- */
-void EXTRACTOR_freeKeywords(EXTRACTOR_KeywordList * keywords);
-
-/**
- * Extract the last keyword that of the given type from the keyword list.
- * @param type the type of the keyword
- * @param keywords the keyword list
- * @return the last matching keyword, or NULL if none matches;
- *  the string returned is aliased in the keywords list and must
- *  not be freed or manipulated by the client.  It will become
- *  invalid once the keyword list is freed.
- */
-const char * EXTRACTOR_extractLast(EXTRACTOR_KeywordType type,
-				   EXTRACTOR_KeywordList * keywords);
-
-/**
- * Extract the last keyword of the given string from the keyword list.
- * @param type the string describing the type of the keyword
- * @param keywords the keyword list
- * @return the last matching keyword, or NULL if none matches;
- *  the string returned is aliased in the keywords list and must
- *  not be freed or manipulated by the client.  It will become
- *  invalid once the keyword list is freed.
- */
-const char * EXTRACTOR_extractLastByString(const char * type,
-					   EXTRACTOR_KeywordList * keywords);
-
-/**
- * Count the number of keywords in the keyword list.
- * @param keywords the keyword list
- * @return the number of keywords in the list
- */
-unsigned int EXTRACTOR_countKeywords(EXTRACTOR_KeywordList * keywords);
-
-
-/**
- * This function can be used to decode the binary data
- * encoded in the libextractor metadata (i.e. for
- * the  thumbnails).
+ * Extract keywords from a file using the given set of plugins.
  *
- * @param in 0-terminated string from the meta-data
- * @return 1 on error, 0 on success
+ * @param plugins the list of plugins to use
+ * @param filename the name of the file, can be NULL if data is not NULL
+ * @param data data of the file in memory, can be NULL (in which
+ *        case libextractor will open file) if filename is not NULL
+ * @param size number of bytes in data, ignored if data is NULL
+ * @param proc function to call for each meta data item found
+ * @param proc_cls cls argument to proc
  */
-int EXTRACTOR_binaryDecode(const char * in,
-			   unsigned char ** out,
-			   size_t * outSize);
+void
+EXTRACTOR_extract(struct EXTRACTOR_PluginList *plugins,
+		  const char *filename,
+		  const void *data,
+		  size_t size,
+		  EXTRACTOR_MetaDataProcessor proc,
+		  void *proc_cls);
 
 
 /**
- * Encode the given binary data object
- * as a 0-terminated C-string according
- * to the LE binary data encoding standard.
- *
- * @return NULL on error, the 0-terminated
- *  encoding otherwise
+ * Simple EXTRACTOR_MetaDataProcessor implementation that simply
+ * prints the extracted meta data to the given file.  Only prints
+ * those keywords that are in UTF-8 format.
+ * 
+ * @param handle the file to write to (stdout, stderr), must NOT be NULL,
+ *               must be of type "FILE *".
+ * @param plugin_name name of the plugin that produced this value
+ * @param type libextractor-type describing the meta data
+ * @param format basic format information about data 
+ * @param data_mime_type mime-type of data (not of the original file);
+ *        can be NULL (if mime-type is not known)
+ * @param data actual meta-data found
+ * @param data_len number of bytes in data
+ * @return non-zero if printing failed, otherwise 0.
  */
-char * EXTRACTOR_binaryEncode(const unsigned char * data,
-			      size_t size);
+int 
+EXTRACTOR_meta_data_print(void * handle,
+			  const char *plugin_name,
+			  enum EXTRACTOR_MetaType type,
+			  enum EXTRACTOR_MetaFormat format,
+			  const char *data_mime_type,
+			  const char *data,
+			  size_t data_len);
 
 
 #if 0 /* keep Emacsens' auto-indent happy */

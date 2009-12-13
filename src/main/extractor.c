@@ -20,7 +20,32 @@
 
 #include "platform.h"
 #include "extractor.h"
-#include <pthread.h>
+#include <dirent.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <sys/shm.h>
+#include <signal.h>
+
+
+/**
+ * How many bytes do we actually try to scan? (from the beginning
+ * of the file).  Limit to 32 MB.
+ */
+#define MAX_READ 32 * 1024 * 1024
+
+/**
+ * How many bytes do we actually try to decompress? (from the beginning
+ * of the file).  Limit to 16 MB.
+ */
+#define MAX_DECOMPRESS 16 * 1024 * 1024
+
+/**
+ * Maximum length of a Mime-Type string.
+ */
+#define MAX_MIME_LEN 256
+
+#define DEBUG 0
+
 
 #if HAVE_LTDL_H
 #include <ltdl.h>
@@ -36,20 +61,171 @@
 #include <zlib.h>
 #endif
 
-#define DEBUG 0
+
+struct MetaTypeDescription
+{
+  const char *short_description;
+
+  const char *long_description;
+};
+
 
 /**
  * The sources of keywords as strings.
  */
-static const char *keywordTypes[] = {
-  gettext_noop("unknown"), /* 0 */
-  gettext_noop("filename"),
-  gettext_noop("mimetype"),
-  gettext_noop("title"),
+static const struct MetaTypeDescription meta_type_descriptions[] = {
+  /* 0 */
+  { gettext_noop ("reserved"),
+    gettext_noop ("reserved value, do not use") },
+  { gettext_noop ("mimetype"),
+    gettext_noop ("mime type") },
+  { gettext_noop ("embedded filename"),
+    gettext_noop ("filename that was embedded (not necessarily the current filename)") },
+  { gettext_noop ("comment"),
+    gettext_noop ("comment about the content") },
+  { gettext_noop ("title"),
+    gettext_noop ("title of the work")},
+  /* 5 */
+  { gettext_noop ("book title"),
+    gettext_noop ("title of the book containing the work") },
+  { gettext_noop ("book edition"),
+    gettext_noop ("edition of the book (or book containing the work)") },
+  { gettext_noop ("book chapter"),
+    gettext_noop ("chapter number") },
+  { gettext_noop ("journal name"),
+    gettext_noop ("journal or magazine the work was published in") },
+  { gettext_noop ("journal volume"),    
+    gettext_noop ("volume of a journal or multi-volume book") },
+  /* 10 */
+  { gettext_noop ("journal number"),    
+    gettext_noop ("number of a journal, magazine or tech-report") },
+  { gettext_noop ("page count"),
+    gettext_noop ("total number of pages of the work") },
+  { gettext_noop ("page range"),
+    gettext_noop ("page numbers of the publication in the respective journal or book") },
+  { gettext_noop ("author name"),
+    gettext_noop ("name of the author(s)") },
+  { gettext_noop ("author email"),
+    gettext_noop ("e-mail of the author(s)") },
+  /* 15 */
+  { gettext_noop ("author institution"),
+    gettext_noop ("institution the author worked for") },
+  { gettext_noop ("publisher"),
+    gettext_noop ("name of the publisher") },
+  { gettext_noop ("publisher's address"),
+    gettext_noop ("Address of the publisher (often only the city)") },
+  { gettext_noop ("publishing institution"),
+    gettext_noop ("institution that was involved in the publishing, but not necessarily the publisher") },
+  { gettext_noop ("publication series"),
+    gettext_noop ("series of books the book was published in") },
+  /* 20 */
+  { gettext_noop ("publication type"),
+    gettext_noop ("type of the tech-report") },
+  { gettext_noop ("publication year"),
+    gettext_noop ("year of publication (or, if unpublished, the year of creation)") },
+  { gettext_noop ("publication month"),
+    gettext_noop ("month of publication (or, if unpublished, the month of creation)") },
+  { gettext_noop ("publication day"),
+    gettext_noop ("day of publication (or, if unpublished, the day of creation), relative to the given month") },
+  { gettext_noop ("publication date"),
+    gettext_noop ("date of publication (or, if unpublished, the date of creation)") },
+  /* 25 */
+  { gettext_noop ("bibtex eprint"),
+    gettext_noop ("specification of an electronic publication") },
+  { gettext_noop ("bibtex entry type"),
+    gettext_noop ("type of the publication for bibTeX bibliographies") },
+  { gettext_noop ("language"),
+    gettext_noop ("language the work uses") },
+  { gettext_noop ("creation time"),
+    gettext_noop ("time and date of creation") },
+  { gettext_noop ("URL"),
+    gettext_noop ("universal resource location (where the work is made available)") },
+  /* 30 */
+  { gettext_noop ("URI"),
+    gettext_noop ("universal resource identifier") },
+  { gettext_noop ("international standard recording code"),
+    gettext_noop ("ISRC number identifying the work") },
+  { gettext_noop ("MD4"),
+    gettext_noop ("MD4 hash") },
+  { gettext_noop ("MD5"),
+    gettext_noop ("MD5 hash") },
+  { gettext_noop ("SHA-0"),
+    gettext_noop ("SHA-0 hash") },
+  /* 35 */
+  { gettext_noop ("SHA-1"), 
+    gettext_noop ("SHA-1 hash") },
+  { gettext_noop ("RipeMD160"),
+    gettext_noop ("RipeMD150 hash") },
+  { gettext_noop ("GPS latitude ref"),
+    gettext_noop ("GPS latitude ref") },
+  { gettext_noop ("GPS latitude"),
+    gettext_noop ("GPS latitude") },
+  { gettext_noop ("GPS longitude ref"),
+    gettext_noop ("GPS longitude ref") },
+  /* 40 */
+  { gettext_noop ("GPS longitude"),
+    gettext_noop ("GPS longitude") },
+  { gettext_noop ("city"),
+    gettext_noop ("name of the city where the document originated") },
+  { gettext_noop ("sublocation"), 
+    gettext_noop ("more specific location of the geographic origin") },
+  { gettext_noop ("country"),
+    gettext_noop ("name of the country where the document originated") },
+  { gettext_noop ("country code"),
+    gettext_noop ("ISO 2-letter country code for the country of origin") },
+  /* 45 */
+  { gettext_noop ("unknown"),
+    gettext_noop ("specifics are not known") },
+  { gettext_noop ("description"),
+    gettext_noop ("description") },
+  { gettext_noop ("copyright"),
+    gettext_noop ("copyright information") },
+  { gettext_noop ("rights"),
+    gettext_noop ("information about rights") },
+  { gettext_noop ("keywords"),
+    gettext_noop ("keywords") },
+  /* 50 */
+  { gettext_noop ("abstract"),
+    gettext_noop ("abstract") },
+  { gettext_noop ("summary"),
+    gettext_noop ("summary") },
+  { gettext_noop ("subject"),
+    gettext_noop ("subject matter") },
+  { gettext_noop ("creator"),
+    gettext_noop ("name of the person who created the document") },
+  { gettext_noop ("format"),
+    gettext_noop ("name of the document format") },
+  /* 55 */
+  { gettext_noop ("format version"),
+    gettext_noop ("version of the document format") },
+  { gettext_noop ("created by software"),
+    gettext_noop ("name of the software that created the document") },
+  { gettext_noop ("unknown date"),
+    gettext_noop ("ambiguous date (could specify creation time, modification time or access time)") },
+  { gettext_noop ("creation date"),
+    gettext_noop ("date the document was created") },
+  { gettext_noop ("modification date"),
+    gettext_noop ("date the document was modified") },
+  /* 60 */
+  { gettext_noop ("last printed"),
+    gettext_noop ("date the document was last printed") },
+  { gettext_noop ("last saved by"),
+    gettext_noop ("name of the user who saved the document last") },
+  { gettext_noop ("total editing time"),
+    gettext_noop ("time spent editing the document") },
+  { gettext_noop ("editing cycles"),
+    gettext_noop ("number of editing cycles") },
+  { gettext_noop ("modified by software"),
+    gettext_noop ("name of software making modifications") },
+  /* 65 */
+  { gettext_noop ("revision history"),
+    gettext_noop ("information about the revision history") },
+
+#if 0
+  
   gettext_noop("author"),
   gettext_noop("artist"), /* 5 */
   gettext_noop("description"),
-  gettext_noop("comment"),
   gettext_noop("date"),
   gettext_noop("publisher"),
   gettext_noop("language"), /* 10 */
@@ -94,11 +270,6 @@ static const char *keywordTypes[] = {
   gettext_noop("build-host"),
   gettext_noop("operating system"), /* 50 */
   gettext_noop("dependency"),
-  gettext_noop("MD4"),
-  gettext_noop("MD5"),
-  gettext_noop("SHA-0"),
-  gettext_noop("SHA-1"), /* 55 */
-  gettext_noop("RipeMD160"),
   gettext_noop("resolution"),
   gettext_noop("category"),
   gettext_noop("book title"),
@@ -143,7 +314,6 @@ static const char *keywordTypes[] = {
   gettext_noop("created by software"),
   gettext_noop("modified by software"),
   gettext_noop("revision history"), /* 100 */
-  gettext_noop("lower case conversion"),
   gettext_noop("company"),
   gettext_noop("generator"),
   gettext_noop("character set"),
@@ -175,118 +345,131 @@ static const char *keywordTypes[] = {
   gettext_noop("ripper"), /* 130 */
   gettext_noop("filesize"),
   gettext_noop("track number"),
-  gettext_noop("international standard recording code"),
   gettext_noop("disc number"), 
   gettext_noop("preferred display style (GNUnet)"), /* 135 */
   gettext_noop("GNUnet URI of ECBC data"),
   gettext_noop("Complete file data (for non-binary files only)"),
-  gettext_noop("city"),
-  gettext_noop("country"),
-  gettext_noop("sublocation"), /* 140 */
-  gettext_noop("GPS latitude ref"),
-  gettext_noop("GPS latitude"),
-  gettext_noop("GPS longitude ref"),
-  gettext_noop("GPS longitude"),
   gettext_noop("rating"), /* 145 */
-  gettext_noop("country code"),
-  NULL
+
+#endif
 };
 
-/* the number of keyword types (for bounds-checking) */
-#define HIGHEST_TYPE_NUMBER 147
+/**
+ * Total number of keyword types (for bounds-checking) 
+ */
+#define HIGHEST_METATYPE_NUMBER (sizeof (meta_type_descriptions) / sizeof(*meta_type_descriptions))
 
-#ifdef HAVE_LIBOGG
-#if HAVE_VORBIS
-#define WITH_OGG 1
-#endif
-#endif
 
-#if HAVE_VORBISFILE
-#define WITH_OGG 1
-#endif
-
-#if HAVE_EXIV2
-#define EXSO "libextractor_exiv2:"
-#else
-#define EXSO ""
-#endif
-
-#if WITH_OGG
-#define OGGSO "libextractor_ogg:"
-#else
-#define OGGSO ""
-#endif
-
-#if HAVE_FLAC
-#define FLACSO "libextractor_flac:"
-#else
-#define FLACSO ""
-#endif
-
-#if HAVE_ZLIB
-#define QTSO "libextractor_qt:"
-#else
-#define QTSO ""
-#endif
-
-#if HAVE_GSF
-#define OLESO "libextractor_ole2:"
-#else
-#define OLESO ""
-#endif
-
-#if HAVE_MPEG2
-#define MPEGSO "libextractor_mpeg:"
-#else
-#define MPEGSO ""
-#endif 
-
-/* ATTN: order matters (for performance!) since
-   mime-types can be used to avoid parsing once
-   the type has been established! */
-#define DEFSO \
-"libextractor_html:\
-libextractor_man:\
-libextractor_ps:\
-libextractor_pdf:\
-libextractor_mp3:\
-libextractor_id3v2:\
-libextractor_id3v23:\
-libextractor_id3v24:\
-libextractor_mime:\
-libextractor_tar:\
-libextractor_dvi:\
-libextractor_deb:\
-libextractor_png:\
-libextractor_gif:\
-libextractor_wav:\
-libextractor_flv:\
-libextractor_real:\
-libextractor_jpeg:\
-libextractor_tiff:\
-libextractor_zip:\
-libextractor_rpm:\
-libextractor_riff:\
-libextractor_applefile:\
-libextractor_elf:\
-libextractor_oo:\
-libextractor_asf:\
-libextractor_sid:\
-libextractor_nsfe:\
-libextractor_nsf:\
-libextractor_it:\
-libextractor_xm:\
-libextractor_s3m"
-
-#define DEFAULT_LIBRARIES MPEGSO EXSO OLESO OGGSO FLACSO QTSO DEFSO
-
-const char * EXTRACTOR_getDefaultLibraries() {
-  return DEFAULT_LIBRARIES;
+/**
+ * Get the textual name of the keyword.
+ *
+ * @param type meta type to get a UTF-8 string for
+ * @return NULL if the type is not known, otherwise
+ *         an English (locale: C) string describing the type;
+ *         translate using 'dgettext ("libextractor", rval)'
+ */
+const char *
+EXTRACTOR_metatype_to_string(enum EXTRACTOR_MetaType type)
+{
+  if ((type < 0) || (type >= HIGHEST_METATYPE_NUMBER))
+    return NULL;
+  return meta_type_descriptions[type].short_description;
 }
 
-/* determine installation path */
 
-static char * cut_bin(char * in) {
+/**
+ * Get a long description for the meta type.
+ *
+ * @param type meta type to get a UTF-8 description for
+ * @return NULL if the type is not known, otherwise
+ *         an English (locale: C) string describing the type;
+ *         translate using 'dgettext ("libextractor", rval)'
+ */
+const char *
+EXTRACTOR_metatype_to_description(enum EXTRACTOR_MetaType type)
+{
+  if ((type < 0) || (type >= HIGHEST_METATYPE_NUMBER))
+    return NULL;
+  return meta_type_descriptions[type].long_description;
+}
+
+
+/**
+ * Return the highest type number, exclusive as in [0,max).
+ *
+ * @return highest legal metatype number for this version of libextractor
+ */
+enum EXTRACTOR_MetaType
+EXTRACTOR_metatype_get_max ()
+{
+  return HIGHEST_METATYPE_NUMBER;
+}
+
+
+/**
+ * Linked list of extractor plugins.  An application builds this list
+ * by telling libextractor to load various keyword-extraction
+ * plugins. Libraries can also be unloaded (removed from this list,
+ * see EXTRACTOR_plugin_remove).
+ */
+struct EXTRACTOR_PluginList
+{
+  /**
+   * This is a linked list.
+   */
+  struct EXTRACTOR_PluginList *next;
+
+  /**
+   * Pointer to the plugin (as returned by lt_dlopen).
+   */
+  void * libraryHandle;
+
+  /**
+   * Name of the library (i.e., 'libextractor_foo.so')
+   */
+  char *libname;
+  
+  /**
+   * Pointer to the function used for meta data extraction.
+   */
+  EXTRACTOR_ExtractMethod extractMethod;
+
+  /**
+   * Options for the plugin.
+   */
+  char * plugin_options;
+
+  /**
+   * Flags to control how the plugin is executed.
+   */
+  enum EXTRACTOR_Options flags;
+
+  /**
+   * Process ID of the child process for this plugin. 0 for 
+   * none.
+   */
+  pid_t cpid;
+
+  /**
+   * Pipe used to send information about shared memory segments to
+   * the child process.  NULL if not initialized.
+   */
+  FILE *cpipe_in;
+
+  /**
+   * Pipe used to read information about extracted meta data from
+   * the child process.  -1 if not initialized.
+   */
+  int cpipe_out;
+
+};
+
+
+/**
+ * Remove a trailing '/bin' from in (if present).
+ */
+static char * 
+cut_bin(char * in) {
   size_t p;
 
   if (in == NULL)
@@ -304,26 +487,6 @@ static char * cut_bin(char * in) {
   }
   return in;
 }
-
-static char * cut_lib(char * in) {
-  size_t p;
-
-  if (in == NULL)
-    return NULL;
-  p = strlen(in);
-  if (p > 4) {
-    if ( (in[p-1] == '/') ||
-	 (in[p-1] == '\\') )
-      in[--p] = '\0';
-    if (0 == strcmp(&in[p-3],
-		    "lib")) {
-      in[p-3] = '\0';
-      p -= 3;
-    }
-  }
-  return in;
-}
-
 
 #if LINUX
 /**
@@ -490,404 +653,337 @@ get_path_from_PATH() {
   return NULL;
 }
 
-static char *
-get_path_from_ENV_PREFIX() {
-  const char * p;
 
-  p = getenv("LIBEXTRACTOR_PREFIX");
-  if (p != NULL) {
-    char * s = malloc(strlen(p) + 6);
-    if (s != NULL) {
-      int len;
-      strcpy(s, p);
-      s = cut_bin(cut_lib(s));
-      len = strlen(s);
-      s = realloc(s, len + 6);
-      if (len > 0 && s[len-1] != '/')
-        strcat(s, "/lib/");
-      else
-        strcat(s, "lib/");
-      return s;
-    }
-  }
-  return NULL;
+/**
+ * Function to call on paths.
+ * 
+ * @param cls closure
+ * @param path a directory path
+ */
+typedef void (*PathProcessor)(void *cls,
+			      const char *path);
+
+
+/**
+ * Create a filename by appending 'fname' to 'path'.
+ *
+ * @param path the base path 
+ * @param fname the filename to append
+ * @return '$path/$fname'
+ */
+static char *
+append_to_dir (const char *path,
+	       const char *fname)
+{
+  char *ret;
+
+  ret = malloc (strlen (path) + strlen(fname) + 2);
+  sprintf (ret,
+#ifdef MINGW
+	   "%s\%s",
+#else
+	   "%s/%s",
+#endif
+	   path, 
+	   fname);
+  return ret;
 }
 
-/*
- * @brief get the path to the plugin directory
- * @return a pointer to the dir path (to be freed by the caller)
- */
-static char * os_get_installation_path() {
-  size_t n;
-  char * tmp;
-  char * lpref;
-  char * pexe;
-  char * modu;
-  char * dima;
-  char * path;
 
-  lpref = get_path_from_ENV_PREFIX();
+/**
+ * Iterate over all paths where we expect to find GNU libextractor
+ * plugins.
+ *
+ * @param pp function to call for each path
+ * @param pp_cls cls argument for pp.
+ */
+static void
+get_installation_paths (PathProcessor pp,
+			void *pp_cls)
+{
+  const char *p;
+  char * path;
+  char * prefix;
+  char * d;
+
+  prefix = NULL;
+  p = getenv("LIBEXTRACTOR_PREFIX");
+  if (p != NULL)
+    {
+      d = strdup (p);
+      prefix = strtok (d, ":");
+      while (NULL != prefix)
+	{
+	  pp (pp_cls, prefix);
+	  prefix = strtok (NULL, ":");
+	}
+      free (d);
+      return;
+    }
 #if LINUX
-  pexe = get_path_from_proc_exe();
-#else
-  pexe = NULL;
+  if (prefix == NULL)
+    prefix = get_path_from_proc_exe();
 #endif
 #if WINDOWS
-  modu = get_path_from_module_filename();
-#else
-  modu = NULL;
+  if (prefix == NULL)
+    prefix = get_path_from_module_filename();
 #endif
 #if DARWIN
-  dima = get_path_from_dyld_image();
-  path = NULL;
-#else
-  dima = NULL;
-  path = get_path_from_PATH();
+  if (prefix == NULL)
+    prefix = get_path_from_dyld_image();
 #endif
-  n = 1;
-  if (lpref != NULL)
-    n += strlen(lpref) + strlen(PLUGINDIR "/:");
-  if (pexe != NULL)
-    n += strlen(pexe) + strlen(PLUGINDIR "/:");
-  if (modu != NULL)
-    n += strlen(modu) + strlen(PLUGINDIR "/:");
-  if (dima != NULL)
-    n += strlen(dima) + strlen(PLUGINDIR "/:");
-  if (path != NULL)
-    n += strlen(path) + strlen(PLUGINDIR "/:");
-  tmp = malloc(n);
-  tmp[0] = '\0';
-  if (lpref != NULL) {
-    strcat(tmp, lpref);
-    strcat(tmp, PLUGINDIR "/:");
-    free(lpref);
-  }
-  if (pexe != NULL) {
-    strcat(tmp, pexe);
-    strcat(tmp, PLUGINDIR "/:");
-    free(pexe);
-  }
-  if (modu != NULL) {
-    strcat(tmp, modu);
-    strcat(tmp, PLUGINDIR "/:");
-    free(modu);
-  }
-  if (dima != NULL) {
-    strcat(tmp, dima);
-    strcat(tmp, PLUGINDIR "/:");
-    free(dima);
-  }
-  if (path != NULL) {
-    strcat(tmp, path);
-    strcat(tmp, PLUGINDIR "/:");
-    free(path);
-  }
-  if (strlen(tmp) > 0)
-    tmp[strlen(tmp)-1] = '\0';
-  if (strlen(tmp) == 0) {
-    free(tmp);
-    return NULL;
-  }
-  return tmp;
-}
-
-
-/* ************library initialization ***************** */
-
-static char * old_dlsearchpath = NULL;
-
-/* using libtool, needs init! */
-void __attribute__ ((constructor)) le_ltdl_init() {
-  int err;
-  const char * opath;
-  char * path;
-  char * cpath;
-
-#if ENABLE_NLS
-  BINDTEXTDOMAIN(PACKAGE, LOCALEDIR);
-  BINDTEXTDOMAIN("iso-639", ISOLOCALEDIR); /* used by wordextractor */
-#endif
-  err = lt_dlinit ();
-  if (err > 0) {
-#if DEBUG
-    fprintf(stderr,
-	    _("Initialization of plugin mechanism failed: %s!\n"),
-	    lt_dlerror());
-#endif
+  if (prefix == NULL)
+    prefix = get_path_from_PATH();
+  if (prefix == NULL)
     return;
-  }
-  opath = lt_dlgetsearchpath();
-  if (opath != NULL)
-    old_dlsearchpath = strdup(opath);
-  path = os_get_installation_path();
-  if (path != NULL) {
-    if (opath != NULL) {
-      cpath = malloc(strlen(path) + strlen(opath) + 4);
-      strcpy(cpath, opath);
-      strcat(cpath, ":");
-      strcat(cpath, path);
-      lt_dlsetsearchpath(cpath);
-      free(path);
-      free(cpath);
-    } else {
-      lt_dlsetsearchpath(path);
-      free(path);
+  if (prefix != NULL)
+    {
+      path = append_to_dir (prefix, PLUGINDIR);
+      pp (pp_cls, path);
+      free (path);
+      free (prefix);
+      return;
     }
-  }
-#ifdef MINGW
-  InitWinEnv();
-#endif
 }
 
-void __attribute__ ((destructor)) le_ltdl_fini() {
-  lt_dlsetsearchpath(old_dlsearchpath);
-  if (old_dlsearchpath != NULL) {
-    free(old_dlsearchpath);
-    old_dlsearchpath = NULL;
-  }
-#ifdef MINGW
-  ShutdownWinEnv();
-#endif
-  lt_dlexit ();
-}
 
-/**
- * Open a file
- */
-static int fileopen(const char *filename, int oflag, ...)
+struct DefaultLoaderContext
 {
-  int mode;
-  char *fn;
-
-#ifdef MINGW
-  char szFile[_MAX_PATH + 1];
-  long lRet;
-
-  if ((lRet = plibc_conv_to_win_path(filename, szFile)) != ERROR_SUCCESS)
-  {
-    errno = ENOENT;
-    SetLastError(lRet);
-
-    return -1;
-  }
-  fn = szFile;
-#else
-  fn = (char *) filename;
-#endif
-
-  if (oflag & O_CREAT)
-  {
-    va_list arg;
-    va_start(arg, oflag);
-    mode = va_arg(arg, int);
-    va_end(arg);
-  }
-  else
-  {
-    mode = 0;
-  }
-
-#ifdef MINGW
-  /* Set binary mode */
-  mode |= O_BINARY;
-#endif
-
-  return open(fn, oflag, mode);
-}
-
+  struct EXTRACTOR_PluginList *res;
+  enum EXTRACTOR_Options flags;
+};
 
 
 /**
- * Load the default set of libraries. The default set of
- * libraries consists of the libraries that are part of
- * the libextractor distribution (except split and filename
- * extractor) plus the extractors that are specified
- * in the environment variable "LIBEXTRACTOR_LIBRARIES".
+ * Load all plugins from the given directory.
+ * 
+ * @param cls pointer to the "struct EXTRACTOR_PluginList*" to extend
+ * @param path path to a directory with plugins
+ */
+static void
+load_plugins_from_dir (void *cls,
+		       const char *path)
+{
+  struct DefaultLoaderContext *dlc = cls;
+  DIR *dir;
+  struct dirent *ent;
+  char *fname;
+  const char *la;
+
+  dir = opendir (path);
+  if (NULL == dir)
+    return;
+  while (NULL != (ent = readdir (dir)))
+    {
+      if (ent->d_name[0] == '.')
+	continue;
+      if ( (NULL != (la = strstr (ent->d_name, ".la"))) &&
+	   (la[3] == '\0') )
+	continue; /* only load '.so' and '.dll' */
+      fname = append_to_dir (path, ent->d_name);
+      dlc->res = EXTRACTOR_plugin_add (dlc->res,
+				       fname,
+				       NULL,
+				       dlc->flags);
+      free (fname);
+    }
+  closedir (dir);
+}
+
+
+/**
+ * Load the default set of plugins. The default can be changed
+ * by setting the LIBEXTRACTOR_LIBRARIES environment variable.
+ * If it is set to "env", then this function will return
+ * EXTRACTOR_plugin_add_config (NULL, env, flags).  Otherwise,
+ * it will load all of the installed plugins and return them.
  *
- * @return the default set of libraries.
+ * @param flags options for all of the plugins loaded
+ * @return the default set of plugins, NULL if no plugins were found
  */
-EXTRACTOR_ExtractorList *
-EXTRACTOR_loadDefaultLibraries ()
+struct EXTRACTOR_PluginList * 
+EXTRACTOR_plugin_add_defaults(enum EXTRACTOR_Options flags)
 {
+  struct DefaultLoaderContext dlc;
   char *env;
-  char *tmp;
-  EXTRACTOR_ExtractorList *res;
-
 
   env = getenv ("LIBEXTRACTOR_LIBRARIES");
-  if (env == NULL)
-    {
-      return EXTRACTOR_loadConfigLibraries (NULL, DEFAULT_LIBRARIES);
-    }
-  tmp = malloc (strlen (env) + strlen (DEFAULT_LIBRARIES) + 2);
-  strcpy (tmp, env);
-  strcat (tmp, ":");
-  strcat (tmp, DEFAULT_LIBRARIES);
-  res = EXTRACTOR_loadConfigLibraries (NULL, tmp);
-  free (tmp);
-  return res;
+  if (env != NULL)
+    return EXTRACTOR_plugin_add_config (NULL, env, flags);
+  dlc.res = NULL;
+  dlc.flags = flags;
+  get_installation_paths (&load_plugins_from_dir,
+			  &dlc);
+  return dlc.res;
 }
+
 
 /**
- * Get the textual name of the keyword.
- * @return NULL if the type is not known
+ * Try to resolve a plugin function.
+ *
+ * @param lib_handle library to search for the symbol
+ * @param prefix prefix to add
+ * @param sym_name base name for the symbol
+ * @return NULL on error, otherwise pointer to the symbol
  */
-const char *
-EXTRACTOR_getKeywordTypeAsString(const EXTRACTOR_KeywordType type)
+static void *
+get_symbol_with_prefix(void *lib_handle,
+		       const char *prefix)
 {
-  if ((type >= 0) && (type < HIGHEST_TYPE_NUMBER))
-    return keywordTypes[type];
-  else
+  char *name;
+  void *symbol;
+  const char *sym_name;
+  char *sym;
+  char *dot;
+
+  sym_name = strstr (prefix, "_");
+  if (sym_name == NULL)
     return NULL;
-}
-
-static pthread_mutex_t ltdl_lock = PTHREAD_MUTEX_INITIALIZER;
-
-#define LTDL_MUTEX_LOCK                     \
-  if (pthread_mutex_lock (&ltdl_lock) != 0) \
-    abort();
-#define LTDL_MUTEX_UNLOCK                     \
-  if (pthread_mutex_unlock (&ltdl_lock) != 0) \
-    abort();
-
-static void *getSymbolWithPrefix(void *lib_handle,
-                                 const char *lib_name,
-                                 const char *sym_name)
-{
-  size_t name_size
-    = strlen(lib_name)
-    + strlen(sym_name)
-    + 1 /* for the zero delim. */
-    + 1 /* for the optional '_' prefix */;
-  char *name=malloc(name_size),*first_error;
-  void *symbol=NULL;
-
-  snprintf(name,
-	   name_size,
-	   "_%s%s",
-	   lib_name,
-	   sym_name);
-
-  LTDL_MUTEX_LOCK
-  symbol=lt_dlsym(lib_handle,name+1 /* skip the '_' */);
-  if (symbol==NULL) {
-    first_error=strdup(lt_dlerror());
-    symbol=lt_dlsym(lib_handle,name /* now try with the '_' */);
+  sym_name++;
+  sym = strdup (sym_name);
+  dot = strstr (sym, ".");
+  if (dot != NULL)
+    *dot = '\0';
+  name = malloc(strlen(sym) + 32);
+  sprintf(name,
+	  "_EXTRACTOR_%s_extract",
+	  sym);
+  free (sym);
+  /* try without '_' first */
+  symbol = lt_dlsym(lib_handle, name + 1);
+  if (symbol==NULL) 
+    {
+      /* now try with the '_' */
 #if DEBUG
-    fprintf(stderr,
-	    _("Resolving symbol `%s' in library `%s' failed, "
-	      "so I tried `%s', but that failed also.  Errors are: "
-	      "`%s' and `%s'.\n"),
-             name+1,
-             lib_name,
-             name,
-             first_error,
-             lt_dlerror());
+      char *first_error = strdup (lt_dlerror());
 #endif
-    free(first_error);
-  }
-  LTDL_MUTEX_UNLOCK
+      symbol = lt_dlsym(lib_handle, name);
+#if DEBUG
+      if (NULL == symbol)
+	{
+	  fprintf(stderr,
+		  "Resolving symbol `%s' failed, "
+		  "so I tried `%s', but that failed also.  Errors are: "
+		  "`%s' and `%s'.\n",
+		  name+1,
+		  name,
+		  first_error,
+		  lt_dlerror());
+	}
+      free(first_error);
+#endif
+    }
   free(name);
   return symbol;
 }
 
+
 /**
- * Load a dynamic library.
- * @return 1 on success, -1 on error
+ * Load a plugin.
+ *
+ * @param name name of the plugin
+ * @param libhandle set to the handle for the plugin
+ * @param method set to the extraction method
+ * @return 0 on success, -1 on error
  */
 static int
-loadLibrary (const char *name,
+plugin_load (const char *name,
 	     void **libHandle,
-	     ExtractMethod * method)
+	     EXTRACTOR_ExtractMethod * method)
 {
   lt_dladvise advise;
 
-  LTDL_MUTEX_LOCK
-  lt_dladvise_init(&advise);
-  lt_dladvise_ext(&advise);
-  lt_dladvise_local(&advise);
+  lt_dladvise_init (&advise);
+  lt_dladvise_ext (&advise);
+  lt_dladvise_local (&advise);
   *libHandle = lt_dlopenadvise (name, advise);
   lt_dladvise_destroy(&advise);
   if (*libHandle == NULL)
     {
 #if DEBUG
       fprintf (stderr,
-	       _("Loading `%s' plugin failed: %s\n"),
+	       "Loading `%s' plugin failed: %s\n",
 	       name,
 	       lt_dlerror ());
 #endif
-      LTDL_MUTEX_UNLOCK
       return -1;
     }
-  LTDL_MUTEX_UNLOCK
-
-  *method = (ExtractMethod) getSymbolWithPrefix (*libHandle, name, "_extract");
-  if (*method == NULL) {
-    LTDL_MUTEX_LOCK
-    lt_dlclose (*libHandle);
-    LTDL_MUTEX_UNLOCK
-    return -1;
-  }
-  return 1;
+  *method = get_symbol_with_prefix (*libHandle, name);
+  if (*method == NULL) 
+    {
+      lt_dlclose (*libHandle);
+      return -1;
+    }
+  return 0;
 }
 
-/* Internal function that accepts options. */
-static EXTRACTOR_ExtractorList *
-EXTRACTOR_addLibrary2 (EXTRACTOR_ExtractorList * prev,
-		       const char *library, const char *options)
-{
-  EXTRACTOR_ExtractorList *result;
-  void *handle;
-  ExtractMethod method;
 
-  if (-1 == loadLibrary (library, &handle, &method))
+/**
+ * Add a library for keyword extraction.
+ *
+ * @param prev the previous list of libraries, may be NULL
+ * @param library the name of the library
+ * @param flags options to use
+ * @return the new list of libraries, equal to prev iff an error occured
+ */
+struct EXTRACTOR_PluginList *
+EXTRACTOR_plugin_add (struct EXTRACTOR_PluginList * prev,
+		      const char *library,
+		      const char *options,
+		      enum EXTRACTOR_Options flags)
+{
+  struct EXTRACTOR_PluginList *result;
+  void *handle;
+  EXTRACTOR_ExtractMethod method;
+
+  if (0 != plugin_load (library, &handle, &method))
     return prev;
-  result = malloc (sizeof (EXTRACTOR_ExtractorList));
+  result = malloc (sizeof (struct EXTRACTOR_PluginList));
   result->next = prev;
   result->libraryHandle = handle;
   result->extractMethod = method;
   result->libname = strdup (library);
-  if( options )
-    result->options = strdup (options);
+  result->flags = flags;
+  if (NULL != options)
+    result->plugin_options = strdup (options);
   else
-    result->options = NULL;
+    result->plugin_options = NULL;
   return result;
 }
 
+
 /**
- * Add a library for keyword extraction.
+ * Add a library for keyword extraction at the END of the list.
  * @param prev the previous list of libraries, may be NULL
  * @param library the name of the library
- * @return the new list of libraries, equal to prev iff an error occured
+ * @param options options to give to the library
+ * @param flags options to use
+ * @return the new list of libraries, always equal to prev
+ *         except if prev was NULL and no error occurs
  */
-EXTRACTOR_ExtractorList *
-EXTRACTOR_addLibrary (EXTRACTOR_ExtractorList * prev,
-		      const char *library)
+struct EXTRACTOR_PluginList *
+EXTRACTOR_plugin_add_last(struct EXTRACTOR_PluginList *prev,
+			  const char *library,
+			  const char *options,
+			  enum EXTRACTOR_Options flags)
 {
-  return EXTRACTOR_addLibrary2(prev, library, NULL);
-}
-
-/* Internal function which takes options. */
-static EXTRACTOR_ExtractorList *
-EXTRACTOR_addLibraryLast2 (EXTRACTOR_ExtractorList * prev,
-			   const char *library, const char *options)
-{
-  EXTRACTOR_ExtractorList *result;
-  EXTRACTOR_ExtractorList *pos;
+  struct EXTRACTOR_PluginList *result;
+  struct EXTRACTOR_PluginList *pos;
   void *handle;
-  ExtractMethod method;
+  EXTRACTOR_ExtractMethod method;
 
-  if (-1 == loadLibrary (library, &handle, &method))
+  if (0 != plugin_load (library, &handle, &method))
     return prev;
-  result = malloc (sizeof (EXTRACTOR_ExtractorList));
+  result = malloc (sizeof (struct EXTRACTOR_PluginList));
   result->next = NULL;
   result->libraryHandle = handle;
   result->extractMethod = method;
   result->libname = strdup (library);
   if( options )
-    result->options = strdup (options);
+    result->plugin_options = strdup (options);
   else
-    result->options = NULL;
+    result->plugin_options = NULL;
+  result->flags = flags;
   if (prev == NULL)
     return result;
   pos = prev;
@@ -897,42 +993,33 @@ EXTRACTOR_addLibraryLast2 (EXTRACTOR_ExtractorList * prev,
   return prev;
 }
 
-/**
- * Add a library for keyword extraction at the END of the list.
- * @param prev the previous list of libraries, may be NULL
- * @param library the name of the library
- * @return the new list of libraries, always equal to prev
- *         except if prev was NULL and no error occurs
- */
-EXTRACTOR_ExtractorList *
-EXTRACTOR_addLibraryLast (EXTRACTOR_ExtractorList * prev,
-			  const char *library)
-{
-  return EXTRACTOR_addLibraryLast2(prev, library, NULL);
-}
 
 /**
  * Load multiple libraries as specified by the user.
+ *
  * @param config a string given by the user that defines which
  *        libraries should be loaded. Has the format
- *        "[[-]LIBRARYNAME[:[-]LIBRARYNAME]*]". For example,
- *        libextractor_mp3.so:libextractor_ogg.so loads the
+ *        "[[-]LIBRARYNAME[(options)][:[-]LIBRARYNAME[(options)]]]*".
+ *        For example,
+ *        /usr/lib/libextractor/libextractor_mp3.so:/usr/lib/libextractor/libextractor_ogg.so loads the
  *        mp3 and the ogg library. The '-' before the LIBRARYNAME
  *        indicates that the library should be added to the end
  *        of the library list (addLibraryLast).
  * @param prev the  previous list of libraries, may be NULL
+ * @param flags options to use
  * @return the new list of libraries, equal to prev iff an error occured
  *         or if config was empty (or NULL).
  */
-EXTRACTOR_ExtractorList *
-EXTRACTOR_loadConfigLibraries (EXTRACTOR_ExtractorList * prev,
-			       const char *config)
+struct EXTRACTOR_PluginList *
+EXTRACTOR_plugin_add_config (struct EXTRACTOR_PluginList * prev,
+			     const char *config,
+			     enum EXTRACTOR_Options flags)
 {
   char *cpy;
-  int pos;
-  int last;
-  int lastconf;
-  int len;
+  size_t pos;
+  size_t last;
+  ssize_t lastconf;
+  size_t len;
 
   if (config == NULL)
     return prev;
@@ -966,36 +1053,39 @@ EXTRACTOR_loadConfigLibraries (EXTRACTOR_ExtractorList * prev,
       if (cpy[last] == '-')
 	{
 	  last++;
-	  if( lastconf != -1 )
-	    prev = EXTRACTOR_addLibraryLast2 (prev, &cpy[last],
-					      &cpy[lastconf]);
-	  else
-	    prev = EXTRACTOR_addLibraryLast2 (prev, &cpy[last], NULL);
+	  prev = EXTRACTOR_plugin_add_last (prev, 
+					    &cpy[last],
+					    (lastconf != -1) ? &cpy[lastconf] : NULL,
+					    flags);
 	}
       else
-	if( lastconf != -1 )
-	  prev = EXTRACTOR_addLibrary2 (prev, &cpy[last], &cpy[lastconf]);
-	else
-	  prev = EXTRACTOR_addLibrary2 (prev, &cpy[last], NULL);
-
+	{
+	  prev = EXTRACTOR_plugin_add (prev, 
+				       &cpy[last], 
+				       (lastconf != -1) ? &cpy[lastconf] : NULL,
+				       flags);
+	}
       last = pos;
     }
   free (cpy);
   return prev;
 }
 
+
 /**
- * Remove a library for keyword extraction.
- * @param prev the current list of libraries
- * @param library the name of the library to remove
- * @return the reduced list, unchanged if the library was not loaded
+ * Remove a plugin from a list.
+ *
+ * @param prev the current list of plugins
+ * @param library the name of the plugin to remove
+ * @return the reduced list, unchanged if the plugin was not loaded
  */
-EXTRACTOR_ExtractorList *
-EXTRACTOR_removeLibrary(EXTRACTOR_ExtractorList * prev,
-			const char *library)
+struct EXTRACTOR_PluginList *
+EXTRACTOR_plugin_remove(struct EXTRACTOR_PluginList * prev,
+			const char * library)
 {
-  EXTRACTOR_ExtractorList *pos;
-  EXTRACTOR_ExtractorList *first;
+  struct EXTRACTOR_PluginList *pos;
+  struct EXTRACTOR_PluginList *first;
+
   pos = prev;
   first = prev;
   while ((pos != NULL) && (0 != strcmp (pos->libname, library)))
@@ -1011,57 +1101,462 @@ EXTRACTOR_removeLibrary(EXTRACTOR_ExtractorList * prev,
       else
 	prev->next = pos->next;
       /* found */
+      /* FIXME: stop sub-process! */
       free (pos->libname);
-      if( pos->options )
-	free (pos->options);
-      if( pos->libraryHandle ) {
-        LTDL_MUTEX_LOCK
-	lt_dlclose (pos->libraryHandle);
-        LTDL_MUTEX_UNLOCK
-      }
+      free (pos->plugin_options);
+      if (NULL != pos->libraryHandle) 
+	lt_dlclose (pos->libraryHandle);      
       free (pos);
     }
 #if DEBUG
   else
     fprintf(stderr,
-	    _("Unloading plugin `%s' failed!\n"),
+	    "Unloading plugin `%s' failed!\n",
 	    library);
 #endif
   return first;
 }
 
+
 /**
- * Remove all extractors.
- * @param libraries the list of extractors
+ * Remove all plugins from the given list (destroys the list).
+ *
+ * @param plugin the list of plugins
  */
-void
-EXTRACTOR_removeAll (EXTRACTOR_ExtractorList * libraries)
+void 
+EXTRACTOR_plugin_remove_all(struct EXTRACTOR_PluginList *plugins)
 {
-  while (libraries != NULL)
-    libraries = EXTRACTOR_removeLibrary (libraries, libraries->libname);
+  while (plugins != NULL)
+    plugins = EXTRACTOR_plugin_remove (plugins, plugins->libname);
+}
+
+
+static int
+write_all (int fd,
+	   const void *buf,
+	   size_t size)
+{
+  const char *data = buf;
+  size_t off = 0;
+  ssize_t ret;
+  
+  while (off < size)
+    {
+      ret = write (fd, &data[off], size - off);
+      if (ret <= 0)
+	return -1;
+      off += ret;
+    }
+  return 0;
+}
+
+
+static int
+read_all (int fd,
+	  void *buf,
+	  size_t size)
+{
+  char *data = buf;
+  size_t off = 0;
+  ssize_t ret;
+  
+  while (off < size)
+    {
+      ret = read (fd, &data[off], size - off);
+      if (ret <= 0)
+	return -1;
+      off += ret;
+    }
+  return 0;
+}
+
+
+/**
+ * Header used for our IPC replies.  A header
+ * with all fields being zero is used to indicate
+ * the end of the stream.
+ */
+struct IpcHeader
+{
+  enum EXTRACTOR_MetaType type;
+  enum EXTRACTOR_MetaFormat format;
+  size_t data_len;
+  size_t mime_len;
+};
+
+
+/**
+ * Function called by a plugin in a child process.  Transmits
+ * the meta data back to the parent process.
+ *
+ * @param cls closure, "int*" of the FD for transmission
+ * @param plugin_name name of the plugin that produced this value;
+ *        special values can be used (i.e. '<zlib>' for zlib being
+ *        used in the main libextractor library and yielding
+ *        meta data).
+ * @param type libextractor-type describing the meta data
+ * @param format basic format information about data 
+ * @param data_mime_type mime-type of data (not of the original file);
+ *        can be NULL (if mime-type is not known)
+ * @param data actual meta-data found
+ * @param data_len number of bytes in data
+ * @return 0 to continue extracting, 1 to abort (transmission error)
+ */ 
+static int
+transmit_reply (void *cls,
+		const char *plugin_name,
+		enum EXTRACTOR_MetaType type,
+		enum EXTRACTOR_MetaFormat format,
+		const char *data_mime_type,
+		const char *data,
+		size_t data_len)
+{
+  int *cpipe_out = cls;
+  struct IpcHeader hdr;
+  size_t mime_len;
+
+  if (data_mime_type == NULL)
+    mime_len = 0;
+  else
+    mime_len = strlen (data_mime_type) + 1;
+  if (mime_len > MAX_MIME_LEN)
+    mime_len = MAX_MIME_LEN;
+  hdr.type = type;
+  hdr.format = format;
+  hdr.data_len = data_len;
+  hdr.mime_len = mime_len;
+  if ( (hdr.type == 0) &&
+       (hdr.format == 0) &&
+       (hdr.data_len == 0) &&
+       (hdr.mime_len == 0) )
+    return 0; /* better skip this one, would signal termination... */    
+  if ( (0 != write_all (*cpipe_out, &hdr, sizeof(hdr))) ||
+       (0 != write_all (*cpipe_out, data_mime_type, mime_len)) ||
+       (0 != write_all (*cpipe_out, data, data_len)) )
+    return 1;  
+  return 0;
 }
 
 
 
-/**
- * How many bytes do we actually try to scan? (from the beginning
- * of the file).  Limit to 1 GB.
- */
-#define MAX_READ 1024 * 1024 * 1024
 
 /**
- * How many bytes do we actually try to decompress? (from the beginning
- * of the file).  Limit to 16 MB.
+ * 'main' function of the child process.
+ * Reads shm-filenames from 'in' (line-by-line) and
+ * writes meta data blocks to 'out'.  The meta data
+ * stream is terminated by an empty entry.
+ *
+ * @param plugin extractor plugin to use
+ * @param in stream to read from
+ * @param out stream to write to
  */
-#define MAX_DECOMPRESS 16 * 1024 * 1024
+static void
+process_requests (struct EXTRACTOR_PluginList *plugin,
+		  int in,
+		  int out)
+{
+  char fn[256];
+  FILE *fin;
+  void *ptr;
+  int shmid;
+  struct stat sbuf;
+  struct IpcHeader hdr;
+  
+  memset (&hdr, 0, sizeof (hdr));
+  fin = fdopen (in, "r");
+  while (NULL != fgets (fn, sizeof(fn), fin))
+    {
+      if ( (-1 != (shmid = shm_open (fn, O_RDONLY, 0))) &&
+	   (0 == fstat (shmid, &sbuf)) &&
+	   (NULL != (ptr = shmat (shmid, NULL, SHM_RDONLY))) )
+	{
+	  if (0 != plugin->extractMethod (ptr,
+					  sbuf.st_size,
+					  &transmit_reply,
+					  &out,
+					  plugin->plugin_options))
+	    break;
+	  if (0 != write_all (out, &hdr, sizeof(hdr)))
+	    break;
+	}
+      if (ptr != NULL)
+	shmdt (ptr);
+      if (-1 != shmid)
+	close (shmid);
+    }
+  fclose (fin);
+  close (out);
+}
 
 
-static EXTRACTOR_KeywordList *
-getKeywords (EXTRACTOR_ExtractorList * extractor,
-	     const char * filename,
-	     const unsigned char * data,
-	     size_t size) {
-  EXTRACTOR_KeywordList *result;
+/**
+ * Start the process for the given plugin.
+ */ 
+static void
+start_process (struct EXTRACTOR_PluginList *plugin)
+{
+  int p1[2];
+  int p2[2];
+  pid_t pid;
+  
+  if (0 != pipe (p1))
+    {
+      plugin->cpid = -1;
+      return;
+    }
+  if (0 != pipe (p2))
+    {
+      close (p1[0]);
+      close (p1[1]);
+      plugin->cpid = -1;
+      return;
+    }
+  pid = fork ();
+  if (pid == -1)
+    {
+      close (p1[0]);
+      close (p1[1]);
+      close (p2[0]);
+      close (p2[1]);
+      plugin->cpid = -1;
+      return;
+    }
+  if (pid == 0)
+    {
+      close (p1[1]);
+      close (p2[0]);
+      process_requests (plugin, p1[0], p2[1]);
+      _exit (0);
+    }
+  plugin->cpid = 0;
+  close (p1[0]);
+  close (p2[1]);
+  plugin->cpipe_in = fdopen (p1[1], "w");
+  plugin->cpipe_out = p2[0];
+}
+
+
+/**
+ * Stop the child process of this plugin.
+ */
+static void
+stop_process (struct EXTRACTOR_PluginList *plugin)
+{
+  int status;
+
+  if (plugin->cpid == -1)
+    return;
+  kill (plugin->cpid, SIGKILL);
+  waitpid (plugin->cpid, &status, 0);
+  plugin->cpid = -1;
+  close (plugin->cpipe_out);
+  plugin->cpipe_out = -1;
+  fclose (plugin->cpipe_in);
+  plugin->cpipe_in = NULL;
+}
+
+
+/**
+ * Extract meta data using the given plugin, running the
+ * actual code of the plugin out-of-process.
+ *
+ * @param plugin which plugin to call
+ * @param shmfn file name of the shared memory segment
+ * @param proc function to call on the meta data
+ * @param proc_cls cls for proc
+ * @return 0 if proc did not return non-zero
+ */
+static int
+extract_oop (struct EXTRACTOR_PluginList *plugin,
+	     const char *shmfn,
+	     EXTRACTOR_MetaDataProcessor proc,
+	     void *proc_cls)
+{
+  struct IpcHeader hdr;
+  char mimetype[MAX_MIME_LEN + 1];
+  char *data;
+
+  if (0 <= fprintf (plugin->cpipe_in, "%s\n", shmfn))
+    {
+      stop_process (plugin);
+      plugin->cpid = -1;
+      return 0;
+    }
+  while (1)
+    {
+      if (0 != read_all (plugin->cpipe_out,
+			 &hdr,
+			 sizeof(hdr)))
+	{
+	  return 0;
+	}
+      if  ( (hdr.type == 0) &&
+	    (hdr.format == 0) &&
+	    (hdr.data_len == 0) &&
+	    (hdr.mime_len == 0) )
+	break;
+      if (hdr.mime_len > MAX_MIME_LEN)
+	{
+	  stop_process (plugin);
+	  return 0;
+	}
+      data = malloc (hdr.data_len);
+      if (data == NULL)
+	{
+	  stop_process (plugin);
+	  return 1;
+	}
+      if ( (0 != (read_all (plugin->cpipe_out,
+			    mimetype,
+			    hdr.mime_len))) ||
+	   (0 != (read_all (plugin->cpipe_out,
+			    data,
+			    hdr.data_len))) )
+	{
+	  stop_process (plugin);
+	  free (data);
+	  return 0;
+	}	   
+      mimetype[hdr.mime_len] = '\0';
+      if ( (proc != NULL) &&
+	   (0 != proc (proc_cls, 
+		       plugin->libname,
+		       hdr.type,
+		       hdr.format,
+		       mimetype,
+		       data,
+		       hdr.data_len)) )
+	proc = NULL;	
+      free (data);
+    }
+  if (NULL == proc)
+    return 1;
+  return 0;
+}	     
+
+
+/**
+ * Extract keywords from a file using the given set of plugins.
+ *
+ * @param plugins the list of plugins to use
+ * @param filename the name of the file, can be NULL 
+ * @param data data to process, never NULL
+ * @param size number of bytes in data, ignored if data is NULL
+ * @param proc function to call for each meta data item found
+ * @param proc_cls cls argument to proc
+ */
+static void
+extract (struct EXTRACTOR_PluginList *plugins,
+	 const char * filename,
+	 const char * data,
+	 size_t size,
+	 EXTRACTOR_MetaDataProcessor proc,
+	 void *proc_cls) 
+{
+  struct EXTRACTOR_PluginList *ppos;
+  int shmid;
+  enum EXTRACTOR_Options flags;
+  void *ptr;
+  char fn[255];
+  int want_shm;
+
+  want_shm = 0;
+  ppos = plugins;
+  while (NULL != ppos)
+    {      
+      switch (ppos->flags)
+	{
+	case EXTRACTOR_OPTION_NONE:
+	  break;
+	case EXTRACTOR_OPTION_OUT_OF_PROCESS:
+	  if (0 == plugins->cpid)
+	    start_process (plugins);
+	  want_shm = 1;
+	  break;
+	case EXTRACTOR_OPTION_AUTO_RESTART:
+	  if ( (0 == plugins->cpid) ||
+	       (-1 == plugins->cpid) )
+	    start_process (plugins);
+	  want_shm = 1;
+	  break;
+	}      
+      ppos = ppos->next;
+    }
+
+  if (want_shm)
+    {
+      sprintf (fn,
+	       "/tmp/libextractor-shm-%u-XXXXXX",
+	       getpid());	   
+      mktemp (fn);
+      shmid = shm_open (fn, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
+      ptr = NULL;
+      if (shmid != -1)
+	{
+	  if ( (0 != ftruncate (shmid, size)) ||
+	       (NULL == (ptr = shmat (shmid, NULL, 0))) )
+	    {
+	      close (shmid);	
+	      shmid = -1;
+	    }
+	  memcpy (ptr, data, size);
+	}
+    }
+  ppos = plugins;
+  while (NULL != ppos)
+    {
+      flags = ppos->flags;
+      if (shmid == -1)
+	flags = EXTRACTOR_OPTION_NONE;
+      switch (flags)
+	{
+	case EXTRACTOR_OPTION_NONE:
+	  if (0 != ppos->extractMethod (data, 
+					size, 
+					proc, 
+					proc_cls,
+					ppos->plugin_options))
+	    return;
+	  break;
+	case EXTRACTOR_OPTION_OUT_OF_PROCESS:
+	case EXTRACTOR_OPTION_AUTO_RESTART:
+	  if (0 != extract_oop (ppos, fn, proc, proc_cls))
+	    return;
+	  break;
+	}      
+      ppos = ppos->next;
+    }
+  if (want_shm)
+    {
+      if (NULL != ptr)
+	shmdt (ptr);
+      if (shmid != -1)
+	close (shmid);
+      shm_unlink (fn);
+      unlink (fn);
+    }
+}
+
+
+/**
+ * If the given data is compressed using gzip or bzip2, decompress
+ * it.  Run 'extract' on the decompressed contents (or the original
+ * contents if they were not compressed).
+ *
+ * @param plugins the list of plugins to use
+ * @param filename the name of the file, can be NULL 
+ * @param data data to process, never NULL
+ * @param size number of bytes in data, ignored if data is NULL
+ * @param proc function to call for each meta data item found
+ * @param proc_cls cls argument to proc
+ */
+static void
+decompress_and_extract (struct EXTRACTOR_PluginList *plugins,
+			const char * filename,
+			const unsigned char * data,
+			size_t size,
+			EXTRACTOR_MetaDataProcessor proc,
+			void *proc_cls) {
   unsigned char * buf;
   size_t dsize;
 #if HAVE_ZLIB
@@ -1075,7 +1570,6 @@ getKeywords (EXTRACTOR_ExtractorList * extractor,
   size_t bpos;
 #endif
 
-  result = NULL;
   buf = NULL;
   dsize = 0;
 #if HAVE_ZLIB
@@ -1083,687 +1577,416 @@ getKeywords (EXTRACTOR_ExtractorList * extractor,
   if ( (size >= 12) &&
        (data[0] == 0x1f) &&
        (data[1] == 0x8b) &&
-       (data[2] == 0x08) ) {
-
-    /*
-     * Skip gzip header - we might want to retrieve parts of it as keywords
-     */
-    unsigned gzip_header_length = 10;
-
-    if (data[3] & 0x4) /* FEXTRA  set */
-      gzip_header_length += 2 + (unsigned) (data[10] & 0xff)
-                              + (((unsigned) (data[11] & 0xff)) * 256);
-
-    if(data[3] & 0x8) /* FNAME set */
+       (data[2] == 0x08) ) 
     {
-      const unsigned char * cptr = data + gzip_header_length;
-
-      /*
-       * stored file name is here
-       * extremely long file names might break the following code.
-       */
-
-      while(cptr < data + size)
-      {
-        if('\0' == *cptr)
-          break;
-
-        cptr++;
-      }
-      gzip_header_length = (cptr - data) + 1;
-    }
-
-    if(data[3] & 0x16) /* FCOMMENT set */
-    {
-      const unsigned char * cptr = data + gzip_header_length;
-
-      /*
-       * stored comment is here
-       */
-
-      while(cptr < data + size)
-      {
-        if('\0' == *cptr)
-          break;
-
-        cptr ++;
-      }
-
-      gzip_header_length = (cptr - data) + 1;
-    }
-
-    if(data[3] & 0x2) /* FCHRC set */
-      gzip_header_length += 2;
-
-    memset(&strm,
-	   0,
-	   sizeof(z_stream));
-#ifdef ZLIB_VERNUM
-    gzip_header_length = 0;
-#endif
-    if (size > gzip_header_length) {
-      strm.next_in = (Bytef*) data + gzip_header_length;
-      strm.avail_in = size - gzip_header_length;
-    } else {
-      strm.next_in = (Bytef*) data;
-      strm.avail_in = 0;
-    }
-    strm.total_in = 0;
-    strm.zalloc = NULL;
-    strm.zfree = NULL;
-    strm.opaque = NULL;
-
-    /*
-     * note: maybe plain inflateInit(&strm) is adequate,
-     * it looks more backward-compatible also ;
-     *
-     * ZLIB_VERNUM isn't defined by zlib version 1.1.4 ;
-     * there might be a better check.
-     */
-#ifdef ZLIB_VERNUM
-    if (Z_OK == inflateInit2(&strm,
-			     15 + 32)) {
-#else
-    if (Z_OK == inflateInit2(&strm,
-			     -MAX_WBITS)) {
-#endif
-      dsize = 2 * size;
-      if (dsize > MAX_DECOMPRESS)
-	dsize = MAX_DECOMPRESS;
-      buf = malloc(dsize);
-      pos = 0;
-      if (buf == NULL) {
-	inflateEnd(&strm);
-      } else {
-	strm.next_out = (Bytef*) buf;
-	strm.avail_out = dsize;
-	do {
-	  ret = inflate(&strm,
-			Z_SYNC_FLUSH);
-	  if (ret == Z_OK) {
-	    if (dsize == MAX_DECOMPRESS)
-	      break;
-	    pos += strm.total_out;
-	    strm.total_out = 0;
-	    dsize *= 2;
-	    if (dsize > MAX_DECOMPRESS)
-	      dsize = MAX_DECOMPRESS;
-	    buf = realloc(buf, dsize);
-	    strm.next_out = (Bytef*) &buf[pos];
-	    strm.avail_out = dsize - pos;
-	  } else if (ret != Z_STREAM_END) {
-	    /* error */
-	    free(buf);
-	    buf = NULL;
-	  }
-	} while ( (buf != NULL) &&		
-		  (ret != Z_STREAM_END) );
-	dsize = pos + strm.total_out;
-	inflateEnd(&strm);
-	if (dsize == 0) {
-	  free(buf);
-	  buf = NULL;
+      /* Process gzip header */
+      unsigned int gzip_header_length = 10;
+      
+      if (data[3] & 0x4) /* FEXTRA  set */
+	gzip_header_length += 2 + (unsigned) (data[10] & 0xff)
+	  + (((unsigned) (data[11] & 0xff)) * 256);
+      
+      if (data[3] & 0x8) /* FNAME set */
+	{
+	  const unsigned char * cptr = data + gzip_header_length;
+	  /* stored file name is here */
+	  while (cptr < data + size)
+	    {
+	      if ('\0' == *cptr)
+		break;	      
+	      cptr++;
+	    }
+	  if (0 != proc (proc_cls,
+			 "<zlib>",
+			 EXTRACTOR_METATYPE_FILENAME,
+			 EXTRACTOR_METAFORMAT_C_STRING,
+			 "text/plain",
+			 (const char*) (data + gzip_header_length),
+			 cptr - (data + gzip_header_length)))
+	    return; /* done */	  
+	  gzip_header_length = (cptr - data) + 1;
 	}
+      if (data[3] & 0x16) /* FCOMMENT set */
+	{
+	  const unsigned char * cptr = data + gzip_header_length;
+	  /* stored comment is here */	  
+	  while (cptr < data + size)
+	    {
+	      if('\0' == *cptr)
+		break;
+	      cptr ++;
+	    }	
+	  if (0 != proc (proc_cls,
+			 "<zlib>",
+			 EXTRACTOR_METATYPE_COMMENT,
+			 EXTRACTOR_METAFORMAT_C_STRING,
+			 "text/plain",
+			 (const char*) (data + gzip_header_length),
+			 cptr - (data + gzip_header_length)))
+	    return; /* done */
+	  gzip_header_length = (cptr - data) + 1;
+	}
+      if(data[3] & 0x2) /* FCHRC set */
+	gzip_header_length += 2;
+      memset(&strm,
+	     0,
+	     sizeof(z_stream));
+#ifdef ZLIB_VERNUM
+      gzip_header_length = 0;
+#endif
+      if (size > gzip_header_length) 
+	{
+	  strm.next_in = (Bytef*) data + gzip_header_length;
+	  strm.avail_in = size - gzip_header_length;
+	}
+      else
+	{
+	  strm.next_in = (Bytef*) data;
+	  strm.avail_in = 0;
+	}
+      strm.total_in = 0;
+      strm.zalloc = NULL;
+      strm.zfree = NULL;
+      strm.opaque = NULL;
+      
+      /*
+       * note: maybe plain inflateInit(&strm) is adequate,
+       * it looks more backward-compatible also ;
+       *
+       * ZLIB_VERNUM isn't defined by zlib version 1.1.4 ;
+       * there might be a better check.
+       */
+      if (Z_OK == inflateInit2(&strm,
+#ifdef ZLIB_VERNUM
+			       15 + 32
+#else
+			       -MAX_WBITS
+#endif
+			       )) {
+	dsize = 2 * size;
+	if (dsize > MAX_DECOMPRESS)
+	  dsize = MAX_DECOMPRESS;
+	buf = malloc(dsize);
+	pos = 0;
+	if (buf == NULL) 
+	  {
+	    inflateEnd(&strm);
+	  } 
+	else 
+	  {
+	    strm.next_out = (Bytef*) buf;
+	    strm.avail_out = dsize;
+	    do
+	      {
+		ret = inflate(&strm,
+			      Z_SYNC_FLUSH);
+		if (ret == Z_OK) 
+		  {
+		    if (dsize == MAX_DECOMPRESS)
+		      break;
+		    pos += strm.total_out;
+		    strm.total_out = 0;
+		    dsize *= 2;
+		    if (dsize > MAX_DECOMPRESS)
+		      dsize = MAX_DECOMPRESS;
+		    buf = realloc(buf, dsize);
+		    strm.next_out = (Bytef*) &buf[pos];
+		    strm.avail_out = dsize - pos;
+		  }
+		else if (ret != Z_STREAM_END) 
+		  {
+		    /* error */
+		    free(buf);
+		    buf = NULL;
+		  }
+	      } while ( (buf != NULL) &&		
+			(ret != Z_STREAM_END) );
+	    dsize = pos + strm.total_out;
+	    inflateEnd(&strm);
+	    if (dsize == 0) {
+	      free(buf);
+	      buf = NULL;
+	    }
+	  }
       }
     }
-  }
 #endif
-
+  
 #if HAVE_LIBBZ2
   if ( (size >= 4) &&
        (data[0] == 'B') &&
        (data[1] == 'Z') &&
-       (data[2] == 'h') ) {
-    /* now try bz2 decompression */
-    memset(&bstrm,
-	   0,
-	   sizeof(bz_stream));
-    bstrm.next_in = (char*) data;
-    bstrm.avail_in = size;
-    bstrm.total_in_lo32 = 0;
-    bstrm.total_in_hi32 = 0;
-    bstrm.bzalloc = NULL;
-    bstrm.bzfree = NULL;
-    bstrm.opaque = NULL;
-    if ( (buf == NULL) &&
-	 (BZ_OK == BZ2_bzDecompressInit(&bstrm,
-					0,
-					0)) ) {
-      dsize = 2 * size;
-      if (dsize > MAX_DECOMPRESS)
-	dsize = MAX_DECOMPRESS;
-      buf = malloc(dsize);
-      bpos = 0;
-      if (buf == NULL) {
-	BZ2_bzDecompressEnd(&bstrm);
-      } else {
-	bstrm.next_out = (char*) buf;
-	bstrm.avail_out = dsize;
-	do {
-	  bret = BZ2_bzDecompress(&bstrm);
-	  if (bret == Z_OK) {
-	    if (dsize == MAX_DECOMPRESS)
-	      break;
-	    bpos += bstrm.total_out_lo32;
-	    bstrm.total_out_lo32 = 0;
-	    dsize *= 2;
-	    if (dsize > MAX_DECOMPRESS)
-	      dsize = MAX_DECOMPRESS;
-	    buf = realloc(buf, dsize);
-	    bstrm.next_out = (char*) &buf[bpos];
-	    bstrm.avail_out = dsize - bpos;
-	  } else if (bret != BZ_STREAM_END) {
-	    /* error */
-	    free(buf);
-	    buf = NULL;
-	  }
-	} while ( (buf != NULL) &&
-		  (bret != BZ_STREAM_END) );
-	dsize = bpos + bstrm.total_out_lo32;
-	BZ2_bzDecompressEnd(&bstrm);
-	if (dsize == 0) {
-	  free(buf);
-	  buf = NULL;
+       (data[2] == 'h') ) 
+    {
+      /* now try bz2 decompression */
+      memset(&bstrm,
+	     0,
+	     sizeof(bz_stream));
+      bstrm.next_in = (char*) data;
+      bstrm.avail_in = size;
+      bstrm.total_in_lo32 = 0;
+      bstrm.total_in_hi32 = 0;
+      bstrm.bzalloc = NULL;
+      bstrm.bzfree = NULL;
+      bstrm.opaque = NULL;
+      if ( (buf == NULL) &&
+	   (BZ_OK == BZ2_bzDecompressInit(&bstrm,
+					  0,
+					  0)) ) 
+	{
+	  dsize = 2 * size;
+	  if (dsize > MAX_DECOMPRESS)
+	    dsize = MAX_DECOMPRESS;
+	  buf = malloc(dsize);
+	  bpos = 0;
+	  if (buf == NULL) 
+	    {
+	      BZ2_bzDecompressEnd(&bstrm);
+	    }
+	  else 
+	    {
+	      bstrm.next_out = (char*) buf;
+	      bstrm.avail_out = dsize;
+	      do {
+		bret = BZ2_bzDecompress(&bstrm);
+		if (bret == Z_OK) 
+		  {
+		    if (dsize == MAX_DECOMPRESS)
+		      break;
+		    bpos += bstrm.total_out_lo32;
+		    bstrm.total_out_lo32 = 0;
+		    dsize *= 2;
+		    if (dsize > MAX_DECOMPRESS)
+		      dsize = MAX_DECOMPRESS;
+		    buf = realloc(buf, dsize);
+		    bstrm.next_out = (char*) &buf[bpos];
+		    bstrm.avail_out = dsize - bpos;
+		  } 
+		else if (bret != BZ_STREAM_END) 
+		  {
+		    /* error */
+		    free(buf);
+		    buf = NULL;
+		  }
+	      } while ( (buf != NULL) &&
+			(bret != BZ_STREAM_END) );
+	      dsize = bpos + bstrm.total_out_lo32;
+	      BZ2_bzDecompressEnd(&bstrm);
+	      if (dsize == 0) 
+		{
+		  free(buf);
+		  buf = NULL;
+		}
+	    }
 	}
-      }
     }
-  }
-#endif
-
-
-  /* finally, call plugins */
-  if (buf != NULL) {
-    data = buf;
-    size = dsize;
-  }
-  while (extractor != NULL) {
-    result = extractor->extractMethod(filename,
-				      (char*) data,
-				      size,
-				      result,
-				      extractor->options);
-    extractor = extractor->next;
-  }
+#endif  
+  if (buf != NULL) 
+    {
+      data = buf;
+      size = dsize;
+    }
+  extract (plugins,
+	   filename,
+	   (const char*) data,
+	   size,
+	   proc,
+	   proc_cls);
   if (buf != NULL)
     free(buf);
   errno = 0; /* kill transient errors */
-  return result;
 }
 
+
 /**
- * Extract keywords from a file using the available extractors.
- * @param extractor the list of extractor libraries
- * @param filename the name of the file
- * @return the list of keywords found in the file, NULL if none
- *         were found (or other errors)
+ * Open a file
  */
-EXTRACTOR_KeywordList *
-EXTRACTOR_getKeywords (EXTRACTOR_ExtractorList * extractor,
-		       const char * filename) {
-  EXTRACTOR_KeywordList *result;
-  int file;
+static int file_open(const char *filename, int oflag, ...)
+{
+  int mode;
+  const char *fn;
+#ifdef MINGW
+  char szFile[_MAX_PATH + 1];
+  long lRet;
+
+  if ((lRet = plibc_conv_to_win_path(filename, szFile)) != ERROR_SUCCESS)
+  {
+    errno = ENOENT;
+    SetLastError(lRet);
+    return -1;
+  }
+  fn = szFile;
+#else
+  fn = filename;
+#endif
+  mode = 0;
+#ifdef MINGW
+  /* Set binary mode */
+  mode |= O_BINARY;
+#endif
+  return open(fn, oflag, mode);
+}
+
+
+#ifndef O_LARGEFILE
+#define O_LARGEFILE 0
+#endif
+
+
+/**
+ * Extract keywords from a file using the given set of plugins.
+ * If needed, opens the file and loads its data (via mmap).  Then
+ * decompresses it if the data is compressed.  Finally runs the
+ * plugins on the (now possibly decompressed) data.
+ *
+ * @param plugins the list of plugins to use
+ * @param filename the name of the file, can be NULL if data is not NULL
+ * @param data data of the file in memory, can be NULL (in which
+ *        case libextractor will open file) if filename is not NULL
+ * @param size number of bytes in data, ignored if data is NULL
+ * @param proc function to call for each meta data item found
+ * @param proc_cls cls argument to proc
+ */
+void
+EXTRACTOR_extract (struct EXTRACTOR_PluginList *plugins,
+		   const char *filename,
+		   const void *data,
+		   size_t size,
+		   EXTRACTOR_MetaDataProcessor proc,
+		   void *proc_cls)
+{
+  int fd;
   void * buffer;
   struct stat fstatbuf;
-  size_t size;
-  int eno, dir;
+  size_t fsize;
+  int eno;
 
-  if (-1 == STAT(filename, &fstatbuf))
-    return NULL;
-
-  if (!S_ISDIR(fstatbuf.st_mode)) {
-    dir = 0;
-      
-#ifdef O_LARGEFILE
-    file = fileopen(filename, O_RDONLY | O_LARGEFILE);
-#else
-    file = fileopen(filename, O_RDONLY);
-#endif
-    if (-1 == file)
-      return NULL;
-  
-    size = (fstatbuf.st_size > 0xFFFFFFFF) ? 0xFFFFFFFF : fstatbuf.st_size;
-    if (size == 0) {
-      close(file);
-      return NULL;
+  fd = -1;
+  buffer = NULL;
+  if ( (data == NULL) &&
+       (filename != NULL) &&
+       (0 == STAT(filename, &fstatbuf)) &&
+       (!S_ISDIR(fstatbuf.st_mode)) &&
+       (-1 != (fd = file_open (filename,
+			       O_RDONLY | O_LARGEFILE))) )
+    {      
+      fsize = (fstatbuf.st_size > 0xFFFFFFFF) ? 0xFFFFFFFF : fstatbuf.st_size;
+      if (fsize == 0) 
+	{
+	  close(fd);
+	  return;
+	}
+      if (fsize > MAX_READ)
+	fsize = MAX_READ;
+      buffer = MMAP(NULL, fsize, PROT_READ, MAP_PRIVATE, fd, 0);
+      if ( (buffer == NULL) || (buffer == (void *) -1) ) 
+	{
+	  eno = errno;
+	  close(fd);
+	  errno = eno;
+	  return;
+	}
     }
-  
-    if (size > MAX_READ)
-      size = MAX_READ; /* do not mmap/read more than 1 GB! */
-    buffer = MMAP(NULL, size, PROT_READ, MAP_PRIVATE, file, 0);
-    if ( (buffer == NULL) || (buffer == (void *) -1) ) {
-      eno = errno;
-      close(file);
-      errno = eno;
-      return NULL;
-    }
-  }
-  else {
-    dir = 1;
-    
-    size = 0;
-    buffer = malloc(1);
-  }
-  
-  result = getKeywords(extractor,
-		       filename,
-		       buffer,
-		       size);
-  
-  if (dir)
-    free(buffer);
-  else {
+  if ( (buffer == NULL) &&
+       (data == NULL) )
+    return;
+  decompress_and_extract (plugins,
+			  filename,
+			  buffer != NULL ? buffer : data,
+			  buffer != NULL ? fsize : size,
+			  proc,
+			  proc_cls);
+  if (buffer != NULL)
     MUNMAP (buffer, size);
-    close(file);
-  }
-  return result;
-}
-
-
-
-/**
- * Extract keywords from a buffer in memory
- * using the available extractors.
- *
- * @param extractor the list of extractor libraries
- * @param data the data of the file
- * @param size the number of bytes in data
- * @return the list of keywords found in the file, NULL if none
- *         were found (or other errors)
- */
-EXTRACTOR_KeywordList *
-EXTRACTOR_getKeywords2(EXTRACTOR_ExtractorList * extractor,
-		       const void * data,
-		       size_t size) {
-  if (data == NULL)
-    return NULL;
-  return getKeywords(extractor,
-		     NULL,
-		     data,
-		     size);
-}
-
-static void
-removeKeyword (const char *keyword,
-	       const EXTRACTOR_KeywordType type,
-	       const unsigned int options,
-	       EXTRACTOR_KeywordList ** list,
-	       EXTRACTOR_KeywordList * current) {
-  EXTRACTOR_KeywordList *first;
-  EXTRACTOR_KeywordList *pos;
-  EXTRACTOR_KeywordList *prev;
-  EXTRACTOR_KeywordList *next;
-
-  first = *list;
-  pos = first;
-  prev = NULL;
-  while (pos != NULL) {
-    if (pos == current) {
-      prev = pos;
-      pos = current->next;
-    }
-    if (pos == NULL)
-      break;
-    if ( (0 == strcmp (pos->keyword, keyword)) &&
-	 ( (pos->keywordType == type) ||
-	   ( ((options & EXTRACTOR_DUPLICATES_TYPELESS) > 0) &&
-	     ( (pos->keywordType == EXTRACTOR_SPLIT) ||
-	       (type != EXTRACTOR_SPLIT)) ) ||
-	   ( ((options & EXTRACTOR_DUPLICATES_REMOVE_UNKNOWN) > 0) &&
-	     (pos->keywordType == EXTRACTOR_UNKNOWN)) ) ) {
-      /* remove! */
-      if (prev == NULL)
-	first = pos->next;
-      else
-	prev->next = pos->next;
-      next = pos->next;
-      free (pos->keyword);
-      free (pos);
-      pos = next;
-    } else {
-      prev = pos;
-      pos = pos->next;
-    }
-  } /* end while */
-  *list = first;
-}
-
-/**
- * Remove duplicate keywords from the list.
- * @param list the original keyword list (destroyed in the process!)
- * @param options a set of options (DUPLICATES_XXXX)
- * @return a list of keywords without duplicates
- */
-EXTRACTOR_KeywordList *
-EXTRACTOR_removeDuplicateKeywords (EXTRACTOR_KeywordList * list,
-				   const unsigned int options) {
-  EXTRACTOR_KeywordList *pos;
-
-  pos = list;
-  while (pos != NULL) {
-    removeKeyword(pos->keyword,
-		  pos->keywordType,
-		  options,
-		  &list,
-		  pos);
-    pos = pos->next;
-  }
-  return list;
-}
-
-/**
- * Remove empty (all-whitespace) keywords from the list.
- * @param list the original keyword list (destroyed in the process!)
- * @return a list of keywords without duplicates
- */
-EXTRACTOR_KeywordList *
-EXTRACTOR_removeEmptyKeywords (EXTRACTOR_KeywordList * list) {
-  EXTRACTOR_KeywordList * pos;
-  EXTRACTOR_KeywordList * last;
-
-  last = NULL;
-  pos = list;
-  while (pos != NULL)
-    {
-      int allWhite;
-      int i;
-      allWhite = 1;
-      for (i=strlen(pos->keyword)-1;i>=0;i--)
-	if (! isspace(pos->keyword[i]))
-  	    {
-	        allWhite = 0;
-		break;
-            }
-      if (allWhite)
-	{
-	  EXTRACTOR_KeywordList * next;
-	  next = pos->next;
-	  if (last == NULL)
-	    list = next;
-	  else
-	    last->next = next;
-	  free(pos->keyword);
-	  free(pos);
-	  pos = next;
-	}
-      else
-	{
-	  last = pos;
-	  pos = pos->next;
-	}
-    }
-  return list;
-}
-
-/**
- * Remove keywords of a particular type from the list.
- * @param list the original keyword list (altered in the process!)
- * @param type the type to remove
- * @return a list of keywords without entries of given type
- */
-EXTRACTOR_KeywordList *
-EXTRACTOR_removeKeywordsOfType(EXTRACTOR_KeywordList * list,
-			       EXTRACTOR_KeywordType type) {
-  EXTRACTOR_KeywordList * pos;
-  EXTRACTOR_KeywordList * last;
-
-  last = NULL;
-  pos = list;
-  while (pos != NULL) {
-    if (pos->keywordType == type) {
-      EXTRACTOR_KeywordList * next;
-      next = pos->next;
-      if (last == NULL)
-	list = next;
-      else
-	last->next = next;
-      free(pos->keyword);
-      free(pos);
-      pos = next;
-    } else {
-      last = pos;
-      pos = pos->next;
-    }
-  }
-  return list;
+  if (-1 != fd)
+    close(fd);  
 }
 
 #include "iconv.c"
 
 /**
- * Print a keyword list to a file.
- * For debugging.
- * @param handle the file to write to (stdout, stderr), may NOT be NULL
- * @param keywords the list of keywords to print, may be NULL
+ * Simple EXTRACTOR_MetaDataProcessor implementation that simply
+ * prints the extracted meta data to the given file.  Only prints
+ * those keywords that are in UTF-8 format.
+ * 
+ * @param handle the file to write to (stdout, stderr), must NOT be NULL,
+ *               must be of type "FILE *".
+ * @param plugin_name name of the plugin that produced this value
+ * @param type libextractor-type describing the meta data
+ * @param format basic format information about data 
+ * @param data_mime_type mime-type of data (not of the original file);
+ *        can be NULL (if mime-type is not known)
+ * @param data actual meta-data found
+ * @param data_len number of bytes in data
+ * @return non-zero if printing failed, otherwise 0.
  */
-void
-EXTRACTOR_printKeywords(FILE * handle,
-			EXTRACTOR_KeywordList * keywords)
+int 
+EXTRACTOR_meta_data_print(void * handle,
+			  const char *plugin_name,
+			  enum EXTRACTOR_MetaType type,
+			  enum EXTRACTOR_MetaFormat format,
+			  const char *data_mime_type,
+			  const char *data,
+			  size_t data_len)
 {
   iconv_t cd;
   char * buf;
+  int ret;
 
-  cd = iconv_open(
-    nl_langinfo(CODESET)
-    , "UTF-8");
-  while (keywords != NULL)
-    {
-      if (cd == (iconv_t) -1)
-	buf = strdup(keywords->keyword);
-      else
-	buf = iconvHelper(cd,
-			  keywords->keyword);
-      if (keywords->keywordType == EXTRACTOR_THUMBNAIL_DATA) {
-	fprintf(handle,
-		_("%s - (binary)\n"),
-		_(keywordTypes[keywords->keywordType]));
-      } else {
-	if (keywords->keywordType >= HIGHEST_TYPE_NUMBER)
-	  fprintf(handle,
-		  _("INVALID TYPE - %s\n"),
-		  buf);
-	else
-	  fprintf(handle,
-		  "%s - %s\n",
-		  _(keywordTypes[keywords->keywordType]),
-		  buf);
-      }
-      free(buf);
-      keywords = keywords->next;
-    }
-  if (cd != (iconv_t) -1)
-    iconv_close(cd);
-}
-
-/**
- * Free the memory occupied by the keyword list (and the
- * keyword strings in it!)
- * @param keywords the list to free
- */
-void
-EXTRACTOR_freeKeywords (EXTRACTOR_KeywordList * keywords)
-{
-  EXTRACTOR_KeywordList *prev;
-  while (keywords != NULL)
-    {
-      prev = keywords;
-      keywords = keywords->next;
-      free (prev->keyword);
-      free (prev);
-    }
-}
-
-/**
- * Return the highest type number, exclusive as in [0,highest).
- */
-EXTRACTOR_KeywordType
-EXTRACTOR_getHighestKeywordTypeNumber ()
-{
-  return HIGHEST_TYPE_NUMBER;
-}
-
-/**
- * Extract the last keyword that of the given type from the keyword list.
- * @param type the type of the keyword
- * @param keywords the keyword list
- * @return the last matching keyword, or NULL if none matches
- */
-const char *
-EXTRACTOR_extractLast (const EXTRACTOR_KeywordType type,
-		       EXTRACTOR_KeywordList * keywords)
-{
-  char *result = NULL;
-  while (keywords != NULL)
-    {
-      if (keywords->keywordType == type)
-	result = keywords->keyword;
-      keywords = keywords->next;
-    }
-  return result;
-}
-
-/**
- * Extract the last keyword of the given string from the keyword list.
- * @param type the string describing the type of the keyword
- * @param keywords the keyword list
- * @return the last matching keyword, or NULL if none matches
- */
-const char *
-EXTRACTOR_extractLastByString (const char * type,
-			       EXTRACTOR_KeywordList * keywords)
-{
-  char * result = NULL;
-
-  if (type == NULL)
-    return NULL;
-  while (keywords != NULL) {
-    if ( (0 == strcmp(_(keywordTypes[keywords->keywordType]), type)) ||
-	 (0 == strcmp(keywordTypes[keywords->keywordType], type) ) )
-      result = keywords->keyword;
-    keywords = keywords->next;
-  }
-  return result;
-}
-
-/**
- * Count the number of keywords in the keyword list.
- * @param keywords the keyword list
- * @return the number of keywords in the list
- */
-unsigned int
-EXTRACTOR_countKeywords (EXTRACTOR_KeywordList * keywords)
-{
-  int count = 0;
-  while (keywords != NULL)
-    {
-      count++;
-      keywords = keywords->next;
-    }
-  return count;
-}
-
-/**
- * Encode the given binary data object
- * as a 0-terminated C-string according
- * to the LE binary data encoding standard.
- *
- * @return NULL on error, the 0-terminated
- *  encoding otherwise
- */
-char * EXTRACTOR_binaryEncode(const unsigned char * data,
-			      size_t size) {
-
-  char * binary;
-  size_t pos;
-  size_t end;
-  size_t wpos;
-  size_t i;
-  unsigned int markers[8]; /* 256 bits */
-  unsigned char marker;
-
- /* encode! */
-  binary = malloc(2 + size + (size+256) / 254);
-  if (binary == NULL)
-    return NULL;
-
-  pos = 0;
-  wpos = 0;
-  while (pos < size) {
-    /* find unused value between 1 and 255 in
-       the next 254 bytes */
-    end = pos + 254;
-    if (end < pos)
-      break; /* integer overflow! */
-    if (end > size)
-      end = size;
-    memset(markers,
-	   0,
-	   sizeof(markers));
-    for (i=pos;i<end;i++)
-      markers[data[i]&7] |= 1 << (data[i] >> 3);
-    marker = 1;
-    while (markers[marker&7] & (1 << (marker >> 3))) {
-      marker++;
-      if (marker == 0) {
-	/* assertion failed... */
-	free(binary);
-	return NULL;
-      }
-    }
-    /* recode */
-    binary[wpos++] = marker;
-    for (i=pos;i<end;i++)
-      binary[wpos++] = data[i] == 0 ? marker : data[i];
-    pos = end;
-  }
-  binary[wpos++] = 0; /* 0-termination! */
-  return binary;
-}
-
-
-/**
- * This function can be used to decode the binary data
- * encoded in the libextractor metadata (i.e. for
- * the  thumbnails).
- *
- * @param in 0-terminated string from the meta-data
- * @return 1 on error, 0 on success
- */
-int EXTRACTOR_binaryDecode(const char * in,
-			   unsigned char ** out,
-			   size_t * outSize) {
-  unsigned char * buf;
-  size_t pos;
-  size_t wpos;
-  unsigned char marker;
-  size_t i;
-  size_t end;
-  size_t inSize;
-
-  inSize = strlen(in);
-  if (inSize == 0) {
-    *out = NULL;
-    *outSize = 0;
+  if (format != EXTRACTOR_METAFORMAT_UTF8)
     return 0;
-  }
-
-  buf = malloc(inSize); /* slightly more than needed ;-) */
-  if (buf == NULL)
-    return 1; /* error */
-  *out = buf;
-
-  pos = 0;
-  wpos = 0;
-  while (pos < inSize) {
-    end = pos + 255; /* 255 here: count the marker! */
-    if (end > inSize)
-      end = inSize;
-    marker = in[pos++];
-    for (i=pos;i<end;i++)
-      buf[wpos++] = (in[i] == (char) marker) ? 0 : in[i];
-    pos = end;
-  }
-  *outSize = wpos;
+  cd = iconv_open(nl_langinfo(CODESET),
+		  "UTF-8");
+  if (cd == (iconv_t) -1)
+    return 1;
+  buf = iconv_helper(cd, data);
+  ret = fprintf(handle,
+		"%s - %s\n",
+		dgettext ("libextractor",
+			  EXTRACTOR_metatype_to_string (type)),
+		buf);
+  free(buf);
+  iconv_close(cd);
+  if (ret < 0)
+    return 1;
   return 0;
+}
+
+
+
+/**
+ * Initialize gettext and libltdl (and W32 if needed).
+ */
+void __attribute__ ((constructor)) EXTRACTOR_ltdl_init() {
+  int err;
+
+#if ENABLE_NLS
+  BINDTEXTDOMAIN(PACKAGE, LOCALEDIR);
+  BINDTEXTDOMAIN("iso-639", ISOLOCALEDIR); /* used by wordextractor */
+#endif
+  err = lt_dlinit ();
+  if (err > 0) {
+#if DEBUG
+    fprintf(stderr,
+	    _("Initialization of plugin mechanism failed: %s!\n"),
+	    lt_dlerror());
+#endif
+    return;
+  }
+#ifdef MINGW
+  plibc_init("GNU", PACKAGE);
+#endif
+}
+
+
+/**
+ * Deinit.
+ */
+void __attribute__ ((destructor)) EXTRACTOR_ltdl_fini() {
+#ifdef MINGW
+  plibc_shutdown();
+#endif
+  lt_dlexit ();
 }
 
 

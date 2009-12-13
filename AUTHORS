@@ -1,6 +1,6 @@
 Core Team:
-Vidyut Samanta <vids@cs.ucla.edu>
 Christian Grothoff <christian@grothoff.org>
+Nils Durner <durner@gnunet.org>
 
 Formats:
 html          - core team with code from libhtmlparse 0.1.13, http://msalem.translator.cx/libhtmlparse.html
@@ -55,6 +55,7 @@ Heiko Wundram <modelnine@ceosg.de>
 Ronan MELENNEC <ronan.melennec@cena.fr>
 Vasil Dimov <vd@freebsd.org>
 Pavol Rusnak <prusnak@suse.cz>
+Vidyut Samanta <vids@cs.ucla.edu>
 
 Translations:
 German - Karl Eichwalder <ke@gnu.franken.de>

@@ -22,8 +22,9 @@
  * Convert the given input using the given converter
  * and return as a 0-terminated string.
  */
-static char * iconvHelper(iconv_t cd,
-			  const char * in) {
+static char * 
+iconv_helper(iconv_t cd,
+	     const char * in) {
   size_t inSize;
   char * buf;
   char * ibuf;

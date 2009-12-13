@@ -26,6 +26,17 @@
 #define NO 0
 
 
+/**
+ * Which keyword types should we print?
+ */
+static int * print;
+
+/**
+ * How verbose are we supposed to be?
+ */
+static int verbose;
+
+
 typedef struct {
   char shortArg;
   char * longArg;
@@ -122,16 +133,10 @@ static void
 printHelp ()
 {
   static Help help[] = {
-    { 'a', "all", NULL,
-      gettext_noop("do not remove any duplicates") },
     { 'b', "bibtex", NULL,
       gettext_noop("print output in bibtex format") },
     { 'B', "binary", "LANG",
       gettext_noop("use the generic plaintext extractor for the language with the 2-letter language code LANG") },
-    { 'd', "duplicates", NULL,
-      gettext_noop("remove duplicates only if types match") },
-    { 'f', "filename", NULL,
-      gettext_noop("use the filename as a keyword (loads filename-extractor plugin)") },
     { 'g', "grep-friendly", NULL,
       gettext_noop("produce grep-friendly output (all results on one line per file)") },
     { 'h', "help", NULL,
@@ -146,10 +151,6 @@ printHelp ()
       gettext_noop("do not use the default set of extractor plugins") },
     { 'p', "print", "TYPE",
       gettext_noop("print only keywords of the given TYPE (use -L to get a list)") },
-    { 'r', "remove-duplicates", NULL,
-      gettext_noop("remove duplicates even if keyword types do not match") },
-    { 's', "split", NULL,
-      gettext_noop("use keyword splitting (loads split-extractor plugin)") },
     { 'v', "version", NULL,
       gettext_noop("print the version number") },
     { 'V', "verbose", NULL,
@@ -166,109 +167,159 @@ printHelp ()
 
 #include "iconv.c"
 
-
 /**
  * Print a keyword list to a file.
  *
- * @param handle the file to write to (stdout, stderr), may NOT be NULL
- * @param keywords the list of keywords to print, may be NULL
- * @param print array indicating which types to print
- */
-static void
-printSelectedKeywords(FILE * handle,
-		      EXTRACTOR_KeywordList * keywords,
-		      const int * print,
-		      const int verbose)
-{
+ * @param cls closure, not used
+ * @param plugin_name name of the plugin that produced this value;
+ *        special values can be used (i.e. '<zlib>' for zlib being
+ *        used in the main libextractor library and yielding
+ *        meta data).
+ * @param type libextractor-type describing the meta data
+ * @param format basic format information about data 
+ * @param data_mime_type mime-type of data (not of the original file);
+ *        can be NULL (if mime-type is not known)
+ * @param data actual meta-data found
+ * @param data_len number of bytes in data
+ * @return 0 to continue extracting, 1 to abort
+ */ 
+static int
+print_selected_keywords (void *cls,
+			 const char *plugin_name,
+			 enum EXTRACTOR_MetaType type,
+			 enum EXTRACTOR_MetaFormat format,
+			 const char *data_mime_type,
+			 const char *data,
+			 size_t data_len)
+{ 
   char * keyword;
   iconv_t cd;
+  const char *stype;
 
-  cd = iconv_open(nl_langinfo(CODESET), "UTF-8");
-  while (keywords != NULL) {
-    if (EXTRACTOR_isBinaryType(keywords->keywordType)) {
-      fprintf (handle,
-	       _("%s - (binary)\n"),
-	       _(EXTRACTOR_getKeywordTypeAsString(keywords->keywordType)));
-    } else {
+  if (print[type] != YES)
+    return 0;
+  stype = gettext(EXTRACTOR_metatype_to_string(type));
+  switch (format)
+    {
+    case EXTRACTOR_METAFORMAT_UNKNOWN:
+      fprintf (stdout,
+	       _("%s - (unknown, %u bytes)\n"),
+	       stype,
+	       (unsigned int) data_len);
+      break;
+    case EXTRACTOR_METAFORMAT_UTF8:
+      cd = iconv_open(nl_langinfo(CODESET), "UTF-8");
       if (cd != (iconv_t) -1)
-	keyword = iconvHelper(cd,
-			      keywords->keyword);
+	keyword = iconv_helper(cd,
+			       data);
       else
-	keyword = strdup(keywords->keyword);
-      if (NULL == EXTRACTOR_getKeywordTypeAsString(keywords->keywordType)) {
-	if (verbose == YES) {
-	  fprintf(handle,
-		  _("INVALID TYPE - %s\n"),
-		  keyword);
-	}
-      } else if (print[keywords->keywordType] == YES)
-	fprintf (handle,
-		 "%s - %s\n",
-		 _(EXTRACTOR_getKeywordTypeAsString(keywords->keywordType)),
-		 keyword);
-      free(keyword);
-    }
-    keywords = keywords->next;
-  }
-  if (cd != (iconv_t) -1)
-    iconv_close(cd);
-}
-
-/**
- * Print a keyword list to a file in a grep-friendly manner.
- *
- * @param handle the file to write to (stdout, stderr), may NOT be NULL
- * @param keywords the list of keywords to print, may be NULL
- * @param print array indicating which types to print
- */
-static void
-printSelectedKeywordsGrepFriendly(FILE * handle,
-				  EXTRACTOR_KeywordList * keywords,
-				  const int * print,
-				  const int verbose)
-{
-  char * keyword;
-  iconv_t cd;
-  size_t pos;
-
-  cd = iconv_open(nl_langinfo(CODESET), "UTF-8");
-  while (keywords != NULL) {
-    if ( (EXTRACTOR_isBinaryType(EXTRACTOR_THUMBNAIL_DATA)) &&
-	 (print[keywords->keywordType] == YES) ) {
-      if (verbose > 1) 
-	fprintf(handle,
-		"%s: ",
-		_(EXTRACTOR_getKeywordTypeAsString(keywords->keywordType)));
-      if (cd != (iconv_t) -1)
-	keyword = iconvHelper(cd,
-			      keywords->keyword);
-      else
-	keyword = strdup(keywords->keyword);
-      pos = 0;
-      while (keyword[pos] != '\0') {
-	if (iscntrl(keyword[pos]))	
-	  keyword[pos] = ' ';
-	pos++;
-      }
-      fprintf (handle,
-	       (keywords->next == NULL) ? "%s" : "%s ",
+	keyword = strdup(data);
+      fprintf (stdout,
+	       "%s - %s\n",
+	       stype,
 	       keyword);
       free(keyword);
+      if (cd != (iconv_t) -1)
+	iconv_close(cd);
+      break;
+    case EXTRACTOR_METAFORMAT_BINARY:
+      fprintf (stdout,
+	       _("%s - (binary, %u bytes)\n"),
+	       stype,
+	       (unsigned int) data_len);
+      break;
+    case EXTRACTOR_METAFORMAT_C_STRING:
+      fprintf (stdout,
+	       "%s - %s\n",
+	       stype,
+	       data);
+      break;
+
+    default:
+      break;
     }
-    keywords = keywords->next;
-  }
-  fprintf(handle, "\n");
-  if (cd != (iconv_t) -1)
-    iconv_close(cd);
+  return 0;
 }
+
+
+
+/**
+ * Print a keyword list to a file without new lines.
+ *
+ * @param cls closure, not used
+ * @param plugin_name name of the plugin that produced this value;
+ *        special values can be used (i.e. '<zlib>' for zlib being
+ *        used in the main libextractor library and yielding
+ *        meta data).
+ * @param type libextractor-type describing the meta data
+ * @param format basic format information about data 
+ * @param data_mime_type mime-type of data (not of the original file);
+ *        can be NULL (if mime-type is not known)
+ * @param data actual meta-data found
+ * @param data_len number of bytes in data
+ * @return 0 to continue extracting, 1 to abort
+ */ 
+static int
+print_selected_keywords_grep_friendly (void *cls,
+				       const char *plugin_name,
+				       enum EXTRACTOR_MetaType type,
+				       enum EXTRACTOR_MetaFormat format,
+				       const char *data_mime_type,
+				       const char *data,
+				       size_t data_len)
+{ 
+  char * keyword;
+  iconv_t cd;
+
+  if (print[type] != YES)
+    return 0;
+  switch (format)
+    {
+    case EXTRACTOR_METAFORMAT_UNKNOWN:      
+      break;
+    case EXTRACTOR_METAFORMAT_UTF8:
+      if (verbose > 1)
+	fprintf (stdout,
+		 "%s: ",
+		 gettext(EXTRACTOR_metatype_to_string(type)));
+      cd = iconv_open(nl_langinfo(CODESET), "UTF-8");
+      if (cd != (iconv_t) -1)
+	keyword = iconv_helper(cd,
+			       data);
+      else
+	keyword = strdup(data);
+      fprintf (stdout,
+	       "'%s' ",
+	       keyword);
+      free(keyword);
+      if (cd != (iconv_t) -1)
+	iconv_close(cd);
+      break;
+    case EXTRACTOR_METAFORMAT_BINARY:
+      break;
+    case EXTRACTOR_METAFORMAT_C_STRING:
+      if (verbose > 1)
+	fprintf (stdout,
+		 "%s ",
+		 gettext(EXTRACTOR_metatype_to_string(type)));      
+      fprintf (stdout,
+	       "'%s'",
+	       data);
+      break;
+    default:
+      break;
+    }
+  return 0;
+}
+
 
 /**
  * Take title, auth, year and return a string
  */
 static char *
 str_splice(const char * title,
-	   const char * auth,
-	   const char * year) {
+	   const char * year,
+	   const char * auth) {
   char * temp = malloc(16);
   int i = 0;
 
@@ -287,190 +338,202 @@ str_splice(const char * title,
   return temp;
 }
 
+
 /**
- * Print a keyword list in bibtex format to a file.
- * FIXME: We should generate the three letter abbrev of the month
- * @param handle the file to write to (stdout, stderr), may NOT be NULL
- * @param keywords the list of keywords to print, may be NULL
- * @param print array indicating which types to print
+ * Entry in the map we construct for each file.
  */
-static void
-printSelectedKeywordsBibtex (FILE * handle,
-			     EXTRACTOR_KeywordList * keywords,
-			     const int * print,
-			     const char * filename)
+struct BibTexMap
 {
-  const char * last = NULL;
-  if (keywords == NULL)
-    return;
-  if (print[keywords->keywordType] == YES)
+  const char *bibTexName;
+  enum EXTRACTOR_MetaType le_type;
+  char *value;
+};
+
+
+/**
+ * Type of the entry for bibtex.
+ */
+static char *entry_type;
+
+/**
+ * Mapping between bibTeX strings, libextractor
+ * meta data types and values for the current document.
+ */
+static struct BibTexMap btm[] =
+  {
+    { "title", EXTRACTOR_METATYPE_TITLE, NULL},
+    { "year", EXTRACTOR_METATYPE_PUBLICATION_YEAR, NULL },
+    { "author", EXTRACTOR_METATYPE_AUTHOR_NAME, NULL },
+    { "book", EXTRACTOR_METATYPE_BOOK_TITLE, NULL},
+    { "edition", EXTRACTOR_METATYPE_BOOK_EDITION, NULL},
+    { "chapter", EXTRACTOR_METATYPE_BOOK_CHAPTER_NUMBER, NULL},
+    { "journal", EXTRACTOR_METATYPE_JOURNAL_NAME, NULL},
+    { "volume", EXTRACTOR_METATYPE_JOURNAL_VOLUME, NULL},
+    { "number", EXTRACTOR_METATYPE_JOURNAL_NUMBER, NULL},
+    { "pages", EXTRACTOR_METATYPE_PAGE_COUNT, NULL },
+    { "pages", EXTRACTOR_METATYPE_PAGE_RANGE, NULL },
+    { "school", EXTRACTOR_METATYPE_AUTHOR_INSTITUTION, NULL},
+    { "publisher", EXTRACTOR_METATYPE_PUBLISHER, NULL },
+    { "address", EXTRACTOR_METATYPE_PUBLISHER_ADDRESS, NULL },
+    { "institution", EXTRACTOR_METATYPE_PUBLISHER_INSTITUTION, NULL },
+    { "series", EXTRACTOR_METATYPE_PUBLISHER_SERIES, NULL},
+    { "month", EXTRACTOR_METATYPE_PUBLICATION_MONTH, NULL },
+    { "url", EXTRACTOR_METATYPE_URL, NULL}, 
+    { "note", EXTRACTOR_METATYPE_COMMENT, NULL},
+    { "eprint", EXTRACTOR_METATYPE_BIBTEX_EPRINT, NULL },
+    { "type", EXTRACTOR_METATYPE_PUBLICATION_TYPE, NULL },
+    { NULL, 0, NULL }
+  };
+
+
+/**
+ * Clean up the bibtex processor in preparation for the next round.
+ */
+static void 
+start_bibtex ()
+{
+  int i;
+  
+  i = 0;
+  while (btm[i].bibTexName != NULL)
     {
-      const char * title = NULL;
-      const char * author = NULL;
-      const char * note = NULL;
-      const char * date = NULL;
-      const char * publisher = NULL;
-      const char * organization = NULL;
-      const char * key = NULL;
-      const char * pages = NULL;
-      char * year = NULL;
-      char * month = NULL;
-      char * tmp;
-
-      title = EXTRACTOR_extractLastByString(_("title"), keywords);
-      if ( !title )
-	title = EXTRACTOR_extractLastByString(_("filename"), keywords);
-      if ( !title )
-	title = (char*)filename;
-      last = title;
-
-      author = EXTRACTOR_extractLastByString(_("author"), keywords);
-      if ( author )
-	last = author;
-
-      note = EXTRACTOR_extractLastByString(_("description"), keywords);
-      if ( !note )
-	note = EXTRACTOR_extractLastByString(_("keywords"), keywords);
-      if ( !note )
-	note = EXTRACTOR_extractLastByString(_("comment"), keywords);
-      if ( note )
-	last = note;
-
-      date = EXTRACTOR_extractLastByString(_("date"), keywords);
-      if ( !date )
-	date = EXTRACTOR_extractLastByString(_("creation date"), keywords);
-      if ( date ) {
-	if ( strlen(keywords->keyword) >= 7 ) {
-	  year = (char*)malloc(sizeof(char)*5);
-	  memset(year, 0, sizeof(char)*5);
-	  month = (char*)malloc(sizeof(char)*3);
-	  memset(month, 0, sizeof(char)*3);
-	  year[0] = keywords->keyword[0];
-	  year[1] = keywords->keyword[1];
-	  year[2] = keywords->keyword[2];
-	  year[3] = keywords->keyword[3];
-	  month[0] = keywords->keyword[4];
-	  month[1] = keywords->keyword[5];
-	} else if ( strlen(keywords->keyword) >= 4 ) {
-	  year = (char*)malloc(sizeof(char)*5);
-	  memset(year, 0, sizeof(char)*5);
-	  year[0] = keywords->keyword[0];
-	  year[1] = keywords->keyword[1];
-	  year[2] = keywords->keyword[2];
-	  year[3] = keywords->keyword[3];
-	}
-      }
-      if ( year )
-	last = year;
-
-      if ( month )
-	last = month;
-
-      publisher = EXTRACTOR_extractLastByString(_("publisher"), keywords);
-      if ( publisher )
-	last = publisher;
-
-      organization = EXTRACTOR_extractLastByString(_("organization"), keywords);
-      if ( organization )
-	last = organization;
-
-      key = EXTRACTOR_extractLastByString(_("subject"), keywords);
-      if ( key )
-	last = key;
-
-      pages = EXTRACTOR_extractLastByString(_("page count"), keywords);
-      if ( pages )
-	last = pages;
-
-      tmp = str_splice(title, author, year);
-      fprintf(handle, 
-	      "@misc{ %s,\n", 
-	      tmp);
-      free(tmp);      
-      if ( title )
-	fprintf(handle, "    title = \"%s\"%s\n", title,
-	    (last == title)?"":",");
-      if ( author )
-	fprintf(handle, "    author = \"%s\"%s\n", author,
-	    (last == author)?"":",");
-      if ( note )
-	fprintf(handle, "    note = \"%s\"%s\n", note,
-	    (last == note)?"":",");
-      if ( year )
-	fprintf(handle, "    year = \"%s\"%s\n", year,
-	    (last == year)?"":",");
-      if ( month )
-	fprintf(handle, "    month = \"%s\"%s\n", month,
-	    (last == month)?"":",");
-      if ( publisher )
-	fprintf(handle, "    publisher = \"%s\"%s\n", publisher,
-	    (last == publisher)?"":",");
-      if ( organization )
-	fprintf(handle, "    organization = \"%s\"%s\n", organization,
-	    (last == organization)?"":",");
-      if ( key )
-	fprintf(handle, "    key = \"%s\"%s\n", key,
-	    (last == key)?"":",");
-      if ( pages )
-	fprintf(handle, "    pages = \"%s\"%s\n", pages,
-	    (last == pages)?"":",");
-      if (month != NULL)
-	free(month);
-      if (year != NULL)
-	free(year);
-      fprintf(handle, "}\n\n");
+      free (btm[i].value);
+      btm[i].value = NULL;
+      i++;
     }
+  free (entry_type);
+  entry_type = NULL;
 }
 
+
 /**
- * Demo for libExtractor.
- * <p>
- * Invoke with a list of filenames to extract keywords
- * from (demo will use all the extractor libraries that
- * are available by default).
+ * Callback function for printing meta data in bibtex format.
+ *
+ * @param cls closure, not used
+ * @param plugin_name name of the plugin that produced this value;
+ *        special values can be used (i.e. '<zlib>' for zlib being
+ *        used in the main libextractor library and yielding
+ *        meta data).
+ * @param type libextractor-type describing the meta data
+ * @param format basic format information about data 
+ * @param data_mime_type mime-type of data (not of the original file);
+ *        can be NULL (if mime-type is not known)
+ * @param data actual meta-data found
+ * @param data_len number of bytes in data
+ * @return 0 to continue extracting (always)
+ */
+static int
+print_bibtex (void *cls,
+	      const char *plugin_name,
+	      enum EXTRACTOR_MetaType type,
+	      enum EXTRACTOR_MetaFormat format,
+	      const char *data_mime_type,
+	      const char *data,
+	      size_t data_len)
+{
+  int i;
+
+  if (print[type] != YES)
+    return 0;
+  if (format != EXTRACTOR_METAFORMAT_UTF8)
+    return 0;
+  if (type == EXTRACTOR_METATYPE_BIBTEX_ENTRY_TYPE)
+    {
+      entry_type = strdup (data);
+      return 0;
+    }
+  i = 0;
+  while (btm[i].bibTexName != NULL)
+    {
+      if ( (btm[i].value == NULL) &&
+	   (btm[i].le_type == type) )
+	btm[i].value = strdup (data);
+      i++;
+    }  
+  return 0;
+}
+
+
+static void
+finish_bibtex (const char *fn)
+{
+  int i;
+  char *tya;
+  const char *et;
+
+  if (entry_type != NULL)
+    et = entry_type;
+  else
+    et = "misc";
+  if ( (btm[0].value == NULL) ||
+       (btm[1].value == NULL) ||
+       (btm[2].value == NULL) )          
+    fprintf (stdout,
+	     "@%s %s { ",
+	     et,
+	     fn);
+  else
+    {
+      tya = str_splice (btm[0].value,
+			btm[1].value,
+			btm[2].value);      
+      fprintf (stdout,
+	       "@%s %s { ",
+	       et,
+	       tya);
+      free (tya);
+    }
+
+	     
+  i = 0;
+  while (btm[i].bibTexName != NULL)
+    {
+      if (btm[i].value != NULL) 
+	fprintf (stdout,
+		 "\t%s = {%s},\n",
+		 btm[i].bibTexName,
+		 btm[i].value);
+      i++;
+    }  
+  fprintf(stdout, "}\n\n");
+}
+
+
+/**
+ * Main function for the 'extract' tool.  Invoke with a list of
+ * filenames to extract keywords from.
  */
 int
 main (int argc, char *argv[])
 {
   int i;
-  EXTRACTOR_ExtractorList *extractors;
-  EXTRACTOR_KeywordList *keywords;
+  struct EXTRACTOR_PluginList *plugins;
   int option_index;
   int c;
   char * libraries = NULL;
   char * hash = NULL;
-  int splitKeywords = NO;
-  int verbose = 0;
-  int useFilename = NO;
   int nodefault = NO;
-  int *print;
   int defaultAll = YES;
-  int duplicates = EXTRACTOR_DUPLICATES_REMOVE_UNKNOWN;
   int bibtex = NO;
   int grepfriendly = NO;
   char * binary = NULL;
+  char * name;
   int ret = 0;
+  EXTRACTOR_MetaDataProcessor processor = NULL;
 
-#ifdef MINGW
-  InitWinEnv();
-#endif
 #if ENABLE_NLS
   setlocale(LC_ALL, "");
-  textdomain("libextractor");
-  BINDTEXTDOMAIN("libextractor", LOCALEDIR);
+  textdomain(PACKAGE);
 #endif
-  print = malloc (sizeof (int) * EXTRACTOR_getHighestKeywordTypeNumber ());
-  for (i = 0; i < EXTRACTOR_getHighestKeywordTypeNumber (); i++)
+  print = malloc (sizeof (int) * EXTRACTOR_metatype_get_max ());
+  for (i = 0; i < EXTRACTOR_metatype_get_max (); i++)
     print[i] = YES;		/* default: print everything */
 
   while (1)
     {
       static struct option long_options[] = {
-	{"all", 0, 0, 'a'},
 	{"binary", 1, 0, 'B'},
 	{"bibtex", 0, 0, 'b'},
-	{"duplicates", 0, 0, 'd'},
-	{"filename", 0, 0, 'f'},
 	{"grep-friendly", 0, 0, 'g'},
 	{"help", 0, 0, 'h'},
 	{"hash", 1, 0, 'H'},
@@ -478,8 +541,6 @@ main (int argc, char *argv[])
 	{"library", 1, 0, 'l'},
 	{"nodefault", 0, 0, 'n'},
 	{"print", 1, 0, 'p'},
-	{"remove-duplicates", 0, 0, 'r'},
-	{"split", 0, 0, 's'},
 	{"verbose", 0, 0, 'V'},
 	{"version", 0, 0, 'v'},
 	{"exclude", 1, 0, 'x'},
@@ -487,7 +548,8 @@ main (int argc, char *argv[])
       };
       option_index = 0;
       c = getopt_long (argc,
-		       argv, "vhbgl:nsH:fp:x:LVdraB:",
+		       argv, 
+		       "abB:ghH:l:Lnp:vVx:",
 		       long_options,
 		       &option_index);
 
@@ -495,23 +557,28 @@ main (int argc, char *argv[])
 	break;			/* No more flags to process */
       switch (c)
 	{
-	case 'a':
-	  duplicates = -1;
-	  break;
 	case 'b':
 	  bibtex = YES;
+	  if (processor != NULL)
+	    {
+	      fprintf (stderr,
+		       _("Illegal combination of options, cannot combine multiple styles of printing.\n"));
+	      return 0;
+	    }
+	  processor = &print_bibtex;
 	  break;
 	case 'B':
 	  binary = optarg;
 	  break;
-	case 'd':
-	  duplicates = 0;
-	  break;
-	case 'f':
-	  useFilename = YES;
-	  break;
 	case 'g':
 	  grepfriendly = YES;
+	  if (processor != NULL)
+	    {
+	      fprintf (stderr,
+		       _("Illegal combination of options, cannot combine multiple styles of printing.\n"));
+	      return 0;
+	    }
+	  processor = &print_selected_keywords_grep_friendly;
 	  break;
 	case 'h':
 	  printHelp();
@@ -524,32 +591,35 @@ main (int argc, char *argv[])
 	  break;
 	case 'L':
 	  i = 0;
-	  while (NULL != EXTRACTOR_getKeywordTypeAsString (i))
+	  while (NULL != EXTRACTOR_metatype_to_string (i))
 	    printf ("%s\n",
-		    _(EXTRACTOR_getKeywordTypeAsString (i++)));
+		    gettext(EXTRACTOR_metatype_to_string (i++)));
 	  return 0;
 	case 'n':
 	  nodefault = YES;
 	  break;
 	case 'p':
-	  if (optarg == NULL) {
-	    fprintf(stderr,
-		    _("You must specify an argument for the `%s' option (option ignored).\n"),
-		    "-p");
-	    break;
-	  }
+	  if (optarg == NULL) 
+	    {
+	      fprintf(stderr,
+		      _("You must specify an argument for the `%s' option (option ignored).\n"),
+		      "-p");
+	      break;
+	    }
 	  if (defaultAll == YES)
 	    {
 	      defaultAll = NO;
 	      i = 0;
-	      while (NULL != EXTRACTOR_getKeywordTypeAsString (i))
+	      while (NULL != EXTRACTOR_metatype_to_string (i))
 		print[i++] = NO;
 	    }
 	  i = 0;
-	  while (NULL != EXTRACTOR_getKeywordTypeAsString (i))
+	  while (NULL != EXTRACTOR_metatype_to_string (i))
 	    {
-	      if ( (0 == strcmp (optarg, EXTRACTOR_getKeywordTypeAsString (i))) ||
-		   (0 == strcmp (optarg, _(EXTRACTOR_getKeywordTypeAsString (i)))) )
+	      if ( (0 == strcmp (optarg, 
+				 EXTRACTOR_metatype_to_string (i))) ||
+		   (0 == strcmp (optarg, 
+				 gettext(EXTRACTOR_metatype_to_string (i)))) )
 		
 		{
 		  print[i] = YES;
@@ -557,7 +627,7 @@ main (int argc, char *argv[])
 		}
 	      i++;
 	    }
-	  if (NULL == EXTRACTOR_getKeywordTypeAsString (i))
+	  if (NULL == EXTRACTOR_metatype_to_string (i))
 	    {
 	      fprintf(stderr,
 		      "Unknown keyword type `%s', use option `%s' to get a list.\n",
@@ -565,12 +635,6 @@ main (int argc, char *argv[])
 		       "-L");
 	      return -1;
 	    }
-	  break;
-	case 'r':
-	  duplicates = EXTRACTOR_DUPLICATES_TYPELESS;
-	  break;
-	case 's':
-	  splitKeywords = YES;
 	  break;
        	case 'v':
 	  printf ("extract v%s\n", PACKAGE_VERSION);
@@ -580,34 +644,30 @@ main (int argc, char *argv[])
 	  break;
 	case 'x':
 	  i = 0;
-	  while (NULL != EXTRACTOR_getKeywordTypeAsString (i))
+	  while (NULL != EXTRACTOR_metatype_to_string (i))
 	    {
-	      if ( (0 == strcmp (optarg, EXTRACTOR_getKeywordTypeAsString (i))) ||
-		   (0 == strcmp (optarg, _(EXTRACTOR_getKeywordTypeAsString (i)))) )
+	      if ( (0 == strcmp (optarg, 
+				 EXTRACTOR_metatype_to_string (i))) ||
+		   (0 == strcmp (optarg, 
+				 gettext(EXTRACTOR_metatype_to_string (i)))) )
 		{
 		  print[i] = NO;
 		  break;
 		}
 	      i++;
 	    }
-	  if (NULL == EXTRACTOR_getKeywordTypeAsString (i))
+	  if (NULL == EXTRACTOR_metatype_to_string (i))
 	    {
 	      fprintf (stderr,
 		       "Unknown keyword type `%s', use option `%s' to get a list.\n",
 		       optarg,
 		       "-L");
-#ifdef MINGW
-  			ShutdownWinEnv();
-#endif
 	      return -1;
 	    }
 	  break;
 	default:
 	  fprintf (stderr,
 		   _("Use --help to get a list of options.\n"));
-#ifdef MINGW
-  	ShutdownWinEnv();
-#endif
 	  return -1;
 	}			/* end of parsing commandline */
     }				/* while (1) */
@@ -616,54 +676,66 @@ main (int argc, char *argv[])
     {
       fprintf (stderr,
 	       "Invoke with list of filenames to extract keywords form!\n");
-#ifdef MINGW
-  		ShutdownWinEnv();
-#endif
       free (print);
       return -1;
     }
 
   /* build list of libraries */
   if (nodefault == NO)
-    extractors = EXTRACTOR_loadDefaultLibraries ();
+    plugins = EXTRACTOR_plugin_add_defaults (EXTRACTOR_OPTION_NONE);
   else
-    extractors = NULL;
-  if (useFilename == YES)
-    extractors = EXTRACTOR_addLibrary (extractors,
-				       "libextractor_filename");
+    plugins = NULL;
   if (libraries != NULL)
-    extractors = EXTRACTOR_loadConfigLibraries (extractors, libraries);
+    plugins = EXTRACTOR_plugin_add_config (plugins, 
+					      libraries,
+					      EXTRACTOR_OPTION_NONE);
+  if (binary != NULL) 
+    {
+      /* FIXME: need full path here now... */
+      name = malloc(strlen(binary) + strlen("libextractor_printable_") + 1);
+      strcpy(name, "libextractor_printable_");
+      strcat(name, binary);
+      plugins = EXTRACTOR_plugin_add_last(plugins,
+					  name,
+					  NULL,
+					  EXTRACTOR_OPTION_NONE);
+      free(name);
+    }
+  if (hash != NULL) 
+    {
+      /* FIXME: need full path here now... */
+      name = malloc(strlen(hash) + strlen("libextractor_hash_") + 1);
+      strcpy(name, "libextractor_hash_");
+      strcat(name, hash);
+      plugins = EXTRACTOR_plugin_add_last(plugins,
+					  name,
+					  NULL,
+					  EXTRACTOR_OPTION_NONE);
+      free(name);
+    }
 
-  if (binary != NULL) {
-    char * name;
-    name = malloc(strlen(binary) + strlen("libextractor_printable_") + 1);
-    strcpy(name, "libextractor_printable_");
-    strcat(name, binary);
-    extractors = EXTRACTOR_addLibraryLast(extractors,
-					  name);
-    free(name);
-  }
-  if (hash != NULL) {
-    char * name;
-    name = malloc(strlen(hash) + strlen("libextractor_hash_") + 1);
-    strcpy(name, "libextractor_hash_");
-    strcat(name, hash);
-    extractors = EXTRACTOR_addLibraryLast(extractors,
-					  name);
-    free(name);
-  }
-
-  if (splitKeywords == YES)
-    extractors = EXTRACTOR_addLibraryLast(extractors,
-					  "libextractor_split");
+  if (processor == NULL)
+    processor = &print_selected_keywords;
 
   /* extract keywords */
-  if ( bibtex == YES )
+  if (bibtex == YES)
     fprintf(stdout,
 	    _("%% BiBTeX file\n"));
   for (i = optind; i < argc; i++) {
     errno = 0;
-    keywords = EXTRACTOR_getKeywords (extractors, argv[i]);
+    if (grepfriendly == YES)
+      fprintf (stdout, "%s ", argv[i]);
+    else if (bibtex == NO)
+      fprintf (stdout,
+	       _("Keywords for file %s:\n"),
+	       argv[i]);
+    else
+      start_bibtex ();
+    EXTRACTOR_extract (plugins,
+		       argv[i],
+		       NULL, 0,
+		       processor,
+		       NULL);    
     if (0 != errno) {
       if (verbose > 0) {
 	fprintf(stderr,
@@ -671,34 +743,21 @@ main (int argc, char *argv[])
 		argv[0], argv[i], strerror(errno));
       }
       ret = 1;
+      if (grepfriendly == YES)
+	fprintf (stdout, "\n");
       continue;
     }
-    if ( (duplicates != -1) || (bibtex == YES))
-      keywords = EXTRACTOR_removeDuplicateKeywords (keywords, duplicates);
-    if ( (verbose > 0) 
-	 && (bibtex == NO) ) {
-      if (grepfriendly == YES)
-	printf ("%s ", argv[i]);
-      else
-	printf (_("Keywords for file %s:\n"),
-		argv[i]);
-    }
-    if (bibtex == YES)
-      printSelectedKeywordsBibtex (stdout, keywords, print, argv[i]);
-    else if (grepfriendly == YES)
-      printSelectedKeywordsGrepFriendly(stdout, keywords, print, verbose);
-    else
-      printSelectedKeywords (stdout, keywords, print, verbose);
-    if (verbose > 0 && bibtex == NO)
+    if (grepfriendly == YES)
+      fprintf (stdout, "\n");
+    if (bibtex)
+      finish_bibtex (argv[i]);
+    if (verbose > 0)
       printf ("\n");
-    EXTRACTOR_freeKeywords (keywords);
   }
   free (print);
-  EXTRACTOR_removeAll (extractors);
-
-#ifdef MINGW
-  ShutdownWinEnv();
-#endif
-
+  EXTRACTOR_plugin_remove_all (plugins);
+  start_bibtex (); /* actually free's stuff */
   return ret;
 }
+
+/* end of extract.c */

@@ -1,4 +1,4 @@
-.TH EXTRACT 1 "Dec 29, 2006" "libextractor 0.5.17"
+.TH EXTRACT 1 "Dec 14, 2009" "libextractor 0.6.0"
 .\" $Id
 .SH NAME
 extract
@@ -6,7 +6,7 @@ extract
 .SH SYNOPSIS
 .B extract
 [
-.B \-abdfghLnrsvV
+.B \-bghLnvV
 ]
 [
 .B \-B
@@ -32,7 +32,7 @@ extract
 \&...
 .br
 .SH DESCRIPTION
-This manual page documents version 0.5.17 of the
+This manual page documents version 0.6.0 of the
 .B extract
 command.
 .PP
@@ -46,9 +46,6 @@ option.
 
 .SH OPTIONS
 .TP 8
-.B \-a
-Do not remove any duplicates, even if the keywords match exactly and have the same type (i.e. because the same keyword was found by different extractor libraries).
-.TP 8
 .B \-b
 Display the output in BiBTeX format. This implies the
 .B \-d
@@ -56,12 +53,6 @@ option
 .TP 8
 .B \-B LANG
 Use the generic plaintext extractor for the language with the 2\-letter language code LANG.  Supported languages are DA (Danish), DE (German), EN (English), ES (Spanish), FI (Finnish), FR (French), GA (Gaelic), IT (Italian), NO (Norwegian) and SV (Swedish).
-.TP 8
-.B \-d
-Remove duplicates only if the types match exactly. By default, duplicates are removed if the types match or if one of the types is \I unknown (in this case, the duplicate of unknown type is removed).
-.TP 8
-.B \-f
-add the filename(s) (without directory) to the list of keywords.
 .TP 8
 .B \-g
 Use grep\-friendly output (all keywords on a single line for each file).  Use the verbose option to print the filename first, followed by the keywords.  Use the verbose option twice to also display the keyword types.  This option will not print keyword types or non\-textual metadata.
@@ -77,12 +68,6 @@ Print a list of all known keyword types.
 .TP 8
 .B \-n
 Do not use the default set of extractors (typically all standard extractors, currently mp3, ogg, jpg, gif, png, tiff, real, html, pdf and mime\-types), use only the extractors specified with the .B \-l option.
-.TP 8
-.B \-r
-Remove all duplicates disregarding differences in the keyword type.
-.TP 8
-.B \-s
-Split keywords at delimiters (space, comma, colon, etc.) and list split keywords to be of .I unknown type. This can also be done by loading the split\-library. Using this option guarantees that the splitting is performed after all other libraries have been run. It is always performed before duplicate elimination.
 .TP 8
 .B \-v
 Print the version number and exit.
@@ -111,10 +96,9 @@ $ extract test/test.jpg
 comment \- (C) 2001 by Christian Grothoff, using gimp 1.2 1
 mimetype \- image/jpeg
 
-$ extract \-Vf \-x comment test/test.jpg
+$ extract \-V \-x comment test/test.jpg
 Keywords for file test/test.jpg:
 mimetype \- image/jpeg
-filename \- test.jpg
 
 $ extract \-p comment test/test.jpg
 comment \- (C) 2001 by Christian Grothoff, using gimp 1.2 1
@@ -125,7 +109,7 @@ Keywords for file test/test.png:
 comment \- Testing keyword extraction
 
 .SH LEGAL NOTICE
-libextractor and the extract tool are released under the GPL.  libextractor is a GNU project.
+libextractor and the extract tool are released under the GPL.  libextractor is a GNU package.
 
 .SH BUGS
 A couple of file\-formats (on the order of 10^3) are not recognized...
@@ -138,4 +122,4 @@ to contact the current maintainer(s).
 
 .SH AVAILABILITY
 You can obtain the original author's latest version from
-http://gnunet.org/libextractor/
+http://www.gnu.org/software/libextractor/
