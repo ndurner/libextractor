@@ -21,40 +21,27 @@
 #include "platform.h"
 #include "extractor.h"
 
-static EXTRACTOR_KeywordList *
-addKeyword (EXTRACTOR_KeywordType type,
-            char *keyword, EXTRACTOR_KeywordList * next)
-{
-  EXTRACTOR_KeywordList *result;
-
-  if (keyword == NULL)
-    return next;
-  result = malloc (sizeof (EXTRACTOR_KeywordList));
-  result->next = next;
-  result->keyword = keyword;
-  result->keywordType = type;
-  return result;
-}
-
 typedef struct
 {
   char *text;
-  EXTRACTOR_KeywordType type;
+  enum EXTRACTOR_MetaType type;
 } Matches;
 
 static Matches tmap[] = {
-  {"/Title (", EXTRACTOR_TITLE},
-  {"/Subject (", EXTRACTOR_SUBJECT},
-  {"/Author (", EXTRACTOR_AUTHOR},
-  {"/Keywords (", EXTRACTOR_KEYWORDS},
-  {"/Creator (", EXTRACTOR_CREATOR},
-  {"/Producer (", EXTRACTOR_PRODUCER},
+  {"/Title (",    EXTRACTOR_METATYPE_TITLE},
+  {"/Subject (",  EXTRACTOR_METATYPE_SUBJECT},
+  {"/Author (",   EXTRACTOR_METATYPE_AUTHOR_NAME},
+  {"/Keywords (", EXTRACTOR_METATYPE_KEYWORDS},
+  {"/Creator (",  EXTRACTOR_METATYPE_CREATED_BY_SOFTWARE },
+  {"/Producer (", EXTRACTOR_METATYPE_CREATED_BY_SOFTWARE},
   {NULL, 0},
 };
 
-static struct EXTRACTOR_Keywords *
+static int
 parseZZZ (const char *data,
-          size_t pos, size_t len, struct EXTRACTOR_Keywords *prev)
+          size_t pos, size_t len,
+	  EXTRACTOR_MetaDataProcessor proc,
+	  void *proc_cls)
 {
   size_t slen;
   size_t end;
@@ -64,9 +51,9 @@ parseZZZ (const char *data,
   end = pos + len;
   slen = strlen ("ps:SDict begin [");
   if (len <= slen)
-    return prev;
+    return 0;
   if (0 != strncmp ("ps:SDict begin [ ", &data[pos], slen))
-    return prev;
+    return 0;
   pos += slen;
   while (pos < end)
     {
@@ -86,7 +73,14 @@ parseZZZ (const char *data,
                   value = malloc (slen + 1);
                   value[slen] = '\0';
                   memcpy (value, &data[pos], slen);
-                  prev = addKeyword (tmap[i].type, value, prev);
+		  if (0 != proc (proc_cls, 
+				 "dvi",
+				 tmap[i].type,
+				 EXTRACTOR_METAFORMAT_C_STRING,
+				 "text/plain",
+				 value,
+				 strlen (value) +1))
+		    return 1;
                   pos += slen + 1;
                 }
             }
@@ -94,7 +88,7 @@ parseZZZ (const char *data,
         }
       pos++;
     }
-  return prev;
+  return 0;
 }
 
 static unsigned int
@@ -115,10 +109,13 @@ getShortAt (const void *data)
   return *(unsigned short *) &p[0];
 }
 
-struct EXTRACTOR_Keywords *
-libextractor_dvi_extract (const char *filename,
-                          const unsigned char *data,
-                          size_t size, struct EXTRACTOR_Keywords *prev)
+
+int 
+EXTRACTOR_dvi_extract (const unsigned char *data,
+		       size_t size,
+		       EXTRACTOR_MetaDataProcessor proc,
+		       void *proc_cls,
+		       const char *options)
 {
   unsigned int klen;
   char *comment;
@@ -126,31 +123,31 @@ libextractor_dvi_extract (const char *filename,
   unsigned int opos;
   unsigned int len;
   unsigned int pageCount;
-  char *pages;
+  char pages[16];
 
   if (size < 40)
-    return prev;
+    return 0;
   if ((data[0] != 247) || (data[1] != 2))
-    return prev;                /* cannot be dvi or unsupported version */
+    return 0;                /* cannot be dvi or unsupported version */
   klen = data[14];
 
   pos = size - 1;
   while ((data[pos] == 223) && (pos > 0))
     pos--;
   if ((data[pos] != 2) || (pos < 40))
-    return prev;
+    return 0;
   pos--;
   pos -= 4;
   /* assert pos at 'post_post tag' */
   if (data[pos] != 249)
-    return prev;
+    return 0;
   opos = pos;
   pos = ntohl (getIntAt (&data[opos + 1]));
   if (pos + 25 > size)
-    return prev;
+    return 0;
   /* assert pos at 'post' command */
   if (data[pos] != 248)
-    return prev;
+    return 0;
   pageCount = 0;
   opos = pos;
   pos = ntohl (getIntAt (&data[opos + 1]));
@@ -159,26 +156,50 @@ libextractor_dvi_extract (const char *filename,
       if (pos == (unsigned int) -1)
         break;
       if (pos + 45 > size)
-        return prev;
+        return 0;
       if (data[pos] != 139)     /* expect 'bop' */
-        return prev;
+        return 0;
       pageCount++;
       opos = pos;
       pos = ntohl (getIntAt (&data[opos + 41]));
       if (pos == (unsigned int) -1)
         break;
       if (pos >= opos)
-        return prev;            /* invalid! */
+        return 0;            /* invalid! */
     }
   /* ok, now we believe it's a dvi... */
-  pages = malloc (16);
-  snprintf (pages, 16, "%u", pageCount);
+  snprintf (pages, sizeof(pages), "%u", pageCount);
+  if (0 != proc (proc_cls, 
+		 "dvi",
+		 EXTRACTOR_METATYPE_MIMETYPE,
+		 EXTRACTOR_METAFORMAT_UTF8,
+		 "text/plain",
+		 "application/x-dvi",
+		 strlen ("application/x-dvi") +1))
+    return 1;
   comment = malloc (klen + 1);
   comment[klen] = '\0';
   memcpy (comment, &data[15], klen);
-  prev = addKeyword (EXTRACTOR_MIMETYPE, strdup ("application/x-dvi"), prev);
-  prev = addKeyword (EXTRACTOR_COMMENT, comment, prev);
-  prev = addKeyword (EXTRACTOR_PAGE_COUNT, pages, prev);
+  if (0 != proc (proc_cls, 
+		 "dvi",
+		 EXTRACTOR_METATYPE_COMMENT,
+		 EXTRACTOR_METAFORMAT_UTF8,
+		 "text/plain",
+		 comment,
+		 strlen (comment) +1))
+    {
+      free (comment);
+      return 1;
+    }
+  free (comment);
+  if (0 != proc (proc_cls, 
+		 "dvi",
+		 EXTRACTOR_METATYPE_PAGE_COUNT,
+		 EXTRACTOR_METAFORMAT_UTF8,
+		 "text/plain",
+		 pages,
+		 strlen (pages) +1))
+    return 1;
   /* try to find PDF/ps special */
   pos = opos;
   while (pos < size - 100)
@@ -192,30 +213,34 @@ libextractor_dvi_extract (const char *filename,
         case 239:              /* zzz1 */
           len = data[pos + 1];
           if (pos + 2 + len < size)
-            prev = parseZZZ ((const char *) data, pos + 2, len, prev);
+            if (0 != parseZZZ ((const char *) data, pos + 2, len, proc, proc_cls))
+	      return 1;
           pos += len + 2;
           break;
         case 240:              /* zzz2 */
           len = ntohs (getShortAt (&data[pos + 1]));
           if (pos + 3 + len < size)
-            prev = parseZZZ ((const char *) data, pos + 3, len, prev);
+            if (0 != parseZZZ ((const char *) data, pos + 3, len, proc, proc_cls))
+	      return 1;
           pos += len + 3;
           break;
         case 241:              /* zzz3, who uses that? */
           len = (ntohs (getShortAt (&data[pos + 1]))) + 65536 * data[pos + 3];
           if (pos + 4 + len < size)
-            prev = parseZZZ ((const char *) data, pos + 4, len, prev);
+            if (0 != parseZZZ ((const char *) data, pos + 4, len, proc, proc_cls))
+	      return 1;
           pos += len + 4;
           break;
         case 242:              /* zzz4, hurray! */
           len = ntohl (getIntAt (&data[pos + 1]));
           if (pos + 1 + len < size)
-            prev = parseZZZ ((const char *) data, pos + 5, len, prev);
+            if (0 != parseZZZ ((const char *) data, pos + 5, len, proc, proc_cls))
+	      return 1;
           pos += len + 5;
           break;
         default:               /* unsupported opcode, abort scan */
-          return prev;
+          return 0;
         }
     }
-  return prev;
+  return 0;
 }

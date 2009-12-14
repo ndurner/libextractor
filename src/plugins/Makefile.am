@@ -89,6 +89,7 @@ plugin_LTLIBRARIES = \
   libextractor_applefile.la \
   libextractor_asf.la \
   libextractor_deb.la \
+  libextractor_dvi.la \
   libextractor_html.la \
   libextractor_it.la \
   libextractor_mime.la 
@@ -113,6 +114,11 @@ libextractor_deb_la_LDFLAGS = \
 libextractor_deb_la_LIBADD = \
   -lz
 
+libextractor_dvi_la_SOURCES = \
+  dvi_extractor.c 
+libextractor_dvi_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+
 libextractor_html_la_SOURCES = \
   html_extractor.c 
 libextractor_html_la_LDFLAGS = \
@@ -135,7 +141,6 @@ libextractor_mime_la_LDFLAGS = \
 
 OLD_LIBS = \
   $(pdfplugin) \
-  libextractor_dvi.la \
   libextractor_elf.la \
   $(extraflac) \
   libextractor_flv.la \
@@ -243,11 +248,6 @@ libextractor_id3v24_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_id3v24_la_LIBADD = \
   $(top_builddir)/src/common/libextractor_common.la
-
-libextractor_dvi_la_SOURCES = \
-  dviextractor.c 
-libextractor_dvi_la_LDFLAGS = \
-  $(PLUGINFLAGS)
 
 if HAVE_ZLIB
 libextractor_tar_la_SOURCES = \
