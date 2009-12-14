@@ -8,7 +8,7 @@ thumbffmpeg=thumbnailffmpeg
 endif
 
 if HAVE_LIBRPM
-rpm=rpm
+rpm=libextractor_rpm.la 
 endif
 
 if HAVE_GLIB
@@ -61,7 +61,7 @@ endif
 
 # toggle for development
 SUBDIRS = . 
-# SUBDIRS = . $(thumbgtk) $(thumbffmpeg) $(oodir) $(printdir) hash $(oledir) $(rpm) $(xpdfdir) $(exiv2dir) 
+# SUBDIRS = . $(thumbgtk) $(thumbffmpeg) $(oodir) $(printdir) hash $(oledir) $(xpdfdir) $(exiv2dir) 
 
 
 if HAVE_VORBISFILE
@@ -92,7 +92,8 @@ plugin_LTLIBRARIES = \
   libextractor_dvi.la \
   libextractor_html.la \
   libextractor_it.la \
-  libextractor_mime.la 
+  libextractor_mime.la \
+  $(rpm)
 
 libextractor_applefile_la_SOURCES = \
   applefile_extractor.c
@@ -131,6 +132,12 @@ libextractor_it_la_SOURCES = \
 libextractor_it_la_LDFLAGS = \
   $(PLUGINFLAGS)
 
+libextractor_rpm_la_SOURCES = \
+  rpm_extractor.c 
+libextractor_rpm_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+libextractor_rpm_la_LIBADD = \
+  -lrpm
 
 libextractor_mime_la_SOURCES = \
   mime_extractor.c 
