@@ -88,6 +88,7 @@ endif
 plugin_LTLIBRARIES = \
   libextractor_applefile.la \
   libextractor_asf.la \
+  libextractor_deb.la \
   libextractor_html.la \
   libextractor_it.la \
   libextractor_mime.la 
@@ -104,6 +105,13 @@ libextractor_asf_la_SOURCES = \
   asf_extractor.c 
 libextractor_asf_la_LDFLAGS = \
   $(PLUGINFLAGS)
+
+libextractor_deb_la_SOURCES = \
+  deb_extractor.c 
+libextractor_deb_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+libextractor_deb_la_LIBADD = \
+  -lz
 
 libextractor_html_la_SOURCES = \
   html_extractor.c 
@@ -127,7 +135,6 @@ libextractor_mime_la_LDFLAGS = \
 
 OLD_LIBS = \
   $(pdfplugin) \
-  libextractor_deb.la \
   libextractor_dvi.la \
   libextractor_elf.la \
   $(extraflac) \
@@ -315,16 +322,6 @@ libextractor_man_la_LDFLAGS = \
 libextractor_man_la_LIBADD = \
   $(top_builddir)/src/main/libextractor.la \
   $(LE_LIBINTL)
-
-if HAVE_ZLIB
-libextractor_deb_la_SOURCES = \
-  debextractor.c 
-libextractor_deb_la_LDFLAGS = \
-  $(PLUGINFLAGS)
-libextractor_deb_la_LIBADD = \
-  $(top_builddir)/src/main/libextractor.la \
-  -lz
-endif
 
 libextractor_riff_la_SOURCES = \
   riffextractor.c 

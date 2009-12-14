@@ -34,20 +34,6 @@
  * http://www.opengroup.org/onlinepubs/009695399/utilities/ar.html
  */
 
-static EXTRACTOR_KeywordList *
-addKeyword (EXTRACTOR_KeywordType type,
-            char *keyword, EXTRACTOR_KeywordList * next)
-{
-  EXTRACTOR_KeywordList *result;
-
-  if (keyword == NULL)
-    return next;
-  result = malloc (sizeof (EXTRACTOR_KeywordList));
-  result->next = next;
-  result->keyword = keyword;
-  result->keywordType = type;
-  return result;
-}
 
 static char *
 stndup (const char *str, size_t n)
@@ -64,41 +50,44 @@ stndup (const char *str, size_t n)
 typedef struct
 {
   const char *text;
-  EXTRACTOR_KeywordType type;
+  enum EXTRACTOR_MetaType type;
 } Matches;
 
 /* see also: "man 5 deb-control" */
 static Matches tmap[] = {
-  {"Package: ", EXTRACTOR_SOFTWARE},
-  {"Version: ", EXTRACTOR_VERSIONNUMBER},
-  {"Section: ", EXTRACTOR_GENRE},
-  {"Priority: ", EXTRACTOR_PRIORITY},
-  {"Architecture: ", EXTRACTOR_CREATED_FOR},
-  {"Depends: ", EXTRACTOR_DEPENDENCY},
-  {"Recommends: ", EXTRACTOR_RELATION},
-  {"Suggests: ", EXTRACTOR_RELATION},
-  {"Installed-Size: ", EXTRACTOR_SIZE},
-  {"Maintainer: ", EXTRACTOR_PACKAGER},
-  {"Description: ", EXTRACTOR_DESCRIPTION},
-  {"Source: ", EXTRACTOR_SOURCE},
-  {"Pre-Depends: ", EXTRACTOR_DEPENDENCY},
-  {"Conflicts: ", EXTRACTOR_CONFLICTS},
-  {"Replaces: ", EXTRACTOR_REPLACES},
-  {"Provides: ", EXTRACTOR_PROVIDES},
-  {NULL, 0},
-  {"Essential: ", EXTRACTOR_UNKNOWN}
+  {"Package: ",       EXTRACTOR_METATYPE_PACKAGE_NAME},
+  {"Version: ",       EXTRACTOR_METATYPE_PACKAGE_VERSION},
+  {"Section: ",       EXTRACTOR_METATYPE_PACKAGE_SECTION},
+  {"Priority: ",      EXTRACTOR_METATYPE_UPLOAD_PRIORITY},
+  {"Architecture: ",  EXTRACTOR_METATYPE_TARGET_ARCHITECTURE},
+  {"Depends: ",       EXTRACTOR_METATYPE_PACKAGE_DEPENDENCY},
+  {"Recommends: ",    EXTRACTOR_METATYPE_PACKAGE_RECOMMENDS},
+  {"Suggests: ",      EXTRACTOR_METATYPE_PACKAGE_SUGGESTS},
+  {"Installed-Size: ",EXTRACTOR_METATYPE_PACKAGE_INSTALLED_SIZE},
+  {"Maintainer: ",    EXTRACTOR_METATYPE_PACKAGE_MAINTAINER},
+  {"Description: ",   EXTRACTOR_METATYPE_DESCRIPTION},
+  {"Source: ",        EXTRACTOR_METATYPE_PACKAGE_SOURCE},
+  {"Pre-Depends: ",   EXTRACTOR_METATYPE_PACKAGE_PRE_DEPENDENCY},
+  {"Conflicts: ",     EXTRACTOR_METATYPE_PACKAGE_CONFLICTS},
+  {"Replaces: ",      EXTRACTOR_METATYPE_PACKAGE_REPLACES},
+  {"Provides: ",      EXTRACTOR_METATYPE_PACKAGE_PROVIDES},
+  {"Essential: ",     EXTRACTOR_METATYPE_PACKAGE_ESSENTIAL},
+  {NULL, 0}
 };
 
 
 /**
  * Process the control file.
  */
-static struct EXTRACTOR_Keywords *
+static int
 processControl (const char *data,
-                const size_t size, struct EXTRACTOR_Keywords *prev)
+                const size_t size,
+		EXTRACTOR_MetaDataProcessor proc,
+		void *proc_cls)
 {
   size_t pos;
   char *key;
+  char *val;
 
   pos = 0;
   while (pos < size)
@@ -111,7 +100,7 @@ processControl (const char *data,
       while (data[colon] != ':')
         {
           if ((colon > size) || (data[colon] == '\n'))
-            return prev;
+            return 0;
           colon++;
         }
       colon++;
@@ -123,17 +112,26 @@ processControl (const char *data,
               ((eol + 1 < size) && (data[eol + 1] == ' '))))
         eol++;
       if ((eol == colon) || (eol > size))
-        return prev;
+        return 0;
       key = stndup (&data[pos], colon - pos);
       i = 0;
       while (tmap[i].text != NULL)
         {
           if (0 == strcmp (key, tmap[i].text))
             {
-              char *val;
-
               val = stndup (&data[colon], eol - colon);
-              prev = addKeyword (tmap[i].type, val, prev);
+	      if (0 != proc (proc_cls, 
+			     "deb",
+			     tmap[i].type,
+			     EXTRACTOR_METAFORMAT_UTF8,
+			     "text/plain",
+			     val,
+			     strlen(val) + 1))
+		{
+		  free (val);
+		  return 1;
+		}
+	      free (val);
               break;
             }
           i++;
@@ -141,7 +139,7 @@ processControl (const char *data,
       free (key);
       pos = eol + 1;
     }
-  return prev;
+  return 0;
 }
 
 
@@ -173,9 +171,11 @@ typedef struct
 /**
  * Process the control.tar file.
  */
-static struct EXTRACTOR_Keywords *
+static int
 processControlTar (const char *data,
-                   const size_t size, struct EXTRACTOR_Keywords *prev)
+                   const size_t size,
+		   EXTRACTOR_MetaDataProcessor proc,
+		   void *proc_cls)
 {
   TarHeader *tar;
   USTarHeader *ustar;
@@ -204,21 +204,21 @@ processControlTar (const char *data,
       memcpy (buf, &tar->filesize[0], 12);
       buf[12] = '\0';
       if (1 != sscanf (buf, "%12llo", &fsize))  /* octal! Yuck yuck! */
-        return prev;
+        return 0;
       if ((pos + fsize > size) || (fsize > size) || (pos + fsize < pos))
-        return prev;
+        return 0;
 
       if (0 == strncmp (&tar->name[0], "./control", strlen ("./control")))
         {
-          return processControl (&data[pos], fsize, prev);
+          return processControl (&data[pos], fsize, proc, proc_cls);
         }
       if ((fsize & 511) != 0)
         fsize = (fsize | 511) + 1;      /* round up! */
       if (pos + fsize < pos)
-        return prev;
+        return 0;
       pos += fsize;
     }
-  return prev;
+  return 0;
 }
 
 #define MAX_CONTROL_SIZE (1024 * 1024)
@@ -238,20 +238,21 @@ Efree (voidpf opaque, voidpf ptr)
 /**
  * Process the control.tar.gz file.
  */
-static struct EXTRACTOR_Keywords *
+static int
 processControlTGZ (const unsigned char *data,
-                   size_t size, struct EXTRACTOR_Keywords *prev)
+                   size_t size, 
+		   EXTRACTOR_MetaDataProcessor proc,
+		   void *proc_cls)
 {
   uint32_t bufSize;
   char *buf;
   z_stream strm;
+  int ret;
 
   bufSize = data[size - 4] + (data[size - 3] << 8) + (data[size - 2] << 16) + (data[size - 1] << 24);
   if (bufSize > MAX_CONTROL_SIZE)
-    return prev;
-
+    return 0;
   memset (&strm, 0, sizeof (z_stream));
-
   strm.next_in = (Bytef *) data;
   strm.avail_in = size;
   strm.total_in = 0;
@@ -265,22 +266,22 @@ processControlTGZ (const unsigned char *data,
       if (buf == NULL)
         {
           inflateEnd (&strm);
-          return prev;
+          return 0;
         }
       strm.next_out = (Bytef *) buf;
       strm.avail_out = bufSize;
       inflate (&strm, Z_FINISH);
       if (strm.total_out > 0)
         {
-          prev = processControlTar (buf, strm.total_out, prev);
+          ret = processControlTar (buf, strm.total_out, proc, proc_cls);
           inflateEnd (&strm);
           free (buf);
-          return prev;
+          return ret;
         }
       free (buf);
       inflateEnd (&strm);
     }
-  return prev;
+  return 0;
 }
 
 typedef struct
@@ -294,53 +295,61 @@ typedef struct
   char trailer[2];
 } ObjectHeader;
 
-struct EXTRACTOR_Keywords *
-libextractor_deb_extract (const char *filename,
-                          const char *data,
-                          const size_t size, struct EXTRACTOR_Keywords *prev)
+
+int 
+EXTRACTOR_deb_extract (const char *data,
+		       size_t size,
+		       EXTRACTOR_MetaDataProcessor proc,
+		       void *proc_cls,
+		       const char *options)
 {
   size_t pos;
   int done = 0;
+  ObjectHeader *hdr;
+  unsigned long long fsize;
+  char buf[11];
 
   if (size < 128)
-    return prev;
+    return 0;
   if (0 != strncmp ("!<arch>\n", data, strlen ("!<arch>\n")))
-    return prev;
+    return 0;
   pos = strlen ("!<arch>\n");
   while (pos + sizeof (ObjectHeader) < size)
     {
-      ObjectHeader *hdr;
-      unsigned long long fsize;
-      char buf[11];
-
       hdr = (ObjectHeader *) & data[pos];
       if (0 != strncmp (&hdr->trailer[0], "`\n", 2))
-        return prev;
-
+        return 0;
       memcpy (buf, &hdr->filesize[0], 10);
       buf[10] = '\0';
       if (1 != sscanf (buf, "%10llu", &fsize))
-        return prev;
+        return 0;
       pos += sizeof (ObjectHeader);
       if ((pos + fsize > size) || (fsize > size) || (pos + fsize < pos))
-        return prev;
+        return 0;
       if (0 == strncmp (&hdr->name[0],
                         "control.tar.gz", strlen ("control.tar.gz")))
         {
-          prev = processControlTGZ ((const unsigned char *) &data[pos],
-                                    fsize, prev);
+          if (0 != processControlTGZ ((const unsigned char *) &data[pos],
+				      fsize, proc, proc_cls))
+	    return 1;
           done++;
         }
       if (0 == strncmp (&hdr->name[0],
                         "debian-binary", strlen ("debian-binary")))
         {
-          prev = addKeyword (EXTRACTOR_MIMETYPE,
-                             strdup ("application/x-debian-package"), prev);
+	  if (0 != proc (proc_cls, 
+			 "deb",
+			 EXTRACTOR_METATYPE_MIMETYPE,
+			 EXTRACTOR_METAFORMAT_UTF8,
+			 "text/plain",
+			 "application/x-debian-package",
+			 strlen ("application/x-debian-package")))
+	    return 1;
           done++;
         }
       pos += fsize;
       if (done == 2)
         break;                  /* no need to process the rest of the archive */
     }
-  return prev;
+  return 0;
 }

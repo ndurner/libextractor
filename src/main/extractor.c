@@ -226,8 +226,42 @@ static const struct MetaTypeDescription meta_type_descriptions[] = {
     gettext_noop ("standard Macintosh Finder file type information") },
   { gettext_noop ("creator"),
     gettext_noop ("standard Macintosh Finder file creator information") },
-  
-  
+  { gettext_noop ("package name"),
+    gettext_noop ("unique identifier for the package") },
+  /* 70 */
+  { gettext_noop ("package version"),
+    gettext_noop ("version of the software and its package") },
+  { gettext_noop ("section"),
+    gettext_noop ("category the software package belongs to") },
+  { gettext_noop ("upload priority"),
+    gettext_noop ("priority for promoting the release to production") },
+  { gettext_noop ("dependencies"),
+    gettext_noop ("packages this package depends upon") },
+  { gettext_noop ("conflicting packages"),
+    gettext_noop ("packages that cannot be installed with this package") },
+  /* 75 */
+  { gettext_noop ("replaced packages"),
+    gettext_noop ("packages made obsolete by this package") },
+  { gettext_noop ("provides"),
+    gettext_noop ("functionality provided by this package") },
+  { gettext_noop ("recommendations"),
+    gettext_noop ("packages recommended for installation in conjunction with this package") },
+  { gettext_noop ("suggestions"),
+    gettext_noop ("packages suggested for installation in conjunction with this package") },
+  { gettext_noop ("maintainer"),
+    gettext_noop ("name of the maintainer") },
+  /* 80 */
+  { gettext_noop ("installed size"),
+    gettext_noop ("space consumption after installation") },
+  { gettext_noop ("source"),
+    gettext_noop ("original source code") },
+  { gettext_noop ("is essential"),
+    gettext_noop ("package is marked as essential") },
+  { gettext_noop ("target architecture"),
+    gettext_noop ("hardware architecture the package can be used for") },
+  { gettext_noop ("pre-dependency"),
+    gettext_noop ("dependency that must be satisfied before installation") }, 
+  /* 85 */
 #if 0
   
   gettext_noop("author"),
