@@ -570,7 +570,6 @@ src/plugins/Makefile
 src/plugins/ole2/Makefile
 src/plugins/oo/Makefile
 src/plugins/pdf/Makefile
-src/plugins/rpm/Makefile
 src/plugins/printable/Makefile
 src/plugins/hash/Makefile
 src/plugins/thumbnail/Makefile
