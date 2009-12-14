@@ -594,7 +594,7 @@ EXTRACTOR_plugin_add (struct EXTRACTOR_PluginList * prev,
 
   if (0 != plugin_load (library, &handle, &method))
     return prev;
-  result = malloc (sizeof (struct EXTRACTOR_PluginList));
+  result = calloc (1, sizeof (struct EXTRACTOR_PluginList));
   result->next = prev;
   result->libraryHandle = handle;
   result->extractMethod = method;
@@ -630,7 +630,7 @@ EXTRACTOR_plugin_add_last(struct EXTRACTOR_PluginList *prev,
 
   if (0 != plugin_load (library, &handle, &method))
     return prev;
-  result = malloc (sizeof (struct EXTRACTOR_PluginList));
+  result = calloc (1, sizeof (struct EXTRACTOR_PluginList));
   result->next = NULL;
   result->libraryHandle = handle;
   result->extractMethod = method;
