@@ -209,7 +209,7 @@ enum EXTRACTOR_MetaType
     EXTRACTOR_METATYPE_TARGET_PLATFORM = 91,
 
 
-    / * FIXME: transcribe & renumber those below */
+    /* FIXME: transcribe & renumber those below */
     /* (text) document processing specifics */
     EXTRACTOR_METATYPE_CHARACTER_SET = 104,
     EXTRACTOR_METATYPE_LINE_COUNT = 105,
