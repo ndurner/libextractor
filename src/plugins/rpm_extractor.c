@@ -100,8 +100,7 @@ static Matches tests[] = {
 #endif
 
 #if 0
-    RPMTAG_EPOCH   		= 1003,	/* i */
-    RPMTAG_INSTALLTIME		= 1008,	/* i */
+  /* FIXME: add support for some of these */
     RPMTAG_GIF			= 1012,	/* x */
     RPMTAG_XPM			= 1013,	/* x */
     RPMTAG_SOURCE		= 1018,	/* s[] */
