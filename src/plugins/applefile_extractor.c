@@ -31,21 +31,6 @@
 #define APPLESINGLE_SIGNATURE "\x00\x05\x16\x00"
 #define APPLEDOUBLE_SIGNATURE "\x00\x05\x16\x07"
 
-static struct EXTRACTOR_Keywords *
-addKeyword (EXTRACTOR_KeywordType type,
-            char *keyword, struct EXTRACTOR_Keywords *next)
-{
-  EXTRACTOR_KeywordList *result;
-
-  if (keyword == NULL)
-    return next;
-  result = malloc (sizeof (EXTRACTOR_KeywordList));
-  result->next = next;
-  result->keyword = keyword;
-  result->keywordType = type;
-  return result;
-}
-
 typedef struct
 {
   unsigned char magic[4];
@@ -121,49 +106,56 @@ static int readEntryDescriptor(const unsigned char *data,
   return 0;
 }
 
-struct EXTRACTOR_Keywords *
-libextractor_applefile_extract (const char *filename,
-                          const unsigned char *data,
-                          const size_t size, struct EXTRACTOR_Keywords *prev)
+/* mimetype = application/applefile */
+int 
+EXTRACTOR_applefile_extract (const char *sdata,
+			     size_t size,
+			     EXTRACTOR_MetaDataProcessor proc,
+			     void *proc_cls,
+			     const char *options)
 {
-  struct EXTRACTOR_Keywords *result;
+  const unsigned char *data = (const unsigned char*) sdata;
   size_t offset;
   ApplefileHeader header;
   ApplefileEntryDescriptor dsc;
   int i;
 
   offset = 0;
-
   if (readApplefileHeader(data, &offset, size, &header) == -1)
-    return prev;
-
-  if ((memcmp(header.magic, APPLESINGLE_SIGNATURE, 4) != 0) &&
-        (memcmp(header.magic, APPLEDOUBLE_SIGNATURE, 4) != 0))
-      return prev;
-
-  result = prev;
-  result = addKeyword (EXTRACTOR_MIMETYPE,
-                       strdup ("application/applefile"),
-                       result);
-
+    return 0;
+  if ( (memcmp(header.magic, APPLESINGLE_SIGNATURE, 4) != 0) &&
+       (memcmp(header.magic, APPLEDOUBLE_SIGNATURE, 4) != 0) )
+    return 0;
+  if (0 != proc (proc_cls, 
+		 "html",
+		 EXTRACTOR_METATYPE_MIMETYPE,
+		 EXTRACTOR_METAFORMAT_UTF8,
+		 "text/plain",
+		 "application/applefile",
+		 strlen ("application/applefile")+1))
+    return 1;
 #if DEBUG
-  printf("applefile header: %08x %d\n", header.version, header.entries);
+  fprintf(stderr,
+	  "applefile header: %08x %d\n", header.version, header.entries);
 #endif
-  if (header.version != 0x00010000 && header.version != 0x00020000)
-    return result;
+  if ( (header.version != 0x00010000) && 
+       (header.version != 0x00020000) )
+    return 0;
 
   for (i = 0; i < header.entries; i++) {
     if (readEntryDescriptor(data, &offset, size, &dsc) == -1)
       break;
 
 #if DEBUG
-    printf("applefile entry: %u %u %u\n", dsc.id, dsc.offset, dsc.length);
+    fprintf(stderr,
+	    "applefile entry: %u %u %u\n", dsc.id, dsc.offset, dsc.length);
 #endif
-    switch (dsc.id) {
+    switch (dsc.id) 
+      {
       case AED_ID_DATA_FORK:
         {
-        /* same as in filenameextractor.c */
-        char * s = malloc (14);
+	  /* same as in filenameextractor.c */
+	  char s[14];
 
         if (dsc.length >= 1000000000)
           snprintf (s, 13, "%.2f %s", dsc.length / 1000000000.0,
@@ -175,50 +167,84 @@ libextractor_applefile_extract (const char *filename,
         else
           snprintf (s, 13, "%.2f %s", (double) dsc.length, _("Bytes"));
 
-        result = addKeyword(EXTRACTOR_FILE_SIZE, s, result);
-        }
-        break;
+	if (0 != proc (proc_cls, 
+		       "html",
+		       EXTRACTOR_METATYPE_EMBEDDED_FILE_SIZE,
+		       EXTRACTOR_METAFORMAT_UTF8,
+		       "text/plain",
+		       s,
+		       strlen (s) + 1))
+	  return 1;
+	}
+	break;      
       case AED_ID_REAL_NAME:
-        if (dsc.length < 2048 && (dsc.offset + dsc.length) < size) {
-	  char *s = malloc(dsc.length + 1);
-	  if (s != NULL) {
-            memcpy(s, data + dsc.offset, dsc.length);
+	{
+	  char s[2048];
+	  if ( (dsc.length < sizeof(s)) && 
+	       ((dsc.offset + dsc.length) < size) ) {
+	    memcpy(s, data + dsc.offset, dsc.length);
 	    s[dsc.length] = '\0';
-	    result = addKeyword(EXTRACTOR_FILENAME, s, result);
+	    if (0 != proc (proc_cls, 
+			   "html",
+			   EXTRACTOR_METATYPE_FILENAME,
+			   EXTRACTOR_METAFORMAT_UTF8,
+			   "text/plain",
+			   s,
+			   dsc.length + 1))
+	      return 1;	
 	  }
 	}
 	break;
       case AED_ID_COMMENT:
-        if (dsc.length < 65536 && (dsc.offset + dsc.length) < size) {
+        if ( (dsc.length < 65536) && ((dsc.offset + dsc.length) < size) ) {
 	  char *s = malloc(dsc.length + 1);
 	  if (s != NULL) {
             memcpy(s, data + dsc.offset, dsc.length);
 	    s[dsc.length] = '\0';
-	    result = addKeyword(EXTRACTOR_COMMENT, s, result);
+	    if (0 != proc (proc_cls, 
+			   "html",
+			   EXTRACTOR_METATYPE_COMMENT,
+			   EXTRACTOR_METAFORMAT_UTF8,
+			   "text/plain",
+			   s,
+			   dsc.length + 1))
+	      {
+		free (s);
+		return 1;	
+	      }
+	    free (s);	    
 	  }
-	}
+	}      
 	break;
       case AED_ID_FINDER_INFO:
         if (dsc.length >= 16 && (dsc.offset + dsc.length) < size) {
-          char *s;
-          s = malloc(5);
-          if (s != NULL) {
-            memcpy(s, data + dsc.offset, 4);
-            s[4] = '\0';
-            result = addKeyword(EXTRACTOR_RESOURCE_TYPE, s, result);
-          }
-          s = malloc(5);
-          if (s != NULL) {
-            memcpy(s, data + dsc.offset + 4, 4);
-            s[4] = '\0';
-            result = addKeyword(EXTRACTOR_CREATOR, s, result);
-          }
+          char s[5];
+	  memcpy(s, data + dsc.offset, 4);
+	  s[4] = '\0';
+	  if (0 != proc (proc_cls, 
+			 "html",
+			 EXTRACTOR_METATYPE_FINDER_FILE_TYPE,
+			 EXTRACTOR_METAFORMAT_C_STRING,
+			 "text/plain",
+			 s,
+			 strlen(s) + 1))
+	    return 1;	
+          
+	  memcpy(s, data + dsc.offset + 4, 4);
+	  s[4] = '\0';
+	  if (0 != proc (proc_cls, 
+			 "html",
+			 EXTRACTOR_METATYPE_FINDER_FILE_CREATOR,
+			 EXTRACTOR_METAFORMAT_C_STRING,
+			 "text/plain",
+			 s,
+			 strlen(s) + 1))
+	    return 1;	
         }
         break;
       default:
         break;
     }
   }
-
-  return result;
+  return 0;
 }

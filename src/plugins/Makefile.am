@@ -86,9 +86,18 @@ oodir = oo
 endif
 
 plugin_LTLIBRARIES = \
+  libextractor_applefile.la \
   libextractor_html.la \
   libextractor_it.la \
   libextractor_mime.la 
+
+libextractor_applefile_la_SOURCES = \
+  applefile_extractor.c
+libextractor_applefile_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+libextractor_applefile_la_LIBADD = \
+  $(top_builddir)/src/common/libextractor_common.la \
+  $(LE_LIBINTL)
 
 libextractor_html_la_SOURCES = \
   html_extractor.c 
@@ -112,7 +121,6 @@ libextractor_mime_la_LDFLAGS = \
 
 OLD_LIBS = \
   $(pdfplugin) \
-  libextractor_applefile.la \
   libextractor_asf.la \
   libextractor_deb.la \
   libextractor_dvi.la \
@@ -256,14 +264,6 @@ libextractor_tiff_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_tiff_la_LIBADD = \
   $(top_builddir)/src/common/libextractor_common.la
-
-libextractor_applefile_la_SOURCES = \
-  applefileextractor.c
-libextractor_applefile_la_LDFLAGS = \
-  $(PLUGINFLAGS)
-libextractor_applefile_la_LIBADD = \
-  $(top_builddir)/src/common/libextractor_common.la \
-  $(LE_LIBINTL)
 
 libextractor_elf_la_SOURCES = \
   elfextractor.c 
