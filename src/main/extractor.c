@@ -220,7 +220,14 @@ static const struct MetaTypeDescription meta_type_descriptions[] = {
   /* 65 */
   { gettext_noop ("revision history"),
     gettext_noop ("information about the revision history") },
-
+  { gettext_noop ("embedded file size"),
+    gettext_noop ("size of the contents of the container as embedded in the file") },
+  { gettext_noop ("file type"),
+    gettext_noop ("standard Macintosh Finder file type information") },
+  { gettext_noop ("creator"),
+    gettext_noop ("standard Macintosh Finder file creator information") },
+  
+  
 #if 0
   
   gettext_noop("author"),
