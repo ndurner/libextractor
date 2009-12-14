@@ -127,7 +127,7 @@ EXTRACTOR_applefile_extract (const char *sdata,
        (memcmp(header.magic, APPLEDOUBLE_SIGNATURE, 4) != 0) )
     return 0;
   if (0 != proc (proc_cls, 
-		 "html",
+		 "applefile",
 		 EXTRACTOR_METATYPE_MIMETYPE,
 		 EXTRACTOR_METAFORMAT_UTF8,
 		 "text/plain",
@@ -168,7 +168,7 @@ EXTRACTOR_applefile_extract (const char *sdata,
           snprintf (s, 13, "%.2f %s", (double) dsc.length, _("Bytes"));
 
 	if (0 != proc (proc_cls, 
-		       "html",
+		       "applefile",
 		       EXTRACTOR_METATYPE_EMBEDDED_FILE_SIZE,
 		       EXTRACTOR_METAFORMAT_UTF8,
 		       "text/plain",
@@ -185,7 +185,7 @@ EXTRACTOR_applefile_extract (const char *sdata,
 	    memcpy(s, data + dsc.offset, dsc.length);
 	    s[dsc.length] = '\0';
 	    if (0 != proc (proc_cls, 
-			   "html",
+			   "applefile",
 			   EXTRACTOR_METATYPE_FILENAME,
 			   EXTRACTOR_METAFORMAT_UTF8,
 			   "text/plain",
@@ -202,7 +202,7 @@ EXTRACTOR_applefile_extract (const char *sdata,
             memcpy(s, data + dsc.offset, dsc.length);
 	    s[dsc.length] = '\0';
 	    if (0 != proc (proc_cls, 
-			   "html",
+			   "applefile",
 			   EXTRACTOR_METATYPE_COMMENT,
 			   EXTRACTOR_METAFORMAT_UTF8,
 			   "text/plain",
@@ -222,7 +222,7 @@ EXTRACTOR_applefile_extract (const char *sdata,
 	  memcpy(s, data + dsc.offset, 4);
 	  s[4] = '\0';
 	  if (0 != proc (proc_cls, 
-			 "html",
+			 "applefile",
 			 EXTRACTOR_METATYPE_FINDER_FILE_TYPE,
 			 EXTRACTOR_METAFORMAT_C_STRING,
 			 "text/plain",
@@ -233,7 +233,7 @@ EXTRACTOR_applefile_extract (const char *sdata,
 	  memcpy(s, data + dsc.offset + 4, 4);
 	  s[4] = '\0';
 	  if (0 != proc (proc_cls, 
-			 "html",
+			 "applefile",
 			 EXTRACTOR_METATYPE_FINDER_FILE_CREATOR,
 			 EXTRACTOR_METAFORMAT_C_STRING,
 			 "text/plain",

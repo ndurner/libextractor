@@ -87,6 +87,7 @@ endif
 
 plugin_LTLIBRARIES = \
   libextractor_applefile.la \
+  libextractor_asf.la \
   libextractor_html.la \
   libextractor_it.la \
   libextractor_mime.la 
@@ -98,6 +99,11 @@ libextractor_applefile_la_LDFLAGS = \
 libextractor_applefile_la_LIBADD = \
   $(top_builddir)/src/common/libextractor_common.la \
   $(LE_LIBINTL)
+
+libextractor_asf_la_SOURCES = \
+  asf_extractor.c 
+libextractor_asf_la_LDFLAGS = \
+  $(PLUGINFLAGS)
 
 libextractor_html_la_SOURCES = \
   html_extractor.c 
@@ -121,7 +127,6 @@ libextractor_mime_la_LDFLAGS = \
 
 OLD_LIBS = \
   $(pdfplugin) \
-  libextractor_asf.la \
   libextractor_deb.la \
   libextractor_dvi.la \
   libextractor_elf.la \
@@ -235,11 +240,6 @@ libextractor_id3v24_la_LIBADD = \
 libextractor_dvi_la_SOURCES = \
   dviextractor.c 
 libextractor_dvi_la_LDFLAGS = \
-  $(PLUGINFLAGS)
-
-libextractor_asf_la_SOURCES = \
-  asfextractor.c 
-libextractor_asf_la_LDFLAGS = \
   $(PLUGINFLAGS)
 
 if HAVE_ZLIB

@@ -361,7 +361,7 @@ typedef struct
 typedef struct demux_asf_s
 {
   /* pointer to the stream data */
-  char *input;
+  const char *input;
   /* current position in stream */
   size_t inputPos;
   size_t inputLen;
@@ -716,22 +716,6 @@ fail:
 }
 
 
-static struct EXTRACTOR_Keywords *
-addKeyword (EXTRACTOR_KeywordType type,
-            char *keyword, struct EXTRACTOR_Keywords *next)
-{
-  EXTRACTOR_KeywordList *result;
-
-  if (keyword == NULL)
-    return next;
-  result = malloc (sizeof (EXTRACTOR_KeywordList));
-  result->next = next;
-  result->keyword = strdup (keyword);
-  result->keywordType = type;
-  return result;
-}
-
-
 /* mimetypes:
    video/x-ms-asf: asf: ASF stream;
    video/x-ms-wmv: wmv: Windows Media Video;
@@ -741,57 +725,65 @@ addKeyword (EXTRACTOR_KeywordType type,
    video/x-ms-asf-plugin: asf,asx,asp: mms animation;
    video/x-ms-wvx: wvx: wmv metafile;
    video/x-ms-wax: wva: wma metafile; */
-struct EXTRACTOR_Keywords *
-libextractor_asf_extract (char *filename,
-                          char *data,
-                          size_t size, struct EXTRACTOR_Keywords *prev)
+
+/* mimetype = application/applefile */
+int 
+EXTRACTOR_asf_extract (const char *data,
+		       size_t size,
+		       EXTRACTOR_MetaDataProcessor proc,
+		       void *proc_cls,
+		       const char *options)
 {
-  demux_asf_t *this;
+  demux_asf_t this;
 
-  this = malloc (sizeof (demux_asf_t));
-  memset (this, 0, sizeof (demux_asf_t));
-  this->input = data;
-  this->inputPos = 0;
-  this->inputLen = size;
-  this->status = DEMUX_START;
-
-  if (0 == asf_read_header (this))
-    {
-      free (this);
-      return prev;
-    }
-
-  if (strlen (this->title) > 0)
-    prev = addKeyword (EXTRACTOR_TITLE, this->title, prev);
-  if (strlen (this->author) > 0)
-    prev = addKeyword (EXTRACTOR_AUTHOR, this->author, prev);
-  if (strlen (this->comment) > 0)
-    prev = addKeyword (EXTRACTOR_COMMENT, this->comment, prev);
-  if (strlen (this->copyright) > 0)
-    prev = addKeyword (EXTRACTOR_COPYRIGHT, this->copyright, prev);
-  prev = addKeyword (EXTRACTOR_MIMETYPE, "video/x-ms-asf", prev);
-
-  /* build a description from author and title */
-  if (strlen (this->author) * strlen (this->title) > 0)
-    {
-      EXTRACTOR_KeywordList *keyword =
-        malloc (sizeof (EXTRACTOR_KeywordList));
-      char *word;
-      int len = 3 + strlen (this->author) + strlen (this->title);
-
-      word = malloc (len);
-      word[0] = '\0';
-      strcat (word, this->author);
-      strcat (word, ": ");
-      strcat (word, this->title);
-      keyword->next = prev;
-      keyword->keyword = word;
-      keyword->keywordType = EXTRACTOR_DESCRIPTION;
-      prev = keyword;
-    }
-  free (this);
-  return prev;
+  memset (&this, 0, sizeof (demux_asf_t));
+  this.input = data;
+  this.inputLen = size;
+  this.status = DEMUX_START;
+  if (0 == asf_read_header (&this))
+    return 0;    
+  
+  if ( ( (strlen(this.title) > 0) &&
+	 (0 != proc (proc_cls, 
+		     "asf",
+		     EXTRACTOR_METATYPE_TITLE,
+		     EXTRACTOR_METAFORMAT_C_STRING,
+		     "text/plain",
+		     this.title,
+		     strlen(this.title) + 1)) ) ||
+       ( (strlen(this.author) > 0) &&
+	 (0 != proc (proc_cls, 
+		     "asf",
+		     EXTRACTOR_METATYPE_AUTHOR_NAME,
+		     EXTRACTOR_METAFORMAT_C_STRING,
+		     "text/plain",
+		     this.author,
+		     strlen(this.author) + 1)) ) ||
+       ( (strlen(this.comment) > 0) &&
+	 (0 != proc (proc_cls, 
+		     "asf",
+		     EXTRACTOR_METATYPE_COMMENT,
+		     EXTRACTOR_METAFORMAT_C_STRING,
+		     "text/plain",
+		     this.comment,
+		     strlen(this.comment) + 1)) ) ||
+       ( (strlen(this.copyright) > 0) &&
+	 (0 != proc (proc_cls, 
+		     "asf",
+		     EXTRACTOR_METATYPE_COPYRIGHT,
+		     EXTRACTOR_METAFORMAT_C_STRING,
+		     "text/plain",
+		     this.copyright,
+		     strlen(this.copyright) + 1)) ) ||
+       (0 != proc (proc_cls, 
+		   "asf",
+		   EXTRACTOR_METATYPE_MIMETYPE,
+		   EXTRACTOR_METAFORMAT_C_STRING,
+		   "text/plain",
+		   "video/x-ms-asf",
+		   strlen("video/x-ms-asf") + 1)) )       
+    return 1;	
+  return 0;
 }
 
-
-/*  end of asfextractor.c */
+/*  end of asf_extractor.c */
