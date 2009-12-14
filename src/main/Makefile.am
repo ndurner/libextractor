@@ -41,7 +41,9 @@ EXTRA_DIST = \
 libextractor_la_CPPFLAGS = -DPLUGINDIR=\"@RPLUGINDIR@\" $(AM_CPPFLAGS)
 
 libextractor_la_SOURCES = \
-  extractor.c
+  extractor.c \
+  extractor_metatypes.c \
+  extractor_print.c 
 
 extract_SOURCES = \
   extract.c \
