@@ -90,6 +90,7 @@ plugin_LTLIBRARIES = \
   libextractor_asf.la \
   libextractor_deb.la \
   libextractor_dvi.la \
+  libextractor_elf.la \
   libextractor_html.la \
   libextractor_it.la \
   libextractor_mime.la \
@@ -119,6 +120,13 @@ libextractor_dvi_la_SOURCES = \
   dvi_extractor.c 
 libextractor_dvi_la_LDFLAGS = \
   $(PLUGINFLAGS)
+
+libextractor_elf_la_SOURCES = \
+  elf_extractor.c 
+libextractor_elf_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+libextractor_elf_la_LIBADD = \
+  $(top_builddir)/src/common/libextractor_common.la
 
 libextractor_html_la_SOURCES = \
   html_extractor.c 
@@ -277,13 +285,6 @@ libextractor_tiff_la_SOURCES = \
 libextractor_tiff_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_tiff_la_LIBADD = \
-  $(top_builddir)/src/common/libextractor_common.la
-
-libextractor_elf_la_SOURCES = \
-  elfextractor.c 
-libextractor_elf_la_LDFLAGS = \
-  $(PLUGINFLAGS)
-libextractor_elf_la_LIBADD = \
   $(top_builddir)/src/common/libextractor_common.la
 
 libextractor_zip_la_SOURCES = \

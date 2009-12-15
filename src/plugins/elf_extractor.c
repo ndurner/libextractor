@@ -1,6 +1,6 @@
 /*
      This file is part of libextractor.
-     (C) 2004 Vidyut Samanta and Christian Grothoff
+     (C) 2004, 2009 Vidyut Samanta and Christian Grothoff
 
      libextractor is free software; you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published
@@ -21,24 +21,18 @@
 #include "platform.h"
 #include "extractor.h"
 #include "pack.h"
+#include <stdint.h>
 
-static void
-addKeyword (struct EXTRACTOR_Keywords **list,
-            const char *keyword, EXTRACTOR_KeywordType type)
-{
-  EXTRACTOR_KeywordList *next;
-  next = malloc (sizeof (EXTRACTOR_KeywordList));
-  next->next = *list;
-  next->keyword = strdup (keyword);
-  next->keywordType = type;
-  *list = next;
-}
+typedef uint32_t Elf32_Addr;
+typedef uint16_t Elf32_Half;
+typedef uint32_t Elf32_Off;
+typedef int32_t  Elf32_Sword;
+typedef uint32_t Elf32_Word;
 
-typedef unsigned int Elf32_Addr;
-typedef unsigned short Elf32_Half;
-typedef unsigned int Elf32_Off;
-typedef signed int Elf32_Sword;
-typedef unsigned int Elf32_Word;
+typedef uint16_t Elf64_Half;
+typedef uint32_t Elf64_Word;
+typedef uint64_t Elf64_Addr;
+typedef uint64_t Elf64_Off;
 
 /* first 4 bytes of the ELF header */
 static char elfMagic[] = { 0x7f, 'E', 'L', 'F' };
@@ -46,7 +40,7 @@ static char elfMagic[] = { 0x7f, 'E', 'L', 'F' };
 #define EI_CLASS 4
 #define EI_DATA 5
 #define EI_VERSION 6
-#define EI_PAD 7
+#define EI_OSABI 7
 #define EI_NIDENT 16
 
 typedef struct
@@ -67,7 +61,7 @@ typedef struct
 } Elf32_Ehdr;
 
 /* elf-header minus e_ident */
-#define ELF_HEADER_SIZE 36
+#define ELF_HEADER_SIZE sizeof (Elf32_Ehdr)
 
 #define ELF_HEADER_FIELDS(p) \
   &(p)->e_type,		     \
@@ -88,6 +82,44 @@ static char *ELF_HEADER_SPECS[] = {
   "HHWWWWWHHHHHH",
 };
 
+typedef struct {
+        Elf64_Half      e_type;
+        Elf64_Half      e_machine;
+        Elf64_Word      e_version;
+        Elf64_Addr      e_entry;
+        Elf64_Off       e_phoff;
+        Elf64_Off       e_shoff;
+        Elf64_Word      e_flags;
+        Elf64_Half      e_ehsize;
+        Elf64_Half      e_phensize;
+        Elf64_Half      e_phnum;
+        Elf64_Half      e_shentsize;
+        Elf64_Half      e_shnum;
+        Elf64_Half      e_shstrndx;
+} Elf64_Ehdr;
+
+/* elf-header minus e_ident */
+#define ELF64_HEADER_SIZE sizeof (Elf64_Ehdr)
+
+#define ELF64_HEADER_FIELDS(p) \
+    &(p)->e_type,		     \
+    &(p)->e_machine,	     \
+    &(p)->e_version,	     \
+    &(p)->e_entry,	     \
+    &(p)->e_phoff,	     \
+    &(p)->e_shoff,	     \
+    &(p)->e_flags,	     \
+    &(p)->e_ehsize,	     \
+    &(p)->e_phensize,	     \
+    &(p)->e_phnum,	     \
+    &(p)->e_shentsize,	     \
+    &(p)->e_shnum,	     \
+    &(p)->e_shstrndx
+static char *ELF64_HEADER_SPECS[] = {
+  "hhwxxxwhhhhhh",
+  "HHWXXXWHHHHHH",
+};
+
 
 typedef struct
 {
@@ -103,6 +135,7 @@ typedef struct
   Elf32_Word sh_entsize;
 } Elf32_Shdr;
 #define ELF_SECTION_SIZE 40
+
 #define ELF_SECTION_FIELDS(p) \
   &(p)->sh_name,	      \
     &(p)->sh_type,	      \
@@ -179,6 +212,20 @@ static char *ELF_DYN_SPECS[] = {
 #define EM_88K 5
 #define EM_860 7
 #define EM_MIPS 8
+#define EM_PPC 20
+#define EM_PPC64 21
+#define EM_S390 22
+#define EM_ARM 40
+#define EM_ALPHA 41
+#define EM_IA_64 50
+#define EM_X86_64 62
+#define EM_CUDA 190
+
+#define ELFOSABI_NETBSD 2
+#define ELFOSABI_LINUX 3
+#define ELFOSABI_IRIX 8
+#define ELFOSABI_FREEBSD 9
+#define ELFOSABI_OPENBSD 12
 
 #define EV_NONE 0
 #define EV_CURRENT 1
@@ -287,7 +334,7 @@ getByteorder (char ei_data)
  * @return 0 on success, -1 on error
  */
 static int
-getSectionHdr (char *data,
+getSectionHdr (const char *data,
                size_t size,
                Elf32_Ehdr * ehdr, Elf32_Half idx, Elf32_Shdr * ret)
 {
@@ -305,7 +352,7 @@ getSectionHdr (char *data,
  * @return 0 on success, -1 on error
  */
 static int
-getDynTag (char *data,
+getDynTag (const char *data,
            size_t size,
            Elf32_Ehdr * ehdr,
            Elf32_Off off, Elf32_Word osize, unsigned int idx, Elf32_Dyn * ret)
@@ -323,7 +370,7 @@ getDynTag (char *data,
  * @return 0 on success, -1 on error
  */
 static int
-getProgramHdr (char *data,
+getProgramHdr (const char *data,
                size_t size,
                Elf32_Ehdr * ehdr, Elf32_Half idx, Elf32_Phdr * ret)
 {
@@ -338,43 +385,56 @@ getProgramHdr (char *data,
 
 /**
  * Parse ELF header.
- * @return 0 on success, -1 on error
+ * @return 0 on success for 32 bit, 1 on success for 64 bit, -1 on error
  */
 static int
-getELFHdr (char *data, size_t size, Elf32_Ehdr * ehdr)
+getELFHdr (const char *data, 
+	   size_t size,
+	   Elf32_Ehdr * ehdr,
+	   Elf64_Ehdr * ehdr64)
 {
   /* catlib */
-  if (size < sizeof (Elf32_Ehdr) + EI_NIDENT)
+  if (size < EI_NIDENT)
     return -1;
   if (0 != strncmp (data, elfMagic, sizeof (elfMagic)))
     return -1;                  /* not an elf */
 
   switch (data[EI_CLASS])
     {
-    case ELFDATA2LSB:
-    case ELFDATA2MSB:
+    case ELFCLASS32:
+      if (size < sizeof (Elf32_Ehdr) + EI_NIDENT)
+	return -1;
       EXTRACTOR_common_cat_unpack (&data[EI_NIDENT],
-                  ELF_HEADER_SPECS[getByteorder (data[EI_CLASS])],
-                  ELF_HEADER_FIELDS (ehdr));
-      break;
+				   ELF_HEADER_SPECS[getByteorder (data[EI_DATA])],
+				   ELF_HEADER_FIELDS (ehdr));
+      if (ehdr->e_shoff + ehdr->e_shentsize * ehdr->e_shnum > size)
+	return -1;                  /* invalid offsets... */
+      if (ehdr->e_shentsize < ELF_SECTION_SIZE)
+	return -1;                  /* huh? */
+      if (ehdr->e_phoff + ehdr->e_phensize * ehdr->e_phnum > size)
+	return -1;
+      return 0;
+    case ELFCLASS64:
+      if (size < sizeof (Elf64_Ehdr) + EI_NIDENT)
+	return -1;
+      EXTRACTOR_common_cat_unpack (&data[EI_NIDENT],
+				   ELF64_HEADER_SPECS[getByteorder (data[EI_DATA])],
+				   ELF64_HEADER_FIELDS (ehdr64));
+      if (ehdr64->e_shoff + ehdr64->e_shentsize * ehdr64->e_shnum > size)
+	return -1;                  /* invalid offsets... */
+      if (ehdr64->e_phoff + ehdr64->e_phensize * ehdr64->e_phnum > size)
+	return -1;
+      return 1;
     default:
       return -1;
     }
-  if (ehdr->e_shoff + ehdr->e_shentsize * ehdr->e_shnum > size)
-    return -1;                  /* invalid offsets... */
-  if (ehdr->e_shentsize < ELF_SECTION_SIZE)
-    return -1;                  /* huh? */
-  if (ehdr->e_phoff + ehdr->e_phensize * ehdr->e_phnum > size)
-    return -1;
-
-  return 0;
 }
 
 /**
  * @return the string (offset into data, do NOT free), NULL on error
  */
 static const char *
-readStringTable (char *data,
+readStringTable (const char *data,
                  size_t size,
                  Elf32_Ehdr * ehdr,
                  Elf32_Half strTableOffset, Elf32_Word sh_name)
@@ -390,70 +450,121 @@ readStringTable (char *data,
   return &data[shrd.sh_offset + sh_name];
 }
 
-
+#define ADD(s, type) do { if (0!=proc(proc_cls, "elf", type, EXTRACTOR_METAFORMAT_UTF8, "text/plain", s, strlen(s)+1)) return 1; } while (0)
 
 /* application/x-executable, ELF */
-struct EXTRACTOR_Keywords *
-libextractor_elf_extract (char *filename,
-                          char *data,
-                          size_t size, struct EXTRACTOR_Keywords *prev)
+int 
+EXTRACTOR_elf_extract (const char *data,
+		       size_t size,
+		       EXTRACTOR_MetaDataProcessor proc,
+		       void *proc_cls,
+		       const char *options)
 {
   Elf32_Ehdr ehdr;
   Elf32_Half idx;
+  Elf64_Ehdr ehdr64;
+  int ret;
 
-  if (0 != getELFHdr (data, size, &ehdr))
-    return prev;
-  addKeyword (&prev, "application/x-executable", EXTRACTOR_MIMETYPE);
-  switch (ehdr.e_type)
+  ret = getELFHdr (data, size, &ehdr, &ehdr64);
+  if (ret == -1)
+    return 0;
+  ADD ("application/x-executable", EXTRACTOR_METATYPE_MIMETYPE);
+  switch ( ((unsigned char*) data)[EI_OSABI])
+    {
+    case ELFOSABI_LINUX:
+      ADD ("Linux", EXTRACTOR_METATYPE_TARGET_OS);
+      break;
+    case ELFOSABI_FREEBSD:
+      ADD ("FreeBSD", EXTRACTOR_METATYPE_TARGET_OS);
+      break;
+    case ELFOSABI_NETBSD:
+      ADD ("NetBSD", EXTRACTOR_METATYPE_TARGET_OS);
+      break;
+    case ELFOSABI_OPENBSD:
+      ADD ("OpenBSD", EXTRACTOR_METATYPE_TARGET_OS);
+      break;
+    case ELFOSABI_IRIX:
+      ADD ("IRIX", EXTRACTOR_METATYPE_TARGET_OS);
+      break;
+    default:
+      break;
+    }
+  switch ( (ret == 0) ? ehdr.e_type : ehdr64.e_type) 
     {
     case ET_REL:
-      addKeyword (&prev, "Relocatable file", EXTRACTOR_RESOURCE_TYPE);
+      ADD ("Relocatable file", EXTRACTOR_METATYPE_RESOURCE_TYPE);
       break;
     case ET_EXEC:
-      addKeyword (&prev, "Executable file", EXTRACTOR_RESOURCE_TYPE);
+      ADD ("Executable file", EXTRACTOR_METATYPE_RESOURCE_TYPE);
       break;
     case ET_DYN:
-      addKeyword (&prev, "Shared object file", EXTRACTOR_RESOURCE_TYPE);
+      ADD ("Shared object file", EXTRACTOR_METATYPE_RESOURCE_TYPE);
       break;
     case ET_CORE:
-      addKeyword (&prev, "Core file", EXTRACTOR_RESOURCE_TYPE);
+      ADD ("Core file", EXTRACTOR_METATYPE_RESOURCE_TYPE);
       break;
     default:
       break;                    /* unknown */
     }
-  switch (ehdr.e_machine)
+  switch ( (ret == 0) ? ehdr.e_machine : ehdr64.e_machine)
     {
     case EM_M32:
-      addKeyword (&prev, "M32", EXTRACTOR_CREATED_FOR);
+      ADD ("M32", EXTRACTOR_METATYPE_TARGET_ARCHITECTURE);
       break;
     case EM_386:
-      addKeyword (&prev, "i386", EXTRACTOR_CREATED_FOR);
+      ADD ("i386", EXTRACTOR_METATYPE_TARGET_ARCHITECTURE);
       break;
     case EM_68K:
-      addKeyword (&prev, "68K", EXTRACTOR_CREATED_FOR);
+      ADD ("68K", EXTRACTOR_METATYPE_TARGET_ARCHITECTURE);
       break;
     case EM_88K:
-      addKeyword (&prev, "88K", EXTRACTOR_CREATED_FOR);
+      ADD ("88K", EXTRACTOR_METATYPE_TARGET_ARCHITECTURE);
       break;
     case EM_SPARC:
-      addKeyword (&prev, "Sparc", EXTRACTOR_CREATED_FOR);
+      ADD ("Sparc", EXTRACTOR_METATYPE_TARGET_ARCHITECTURE);
       break;
     case EM_860:
-      addKeyword (&prev, "960", EXTRACTOR_CREATED_FOR);
+      ADD ("960", EXTRACTOR_METATYPE_TARGET_ARCHITECTURE);
       break;
     case EM_MIPS:
-      addKeyword (&prev, "MIPS", EXTRACTOR_CREATED_FOR);
+      ADD ("MIPS", EXTRACTOR_METATYPE_TARGET_ARCHITECTURE);
+      break;
+    case EM_PPC:
+      ADD ("PPC", EXTRACTOR_METATYPE_TARGET_ARCHITECTURE);
+      break;
+    case EM_PPC64:
+      ADD ("PPC64", EXTRACTOR_METATYPE_TARGET_ARCHITECTURE);
+      break;
+    case EM_S390:
+      ADD ("S390", EXTRACTOR_METATYPE_TARGET_ARCHITECTURE);
+      break;
+    case EM_ARM:
+      ADD ("ARM", EXTRACTOR_METATYPE_TARGET_ARCHITECTURE);
+      break;
+    case EM_ALPHA:
+      ADD ("ALPHA", EXTRACTOR_METATYPE_TARGET_ARCHITECTURE);
+      break;
+    case EM_IA_64:
+      ADD ("IA-64", EXTRACTOR_METATYPE_TARGET_ARCHITECTURE);
+      break;
+    case EM_X86_64:
+      ADD ("x86_64", EXTRACTOR_METATYPE_TARGET_ARCHITECTURE);
+      break;
+    case EM_CUDA:
+      ADD ("NVIDIA CUDA", EXTRACTOR_METATYPE_TARGET_ARCHITECTURE);
       break;
     default:
       break;                    /* oops */
     }
 
+  if (ret != 0)
+    return 0; /* FIXME: full support for 64-bit ELF... */
   for (idx = 0; idx < ehdr.e_phnum; idx++)
     {
       Elf32_Phdr phdr;
 
       if (0 != getProgramHdr (data, size, &ehdr, idx, &phdr))
-        return prev;
+        return 0;
       if (phdr.p_type == PT_DYNAMIC)
         {
           unsigned int dc = phdr.p_filesz / ELF_DYN_SIZE;
@@ -471,7 +582,7 @@ libextractor_elf_extract (char *filename,
                                   size,
                                   &ehdr,
                                   phdr.p_offset, phdr.p_filesz, id, &dyn))
-                return prev;
+                return 0;
               if (DT_STRTAB == dyn.d_tag)
                 {
                   stringPtr = dyn.d_un.d_ptr;
@@ -479,12 +590,12 @@ libextractor_elf_extract (char *filename,
                 }
             }
           if (stringPtr == 0)
-            return prev;
+            return 0;
           for (six = 0; six < ehdr.e_shnum; six++)
             {
               Elf32_Shdr sec;
               if (-1 == getSectionHdr (data, size, &ehdr, six, &sec))
-                return prev;
+                return 0;
               if ((sec.sh_addr == stringPtr) && (sec.sh_type == SHT_STRTAB))
                 {
                   stringIdx = six;
@@ -499,7 +610,7 @@ libextractor_elf_extract (char *filename,
                                   size,
                                   &ehdr,
                                   phdr.p_offset, phdr.p_filesz, id, &dyn))
-                return prev;
+                return 0;
               switch (dyn.d_tag)
                 {
                 case DT_RPATH:
@@ -514,7 +625,7 @@ libextractor_elf_extract (char *filename,
                        to dynamic libraries */
                     if (rpath != NULL)
                       {
-                        addKeyword (&prev, rpath, EXTRACTOR_SOURCE);
+                        ADD (rpath, EXTRACTOR_METATYPE_LIBRARY_SEARCH_PATH);
                       }
                     break;
                   }
@@ -528,7 +639,7 @@ libextractor_elf_extract (char *filename,
                                               stringIdx, dyn.d_un.d_val);
                     if (needed != NULL)
                       {
-                        addKeyword (&prev, needed, EXTRACTOR_DEPENDENCY);
+                        ADD (needed, EXTRACTOR_METATYPE_LIBRARY_DEPENDENCY);
                       }
                     break;
                   }
@@ -538,5 +649,5 @@ libextractor_elf_extract (char *filename,
         }
     }
 
-  return prev;
+  return 0;
 }

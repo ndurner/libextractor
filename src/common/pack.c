@@ -36,7 +36,7 @@ typedef signed int sword;
 
 
 /*
-   "bhwAcslPBHWCSL"
+   "bhwAcslxPBHWCSLX"
 
    Small letters: do not convert (not implemented for arrays and P)
    Captial letters: convert from network byte order to host byte order
@@ -48,6 +48,7 @@ typedef signed int sword;
    c - signed 8 bit value
    s - signed 16 bit value
    l - signed 32 bit value
+   x - signed 64 bit value
    p - (unpack only) value is a pointer to a pointer.  Generate the buffer
        to hold the data.
 
@@ -255,6 +256,7 @@ EXTRACTOR_common_cat_unpack (const void *buf, const char *fmt, ...)
   void *arr;
   byte *bp, *bytep, *newbuf;
   half *halfp;
+  long long *ll;
   sbyte *sbytep;
   shalf *shalfp;
   sword *swordp;
@@ -332,6 +334,23 @@ EXTRACTOR_common_cat_unpack (const void *buf, const char *fmt, ...)
             }
           break;
 
+        case 'x':
+          ll = va_arg (ap, long long *);
+          for (i = 0; i < nreps; ++i)
+            {
+              *ll = ((long long) *bp++);
+              *ll |= ((long long) *bp++) << 8;
+              *ll |= ((long long) *bp++) << 16;
+              *ll |= ((long long) *bp++) << 24;
+              *ll |= ((long long) *bp++) << 32;
+              *ll |= ((long long) *bp++) << 40;
+              *ll |= ((long long) *bp++) << 48;
+              *ll |= ((long long) *bp++) << 56;
+              ++ll;
+              npacked += 8;
+            }
+          break;
+
         case 'W':
           wordp = va_arg (ap, word *);
           for (i = 0; i < nreps; ++i)
@@ -344,6 +363,24 @@ EXTRACTOR_common_cat_unpack (const void *buf, const char *fmt, ...)
               npacked += 4;
             }
           break;
+
+        case 'X':
+          ll = va_arg (ap, long long *);
+          for (i = 0; i < nreps; ++i)
+            {
+              *ll = ((long long) *bp++) << 56;
+              *ll |= ((long long) *bp++) << 48;
+              *ll |= ((long long) *bp++) << 40;
+              *ll |= ((long long) *bp++) << 32;
+              *ll |= ((long long) *bp++) << 24;
+              *ll |= ((long long) *bp++) << 18;
+              *ll |= ((long long) *bp++) << 8;
+              *ll |= ((long long) *bp++);
+              ++ll;
+              npacked += 8;
+            }
+          break;
+
 
         case 'A':
           if (isnonprefixed)

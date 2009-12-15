@@ -41,6 +41,7 @@ MODIFICATIONS.
    c - signed 8 bit value
    s - signed 16 bit value
    l - signed 32 bit value
+   x - signed 64 bit value
    p - (unpack only) value is a pointer to a pointer.  Generate the buffer
        to hold the data.
  */

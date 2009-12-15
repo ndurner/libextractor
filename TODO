@@ -15,6 +15,7 @@ Incomplete code (missing features):
 * man pages (interpret sections for authors, brief description)
 * pdf: full-text extraction!
 * EXIV2
+* ELF: 64-bit support, lists of architectures, OSes, etc. are incomplete
 
 Desirable missing formats:
 * mbox / various e-mail formats

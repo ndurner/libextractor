@@ -343,7 +343,7 @@ EXTRACTOR_deb_extract (const char *data,
 			 EXTRACTOR_METAFORMAT_UTF8,
 			 "text/plain",
 			 "application/x-debian-package",
-			 strlen ("application/x-debian-package")))
+			 strlen ("application/x-debian-package")+1))
 	    return 1;
           done++;
         }
