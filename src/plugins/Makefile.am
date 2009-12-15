@@ -16,7 +16,7 @@ if WITH_GSF
  oledir=ole2
 endif
 if HAVE_GTK
-thumbgtk=thumbnail
+ thumbgtk=libextractor_thumbnailgtk.la
 endif
 endif
 
@@ -93,7 +93,8 @@ plugin_LTLIBRARIES = \
   libextractor_it.la \
   libextractor_mime.la \
   $(pdf) \
-  $(rpm)
+  $(rpm) \
+  $(thumbgtk)
 
 libextractor_applefile_la_SOURCES = \
   applefile_extractor.c
@@ -166,6 +167,14 @@ libextractor_rpm_la_LDFLAGS = \
 libextractor_rpm_la_LIBADD = \
   -lrpm
 
+libextractor_thumbnailgtk_la_CFLAGS = \
+  $(GLIB_CFLAGS) $(GTK_CFLAGS)
+libextractor_thumbnailgtk_la_LIBADD = \
+  $(LIBADD) -lgobject-2.0 @GTK_LIBS@ 
+libextractor_thumbnailgtk_la_LDFLAGS = \
+  $(PLUGINFLAGS) 
+libextractor_thumbnailgtk_la_SOURCES = \
+  thumbnailgtk_extractor.c
 
 
 

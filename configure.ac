@@ -560,7 +560,6 @@ src/plugins/ole2/Makefile
 src/plugins/oo/Makefile
 src/plugins/printable/Makefile
 src/plugins/hash/Makefile
-src/plugins/thumbnail/Makefile
 src/plugins/thumbnailffmpeg/Makefile
 src/test/Makefile
 ])
