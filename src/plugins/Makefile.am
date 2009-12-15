@@ -91,6 +91,7 @@ plugin_LTLIBRARIES = \
   libextractor_deb.la \
   libextractor_dvi.la \
   libextractor_elf.la \
+  libextractor_exiv2.la \
   libextractor_html.la \
   libextractor_it.la \
   libextractor_mime.la \
@@ -127,6 +128,13 @@ libextractor_elf_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_elf_la_LIBADD = \
   $(top_builddir)/src/common/libextractor_common.la
+
+libextractor_exiv2_la_SOURCES = \
+  exiv2_extractor.cc 
+libextractor_exiv2_la_LDFLAGS = \
+  $(XTRA_CPPLIBS) $(PLUGINFLAGS) 
+libextractor_exiv2_la_LIBADD = \
+  -lexiv2
 
 libextractor_html_la_SOURCES = \
   html_extractor.c 
