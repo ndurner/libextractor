@@ -217,6 +217,13 @@ AC_CHECK_LIB(mpeg2, mpeg2_init,
          AM_CONDITIONAL(HAVE_MPEG2, false))],
          AM_CONDITIONAL(HAVE_MPEG2, false))
 
+AC_CHECK_LIB(poppler, _ZTI9MemStream,
+        [AC_CHECK_HEADERS([poppler/goo/gmem.h],
+           AM_CONDITIONAL(HAVE_POPPLER, true)
+           AC_DEFINE(HAVE_POPPLER,1,[Have libpoppler]),
+         AM_CONDITIONAL(HAVE_POPPLER, false))],
+         AM_CONDITIONAL(HAVE_POPPLER, false))
+
 
 # restore LIBS
 LIBS=$LIBSOLD
@@ -309,7 +316,6 @@ else
 fi
 
 # check for all C++ dependencies...
-xpdf=0
 exiv2=0
 qt=0
 qt4=0
@@ -398,21 +404,6 @@ AC_ARG_WITH(qt,
               EXT_LIB_PATH="-L$with_qt/lib $EXT_LIB_PATH"
               qt_svg=1)))])
 
-AC_MSG_CHECKING([whether to enable xpdf-based extractor])
-AC_ARG_ENABLE(xpdf,
- [AC_HELP_STRING([--enable-xpdf],[Enable xpdf-based extractor])
-  AC_HELP_STRING([--disable-xpdf],[Disable xpdf-based extractor])],
- [case "$enableval" in
-  no)	AC_MSG_RESULT(no)
-        xpdf=0
-	;;
-  *)    AC_MSG_RESULT(yes)
-        xpdf=1
-	;;
-  esac],
-  [     AC_MSG_RESULT(no)
-        xpdf=0])
-
 exiv2=1
 AC_MSG_CHECKING([whether to enable exiv2 extractor])
 AC_ARG_ENABLE(exiv2,
@@ -454,8 +445,6 @@ then
 fi
 AM_CONDITIONAL(HAVE_QT_SVG, test x$qt_svg != x0)
 AM_CONDITIONAL(HAVE_QT_SVG4, test x$qt_svg4 != x0)
-
-AM_CONDITIONAL(HAVE_XPDF, test x$xpdf != x0)
 
 AM_CONDITIONAL(HAVE_EXIV2, test x$exiv2 != x0)
 AC_DEFINE_UNQUOTED([HAVE_EXIV2], $exiv2, [We use EXIV2])
@@ -569,7 +558,6 @@ src/main/Makefile
 src/plugins/Makefile
 src/plugins/ole2/Makefile
 src/plugins/oo/Makefile
-src/plugins/pdf/Makefile
 src/plugins/printable/Makefile
 src/plugins/hash/Makefile
 src/plugins/thumbnail/Makefile
@@ -627,13 +615,6 @@ fi
 
 AC_OUTPUT
 
-if test "x$xpdf" = "x1"
-then
- AC_MSG_NOTICE([NOTICE: xpdf enabled (xpdf has a bad security record)])
-else 
- AC_MSG_NOTICE([NOTICE: xpdf disabled (result: limited PDF support)])
-fi
-
 if test "x$exiv2" = "x0"
 then
  AC_MSG_NOTICE([NOTICE: exiv2 disabled])
@@ -677,6 +658,11 @@ fi
 if test "x$HAVE_MPEG2_TRUE" = "x#"
 then
  AC_MSG_NOTICE([NOTICE: libmpeg2 not found (will not compile mpeg2 plugin)])
+fi
+
+if test "x$HAVE_POPPLER_TRUE" = "x#"
+then
+ AC_MSG_NOTICE([NOTICE: libpoppler not found (will not compile pdf plugin)])
 fi
 
 if test "x$HAVE_CXX" != "xyes"

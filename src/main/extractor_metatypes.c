@@ -282,8 +282,11 @@ static const struct MetaTypeDescription meta_type_descriptions[] = {
     gettext_noop ("") }, 
   { gettext_noop ("image dimensions"),
     gettext_noop ("") }, 
-  { gettext_noop (""),
-    gettext_noop ("") }, 
+  { gettext_noop ("produced by software"),
+    gettext_noop ("") }, /* what is the exact difference between the software
+			    creator and the software producer? PDF and DVI
+			    both have this distinction (i.e., Writer vs.
+			    OpenOffice) */
   { gettext_noop (""),
     gettext_noop ("") }, 
 #if 0

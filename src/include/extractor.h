@@ -237,6 +237,10 @@ enum EXTRACTOR_MetaType
 
     /* image specifics */
     EXTRACTOR_METATYPE_IMAGE_DIMENSIONS = 112, 
+
+
+    EXTRACTOR_METATYPE_PRODUCED_BY_SOFTWARE = 113, 
+
     
     /* fixme: used up to here! */
     EXTRACTOR_METATYPE_THUMBNAIL_DATA = 70,

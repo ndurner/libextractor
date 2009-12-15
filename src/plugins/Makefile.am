@@ -46,14 +46,11 @@ if HAVE_CXX
 if HAVE_EXIV2
  exiv2=libextractor_exiv2.la
 endif
+if HAVE_POPPLER
+ pdf=libextractor_pdf.la
+endif
 endif
 
-
-if HAVE_XPDF
- xpdfdir=pdf
-else
- pdfplugin=libextractor_pdf.la 
-endif
 
 if HAVE_MPEG2
  extrampeg = libextractor_mpeg.la
@@ -61,7 +58,7 @@ endif
 
 # toggle for development
 SUBDIRS = . 
-# SUBDIRS = . $(thumbgtk) $(thumbffmpeg) $(oodir) $(printdir) hash $(oledir) $(xpdfdir)
+# SUBDIRS = . $(thumbgtk) $(thumbffmpeg) $(oodir) $(printdir) hash $(oledir)
 
 
 if HAVE_VORBISFILE
@@ -95,6 +92,7 @@ plugin_LTLIBRARIES = \
   libextractor_html.la \
   libextractor_it.la \
   libextractor_mime.la \
+  $(pdf) \
   $(rpm)
 
 libextractor_applefile_la_SOURCES = \
@@ -148,6 +146,19 @@ libextractor_it_la_SOURCES = \
 libextractor_it_la_LDFLAGS = \
   $(PLUGINFLAGS)
 
+libextractor_mime_la_SOURCES = \
+  mime_extractor.c 
+libextractor_mime_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+
+libextractor_pdf_la_SOURCES = \
+  pdf_extractor.cc 
+libextractor_pdf_la_LDFLAGS = \
+  $(XTRA_CPPLIBS) $(PLUGINFLAGS) 
+libextractor_pdf_la_LIBADD = \
+  $(top_builddir)/src/common/libextractor_common.la \
+  -lpoppler
+
 libextractor_rpm_la_SOURCES = \
   rpm_extractor.c 
 libextractor_rpm_la_LDFLAGS = \
@@ -155,10 +166,6 @@ libextractor_rpm_la_LDFLAGS = \
 libextractor_rpm_la_LIBADD = \
   -lrpm
 
-libextractor_mime_la_SOURCES = \
-  mime_extractor.c 
-libextractor_mime_la_LDFLAGS = \
-  $(PLUGINFLAGS)
 
 
 
@@ -235,13 +242,6 @@ libextractor_wav_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_wav_la_LIBADD = \
   $(LE_LIBINTL)
-
-libextractor_pdf_la_SOURCES = \
-  pdfextractor.c
-libextractor_pdf_la_LDFLAGS = \
-  $(PLUGINFLAGS)
-libextractor_pdf_la_LIBADD = \
-  $(top_builddir)/src/common/libextractor_common.la
 
 libextractor_mp3_la_SOURCES = \
   mp3extractor.c 

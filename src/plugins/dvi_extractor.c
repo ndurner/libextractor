@@ -33,7 +33,7 @@ static Matches tmap[] = {
   {"/Author (",   EXTRACTOR_METATYPE_AUTHOR_NAME},
   {"/Keywords (", EXTRACTOR_METATYPE_KEYWORDS},
   {"/Creator (",  EXTRACTOR_METATYPE_CREATED_BY_SOFTWARE },
-  {"/Producer (", EXTRACTOR_METATYPE_CREATED_BY_SOFTWARE},
+  {"/Producer (", EXTRACTOR_METATYPE_PRODUCED_BY_SOFTWARE},
   {NULL, 0},
 };
 
