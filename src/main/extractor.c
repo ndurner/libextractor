@@ -1170,7 +1170,8 @@ extract_oop (struct EXTRACTOR_PluginList *plugin,
     {
       stop_process (plugin);
       plugin->cpid = -1;
-      plugin->flags = EXTRACTOR_OPTION_DISABLED;
+      if (plugin->flags != EXTRACTOR_OPTION_AUTO_RESTART)
+	plugin->flags = EXTRACTOR_OPTION_DISABLED;
       return 0;
     }
   while (1)
@@ -1179,8 +1180,9 @@ extract_oop (struct EXTRACTOR_PluginList *plugin,
 			 &hdr,
 			 sizeof(hdr)))
 	{
+	  if (plugin->flags != EXTRACTOR_OPTION_AUTO_RESTART)
+	    plugin->flags = EXTRACTOR_OPTION_DISABLED;
 	  return 0;
-	  plugin->flags = EXTRACTOR_OPTION_DISABLED;
 	}
       if  ( (hdr.type == 0) &&
 	    (hdr.format == 0) &&
@@ -1190,7 +1192,8 @@ extract_oop (struct EXTRACTOR_PluginList *plugin,
       if (hdr.mime_len > MAX_MIME_LEN)
 	{
 	  stop_process (plugin);
-	  plugin->flags = EXTRACTOR_OPTION_DISABLED;
+	  if (plugin->flags != EXTRACTOR_OPTION_AUTO_RESTART)
+	    plugin->flags = EXTRACTOR_OPTION_DISABLED;
 	  return 0;
 	}
       data = malloc (hdr.data_len);
@@ -1208,7 +1211,8 @@ extract_oop (struct EXTRACTOR_PluginList *plugin,
 	{
 	  stop_process (plugin);
 	  free (data);
-	  plugin->flags = EXTRACTOR_OPTION_DISABLED;
+	  if (plugin->flags != EXTRACTOR_OPTION_AUTO_RESTART)
+	    plugin->flags = EXTRACTOR_OPTION_DISABLED;
 	  return 0;
 	}	   
       mimetype[hdr.mime_len] = '\0';
