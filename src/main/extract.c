@@ -1,6 +1,6 @@
 /*
      This file is part of libextractor.
-     (C) 2002, 2003, 2004, 2005, 2006 Vidyut Samanta and Christian Grothoff
+     (C) 2002, 2003, 2004, 2005, 2006, 2009 Vidyut Samanta and Christian Grothoff
 
      libextractor is free software; you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published
@@ -35,6 +35,11 @@ static int * print;
  * How verbose are we supposed to be?
  */
 static int verbose;
+
+/**
+ * Run plugins in-process.
+ */
+static int in_process;
 
 
 typedef struct {
@@ -143,6 +148,8 @@ printHelp ()
       gettext_noop("print this help") },
     { 'H', "hash", "ALGORITHM",
       gettext_noop("compute hash using the given ALGORITHM (currently sha1 or md5)") },
+    { 'i', "in-process", NULL,
+      gettext_noop("run plugins in-process (simplifies debugging)") },
     { 'l', "library", "LIBRARY",
       gettext_noop("load an extractor plugin named LIBRARY") },
     { 'L', "list", NULL,
@@ -537,6 +544,7 @@ main (int argc, char *argv[])
 	{"grep-friendly", 0, 0, 'g'},
 	{"help", 0, 0, 'h'},
 	{"hash", 1, 0, 'H'},
+	{"in-process", 0, 0, 'i'},
 	{"list", 0, 0, 'L'},
 	{"library", 1, 0, 'l'},
 	{"nodefault", 0, 0, 'n'},
@@ -549,7 +557,7 @@ main (int argc, char *argv[])
       option_index = 0;
       c = getopt_long (argc,
 		       argv, 
-		       "abB:ghH:l:Lnp:vVx:",
+		       "abB:ghH:il:Lnp:vVx:",
 		       long_options,
 		       &option_index);
 
@@ -585,6 +593,9 @@ main (int argc, char *argv[])
 	  return 0;
 	case 'H':
 	  hash = optarg;
+	  break;
+	case 'i':
+	  in_process = 1;
 	  break;
 	case 'l':
 	  libraries = optarg;
@@ -687,8 +698,10 @@ main (int argc, char *argv[])
     plugins = NULL;
   if (libraries != NULL)
     plugins = EXTRACTOR_plugin_add_config (plugins, 
-					      libraries,
-					      EXTRACTOR_OPTION_NONE);
+					   libraries,
+					   in_process 
+					   ? EXTRACTOR_OPTION_NONE
+					   : EXTRACTOR_OPTION_AUTO_RESTART);
   if (binary != NULL) 
     {
       name = malloc(strlen(binary) + strlen("printable_") + 1);
@@ -697,7 +710,9 @@ main (int argc, char *argv[])
       plugins = EXTRACTOR_plugin_add_last(plugins,
 					  name,
 					  NULL,
-					  EXTRACTOR_OPTION_NONE);
+					  in_process 
+					  ? EXTRACTOR_OPTION_NONE
+					  : EXTRACTOR_OPTION_AUTO_RESTART);
       free(name);
     }
   if (hash != NULL) 
@@ -708,7 +723,9 @@ main (int argc, char *argv[])
       plugins = EXTRACTOR_plugin_add_last(plugins,
 					  name,
 					  NULL,
-					  EXTRACTOR_OPTION_NONE);
+					  in_process 
+					  ? EXTRACTOR_OPTION_NONE
+					  : EXTRACTOR_OPTION_AUTO_RESTART);
       free(name);
     }
 

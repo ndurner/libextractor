@@ -17,6 +17,9 @@ extract
 .I hash\-algorithm
 ]
 [
+.B \-i
+]
+[
 .B \-l
 .I library
 ]
@@ -62,6 +65,9 @@ Print a brief summary of the options.
 .TP 8
 .B \-H ALGORITHM
 Use the ALGORITHM to compute a hash of each file (possible algorithms are sha1 and md5).
+.TP 8
+.B \-i
+Run plugins in-process (for debugging).  By default, each plugin is run in its own process.
 .TP 8
 .B \-L
 Print a list of all known keyword types.
