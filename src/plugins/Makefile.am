@@ -44,7 +44,7 @@ endif
 
 if HAVE_CXX
 if HAVE_EXIV2
- exiv2dir=exiv2
+ exiv2=libextractor_exiv2.la
 endif
 endif
 
@@ -61,7 +61,7 @@ endif
 
 # toggle for development
 SUBDIRS = . 
-# SUBDIRS = . $(thumbgtk) $(thumbffmpeg) $(oodir) $(printdir) hash $(oledir) $(xpdfdir) $(exiv2dir) 
+# SUBDIRS = . $(thumbgtk) $(thumbffmpeg) $(oodir) $(printdir) hash $(oledir) $(xpdfdir)
 
 
 if HAVE_VORBISFILE
@@ -91,7 +91,7 @@ plugin_LTLIBRARIES = \
   libextractor_deb.la \
   libextractor_dvi.la \
   libextractor_elf.la \
-  libextractor_exiv2.la \
+  $(exiv2) \
   libextractor_html.la \
   libextractor_it.la \
   libextractor_mime.la \

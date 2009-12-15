@@ -574,7 +574,6 @@ src/plugins/printable/Makefile
 src/plugins/hash/Makefile
 src/plugins/thumbnail/Makefile
 src/plugins/thumbnailffmpeg/Makefile
-src/plugins/exiv2/Makefile
 src/test/Makefile
 ])
 
