@@ -691,8 +691,7 @@ main (int argc, char *argv[])
 					      EXTRACTOR_OPTION_NONE);
   if (binary != NULL) 
     {
-      /* FIXME: need full path here now... */
-      name = malloc(strlen(binary) + strlen("libextractor_printable_") + 1);
+      name = malloc(strlen(binary) + strlen("printable_") + 1);
       strcpy(name, "libextractor_printable_");
       strcat(name, binary);
       plugins = EXTRACTOR_plugin_add_last(plugins,
@@ -703,8 +702,7 @@ main (int argc, char *argv[])
     }
   if (hash != NULL) 
     {
-      /* FIXME: need full path here now... */
-      name = malloc(strlen(hash) + strlen("libextractor_hash_") + 1);
+      name = malloc(strlen(hash) + strlen("hash_") + 1);
       strcpy(name, "libextractor_hash_");
       strcat(name, hash);
       plugins = EXTRACTOR_plugin_add_last(plugins,

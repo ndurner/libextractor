@@ -61,7 +61,12 @@ enum EXTRACTOR_Options
      * process for the next file.  Implies
      * EXTRACTOR_OPTION_OUT_OF_PROCESS.
      */
-    EXTRACTOR_OPTION_AUTO_RESTART = 2
+    EXTRACTOR_OPTION_AUTO_RESTART = 2,
+
+    /**
+     * Internal value for plugins that have been disabled.
+     */
+    EXTRACTOR_OPTION_DISABLED = 3
 
   };
 
@@ -429,7 +434,7 @@ EXTRACTOR_plugin_add_defaults(enum EXTRACTOR_Options flags);
  * Add a library for keyword extraction.
  *
  * @param prev the previous list of libraries, may be NULL
- * @param library the name of the library (full path)
+ * @param library the name of the library (short handle, i.e. "mime")
  * @param options options to give to the library
  * @param flags options to use
  * @return the new list of libraries, equal to prev iff an error occured
@@ -463,9 +468,8 @@ EXTRACTOR_plugin_add_last(struct EXTRACTOR_PluginList *prev,
  * @param config a string given by the user that defines which
  *        libraries should be loaded. Has the format
  *        "[[-]LIBRARYNAME[(options)][:[-]LIBRARYNAME[(options)]]]*".
- *        For example,
- *        /usr/lib/libextractor/libextractor_mp3.so:/usr/lib/libextractor/libextractor_ogg.so loads the
- *        mp3 and the ogg library. The '-' before the LIBRARYNAME
+ *        For example, 'mp3:ogg' loads the
+ *        mp3 and the ogg plugins. The '-' before the LIBRARYNAME
  *        indicates that the library should be added to the end
  *        of the library list (addLibraryLast).
  * @param prev the  previous list of libraries, may be NULL
@@ -483,7 +487,7 @@ EXTRACTOR_plugin_add_config (struct EXTRACTOR_PluginList * prev,
  * Remove a plugin from a list.
  *
  * @param prev the current list of plugins
- * @param library the name of the plugin to remove (full path)
+ * @param library the name of the plugin to remove (short handle)
  * @return the reduced list, unchanged if the plugin was not loaded
  */
 struct EXTRACTOR_PluginList *

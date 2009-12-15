@@ -84,6 +84,11 @@ struct EXTRACTOR_PluginList
    * Name of the library (i.e., 'libextractor_foo.so')
    */
   char *libname;
+
+  /**
+   * Name of the library (i.e., 'libextractor_foo.so')
+   */
+  char *short_libname;
   
   /**
    * Pointer to the function used for meta data extraction.
@@ -403,6 +408,89 @@ get_installation_paths (PathProcessor pp,
 }
 
 
+struct SearchContext
+{
+  const char *short_name;
+  char *path;
+};
+
+
+/**
+ * Load all plugins from the given directory.
+ * 
+ * @param cls pointer to the "struct EXTRACTOR_PluginList*" to extend
+ * @param path path to a directory with plugins
+ */
+static void
+find_plugin_in_path (void *cls,
+		     const char *path)
+{
+  struct SearchContext *sc = cls;
+  DIR *dir;
+  struct dirent *ent;
+  const char *la;
+  const char *sym_name;
+  char *sym;
+  char *dot;
+
+  if (sc->path != NULL)
+    return;
+  dir = opendir (path);
+  if (NULL == dir)
+    return;
+  while (NULL != (ent = readdir (dir)))
+    {
+      if (ent->d_name[0] == '.')
+	continue;
+      if ( (NULL != (la = strstr (ent->d_name, ".la"))) &&
+	   (la[3] == '\0') )
+	continue; /* only load '.so' and '.dll' */
+      sym_name = strstr (ent->d_name, "_");
+      if (sym_name == NULL)
+	continue;
+      sym_name++;
+      sym = strdup (sym_name);
+      dot = strstr (sym, ".");
+      if (dot != NULL)
+	*dot = '\0';
+      if (0 == strcmp (sym, sc->short_name))
+	{
+	  sc->path = append_to_dir (path, ent->d_name);
+	  free (sym);
+	  break;
+	}
+      free (sym);
+    }
+#if DEBUG
+  if (sc->path == NULL)
+    fprintf (stderr,
+	     "Failed to find plugin `%s' in `%s'\n",
+	     sc->short_name,
+	     path);
+#endif
+  closedir (dir);
+}
+
+
+
+/**
+ * Given a short name of a library (i.e. "mime"), find
+ * the full path of the respective plugin.
+ */
+static char *
+find_plugin (const char *short_name)
+{
+  struct SearchContext sc;
+  
+  sc.path = NULL;
+  sc.short_name = short_name;
+  get_installation_paths (&find_plugin_in_path,
+			  &sc);
+  return sc.path;
+}
+
+
+
 struct DefaultLoaderContext
 {
   struct EXTRACTOR_PluginList *res;
@@ -423,8 +511,10 @@ load_plugins_from_dir (void *cls,
   struct DefaultLoaderContext *dlc = cls;
   DIR *dir;
   struct dirent *ent;
-  char *fname;
   const char *la;
+  const char *sym_name;
+  char *sym;
+  char *dot;
 
   dir = opendir (path);
   if (NULL == dir)
@@ -436,12 +526,25 @@ load_plugins_from_dir (void *cls,
       if ( (NULL != (la = strstr (ent->d_name, ".la"))) &&
 	   (la[3] == '\0') )
 	continue; /* only load '.so' and '.dll' */
-      fname = append_to_dir (path, ent->d_name);
+
+      sym_name = strstr (ent->d_name, "_");
+      if (sym_name == NULL)
+	continue;
+      sym_name++;
+      sym = strdup (sym_name);
+      dot = strstr (sym, ".");
+      if (dot != NULL)
+	*dot = '\0';
+#if DEBUG
+      fprintf (stderr,
+	       "Adding default plugin `%s'\n",
+	       sym);
+#endif
       dlc->res = EXTRACTOR_plugin_add (dlc->res,
-				       fname,
+				       sym,
 				       NULL,
 				       dlc->flags);
-      free (fname);
+      free (sym);
     }
   closedir (dir);
 }
@@ -537,41 +640,64 @@ get_symbol_with_prefix(void *lib_handle,
 /**
  * Load a plugin.
  *
- * @param name name of the plugin
- * @param libhandle set to the handle for the plugin
- * @param method set to the extraction method
+ * @param plugin plugin to load
  * @return 0 on success, -1 on error
  */
 static int
-plugin_load (const char *name,
-	     void **libHandle,
-	     EXTRACTOR_ExtractMethod * method)
+plugin_load (struct EXTRACTOR_PluginList *plugin)
 {
   lt_dladvise advise;
 
+  plugin->libname = find_plugin (plugin->short_libname);
+  if (plugin->libname == NULL)
+    {
+#if DEBUG
+      fprintf (stderr,
+	       "Failed to find plugin `%s'\n",
+	       plugin->short_libname);
+#endif
+      plugin->flags = EXTRACTOR_OPTION_DISABLED;
+      return -1;
+    }
   lt_dladvise_init (&advise);
   lt_dladvise_ext (&advise);
   lt_dladvise_local (&advise);
-  *libHandle = lt_dlopenadvise (name, advise);
+  plugin->libraryHandle = lt_dlopenadvise (plugin->libname, 
+				       advise);
   lt_dladvise_destroy(&advise);
-  if (*libHandle == NULL)
+  if (plugin->libraryHandle == NULL)
     {
 #if DEBUG
       fprintf (stderr,
 	       "Loading `%s' plugin failed: %s\n",
-	       name,
+	       plugin->short_libname,
 	       lt_dlerror ());
 #endif
+      free (plugin->libname);
+      plugin->libname = NULL;
+      plugin->flags = EXTRACTOR_OPTION_DISABLED;
       return -1;
     }
-  *method = get_symbol_with_prefix (*libHandle, name);
-  if (*method == NULL) 
+  plugin->extractMethod = get_symbol_with_prefix (plugin->libraryHandle,
+						  plugin->libname);
+  if (plugin->extractMethod == NULL) 
     {
-      lt_dlclose (*libHandle);
+#if DEBUG
+      fprintf (stderr,
+	       "Resolving `extract' method of plugin `%s' failed: %s\n",
+	       plugin->short_libname,
+	       lt_dlerror ());
+#endif
+      lt_dlclose (plugin->libraryHandle);
+      free (plugin->libname);
+      plugin->libname = NULL;
+      plugin->flags = EXTRACTOR_OPTION_DISABLED;
       return -1;
     }
   return 0;
 }
+
+
 
 
 /**
@@ -589,16 +715,15 @@ EXTRACTOR_plugin_add (struct EXTRACTOR_PluginList * prev,
 		      enum EXTRACTOR_Options flags)
 {
   struct EXTRACTOR_PluginList *result;
-  void *handle;
-  EXTRACTOR_ExtractMethod method;
+  char *libname;
 
-  if (0 != plugin_load (library, &handle, &method))
+  libname = find_plugin (library);
+  if (libname == NULL)
     return prev;
   result = calloc (1, sizeof (struct EXTRACTOR_PluginList));
   result->next = prev;
-  result->libraryHandle = handle;
-  result->extractMethod = method;
-  result->libname = strdup (library);
+  result->short_libname = strdup (library);
+  result->libname = libname;
   result->flags = flags;
   if (NULL != options)
     result->plugin_options = strdup (options);
@@ -625,21 +750,20 @@ EXTRACTOR_plugin_add_last(struct EXTRACTOR_PluginList *prev,
 {
   struct EXTRACTOR_PluginList *result;
   struct EXTRACTOR_PluginList *pos;
-  void *handle;
-  EXTRACTOR_ExtractMethod method;
+  char *libname;
 
-  if (0 != plugin_load (library, &handle, &method))
+  libname = find_plugin (library);
+  if (libname == NULL)
     return prev;
   result = calloc (1, sizeof (struct EXTRACTOR_PluginList));
-  result->next = NULL;
-  result->libraryHandle = handle;
-  result->extractMethod = method;
-  result->libname = strdup (library);
+  result->next = prev;
+  result->short_libname = strdup (library);
+  result->libname = libname;
+  result->flags = flags;
   if( options )
     result->plugin_options = strdup (options);
   else
     result->plugin_options = NULL;
-  result->flags = flags;
   if (prev == NULL)
     return result;
   pos = prev;
@@ -656,8 +780,7 @@ EXTRACTOR_plugin_add_last(struct EXTRACTOR_PluginList *prev,
  * @param config a string given by the user that defines which
  *        libraries should be loaded. Has the format
  *        "[[-]LIBRARYNAME[(options)][:[-]LIBRARYNAME[(options)]]]*".
- *        For example,
- *        /usr/lib/libextractor/libextractor_mp3.so:/usr/lib/libextractor/libextractor_ogg.so loads the
+ *        For example, 'mp3:ogg.so' loads the
  *        mp3 and the ogg library. The '-' before the LIBRARYNAME
  *        indicates that the library should be added to the end
  *        of the library list (addLibraryLast).
@@ -729,6 +852,27 @@ EXTRACTOR_plugin_add_config (struct EXTRACTOR_PluginList * prev,
 
 
 /**
+ * Stop the child process of this plugin.
+ */
+static void
+stop_process (struct EXTRACTOR_PluginList *plugin)
+{
+  int status;
+
+  if ( (plugin->cpid == -1) ||
+       (plugin->cpid == 0) )
+    return;
+  kill (plugin->cpid, SIGKILL);
+  waitpid (plugin->cpid, &status, 0);
+  plugin->cpid = -1;
+  close (plugin->cpipe_out);
+  plugin->cpipe_out = -1;
+  fclose (plugin->cpipe_in);
+  plugin->cpipe_in = NULL;
+}
+
+
+/**
  * Remove a plugin from a list.
  *
  * @param prev the current list of plugins
@@ -744,7 +888,7 @@ EXTRACTOR_plugin_remove(struct EXTRACTOR_PluginList * prev,
 
   pos = prev;
   first = prev;
-  while ((pos != NULL) && (0 != strcmp (pos->libname, library)))
+  while ((pos != NULL) && (0 != strcmp (pos->short_libname, library)))
     {
       prev = pos;
       pos = pos->next;
@@ -757,7 +901,8 @@ EXTRACTOR_plugin_remove(struct EXTRACTOR_PluginList * prev,
       else
 	prev->next = pos->next;
       /* found */
-      /* FIXME: stop sub-process! */
+      stop_process (pos);
+      free (pos->short_libname);
       free (pos->libname);
       free (pos->plugin_options);
       if (NULL != pos->libraryHandle) 
@@ -783,7 +928,7 @@ void
 EXTRACTOR_plugin_remove_all(struct EXTRACTOR_PluginList *plugins)
 {
   while (plugins != NULL)
-    plugins = EXTRACTOR_plugin_remove (plugins, plugins->libname);
+    plugins = EXTRACTOR_plugin_remove (plugins, plugins->short_libname);
 }
 
 
@@ -917,7 +1062,13 @@ process_requests (struct EXTRACTOR_PluginList *plugin,
   int shmid;
   struct stat sbuf;
   struct IpcHeader hdr;
-  
+
+  if (0 != plugin_load (plugin))
+    {
+      close (in);
+      close (out);
+      return;
+    }  
   memset (&hdr, 0, sizeof (hdr));
   fin = fdopen (in, "r");
   while (NULL != fgets (fn, sizeof(fn), fin))
@@ -958,6 +1109,7 @@ start_process (struct EXTRACTOR_PluginList *plugin)
   if (0 != pipe (p1))
     {
       plugin->cpid = -1;
+      plugin->flags = EXTRACTOR_OPTION_DISABLED;
       return;
     }
   if (0 != pipe (p2))
@@ -965,6 +1117,7 @@ start_process (struct EXTRACTOR_PluginList *plugin)
       close (p1[0]);
       close (p1[1]);
       plugin->cpid = -1;
+      plugin->flags = EXTRACTOR_OPTION_DISABLED;
       return;
     }
   pid = fork ();
@@ -975,6 +1128,7 @@ start_process (struct EXTRACTOR_PluginList *plugin)
       close (p2[0]);
       close (p2[1]);
       plugin->cpid = -1;
+      plugin->flags = EXTRACTOR_OPTION_DISABLED;
       return;
     }
   if (pid == 0)
@@ -989,26 +1143,6 @@ start_process (struct EXTRACTOR_PluginList *plugin)
   close (p2[1]);
   plugin->cpipe_in = fdopen (p1[1], "w");
   plugin->cpipe_out = p2[0];
-}
-
-
-/**
- * Stop the child process of this plugin.
- */
-static void
-stop_process (struct EXTRACTOR_PluginList *plugin)
-{
-  int status;
-
-  if (plugin->cpid == -1)
-    return;
-  kill (plugin->cpid, SIGKILL);
-  waitpid (plugin->cpid, &status, 0);
-  plugin->cpid = -1;
-  close (plugin->cpipe_out);
-  plugin->cpipe_out = -1;
-  fclose (plugin->cpipe_in);
-  plugin->cpipe_in = NULL;
 }
 
 
@@ -1036,6 +1170,7 @@ extract_oop (struct EXTRACTOR_PluginList *plugin,
     {
       stop_process (plugin);
       plugin->cpid = -1;
+      plugin->flags = EXTRACTOR_OPTION_DISABLED;
       return 0;
     }
   while (1)
@@ -1045,6 +1180,7 @@ extract_oop (struct EXTRACTOR_PluginList *plugin,
 			 sizeof(hdr)))
 	{
 	  return 0;
+	  plugin->flags = EXTRACTOR_OPTION_DISABLED;
 	}
       if  ( (hdr.type == 0) &&
 	    (hdr.format == 0) &&
@@ -1054,6 +1190,7 @@ extract_oop (struct EXTRACTOR_PluginList *plugin,
       if (hdr.mime_len > MAX_MIME_LEN)
 	{
 	  stop_process (plugin);
+	  plugin->flags = EXTRACTOR_OPTION_DISABLED;
 	  return 0;
 	}
       data = malloc (hdr.data_len);
@@ -1071,6 +1208,7 @@ extract_oop (struct EXTRACTOR_PluginList *plugin,
 	{
 	  stop_process (plugin);
 	  free (data);
+	  plugin->flags = EXTRACTOR_OPTION_DISABLED;
 	  return 0;
 	}	   
       mimetype[hdr.mime_len] = '\0';
@@ -1135,6 +1273,8 @@ extract (struct EXTRACTOR_PluginList *plugins,
 	    start_process (plugins);
 	  want_shm = 1;
 	  break;
+	case EXTRACTOR_OPTION_DISABLED:
+	  break;
 	}      
       ppos = ppos->next;
     }
@@ -1166,18 +1306,23 @@ extract (struct EXTRACTOR_PluginList *plugins,
 	flags = EXTRACTOR_OPTION_NONE;
       switch (flags)
 	{
-	case EXTRACTOR_OPTION_NONE:
-	  if (0 != ppos->extractMethod (data, 
-					size, 
-					proc, 
-					proc_cls,
-					ppos->plugin_options))
+	case EXTRACTOR_OPTION_NONE:	  
+	  if (NULL == ppos->extractMethod)  
+	    plugin_load (ppos);	    
+	  if ( (NULL != ppos->extractMethod) &&
+	       (0 != ppos->extractMethod (data, 
+					  size, 
+					  proc, 
+					  proc_cls,
+					  ppos->plugin_options)) )
 	    return;
 	  break;
 	case EXTRACTOR_OPTION_OUT_OF_PROCESS:
 	case EXTRACTOR_OPTION_AUTO_RESTART:
 	  if (0 != extract_oop (ppos, fn, proc, proc_cls))
 	    return;
+	  break;
+	case EXTRACTOR_OPTION_DISABLED:
 	  break;
 	}      
       ppos = ppos->next;
