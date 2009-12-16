@@ -1,6 +1,6 @@
 /*
      This file is part of libextractor.
-     (C) 2002, 2003 Vidyut Samanta and Christian Grothoff
+     (C) 2002, 2003, 2009 Vidyut Samanta and Christian Grothoff
 
      libextractor is free software; you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published
@@ -85,21 +85,6 @@ typedef struct
   unsigned char graphic_control_label;
 } GIF_EXTENSION;
 
-static struct EXTRACTOR_Keywords *
-addKeyword (EXTRACTOR_KeywordType type,
-            char *keyword, struct EXTRACTOR_Keywords *next)
-{
-  EXTRACTOR_KeywordList *result;
-
-  if (keyword == NULL)
-    return next;
-  result = malloc (sizeof (EXTRACTOR_KeywordList));
-  result->next = next;
-  result->keyword = keyword;
-  result->keywordType = type;
-  return result;
-}
-
 /**
  * Skip a data block.
  * @return the position after the block
@@ -160,20 +145,23 @@ skipLocalColorMap (const unsigned char *data,
   return pos + GIF_DESCRIPTOR_SIZE + lct_size;
 }
 
-static struct EXTRACTOR_Keywords *
+static int
 parseComment (const unsigned char *data,
-              size_t pos, const size_t size, struct EXTRACTOR_Keywords *prev)
+              size_t pos, const size_t size, 
+	      EXTRACTOR_MetaDataProcessor proc,
+	      void *proc_cls)
 {
   size_t length = 0;
   size_t curr = pos;
-  char *keyword;
+  char *comment;
+  int ret;
 
   while ((data[curr] != 0) && (curr < size))
     {
       length += data[curr];
       curr += data[curr] + 1;
     }
-  keyword = malloc (length + 1);
+  comment = malloc (length + 1);
   curr = pos;
   length = 0;
   while ((data[curr] != 0) && (curr < size))
@@ -181,37 +169,60 @@ parseComment (const unsigned char *data,
       length += data[curr];
       if (length >= size)
         break;
-      memcpy (&keyword[length - data[curr]], &data[curr] + 1, data[curr]);
-      keyword[length] = 0;
+      memcpy (&comment[length - data[curr]], &data[curr] + 1, data[curr]);
+      comment[length] = '\0';
       curr += data[curr] + 1;
     }
-  return addKeyword (EXTRACTOR_COMMENT, keyword, prev);
+  ret = proc (proc_cls, 
+	      "gif",
+	      EXTRACTOR_METATYPE_COMMENT,
+	      EXTRACTOR_METAFORMAT_UTF8,
+	      "text/plain",
+	      comment,
+	      length+1);
+  free (comment);
+  return ret;
 }
 
 
-struct EXTRACTOR_Keywords *
-libextractor_gif_extract (const char *filename,
-                          const unsigned char *data,
-                          const size_t size, struct EXTRACTOR_Keywords *prev)
+int 
+EXTRACTOR_gif_extract (const unsigned char *data,
+		       size_t size,
+		       EXTRACTOR_MetaDataProcessor proc,
+		       void *proc_cls,
+		       const char *options)
 {
   size_t pos;
-  struct EXTRACTOR_Keywords *result;
   GIF_HEADER header;
-  char *tmp;
+  char tmp[128];
 
   if (size < GIF_HEADER_SIZE)
-    return prev;
+    return 0;
   EXTRACTOR_common_cat_unpack (data, GIF_HEADER_SPEC, GIF_HEADER_FIELDS (&header));
   if (0 != strncmp (&header.gif[0], "GIF", 3))
-    return prev;
+    return 0;
   if (0 != strncmp (&header.version[0], "89a", 3))
-    return prev;                /* only 89a has support for comments */
-  result = prev;
-  result = addKeyword (EXTRACTOR_MIMETYPE, strdup ("image/gif"), result);
-  tmp = malloc (128);
-  snprintf (tmp, 128, "%ux%u", header.screen_width, header.screen_height);
-  result = addKeyword (EXTRACTOR_SIZE, strdup (tmp), result);
-  free (tmp);
+    return 0;                /* only 89a has support for comments */
+  if (0 != proc (proc_cls, 
+		 "gif",
+		 EXTRACTOR_METATYPE_MIMETYPE,
+		 EXTRACTOR_METAFORMAT_UTF8,
+		 "text/plain",
+		 "image/gif",
+		 strlen ("image/gif")+1))
+    return 1;
+  snprintf (tmp, 
+	    sizeof(tmp),
+	    "%ux%u", 
+	    header.screen_width, header.screen_height);
+  if (0 != proc (proc_cls, 
+		 "gif",
+		 EXTRACTOR_METATYPE_IMAGE_DIMENSIONS,
+		 EXTRACTOR_METAFORMAT_UTF8,
+		 "text/plain",
+		 tmp,
+		 strlen (tmp)+1))
+    return 1;
   pos = skipGlobalColorMap (data, size, &header);
   PRINT ("global color map ends at %d\n", pos);
   while (pos < size)
@@ -223,21 +234,23 @@ libextractor_gif_extract (const char *filename,
         case ',':              /* image descriptor block */
           PRINT ("skipping local color map %d\n", pos);
           EXTRACTOR_common_cat_unpack (&data[pos],
-                      GIF_DESCRIPTOR_SPEC, GIF_DESCRIPTOR_FIELDS (&gd));
+				       GIF_DESCRIPTOR_SPEC,
+				       GIF_DESCRIPTOR_FIELDS (&gd));
           pos = skipLocalColorMap (data, pos, size, &gd);
           break;
         case '!':              /* extension block */
           PRINT ("skipping extension block %d\n", pos);
           if (data[pos + 1] == (unsigned char) 0xFE)
             {
-              result = parseComment (data, pos + 2, size, result);
+              if (0 != parseComment (data, pos + 2, size, proc, proc_cls))
+		return 1;
             }
           pos = skipExtensionBlock (data, pos, size,
                                     (GIF_EXTENSION *) & data[pos]);
           break;
         case ';':
           PRINT ("hit terminator at %d!\n", pos);
-          return result;        /* terminator! */
+          return 0;        /* terminator! */
         default:               /* raster data block */
           PRINT ("skipping data block at %d\n", pos);
           pos = skipDataBlock (data, pos + 1, size);
@@ -245,5 +258,5 @@ libextractor_gif_extract (const char *filename,
         }
     }
   PRINT ("returning at %d\n", pos);
-  return result;
+  return 0;
 }

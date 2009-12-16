@@ -89,8 +89,10 @@ plugin_LTLIBRARIES = \
   libextractor_dvi.la \
   libextractor_elf.la \
   $(exiv2) \
+  libextractor_gif.la \
   libextractor_html.la \
   libextractor_it.la \
+  libextractor_jpeg.la \
   libextractor_mime.la \
   $(pdf) \
   $(rpm) \
@@ -135,6 +137,13 @@ libextractor_exiv2_la_LDFLAGS = \
 libextractor_exiv2_la_LIBADD = \
   -lexiv2
 
+libextractor_gif_la_SOURCES = \
+  gif_extractor.c 
+libextractor_gif_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+libextractor_gif_la_LIBADD = \
+  $(top_builddir)/src/common/libextractor_common.la
+
 libextractor_html_la_SOURCES = \
   html_extractor.c 
 libextractor_html_la_LDFLAGS = \
@@ -146,6 +155,13 @@ libextractor_it_la_SOURCES = \
   it_extractor.c 
 libextractor_it_la_LDFLAGS = \
   $(PLUGINFLAGS)
+
+libextractor_jpeg_la_SOURCES = \
+  jpeg_extractor.c 
+libextractor_jpeg_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+libextractor_jpeg_la_LIBADD = \
+  $(LE_LIBINTL)
 
 libextractor_mime_la_SOURCES = \
   mime_extractor.c 
@@ -183,11 +199,9 @@ OLD_LIBS = \
   libextractor_elf.la \
   $(extraflac) \
   libextractor_flv.la \
-  libextractor_gif.la \
   libextractor_id3v2.la \
   libextractor_id3v24.la \
   libextractor_id3v23.la \
-  libextractor_jpeg.la \
   libextractor_man.la \
   libextractor_mp3.la \
   $(extrampeg) \
@@ -290,13 +304,6 @@ libextractor_tar_la_LIBADD = \
   $(top_builddir)/src/main/libextractor.la -lz
 endif
 
-libextractor_gif_la_SOURCES = \
-  gifextractor.c 
-libextractor_gif_la_LDFLAGS = \
-  $(PLUGINFLAGS)
-libextractor_gif_la_LIBADD = \
-  $(top_builddir)/src/common/libextractor_common.la
-
 libextractor_tiff_la_SOURCES = \
   tiffextractor.c 
 libextractor_tiff_la_LDFLAGS = \
@@ -310,13 +317,6 @@ libextractor_zip_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_zip_la_LIBADD = \
   $(top_builddir)/src/main/libextractor.la
-
-libextractor_jpeg_la_SOURCES = \
-  jpegextractor.c 
-libextractor_jpeg_la_LDFLAGS = \
-  $(PLUGINFLAGS)
-libextractor_jpeg_la_LIBADD = \
-  $(LE_LIBINTL)
 
 libextractor_flv_la_SOURCES = \
   flvextractor.c
