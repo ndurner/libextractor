@@ -13,7 +13,7 @@ endif
 
 if HAVE_GLIB
 if WITH_GSF
- oledir=ole2
+ ole2=libextractor_ole2.la
 endif
 if HAVE_GTK
  thumbgtk=libextractor_thumbnailgtk.la
@@ -58,7 +58,7 @@ endif
 
 # toggle for development
 SUBDIRS = . 
-# SUBDIRS = . $(thumbgtk) $(thumbffmpeg) $(oodir) $(printdir) hash $(oledir)
+# SUBDIRS = . $(thumbgtk) $(thumbffmpeg) $(oodir) $(printdir) hash
 
 
 if HAVE_VORBISFILE
@@ -95,6 +95,7 @@ plugin_LTLIBRARIES = \
   libextractor_jpeg.la \
   libextractor_man.la \
   libextractor_mime.la \
+  $(ole2) \
   $(pdf) \
   $(rpm) \
   $(thumbgtk)
@@ -175,6 +176,16 @@ libextractor_mime_la_SOURCES = \
   mime_extractor.c 
 libextractor_mime_la_LDFLAGS = \
   $(PLUGINFLAGS)
+
+libextractor_ole2_la_SOURCES =  \
+  ole2_extractor.c
+libextractor_ole2_la_CFLAGS = \
+  $(GSF_CFLAGS) 
+libextractor_ole2_la_LIBADD = \
+  $(LIBADD) $(GSF_LIBS) \
+  $(top_builddir)/src/common/libextractor_common.la 
+libextractor_ole2_la_LDFLAGS = \
+  $(PLUGINFLAGS) 
 
 libextractor_pdf_la_SOURCES = \
   pdf_extractor.cc 

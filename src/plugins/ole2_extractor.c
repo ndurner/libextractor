@@ -1,6 +1,6 @@
 /*
      This file is part of libextractor.
-     (C) 2004, 2005, 2006, 2007 Vidyut Samanta and Christian Grothoff
+     (C) 2004, 2005, 2006, 2007, 2009 Vidyut Samanta and Christian Grothoff
 
      libextractor is free software; you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published
@@ -44,98 +44,90 @@
 
 /* ******************************** main extraction code ************************ */
 
-static struct EXTRACTOR_Keywords *
-addKeyword(EXTRACTOR_KeywordList *oldhead,
+static int
+addKeyword(EXTRACTOR_MetaDataProcessor proc,
+	   void *proc_cls,
 	   const char *phrase,
-	   EXTRACTOR_KeywordType type) {
-  EXTRACTOR_KeywordList * keyword;
-
+	   enum EXTRACTOR_MetaType type) {
   if (strlen(phrase) == 0)
-    return oldhead;
+    return 0;
   if (0 == strcmp(phrase, "\"\""))
-    return oldhead;
+    return 0;
   if (0 == strcmp(phrase, "\" \""))
-    return oldhead;
+    return 0;
   if (0 == strcmp(phrase, " "))
-    return oldhead;
-  keyword = malloc(sizeof(EXTRACTOR_KeywordList));
-  keyword->next = oldhead;
-  keyword->keyword = strdup(phrase);
-  keyword->keywordType = type;
-  return keyword;
+    return 0;
+  return proc (proc_cls, 
+	       "ole2",
+	       type,
+	       EXTRACTOR_METAFORMAT_UTF8,
+	       "text/plain",
+	       phrase,
+	       strlen (phrase) +1);
 }
-
-
-#if 0
-static guint8 const component_guid [] = {
-	0xe0, 0x85, 0x9f, 0xf2, 0xf9, 0x4f, 0x68, 0x10,
-	0xab, 0x91, 0x08, 0x00, 0x2b, 0x27, 0xb3, 0xd9
-};
-
-static guint8 const document_guid [] = {
-	0x02, 0xd5, 0xcd, 0xd5, 0x9c, 0x2e, 0x1b, 0x10,
-	0x93, 0x97, 0x08, 0x00, 0x2b, 0x2c, 0xf9, 0xae
-};
-
-static guint8 const user_guid [] = {
-	0x05, 0xd5, 0xcd, 0xd5, 0x9c, 0x2e, 0x1b, 0x10,
-	0x93, 0x97, 0x08, 0x00, 0x2b, 0x2c, 0xf9, 0xae
-};
-#endif
 
 typedef struct {
   char * text;
-  EXTRACTOR_KeywordType type;
+  enum EXTRACTOR_MetaType type;
 } Matches;
 
 static Matches tmap[] = {
-  { "Title", EXTRACTOR_TITLE },
-  { "PresentationFormat", EXTRACTOR_FORMAT },
-  { "Category", EXTRACTOR_DESCRIPTION },
-  { "Manager", EXTRACTOR_MANAGER },
-  { "Company", EXTRACTOR_COMPANY },
-  { "Subject", EXTRACTOR_SUBJECT },
-  { "Author", EXTRACTOR_AUTHOR },
-  { "Keywords", EXTRACTOR_KEYWORDS },
-  { "Comments", EXTRACTOR_COMMENT },
-  { "Template", EXTRACTOR_TEMPLATE },
-  { "NumPages", EXTRACTOR_PAGE_COUNT },
-  { "AppName", EXTRACTOR_SOFTWARE },
-  { "RevisionNumber", EXTRACTOR_VERSIONNUMBER },
-  { "Dictionary", EXTRACTOR_LANGUAGE },
-  { "NumBytes", EXTRACTOR_SIZE },
-  { "CreatedTime", EXTRACTOR_CREATION_DATE },
-  { "LastSavedTime" , EXTRACTOR_MODIFICATION_DATE },
-  { "gsf:company", EXTRACTOR_COMPANY },
-  /*  { "gsf:security", EXTRACTOR_SECURITY }, */
-  { "gsf:character-count", EXTRACTOR_CHARACTER_COUNT },
-  { "gsf:page-count", EXTRACTOR_PAGE_COUNT },
-  { "gsf:line-count", EXTRACTOR_LINE_COUNT },
-  { "gsf:word-count", EXTRACTOR_WORD_COUNT },
-  { "gsf:paragraph-count", EXTRACTOR_PARAGRAPH_COUNT },
-  { "gsf:last-saved-by", EXTRACTOR_LAST_SAVED_BY },
+  { "Title", EXTRACTOR_METATYPE_TITLE },
+  { "PresentationFormat", EXTRACTOR_METATYPE_FORMAT },
+  { "Category", EXTRACTOR_METATYPE_SECTION },
+  { "Manager", EXTRACTOR_METATYPE_MANAGER },
+  { "Company", EXTRACTOR_METATYPE_COMPANY },
+  { "Subject", EXTRACTOR_METATYPE_SUBJECT },
+  { "Author", EXTRACTOR_METATYPE_AUTHOR_NAME },
+  { "Keywords", EXTRACTOR_METATYPE_KEYWORDS },
+  { "Comments", EXTRACTOR_METATYPE_COMMENT },
+  { "Template", EXTRACTOR_METATYPE_TEMPLATE },
+  { "NumPages", EXTRACTOR_METATYPE_PAGE_COUNT },
+  { "AppName", EXTRACTOR_METATYPE_PRODUCED_BY_SOFTWARE },
+  { "RevisionNumber", EXTRACTOR_METATYPE_REVISION_NUMBER },
+  { "NumBytes", EXTRACTOR_METATYPE_EMBEDDED_FILE_SIZE },
+  { "CreatedTime", EXTRACTOR_METATYPE_CREATION_DATE },
+  { "LastSavedTime" , EXTRACTOR_METATYPE_MODIFICATION_DATE },
+  { "gsf:company", EXTRACTOR_METATYPE_COMPANY },
+  { "gsf:character-count", EXTRACTOR_METATYPE_CHARACTER_COUNT },
+  { "gsf:page-count", EXTRACTOR_METATYPE_PAGE_COUNT },
+  { "gsf:line-count", EXTRACTOR_METATYPE_LINE_COUNT },
+  { "gsf:word-count", EXTRACTOR_METATYPE_WORD_COUNT },
+  { "gsf:paragraph-count", EXTRACTOR_METATYPE_PARAGRAPH_COUNT },
+  { "gsf:last-saved-by", EXTRACTOR_METATYPE_LAST_SAVED_BY },
+  { "gsf:manager", EXTRACTOR_METATYPE_MANAGER },
+  { "dc:title", EXTRACTOR_METATYPE_TITLE },
+  { "dc:creator", EXTRACTOR_METATYPE_CREATOR },
+  { "dc:date", EXTRACTOR_METATYPE_UNKNOWN_DATE },
+  { "dc:subject", EXTRACTOR_METATYPE_SUBJECT },
+  { "dc:keywords", EXTRACTOR_METATYPE_KEYWORDS },
+  { "dc:last-printed", EXTRACTOR_METATYPE_LAST_PRINTED },
+  { "dc:description", EXTRACTOR_METATYPE_DESCRIPTION },
+  { "meta:creation-date", EXTRACTOR_METATYPE_CREATION_DATE },
+  { "meta:generator", EXTRACTOR_METATYPE_CREATED_BY_SOFTWARE },
+  { "meta:template", EXTRACTOR_METATYPE_TEMPLATE },
+  { "meta:editing-cycles", EXTRACTOR_METATYPE_EDITING_CYCLES }, 
+  /* { "Dictionary", EXTRACTOR_METATYPE_DOCUMENT_LANGUAGE },  */
+  /* { "gsf:security", EXTRACTOR_SECURITY }, */
   /* { "gsf:scale", EXTRACTOR_SCALE }, // always "false"? */
-  { "gsf:manager", EXTRACTOR_MANAGER },
-  { "dc:title", EXTRACTOR_TITLE },
-  { "dc:creator", EXTRACTOR_CREATOR },
-  { "dc:date", EXTRACTOR_DATE },
-  { "dc:subject", EXTRACTOR_SUBJECT },
-  { "dc:keywords", EXTRACTOR_KEYWORDS },
-  { "dc:last-printed", EXTRACTOR_LAST_PRINTED },
-  { "dc:description", EXTRACTOR_DESCRIPTION },
-  { "meta:creation-date", EXTRACTOR_CREATION_DATE },
-  /* { "meta:editing-duration", EXTRACTOR_TOTAL_EDITING_TIME }, // encoding? */
-  { "meta:generator", EXTRACTOR_GENERATOR },
-  { "meta:template", EXTRACTOR_TEMPLATE },
-  /* { "meta:editing-cycles", EXTRACTOR_EDITING_CYCLES }, // usually "FALSE" */
+  /* { "meta:editing-duration", EXTRACTOR_METATYPE_TOTAL_EDITING_TIME }, // encoding? */
   /* { "msole:codepage", EXTRACTOR_CHARACTER_SET }, */
-  { NULL, 0 },
+  { NULL, 0 }
 };
+
+
+struct ProcContext
+{
+  EXTRACTOR_MetaDataProcessor proc;
+  void *proc_cls;
+  int ret;
+};
+
 
 static void processMetadata(gpointer key,
 			    gpointer value,
 			    gpointer user_data) {
-  struct EXTRACTOR_Keywords ** pprev = user_data;
+  struct ProcContext *pc = user_data;
   const char * type = key;
   const GsfDocProp * prop = value;
   const GValue * gval;
@@ -145,30 +137,70 @@ static void processMetadata(gpointer key,
   if ( (key == NULL) ||
        (value == NULL) )
     return;
+  if (pc->ret != 0)
+    return;
   gval = gsf_doc_prop_get_val(prop);
 
-  if (G_VALUE_TYPE(gval) == G_TYPE_STRING) {
-    contents = strdup(g_value_get_string(gval));
-  } else {
-    /* convert other formats? */
-    contents = g_strdup_value_contents(gval);
-  }
+  if (G_VALUE_TYPE(gval) == G_TYPE_STRING) 
+    {
+      contents = strdup(g_value_get_string(gval));
+    }
+  else
+    {
+      /* convert other formats? */
+      contents = g_strdup_value_contents(gval);
+    }
   if (contents == NULL)
     return;
   if ( (strlen(contents) > 0) &&
        (contents[strlen(contents)-1] == '\n') )
     contents[strlen(contents)-1] = '\0';
   pos = 0;
-  while (tmap[pos].text != NULL) {
-    if (0 == strcmp(tmap[pos].text,
-		    type))
-      break;
-    pos++;
-  }
+  while (tmap[pos].text != NULL) 
+    {
+      if (0 == strcmp(tmap[pos].text,
+		      type))
+	break;
+      pos++;
+    }
+  if (0 == strcmp (type, "meta:generator"))
+    {
+      const char * mimetype = "application/vnd.ms-files";
+      if((0 == strncmp(value, "Microsoft Word", 14)) ||
+	 (0 == strncmp(value, "Microsoft Office Word", 21)))
+	mimetype = "application/msword";
+      else if((0 == strncmp(value, "Microsoft Excel", 15)) ||
+	      (0 == strncmp(value, "Microsoft Office Excel", 22)))
+	mimetype = "application/vnd.ms-excel";
+      else if((0 == strncmp(value, "Microsoft PowerPoint", 20)) ||
+	      (0 == strncmp(value, "Microsoft Office PowerPoint", 27)))
+	mimetype = "application/vnd.ms-powerpoint";
+      else if(0 == strncmp(value, "Microsoft Project", 17))
+	mimetype = "application/vnd.ms-project";
+      else if(0 == strncmp(value, "Microsoft Visio", 15))
+	mimetype = "application/vnd.visio";
+      else if(0 == strncmp(value, "Microsoft Office", 16))
+	mimetype = "application/vnd.ms-office";
+      
+      if (0 != addKeyword(pc->proc,
+			  pc->proc_cls, mimetype, EXTRACTOR_METATYPE_MIMETYPE))
+	{
+	  free (contents);
+	  pc->ret = 1;
+	  return;
+	}
+    }
   if (tmap[pos].text != NULL)
-    *pprev = addKeyword(*pprev,
-			contents,
-			tmap[pos].type);
+    {
+      if (0 != addKeyword(pc->proc, pc->proc_cls,
+			  contents,
+			  tmap[pos].type))
+	{
+	  free (contents);
+	  pc->ret = 1;
+	  return;
+	}
+    }
 #if DEBUG_OLE2
   else
     printf("No match for type `%s'\n",
@@ -178,33 +210,37 @@ static void processMetadata(gpointer key,
 }
 
 
-static struct EXTRACTOR_Keywords *
+static int
 process(GsfInput * in,
-	struct EXTRACTOR_Keywords * prev) {
+	EXTRACTOR_MetaDataProcessor proc,
+	void *proc_cls)
+{
+  struct ProcContext pc;
   GsfDocMetaData * sections;
   GError * error;
 
+  pc.proc = proc;
+  pc.proc_cls = proc_cls;
+  pc.ret = 0;
   sections = gsf_doc_meta_data_new();
   error = gsf_msole_metadata_read(in, sections);
   if (error == NULL) {
     gsf_doc_meta_data_foreach(sections,
 			      &processMetadata,
-			      &prev);
+			      &pc);
   }
   g_object_unref(G_OBJECT(sections));
-  return prev;
+  return pc.ret;
 }
 
-static struct EXTRACTOR_Keywords *
+static int
 processSO(GsfInput * src,
-	  struct EXTRACTOR_Keywords * prev) {
-  off_t size;
-  char * buf;
-
-  size = gsf_input_size(src);
-  if (size < 0x374) /* == 0x375?? */
-    return prev;
-  buf = malloc(size);
+	  EXTRACTOR_MetaDataProcessor proc,
+	  void *proc_cls) {
+  off_t size = gsf_input_size(src);
+  if ( (size < 0x374) || (size > 4*1024*1024) )  /* == 0x375?? */
+    return 0;
+  char buf[size];
   gsf_input_read(src, size, (unsigned char*) buf);
   if ( (buf[0] != 0x0F) ||
        (buf[1] != 0x0) ||
@@ -213,35 +249,35 @@ processSO(GsfInput * src,
 		     strlen("SfxDocumentInfo"))) ||
        (buf[0x11] != 0x0B) ||
        (buf[0x13] != 0x00) || /* pw protected! */
-       (buf[0x12] != 0x00) ) {
-    free(buf);
-    return prev;
-  }
+       (buf[0x12] != 0x00) ) 
+    return 0;
   buf[0xd3] = '\0';
   if (buf[0x94] + buf[0x93] > 0)
-    prev = addKeyword(prev,
-		      &buf[0x95],
-		      EXTRACTOR_TITLE);
+    if (0 != addKeyword(proc, proc_cls,
+			&buf[0x95],
+			EXTRACTOR_METATYPE_TITLE))
+      return 1;
   buf[0x114] = '\0';
   if (buf[0xd5] + buf[0xd4] > 0)
-    prev = addKeyword(prev,
-		      &buf[0xd6],
-		      EXTRACTOR_SUBJECT);
+    if (0 != addKeyword(proc, proc_cls,
+			&buf[0xd6],
+			EXTRACTOR_METATYPE_SUBJECT))
+      return 1;
   buf[0x215] = '\0';
   if (buf[0x115] + buf[0x116] > 0)
-    prev = addKeyword(prev,
-		      &buf[0x117],
-		      EXTRACTOR_COMMENT);
+    if (0 != addKeyword(proc, proc_cls,
+			&buf[0x117],
+			EXTRACTOR_METATYPE_COMMENT))
+      return 1;
   buf[0x296] = '\0';
   if (buf[0x216] + buf[0x217] > 0)
-    prev = addKeyword(prev,
-		      &buf[0x218],
-		      EXTRACTOR_KEYWORDS);
+    if (0 != addKeyword(proc, proc_cls,
+			&buf[0x218],
+			EXTRACTOR_METATYPE_KEYWORDS))
+      return 1;
   /* fixme: do timestamps,
      mime-type, user-defined info's */
-
-  free(buf);
-  return prev;
+  return 0;
 }
 
 /* *************** wordleaker stuff *************** */
@@ -372,11 +408,13 @@ static const char * lidToLanguage( unsigned int lid ) {
 }
 
 
-static struct EXTRACTOR_Keywords *
+static int
 history_extract(GsfInput * stream,
 		unsigned int lcbSttbSavedBy,
 		unsigned int fcSttbSavedBy,
-		struct EXTRACTOR_Keywords * prev) {
+		EXTRACTOR_MetaDataProcessor proc,
+		void *proc_cls)
+{
   unsigned int where = 0;
   unsigned char * lbuffer;
   unsigned int i;
@@ -385,17 +423,19 @@ history_extract(GsfInput * stream,
   char * filename;
   char * rbuf;
   unsigned int nRev;
+  int ret;
 
   // goto offset of revision
   gsf_input_seek(stream, fcSttbSavedBy, G_SEEK_SET);
   if (gsf_input_remaining(stream) < lcbSttbSavedBy)
-    return prev;
+    return 0;
   lbuffer = malloc(lcbSttbSavedBy);
   // read all the revision history
   gsf_input_read(stream, lcbSttbSavedBy, lbuffer);
   // there are n strings, so n/2 revisions (author & file)
   nRev = (lbuffer[2] + (lbuffer[3] << 8)) / 2;
   where = 6;
+  ret = 0;
   for (i=0; i < nRev; i++) {
     if (where >= lcbSttbSavedBy)
       break;
@@ -423,67 +463,74 @@ history_extract(GsfInput * stream,
 	     i, author, filename);
     free(author);
     free(filename);
-    prev = addKeyword(prev,
-		      rbuf,
-		      EXTRACTOR_REVISION_HISTORY);
+    ret = addKeyword(proc, proc_cls,
+		     rbuf,
+		     EXTRACTOR_METATYPE_REVISION_HISTORY);    
     free(rbuf);
+    if (0 != ret)
+      break;
   }
   free(lbuffer);
-  return prev;
+  return ret;
 }
 
 
-/* ************** main method *********** */
-
-struct EXTRACTOR_Keywords *
-libextractor_ole2_extract(const char * filename,
-			  const char * data,
-			  size_t size,
-			  struct EXTRACTOR_Keywords * prev) {
+int 
+EXTRACTOR_ole2_extract (const char *data,
+			size_t size,
+			EXTRACTOR_MetaDataProcessor proc,
+			void *proc_cls,
+			const char *options)
+{
   GsfInput * input;
   GsfInfile * infile;
   GsfInput * src;
   const char * name;
-  const char * generator = NULL;
   int i;
   unsigned int lcb;
   unsigned int fcb;
   const unsigned char * data512;
   unsigned int lid;
   const char * lang;
+  int ret;
 
+  ret = 0;
   if (size < 512 + 898)
-    return prev; /* can hardly be OLE2 */
+    return 0; /* can hardly be OLE2 */
   input = gsf_input_memory_new((const guint8 *) data,
 			       (gsf_off_t) size,
 			       FALSE);
   if (input == NULL)
-    return prev;
+    return 0;
 
   infile = gsf_infile_msole_new(input, NULL);
   if (infile == NULL) {
     g_object_unref(G_OBJECT(input));
-    return prev;
+    return 0;
   }
   lcb = 0;
   fcb = 0;
   for (i=0;i<gsf_infile_num_children(infile);i++) {
     name = gsf_infile_name_by_index (infile, i);
     src = NULL;
+    if (ret != 0)
+      break;
     if (name == NULL)
       continue;
     if ( (0 == strcmp(name, "\005SummaryInformation"))
 	 || (0 == strcmp(name, "\005DocumentSummaryInformation")) ) {
       src = gsf_infile_child_by_index (infile, i);
       if (src != NULL)
-	prev = process(src,
-		       prev);
+	ret = process(src,
+		      proc, 
+		      proc_cls);
     }
     if (0 == strcmp(name, "SfxDocumentInfo")) {
       src = gsf_infile_child_by_index (infile, i);
-      if (src != NULL)
-	prev = processSO(src,
-			 prev);
+      if ( (src != NULL) && (ret == 0) )
+	ret = processSO(src,
+			proc,
+			proc_cls);
     }
     if (src != NULL)
       g_object_unref(G_OBJECT(src));
@@ -494,13 +541,14 @@ libextractor_ole2_extract(const char * filename,
   lcb = data512[726] + (data512[727] << 8) + (data512[728] << 16) + (data512[729] << 24);
   fcb = data512[722] + (data512[723] << 8) + (data512[724] << 16) + (data512[725] << 24);
   lang = lidToLanguage(lid);
-  if (lang != NULL) {
-    prev = addKeyword(prev,
-		      lang,
-		      EXTRACTOR_LANGUAGE);
-  }
+  if ( (lang != NULL) && (ret == 0) )
+    ret = addKeyword(proc, proc_cls,
+		     lang,
+		     EXTRACTOR_METATYPE_DOCUMENT_LANGUAGE);  
   if (lcb >= 6) {
     for (i=0;i<gsf_infile_num_children(infile);i++) {
+      if (ret != 0)
+	break;
       name = gsf_infile_name_by_index (infile, i);
       if (name == NULL)
 	continue;
@@ -508,10 +556,10 @@ libextractor_ole2_extract(const char * filename,
 	   (0 == strcmp(name, "0Table")) ) {
 	src = gsf_infile_child_by_index (infile, i);
 	if (src != NULL) {
-	  prev = history_extract(src,
-				 lcb,
-				 fcb,
-				 prev);
+	  ret = history_extract(src,
+				lcb,
+				fcb,
+				proc, proc_cls);
 	  g_object_unref(G_OBJECT(src));
 	}
       }
@@ -519,66 +567,33 @@ libextractor_ole2_extract(const char * filename,
   }
   g_object_unref(G_OBJECT(infile));
   g_object_unref(G_OBJECT(input));
-
-  /*
-   * Hack to return an appropriate mimetype
-   */
-  generator = EXTRACTOR_extractLast(EXTRACTOR_GENERATOR, prev);
-  if (NULL == generator) {
-     /*
-      * when very puzzled, just look at file magic number
-      */
-    if ( (8 < size)
-	 && (0 == memcmp(data, "\xd0\xcf\x11\xe0\xa1\xb1\x1a\xe1", 8)) )
-      generator = "Microsoft Office";
-  }
-
-  if(NULL != generator) {
-    const char * mimetype = "application/vnd.ms-files";
-
-    if((0 == strncmp(generator, "Microsoft Word", 14)) ||
-       (0 == strncmp(generator, "Microsoft Office Word", 21)))
-      mimetype = "application/msword";
-    else if((0 == strncmp(generator, "Microsoft Excel", 15)) ||
-            (0 == strncmp(generator, "Microsoft Office Excel", 22)))
-      mimetype = "application/vnd.ms-excel";
-    else if((0 == strncmp(generator, "Microsoft PowerPoint", 20)) ||
-            (0 == strncmp(generator, "Microsoft Office PowerPoint", 27)))
-      mimetype = "application/vnd.ms-powerpoint";
-    else if(0 == strncmp(generator, "Microsoft Project", 17))
-      mimetype = "application/vnd.ms-project";
-    else if(0 == strncmp(generator, "Microsoft Visio", 15))
-      mimetype = "application/vnd.visio";
-    else if(0 == strncmp(generator, "Microsoft Office", 16))
-      mimetype = "application/vnd.ms-office";
-
-    prev = addKeyword(prev, mimetype, EXTRACTOR_MIMETYPE);
-  }
-
-  return prev;
+  return ret;
 }
-static void nolog (const gchar *log_domain,
-		   GLogLevelFlags log_level,
-		   const gchar *message,
-		   gpointer user_data) {
+
+
+static void 
+nolog (const gchar *log_domain,
+       GLogLevelFlags log_level,
+       const gchar *message,
+       gpointer user_data) {
 }
+
 
 void __attribute__ ((constructor)) ole2_ltdl_init() {
- g_type_init();
+  g_type_init();
 #ifdef HAVE_GSF_INIT
   gsf_init();
 #endif
   /* disable logging -- thanks, Jody! */
   g_log_set_handler ("libgsf:msole", G_LOG_LEVEL_CRITICAL | G_LOG_LEVEL_WARNING,  &nolog, NULL);
-  // gsf_init_dynamic(NULL);
 }
+
 
 void __attribute__ ((destructor)) ole2_ltdl_fini() {
 #ifdef HAVE_GSF_INIT
   gsf_shutdown();
 #endif
-  // gsf_shutdown_dynamic(NULL);
 }
 
-/* end of ole2extractor.c */
+/* end of ole2_extractor.c */
 

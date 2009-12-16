@@ -37,6 +37,7 @@
 #include <poppler/Page.h>
 #include <poppler/PDFDoc.h>
 #include <poppler/Error.h>
+#include <poppler/GlobalParams.h>
 #include <poppler/goo/GooString.h>
 
 #define ADD(s, type) do { if (0!=proc(proc_cls, "pdf", type, EXTRACTOR_METAFORMAT_UTF8, "text/plain", s, strlen(s)+1)) { err = 1; goto EXIT; }} while (0)
@@ -167,7 +168,11 @@ extern "C" {
     BaseStream * stream;
     int err;
 
-    /* errorInit();   -- keep commented out, otherwise errors are printed to stderr for non-pdf files! */
+    if (globalParams == NULL)
+      {
+	globalParams = new GlobalParams();
+	globalParams->setErrQuiet (gTrue);
+      }
     obj.initNull();
     err = 0;
     stream = new MemStream( (char*) data, 0, size, &obj);
