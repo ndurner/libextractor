@@ -67,7 +67,7 @@ addKeyword(EXTRACTOR_MetaDataProcessor proc,
 }
 
 typedef struct {
-  char * text;
+  const char * text;
   enum EXTRACTOR_MetaType type;
 } Matches;
 

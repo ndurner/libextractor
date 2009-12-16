@@ -556,8 +556,6 @@ src/intlemu/Makefile
 src/common/Makefile
 src/main/Makefile
 src/plugins/Makefile
-src/plugins/oo/Makefile
-src/plugins/printable/Makefile
 src/plugins/hash/Makefile
 src/plugins/thumbnailffmpeg/Makefile
 src/test/Makefile

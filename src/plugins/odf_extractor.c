@@ -1,6 +1,6 @@
 /*
      This file is part of libextractor.
-     (C) 2004 Vidyut Samanta and Christian Grothoff
+     (C) 2004, 2009 Vidyut Samanta and Christian Grothoff
 
      libextractor is free software; you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published
@@ -33,41 +33,26 @@
  */
 #define METAFILE "meta.xml"
 
-static EXTRACTOR_KeywordList * addKeyword(EXTRACTOR_KeywordType type,
-					  char * keyword,
-					  EXTRACTOR_KeywordList * next) {
-  EXTRACTOR_KeywordList * result;
-
-  if (keyword == NULL)
-    return next;
-  result = malloc(sizeof(EXTRACTOR_KeywordList));
-  result->next = next;
-  result->keyword = keyword;
-  result->keywordType = type;
-  return result;
-}
-
-
 typedef struct {
-  char * text;
-  EXTRACTOR_KeywordType type;
+  const char * text;
+  enum EXTRACTOR_MetaType type;
 } Matches;
 
 static Matches tmap[] = {
-  { "meta:generator",     EXTRACTOR_SOFTWARE },
-  { "meta:page-count",    EXTRACTOR_PAGE_COUNT },
-  { "meta:creation-date", EXTRACTOR_CREATION_DATE },
-  { "dc:date",            EXTRACTOR_DATE },
-  { "dc:creator",         EXTRACTOR_CREATOR },
-  { "dc:language",        EXTRACTOR_LANGUAGE },
-  { "dc:title",           EXTRACTOR_TITLE },
-  { "dc:description",     EXTRACTOR_DESCRIPTION },
-  { "dc:subject",         EXTRACTOR_SUBJECT },
-  { "meta:keyword",       EXTRACTOR_KEYWORDS },
-  { "meta:user-defined meta:name=\"Info 1\"", EXTRACTOR_UNKNOWN },
-  { "meta:user-defined meta:name=\"Info 2\"", EXTRACTOR_UNKNOWN },
-  { "meta:user-defined meta:name=\"Info 3\"", EXTRACTOR_UNKNOWN },
-  { "meta:user-defined meta:name=\"Info 4\"", EXTRACTOR_UNKNOWN },
+  { "meta:generator",     EXTRACTOR_METATYPE_CREATED_BY_SOFTWARE },
+  { "meta:page-count",    EXTRACTOR_METATYPE_PAGE_COUNT },
+  { "meta:creation-date", EXTRACTOR_METATYPE_CREATION_DATE },
+  { "dc:date",            EXTRACTOR_METATYPE_UNKNOWN_DATE },
+  { "dc:creator",         EXTRACTOR_METATYPE_CREATOR },
+  { "dc:language",        EXTRACTOR_METATYPE_DOCUMENT_LANGUAGE },
+  { "dc:title",           EXTRACTOR_METATYPE_TITLE },
+  { "dc:description",     EXTRACTOR_METATYPE_DESCRIPTION },
+  { "dc:subject",         EXTRACTOR_METATYPE_SUBJECT },
+  { "meta:keyword",       EXTRACTOR_METATYPE_KEYWORDS },
+  { "meta:user-defined meta:name=\"Info 1\"", EXTRACTOR_METATYPE_COMMENT },
+  { "meta:user-defined meta:name=\"Info 2\"", EXTRACTOR_METATYPE_COMMENT },
+  { "meta:user-defined meta:name=\"Info 3\"", EXTRACTOR_METATYPE_COMMENT },
+  { "meta:user-defined meta:name=\"Info 4\"", EXTRACTOR_METATYPE_COMMENT },
   { NULL, 0 },
 };
 
@@ -76,7 +61,8 @@ static Matches tmap[] = {
  * returns either zero when mimetype info is missing
  * or an already malloc'ed string containing the mimetype info.
  */
-static char *libextractor_oo_getmimetype(EXTRACTOR_unzip_file uf) {
+static char *
+libextractor_oo_getmimetype(EXTRACTOR_unzip_file uf) {
   char filename_inzip[MAXFILENAME];
   EXTRACTOR_unzip_file_info file_info;
   char * buf = NULL;
@@ -128,11 +114,13 @@ typedef struct Ecls {
 } Ecls;
 
 
-struct EXTRACTOR_Keywords *
-libextractor_oo_extract(const char * filename,
-			char * data,
+int 
+EXTRACTOR_ole2_extract (const char *data,
 			size_t size,
-			struct EXTRACTOR_Keywords * prev) {
+			EXTRACTOR_MetaDataProcessor proc,
+			void *proc_cls,
+			const char *options)
+{
   char filename_inzip[MAXFILENAME];
   EXTRACTOR_unzip_file uf;
   EXTRACTOR_unzip_file_info file_info;
@@ -145,11 +133,11 @@ libextractor_oo_extract(const char * filename,
   char * mimetype;
 
   if (size < 100)
-    return prev;
+    return 0;
   if ( !( ('P'==data[0]) && ('K'==data[1]) && (0x03==data[2]) && (0x04==data[3])) )
-    return prev;
+    return 0;
 
-  cls.data = data;
+  cls.data = (void*) data;
   cls.size = size;
   cls.pos = 0;
   io.zopen_file = &EXTRACTOR_common_unzip_zlib_open_file_func;
@@ -163,54 +151,62 @@ libextractor_oo_extract(const char * filename,
 
   uf = EXTRACTOR_common_unzip_open2("ERROR", &io);
   if (uf == NULL)
-    return prev;
+    return 0;
   mimetype = libextractor_oo_getmimetype(uf);
-  if (NULL != mimetype)
-    prev = addKeyword(EXTRACTOR_MIMETYPE,
-		      mimetype,
-		      EXTRACTOR_removeKeywordsOfType(prev,
-						     EXTRACTOR_MIMETYPE));
-
-
+  if ( (NULL != mimetype) &&
+       (0 != proc (proc_cls, 
+		   "deb",
+		   EXTRACTOR_METATYPE_MIMETYPE,
+		   EXTRACTOR_METAFORMAT_UTF8,
+		   "text/plain",
+		   mimetype,
+		   strlen (mimetype)+1)) )
+    {
+      EXTRACTOR_common_unzip_close(uf);
+      free (mimetype);
+      return 1;
+    }
+  free (mimetype);
   if (EXTRACTOR_common_unzip_local_file(uf,
 		    METAFILE,
 		    CASESENSITIVITY) != EXTRACTOR_UNZIP_OK) {
     EXTRACTOR_common_unzip_close(uf);
-    return prev; /* not found */
+    return 0; /* not found */
   }
 
-  if (EXTRACTOR_UNZIP_OK != EXTRACTOR_common_unzip_get_current_file_info(uf,
-				      &file_info,
-				      filename_inzip,
-				      sizeof(filename_inzip),
-				      NULL,0,NULL,0)) {
+  if (EXTRACTOR_UNZIP_OK != 
+      EXTRACTOR_common_unzip_get_current_file_info(uf,
+						   &file_info,
+						   filename_inzip,
+						   sizeof(filename_inzip),
+						   NULL,0,NULL,0)) {
     EXTRACTOR_common_unzip_close(uf);
-    return prev; /* problems... */
+    return 0; /* problems... */
   }
 
   if (EXTRACTOR_UNZIP_OK != EXTRACTOR_common_unzip_open_current_file3(uf, NULL, NULL, 0)) {
     EXTRACTOR_common_unzip_close(uf);
-    return prev; /* problems... */
+    return 0; /* problems... */
   }
 
   buf_size = file_info.uncompressed_size;
   if (buf_size > 128 * 1024) {
     EXTRACTOR_common_unzip_close_current_file(uf);
     EXTRACTOR_common_unzip_close(uf);
-    return prev; /* hardly meta-data! */
+    return 0; /* hardly meta-data! */
   }
   buf = malloc(buf_size+1);
   if (buf == NULL) {
     EXTRACTOR_common_unzip_close_current_file(uf);
     EXTRACTOR_common_unzip_close(uf);
-    return prev; /* out of memory */
+    return 0; /* out of memory */
   }
 
   if (buf_size != EXTRACTOR_common_unzip_read_current_file(uf,buf,buf_size)) {
     free(buf);
     EXTRACTOR_common_unzip_close_current_file(uf);
     EXTRACTOR_common_unzip_close(uf);
-    return prev;
+    return 0;
   }
   EXTRACTOR_common_unzip_close_current_file(uf);
   /* we don't do "proper" parsing of the meta-data but rather use some heuristics
@@ -271,9 +267,18 @@ libextractor_oo_extract(const char * filename,
 	  key = malloc(1+epos-spos);
 	  memcpy(key, spos, epos-spos);
 	  key[epos-spos] = '\0';
-	  prev = addKeyword(tmap[i].type,
-			    key,
-			    prev);
+	  if (0 != proc (proc_cls, 
+			 "odf",
+			 tmap[i].type,
+			 EXTRACTOR_METAFORMAT_UTF8,
+			 "text/plain",
+			 key,
+			 strlen (key)+1))
+	    {
+	      free(buf);
+	      EXTRACTOR_common_unzip_close(uf);
+	      return 1;	      
+	    }
 	  pbuf = epos;
 	} else
 	  break;
@@ -282,6 +287,6 @@ libextractor_oo_extract(const char * filename,
   }
   free(buf);
   EXTRACTOR_common_unzip_close(uf);
-  return prev;
+  return 0;
 }
 

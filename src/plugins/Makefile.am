@@ -1,14 +1,13 @@
 include Makefile-plugins.am
-include ffmpeg_distfiles.am
 
-LIBEXT = @LIBEXT@
+SUBDIRS = . 
 
 if HAVE_FFMPEG
-thumbffmpeg=thumbnailffmpeg
+ thumbffmpeg=libextractor_thumbnailffmpeg.la
 endif
 
 if HAVE_LIBRPM
-rpm=libextractor_rpm.la 
+ rpm=libextractor_rpm.la 
 endif
 
 if HAVE_GLIB
@@ -38,10 +37,6 @@ if HAVE_QT_SVG4
 endif
 endif
 
-if HAVE_PRINTABLE
- printdir=printable
-endif
-
 if HAVE_CXX
 if HAVE_EXIV2
  exiv2=libextractor_exiv2.la
@@ -51,22 +46,16 @@ if HAVE_POPPLER
 endif
 endif
 
-
 if HAVE_MPEG2
- extrampeg = libextractor_mpeg.la
+ mpeg = libextractor_mpeg.la
 endif
 
-# toggle for development
-SUBDIRS = . 
-# SUBDIRS = . $(thumbgtk) $(thumbffmpeg) $(oodir) $(printdir) hash
-
-
 if HAVE_VORBISFILE
- extraogg = libextractor_ogg.la
+ ogg = libextractor_ogg.la
 endif
 
 if HAVE_FLAC
- extraflac = libextractor_flac.la
+ flac = libextractor_flac.la
 endif
 
 if NEED_VORBIS
@@ -75,11 +64,6 @@ endif
 
 if NEED_OGG
  flacoggflag = -logg
-endif
-
-if HAVE_ZLIB
-extraqt = libextractor_qt.la
-oodir = oo
 endif
 
 plugin_LTLIBRARIES = \
@@ -96,6 +80,7 @@ plugin_LTLIBRARIES = \
   libextractor_man.la \
   libextractor_mime.la \
   $(ole2) \
+  libextractor_odf.la \
   $(pdf) \
   $(rpm) \
   $(thumbgtk)
@@ -187,6 +172,14 @@ libextractor_ole2_la_LIBADD = \
 libextractor_ole2_la_LDFLAGS = \
   $(PLUGINFLAGS) 
 
+libextractor_odf_la_SOURCES = \
+  odf_extractor.c
+libextractor_odf_la_LDFLAGS = \
+ $(PLUGINFLAGS)
+libextractor_odf_la_LIBADD = \
+ $(top_builddir)/src/common/libextractor_common.la \
+ -lz 
+
 libextractor_pdf_la_SOURCES = \
   pdf_extractor.cc 
 libextractor_pdf_la_LDFLAGS = \
@@ -213,9 +206,13 @@ libextractor_thumbnailgtk_la_SOURCES = \
 
 
 
+
+# stuff below still needs to be ported to 0.6.x
+
+# SUBDIRS = . $(thumbffmpeg) hash
+
+
 OLD_LIBS = \
-  $(pdfplugin) \
-  libextractor_elf.la \
   $(extraflac) \
   libextractor_flv.la \
   libextractor_id3v2.la \
@@ -313,14 +310,12 @@ libextractor_id3v24_la_LDFLAGS = \
 libextractor_id3v24_la_LIBADD = \
   $(top_builddir)/src/common/libextractor_common.la
 
-if HAVE_ZLIB
 libextractor_tar_la_SOURCES = \
   tarextractor.c 
 libextractor_tar_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_tar_la_LIBADD = \
   $(top_builddir)/src/main/libextractor.la -lz
-endif
 
 libextractor_tiff_la_SOURCES = \
   tiffextractor.c 
@@ -348,7 +343,6 @@ libextractor_real_la_SOURCES = \
 libextractor_real_la_LDFLAGS = \
   $(PLUGINFLAGS)
 
-if HAVE_MPEG2
 libextractor_mpeg_la_SOURCES = \
   mpegextractor.c 
 libextractor_mpeg_la_LDFLAGS = \
@@ -356,7 +350,6 @@ libextractor_mpeg_la_LDFLAGS = \
 libextractor_mpeg_la_LIBADD = \
   -lmpeg2 \
   $(top_builddir)/src/main/libextractor.la
-endif
 
 libextractor_riff_la_SOURCES = \
   riffextractor.c 
@@ -367,7 +360,6 @@ libextractor_riff_la_LIBADD = \
   $(LE_LIBINTL) \
   -lm 
 
-if HAVE_ZLIB
 libextractor_png_la_SOURCES = \
   pngextractor.c
 libextractor_png_la_LDFLAGS = \
@@ -376,7 +368,6 @@ libextractor_png_la_LIBADD = \
   $(top_builddir)/src/common/libextractor_common.la \
   $(top_builddir)/src/main/libextractor.la \
   -lz
-endif
 
 libextractor_sid_la_SOURCES = \
   sidextractor.c 
@@ -423,6 +414,9 @@ libextractor_thumbnailqt_la_LIBADD = \
 libextractor_thumbnailqt_la_CPPFLAGS = \
   -I$(top_scrdir)/include \
   $(QT_CFLAGS) $(QT_SVG_CFLAGS)
+
+
+# Fixme: is this still working ok? Doubtful!
 
 install-exec-hook:
 	mkdir -p $(DESTDIR)$(plugindir) &> /dev/null || true
