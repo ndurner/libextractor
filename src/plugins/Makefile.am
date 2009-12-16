@@ -93,6 +93,7 @@ plugin_LTLIBRARIES = \
   libextractor_html.la \
   libextractor_it.la \
   libextractor_jpeg.la \
+  libextractor_man.la \
   libextractor_mime.la \
   $(pdf) \
   $(rpm) \
@@ -163,6 +164,13 @@ libextractor_jpeg_la_LDFLAGS = \
 libextractor_jpeg_la_LIBADD = \
   $(LE_LIBINTL)
 
+libextractor_man_la_SOURCES = \
+  man_extractor.c 
+libextractor_man_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+libextractor_man_la_LIBADD = \
+  $(LE_LIBINTL)
+
 libextractor_mime_la_SOURCES = \
   mime_extractor.c 
 libextractor_mime_la_LDFLAGS = \
@@ -202,7 +210,6 @@ OLD_LIBS = \
   libextractor_id3v2.la \
   libextractor_id3v24.la \
   libextractor_id3v23.la \
-  libextractor_man.la \
   libextractor_mp3.la \
   $(extrampeg) \
   libextractor_nsf.la \
@@ -339,14 +346,6 @@ libextractor_mpeg_la_LIBADD = \
   -lmpeg2 \
   $(top_builddir)/src/main/libextractor.la
 endif
-
-libextractor_man_la_SOURCES = \
-  manextractor.c 
-libextractor_man_la_LDFLAGS = \
-  $(PLUGINFLAGS)
-libextractor_man_la_LIBADD = \
-  $(top_builddir)/src/main/libextractor.la \
-  $(LE_LIBINTL)
 
 libextractor_riff_la_SOURCES = \
   riffextractor.c 

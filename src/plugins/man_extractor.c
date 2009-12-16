@@ -32,18 +32,19 @@ stndup (const char *str, size_t n)
   return tmp;
 }
 
-static EXTRACTOR_KeywordList *
-addKeyword (EXTRACTOR_KeywordType type,
-            char *keyword, EXTRACTOR_KeywordList * next)
+static int
+addKeyword (enum EXTRACTOR_MetaType type,
+            char *keyword, 
+	    EXTRACTOR_MetaDataProcessor proc,
+	    void *proc_cls)
 {
-  EXTRACTOR_KeywordList *result;
-
+  int ret;
   if (keyword == NULL)
-    return next;
+    return 0;
   if (strlen (keyword) == 0)
     {
       free (keyword);
-      return next;
+      return 0;
     }
   if ((keyword[0] == '\"') && (keyword[strlen (keyword) - 1] == '\"'))
     {
@@ -57,13 +58,17 @@ addKeyword (EXTRACTOR_KeywordType type,
   if (strlen (keyword) == 0)
     {
       free (keyword);
-      return next;
+      return 0;
     }
-  result = malloc (sizeof (EXTRACTOR_KeywordList));
-  result->next = next;
-  result->keyword = keyword;
-  result->keywordType = type;
-  return result;
+  ret = proc (proc_cls, 
+	      "man",
+	      type,
+	      EXTRACTOR_METAFORMAT_UTF8,
+	      "text/plain",
+	      keyword,
+	      strlen (keyword)+1);
+  free (keyword);
+  return ret;
 }
 
 static void
@@ -88,12 +93,14 @@ NEXT (size_t * end, const char *buf, const size_t size)
  */
 #define MAX_READ (16 * 1024)
 
+#define ADD(t,s) do { if (0 != addKeyword (t, s, proc, proc_cls)) return 1; } while (0)
 
-
-struct EXTRACTOR_Keywords *
-libextractor_man_extract (const char *filename,
-                          const char *buf,
-                          size_t size, struct EXTRACTOR_Keywords *prev)
+int 
+EXTRACTOR_man_extract (const char *buf,
+		       size_t size,
+		       EXTRACTOR_MetaDataProcessor proc,
+		       void *proc_cls,
+		       const char *options)
 {
   int pos;
   size_t xsize;
@@ -103,14 +110,14 @@ libextractor_man_extract (const char *filename,
     size = MAX_READ;
   pos = 0;
   if (size < xlen)
-    return prev;
+    return 0;
   while ((pos < size - xlen) &&
          ((0 != strncmp (".TH ",
                          &buf[pos],
                          xlen)) || ((pos != 0) && (buf[pos - 1] != '\n'))))
     {
       if (!isgraph (buf[pos]) && !isspace (buf[pos]))
-        return prev;
+        return 0;
       pos++;
     }
   xsize = pos;
@@ -126,19 +133,18 @@ libextractor_man_extract (const char *filename,
       end = pos;
       NEXT (&end, buf, size);
       if (end > size)
-        return prev;
+        return 0;
       if (end - pos > 0)
         {
-          prev = addKeyword (EXTRACTOR_TITLE,
-                             stndup (&buf[pos], end - pos), prev);
+          ADD (EXTRACTOR_METATYPE_TITLE, stndup (&buf[pos], end - pos));
           pos = end + 1;
         }
       if (pos >= size)
-        return prev;
+        return 0;
       end = pos;
       NEXT (&end, buf, size);
       if (end > size)
-        return prev;
+        return 0;
       if (buf[pos] == '\"')
         pos++;
       if ((end - pos >= 1) && (end - pos <= 4))
@@ -146,43 +152,40 @@ libextractor_man_extract (const char *filename,
           switch (buf[pos])
             {
             case '1':
-              prev = addKeyword (EXTRACTOR_CATEGORY,
-                                 strdup (_("Commands")), prev);
+              ADD (EXTRACTOR_METATYPE_SECTION,
+		   strdup (_("Commands")));
               break;
             case '2':
-              prev = addKeyword (EXTRACTOR_CATEGORY,
-                                 strdup (_("System calls")), prev);
+              ADD (EXTRACTOR_METATYPE_SECTION,
+                                 strdup (_("System calls")));
               break;
             case '3':
-              prev = addKeyword (EXTRACTOR_CATEGORY,
-                                 strdup (_("Library calls")), prev);
+              ADD (EXTRACTOR_METATYPE_SECTION,
+                                 strdup (_("Library calls")));
               break;
             case '4':
-              prev = addKeyword (EXTRACTOR_CATEGORY,
-                                 strdup (_("Special files")), prev);
+              ADD (EXTRACTOR_METATYPE_SECTION,
+                                 strdup (_("Special files")));
               break;
             case '5':
-              prev = addKeyword (EXTRACTOR_CATEGORY,
-                                 strdup (_("File formats and conventions")),
-                                 prev);
+              ADD (EXTRACTOR_METATYPE_SECTION,
+                                 strdup (_("File formats and conventions")));
               break;
             case '6':
-              prev = addKeyword (EXTRACTOR_CATEGORY,
-                                 strdup (_("Games")), prev);
+              ADD (EXTRACTOR_METATYPE_SECTION,
+                                 strdup (_("Games")));
               break;
             case '7':
-              prev = addKeyword (EXTRACTOR_CATEGORY,
-                                 strdup (_("Conventions and miscellaneous")),
-                                 prev);
+              ADD (EXTRACTOR_METATYPE_SECTION,
+                                 strdup (_("Conventions and miscellaneous")));
               break;
             case '8':
-              prev = addKeyword (EXTRACTOR_CATEGORY,
-                                 strdup (_("System management commands")),
-                                 prev);
+              ADD (EXTRACTOR_METATYPE_SECTION,
+                                 strdup (_("System management commands")));
               break;
             case '9':
-              prev = addKeyword (EXTRACTOR_CATEGORY,
-                                 strdup (_("Kernel routines")), prev);
+              ADD (EXTRACTOR_METATYPE_SECTION,
+                                 strdup (_("Kernel routines")));
               break;
             }
           pos = end + 1;
@@ -190,36 +193,35 @@ libextractor_man_extract (const char *filename,
       end = pos;
       NEXT (&end, buf, size);
       if (end > size)
-        return prev;
+        return 0;
       if (end - pos > 0)
         {
-          prev = addKeyword (EXTRACTOR_DATE,
-                             stndup (&buf[pos], end - pos), prev);
+          ADD (EXTRACTOR_METATYPE_MODIFICATION_DATE, stndup (&buf[pos], end - pos));
           pos = end + 1;
         }
       end = pos;
       NEXT (&end, buf, size);
       if (end > size)
-        return prev;
+        return 0;
       if (end - pos > 0)
         {
-          prev = addKeyword (EXTRACTOR_SOURCE,
-                             stndup (&buf[pos], end - pos), prev);
+          ADD (EXTRACTOR_METATYPE_SOURCE,
+	       stndup (&buf[pos], end - pos));
           pos = end + 1;
         }
       end = pos;
       NEXT (&end, buf, size);
       if (end > size)
-        return prev;
+        return 0;
       if (end - pos > 0)
         {
-          prev = addKeyword (EXTRACTOR_BOOKTITLE,
-                             stndup (&buf[pos], end - pos), prev);
+          ADD (EXTRACTOR_METATYPE_BOOK_TITLE,
+	       stndup (&buf[pos], end - pos));
           pos = end + 1;
         }
     }
 
-  return prev;
+  return 0;
 }
 
-/* end of manextractor.c */
+/* end of man_extractor.c */

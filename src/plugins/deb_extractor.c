@@ -57,7 +57,7 @@ typedef struct
 static Matches tmap[] = {
   {"Package: ",       EXTRACTOR_METATYPE_PACKAGE_NAME},
   {"Version: ",       EXTRACTOR_METATYPE_PACKAGE_VERSION},
-  {"Section: ",       EXTRACTOR_METATYPE_PACKAGE_SECTION},
+  {"Section: ",       EXTRACTOR_METATYPE_SECTION},
   {"Priority: ",      EXTRACTOR_METATYPE_UPLOAD_PRIORITY},
   {"Architecture: ",  EXTRACTOR_METATYPE_TARGET_ARCHITECTURE},
   {"Depends: ",       EXTRACTOR_METATYPE_PACKAGE_DEPENDENCY},

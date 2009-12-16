@@ -281,7 +281,7 @@ static const struct MetaTypeDescription meta_type_descriptions[] = {
   { gettext_noop ("magnification"),
     gettext_noop ("") }, 
   { gettext_noop ("image dimensions"),
-    gettext_noop ("") }, 
+    gettext_noop ("size of the image in pixels (width times height)") }, 
   { gettext_noop ("produced by software"),
     gettext_noop ("") }, /* what is the exact difference between the software
 			    creator and the software producer? PDF and DVI
@@ -290,10 +290,10 @@ static const struct MetaTypeDescription meta_type_descriptions[] = {
   { gettext_noop ("thumbnail"),
     gettext_noop ("smaller version of the image for previewing") }, 
   /* 115 */
-  { gettext_noop (""),
-    gettext_noop ("") }, 
-  { gettext_noop (""),
-    gettext_noop ("") }, 
+  { gettext_noop ("image resolution"),
+    gettext_noop ("resolution in dots per inch") }, 
+  { gettext_noop ("source"),
+    gettext_noop ("Originating entity") }, 
   { gettext_noop (""),
     gettext_noop ("") }, 
   { gettext_noop (""),
