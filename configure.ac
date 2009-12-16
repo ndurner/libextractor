@@ -458,23 +458,6 @@ AC_CHECK_LIB(gsf-1, gsf_init, AC_DEFINE(HAVE_GSF_INIT,1,[gsf_init supported]))
 AC_CHECK_PROG([HAVE_ZZUF],[zzuf], 1, 0)
 AM_CONDITIONAL(HAVE_ZZUF, test 0 != $HAVE_ZZUF)
 
-printable=1
-AC_MSG_CHECKING([whether to enable printable extractors])
-AC_ARG_ENABLE(printable,
- [AC_HELP_STRING([--enable-printable],[Enable printable support])
-  AC_HELP_STRING([--disable-printable],[Disable printable support])],
- [case "$enableval" in
-  no)	AC_MSG_RESULT(no)
-        printable=0
-	;;
-  *)    AC_MSG_RESULT(yes)
-        printable=1
-	;;
-  esac],
-  [     AC_MSG_RESULT(yes)
-        printable=1])
-AM_CONDITIONAL(HAVE_PRINTABLE, test x$printable != x0)
-
 ffmpeg_enabled=0
 AC_MSG_CHECKING([whether to enable the FFmpeg thumbnail extractor])
 AC_ARG_ENABLE(ffmpeg,
@@ -563,65 +546,16 @@ src/test/Makefile
 
 AX_CREATE_PKGCONFIG_INFO([libextractor.pc],,[-lextractor],[Metadata extraction library],,)
 
-if test "x$ffmpeg_enabled" = "x1"
-then
- AC_MSG_NOTICE([configuring FFmpeg])
- FFMPEGARCH=""
- if test "x$ffmpegarch" != "x"
- then
-   FFMPEGARCH="--enable-cross-compile --arch=$ffmpegarch"
- fi
- cd src/plugins/ffmpeg/
- if ! ./configure			\
-	--cc="$CC"			\
-	$FFMPEGARCH			\
-	--prefix=/tmp			\
-	--disable-optimizations		\
-	--disable-mmx			\
-	--disable-altivec		\
-	--enable-shared			\
-	--enable-swscale		\
-	--enable-gpl			\
-	--enable-hardcoded-tables	\
-	--disable-vhook			\
-	--disable-postproc		\
-	--disable-network		\
-	--disable-ffmpeg		\
-	--disable-ffserver		\
-	--disable-ffplay		\
-	--disable-devices		\
-	--disable-protocols		\
-	--disable-bsfs			\
-	--disable-parsers		\
-	--disable-muxers		\
-	--disable-demuxers		\
-	--disable-encoders		\
-	--disable-decoders		\
-	--enable-encoder=png		\
-	--enable-encoder=ppm		\
-	--enable-decoder=bmp		\
-	--enable-decoder=gif		\
-	--enable-decoder=png		\
-	--enable-parser=pnm
-  then
-    AC_MSG_ERROR([FFmpeg configure failed.])
-  fi
-  cd ../../../
-fi
-
 AC_OUTPUT
+
+if test "x$HAVE_ZLIB_TRUE" = "x#"
+then
+ AC_MSG_ERROR([FATAL: zlib not found (headers not installed?)])
+fi
 
 if test "x$exiv2" = "x0"
 then
  AC_MSG_NOTICE([NOTICE: exiv2 disabled])
-fi
-
-
-if test "x$printable" = "x0"
-then
- AC_MSG_NOTICE([NOTICE: printable plugins disabled])
-else 
- AC_MSG_NOTICE([NOTICE: printable plugins enabled])
 fi
 
 if test "x$have_gsf" != "xtrue"
@@ -644,11 +578,6 @@ fi
 if test "x$HAVE_VORBISFILE_TRUE" = "x#"
 then
  AC_MSG_NOTICE([NOTICE: vorbis support disabled])
-fi
-
-if test "x$HAVE_ZLIB_TRUE" = "x#"
-then
- AC_MSG_ERROR([FATAL: zlib not found (headers not installed?)])
 fi
 
 if test "x$HAVE_MPEG2_TRUE" = "x#"

@@ -5,11 +5,28 @@
 #
 #
 #
+#: src/main/extractor_metatypes.c:247 src/main/extractor_metatypes.c:249
+#: src/main/extractor_metatypes.c:251 src/main/extractor_metatypes.c:253
+#: src/main/extractor_metatypes.c:255 src/main/extractor_metatypes.c:258
+#: src/main/extractor_metatypes.c:260 src/main/extractor_metatypes.c:262
+#: src/main/extractor_metatypes.c:264 src/main/extractor_metatypes.c:266
+#: src/main/extractor_metatypes.c:269 src/main/extractor_metatypes.c:271
+#: src/main/extractor_metatypes.c:273 src/main/extractor_metatypes.c:275
+#: src/main/extractor_metatypes.c:277 src/main/extractor_metatypes.c:280
+#: src/main/extractor_metatypes.c:282 src/main/extractor_metatypes.c:286
+#: src/main/extractor_metatypes.c:306 src/main/extractor_metatypes.c:308
+#: src/main/extractor_metatypes.c:312 src/main/extractor_metatypes.c:314
+#: src/main/extractor_metatypes.c:316 src/main/extractor_metatypes.c:317
+#: src/main/extractor_metatypes.c:318 src/main/extractor_metatypes.c:319
+#: src/main/extractor_metatypes.c:320 src/main/extractor_metatypes.c:321
+#: src/main/extractor_metatypes.c:322 src/main/extractor_metatypes.c:323
+#: src/main/extractor_metatypes.c:324 src/main/extractor_metatypes.c:325
+#: src/main/extractor_metatypes.c:326
 msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.5.3\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2009-02-15 22:36-0700\n"
+"POT-Creation-Date: 2009-12-16 15:44+0100\n"
 "PO-Revision-Date: 2005-08-16 12:00-0500\n"
 "Last-Translator: Laurentiu Buzdugan <lbuz@rolix.org>\n"
 "Language-Team: Romanian <translation-team-ro@lists.sourceforge.net>\n"
@@ -18,7 +35,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/main/extract.c:49
+#: src/main/extract.c:65
 #, c-format
 msgid ""
 "Usage: %s\n"
@@ -29,7 +46,7 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: src/main/extract.c:52
+#: src/main/extract.c:68
 #, c-format
 msgid ""
 "Arguments mandatory for long options are also mandatory for short options.\n"
@@ -37,15 +54,11 @@ msgstr ""
 "Argumentele obligatorii pentru opþiunile lungi sunt obligatorii ºi pentru "
 "opþiunile scurte.\n"
 
-#: src/main/extract.c:126
-msgid "do not remove any duplicates"
-msgstr "nu îndepãrta nici un duplicat"
-
-#: src/main/extract.c:128
+#: src/main/extract.c:142
 msgid "print output in bibtex format"
 msgstr "afiºeazã ieºirea în format bibtex"
 
-#: src/main/extract.c:130
+#: src/main/extract.c:144
 msgid ""
 "use the generic plaintext extractor for the language with the 2-letter "
 "language code LANG"
@@ -53,706 +66,1385 @@ msgstr ""
 "foloseºte extractorul text-simplu generic pentru limba cu codul de limbã din "
 "2 litere LANG"
 
-#: src/main/extract.c:132
-msgid "remove duplicates only if types match"
-msgstr "îndepãrteazã duplicatele numai dacã tipul este acelaºi"
-
-#: src/main/extract.c:134
-msgid "use the filename as a keyword (loads filename-extractor plugin)"
-msgstr ""
-"foloseºte numele de fiºier ca ºi cuvânt cheie (încarcã plugin nume_fiºier-"
-"extractor)"
-
-#: src/main/extract.c:136
+#: src/main/extract.c:146
 msgid "produce grep-friendly output (all results on one line per file)"
 msgstr ""
 
-#: src/main/extract.c:138
+#: src/main/extract.c:148
 msgid "print this help"
 msgstr "afiºeazã acest mesaj de ajutor"
 
-#: src/main/extract.c:140
+#: src/main/extract.c:150
 msgid "compute hash using the given ALGORITHM (currently sha1 or md5)"
 msgstr ""
 "calculeazã tabela de dispersie (hash) folosind ALGORITM-ul dat (curent sha1 "
 "sau md5)"
 
-#: src/main/extract.c:142
+#: src/main/extract.c:152
+msgid "run plugins in-process (simplifies debugging)"
+msgstr ""
+
+#: src/main/extract.c:154
 msgid "load an extractor plugin named LIBRARY"
 msgstr "încarcã un plugin extractor numit LIBRÃRIE"
 
-#: src/main/extract.c:144
+#: src/main/extract.c:156
 msgid "list all keyword types"
 msgstr "listeazã toate tipurile de cuvinte cheie"
 
-#: src/main/extract.c:146
+#: src/main/extract.c:158
 msgid "do not use the default set of extractor plugins"
 msgstr "nu folosi setul implicit de plugin-uri extractor"
 
-#: src/main/extract.c:148
+#: src/main/extract.c:160
 msgid "print only keywords of the given TYPE (use -L to get a list)"
 msgstr ""
 "afiºeazã numai cuvintele cheie pentru TIP-ul dat (foloseºte -L pentru a "
 "obþine o listã"
 
-#: src/main/extract.c:150
-msgid "remove duplicates even if keyword types do not match"
-msgstr ""
-"îndepãrteazã duplicatele chiar dacã tipurile cuvintelor cheie nu sunt "
-"aceleaºi"
-
-#: src/main/extract.c:152
-msgid "use keyword splitting (loads split-extractor plugin)"
-msgstr ""
-"foloseºte spargere dupã cuvinte cheie (încarcã plugin-ul split-extractor)"
-
-#: src/main/extract.c:154
+#: src/main/extract.c:162
 msgid "print the version number"
 msgstr "afiºeazã numãrul versiunii"
 
-#: src/main/extract.c:156
+#: src/main/extract.c:164
 msgid "be verbose"
 msgstr "fi vorbãreþ"
 
-#: src/main/extract.c:158
+#: src/main/extract.c:166
 msgid "do not print keywords of the given TYPE"
 msgstr "nu afiºa cuvinte cheie de TIP-ul dat"
 
-#: src/main/extract.c:161
+#: src/main/extract.c:169
 msgid "extract [OPTIONS] [FILENAME]*"
 msgstr "extract [OPÞIUNI] [NUME_FIªIER]*"
 
-#: src/main/extract.c:162
+#: src/main/extract.c:170
 msgid "Extract metadata from files."
 msgstr "Extrage metadata din fiºiere."
 
-#: src/main/extract.c:190 src/main/extractor.c:1544
+#: src/main/extract.c:213
 #, c-format
-msgid "%s - (binary)\n"
+msgid "%s - (unknown, %u bytes)\n"
+msgstr ""
+
+#: src/main/extract.c:234
+#, fuzzy, c-format
+msgid "%s - (binary, %u bytes)\n"
 msgstr "%s - (binar)\n"
 
-#: src/main/extract.c:201 src/main/extractor.c:1549
+#: src/main/extract.c:573 src/main/extract.c:586
 #, c-format
-msgid "INVALID TYPE - %s\n"
-msgstr "TIP INVALID - %s\n"
+msgid ""
+"Illegal combination of options, cannot combine multiple styles of printing.\n"
+msgstr ""
 
-#: src/main/extract.c:320 src/main/extractor.c:48
-msgid "title"
-msgstr "titlu"
-
-#: src/main/extract.c:322 src/main/extractor.c:46
-msgid "filename"
-msgstr "nume_fiºier"
-
-#: src/main/extract.c:327 src/main/extractor.c:49
-msgid "author"
-msgstr "autor"
-
-#: src/main/extract.c:331 src/main/extractor.c:51
-msgid "description"
-msgstr "descriere"
-
-#: src/main/extract.c:333 src/main/extractor.c:63
-msgid "keywords"
-msgstr "cuvinte cheie"
-
-#: src/main/extract.c:335 src/main/extractor.c:52
-msgid "comment"
-msgstr "comentariu"
-
-#: src/main/extract.c:339 src/main/extractor.c:53
-msgid "date"
-msgstr "data"
-
-#: src/main/extract.c:341 src/main/extractor.c:75
-msgid "creation date"
-msgstr "data creãrii"
-
-#: src/main/extract.c:369 src/main/extractor.c:54
-msgid "publisher"
-msgstr "publicist"
-
-#: src/main/extract.c:373 src/main/extractor.c:60
-msgid "organization"
-msgstr "organizaþie"
-
-#: src/main/extract.c:377 src/main/extractor.c:62
-msgid "subject"
-msgstr "subiect"
-
-#: src/main/extract.c:381 src/main/extractor.c:79
-msgid "page count"
-msgstr "numãr de pagini"
-
-#: src/main/extract.c:537
+#: src/main/extract.c:616
 #, fuzzy, c-format
 msgid "You must specify an argument for the `%s' option (option ignored).\n"
 msgstr ""
 "Trebuie sã specificaþi un argument pentru opþiunea '%s' (opþiune ignoratã).\n"
 
-#: src/main/extract.c:607
+#: src/main/extract.c:681
 #, c-format
 msgid "Use --help to get a list of options.\n"
 msgstr "Folosiþi --help pentru a obþine o listã de opþiuni.\n"
 
-#: src/main/extract.c:663
+#: src/main/extract.c:738
 #, c-format
 msgid "%% BiBTeX file\n"
 msgstr "%% BiBTeX file\n"
 
-#: src/main/extract.c:683
+#: src/main/extract.c:745
 #, c-format
 msgid "Keywords for file %s:\n"
 msgstr "Cuvinte cheie pentru fiºier %s:\n"
 
-#: src/main/extractor.c:45
-msgid "unknown"
-msgstr "necunoscut"
-
-#: src/main/extractor.c:47
-msgid "mimetype"
-msgstr "mimetype"
-
-#: src/main/extractor.c:50
-msgid "artist"
-msgstr "artist"
-
-#: src/main/extractor.c:55
-msgid "language"
-msgstr "limbã"
-
-#: src/main/extractor.c:56
-msgid "album"
-msgstr "album"
-
-#: src/main/extractor.c:57
-msgid "genre"
-msgstr "gen"
-
-#: src/main/extractor.c:58
-msgid "location"
-msgstr "locaþie"
-
-#: src/main/extractor.c:59
-msgid "version"
-msgstr "versiune"
-
-#: src/main/extractor.c:61 src/plugins/mp3extractor.c:478
-msgid "copyright"
-msgstr "copyright"
-
-#: src/main/extractor.c:64
-msgid "contributor"
-msgstr "contribuitor"
-
-#: src/main/extractor.c:65
-msgid "resource-type"
-msgstr "tip-resursã"
-
-#: src/main/extractor.c:66
-msgid "format"
-msgstr "format"
-
-#: src/main/extractor.c:67
-msgid "resource-identifier"
-msgstr "identificator-resursã"
-
-#: src/main/extractor.c:68
-msgid "source"
-msgstr "sursã"
-
-#: src/main/extractor.c:69
-msgid "relation"
-msgstr "relaþie"
-
-#: src/main/extractor.c:70
-msgid "coverage"
-msgstr "acoperire"
-
-#: src/main/extractor.c:71
-msgid "software"
-msgstr "software"
-
-#: src/main/extractor.c:72
-msgid "disclaimer"
-msgstr "repudiere"
-
-#: src/main/extractor.c:73
-msgid "warning"
-msgstr "avertisment"
-
-#: src/main/extractor.c:74
-msgid "translated"
-msgstr "tradus"
-
-#: src/main/extractor.c:76
-msgid "modification date"
-msgstr "data modificãrii"
-
-#: src/main/extractor.c:77
-msgid "creator"
-msgstr "creator"
-
-#: src/main/extractor.c:78
-msgid "producer"
-msgstr "producãtor"
-
-#: src/main/extractor.c:80
-msgid "page orientation"
-msgstr "orientare paginã"
-
-#: src/main/extractor.c:81
-msgid "paper size"
-msgstr "dimensiune pagina"
-
-#: src/main/extractor.c:82
-msgid "used fonts"
-msgstr "fonturi folosite"
-
-#: src/main/extractor.c:83
-msgid "page order"
-msgstr "ordine pagini"
-
-#: src/main/extractor.c:84
-msgid "created for"
-msgstr "creat pentru"
-
-#: src/main/extractor.c:85
-msgid "magnification"
-msgstr "mãrire"
-
-#: src/main/extractor.c:86
-msgid "release"
-msgstr "release"
-
-#: src/main/extractor.c:87
-msgid "group"
-msgstr "grup"
-
-#: src/main/extractor.c:88
-msgid "size"
-msgstr "mãrime"
-
-#: src/main/extractor.c:89
-msgid "summary"
-msgstr "cuprins"
-
-#: src/main/extractor.c:90
-msgid "packager"
-msgstr "împachetator"
-
-#: src/main/extractor.c:91
-msgid "vendor"
-msgstr "vânzãtor"
-
-#: src/main/extractor.c:92
-msgid "license"
-msgstr "licenþã"
-
-#: src/main/extractor.c:93
-msgid "distribution"
-msgstr "distribuþie"
-
-#: src/main/extractor.c:94
-msgid "build-host"
-msgstr "gazdã-contruit"
-
-#: src/main/extractor.c:95
-msgid "operating system"
-msgstr ""
-
-#: src/main/extractor.c:96
-msgid "dependency"
-msgstr "dependinþe"
-
-#: src/main/extractor.c:97
-msgid "MD4"
-msgstr "MD4"
-
-#: src/main/extractor.c:98
-msgid "MD5"
-msgstr "MD5"
-
-#: src/main/extractor.c:99
-msgid "SHA-0"
-msgstr "SHA-0"
-
-#: src/main/extractor.c:100
-msgid "SHA-1"
-msgstr "SHA-1"
-
-#: src/main/extractor.c:101
-msgid "RipeMD160"
-msgstr "RipeMD160"
-
-#: src/main/extractor.c:102
-msgid "resolution"
-msgstr "rezoluþie"
-
-#: src/main/extractor.c:103
-msgid "category"
-msgstr "categorie"
-
-#: src/main/extractor.c:104
-msgid "book title"
-msgstr "titlu de carte"
-
-#: src/main/extractor.c:105
-msgid "priority"
-msgstr "prioritate"
-
-#: src/main/extractor.c:106
-msgid "conflicts"
-msgstr "conflicte"
-
-#: src/main/extractor.c:107
-msgid "replaces"
-msgstr "înlocuieºte"
-
-#: src/main/extractor.c:108
-msgid "provides"
-msgstr "furnizeazã"
-
-#: src/main/extractor.c:109
-msgid "conductor"
-msgstr "conducãtor"
-
-#: src/main/extractor.c:110
-msgid "interpreter"
-msgstr "interpret(ã)"
-
-#: src/main/extractor.c:111
-msgid "owner"
-msgstr "proprietar"
-
-#: src/main/extractor.c:112
-msgid "lyrics"
-msgstr "versuri"
-
-#: src/main/extractor.c:113
-msgid "media type"
-msgstr "tipul media"
-
-#: src/main/extractor.c:114
-msgid "contact"
-msgstr "contact"
-
-#: src/main/extractor.c:115
-msgid "binary thumbnail data"
-msgstr "data thumbnail binar"
-
-#: src/main/extractor.c:116
-msgid "publication date"
-msgstr "data publicãrii"
-
-#: src/main/extractor.c:117
-msgid "camera make"
-msgstr "producãtor"
-
-#: src/main/extractor.c:118
-msgid "camera model"
-msgstr "model de camerã"
-
-#: src/main/extractor.c:119
-msgid "exposure"
-msgstr "expunere"
-
-#: src/main/extractor.c:120
-msgid "aperture"
-msgstr "aperturã"
-
-#: src/main/extractor.c:121
-msgid "exposure bias"
-msgstr "predilecþie expunere"
-
-#: src/main/extractor.c:122
-msgid "flash"
-msgstr "bliþ"
-
-#: src/main/extractor.c:123
-msgid "flash bias"
-msgstr "predilecþie bliþ"
-
-#: src/main/extractor.c:124
-msgid "focal length"
-msgstr "lungime focalã"
-
-#: src/main/extractor.c:125
-msgid "focal length (35mm equivalent)"
-msgstr "lungime focalã (echivalent 35mm)"
-
-#: src/main/extractor.c:126
-msgid "iso speed"
-msgstr "valoare iso"
-
-#: src/main/extractor.c:127
-msgid "exposure mode"
-msgstr "mod expunere"
-
-#: src/main/extractor.c:128
-msgid "metering mode"
-msgstr "mod de mãsurare"
-
-#: src/main/extractor.c:129
-msgid "macro mode"
-msgstr "mod macro"
-
-#: src/main/extractor.c:130
-msgid "image quality"
-msgstr "calitate imagine"
-
-#: src/main/extractor.c:131
-msgid "white balance"
-msgstr "balanþã alb"
-
-#: src/main/extractor.c:132
-msgid "orientation"
-msgstr "orientare"
-
-#: src/main/extractor.c:133
-#, fuzzy
-msgid "template"
-msgstr "înlocuieºte"
-
-#: src/main/extractor.c:134
-msgid "split"
-msgstr ""
-
-#: src/main/extractor.c:135
-#, fuzzy
-msgid "product version"
-msgstr "producãtor"
-
-#: src/main/extractor.c:136
-msgid "last saved by"
-msgstr ""
-
-#: src/main/extractor.c:137
-msgid "last printed"
-msgstr ""
-
-#: src/main/extractor.c:138
-#, fuzzy
-msgid "word count"
-msgstr "numãr de pagini"
-
-#: src/main/extractor.c:139
-#, fuzzy
-msgid "character count"
-msgstr "numãr de pagini"
-
-#: src/main/extractor.c:140
-msgid "total editing time"
-msgstr ""
-
-#: src/main/extractor.c:141
-msgid "thumbnails"
-msgstr ""
-
-#: src/main/extractor.c:142
-msgid "security"
-msgstr ""
-
-#: src/main/extractor.c:143
-#, fuzzy
-msgid "created by software"
-msgstr "creat pentru"
-
-#: src/main/extractor.c:144
-msgid "modified by software"
-msgstr ""
-
-#: src/main/extractor.c:145
-msgid "revision history"
-msgstr ""
-
-#: src/main/extractor.c:146
-msgid "lower case conversion"
-msgstr ""
-
-#: src/main/extractor.c:147
-msgid "company"
-msgstr ""
-
-#: src/main/extractor.c:148
-#, fuzzy
-msgid "generator"
-msgstr "creator"
-
-#: src/main/extractor.c:149
-msgid "character set"
-msgstr ""
-
-#: src/main/extractor.c:150
-#, fuzzy
-msgid "line count"
-msgstr "numãr de pagini"
-
-#: src/main/extractor.c:151
-#, fuzzy
-msgid "paragraph count"
-msgstr "numãr de pagini"
-
-#: src/main/extractor.c:152
-msgid "editing cycles"
-msgstr ""
-
-#: src/main/extractor.c:153
-#, fuzzy
-msgid "scale"
-msgstr "Musical"
-
-#: src/main/extractor.c:154
-#, fuzzy
-msgid "manager"
-msgstr "limbã"
-
-#: src/main/extractor.c:155
-#, fuzzy
-msgid "director"
-msgstr "Este un director"
-
-#: src/main/extractor.c:156
-#, fuzzy
-msgid "duration"
-msgstr "relaþie"
-
-#: src/main/extractor.c:157
-#, fuzzy
-msgid "information"
-msgstr "format"
-
-#: src/main/extractor.c:158
-#, fuzzy
-msgid "full name"
-msgstr "nume_fiºier"
-
-#: src/main/extractor.c:159
-#, fuzzy
-msgid "chapter"
-msgstr "categorie"
-
-#: src/main/extractor.c:160
-msgid "year"
-msgstr ""
-
-#: src/main/extractor.c:161
-msgid "link"
-msgstr ""
-
-#: src/main/extractor.c:162
-#, fuzzy
-msgid "music CD identifier"
-msgstr "identificator-resursã"
-
-#: src/main/extractor.c:163
-#, fuzzy
-msgid "play counter"
-msgstr "numãr de pagini"
-
-#: src/main/extractor.c:164
-msgid "popularity meter"
-msgstr ""
-
-#: src/main/extractor.c:165
-msgid "content type"
-msgstr ""
-
-#: src/main/extractor.c:166
-msgid "encoded by"
-msgstr ""
-
-#: src/main/extractor.c:167
-#, fuzzy
-msgid "time"
-msgstr "Anime"
-
-#: src/main/extractor.c:168
-msgid "musician credits list"
-msgstr ""
-
-#: src/main/extractor.c:169
-#, fuzzy
-msgid "mood"
-msgstr "mono"
-
-#: src/main/extractor.c:170
-#, fuzzy
-msgid "format version"
-msgstr "versiune"
-
-#: src/main/extractor.c:171
-msgid "television system"
-msgstr ""
-
-#: src/main/extractor.c:172
-#, fuzzy
-msgid "song count"
-msgstr "numãr de pagini"
-
-#: src/main/extractor.c:173
-msgid "starting song"
-msgstr ""
-
-#: src/main/extractor.c:174
-#, fuzzy
-msgid "hardware dependency"
-msgstr "dependinþe"
-
-#: src/main/extractor.c:175
-#, fuzzy
-msgid "ripper"
-msgstr "Trailer"
-
-#: src/main/extractor.c:176
-#, fuzzy
-msgid "filesize"
-msgstr "mãrime"
-
-#: src/main/extractor.c:177
-msgid "track number"
-msgstr ""
-
-#: src/main/extractor.c:178
-msgid "international standard recording code"
-msgstr ""
-
-#: src/main/extractor.c:179
-#, fuzzy
-msgid "disc number"
-msgstr "Numãr de fiºier incorect"
-
-#: src/main/extractor.c:180
-msgid "preferred display style (GNUnet)"
-msgstr ""
-
-#: src/main/extractor.c:181
-msgid "GNUnet URI of ECBC data"
-msgstr ""
-
-#: src/main/extractor.c:604
+#: src/main/extractor.c:1725
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "iniþializare mecanismului de plugin a eºuat: %s!\n"
 
-#: src/main/extractor.c:768
-#, fuzzy, c-format
-msgid ""
-"Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
-"failed also.  Errors are: `%s' and `%s'.\n"
+#: src/main/extractor_metatypes.c:37
+msgid "reserved"
 msgstr ""
-"Rezolvarea simbolului '%s' în biblioteca '%s' a eºuat, aºa cã am încercat '%"
-"s', dar ºi acesta a eºuat.  Erorile sunt: '%s' ºi '%s'.\n"
 
-#: src/main/extractor.c:805
-#, fuzzy, c-format
-msgid "Loading `%s' plugin failed: %s\n"
-msgstr "Încãrcarea plugin-ului '%s' a eºuat: %s\n"
+#: src/main/extractor_metatypes.c:38
+msgid "reserved value, do not use"
+msgstr ""
 
-#: src/main/extractor.c:1017
-#, fuzzy, c-format
-msgid "Unloading plugin `%s' failed!\n"
-msgstr "Descãrcarea plugin-ului '%s' a eºuat!\n"
+#: src/main/extractor_metatypes.c:39
+msgid "mimetype"
+msgstr "mimetype"
+
+#: src/main/extractor_metatypes.c:40
+#, fuzzy
+msgid "mime type"
+msgstr "mimetype"
+
+#: src/main/extractor_metatypes.c:41
+#, fuzzy
+msgid "embedded filename"
+msgstr "nume_fiºier"
+
+#: src/main/extractor_metatypes.c:42
+msgid "filename that was embedded (not necessarily the current filename)"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:43
+msgid "comment"
+msgstr "comentariu"
+
+#: src/main/extractor_metatypes.c:44
+msgid "comment about the content"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:45
+msgid "title"
+msgstr "titlu"
+
+#: src/main/extractor_metatypes.c:46
+msgid "title of the work"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:48 src/main/extractor_metatypes.c:378
+msgid "book title"
+msgstr "titlu de carte"
+
+#: src/main/extractor_metatypes.c:49
+msgid "title of the book containing the work"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:50
+#, fuzzy
+msgid "book edition"
+msgstr "titlu de carte"
+
+#: src/main/extractor_metatypes.c:51
+msgid "edition of the book (or book containing the work)"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:52
+#, fuzzy
+msgid "book chapter"
+msgstr "categorie"
+
+#: src/main/extractor_metatypes.c:53
+#, fuzzy
+msgid "chapter number"
+msgstr "categorie"
+
+#: src/main/extractor_metatypes.c:54
+#, fuzzy
+msgid "journal name"
+msgstr "nume_fiºier"
+
+#: src/main/extractor_metatypes.c:55
+msgid "journal or magazine the work was published in"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:56
+msgid "journal volume"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:57
+msgid "volume of a journal or multi-volume book"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:59
+msgid "journal number"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:60
+msgid "number of a journal, magazine or tech-report"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:61 src/main/extractor_metatypes.c:358
+msgid "page count"
+msgstr "numãr de pagini"
+
+#: src/main/extractor_metatypes.c:62
+msgid "total number of pages of the work"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:63
+#, fuzzy
+msgid "page range"
+msgstr "ordine pagini"
+
+#: src/main/extractor_metatypes.c:64
+msgid "page numbers of the publication in the respective journal or book"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:65
+#, fuzzy
+msgid "author name"
+msgstr "autor"
+
+#: src/main/extractor_metatypes.c:66
+msgid "name of the author(s)"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:67
+#, fuzzy
+msgid "author email"
+msgstr "autor"
+
+#: src/main/extractor_metatypes.c:68
+msgid "e-mail of the author(s)"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:70
+#, fuzzy
+msgid "author institution"
+msgstr "orientare"
+
+#: src/main/extractor_metatypes.c:71
+msgid "institution the author worked for"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:72 src/main/extractor_metatypes.c:333
+msgid "publisher"
+msgstr "publicist"
+
+#: src/main/extractor_metatypes.c:73
+#, fuzzy
+msgid "name of the publisher"
+msgstr "publicist"
+
+#: src/main/extractor_metatypes.c:74
+#, fuzzy
+msgid "publisher's address"
+msgstr "publicist"
+
+#: src/main/extractor_metatypes.c:75
+msgid "Address of the publisher (often only the city)"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:76
+msgid "publishing institution"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:77
+msgid ""
+"institution that was involved in the publishing, but not necessarily the "
+"publisher"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:78
+#, fuzzy
+msgid "publication series"
+msgstr "data publicãrii"
+
+#: src/main/extractor_metatypes.c:79
+msgid "series of books the book was published in"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:81
+#, fuzzy
+msgid "publication type"
+msgstr "data publicãrii"
+
+#: src/main/extractor_metatypes.c:82
+msgid "type of the tech-report"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:83
+#, fuzzy
+msgid "publication year"
+msgstr "data publicãrii"
+
+#: src/main/extractor_metatypes.c:84
+msgid "year of publication (or, if unpublished, the year of creation)"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:85
+#, fuzzy
+msgid "publication month"
+msgstr "data publicãrii"
+
+#: src/main/extractor_metatypes.c:86
+msgid "month of publication (or, if unpublished, the month of creation)"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:87
+#, fuzzy
+msgid "publication day"
+msgstr "data publicãrii"
+
+#: src/main/extractor_metatypes.c:88
+msgid ""
+"day of publication (or, if unpublished, the day of creation), relative to "
+"the given month"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:89 src/main/extractor_metatypes.c:390
+msgid "publication date"
+msgstr "data publicãrii"
+
+#: src/main/extractor_metatypes.c:90
+msgid "date of publication (or, if unpublished, the date of creation)"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:92
+msgid "bibtex eprint"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:93
+msgid "specification of an electronic publication"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:94
+msgid "bibtex entry type"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:95
+msgid "type of the publication for bibTeX bibliographies"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:96 src/main/extractor_metatypes.c:334
+msgid "language"
+msgstr "limbã"
+
+#: src/main/extractor_metatypes.c:97
+msgid "language the work uses"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:98
+#, fuzzy
+msgid "creation time"
+msgstr "data creãrii"
+
+#: src/main/extractor_metatypes.c:99
+msgid "time and date of creation"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:100
+msgid "URL"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:101
+msgid "universal resource location (where the work is made available)"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:103
+msgid "URI"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:104
+#, fuzzy
+msgid "universal resource identifier"
+msgstr "identificator-resursã"
+
+#: src/main/extractor_metatypes.c:105
+msgid "international standard recording code"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:106
+msgid "ISRC number identifying the work"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:107
+msgid "MD4"
+msgstr "MD4"
+
+#: src/main/extractor_metatypes.c:108
+msgid "MD4 hash"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:109
+msgid "MD5"
+msgstr "MD5"
+
+#: src/main/extractor_metatypes.c:110
+msgid "MD5 hash"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:111
+msgid "SHA-0"
+msgstr "SHA-0"
+
+#: src/main/extractor_metatypes.c:112
+#, fuzzy
+msgid "SHA-0 hash"
+msgstr "SHA-0"
+
+#: src/main/extractor_metatypes.c:114
+msgid "SHA-1"
+msgstr "SHA-1"
+
+#: src/main/extractor_metatypes.c:115
+#, fuzzy
+msgid "SHA-1 hash"
+msgstr "SHA-1"
+
+#: src/main/extractor_metatypes.c:116
+msgid "RipeMD160"
+msgstr "RipeMD160"
+
+#: src/main/extractor_metatypes.c:117
+#, fuzzy
+msgid "RipeMD150 hash"
+msgstr "RipeMD160"
+
+#: src/main/extractor_metatypes.c:118 src/main/extractor_metatypes.c:119
+msgid "GPS latitude ref"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:120 src/main/extractor_metatypes.c:121
+msgid "GPS latitude"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:122 src/main/extractor_metatypes.c:123
+msgid "GPS longitude ref"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:125 src/main/extractor_metatypes.c:126
+msgid "GPS longitude"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:127
+msgid "city"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:128
+msgid "name of the city where the document originated"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:129
+#, fuzzy
+msgid "sublocation"
+msgstr "locaþie"
+
+#: src/main/extractor_metatypes.c:130
+msgid "more specific location of the geographic origin"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:131
+#, fuzzy
+msgid "country"
+msgstr "Þarã"
+
+#: src/main/extractor_metatypes.c:132
+msgid "name of the country where the document originated"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:133
+#, fuzzy
+msgid "country code"
+msgstr "Þarã"
+
+#: src/main/extractor_metatypes.c:134
+msgid "ISO 2-letter country code for the country of origin"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:136
+msgid "unknown"
+msgstr "necunoscut"
+
+#: src/main/extractor_metatypes.c:137
+msgid "specifics are not known"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:138 src/main/extractor_metatypes.c:139
+#: src/main/extractor_metatypes.c:331
+msgid "description"
+msgstr "descriere"
+
+#: src/main/extractor_metatypes.c:140 src/main/extractor_metatypes.c:340
+msgid "copyright"
+msgstr "copyright"
+
+#: src/main/extractor_metatypes.c:141
+#, fuzzy
+msgid "copyright information"
+msgstr "format"
+
+#: src/main/extractor_metatypes.c:142
+#, fuzzy
+msgid "rights"
+msgstr "copyright"
+
+#: src/main/extractor_metatypes.c:143
+#, fuzzy
+msgid "information about rights"
+msgstr "format"
+
+#: src/main/extractor_metatypes.c:144 src/main/extractor_metatypes.c:145
+#: src/main/extractor_metatypes.c:342
+msgid "keywords"
+msgstr "cuvinte cheie"
+
+#: src/main/extractor_metatypes.c:147 src/main/extractor_metatypes.c:148
+msgid "abstract"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:149 src/main/extractor_metatypes.c:150
+#: src/main/extractor_metatypes.c:368
+msgid "summary"
+msgstr "cuprins"
+
+#: src/main/extractor_metatypes.c:151 src/main/extractor_metatypes.c:341
+msgid "subject"
+msgstr "subiect"
+
+#: src/main/extractor_metatypes.c:152
+#, fuzzy
+msgid "subject matter"
+msgstr "subiect"
+
+#: src/main/extractor_metatypes.c:153 src/main/extractor_metatypes.c:186
+#: src/main/extractor_metatypes.c:356
+msgid "creator"
+msgstr "creator"
+
+#: src/main/extractor_metatypes.c:154
+msgid "name of the person who created the document"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:155 src/main/extractor_metatypes.c:345
+msgid "format"
+msgstr "format"
+
+#: src/main/extractor_metatypes.c:156
+msgid "name of the document format"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:158 src/main/extractor_metatypes.c:443
+#, fuzzy
+msgid "format version"
+msgstr "versiune"
+
+#: src/main/extractor_metatypes.c:159
+msgid "version of the document format"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:160 src/main/extractor_metatypes.c:417
+#, fuzzy
+msgid "created by software"
+msgstr "creat pentru"
+
+#: src/main/extractor_metatypes.c:161
+msgid "name of the software that created the document"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:162
+#, fuzzy
+msgid "unknown date"
+msgstr "necunoscut"
+
+#: src/main/extractor_metatypes.c:163
+msgid ""
+"ambiguous date (could specify creation time, modification time or access "
+"time)"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:164 src/main/extractor_metatypes.c:354
+msgid "creation date"
+msgstr "data creãrii"
+
+#: src/main/extractor_metatypes.c:165
+msgid "date the document was created"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:166 src/main/extractor_metatypes.c:355
+msgid "modification date"
+msgstr "data modificãrii"
+
+#: src/main/extractor_metatypes.c:167
+msgid "date the document was modified"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:169 src/main/extractor_metatypes.c:411
+msgid "last printed"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:170
+msgid "date the document was last printed"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:171 src/main/extractor_metatypes.c:410
+msgid "last saved by"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:172
+msgid "name of the user who saved the document last"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:173 src/main/extractor_metatypes.c:414
+msgid "total editing time"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:174
+msgid "time spent editing the document"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:175 src/main/extractor_metatypes.c:425
+msgid "editing cycles"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:176
+msgid "number of editing cycles"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:177 src/main/extractor_metatypes.c:418
+msgid "modified by software"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:178
+msgid "name of software making modifications"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:180 src/main/extractor_metatypes.c:419
+msgid "revision history"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:181
+msgid "information about the revision history"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:182
+#, fuzzy
+msgid "embedded file size"
+msgstr "mãrime"
+
+#: src/main/extractor_metatypes.c:183
+msgid "size of the contents of the container as embedded in the file"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:184
+#, fuzzy
+msgid "file type"
+msgstr "mimetype"
+
+#: src/main/extractor_metatypes.c:185
+msgid "standard Macintosh Finder file type information"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:187
+msgid "standard Macintosh Finder file creator information"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:188
+#, fuzzy
+msgid "package name"
+msgstr "împachetator"
+
+#: src/main/extractor_metatypes.c:189
+msgid "unique identifier for the package"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:191
+#, fuzzy
+msgid "package version"
+msgstr "împachetator"
+
+#: src/main/extractor_metatypes.c:192
+msgid "version of the software and its package"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:193
+#, fuzzy
+msgid "section"
+msgstr "descriere"
+
+#: src/main/extractor_metatypes.c:194
+msgid "category the software package belongs to"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:195
+#, fuzzy
+msgid "upload priority"
+msgstr "prioritate"
+
+#: src/main/extractor_metatypes.c:196
+msgid "priority for promoting the release to production"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:197
+#, fuzzy
+msgid "dependencies"
+msgstr "dependinþe"
+
+#: src/main/extractor_metatypes.c:198
+msgid "packages this package depends upon"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:199
+#, fuzzy
+msgid "conflicting packages"
+msgstr "conflicte"
+
+#: src/main/extractor_metatypes.c:200
+msgid "packages that cannot be installed with this package"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:202
+#, fuzzy
+msgid "replaced packages"
+msgstr "înlocuieºte"
+
+#: src/main/extractor_metatypes.c:203
+msgid "packages made obsolete by this package"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:204 src/main/extractor_metatypes.c:382
+msgid "provides"
+msgstr "furnizeazã"
+
+#: src/main/extractor_metatypes.c:205
+msgid "functionality provided by this package"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:206
+#, fuzzy
+msgid "recommendations"
+msgstr "comentariu"
+
+#: src/main/extractor_metatypes.c:207
+msgid "packages recommended for installation in conjunction with this package"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:208
+msgid "suggestions"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:209
+msgid "packages suggested for installation in conjunction with this package"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:210
+#, fuzzy
+msgid "maintainer"
+msgstr "limbã"
+
+#: src/main/extractor_metatypes.c:211
+msgid "name of the maintainer"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:213
+#, fuzzy
+msgid "installed size"
+msgstr "mãrime"
+
+#: src/main/extractor_metatypes.c:214
+msgid "space consumption after installation"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:215 src/main/extractor_metatypes.c:295
+#: src/main/extractor_metatypes.c:347
+msgid "source"
+msgstr "sursã"
+
+#: src/main/extractor_metatypes.c:216
+msgid "original source code"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:217
+msgid "is essential"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:218
+msgid "package is marked as essential"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:219
+msgid "target architecture"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:220
+msgid "hardware architecture the package can be used for"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:221
+#, fuzzy
+msgid "pre-dependency"
+msgstr "dependinþe"
+
+#: src/main/extractor_metatypes.c:222
+msgid "dependency that must be satisfied before installation"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:224 src/main/extractor_metatypes.c:371
+msgid "license"
+msgstr "licenþã"
+
+#: src/main/extractor_metatypes.c:225
+msgid "applicable license"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:226 src/main/extractor_metatypes.c:372
+msgid "distribution"
+msgstr "distribuþie"
+
+#: src/main/extractor_metatypes.c:227
+msgid "distribution the package is a part of"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:228
+#, fuzzy
+msgid "build host"
+msgstr "gazdã-contruit"
+
+#: src/main/extractor_metatypes.c:229
+msgid "machine the package was build on"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:230 src/main/extractor_metatypes.c:370
+msgid "vendor"
+msgstr "vânzãtor"
+
+#: src/main/extractor_metatypes.c:231
+msgid "name of the software vendor"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:232
+msgid "target operating system"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:233
+msgid "operating system for which this package was made"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:235
+#, fuzzy
+msgid "software version"
+msgstr "software"
+
+#: src/main/extractor_metatypes.c:236
+msgid "version of the software contained in the file"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:237
+msgid "target platform"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:238
+msgid ""
+"name of the architecture, operating system and distribution this package is "
+"for"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:239
+#, fuzzy
+msgid "resource type"
+msgstr "tip-resursã"
+
+#: src/main/extractor_metatypes.c:240
+msgid ""
+"categorization of the nature of the resource that is more specific than the "
+"file format"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:241
+msgid "library search path"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:242
+msgid ""
+"path in the file system to be considered when looking for required libraries"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:243
+#, fuzzy
+msgid "library dependency"
+msgstr "dependinþe"
+
+#: src/main/extractor_metatypes.c:244
+msgid "name of a library that this file depends on"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:246 src/main/extractor_metatypes.c:391
+msgid "camera make"
+msgstr "producãtor"
+
+#: src/main/extractor_metatypes.c:248 src/main/extractor_metatypes.c:392
+msgid "camera model"
+msgstr "model de camerã"
+
+#: src/main/extractor_metatypes.c:250 src/main/extractor_metatypes.c:393
+msgid "exposure"
+msgstr "expunere"
+
+#: src/main/extractor_metatypes.c:252 src/main/extractor_metatypes.c:394
+msgid "aperture"
+msgstr "aperturã"
+
+#: src/main/extractor_metatypes.c:254 src/main/extractor_metatypes.c:395
+msgid "exposure bias"
+msgstr "predilecþie expunere"
+
+#: src/main/extractor_metatypes.c:257 src/main/extractor_metatypes.c:396
+msgid "flash"
+msgstr "bliþ"
+
+#: src/main/extractor_metatypes.c:259 src/main/extractor_metatypes.c:397
+msgid "flash bias"
+msgstr "predilecþie bliþ"
+
+#: src/main/extractor_metatypes.c:261 src/main/extractor_metatypes.c:398
+msgid "focal length"
+msgstr "lungime focalã"
+
+#: src/main/extractor_metatypes.c:263
+#, fuzzy
+msgid "focal length 35mm"
+msgstr "lungime focalã"
+
+#: src/main/extractor_metatypes.c:265 src/main/extractor_metatypes.c:400
+msgid "iso speed"
+msgstr "valoare iso"
+
+#: src/main/extractor_metatypes.c:268 src/main/extractor_metatypes.c:401
+msgid "exposure mode"
+msgstr "mod expunere"
+
+#: src/main/extractor_metatypes.c:270 src/main/extractor_metatypes.c:402
+msgid "metering mode"
+msgstr "mod de mãsurare"
+
+#: src/main/extractor_metatypes.c:272 src/main/extractor_metatypes.c:403
+msgid "macro mode"
+msgstr "mod macro"
+
+#: src/main/extractor_metatypes.c:274 src/main/extractor_metatypes.c:404
+msgid "image quality"
+msgstr "calitate imagine"
+
+#: src/main/extractor_metatypes.c:276 src/main/extractor_metatypes.c:405
+msgid "white balance"
+msgstr "balanþã alb"
+
+#: src/main/extractor_metatypes.c:279 src/main/extractor_metatypes.c:406
+msgid "orientation"
+msgstr "orientare"
+
+#: src/main/extractor_metatypes.c:281 src/main/extractor_metatypes.c:364
+msgid "magnification"
+msgstr "mãrire"
+
+#: src/main/extractor_metatypes.c:283
+#, fuzzy
+msgid "image dimensions"
+msgstr "orientare paginã"
+
+#: src/main/extractor_metatypes.c:284
+msgid "size of the image in pixels (width times height)"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:285
+#, fuzzy
+msgid "produced by software"
+msgstr "creat pentru"
+
+#: src/main/extractor_metatypes.c:290
+#, fuzzy
+msgid "thumbnail"
+msgstr "data thumbnail binar"
+
+#: src/main/extractor_metatypes.c:291
+msgid "smaller version of the image for previewing"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:293
+#, fuzzy
+msgid "image resolution"
+msgstr "rezoluþie"
+
+#: src/main/extractor_metatypes.c:294
+#, fuzzy
+msgid "resolution in dots per inch"
+msgstr "%ux%u puncte pe inci (dpi)"
+
+#: src/main/extractor_metatypes.c:296
+msgid "Originating entity"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:297 src/main/extractor_metatypes.c:422
+msgid "character set"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:298
+#, fuzzy
+msgid "character encoding used"
+msgstr "numãr de pagini"
+
+#: src/main/extractor_metatypes.c:299 src/main/extractor_metatypes.c:423
+#, fuzzy
+msgid "line count"
+msgstr "numãr de pagini"
+
+#: src/main/extractor_metatypes.c:300
+#, fuzzy
+msgid "number of lines"
+msgstr "Numãr legãturi în afara domeniului"
+
+#: src/main/extractor_metatypes.c:301 src/main/extractor_metatypes.c:424
+#, fuzzy
+msgid "paragraph count"
+msgstr "numãr de pagini"
+
+#: src/main/extractor_metatypes.c:302
+msgid "number o paragraphs"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:303 src/main/extractor_metatypes.c:412
+#, fuzzy
+msgid "word count"
+msgstr "numãr de pagini"
+
+#: src/main/extractor_metatypes.c:304
+msgid "number of words"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:305 src/main/extractor_metatypes.c:359
+msgid "page orientation"
+msgstr "orientare paginã"
+
+#: src/main/extractor_metatypes.c:307 src/main/extractor_metatypes.c:360
+msgid "paper size"
+msgstr "dimensiune pagina"
+
+#: src/main/extractor_metatypes.c:309 src/main/extractor_metatypes.c:407
+#, fuzzy
+msgid "template"
+msgstr "înlocuieºte"
+
+#: src/main/extractor_metatypes.c:310
+msgid "template the document uses or is based on"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:311 src/main/extractor_metatypes.c:420
+msgid "company"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:313 src/main/extractor_metatypes.c:427
+#, fuzzy
+msgid "manager"
+msgstr "limbã"
+
+#: src/main/extractor_metatypes.c:315
+#, fuzzy
+msgid "revision number"
+msgstr "afiºeazã numãrul versiunii"
+
+#: src/main/extractor_metatypes.c:329
+msgid "author"
+msgstr "autor"
+
+#: src/main/extractor_metatypes.c:330
+msgid "artist"
+msgstr "artist"
+
+#: src/main/extractor_metatypes.c:332
+msgid "date"
+msgstr "data"
+
+#: src/main/extractor_metatypes.c:335
+msgid "album"
+msgstr "album"
+
+#: src/main/extractor_metatypes.c:336
+msgid "genre"
+msgstr "gen"
+
+#: src/main/extractor_metatypes.c:337
+msgid "location"
+msgstr "locaþie"
+
+#: src/main/extractor_metatypes.c:338
+msgid "version"
+msgstr "versiune"
+
+#: src/main/extractor_metatypes.c:339
+msgid "organization"
+msgstr "organizaþie"
+
+#: src/main/extractor_metatypes.c:343
+msgid "contributor"
+msgstr "contribuitor"
+
+#: src/main/extractor_metatypes.c:344
+msgid "resource-type"
+msgstr "tip-resursã"
+
+#: src/main/extractor_metatypes.c:346
+msgid "resource-identifier"
+msgstr "identificator-resursã"
+
+#: src/main/extractor_metatypes.c:348
+msgid "relation"
+msgstr "relaþie"
+
+#: src/main/extractor_metatypes.c:349
+msgid "coverage"
+msgstr "acoperire"
+
+#: src/main/extractor_metatypes.c:350
+msgid "software"
+msgstr "software"
+
+#: src/main/extractor_metatypes.c:351
+msgid "disclaimer"
+msgstr "repudiere"
+
+#: src/main/extractor_metatypes.c:352
+msgid "warning"
+msgstr "avertisment"
+
+#: src/main/extractor_metatypes.c:353
+msgid "translated"
+msgstr "tradus"
+
+#: src/main/extractor_metatypes.c:357
+msgid "producer"
+msgstr "producãtor"
+
+#: src/main/extractor_metatypes.c:361
+msgid "used fonts"
+msgstr "fonturi folosite"
+
+#: src/main/extractor_metatypes.c:362
+msgid "page order"
+msgstr "ordine pagini"
+
+#: src/main/extractor_metatypes.c:363
+msgid "created for"
+msgstr "creat pentru"
+
+#: src/main/extractor_metatypes.c:365
+msgid "release"
+msgstr "release"
+
+#: src/main/extractor_metatypes.c:366
+msgid "group"
+msgstr "grup"
+
+#: src/main/extractor_metatypes.c:367
+msgid "size"
+msgstr "mãrime"
+
+#: src/main/extractor_metatypes.c:369
+msgid "packager"
+msgstr "împachetator"
+
+#: src/main/extractor_metatypes.c:373
+msgid "build-host"
+msgstr "gazdã-contruit"
+
+#: src/main/extractor_metatypes.c:374
+msgid "operating system"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:375
+msgid "dependency"
+msgstr "dependinþe"
+
+#: src/main/extractor_metatypes.c:376
+msgid "resolution"
+msgstr "rezoluþie"
+
+#: src/main/extractor_metatypes.c:377
+msgid "category"
+msgstr "categorie"
+
+#: src/main/extractor_metatypes.c:379
+msgid "priority"
+msgstr "prioritate"
+
+#: src/main/extractor_metatypes.c:380
+msgid "conflicts"
+msgstr "conflicte"
+
+#: src/main/extractor_metatypes.c:381
+msgid "replaces"
+msgstr "înlocuieºte"
+
+#: src/main/extractor_metatypes.c:383
+msgid "conductor"
+msgstr "conducãtor"
+
+#: src/main/extractor_metatypes.c:384
+msgid "interpreter"
+msgstr "interpret(ã)"
+
+#: src/main/extractor_metatypes.c:385
+msgid "owner"
+msgstr "proprietar"
+
+#: src/main/extractor_metatypes.c:386
+msgid "lyrics"
+msgstr "versuri"
+
+#: src/main/extractor_metatypes.c:387
+msgid "media type"
+msgstr "tipul media"
+
+#: src/main/extractor_metatypes.c:388
+msgid "contact"
+msgstr "contact"
+
+#: src/main/extractor_metatypes.c:389
+msgid "binary thumbnail data"
+msgstr "data thumbnail binar"
+
+#: src/main/extractor_metatypes.c:399
+msgid "focal length (35mm equivalent)"
+msgstr "lungime focalã (echivalent 35mm)"
+
+#: src/main/extractor_metatypes.c:408
+msgid "split"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:409
+#, fuzzy
+msgid "product version"
+msgstr "producãtor"
+
+#: src/main/extractor_metatypes.c:413
+#, fuzzy
+msgid "character count"
+msgstr "numãr de pagini"
+
+#: src/main/extractor_metatypes.c:415
+msgid "thumbnails"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:416
+msgid "security"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:421
+#, fuzzy
+msgid "generator"
+msgstr "creator"
+
+#: src/main/extractor_metatypes.c:426
+#, fuzzy
+msgid "scale"
+msgstr "Musical"
+
+#: src/main/extractor_metatypes.c:428
+#, fuzzy
+msgid "director"
+msgstr "Este un director"
+
+#: src/main/extractor_metatypes.c:429
+#, fuzzy
+msgid "duration"
+msgstr "relaþie"
+
+#: src/main/extractor_metatypes.c:430
+#, fuzzy
+msgid "information"
+msgstr "format"
+
+#: src/main/extractor_metatypes.c:431
+#, fuzzy
+msgid "full name"
+msgstr "nume_fiºier"
+
+#: src/main/extractor_metatypes.c:432
+#, fuzzy
+msgid "chapter"
+msgstr "categorie"
+
+#: src/main/extractor_metatypes.c:433
+msgid "year"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:434
+msgid "link"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:435
+#, fuzzy
+msgid "music CD identifier"
+msgstr "identificator-resursã"
+
+#: src/main/extractor_metatypes.c:436
+#, fuzzy
+msgid "play counter"
+msgstr "numãr de pagini"
+
+#: src/main/extractor_metatypes.c:437
+msgid "popularity meter"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:438
+msgid "content type"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:439
+msgid "encoded by"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:440
+#, fuzzy
+msgid "time"
+msgstr "Anime"
+
+#: src/main/extractor_metatypes.c:441
+msgid "musician credits list"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:442
+#, fuzzy
+msgid "mood"
+msgstr "mono"
+
+#: src/main/extractor_metatypes.c:444
+msgid "television system"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:445
+#, fuzzy
+msgid "song count"
+msgstr "numãr de pagini"
+
+#: src/main/extractor_metatypes.c:446
+msgid "starting song"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:447
+#, fuzzy
+msgid "hardware dependency"
+msgstr "dependinþe"
+
+#: src/main/extractor_metatypes.c:448
+#, fuzzy
+msgid "ripper"
+msgstr "Trailer"
+
+#: src/main/extractor_metatypes.c:449
+#, fuzzy
+msgid "filesize"
+msgstr "mãrime"
+
+#: src/main/extractor_metatypes.c:450
+msgid "track number"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:451
+#, fuzzy
+msgid "disc number"
+msgstr "Numãr de fiºier incorect"
+
+#: src/main/extractor_metatypes.c:452
+msgid "preferred display style (GNUnet)"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:453
+msgid "GNUnet URI of ECBC data"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:454
+msgid "Complete file data (for non-binary files only)"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:455
+#, fuzzy
+msgid "rating"
+msgstr "Latin"
 
 #: src/main/getopt.c:684
 #, c-format
@@ -809,843 +1501,651 @@ msgstr "%s: opþiunea `-W %s' este ambiguã\n"
 msgid "%s: option `-W %s' doesn't allow an argument\n"
 msgstr "%s: opþiunea `-W %s' nu permite un argument\n"
 
-#: src/plugins/filenameextractor.c:62
-msgid "GB"
-msgstr ""
-
-#: src/plugins/filenameextractor.c:64
-msgid "MB"
-msgstr ""
-
-#: src/plugins/filenameextractor.c:66
-msgid "KB"
-msgstr ""
-
-#: src/plugins/filenameextractor.c:68
-#, fuzzy
-msgid "Bytes"
-msgstr "Blues"
-
-#: src/plugins/jpegextractor.c:188
-#, c-format
-msgid "%ux%u dots per inch"
-msgstr "%ux%u puncte pe inci (dpi)"
-
-#: src/plugins/jpegextractor.c:196
-#, c-format
-msgid "%ux%u dots per cm"
-msgstr "%ux%u puncte pe cm"
-
-#: src/plugins/jpegextractor.c:204
-#, c-format
-msgid "%ux%u dots per inch?"
-msgstr "%ux%u puncte pe inci?"
-
-#: src/plugins/manextractor.c:150
+#: src/plugins/man_extractor.c:156
 msgid "Commands"
 msgstr "Comenzi"
 
-#: src/plugins/manextractor.c:154
+#: src/plugins/man_extractor.c:160
 msgid "System calls"
 msgstr "Apeluri sistem"
 
-#: src/plugins/manextractor.c:158
+#: src/plugins/man_extractor.c:164
 msgid "Library calls"
 msgstr "Apeluri de bibliotecã"
 
-#: src/plugins/manextractor.c:162
+#: src/plugins/man_extractor.c:168
 msgid "Special files"
 msgstr "Fiºiere speciale"
 
-#: src/plugins/manextractor.c:166
+#: src/plugins/man_extractor.c:172
 msgid "File formats and conventions"
 msgstr "Formate de fiºiere ºi convenþii"
 
-#: src/plugins/manextractor.c:171
+#: src/plugins/man_extractor.c:176
 msgid "Games"
 msgstr "Jocuri"
 
-#: src/plugins/manextractor.c:175
+#: src/plugins/man_extractor.c:180
 msgid "Conventions and miscellaneous"
 msgstr "Convenþii ºi diverse"
 
-#: src/plugins/manextractor.c:180
+#: src/plugins/man_extractor.c:184
 msgid "System management commands"
 msgstr "Comenzi pentru managementul sistemului"
 
-#: src/plugins/manextractor.c:185
+#: src/plugins/man_extractor.c:188
 msgid "Kernel routines"
 msgstr "Proceduri kernel"
 
-#: src/plugins/mp3extractor.c:51 src/plugins/qtextractor.c:30
-msgid "Blues"
-msgstr "Blues"
-
-#: src/plugins/mp3extractor.c:52 src/plugins/qtextractor.c:31
-msgid "Classic Rock"
-msgstr "Rock clasic"
-
-#: src/plugins/mp3extractor.c:53 src/plugins/qtextractor.c:32
-msgid "Country"
-msgstr "Þarã"
-
-#: src/plugins/mp3extractor.c:54 src/plugins/qtextractor.c:33
-msgid "Dance"
-msgstr "Dance"
-
-#: src/plugins/mp3extractor.c:55 src/plugins/qtextractor.c:34
-msgid "Disco"
-msgstr "Disco"
-
-#: src/plugins/mp3extractor.c:56 src/plugins/qtextractor.c:35
-msgid "Funk"
-msgstr "Funk"
-
-#: src/plugins/mp3extractor.c:57 src/plugins/qtextractor.c:36
-msgid "Grunge"
-msgstr "Grunge"
-
-#: src/plugins/mp3extractor.c:58 src/plugins/qtextractor.c:37
-msgid "Hip-Hop"
-msgstr "Hip-Hop"
-
-#: src/plugins/mp3extractor.c:59 src/plugins/qtextractor.c:38
-msgid "Jazz"
-msgstr "Jazz"
-
-#: src/plugins/mp3extractor.c:60 src/plugins/qtextractor.c:39
-msgid "Metal"
-msgstr "Metal"
-
-#: src/plugins/mp3extractor.c:61 src/plugins/qtextractor.c:40
-msgid "New Age"
-msgstr "New Age"
-
-#: src/plugins/mp3extractor.c:62 src/plugins/qtextractor.c:41
-msgid "Oldies"
-msgstr "Oldies"
-
-#: src/plugins/mp3extractor.c:63 src/plugins/qtextractor.c:42
-msgid "Other"
-msgstr "Altele"
-
-#: src/plugins/mp3extractor.c:64 src/plugins/qtextractor.c:43
-msgid "Pop"
-msgstr "Pop"
-
-#: src/plugins/mp3extractor.c:65 src/plugins/qtextractor.c:44
-msgid "R&B"
-msgstr "R&B"
-
-#: src/plugins/mp3extractor.c:66 src/plugins/qtextractor.c:45
-msgid "Rap"
-msgstr "Rap"
-
-#: src/plugins/mp3extractor.c:67 src/plugins/qtextractor.c:46
-msgid "Reggae"
-msgstr "Reggae"
-
-#: src/plugins/mp3extractor.c:68 src/plugins/qtextractor.c:47
-msgid "Rock"
-msgstr "Rock"
-
-#: src/plugins/mp3extractor.c:69 src/plugins/qtextractor.c:48
-msgid "Techno"
-msgstr "Techno"
-
-#: src/plugins/mp3extractor.c:70 src/plugins/qtextractor.c:49
-msgid "Industrial"
-msgstr "Industrial"
-
-#: src/plugins/mp3extractor.c:71 src/plugins/qtextractor.c:50
-msgid "Alternative"
-msgstr "Alternative"
-
-#: src/plugins/mp3extractor.c:72 src/plugins/qtextractor.c:51
-msgid "Ska"
-msgstr "Ska"
-
-#: src/plugins/mp3extractor.c:73 src/plugins/qtextractor.c:52
-msgid "Death Metal"
-msgstr "Death Metal"
-
-#: src/plugins/mp3extractor.c:74 src/plugins/qtextractor.c:53
-msgid "Pranks"
-msgstr "Pranks"
-
-#: src/plugins/mp3extractor.c:75 src/plugins/qtextractor.c:54
-msgid "Soundtrack"
-msgstr "Soundtrack"
-
-#: src/plugins/mp3extractor.c:76 src/plugins/qtextractor.c:55
-msgid "Euro-Techno"
-msgstr "Euro-Techno"
-
-#: src/plugins/mp3extractor.c:77 src/plugins/qtextractor.c:56
-msgid "Ambient"
-msgstr "Ambient"
-
-#: src/plugins/mp3extractor.c:78 src/plugins/qtextractor.c:57
-msgid "Trip-Hop"
-msgstr "Trip-Hop"
-
-#: src/plugins/mp3extractor.c:79 src/plugins/qtextractor.c:58
-msgid "Vocal"
-msgstr "Vocal"
-
-#: src/plugins/mp3extractor.c:80 src/plugins/qtextractor.c:59
-msgid "Jazz+Funk"
-msgstr "Jazz+Funk"
-
-#: src/plugins/mp3extractor.c:81 src/plugins/qtextractor.c:60
-msgid "Fusion"
-msgstr "Fusion"
-
-#: src/plugins/mp3extractor.c:82 src/plugins/qtextractor.c:61
-msgid "Trance"
-msgstr "Trance"
-
-#: src/plugins/mp3extractor.c:83 src/plugins/qtextractor.c:62
-msgid "Classical"
-msgstr "Clasicã"
-
-#: src/plugins/mp3extractor.c:84 src/plugins/qtextractor.c:63
-msgid "Instrumental"
-msgstr "Instrumental"
-
-#: src/plugins/mp3extractor.c:85 src/plugins/qtextractor.c:64
-msgid "Acid"
-msgstr "Acid"
-
-#: src/plugins/mp3extractor.c:86 src/plugins/qtextractor.c:65
-msgid "House"
-msgstr "House"
-
-#: src/plugins/mp3extractor.c:87 src/plugins/qtextractor.c:66
-msgid "Game"
-msgstr "Joc"
-
-#: src/plugins/mp3extractor.c:88 src/plugins/qtextractor.c:67
-msgid "Sound Clip"
-msgstr "Clip sonor"
-
-#: src/plugins/mp3extractor.c:89 src/plugins/qtextractor.c:68
-msgid "Gospel"
-msgstr "Gospel"
-
-#: src/plugins/mp3extractor.c:90 src/plugins/qtextractor.c:69
-msgid "Noise"
-msgstr "Zgomot"
-
-#: src/plugins/mp3extractor.c:91 src/plugins/qtextractor.c:70
-msgid "Alt. Rock"
-msgstr "Rock Alternativ"
-
-#: src/plugins/mp3extractor.c:92 src/plugins/qtextractor.c:71
-msgid "Bass"
-msgstr "Bass"
-
-#: src/plugins/mp3extractor.c:93 src/plugins/qtextractor.c:72
-msgid "Soul"
-msgstr "Soul"
-
-#: src/plugins/mp3extractor.c:94 src/plugins/qtextractor.c:73
-msgid "Punk"
-msgstr "Punk"
-
-#: src/plugins/mp3extractor.c:95 src/plugins/qtextractor.c:74
-msgid "Space"
-msgstr "Spaþiu"
-
-#: src/plugins/mp3extractor.c:96 src/plugins/qtextractor.c:75
-msgid "Meditative"
-msgstr "Meditativ"
-
-#: src/plugins/mp3extractor.c:97 src/plugins/qtextractor.c:76
-msgid "Instrumental Pop"
-msgstr "Instrumental Pop"
-
-#: src/plugins/mp3extractor.c:98 src/plugins/qtextractor.c:77
-msgid "Instrumental Rock"
-msgstr "Instrumental Rock"
-
-#: src/plugins/mp3extractor.c:99 src/plugins/qtextractor.c:78
-msgid "Ethnic"
-msgstr "Ethnic"
-
-#: src/plugins/mp3extractor.c:100 src/plugins/qtextractor.c:79
-msgid "Gothic"
-msgstr "Gothic"
-
-#: src/plugins/mp3extractor.c:101 src/plugins/qtextractor.c:80
-msgid "Darkwave"
-msgstr "Darkwave"
-
-#: src/plugins/mp3extractor.c:102 src/plugins/qtextractor.c:81
-msgid "Techno-Industrial"
-msgstr "Techno-Industrial"
-
-#: src/plugins/mp3extractor.c:103 src/plugins/qtextractor.c:82
-msgid "Electronic"
-msgstr "Electronic"
-
-#: src/plugins/mp3extractor.c:104 src/plugins/qtextractor.c:83
-msgid "Pop-Folk"
-msgstr "Pop-Folk"
-
-#: src/plugins/mp3extractor.c:105 src/plugins/qtextractor.c:84
-msgid "Eurodance"
-msgstr "Eurodance"
-
-#: src/plugins/mp3extractor.c:106 src/plugins/qtextractor.c:85
-msgid "Dream"
-msgstr "Dream"
-
-#: src/plugins/mp3extractor.c:107 src/plugins/qtextractor.c:86
-msgid "Southern Rock"
-msgstr "Southern Rock"
-
-#: src/plugins/mp3extractor.c:108 src/plugins/qtextractor.c:87
-msgid "Comedy"
-msgstr "Comedy"
-
-#: src/plugins/mp3extractor.c:109 src/plugins/qtextractor.c:88
-msgid "Cult"
-msgstr "Cult"
-
-#: src/plugins/mp3extractor.c:110 src/plugins/qtextractor.c:89
-msgid "Gangsta Rap"
-msgstr "Gangsta Rap"
-
-#: src/plugins/mp3extractor.c:111 src/plugins/qtextractor.c:90
-msgid "Top 40"
-msgstr "Top 40"
-
-#: src/plugins/mp3extractor.c:112 src/plugins/qtextractor.c:91
-msgid "Christian Rap"
-msgstr "Christian Rap"
-
-#: src/plugins/mp3extractor.c:113 src/plugins/qtextractor.c:92
-msgid "Pop/Funk"
-msgstr "Pop/Funk"
-
-#: src/plugins/mp3extractor.c:114 src/plugins/qtextractor.c:93
-msgid "Jungle"
-msgstr "Jungle"
-
-#: src/plugins/mp3extractor.c:115 src/plugins/qtextractor.c:94
-msgid "Native American"
-msgstr "Native American"
-
-#: src/plugins/mp3extractor.c:116 src/plugins/qtextractor.c:95
-msgid "Cabaret"
-msgstr "Cabaret"
-
-#: src/plugins/mp3extractor.c:117 src/plugins/qtextractor.c:96
-msgid "New Wave"
-msgstr "New Wave"
-
-#: src/plugins/mp3extractor.c:118 src/plugins/qtextractor.c:97
-msgid "Psychedelic"
-msgstr "Psychedelic"
-
-#: src/plugins/mp3extractor.c:119 src/plugins/qtextractor.c:98
-msgid "Rave"
-msgstr "Rave"
-
-#: src/plugins/mp3extractor.c:120 src/plugins/qtextractor.c:99
-msgid "Showtunes"
-msgstr "Showtunes"
-
-#: src/plugins/mp3extractor.c:121 src/plugins/qtextractor.c:100
-msgid "Trailer"
-msgstr "Trailer"
-
-#: src/plugins/mp3extractor.c:122 src/plugins/qtextractor.c:101
-msgid "Lo-Fi"
-msgstr "Lo-Fi"
-
-#: src/plugins/mp3extractor.c:123 src/plugins/qtextractor.c:102
-msgid "Tribal"
-msgstr "Tribal"
-
-#: src/plugins/mp3extractor.c:124 src/plugins/qtextractor.c:103
-msgid "Acid Punk"
-msgstr "Acid Punk"
-
-#: src/plugins/mp3extractor.c:125 src/plugins/qtextractor.c:104
-msgid "Acid Jazz"
-msgstr "Acid Jazz"
-
-#: src/plugins/mp3extractor.c:126 src/plugins/qtextractor.c:105
-msgid "Polka"
-msgstr "Polka"
-
-#: src/plugins/mp3extractor.c:127 src/plugins/qtextractor.c:106
-msgid "Retro"
-msgstr "Retro"
-
-#: src/plugins/mp3extractor.c:128 src/plugins/qtextractor.c:107
-msgid "Musical"
-msgstr "Musical"
-
-#: src/plugins/mp3extractor.c:129 src/plugins/qtextractor.c:108
-msgid "Rock & Roll"
-msgstr "Rock & Roll"
-
-#: src/plugins/mp3extractor.c:130 src/plugins/qtextractor.c:109
-msgid "Hard Rock"
-msgstr "Hard Rock"
-
-#: src/plugins/mp3extractor.c:131 src/plugins/qtextractor.c:110
-msgid "Folk"
-msgstr "Folk"
-
-#: src/plugins/mp3extractor.c:132 src/plugins/qtextractor.c:111
-msgid "Folk/Rock"
-msgstr "Folk/Rock"
-
-#: src/plugins/mp3extractor.c:133 src/plugins/qtextractor.c:112
-msgid "National Folk"
-msgstr "National Folk"
-
-#: src/plugins/mp3extractor.c:134 src/plugins/qtextractor.c:113
-msgid "Swing"
-msgstr "Swing"
-
-#: src/plugins/mp3extractor.c:135 src/plugins/qtextractor.c:114
-msgid "Fast-Fusion"
-msgstr "Fast-Fusion"
-
-#: src/plugins/mp3extractor.c:136 src/plugins/qtextractor.c:115
-msgid "Bebob"
-msgstr "Bebob"
-
-#: src/plugins/mp3extractor.c:137 src/plugins/qtextractor.c:116
-msgid "Latin"
-msgstr "Latin"
-
-#: src/plugins/mp3extractor.c:138 src/plugins/qtextractor.c:117
-msgid "Revival"
-msgstr "Revival"
-
-#: src/plugins/mp3extractor.c:139 src/plugins/qtextractor.c:118
-msgid "Celtic"
-msgstr "Celtic"
-
-#: src/plugins/mp3extractor.c:140 src/plugins/qtextractor.c:119
-msgid "Bluegrass"
-msgstr "Bluegrass"
-
-#: src/plugins/mp3extractor.c:141 src/plugins/qtextractor.c:120
-msgid "Avantgarde"
-msgstr "Avantgarde"
-
-#: src/plugins/mp3extractor.c:142 src/plugins/qtextractor.c:121
-msgid "Gothic Rock"
-msgstr "Gothic Rock"
-
-#: src/plugins/mp3extractor.c:143 src/plugins/qtextractor.c:122
-msgid "Progressive Rock"
-msgstr "Progressive Rock"
-
-#: src/plugins/mp3extractor.c:144 src/plugins/qtextractor.c:123
-msgid "Psychedelic Rock"
-msgstr "Psychedelic Rock"
-
-#: src/plugins/mp3extractor.c:145 src/plugins/qtextractor.c:124
-msgid "Symphonic Rock"
-msgstr "Symphonic Rock"
-
-#: src/plugins/mp3extractor.c:146 src/plugins/qtextractor.c:125
-msgid "Slow Rock"
-msgstr "Slow Rock"
-
-#: src/plugins/mp3extractor.c:147 src/plugins/qtextractor.c:126
-msgid "Big Band"
-msgstr "Big Band"
-
-#: src/plugins/mp3extractor.c:148 src/plugins/qtextractor.c:127
-msgid "Chorus"
-msgstr "Chorus"
-
-#: src/plugins/mp3extractor.c:149 src/plugins/qtextractor.c:128
-msgid "Easy Listening"
-msgstr "Easy Listening"
-
-#: src/plugins/mp3extractor.c:150 src/plugins/qtextractor.c:129
-msgid "Acoustic"
-msgstr "Acoustic"
-
-#: src/plugins/mp3extractor.c:151 src/plugins/qtextractor.c:130
-msgid "Humour"
-msgstr "Umor"
-
-#: src/plugins/mp3extractor.c:152 src/plugins/qtextractor.c:131
-msgid "Speech"
-msgstr "Discurs"
-
-#: src/plugins/mp3extractor.c:153 src/plugins/qtextractor.c:132
-msgid "Chanson"
-msgstr "Chanson"
-
-#: src/plugins/mp3extractor.c:154 src/plugins/qtextractor.c:133
-msgid "Opera"
-msgstr "Operã"
-
-#: src/plugins/mp3extractor.c:155 src/plugins/qtextractor.c:134
-msgid "Chamber Music"
-msgstr "Muzicã de camerã"
-
-#: src/plugins/mp3extractor.c:156 src/plugins/qtextractor.c:135
-msgid "Sonata"
-msgstr "Sonet"
-
-#: src/plugins/mp3extractor.c:157 src/plugins/qtextractor.c:136
-msgid "Symphony"
-msgstr "Simfonie"
-
-#: src/plugins/mp3extractor.c:158 src/plugins/qtextractor.c:137
-msgid "Booty Bass"
-msgstr "Booty Bass"
-
-#: src/plugins/mp3extractor.c:159 src/plugins/qtextractor.c:138
-msgid "Primus"
-msgstr "Primus"
-
-#: src/plugins/mp3extractor.c:160 src/plugins/qtextractor.c:139
-msgid "Porn Groove"
-msgstr "Porn Groove"
-
-#: src/plugins/mp3extractor.c:161 src/plugins/qtextractor.c:140
-msgid "Satire"
-msgstr "Satire"
-
-#: src/plugins/mp3extractor.c:162 src/plugins/qtextractor.c:141
-msgid "Slow Jam"
-msgstr "Slow Jam"
-
-#: src/plugins/mp3extractor.c:163 src/plugins/qtextractor.c:142
-msgid "Club"
-msgstr "Club"
-
-#: src/plugins/mp3extractor.c:164 src/plugins/qtextractor.c:143
-msgid "Tango"
-msgstr "Tango"
-
-#: src/plugins/mp3extractor.c:165 src/plugins/qtextractor.c:144
-msgid "Samba"
-msgstr "Samba"
-
-#: src/plugins/mp3extractor.c:166 src/plugins/qtextractor.c:145
-msgid "Folklore"
-msgstr "Folklore"
-
-#: src/plugins/mp3extractor.c:167 src/plugins/qtextractor.c:146
-msgid "Ballad"
-msgstr "Ballad"
-
-#: src/plugins/mp3extractor.c:168 src/plugins/qtextractor.c:147
-msgid "Power Ballad"
-msgstr "Power Ballad"
-
-#: src/plugins/mp3extractor.c:169 src/plugins/qtextractor.c:148
-msgid "Rhythmic Soul"
-msgstr "Rhythmic Soul"
-
-#: src/plugins/mp3extractor.c:170 src/plugins/qtextractor.c:149
-msgid "Freestyle"
-msgstr "Freestyle"
-
-#: src/plugins/mp3extractor.c:171 src/plugins/qtextractor.c:150
-msgid "Duet"
-msgstr "Duet"
-
-#: src/plugins/mp3extractor.c:172 src/plugins/qtextractor.c:151
-msgid "Punk Rock"
-msgstr "Punk Rock"
-
-#: src/plugins/mp3extractor.c:173 src/plugins/qtextractor.c:152
-msgid "Drum Solo"
-msgstr "Drum Solo"
-
-#: src/plugins/mp3extractor.c:174 src/plugins/qtextractor.c:153
-msgid "A Cappella"
-msgstr "A Cappella"
-
-#: src/plugins/mp3extractor.c:175 src/plugins/qtextractor.c:154
-msgid "Euro-House"
-msgstr "Euro-House"
-
-#: src/plugins/mp3extractor.c:176 src/plugins/qtextractor.c:155
-msgid "Dance Hall"
-msgstr "Dance Hall"
-
-#: src/plugins/mp3extractor.c:177 src/plugins/qtextractor.c:156
-msgid "Goa"
-msgstr "Goa"
-
-#: src/plugins/mp3extractor.c:178 src/plugins/qtextractor.c:157
-msgid "Drum & Bass"
-msgstr "Drum & Bass"
-
-#: src/plugins/mp3extractor.c:179 src/plugins/qtextractor.c:158
-msgid "Club-House"
-msgstr "Club-House"
-
-#: src/plugins/mp3extractor.c:180 src/plugins/qtextractor.c:159
-msgid "Hardcore"
-msgstr "Hardcore"
-
-#: src/plugins/mp3extractor.c:181 src/plugins/qtextractor.c:160
-msgid "Terror"
-msgstr "Terror"
-
-#: src/plugins/mp3extractor.c:182 src/plugins/qtextractor.c:161
-msgid "Indie"
-msgstr "Indie"
-
-#: src/plugins/mp3extractor.c:183 src/plugins/qtextractor.c:162
-msgid "BritPop"
-msgstr "BritPop"
-
-#: src/plugins/mp3extractor.c:184 src/plugins/qtextractor.c:163
-msgid "Negerpunk"
-msgstr "Negerpunk"
-
-#: src/plugins/mp3extractor.c:185 src/plugins/qtextractor.c:164
-msgid "Polsk Punk"
-msgstr "Polsk Punk"
-
-#: src/plugins/mp3extractor.c:186 src/plugins/qtextractor.c:165
-msgid "Beat"
-msgstr "Beat"
-
-#: src/plugins/mp3extractor.c:187 src/plugins/qtextractor.c:166
-msgid "Christian Gangsta Rap"
-msgstr "Christian Gangsta Rap"
-
-#: src/plugins/mp3extractor.c:188 src/plugins/qtextractor.c:167
-msgid "Heavy Metal"
-msgstr "Heavy Metal"
-
-#: src/plugins/mp3extractor.c:189 src/plugins/qtextractor.c:168
-msgid "Black Metal"
-msgstr "Black Metal"
-
-#: src/plugins/mp3extractor.c:190 src/plugins/qtextractor.c:169
-msgid "Crossover"
-msgstr "Crossover"
-
-#: src/plugins/mp3extractor.c:191 src/plugins/qtextractor.c:170
-msgid "Contemporary Christian"
-msgstr "Contemporary Christian"
-
-#: src/plugins/mp3extractor.c:192 src/plugins/qtextractor.c:171
-msgid "Christian Rock"
-msgstr "Christian Rock"
-
-#: src/plugins/mp3extractor.c:193 src/plugins/qtextractor.c:172
-msgid "Merengue"
-msgstr "Merengue"
-
-#: src/plugins/mp3extractor.c:194 src/plugins/qtextractor.c:173
-msgid "Salsa"
-msgstr "Salsa"
-
-#: src/plugins/mp3extractor.c:195 src/plugins/qtextractor.c:174
-msgid "Thrash Metal"
-msgstr "Thrash Metal"
-
-#: src/plugins/mp3extractor.c:196 src/plugins/qtextractor.c:175
-msgid "Anime"
-msgstr "Anime"
-
-#: src/plugins/mp3extractor.c:197 src/plugins/qtextractor.c:176
-msgid "JPop"
-msgstr "JPop"
-
-#: src/plugins/mp3extractor.c:198 src/plugins/qtextractor.c:177
-msgid "Synthpop"
-msgstr "Synthpop"
-
-#: src/plugins/mp3extractor.c:252 src/plugins/wavextractor.c:119
-msgid "stereo"
-msgstr "stereo"
-
-#: src/plugins/mp3extractor.c:253
-#, fuzzy
-msgid "joint stereo"
-msgstr "stereo"
-
-#: src/plugins/mp3extractor.c:254
-msgid "dual channel"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:255 src/plugins/wavextractor.c:119
-msgid "mono"
-msgstr "mono"
-
-#: src/plugins/mp3extractor.c:258
-msgid "MPEG-1"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:259
-msgid "MPEG-2"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:260
-msgid "MPEG-2.5"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:263
-msgid "Layer I"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:264
-msgid "Layer II"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:265
-msgid "Layer III"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:475
-msgid "VBR"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:475
-msgid "CBR"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:478
-#, fuzzy
-msgid "no copyright"
-msgstr "copyright"
-
-#: src/plugins/mp3extractor.c:479
-msgid "original"
-msgstr ""
-
-#: src/plugins/mp3extractor.c:479
-#, fuzzy
-msgid "copy"
-msgstr "copyright"
-
-#: src/plugins/ole2/ole2extractor.c:252
+#: src/plugins/ole2_extractor.c:290
 msgid "No Proofing"
 msgstr ""
 
-#: src/plugins/ole2/ole2extractor.c:260
+#: src/plugins/ole2_extractor.c:298
 msgid "Traditional Chinese"
 msgstr ""
 
-#: src/plugins/ole2/ole2extractor.c:262
+#: src/plugins/ole2_extractor.c:300
 msgid "Simplified Chinese"
 msgstr ""
 
-#: src/plugins/ole2/ole2extractor.c:270
+#: src/plugins/ole2_extractor.c:308
 msgid "Swiss German"
 msgstr ""
 
-#: src/plugins/ole2/ole2extractor.c:274
+#: src/plugins/ole2_extractor.c:312
 msgid "U.S. English"
 msgstr ""
 
-#: src/plugins/ole2/ole2extractor.c:276
+#: src/plugins/ole2_extractor.c:314
 msgid "U.K. English"
 msgstr ""
 
-#: src/plugins/ole2/ole2extractor.c:278
+#: src/plugins/ole2_extractor.c:316
 msgid "Australian English"
 msgstr ""
 
-#: src/plugins/ole2/ole2extractor.c:280
+#: src/plugins/ole2_extractor.c:318
 msgid "Castilian Spanish"
 msgstr ""
 
-#: src/plugins/ole2/ole2extractor.c:282
+#: src/plugins/ole2_extractor.c:320
 msgid "Mexican Spanish"
 msgstr ""
 
-#: src/plugins/ole2/ole2extractor.c:288
+#: src/plugins/ole2_extractor.c:326
 msgid "Belgian French"
 msgstr ""
 
-#: src/plugins/ole2/ole2extractor.c:290
+#: src/plugins/ole2_extractor.c:328
 msgid "Canadian French"
 msgstr ""
 
-#: src/plugins/ole2/ole2extractor.c:292
+#: src/plugins/ole2_extractor.c:330
 msgid "Swiss French"
 msgstr ""
 
-#: src/plugins/ole2/ole2extractor.c:302
+#: src/plugins/ole2_extractor.c:340
 msgid "Swiss Italian"
 msgstr ""
 
-#: src/plugins/ole2/ole2extractor.c:310
+#: src/plugins/ole2_extractor.c:348
 msgid "Belgian Dutch"
 msgstr ""
 
-#: src/plugins/ole2/ole2extractor.c:312
+#: src/plugins/ole2_extractor.c:350
 msgid "Norwegian Bokmal"
 msgstr ""
 
-#: src/plugins/ole2/ole2extractor.c:322
+#: src/plugins/ole2_extractor.c:360
 msgid "Rhaeto-Romanic"
 msgstr ""
 
-#: src/plugins/ole2/ole2extractor.c:328
+#: src/plugins/ole2_extractor.c:366
 msgid "Croato-Serbian (Latin)"
 msgstr ""
 
-#: src/plugins/ole2/ole2extractor.c:330
+#: src/plugins/ole2_extractor.c:368
 msgid "Serbo-Croatian (Cyrillic)"
 msgstr ""
 
-#: src/plugins/ole2/ole2extractor.c:358
+#: src/plugins/ole2_extractor.c:396
 msgid "Farsi"
 msgstr ""
 
-#: src/plugins/ole2/ole2extractor.c:420
+#: src/plugins/ole2_extractor.c:462
 #, c-format
 msgid "Revision #%u: Author '%s' worked on '%s'"
 msgstr ""
 
-#: src/plugins/printable/dictionary-builder.c:97
-#, c-format
-msgid ""
-"Please provide the name of the language you are building\n"
-"a dictionary for.  For example:\n"
-msgstr ""
-"Vã rugãm furnizaþi numele limbii pentru care contruiþi\n"
-"un dicþionar.  De exemplu:\n"
+#~ msgid "do not remove any duplicates"
+#~ msgstr "nu îndepãrta nici un duplicat"
 
-#: src/plugins/printable/dictionary-builder.c:111
-#: src/plugins/printable/dictionary-builder.c:165
-#, fuzzy, c-format
-msgid "Error opening file `%s': %s\n"
-msgstr "Eroare deschidere fiºier '%s': %s\n"
+#~ msgid "remove duplicates only if types match"
+#~ msgstr "îndepãrteazã duplicatele numai dacã tipul este acelaºi"
 
-#: src/plugins/printable/dictionary-builder.c:118
-#, c-format
-msgid ""
-"Error allocating: %s\n"
-"."
-msgstr ""
-"Eroare de alocare: %s\n"
-"."
+#~ msgid "use the filename as a keyword (loads filename-extractor plugin)"
+#~ msgstr ""
+#~ "foloseºte numele de fiºier ca ºi cuvânt cheie (încarcã plugin nume_fiºier-"
+#~ "extractor)"
 
-#: src/plugins/printable/dictionary-builder.c:132
-#, c-format
-msgid "Increase ALLOCSIZE (in %s).\n"
-msgstr "Creºteþi ALLOCSIZE (în %s).\n"
+#~ msgid "remove duplicates even if keyword types do not match"
+#~ msgstr ""
+#~ "îndepãrteazã duplicatele chiar dacã tipurile cuvintelor cheie nu sunt "
+#~ "aceleaºi"
 
-#: src/plugins/riffextractor.c:151
-#, c-format
-msgid "codec: %s, %u fps, %u ms"
-msgstr "codec: %s, %u fps, %u ms"
+#~ msgid "use keyword splitting (loads split-extractor plugin)"
+#~ msgstr ""
+#~ "foloseºte spargere dupã cuvinte cheie (încarcã plugin-ul split-extractor)"
+
+#~ msgid "INVALID TYPE - %s\n"
+#~ msgstr "TIP INVALID - %s\n"
+
+#, fuzzy
+#~ msgid ""
+#~ "Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
+#~ "failed also.  Errors are: `%s' and `%s'.\n"
+#~ msgstr ""
+#~ "Rezolvarea simbolului '%s' în biblioteca '%s' a eºuat, aºa cã am încercat "
+#~ "'%s', dar ºi acesta a eºuat.  Erorile sunt: '%s' ºi '%s'.\n"
+
+#, fuzzy
+#~ msgid "Loading `%s' plugin failed: %s\n"
+#~ msgstr "Încãrcarea plugin-ului '%s' a eºuat: %s\n"
+
+#, fuzzy
+#~ msgid "Unloading plugin `%s' failed!\n"
+#~ msgstr "Descãrcarea plugin-ului '%s' a eºuat!\n"
+
+#, fuzzy
+#~ msgid "Bytes"
+#~ msgstr "Blues"
+
+#~ msgid "%ux%u dots per cm"
+#~ msgstr "%ux%u puncte pe cm"
+
+#~ msgid "%ux%u dots per inch?"
+#~ msgstr "%ux%u puncte pe inci?"
+
+#~ msgid "Blues"
+#~ msgstr "Blues"
+
+#~ msgid "Classic Rock"
+#~ msgstr "Rock clasic"
+
+#~ msgid "Dance"
+#~ msgstr "Dance"
+
+#~ msgid "Disco"
+#~ msgstr "Disco"
+
+#~ msgid "Funk"
+#~ msgstr "Funk"
+
+#~ msgid "Grunge"
+#~ msgstr "Grunge"
+
+#~ msgid "Hip-Hop"
+#~ msgstr "Hip-Hop"
+
+#~ msgid "Jazz"
+#~ msgstr "Jazz"
+
+#~ msgid "Metal"
+#~ msgstr "Metal"
+
+#~ msgid "New Age"
+#~ msgstr "New Age"
+
+#~ msgid "Oldies"
+#~ msgstr "Oldies"
+
+#~ msgid "Other"
+#~ msgstr "Altele"
+
+#~ msgid "Pop"
+#~ msgstr "Pop"
+
+#~ msgid "R&B"
+#~ msgstr "R&B"
+
+#~ msgid "Rap"
+#~ msgstr "Rap"
+
+#~ msgid "Reggae"
+#~ msgstr "Reggae"
+
+#~ msgid "Rock"
+#~ msgstr "Rock"
+
+#~ msgid "Techno"
+#~ msgstr "Techno"
+
+#~ msgid "Industrial"
+#~ msgstr "Industrial"
+
+#~ msgid "Alternative"
+#~ msgstr "Alternative"
+
+#~ msgid "Ska"
+#~ msgstr "Ska"
+
+#~ msgid "Death Metal"
+#~ msgstr "Death Metal"
+
+#~ msgid "Pranks"
+#~ msgstr "Pranks"
+
+#~ msgid "Soundtrack"
+#~ msgstr "Soundtrack"
+
+#~ msgid "Euro-Techno"
+#~ msgstr "Euro-Techno"
+
+#~ msgid "Ambient"
+#~ msgstr "Ambient"
+
+#~ msgid "Trip-Hop"
+#~ msgstr "Trip-Hop"
+
+#~ msgid "Vocal"
+#~ msgstr "Vocal"
+
+#~ msgid "Jazz+Funk"
+#~ msgstr "Jazz+Funk"
+
+#~ msgid "Fusion"
+#~ msgstr "Fusion"
+
+#~ msgid "Trance"
+#~ msgstr "Trance"
+
+#~ msgid "Classical"
+#~ msgstr "Clasicã"
+
+#~ msgid "Instrumental"
+#~ msgstr "Instrumental"
+
+#~ msgid "Acid"
+#~ msgstr "Acid"
+
+#~ msgid "House"
+#~ msgstr "House"
+
+#~ msgid "Game"
+#~ msgstr "Joc"
+
+#~ msgid "Sound Clip"
+#~ msgstr "Clip sonor"
+
+#~ msgid "Gospel"
+#~ msgstr "Gospel"
+
+#~ msgid "Noise"
+#~ msgstr "Zgomot"
+
+#~ msgid "Alt. Rock"
+#~ msgstr "Rock Alternativ"
+
+#~ msgid "Bass"
+#~ msgstr "Bass"
+
+#~ msgid "Soul"
+#~ msgstr "Soul"
+
+#~ msgid "Punk"
+#~ msgstr "Punk"
+
+#~ msgid "Space"
+#~ msgstr "Spaþiu"
+
+#~ msgid "Meditative"
+#~ msgstr "Meditativ"
+
+#~ msgid "Instrumental Pop"
+#~ msgstr "Instrumental Pop"
+
+#~ msgid "Instrumental Rock"
+#~ msgstr "Instrumental Rock"
+
+#~ msgid "Ethnic"
+#~ msgstr "Ethnic"
+
+#~ msgid "Gothic"
+#~ msgstr "Gothic"
+
+#~ msgid "Darkwave"
+#~ msgstr "Darkwave"
+
+#~ msgid "Techno-Industrial"
+#~ msgstr "Techno-Industrial"
+
+#~ msgid "Electronic"
+#~ msgstr "Electronic"
+
+#~ msgid "Pop-Folk"
+#~ msgstr "Pop-Folk"
+
+#~ msgid "Eurodance"
+#~ msgstr "Eurodance"
+
+#~ msgid "Dream"
+#~ msgstr "Dream"
+
+#~ msgid "Southern Rock"
+#~ msgstr "Southern Rock"
+
+#~ msgid "Comedy"
+#~ msgstr "Comedy"
+
+#~ msgid "Cult"
+#~ msgstr "Cult"
+
+#~ msgid "Gangsta Rap"
+#~ msgstr "Gangsta Rap"
+
+#~ msgid "Top 40"
+#~ msgstr "Top 40"
+
+#~ msgid "Christian Rap"
+#~ msgstr "Christian Rap"
+
+#~ msgid "Pop/Funk"
+#~ msgstr "Pop/Funk"
+
+#~ msgid "Jungle"
+#~ msgstr "Jungle"
+
+#~ msgid "Native American"
+#~ msgstr "Native American"
+
+#~ msgid "Cabaret"
+#~ msgstr "Cabaret"
+
+#~ msgid "New Wave"
+#~ msgstr "New Wave"
+
+#~ msgid "Psychedelic"
+#~ msgstr "Psychedelic"
+
+#~ msgid "Rave"
+#~ msgstr "Rave"
+
+#~ msgid "Showtunes"
+#~ msgstr "Showtunes"
+
+#~ msgid "Trailer"
+#~ msgstr "Trailer"
+
+#~ msgid "Lo-Fi"
+#~ msgstr "Lo-Fi"
+
+#~ msgid "Tribal"
+#~ msgstr "Tribal"
+
+#~ msgid "Acid Punk"
+#~ msgstr "Acid Punk"
+
+#~ msgid "Acid Jazz"
+#~ msgstr "Acid Jazz"
+
+#~ msgid "Polka"
+#~ msgstr "Polka"
+
+#~ msgid "Retro"
+#~ msgstr "Retro"
+
+#~ msgid "Musical"
+#~ msgstr "Musical"
+
+#~ msgid "Rock & Roll"
+#~ msgstr "Rock & Roll"
+
+#~ msgid "Hard Rock"
+#~ msgstr "Hard Rock"
+
+#~ msgid "Folk"
+#~ msgstr "Folk"
+
+#~ msgid "Folk/Rock"
+#~ msgstr "Folk/Rock"
+
+#~ msgid "National Folk"
+#~ msgstr "National Folk"
+
+#~ msgid "Swing"
+#~ msgstr "Swing"
+
+#~ msgid "Fast-Fusion"
+#~ msgstr "Fast-Fusion"
+
+#~ msgid "Bebob"
+#~ msgstr "Bebob"
+
+#~ msgid "Revival"
+#~ msgstr "Revival"
+
+#~ msgid "Celtic"
+#~ msgstr "Celtic"
+
+#~ msgid "Bluegrass"
+#~ msgstr "Bluegrass"
+
+#~ msgid "Avantgarde"
+#~ msgstr "Avantgarde"
+
+#~ msgid "Gothic Rock"
+#~ msgstr "Gothic Rock"
+
+#~ msgid "Progressive Rock"
+#~ msgstr "Progressive Rock"
+
+#~ msgid "Psychedelic Rock"
+#~ msgstr "Psychedelic Rock"
+
+#~ msgid "Symphonic Rock"
+#~ msgstr "Symphonic Rock"
+
+#~ msgid "Slow Rock"
+#~ msgstr "Slow Rock"
+
+#~ msgid "Big Band"
+#~ msgstr "Big Band"
+
+#~ msgid "Chorus"
+#~ msgstr "Chorus"
+
+#~ msgid "Easy Listening"
+#~ msgstr "Easy Listening"
+
+#~ msgid "Acoustic"
+#~ msgstr "Acoustic"
+
+#~ msgid "Humour"
+#~ msgstr "Umor"
+
+#~ msgid "Speech"
+#~ msgstr "Discurs"
+
+#~ msgid "Chanson"
+#~ msgstr "Chanson"
+
+#~ msgid "Opera"
+#~ msgstr "Operã"
+
+#~ msgid "Chamber Music"
+#~ msgstr "Muzicã de camerã"
+
+#~ msgid "Sonata"
+#~ msgstr "Sonet"
+
+#~ msgid "Symphony"
+#~ msgstr "Simfonie"
+
+#~ msgid "Booty Bass"
+#~ msgstr "Booty Bass"
+
+#~ msgid "Primus"
+#~ msgstr "Primus"
+
+#~ msgid "Porn Groove"
+#~ msgstr "Porn Groove"
+
+#~ msgid "Satire"
+#~ msgstr "Satire"
+
+#~ msgid "Slow Jam"
+#~ msgstr "Slow Jam"
+
+#~ msgid "Club"
+#~ msgstr "Club"
+
+#~ msgid "Tango"
+#~ msgstr "Tango"
+
+#~ msgid "Samba"
+#~ msgstr "Samba"
+
+#~ msgid "Folklore"
+#~ msgstr "Folklore"
+
+#~ msgid "Ballad"
+#~ msgstr "Ballad"
+
+#~ msgid "Power Ballad"
+#~ msgstr "Power Ballad"
+
+#~ msgid "Rhythmic Soul"
+#~ msgstr "Rhythmic Soul"
+
+#~ msgid "Freestyle"
+#~ msgstr "Freestyle"
+
+#~ msgid "Duet"
+#~ msgstr "Duet"
+
+#~ msgid "Punk Rock"
+#~ msgstr "Punk Rock"
+
+#~ msgid "Drum Solo"
+#~ msgstr "Drum Solo"
+
+#~ msgid "A Cappella"
+#~ msgstr "A Cappella"
+
+#~ msgid "Euro-House"
+#~ msgstr "Euro-House"
+
+#~ msgid "Dance Hall"
+#~ msgstr "Dance Hall"
+
+#~ msgid "Goa"
+#~ msgstr "Goa"
+
+#~ msgid "Drum & Bass"
+#~ msgstr "Drum & Bass"
+
+#~ msgid "Club-House"
+#~ msgstr "Club-House"
+
+#~ msgid "Hardcore"
+#~ msgstr "Hardcore"
+
+#~ msgid "Terror"
+#~ msgstr "Terror"
+
+#~ msgid "Indie"
+#~ msgstr "Indie"
+
+#~ msgid "BritPop"
+#~ msgstr "BritPop"
+
+#~ msgid "Negerpunk"
+#~ msgstr "Negerpunk"
+
+#~ msgid "Polsk Punk"
+#~ msgstr "Polsk Punk"
+
+#~ msgid "Beat"
+#~ msgstr "Beat"
+
+#~ msgid "Christian Gangsta Rap"
+#~ msgstr "Christian Gangsta Rap"
+
+#~ msgid "Heavy Metal"
+#~ msgstr "Heavy Metal"
+
+#~ msgid "Black Metal"
+#~ msgstr "Black Metal"
+
+#~ msgid "Crossover"
+#~ msgstr "Crossover"
+
+#~ msgid "Contemporary Christian"
+#~ msgstr "Contemporary Christian"
+
+#~ msgid "Christian Rock"
+#~ msgstr "Christian Rock"
+
+#~ msgid "Merengue"
+#~ msgstr "Merengue"
+
+#~ msgid "Salsa"
+#~ msgstr "Salsa"
+
+#~ msgid "Thrash Metal"
+#~ msgstr "Thrash Metal"
+
+#~ msgid "Anime"
+#~ msgstr "Anime"
+
+#~ msgid "JPop"
+#~ msgstr "JPop"
+
+#~ msgid "Synthpop"
+#~ msgstr "Synthpop"
+
+#~ msgid "stereo"
+#~ msgstr "stereo"
+
+#, fuzzy
+#~ msgid "joint stereo"
+#~ msgstr "stereo"
+
+#~ msgid "mono"
+#~ msgstr "mono"
+
+#, fuzzy
+#~ msgid "no copyright"
+#~ msgstr "copyright"
+
+#, fuzzy
+#~ msgid "copy"
+#~ msgstr "copyright"
+
+#~ msgid ""
+#~ "Please provide the name of the language you are building\n"
+#~ "a dictionary for.  For example:\n"
+#~ msgstr ""
+#~ "Vã rugãm furnizaþi numele limbii pentru care contruiþi\n"
+#~ "un dicþionar.  De exemplu:\n"
+
+#, fuzzy
+#~ msgid "Error opening file `%s': %s\n"
+#~ msgstr "Eroare deschidere fiºier '%s': %s\n"
+
+#~ msgid ""
+#~ "Error allocating: %s\n"
+#~ "."
+#~ msgstr ""
+#~ "Eroare de alocare: %s\n"
+#~ "."
+
+#~ msgid "Increase ALLOCSIZE (in %s).\n"
+#~ msgstr "Creºteþi ALLOCSIZE (în %s).\n"
+
+#~ msgid "codec: %s, %u fps, %u ms"
+#~ msgstr "codec: %s, %u fps, %u ms"
 
 #~ msgid "Source RPM %d.%d"
 #~ msgstr "Sursã RPM %d.%d"
@@ -1802,9 +2302,6 @@ msgstr "codec: %s, %u fps, %u ms"
 
 #~ msgid "Level 3 reset"
 #~ msgstr "Nivelul 3 resetat"
-
-#~ msgid "Link number out of range"
-#~ msgstr "Numãr legãturi în afara domeniului"
 
 #~ msgid "Protocol driver not attached"
 #~ msgstr "Driver-ul de protocol nu este ataºat"
