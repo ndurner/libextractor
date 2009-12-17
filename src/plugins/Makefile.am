@@ -79,6 +79,7 @@ plugin_LTLIBRARIES = \
   libextractor_jpeg.la \
   libextractor_man.la \
   libextractor_mime.la \
+  libextractor_mp3.la \
   $(ole2) \
   libextractor_odf.la \
   $(pdf) \
@@ -162,6 +163,14 @@ libextractor_mime_la_SOURCES = \
 libextractor_mime_la_LDFLAGS = \
   $(PLUGINFLAGS)
 
+libextractor_mp3_la_SOURCES = \
+  mp3_extractor.c 
+libextractor_mp3_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+libextractor_mp3_la_LIBADD = \
+  $(top_builddir)/src/common/libextractor_common.la \
+  $(LE_LIBINTL)
+
 libextractor_ole2_la_SOURCES =  \
   ole2_extractor.c
 libextractor_ole2_la_CFLAGS = \
@@ -218,7 +227,6 @@ OLD_LIBS = \
   libextractor_id3v2.la \
   libextractor_id3v24.la \
   libextractor_id3v23.la \
-  libextractor_mp3.la \
   $(extrampeg) \
   libextractor_nsf.la \
   libextractor_nsfe.la \
@@ -279,14 +287,6 @@ libextractor_wav_la_SOURCES = \
 libextractor_wav_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_wav_la_LIBADD = \
-  $(LE_LIBINTL)
-
-libextractor_mp3_la_SOURCES = \
-  mp3extractor.c 
-libextractor_mp3_la_LDFLAGS = \
-  $(PLUGINFLAGS)
-libextractor_mp3_la_LIBADD = \
-  $(top_builddir)/src/common/libextractor_common.la \
   $(LE_LIBINTL)
 
 libextractor_id3v2_la_SOURCES = \

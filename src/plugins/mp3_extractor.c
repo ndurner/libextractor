@@ -1,6 +1,6 @@
 /*
      This file is part of libextractor.
-     (C) 2002, 2003, 2004, 2006 Vidyut Samanta and Christian Grothoff
+     (C) 2002, 2003, 2004, 2006, 2009 Vidyut Samanta and Christian Grothoff
 
      libextractor is free software; you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published
@@ -321,23 +321,13 @@ get_id3 (const char *data, size_t size, id3tag * id3)
   return OK;
 }
 
-static struct EXTRACTOR_Keywords *
-addkword (EXTRACTOR_KeywordList * oldhead,
-          const char *phrase, EXTRACTOR_KeywordType type)
-{
-  EXTRACTOR_KeywordList *keyword;
 
-  keyword = malloc (sizeof (EXTRACTOR_KeywordList));
-  keyword->next = oldhead;
-  keyword->keyword = strdup (phrase);
-  keyword->keywordType = type;
-  return keyword;
-}
+#define ADDR(s,t) do { if (0 != proc (proc_cls, "mp3", t, EXTRACTOR_METAFORMAT_UTF8, "text/plain", s, strlen(s)+1)) return 1; } while (0)
 
-
-
-static struct EXTRACTOR_Keywords *
-mp3parse (const unsigned char *data, size_t size, struct EXTRACTOR_Keywords *prev)
+static int
+mp3parse (const unsigned char *data, size_t size,
+	  EXTRACTOR_MetaDataProcessor proc,
+	  void *proc_cls)
 {
   unsigned int header;
   int counter = 0;
@@ -355,14 +345,14 @@ mp3parse (const unsigned char *data, size_t size, struct EXTRACTOR_Keywords *pre
   int frame_size;
   int frames = 0;
   size_t pos = 0;
-  char *format;
+  char format[512];
 
   do
     {
       /* seek for frame start */
       if (pos + sizeof (header) > size)
         {
-          return prev;
+          return 0;
         }                       /*unable to find header */
       header = (data[pos] << 24) | (data[pos+1] << 16) |
                (data[pos+2] << 8) | data[pos+3];
@@ -373,11 +363,8 @@ mp3parse (const unsigned char *data, size_t size, struct EXTRACTOR_Keywords *pre
     }
   while (counter < MAX_MP3_SCAN_DEEP);
   if (counter >= MAX_MP3_SCAN_DEEP)
-    {
-      return prev;
-    };                          /*give up to find mp3 header */
-
-  prev = addkword (prev, "audio/mpeg", EXTRACTOR_MIMETYPE);
+    return 0;
+  ADDR ("audio/mpeg", EXTRACTOR_METATYPE_MIMETYPE);
 
   do
     {                           /*ok, now we found a mp3 frame header */
@@ -414,7 +401,7 @@ mp3parse (const unsigned char *data, size_t size, struct EXTRACTOR_Keywords *pre
           layer = LAYER_ERR;        /*error */
         }
       if (!layer || !mpeg_ver)
-        return prev;            /*unknown mpeg type */
+        return 0;            /*unknown mpeg type */
       if (mpeg_ver < MPEG_V25)
         idx_num = (mpeg_ver - 1) * 3 + layer - 1;
       else
@@ -454,7 +441,7 @@ mp3parse (const unsigned char *data, size_t size, struct EXTRACTOR_Keywords *pre
   while ((header & MPA_SYNC_MASK) == MPA_SYNC_MASK);
 
   if (!frames)
-    return prev;                /*no valid frames */
+    return 0;                /*no valid frames */
   avg_bps = avg_bps / frames;
   if (max_frames_scan)
     {                           /*if not all frames scaned */
@@ -466,9 +453,10 @@ mp3parse (const unsigned char *data, size_t size, struct EXTRACTOR_Keywords *pre
       length = 1152 * frames / (sample_rate ? sample_rate : 0xFFFFFFFF);
     }
 
-  prev = addkword (prev, mpeg_versions[mpeg_ver-1], EXTRACTOR_RESOURCE_TYPE);
-  format = malloc (512);
-  snprintf (format, 512, "%s %s audio, %d kbps (%s), %d Hz, %s, %s, %s",
+  ADDR (mpeg_versions[mpeg_ver-1], EXTRACTOR_METATYPE_FORMAT_VERSION);
+  snprintf (format,
+	    sizeof(format),
+	    "%s %s audio, %d kbps (%s), %d Hz, %s, %s, %s",
             mpeg_versions[mpeg_ver-1],
             layer_names[layer-1],
             avg_bps,
@@ -477,60 +465,59 @@ mp3parse (const unsigned char *data, size_t size, struct EXTRACTOR_Keywords *pre
             channel_modes[ch],
             copyright_flag ? _("copyright") : _("no copyright"),
             original_flag ? _("original") : _("copy") );
-  prev = addkword (prev, format, EXTRACTOR_FORMAT);
-  snprintf (format, 512, "%dm%02d",
+
+  ADDR (format, EXTRACTOR_METATYPE_RESOURCE_TYPE);
+  snprintf (format,
+	    sizeof (format), "%dm%02d",
             length / 60, length % 60);
-  prev = addkword (prev, format, EXTRACTOR_DURATION);
-  free (format);
-  return prev;
+  ADDR (format, EXTRACTOR_METATYPE_DURATION);
+  return 0;
 }
 
 
+#define ADD(s,t) do { if (0 != proc (proc_cls, "mp3", t, EXTRACTOR_METAFORMAT_UTF8, "text/plain", s, strlen(s)+1)) goto FINISH; } while (0)
+
+
 /* mimetype = audio/mpeg */
-struct EXTRACTOR_Keywords *
-libextractor_mp3_extract (const char *filename,
-                          const char *data,
-                          size_t size, struct EXTRACTOR_Keywords *klist)
+int 
+EXTRACTOR_mp3_extract (const char *data,
+		       size_t size,
+		       EXTRACTOR_MetaDataProcessor proc,
+		       void *proc_cls,
+		       const char *options)
 {
   id3tag info;
-  char *word;
   char track[16];
+  int ret;
 
   if (0 != get_id3 (data, size, &info))
-    return klist;
-
+    return 0;
   if (strlen (info.title) > 0)
-    klist = addkword (klist, info.title, EXTRACTOR_TITLE);
+    ADD (info.title, EXTRACTOR_METATYPE_TITLE);
   if (strlen (info.artist) > 0)
-    klist = addkword (klist, info.artist, EXTRACTOR_ARTIST);
+    ADD (info.artist, EXTRACTOR_METATYPE_ARTIST);
   if (strlen (info.album) > 0)
-    klist = addkword (klist, info.album, EXTRACTOR_ALBUM);
+    ADD (info.album, EXTRACTOR_METATYPE_ALBUM);
   if (strlen (info.year) > 0)
-    klist = addkword (klist, info.year, EXTRACTOR_YEAR);
+    ADD (info.year, EXTRACTOR_METATYPE_PUBLICATION_YEAR);
   if (strlen (info.genre) > 0)
-    klist = addkword (klist, info.genre, EXTRACTOR_GENRE);
+    ADD (info.genre, EXTRACTOR_METATYPE_GENRE);
   if (strlen (info.comment) > 0)
-    klist = addkword (klist, info.comment, EXTRACTOR_COMMENT);
+    ADD (info.comment, EXTRACTOR_METATYPE_COMMENT);
   if (info.track_number != 0)
     {
-      snprintf(track, 15, "%u", info.track_number);
-      klist = addkword (klist, track, EXTRACTOR_TRACK_NUMBER);
+      snprintf(track, 
+	       sizeof(track), "%u", info.track_number);
+      ADD (track, EXTRACTOR_METATYPE_TRACK_NUMBER);
     }
-
-  /* A keyword that has all of the information together) */
-  word = malloc (strlen (info.artist) + strlen (info.title) +
-		 strlen (info.album) + 6);
-  sprintf (word, "%s: %s (%s)", info.artist, info.title, info.album);
-  klist = addkword (klist, word, EXTRACTOR_DESCRIPTION);
-
-  free (word);
+  ret = mp3parse ((const unsigned char *) data, size, proc, proc_cls);
+FINISH:
   free (info.title);
   free (info.year);
   free (info.album);
   free (info.artist);
   free (info.comment);
-
-  return mp3parse ((unsigned char *) data, size, klist);
+  return ret; 
 }
 
-/* end of mp3extractor.c */
+/* end of mp3_extractor.c */
