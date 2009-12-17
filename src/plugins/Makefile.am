@@ -73,6 +73,7 @@ plugin_LTLIBRARIES = \
   libextractor_dvi.la \
   libextractor_elf.la \
   $(exiv2) \
+  $(flac) \
   libextractor_gif.la \
   libextractor_html.la \
   libextractor_it.la \
@@ -125,6 +126,14 @@ libextractor_exiv2_la_LDFLAGS = \
   $(XTRA_CPPLIBS) $(PLUGINFLAGS) 
 libextractor_exiv2_la_LIBADD = \
   -lexiv2
+
+libextractor_flac_la_SOURCES = \
+  flac_extractor.c
+libextractor_flac_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+libextractor_flac_la_LIBADD = \
+  -lFLAC $(flacoggflag) \
+  $(LE_LIBINTL)
 
 libextractor_gif_la_SOURCES = \
   gif_extractor.c 
@@ -230,7 +239,6 @@ libextractor_thumbnailgtk_la_SOURCES = \
 
 
 OLD_LIBS = \
-  $(extraflac) \
   libextractor_flv.la \
   libextractor_id3v2.la \
   libextractor_id3v24.la \
@@ -251,17 +259,6 @@ OLD_LIBS = \
   libextractor_wav.la \
   libextractor_xm.la \
   libextractor_zip.la 
-
-if HAVE_FLAC
-libextractor_flac_la_SOURCES = \
-  flacextractor.c
-libextractor_flac_la_LDFLAGS = \
-  $(PLUGINFLAGS)
-libextractor_flac_la_LIBADD = \
-  -lFLAC $(flacoggflag) \
-  $(top_builddir)/src/main/libextractor.la \
-  $(LE_LIBINTL)
-endif
 
 if HAVE_ZLIB
 libextractor_qt_la_SOURCES = \

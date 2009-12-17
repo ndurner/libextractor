@@ -1,6 +1,6 @@
 /*
      This file is part of libextractor.
-     (C) 2007 Vidyut Samanta and Christian Grothoff
+     (C) 2007, 2009 Vidyut Samanta and Christian Grothoff
 
      libextractor is free software; you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published
@@ -29,35 +29,14 @@
 #error You must install the libflac header files!
 #endif
 
-static char * xstrndup(const char * s, size_t n){
-  char * d;
-
-  d= malloc(n+1);
-  memcpy(d,s,n);
-  d[n]='\0';
-  return d;
-}
-
-static struct EXTRACTOR_Keywords *
-addKeyword (EXTRACTOR_KeywordType type,
-            char *keyword, struct EXTRACTOR_Keywords *next)
-{
-  EXTRACTOR_KeywordList *result;
-
-  if (keyword == NULL)
-    return next;
-  result = malloc (sizeof (EXTRACTOR_KeywordList));
-  result->next = next;
-  result->keyword = keyword;
-  result->keywordType = type;
-  return result;
-}
 
 struct Context {
   const char * data;
   size_t size;
-  struct EXTRACTOR_Keywords * prev;
   size_t pos;
+  EXTRACTOR_MetaDataProcessor proc;
+  void *proc_cls;
+  int ret;
 };
 
 static FLAC__StreamDecoderReadStatus
@@ -127,38 +106,52 @@ flac_write(const FLAC__StreamDecoder *decoder, const FLAC__Frame *frame, const F
 
 typedef struct
 {
-  char *text;
-  EXTRACTOR_KeywordType type;
+  const char *text;
+  enum EXTRACTOR_MetaType type;
 } Matches;
 
 static Matches tmap[] = {
-  {"TITLE", EXTRACTOR_TITLE},
-  {"VERSION", EXTRACTOR_VERSION},
-  {"ALBUM", EXTRACTOR_ALBUM},
-  {"ARTIST", EXTRACTOR_ARTIST},
-  {"PERFORMER", EXTRACTOR_INTERPRET},
-  {"COPYRIGHT", EXTRACTOR_COPYRIGHT},
-  {"LICENSE", EXTRACTOR_LICENSE},
-  {"ORGANIZATION", EXTRACTOR_ORGANIZATION},
-  {"DESCRIPTION", EXTRACTOR_DESCRIPTION},
-  {"GENRE", EXTRACTOR_GENRE},
-  {"DATE", EXTRACTOR_DATE},
-  {"LOCATION", EXTRACTOR_LOCATION},
-  {"CONTACT", EXTRACTOR_CONTACT}, 
-  {"TRACKNUMBER", EXTRACTOR_TRACK_NUMBER},
-  {"ISRC", EXTRACTOR_ISRC},
+  {"TITLE", EXTRACTOR_METATYPE_TITLE},
+  {"VERSION", EXTRACTOR_METATYPE_SONG_VERSION},
+  {"ALBUM", EXTRACTOR_METATYPE_ALBUM},
+  {"ARTIST", EXTRACTOR_METATYPE_ARTIST},
+  {"PERFORMER", EXTRACTOR_METATYPE_PERFORMER},
+  {"COPYRIGHT", EXTRACTOR_METATYPE_COPYRIGHT},
+  {"LICENSE", EXTRACTOR_METATYPE_LICENSE},
+  {"ORGANIZATION", EXTRACTOR_METATYPE_ORGANIZATION},
+  {"DESCRIPTION", EXTRACTOR_METATYPE_DESCRIPTION},
+  {"GENRE", EXTRACTOR_METATYPE_GENRE},
+  {"DATE", EXTRACTOR_METATYPE_CREATION_DATE},
+  {"LOCATION", EXTRACTOR_METATYPE_LOCATION_SUBLOCATION},
+  {"CONTACT", EXTRACTOR_METATYPE_CONTACT_INFORMATION}, 
+  {"TRACKNUMBER", EXTRACTOR_METATYPE_TRACK_NUMBER},
+  {"ISRC", EXTRACTOR_METATYPE_ISRC},
   {NULL, 0},
 };
 
 
-static EXTRACTOR_KeywordList *
+static char * xstrndup(const char * s, size_t n){
+  char * d;
+
+  d= malloc(n+1);
+  memcpy(d,s,n);
+  d[n]='\0';
+  return d;
+}
+
+#define ADD(t,s) do { if (ctx->ret == 0) ctx->ret = ctx->proc (ctx->proc_cls, "flac", t, EXTRACTOR_METAFORMAT_UTF8, "text/plain", s, strlen(s)+1); } while (0)
+
+
+static void
 check(const char * type,
       unsigned int type_length,
       const char * value,
       unsigned int value_length,
-      EXTRACTOR_KeywordList * prev)
+      struct Context *ctx)
 {
   unsigned int i;
+  char *tmp;
+
   i = 0;
   while (tmap[i].text != NULL) 
     {
@@ -166,17 +159,22 @@ check(const char * type,
 	   (0 == strncasecmp(tmap[i].text,
 			     type,
 			     type_length)) )
-	return addKeyword(tmap[i].type,
-			  xstrndup(value,
-				  value_length),
-			  prev);
+	{
+	  tmp = xstrndup(value,
+			 value_length);
+	  ADD (tmap[i].type, tmp);
+	  free (tmp);
+	  break;
+	}
       i++;
     }
-  return prev;
 }
 
+
 static void 
-flac_metadata(const FLAC__StreamDecoder *decoder, const FLAC__StreamMetadata *metadata, void *client_data) 
+flac_metadata(const FLAC__StreamDecoder *decoder,
+	      const FLAC__StreamMetadata *metadata, 
+	      void *client_data) 
 {
   struct Context * ctx = client_data;
   
@@ -189,9 +187,7 @@ flac_metadata(const FLAC__StreamDecoder *decoder, const FLAC__StreamMetadata *me
 		_("%u Hz, %u channels"), 
 		metadata->data.stream_info.sample_rate,
 		metadata->data.stream_info.channels); 
-	ctx->prev = addKeyword(EXTRACTOR_FORMAT,
-			       strdup(buf),
-			       ctx->prev);
+	ADD (EXTRACTOR_METATYPE_RESOURCE_TYPE, buf);
 	break;
       }
     case FLAC__METADATA_TYPE_APPLICATION:
@@ -225,24 +221,64 @@ flac_metadata(const FLAC__StreamDecoder *decoder, const FLAC__StreamMetadata *me
 		 (ilen == len) )
 	      break;
 	    eq++;
-	    ctx->prev = check((const char*) entry->entry,
-			      ilen,
-			      eq,
-			      len - ilen,
-			      ctx->prev);		  
+	    check((const char*) entry->entry,
+		  ilen,
+		  eq,
+		  len - ilen,
+		  ctx);		  
 	  }
 	break;
       }
     case FLAC__METADATA_TYPE_PICTURE:
       {
-	FLAC__byte * data = metadata->data.picture.data;
-	FLAC__uint32 length = metadata->data.picture.data_length;
-	char * enc;
-	
-	enc = EXTRACTOR_binaryEncode(data, length);
-	ctx->prev = addKeyword(EXTRACTOR_THUMBNAILS,
-			       enc,
-			       ctx->prev);	
+	if (ctx->ret == 0)
+	  {
+	    enum EXTRACTOR_MetaType type;
+	    switch (metadata->data.picture.type)
+	      {
+	      case FLAC__STREAM_METADATA_PICTURE_TYPE_OTHER:
+	      case FLAC__STREAM_METADATA_PICTURE_TYPE_FILE_ICON_STANDARD:
+	      case FLAC__STREAM_METADATA_PICTURE_TYPE_FILE_ICON:
+		type = EXTRACTOR_METATYPE_THUMBNAIL; 
+		break;
+	      case FLAC__STREAM_METADATA_PICTURE_TYPE_FRONT_COVER:
+	      case FLAC__STREAM_METADATA_PICTURE_TYPE_BACK_COVER:
+		type = EXTRACTOR_METATYPE_COVER_PICTURE; 
+		break;
+	      case FLAC__STREAM_METADATA_PICTURE_TYPE_LEAD_ARTIST:
+	      case FLAC__STREAM_METADATA_PICTURE_TYPE_ARTIST:
+	      case FLAC__STREAM_METADATA_PICTURE_TYPE_CONDUCTOR:
+	      case FLAC__STREAM_METADATA_PICTURE_TYPE_BAND:
+	      case FLAC__STREAM_METADATA_PICTURE_TYPE_COMPOSER:
+	      case FLAC__STREAM_METADATA_PICTURE_TYPE_LYRICIST:
+		type = EXTRACTOR_METATYPE_CONTRIBUTOR_PICTURE; 
+		break;
+	      case FLAC__STREAM_METADATA_PICTURE_TYPE_RECORDING_LOCATION:
+	      case FLAC__STREAM_METADATA_PICTURE_TYPE_DURING_RECORDING:
+	      case FLAC__STREAM_METADATA_PICTURE_TYPE_DURING_PERFORMANCE:
+	      case FLAC__STREAM_METADATA_PICTURE_TYPE_VIDEO_SCREEN_CAPTURE:
+		type = EXTRACTOR_METATYPE_EVENT_PICTURE; 
+		break;
+	      case FLAC__STREAM_METADATA_PICTURE_TYPE_BAND_LOGOTYPE:
+	      case FLAC__STREAM_METADATA_PICTURE_TYPE_PUBLISHER_LOGOTYPE:
+		type = EXTRACTOR_METATYPE_LOGO;
+		break;
+	      case FLAC__STREAM_METADATA_PICTURE_TYPE_LEAFLET_PAGE:
+	      case FLAC__STREAM_METADATA_PICTURE_TYPE_MEDIA:
+	      case FLAC__STREAM_METADATA_PICTURE_TYPE_FISH:
+	      case FLAC__STREAM_METADATA_PICTURE_TYPE_ILLUSTRATION:
+	      default:
+		type = EXTRACTOR_METATYPE_PICTURE;
+		break;		
+	      }
+	    ctx->ret = ctx->proc (ctx->proc_cls, 
+				  "flac", 
+				  type,
+				  EXTRACTOR_METAFORMAT_BINARY,
+				  metadata->data.picture.mime_type,
+				  (const char*) metadata->data.picture.data,
+				  metadata->data.picture.data_length);
+	  }
 	break;
       }
     case FLAC__METADATA_TYPE_PADDING:
@@ -263,34 +299,38 @@ flac_error(const FLAC__StreamDecoder *decoder, FLAC__StreamDecoderErrorStatus st
 }
 
 /* mimetype = audio/flac */
-struct EXTRACTOR_Keywords *
-libextractor_flac_extract (const char *filename,
-			   const char *data,
-			   size_t size, struct EXTRACTOR_Keywords *prev)
+int 
+EXTRACTOR_flac_extract (const char *data,
+			size_t size,
+			EXTRACTOR_MetaDataProcessor proc,
+			void *proc_cls,
+			const char *options)
 {
   FLAC__StreamDecoder * decoder;
   struct Context le_cls;
+  struct Context *ctx;
 
   if (size < strlen(FLAC_HEADER) + sizeof (int))    
-    return prev;    
+    return 0;    
   if (0 != memcmp(FLAC_HEADER,
 		  data,
 		  strlen(FLAC_HEADER)))
-    return prev;
+    return 0;
   decoder = FLAC__stream_decoder_new();
   if (NULL == decoder)
-    return prev;
+    return 0;
   FLAC__stream_decoder_set_md5_checking(decoder, false);
   FLAC__stream_decoder_set_metadata_ignore_all(decoder);
   if (false == FLAC__stream_decoder_set_metadata_respond_all(decoder))
     {
       FLAC__stream_decoder_delete(decoder);     
-      return prev;
+      return 0;
     }
-  le_cls.prev = prev;
-  le_cls.prev = prev;
+  le_cls.ret = 0;
   le_cls.size = size;
   le_cls.data = data;
+  le_cls.proc = proc;
+  le_cls.proc_cls = proc_cls;
   le_cls.pos = 0;
   if (FLAC__STREAM_DECODER_INIT_STATUS_OK !=
       FLAC__stream_decoder_init_stream(decoder,
@@ -305,33 +345,32 @@ libextractor_flac_extract (const char *filename,
 				       &le_cls))
     {
       FLAC__stream_decoder_delete(decoder);     
-      return le_cls.prev;
+      return le_cls.ret;
     }
   if (FLAC__stream_decoder_get_state(decoder) != FLAC__STREAM_DECODER_SEARCH_FOR_METADATA)
     {
       FLAC__stream_decoder_delete(decoder);     
-      return le_cls.prev;
+      return le_cls.ret;
     }
   if (! FLAC__stream_decoder_process_until_end_of_metadata(decoder))
     {
       FLAC__stream_decoder_delete(decoder);     
-      return le_cls.prev;
+      return le_cls.ret;
     }
   switch (FLAC__stream_decoder_get_state(decoder))
-   {
-   case FLAC__STREAM_DECODER_SEARCH_FOR_FRAME_SYNC:
-   case FLAC__STREAM_DECODER_READ_METADATA:
-   case FLAC__STREAM_DECODER_END_OF_STREAM:
-   case FLAC__STREAM_DECODER_READ_FRAME:
-     le_cls.prev = addKeyword(EXTRACTOR_MIMETYPE,
-			      strdup("audio/flac"),
-			      le_cls.prev);
-     break;
-   default:
-     /* not so sure... */
-     break;
-   }
+    {
+    case FLAC__STREAM_DECODER_SEARCH_FOR_FRAME_SYNC:
+    case FLAC__STREAM_DECODER_READ_METADATA:
+    case FLAC__STREAM_DECODER_END_OF_STREAM:
+    case FLAC__STREAM_DECODER_READ_FRAME:
+      ctx = &le_cls;
+      ADD (EXTRACTOR_METATYPE_MIMETYPE, "audio/flac");
+      break;
+    default:
+      /* not so sure... */
+      break;
+    }
   FLAC__stream_decoder_finish (decoder); 
   FLAC__stream_decoder_delete(decoder);
-  return le_cls.prev;
+  return le_cls.ret;
 }
