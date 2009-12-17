@@ -475,7 +475,7 @@ mp3parse (const unsigned char *data, size_t size,
 }
 
 
-#define ADD(s,t) do { if (0 != proc (proc_cls, "mp3", t, EXTRACTOR_METAFORMAT_UTF8, "text/plain", s, strlen(s)+1)) goto FINISH; } while (0)
+#define ADD(s,t) do { if (0 != (ret = proc (proc_cls, "mp3", t, EXTRACTOR_METAFORMAT_UTF8, "text/plain", s, strlen(s)+1))) goto FINISH; } while (0)
 
 
 /* mimetype = audio/mpeg */

@@ -80,8 +80,9 @@ plugin_LTLIBRARIES = \
   libextractor_man.la \
   libextractor_mime.la \
   libextractor_mp3.la \
-  $(ole2) \
   libextractor_odf.la \
+  $(ogg) \
+  $(ole2) \
   $(pdf) \
   $(rpm) \
   $(thumbgtk)
@@ -171,6 +172,21 @@ libextractor_mp3_la_LIBADD = \
   $(top_builddir)/src/common/libextractor_common.la \
   $(LE_LIBINTL)
 
+libextractor_odf_la_SOURCES = \
+  odf_extractor.c
+libextractor_odf_la_LDFLAGS = \
+ $(PLUGINFLAGS)
+libextractor_odf_la_LIBADD = \
+ $(top_builddir)/src/common/libextractor_common.la \
+ -lz 
+
+libextractor_ogg_la_SOURCES = \
+  ogg_extractor.c
+libextractor_ogg_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+libextractor_ogg_la_LIBADD = \
+  -lvorbisfile $(vorbisflag) -logg
+
 libextractor_ole2_la_SOURCES =  \
   ole2_extractor.c
 libextractor_ole2_la_CFLAGS = \
@@ -180,14 +196,6 @@ libextractor_ole2_la_LIBADD = \
   $(top_builddir)/src/common/libextractor_common.la 
 libextractor_ole2_la_LDFLAGS = \
   $(PLUGINFLAGS) 
-
-libextractor_odf_la_SOURCES = \
-  odf_extractor.c
-libextractor_odf_la_LDFLAGS = \
- $(PLUGINFLAGS)
-libextractor_odf_la_LIBADD = \
- $(top_builddir)/src/common/libextractor_common.la \
- -lz 
 
 libextractor_pdf_la_SOURCES = \
   pdf_extractor.cc 
@@ -230,7 +238,6 @@ OLD_LIBS = \
   $(extrampeg) \
   libextractor_nsf.la \
   libextractor_nsfe.la \
-  $(extraogg) \
   libextractor_png.la \
   libextractor_ps.la \
   $(extraqt) \
@@ -244,16 +251,6 @@ OLD_LIBS = \
   libextractor_wav.la \
   libextractor_xm.la \
   libextractor_zip.la 
-
-if HAVE_VORBISFILE
-libextractor_ogg_la_SOURCES = \
-  oggextractor.c
-libextractor_ogg_la_LDFLAGS = \
-  $(PLUGINFLAGS)
-libextractor_ogg_la_LIBADD = \
-  -lvorbisfile $(vorbisflag) -logg
-endif
-
 
 if HAVE_FLAC
 libextractor_flac_la_SOURCES = \
