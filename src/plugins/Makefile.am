@@ -90,7 +90,8 @@ plugin_LTLIBRARIES = \
   libextractor_real.la \
   $(rpm) \
   $(thumbgtk) \
-  libextractor_wav.la 
+  libextractor_wav.la \
+  libextractor_zip.la
 
 libextractor_applefile_la_SOURCES = \
   applefile_extractor.c
@@ -260,6 +261,11 @@ libextractor_wav_la_LDFLAGS = \
 libextractor_wav_la_LIBADD = \
   $(LE_LIBINTL)
 
+libextractor_zip_la_SOURCES = \
+  zip_extractor.c
+libextractor_zip_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+
 EXTRA_DIST = template_extractor.c 
 
 
@@ -338,13 +344,6 @@ libextractor_tiff_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_tiff_la_LIBADD = \
   $(top_builddir)/src/common/libextractor_common.la
-
-libextractor_zip_la_SOURCES = \
-  zipextractor.c
-libextractor_zip_la_LDFLAGS = \
-  $(PLUGINFLAGS)
-libextractor_zip_la_LIBADD = \
-  $(top_builddir)/src/main/libextractor.la
 
 libextractor_riff_la_SOURCES = \
   riffextractor.c 

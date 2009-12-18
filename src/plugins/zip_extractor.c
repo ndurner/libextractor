@@ -40,7 +40,7 @@
   
 /*
  * This file is part of libextractor.
- * (C) 2002, 2003 Vidyut Samanta and Christian Grothoff
+ * (C) 2002, 2003, 2009 Vidyut Samanta and Christian Grothoff
  *
  * libextractor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published
@@ -77,10 +77,14 @@
  } zip_entry;
 
 /* mimetype = application/zip */ 
-struct EXTRACTOR_Keywords *
-libextractor_zip_extract (const char *filename, const unsigned char *data,
-                          size_t size, struct EXTRACTOR_Keywords *prev)
+int 
+EXTRACTOR_zip_extract (const unsigned char *data,
+		       size_t size,
+		       EXTRACTOR_MetaDataProcessor proc,
+		       void *proc_cls,
+		       const char *options)
 {
+  int ret;
   void *tmp;
   zip_entry * info;
   zip_entry * start;
@@ -90,28 +94,13 @@ libextractor_zip_extract (const char *filename, const unsigned char *data,
   unsigned int name_length, extra_length, comment_length;
   unsigned int filecomment_length;
   unsigned int entry_total, entry_count;
-  EXTRACTOR_KeywordList * keyword;
-  const char *mimetype;
-  mimetype = EXTRACTOR_extractLast (EXTRACTOR_MIMETYPE, prev);
-  if (NULL != mimetype)
-    {
-      if ((0 != strcmp (mimetype, "application/x-zip")) && 
-           (0 != strcmp (mimetype, "application/zip")))
-        {
-          
-            /* we think we already know what's in here,
-               and it is not a zip */ 
-            return prev;
-        }
-    }
-  
-    /* I think the smallest zipfile you can have is about 120 bytes */ 
-    if ((NULL == data) || (size < 100))
-    return prev;
-  if (!
-        (('P' == data[0]) && ('K' == data[1]) && (0x03 == data[2])
+
+  /* I think the smallest zipfile you can have is about 120 bytes */ 
+  if ((NULL == data) || (size < 100))
+    return 0;
+  if (! (('P' == data[0]) && ('K' == data[1]) && (0x03 == data[2])
          && (0x04 == data[3])))
-    return prev;
+    return 0;
   
     /* The filenames for each file in a zipfile are stored in two locations.
      * There is one at the start of each entry, just before the compressed data,
@@ -149,7 +138,7 @@ libextractor_zip_extract (const char *filename, const unsigned char *data,
      */ 
     
     /*  the signature can't be more than 22 bytes from the end */ 
-    offset = size - 22;
+  offset = size - 22;
   pos = &data[offset];
   stop = 0;
   if (((signed int) size - 65556) > 0)
@@ -158,8 +147,7 @@ libextractor_zip_extract (const char *filename, const unsigned char *data,
     /* not using int 0x06054b50 so that we don't have to deal with endianess issues.
        break out if we go more than 64K backwards and havn't found it, or if we hit the
        begining of the file. */ 
-    while ((!
-             (('P' == pos[0]) && ('K' == pos[1]) && (0x05 == pos[2])
+    while ((!(('P' == pos[0]) && ('K' == pos[1]) && (0x05 == pos[2])
               && (0x06 == pos[3]))) && (offset > stop))
     pos = &data[offset--];
   if (offset == stop)
@@ -171,7 +159,7 @@ libextractor_zip_extract (const char *filename, const unsigned char *data,
                  offset);
       
 #endif  /*  */
-        return prev;
+        return 0;
     }
   
     /* offset should now point to the start of the end-of-central directory structure */ 
@@ -180,7 +168,7 @@ libextractor_zip_extract (const char *filename, const unsigned char *data,
     filecomment_length = pos[20] + (pos[21] << 8);
   if (filecomment_length + offset + 22 > size)
     {
-      return prev;             /* invalid zip file format! */
+      return 0;             /* invalid zip file format! */
     }
   filecomment = NULL;
   if (filecomment_length > 0)
@@ -221,9 +209,9 @@ libextractor_zip_extract (const char *filename, const unsigned char *data,
     {
       
         /* not a zip */ 
-        if (filecomment != NULL)
+      if (filecomment != NULL)
         free (filecomment);
-      return prev;
+      return 0;
     }
   pos = &data[offset];         /* jump */
   
@@ -253,8 +241,7 @@ libextractor_zip_extract (const char *filename, const unsigned char *data,
      *   ?- ?  extra field (variable size)
      *   ?- ?  file comment (variable size)
      */ 
-    if (!
-         (('P' == pos[0]) && ('K' == pos[1]) && (0x01 == pos[2])
+    if (!(('P' == pos[0]) && ('K' == pos[1]) && (0x01 == pos[2])
           && (0x02 == pos[3])))
     {
       
@@ -263,10 +250,10 @@ libextractor_zip_extract (const char *filename, const unsigned char *data,
                  "Did not find central directory structure signature. offset: %i\n",
                  offset);
       
-#endif  /*  */
+#endif
         if (filecomment != NULL)
-        free (filecomment);
-      return prev;
+	  free (filecomment);
+	return 0;
     }
   start = NULL;
   info = NULL;
@@ -341,7 +328,7 @@ libextractor_zip_extract (const char *filename, const unsigned char *data,
             }
           if (filecomment != NULL)
             free (filecomment);
-          return prev;
+          return 0;
         }
     }
   while ((0x01 == pos[2]) && (0x02 == pos[3]));
@@ -360,58 +347,64 @@ libextractor_zip_extract (const char *filename, const unsigned char *data,
 #endif  /*  */
     }
   
-    /* I'm only putting this in the else clause so that keyword has a local scope */ 
-    keyword  = malloc (sizeof (EXTRACTOR_KeywordList));
-  keyword->next = prev;
-  keyword->keyword = strdup ("application/zip");
-  keyword->keywordType = EXTRACTOR_MIMETYPE;
-  prev = keyword;
-  if (filecomment != NULL)
+  ret = proc (proc_cls,
+	      "zip",
+	      EXTRACTOR_METATYPE_MIMETYPE,
+	      EXTRACTOR_METAFORMAT_UTF8,
+	      "text/plain",
+	      "application/zip",
+	      strlen ("application/zip")+1);
+  if ( (filecomment != NULL) && (ret != 0) )
     {
-      EXTRACTOR_KeywordList * kw  = malloc (sizeof (EXTRACTOR_KeywordList));
-      kw->next = prev;
-      kw->keyword = strdup (filecomment);
-      kw->keywordType = EXTRACTOR_COMMENT;
-      prev = kw;
-      free (filecomment);
+      ret = proc (proc_cls,
+		  "zip",
+		  EXTRACTOR_METATYPE_MIMETYPE,
+		  EXTRACTOR_METAFORMAT_UTF8,
+		  "text/plain",
+		  filecomment,
+		  strlen (filecomment)+1);
     }
+  free (filecomment);
+
   
-    /* if we've gotten to here then there is at least one zip entry (see get_zipinfo call above) */ 
-    /* note: this free()'s the info list as it goes */ 
-    info = start;
+  /* if we've gotten to here then there is at least one zip entry (see get_zipinfo call above) */ 
+  /* note: this free()'s the info list as it goes */ 
+  info = start;
   while (NULL != info)
     {
       if (info->filename != NULL)
         {
-          if (strlen (info->filename))
+          if ( (ret == 0) && (strlen (info->filename)) )
             {
-              EXTRACTOR_KeywordList * keyword =
-                malloc (sizeof (EXTRACTOR_KeywordList));
-              keyword->next = prev;
-              keyword->keyword = strdup (info->filename);
-              keyword->keywordType = EXTRACTOR_FILENAME;
-              prev = keyword;
+	      ret = proc (proc_cls,
+			  "zip",
+			  EXTRACTOR_METATYPE_FILENAME,
+			  EXTRACTOR_METAFORMAT_UTF8,
+			  "text/plain",
+			  info->filename,
+			  strlen (info->filename)+1);
             }
-          free (info->filename);
         }
       if (info->comment != NULL)
 	{
-	  if (strlen (info->comment) > 0)
+	  if ( (ret == 0) && (strlen (info->comment) > 0) )
 	    {
-	      EXTRACTOR_KeywordList * keyword =
-		malloc (sizeof (EXTRACTOR_KeywordList));
-	      keyword->next = prev;
-	      keyword->keyword = strdup (info->comment);
-	      keyword->keywordType = EXTRACTOR_COMMENT;
-	      prev = keyword;
+	      ret = proc (proc_cls,
+			  "zip",
+			  EXTRACTOR_METATYPE_FILENAME,
+			  EXTRACTOR_METAFORMAT_UTF8,
+			  "text/plain",
+			  info->comment,
+			  strlen (info->comment)+1);
 	    }
-	  free (info->comment);
 	}
+      free (info->filename);
+      free (info->comment);
       tmp = info;
       info = info->next;
       free (tmp);
     }
-  return prev;
+  return ret;
 }
 
 
