@@ -88,6 +88,7 @@ plugin_LTLIBRARIES = \
   $(ole2) \
   $(pdf) \
   libextractor_png.la \
+  libextractor_ps.la \
   libextractor_real.la \
   $(rpm) \
   libextractor_tar.la \
@@ -243,6 +244,11 @@ libextractor_png_la_LIBADD = \
   $(top_builddir)/src/common/libextractor_common.la \
   -lz
 
+libextractor_ps_la_SOURCES = \
+  ps_extractor.c
+libextractor_ps_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+
 libextractor_real_la_SOURCES = \
   real_extractor.c 
 libextractor_real_la_LDFLAGS = \
@@ -297,7 +303,6 @@ OLD_LIBS = \
   $(extrampeg) \
   libextractor_nsf.la \
   libextractor_nsfe.la \
-  libextractor_ps.la \
   $(extraqt) \
   libextractor_riff.la \
   libextractor_s3m.la \
@@ -317,12 +322,6 @@ libextractor_qt_la_LIBADD = \
   -lz
 endif
 
-libextractor_ps_la_SOURCES = \
-  psextractor.c
-libextractor_ps_la_LDFLAGS = \
-  $(PLUGINFLAGS)
-libextractor_ps_la_LIBADD = \
-  $(top_builddir)/src/main/libextractor.la
 
 libextractor_id3v2_la_SOURCES = \
   id3v2extractor.c 

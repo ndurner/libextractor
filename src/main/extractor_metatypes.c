@@ -358,8 +358,8 @@ static const struct MetaTypeDescription meta_type_descriptions[] = {
   /* 145 */
   { gettext_noop ("warning"),
     gettext_noop ("warning about the nature of the content") }, 
-  { gettext_noop (""),
-    gettext_noop ("") }, 
+  { gettext_noop ("page order"),
+    gettext_noop ("order of the pages") }, 
   { gettext_noop (""),
     gettext_noop ("") }, 
   { gettext_noop (""),

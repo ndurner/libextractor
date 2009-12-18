@@ -275,7 +275,7 @@ enum EXTRACTOR_MetaType
     EXTRACTOR_METATYPE_SOURCE_DEVICE = 143,
     EXTRACTOR_METATYPE_DISCLAIMER = 144,
     EXTRACTOR_METATYPE_WARNING = 145,
-
+    EXTRACTOR_METATYPE_PAGE_ORDER = 146,
 
     /* fixme: used up to here! */
 
@@ -295,7 +295,6 @@ enum EXTRACTOR_MetaType
 
     /* FIXME: transcribe & renumber those below */
     EXTRACTOR_METATYPE_USED_FONTS = 37,
-    EXTRACTOR_METATYPE_PAGE_ORDER = 38,
 
 
     /* numeric metrics */
