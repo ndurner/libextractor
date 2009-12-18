@@ -1,6 +1,6 @@
 /*
      This file is part of libextractor.
-     (C) 2002, 2003, 2004 Vidyut Samanta and Christian Grothoff
+     (C) 2002, 2003, 2004, 2009 Vidyut Samanta and Christian Grothoff
 
      libextractor is free software; you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published
@@ -21,26 +21,21 @@
 #include "platform.h"
 #include "extractor.h"
 
-static EXTRACTOR_KeywordList *
-addKeyword (EXTRACTOR_KeywordType type,
-            char *keyword, EXTRACTOR_KeywordList * next)
+int 
+EXTRACTOR_template_extract (const unsigned char *data,
+			    size_t size,
+			    EXTRACTOR_MetaDataProcessor proc,
+			    void *proc_cls,
+			    const char *options)
 {
-  EXTRACTOR_KeywordList *result;
-
-  if (keyword == NULL)
-    return next;
-  result = malloc (sizeof (EXTRACTOR_KeywordList));
-  result->next = next;
-  result->keyword = keyword;
-  result->keywordType = type;
-  return result;
-}
-
-struct EXTRACTOR_Keywords *
-libextractor_TEMPLATE_extract (const char *filename,
-                               char *data,
-                               size_t size, struct EXTRACTOR_Keywords *prev)
-{
-
-  return prev;
+  if (0 != proc (proc_cls,
+		 "template",
+		 EXTRACTOR_METATYPE_RESERVED,
+		 EXTRACTOR_METAFORMAT_UTF8,
+		 "text/plain",
+		 "foo",
+		 strlen ("foo")+1))
+    return 1;
+  /* insert more here */
+  return 0;
 }

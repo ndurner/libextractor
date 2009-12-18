@@ -260,7 +260,7 @@ libextractor_wav_la_LDFLAGS = \
 libextractor_wav_la_LIBADD = \
   $(LE_LIBINTL)
 
-
+EXTRA_DIST = template_extractor.c 
 
 
 
