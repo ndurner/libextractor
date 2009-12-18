@@ -31,21 +31,6 @@
 
 #define FLV_SIGNATURE "FLV"
 
-static struct EXTRACTOR_Keywords *
-addKeyword (EXTRACTOR_KeywordType type,
-            char *keyword, struct EXTRACTOR_Keywords *next)
-{
-  EXTRACTOR_KeywordList *result;
-
-  if (keyword == NULL)
-    return next;
-  result = malloc (sizeof (EXTRACTOR_KeywordList));
-  result->next = next;
-  result->keyword = keyword;
-  result->keywordType = type;
-  return result;
-}
-
 /*
  * AMF parser
  */
@@ -624,26 +609,28 @@ static MetaKeyToStreamAttribute key_to_attribute_map[] = {
 
 typedef struct {
   const char *key;
-  EXTRACTOR_KeywordType type;
+  enum EXTRACTOR_MetaType type;
 } MetaKeyToExtractorItem;
 
 static MetaKeyToExtractorItem key_to_extractor_map[] = {
-  { "duration", EXTRACTOR_DURATION },
-  { "creator", EXTRACTOR_CREATOR },
-  { "metadatacreator", EXTRACTOR_CREATOR },
-  { "creationdate", EXTRACTOR_CREATION_DATE },
-  { "metadatadate", EXTRACTOR_MODIFICATION_DATE },
-  { NULL, EXTRACTOR_UNKNOWN }
+  { "duration", EXTRACTOR_METATYPE_DURATION },
+  { "creator", EXTRACTOR_METATYPE_CREATOR },
+  { "metadatacreator", EXTRACTOR_METATYPE_CREATOR },
+  { "creationdate", EXTRACTOR_METATYPE_CREATION_DATE },
+  { "metadatadate", EXTRACTOR_METATYPE_MODIFICATION_DATE },
+  { NULL, EXTRACTOR_METATYPE_RESERVED }
 };
 
 typedef struct {
   int onMetaData;
   int parsingDepth;
+  int ret;
   /* mixed array keys mapped to something readily usable */
-  EXTRACTOR_KeywordType currentKeyType;
+  enum EXTRACTOR_MetaType currentKeyType;
   FLVStreamAttribute currentAttribute;
 
-  struct EXTRACTOR_Keywords *keywords;
+  EXTRACTOR_MetaDataProcessor proc;
+  void *proc_cls;
   FLVStreamInfo *streamInfo;
 } FLVMetaParserState;
 
@@ -684,10 +671,11 @@ static void handleASKey(char * key, void * userdata)
 static void handleASEnd(unsigned char type, void * value, void * userdata)
 {
   FLVMetaParserState *state = (FLVMetaParserState *)userdata;
-  char *s;
+  const char *s;
+  char tmpstr[30];
 
   if ((state->parsingDepth == 0) && (type == ASTYPE_STRING)) {
-    s = (char *)value;
+    s = (const char *)value;
     if (!strcmp(s, "onMetaData"))
       state->onMetaData = 1;
   }
@@ -751,7 +739,7 @@ static void handleASEnd(unsigned char type, void * value, void * userdata)
       (state->currentAttribute != FLV_NONE) &&
       (type == ASTYPE_STRING))
   {
-    s = (char *)value;
+    s = (const char *)value;
     switch (state->currentAttribute) {
       case FLV_VCODECID:
         if (s != NULL && state->streamInfo->videoCodecStr == NULL &&
@@ -779,20 +767,18 @@ static void handleASEnd(unsigned char type, void * value, void * userdata)
 
   /* metadata that maps straight to extractor keys */
   if (state->onMetaData && (state->parsingDepth == 1) &&
-      (state->currentKeyType != EXTRACTOR_UNKNOWN))
+      (state->currentKeyType != EXTRACTOR_METATYPE_RESERVED))
   {
     s = NULL;
     switch (type) {
       case ASTYPE_NUMBER:
       {
         double n = *((double *)value);
-        s = malloc(30);
-	if (s == NULL)
-	  break;
-	if (state->currentKeyType == EXTRACTOR_DURATION)
-          snprintf(s, 30, "%.2f s", n);
+        s = tmpstr;
+	if (state->currentKeyType == EXTRACTOR_METATYPE_DURATION)
+          snprintf(tmpstr, sizeof(tmpstr), "%.2f s", n);
 	else
-          snprintf(s, 30, "%f", n);
+          snprintf(tmpstr, sizeof(tmpstr), "%f", n);
 	break;
       }
       case ASTYPE_STRING:
@@ -809,20 +795,22 @@ static void handleASEnd(unsigned char type, void * value, void * userdata)
 	short *tz;
         millis = (double *)tmp[0];
 	tz = (short *)tmp[1];
-	s = malloc(30);
-	if (s == NULL)
-	  break;
-	flv_to_iso_date(*millis, *tz, s, 30);
+	s = tmpstr;
+	flv_to_iso_date(*millis, *tz, tmpstr, sizeof(tmpstr));
         break;
       }
     }
-
-    if (s != NULL)
-      state->keywords = addKeyword (state->currentKeyType,
-                                    s,
-                                    state->keywords);
+    if ( (s != NULL) &&
+	 (state->ret == 0) )
+      state->ret = state->proc (state->proc_cls,
+				"flv",
+				state->currentKeyType,
+				EXTRACTOR_METAFORMAT_UTF8,
+				"text/plain",
+				s,
+				strlen (s) + 1);
   }
-  state->currentKeyType = EXTRACTOR_UNKNOWN;
+  state->currentKeyType = EXTRACTOR_METATYPE_RESERVED;
   state->currentAttribute = FLV_NONE;
 
   if (type == ASTYPE_ARRAY || type == ASTYPE_MIXEDARRAY ||
@@ -830,27 +818,31 @@ static void handleASEnd(unsigned char type, void * value, void * userdata)
     state->parsingDepth--;
 }
 
-static struct EXTRACTOR_Keywords *
+static int
 handleMetaBody(const unsigned char *data, size_t len,
-                FLVStreamInfo *stinfo,
-                struct EXTRACTOR_Keywords *prev)
+	       FLVStreamInfo *stinfo,
+	       EXTRACTOR_MetaDataProcessor proc,
+	       void *proc_cls)
 {
   AMFParserHandler handler;
   FLVMetaParserState pstate;
 
   pstate.onMetaData = 0;
-  pstate.currentKeyType = EXTRACTOR_UNKNOWN;
+  pstate.currentKeyType = EXTRACTOR_METATYPE_RESERVED;
   pstate.parsingDepth = 0;
-  pstate.keywords = prev;
   pstate.streamInfo = stinfo;
+  pstate.ret = 0;
+  pstate.proc = proc;
+  pstate.proc_cls = proc_cls;
   handler.userdata = &pstate;
   handler.as_begin_callback = &handleASBegin;
   handler.as_key_callback = &handleASKey;
   handler.as_end_callback = &handleASEnd;
 
   while (len > 0 && parse_amf(&data, &len, &handler) == 0);
-
-  return pstate.keywords;
+  if (pstate.ret != 0)
+    return 1;
+  return 0;
 }
 
 static char *FLVAudioCodecs[] = {
@@ -885,10 +877,9 @@ static char *FLVAudioSampleRates[] = {
   "44100"
 };
 
-static struct EXTRACTOR_Keywords *
+static void
 handleAudioBody(const unsigned char *data, size_t len,
-                FLVStreamInfo *stinfo,
-                struct EXTRACTOR_Keywords *prev)
+                FLVStreamInfo *stinfo)
 {
   stinfo->audioChannels = (*data & 0x01) + 1;
   stinfo->audioSampleBits = (*data & 0x02) >> 1;
@@ -898,8 +889,6 @@ handleAudioBody(const unsigned char *data, size_t len,
     free(stinfo->audioCodecStr);
     stinfo->audioCodecStr = NULL;
   }
-
-  return prev;
 }
 
 static char *FLVVideoCodecs[] = {
@@ -924,10 +913,9 @@ static int sorenson_predefined_res[][2] = {
   { -1, -1 }
 };
 
-static struct EXTRACTOR_Keywords *
+static void
 handleVideoBody(const unsigned char *data, size_t len,
-                FLVStreamInfo *stinfo,
-                struct EXTRACTOR_Keywords *prev)
+                FLVStreamInfo *stinfo)
 {
   int codecId, frameType;
 
@@ -1001,17 +989,17 @@ handleVideoBody(const unsigned char *data, size_t len,
     free(stinfo->videoCodecStr);
     stinfo->videoCodecStr = NULL;
   }
-  return prev;
 }
 
 static int readFLVTag(const unsigned char **data,
                       const unsigned char *end,
                       FLVStreamInfo *stinfo,
-                      struct EXTRACTOR_Keywords **list)
+		      EXTRACTOR_MetaDataProcessor proc,
+		      void *proc_cls)
 {
   const unsigned char *ptr = *data;
-  struct EXTRACTOR_Keywords *head = *list;
   FLVTagHeader header;
+  int ret = 0;
 
   if (readFLVTagHeader(&ptr, end, &header) == -1)
     return -1;
@@ -1022,23 +1010,21 @@ static int readFLVTag(const unsigned char **data,
   switch (header.type)
   {
     case FLV_TAG_TYPE_AUDIO:
-      head = handleAudioBody(ptr, header.bodyLength, stinfo, head);
+      handleAudioBody(ptr, header.bodyLength, stinfo);
       break;
     case FLV_TAG_TYPE_VIDEO:
-      head = handleVideoBody(ptr, header.bodyLength, stinfo, head);
+      handleVideoBody(ptr, header.bodyLength, stinfo);
       break;
     case FLV_TAG_TYPE_META:
-      head = handleMetaBody(ptr, header.bodyLength, stinfo, head);
+      ret = handleMetaBody(ptr, header.bodyLength, stinfo, proc, proc_cls);
       break;
     default:
       break;
   }
 
   ptr += header.bodyLength;
-
-  *list = head;
   *data = ptr;
-  return 0;
+  return ret;
 }
 
 #define MAX_FLV_FORMAT_LINE 80
@@ -1158,37 +1144,42 @@ static char * printAudioFormat(FLVStreamInfo *stinfo)
   return strdup(s);
 }
 
-struct EXTRACTOR_Keywords *
-libextractor_flv_extract (const char *filename,
-                          const unsigned char *data,
-                          const size_t size, struct EXTRACTOR_Keywords *prev)
+int 
+EXTRACTOR_flv_extract (const unsigned char *data,
+		       size_t size,
+		       EXTRACTOR_MetaDataProcessor proc,
+		       void *proc_cls,
+		       const char *options)
 {
-  struct EXTRACTOR_Keywords *result;
   const unsigned char *ptr;
   const unsigned char *end;
-
   FLVStreamInfo stinfo;
   FLVHeader header;
   unsigned long prev_tag_size;
   char *s;
+  int ret;
 
   ptr = data;
   end = ptr + size;
 
   if (readFLVHeader(&ptr, end, &header) == -1)
-    return prev;
+    return 0;
 
   if (memcmp(header.signature, FLV_SIGNATURE, 3) != 0)
-    return prev;
+    return 0;
 
-  result = prev;
-  result = addKeyword (EXTRACTOR_MIMETYPE, strdup ("video/x-flv"), result);
-
+  if (0 != proc (proc_cls,
+		 "flv",
+		 EXTRACTOR_METATYPE_MIMETYPE, 
+		 EXTRACTOR_METAFORMAT_UTF8,
+		 "text/plain",
+		 "video/x-flv",
+		 strlen ("video/x-flv") + 1))
+    return 0;
   if (header.version != 1)
-    return result;
-
+    return 0;
   if (readPreviousTagSize (&ptr, end, &prev_tag_size) == -1)
-    return result;
+    return 0;
 
   stinfo.videoCodec = -1;
   stinfo.videoCodecStr = NULL;
@@ -1202,19 +1193,46 @@ libextractor_flv_extract (const char *filename,
   stinfo.audioSampleBits = -1;
   stinfo.audioChannels = -1;
   stinfo.audioDataRate = 0.0;
+  ret = 0;
   while (ptr < end) {
-    if (readFLVTag (&ptr, end, &stinfo, &result) == -1)
+    if (-1 == (ret = readFLVTag (&ptr, end, &stinfo, proc, proc_cls)))
       break;
     if (readPreviousTagSize (&ptr, end, &prev_tag_size) == -1)
       break;
   }
-
+  if (1 == ret)
+    return 1;
   s = printVideoFormat (&stinfo);
   if (s != NULL)
-    result = addKeyword (EXTRACTOR_FORMAT, s, result);
+    {
+      if (0 != proc (proc_cls, 
+		     "flv",
+		     EXTRACTOR_METATYPE_RESOURCE_TYPE,
+		     EXTRACTOR_METAFORMAT_UTF8,
+		     "text/plain",
+		     s,
+		     strlen (s)+1))
+	{
+	  free (s);
+	  return 1;
+	}
+      free (s);
+    }
   s = printAudioFormat (&stinfo);
   if (s != NULL)
-    result = addKeyword (EXTRACTOR_FORMAT, s, result);
-
-  return result;
+    {
+      if (0 != proc (proc_cls, 
+		     "flv",
+		     EXTRACTOR_METATYPE_RESOURCE_TYPE,
+		     EXTRACTOR_METAFORMAT_UTF8,
+		     "text/plain",
+		     s,
+		     strlen (s)+1))
+	{
+	  free (s);
+	  return 1;
+	}
+      free (s);
+    }
+  return 0;
 }

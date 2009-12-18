@@ -74,6 +74,7 @@ plugin_LTLIBRARIES = \
   libextractor_elf.la \
   $(exiv2) \
   $(flac) \
+  libextractor_flv.la \
   libextractor_gif.la \
   libextractor_html.la \
   libextractor_it.la \
@@ -134,6 +135,13 @@ libextractor_flac_la_LDFLAGS = \
 libextractor_flac_la_LIBADD = \
   -lFLAC $(flacoggflag) \
   $(LE_LIBINTL)
+
+libextractor_flv_la_SOURCES = \
+  flv_extractor.c
+libextractor_flv_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+libextractor_flv_la_LIBADD = \
+  $(top_builddir)/src/common/libextractor_common.la
 
 libextractor_gif_la_SOURCES = \
   gif_extractor.c 
@@ -239,7 +247,6 @@ libextractor_thumbnailgtk_la_SOURCES = \
 
 
 OLD_LIBS = \
-  libextractor_flv.la \
   libextractor_id3v2.la \
   libextractor_id3v24.la \
   libextractor_id3v23.la \
@@ -324,13 +331,6 @@ libextractor_zip_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_zip_la_LIBADD = \
   $(top_builddir)/src/main/libextractor.la
-
-libextractor_flv_la_SOURCES = \
-  flvextractor.c
-libextractor_flv_la_LDFLAGS = \
-  $(PLUGINFLAGS)
-libextractor_flv_la_LIBADD = \
-  $(top_builddir)/src/common/libextractor_common.la
 
 libextractor_real_la_SOURCES = \
   realextractor.c 
