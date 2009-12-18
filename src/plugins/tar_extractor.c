@@ -35,72 +35,6 @@
  * (J. Schilling's remarks on TAR formats compatibility issues.)
  */
 
-static EXTRACTOR_KeywordList *
-addKeyword (EXTRACTOR_KeywordType type,
-            char *keyword, EXTRACTOR_KeywordList * next)
-{
-  EXTRACTOR_KeywordList *result = next;
-
-  if (NULL != keyword)
-    {
-      if (0 == *keyword)
-        {
-          free (keyword);
-        }
-      else
-        {
-          result = malloc (sizeof (EXTRACTOR_KeywordList));
-          if (NULL == result)
-            {
-              free (keyword);
-            }
-          else
-            {
-              result->next = next;
-              result->keyword = keyword;
-              result->keywordType = type;
-            }
-        }
-    }
-
-  return result;
-}
-
-static EXTRACTOR_KeywordList *
-appendKeyword (EXTRACTOR_KeywordType type,
-               char *keyword, EXTRACTOR_KeywordList * last)
-{
-  EXTRACTOR_KeywordList *result = last;
-
-  if (NULL != keyword)
-    {
-      if (0 == *keyword)
-        {
-          free (keyword);
-        }
-      else
-        {
-          if ((NULL != last) && (NULL != last->next))
-            abort ();
-          result = malloc (sizeof (EXTRACTOR_KeywordList));
-          if (NULL == result)
-            {
-              free (keyword);
-            }
-          else
-            {
-              result->next = NULL;
-              result->keywordType = type;
-              result->keyword = keyword;
-              if (NULL != last)
-                last->next = result;
-            }
-        }
-    }
-
-  return result;
-}
-
 /*
  * Define known TAR archive member variants.
  * In theory different variants
@@ -311,30 +245,31 @@ tar_time (long long timeval, char *rtime, unsigned int rsize)
   return (retval < rsize) ? 0 : EOVERFLOW;
 }
 
-struct EXTRACTOR_Keywords *
-libextractor_tar_extract (const char *filename,
-                          const char *data,
-                          size_t size, struct EXTRACTOR_Keywords *prev)
+#define ADD(t,s) do { if (0 != (ret = proc (proc_cls, "tar", t, EXTRACTOR_METAFORMAT_UTF8, "text/plain", s, strlen(s)+1))) goto FINISH; } while (0)
+#define ADDF(t,s) do { if (0 != (ret = proc (proc_cls, "tar", t, EXTRACTOR_METAFORMAT_UTF8, "text/plain", s, strlen(s)+1))) { free(s); goto FINISH; } free (s); } while (0)
+
+int 
+EXTRACTOR_tar_extract (const char *data,
+		       size_t size,
+		       EXTRACTOR_MetaDataProcessor proc,
+		       void *proc_cls,
+		       const char *options)
 {
   char *fname = NULL;
   size_t pos = 0;
   int contents_are_empty = 1;
   long long maxftime = TAR_TIME_FENCE;
   unsigned int format_archive = 0;
-  struct EXTRACTOR_Keywords *last;
+  int ret;
 
   if (512 != TAR_HEADER_SIZE)
-    return prev;                /* compiler should remove this when optimising */
+    return 0;                /* compiler should remove this when optimising */
   if (0 != (size % TAR_HEADER_SIZE))
-    return prev;                /* cannot be tar! */
+    return 0;                /* cannot be tar! */
   if (size < TAR_HEADER_SIZE)
-    return prev;                /* too short, or somehow truncated */
+    return 0;                /* too short, or somehow truncated */
 
-  last = prev;
-  if (last != NULL)
-    while (last->next != NULL)
-      last = last->next;
-
+  ret = 0;
   pos = 0;
   while ((pos + TAR_HEADER_SIZE) <= size)
     {
@@ -776,10 +711,8 @@ libextractor_tar_extract (const char *filename,
                        (NULL == fname) ? "" : fname);
 #endif
 
-              last = appendKeyword (EXTRACTOR_FILENAME, fname, last);
+              ADDF (EXTRACTOR_METATYPE_FILENAME, fname);
               fname = NULL;
-              if (prev == NULL)
-                prev = last;
               if (ftime > maxftime)
                 maxftime = ftime;
               contents_are_empty = 0;
@@ -818,9 +751,8 @@ libextractor_tar_extract (const char *filename,
             {
               char iso8601_time[24];
 
-              if (0 == tar_time (maxftime, iso8601_time, sizeof iso8601_time))
-                prev =
-                  addKeyword (EXTRACTOR_DATE, strdup (iso8601_time), prev);
+              if (0 == tar_time (maxftime, iso8601_time, sizeof(iso8601_time)))
+                ADD (EXTRACTOR_METATYPE_CREATION_DATE, iso8601_time);
             }
 
           /*
@@ -912,7 +844,7 @@ libextractor_tar_extract (const char *filename,
                   if (0 < format_length)
                     {
                       strcpy (format + format_length, " TAR");
-                      prev = addKeyword (EXTRACTOR_FORMAT, format, prev);
+                      ADDF (EXTRACTOR_METATYPE_FORMAT_VERSION, format);
                     }
                   else
                     {
@@ -922,9 +854,8 @@ libextractor_tar_extract (const char *filename,
             }
         }
 
-      prev =
-        addKeyword (EXTRACTOR_MIMETYPE, strdup ("application/x-tar"), prev);
+      ADD (EXTRACTOR_METATYPE_MIMETYPE, "application/x-tar");
     }
-
-  return prev;
+ FINISH:
+  return ret;
 }

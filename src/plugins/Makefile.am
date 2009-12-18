@@ -89,6 +89,7 @@ plugin_LTLIBRARIES = \
   $(pdf) \
   libextractor_real.la \
   $(rpm) \
+  libextractor_tar.la \
   $(thumbgtk) \
   libextractor_wav.la \
   libextractor_zip.la
@@ -245,6 +246,11 @@ libextractor_rpm_la_LDFLAGS = \
 libextractor_rpm_la_LIBADD = \
   -lrpm
 
+libextractor_tar_la_SOURCES = \
+  tar_extractor.c 
+libextractor_tar_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+
 libextractor_thumbnailgtk_la_CFLAGS = \
   $(GLIB_CFLAGS) $(GTK_CFLAGS)
 libextractor_thumbnailgtk_la_LIBADD = \
@@ -330,13 +336,6 @@ libextractor_id3v24_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_id3v24_la_LIBADD = \
   $(top_builddir)/src/common/libextractor_common.la
-
-libextractor_tar_la_SOURCES = \
-  tarextractor.c 
-libextractor_tar_la_LDFLAGS = \
-  $(PLUGINFLAGS)
-libextractor_tar_la_LIBADD = \
-  $(top_builddir)/src/main/libextractor.la -lz
 
 libextractor_tiff_la_SOURCES = \
   tiffextractor.c 
