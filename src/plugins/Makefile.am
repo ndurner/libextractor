@@ -89,6 +89,7 @@ plugin_LTLIBRARIES = \
   $(pdf) \
   libextractor_png.la \
   libextractor_ps.la \
+  libextractor_qt.la \
   libextractor_real.la \
   $(rpm) \
   libextractor_tar.la \
@@ -249,6 +250,13 @@ libextractor_ps_la_SOURCES = \
 libextractor_ps_la_LDFLAGS = \
   $(PLUGINFLAGS)
 
+libextractor_qt_la_SOURCES = \
+  qt_extractor.c 
+libextractor_qt_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+libextractor_qt_la_LIBADD = \
+  -lz -lm
+
 libextractor_real_la_SOURCES = \
   real_extractor.c 
 libextractor_real_la_LDFLAGS = \
@@ -303,7 +311,6 @@ OLD_LIBS = \
   $(extrampeg) \
   libextractor_nsf.la \
   libextractor_nsfe.la \
-  $(extraqt) \
   libextractor_riff.la \
   libextractor_s3m.la \
   libextractor_sid.la \
@@ -312,15 +319,6 @@ OLD_LIBS = \
   $(thumbqt) \
   libextractor_xm.la \
   libextractor_zip.la 
-
-if HAVE_ZLIB
-libextractor_qt_la_SOURCES = \
-  qtextractor.c 
-libextractor_qt_la_LDFLAGS = \
-  $(PLUGINFLAGS)
-libextractor_qt_la_LIBADD = \
-  -lz
-endif
 
 
 libextractor_id3v2_la_SOURCES = \

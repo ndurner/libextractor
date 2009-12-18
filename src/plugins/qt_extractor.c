@@ -181,439 +181,6 @@ static const char *const genre_names[] = {
     ((unsigned int)(sizeof genre_names / sizeof (const char *const)))
 
 
-typedef struct
-{
-  unsigned int size;
-  unsigned int type;
-} Atom;
-
-typedef struct
-{
-  unsigned int one;
-  unsigned int type;
-  unsigned long long size;
-} LongAtom;
-
-static unsigned long long
-ntohll (unsigned long long n)
-{
-#if __BYTE_ORDER == __BIG_ENDIAN
-  return n;
-#else
-  return (((unsigned long long) ntohl (n)) << 32) + ntohl (n >> 32);
-#endif
-}
-
-static void
-addKeyword (EXTRACTOR_KeywordType type,
-            const char *keyword, struct EXTRACTOR_Keywords **list)
-{
-  EXTRACTOR_KeywordList *result;
-
-  if (keyword == NULL)
-    return;
-  result = malloc (sizeof (EXTRACTOR_KeywordList));
-  result->next = *list;
-  result->keyword = strdup (keyword);
-  result->keywordType = type;
-  *list = result;
-}
-
-
-/**
- * Check if at position pos there is a valid atom.
- * @return 0 if the atom is invalid, 1 if it is valid
- */
-static int
-checkAtomValid (const char *buffer, size_t size, size_t pos)
-{
-  unsigned long long atomSize;
-  const Atom *atom;
-  const LongAtom *latom;
-  if ((pos >= size) ||
-      (pos + sizeof (Atom) > size) || (pos + sizeof (Atom) < pos))
-    return 0;
-  atom = (const Atom *) &buffer[pos];
-  if (ntohl (atom->size) == 1)
-    {
-      if ((pos + sizeof (LongAtom) > size) || (pos + sizeof (LongAtom) < pos))
-        return 0;
-      latom = (const LongAtom *) &buffer[pos];
-      atomSize = ntohll (latom->size);
-      if ((atomSize < sizeof (LongAtom)) ||
-          (atomSize + pos > size) || (atomSize + pos < atomSize))
-        return 0;
-    }
-  else
-    {
-      atomSize = ntohl (atom->size);
-      if ((atomSize < sizeof (Atom)) ||
-          (atomSize + pos > size) || (atomSize + pos < atomSize))
-        return 0;
-    }
-  return 1;
-}
-
-/**
- * Assumes that checkAtomValid has already been called.
- */
-static unsigned long long
-getAtomSize (const char *buf)
-{
-  const Atom *atom;
-  const LongAtom *latom;
-  atom = (const Atom *) buf;
-  if (ntohl (atom->size) == 1)
-    {
-      latom = (const LongAtom *) buf;
-      return ntohll (latom->size);
-    }
-  return ntohl (atom->size);
-}
-
-/**
- * Assumes that checkAtomValid has already been called.
- */
-static unsigned int
-getAtomHeaderSize (const char *buf)
-{
-  const Atom *atom;
-
-  atom = (const Atom *) buf;
-  if (ntohl (atom->size) == 1)
-    return sizeof (const LongAtom);
-  return sizeof (Atom);
-}
-
-/**
- * Assumes that checkAtomValid has already been called.
- */
-typedef int (*AtomHandler) (const char *input,
-                            size_t size,
-                            size_t pos, struct EXTRACTOR_Keywords ** list);
-
-typedef struct
-{
-  char *name;
-  AtomHandler handler;
-} HandlerEntry;
-
-/**
- * Call the handler for the atom at the given position.
- * Will check validity of the given atom.
- *
- * @return 0 on error, 1 for success, -1 for unknown atom type
- */
-static int handleAtom (HandlerEntry *handlers,
-                       const char *input,
-                       size_t size,
-                       size_t pos, struct EXTRACTOR_Keywords **list);
-
-static HandlerEntry all_handlers[];
-static HandlerEntry ilst_handlers[];
-
-/**
- * Process atoms.
- * @return 0 on error, 1 for success, -1 for unknown atom type
- */
-static int
-processAtoms (HandlerEntry *handlers, const char *input,
-                 size_t size, struct EXTRACTOR_Keywords **list)
-{
-  size_t pos;
-
-  if (size < sizeof (Atom))
-    return 1;
-  pos = 0;
-  while (pos < size - sizeof (Atom))
-    {
-      if (0 == handleAtom (handlers, input, size, pos, list))
-        return 0;
-      pos += getAtomSize (&input[pos]);
-    }
-  return 1;
-}
-
-/**
- * Process all atoms.
- * @return 0 on error, 1 for success, -1 for unknown atom type
- */
-static int
-processAllAtoms (const char *input,
-                 size_t size, struct EXTRACTOR_Keywords **list)
-{
-  return processAtoms(all_handlers, input, size, list);
-}
-
-/**
- * Handle the moov atom.
- * @return 0 on error, 1 for success, -1 for unknown atom type
- */
-static int
-moovHandler (const char *input,
-             size_t size, size_t pos, struct EXTRACTOR_Keywords **list)
-{
-  unsigned int hdr = getAtomHeaderSize (&input[pos]);
-  return processAllAtoms (&input[pos + hdr],
-                          getAtomSize (&input[pos]) - hdr, list);
-}
-
-/* see http://developer.apple.com/documentation/QuickTime/QTFF/QTFFChap1/chapter_2_section_5.html */
-typedef struct
-{
-  Atom header;
-  /* major brand */
-  char type[4];
-  /* minor version */
-  unsigned int version;
-  /* compatible brands */
-  char compatibility[4];
-} FileType;
-
-typedef struct
-{
-  const char *ext;
-  const char *mime;
-} C2M;
-
-/* see http://www.mp4ra.org/filetype.html 
- *     http://www.ftyps.com/ */
-static C2M ftMap[] = {
-  {"qt  ", "video/quicktime"},
-  {"isom", "video/mp4"},        /* ISO Base Media files */
-  {"iso2", "video/mp4"},
-  {"mp41", "video/mp4"},        /* MPEG-4 (ISO/IEC 14491-1) version 1 */
-  {"mp42", "video/mp4"},        /* MPEG-4 (ISO/IEC 14491-1) version 2 */
-  {"3gp1", "video/3gpp"},
-  {"3gp2", "video/3gpp"},
-  {"3gp3", "video/3gpp"},
-  {"3gp4", "video/3gpp"},
-  {"3gp5", "video/3gpp"},
-  {"3g2a", "video/3gpp2"},
-  {"mmp4", "video/mp4"},        /* Mobile MPEG-4 */
-  {"M4A ", "audio/mp4"},
-  {"M4B ", "audio/mp4"},
-  {"M4P ", "audio/mp4"},
-  {"M4V ", "video/mp4"},
-  {"mj2s", "video/mj2"},        /* Motion JPEG 2000 */
-  {"mjp2", "video/mj2"},
-  {NULL, NULL},
-};
-
-static int
-ftypHandler (const char *input,
-             size_t size, size_t pos, struct EXTRACTOR_Keywords **list)
-{
-  const FileType *ft;
-  int i;
-
-  if (getAtomSize (&input[pos]) < sizeof (FileType)) {
-    return 0;
-  }
-  ft = (const FileType *) &input[pos];
-
-  i = 0;
-  while ((ftMap[i].ext != NULL) && (0 != memcmp (ft->type, ftMap[i].ext, 4)))
-    i++;
-  if (ftMap[i].ext != NULL)
-    addKeyword (EXTRACTOR_MIMETYPE, ftMap[i].mime, list);
-  return 1;
-}
-
-typedef struct
-{
-  Atom hdr;
-  unsigned char version;
-  unsigned char flags[3];
-  /* in seconds since midnight, January 1, 1904 */
-  unsigned int creationTime;
-  /* in seconds since midnight, January 1, 1904 */
-  unsigned int modificationTime;
-  /* number of time units that pass per second in the movies time
-     coordinate system */
-  unsigned int timeScale;
-  /* A time value that indicates the duration of the movie in time
-     scale units. */
-  unsigned int duration;
-  unsigned int preferredRate;
-  /* A 16-bit fixed-point number that specifies how loud to
-     play. 1.0 indicates full volume */
-  unsigned short preferredVolume;
-  unsigned char reserved[10];
-  unsigned char matrix[36];
-  unsigned int previewTime;
-  unsigned int previewDuration;
-  unsigned int posterTime;
-  unsigned int selectionTime;
-  unsigned int selectionDuration;
-  unsigned int currentTime;
-  unsigned int nextTrackId;
-} MovieHeaderAtom;
-
-static int
-mvhdHandler (const char *input,
-             size_t size, size_t pos, struct EXTRACTOR_Keywords **list)
-{
-  const MovieHeaderAtom *m;
-  char duration[16];
-  if (getAtomSize (&input[pos]) != sizeof (MovieHeaderAtom))
-    return 0;
-  m = (const MovieHeaderAtom *) &input[pos];
-  snprintf (duration, 16, "%us", ntohl (m->duration) / ntohl (m->timeScale));
-  addKeyword (EXTRACTOR_DURATION, duration, list);
-  return 1;
-}
-
-typedef struct
-{
-  Atom cmovAtom;
-  Atom dcomAtom;
-  char compressor[4];
-  Atom cmvdAtom;
-  unsigned int decompressedSize;
-} CompressedMovieHeaderAtom;
-
-static int
-cmovHandler (const char *input,
-             size_t size, size_t pos, struct EXTRACTOR_Keywords **list)
-{
-  const CompressedMovieHeaderAtom *c;
-  unsigned int s;
-  char *buf;
-  int ret;
-  z_stream z_state;
-  int z_ret_code;
-
-
-  if (getAtomSize (&input[pos]) < sizeof (CompressedMovieHeaderAtom))
-    return 0;
-  c = (const CompressedMovieHeaderAtom *) &input[pos];
-  if ((ntohl (c->dcomAtom.size) != 12) ||
-      (0 != memcmp (&c->dcomAtom.type, "dcom", 4)) ||
-      (0 != memcmp (c->compressor, "zlib", 4)) ||
-      (0 != memcmp (&c->cmvdAtom.type, "cmvd", 4)) ||
-      (ntohl (c->cmvdAtom.size) !=
-       getAtomSize (&input[pos]) - sizeof (Atom) * 2 - 4))
-    {
-      return 0;                 /* dcom must be 12 bytes */
-    }
-  s = ntohl (c->decompressedSize);
-  if (s > 16 * 1024 * 1024)
-    return 1;                   /* ignore, too big! */
-  buf = malloc (s);
-  if (buf == NULL)
-    return 1;                   /* out of memory, handle gracefully */
-
-  z_state.next_in = (unsigned char *) &c[1];
-  z_state.avail_in = ntohl (c->cmvdAtom.size);
-  z_state.avail_out = s;
-  z_state.next_out = (unsigned char *) buf;
-  z_state.zalloc = (alloc_func) 0;
-  z_state.zfree = (free_func) 0;
-  z_state.opaque = (voidpf) 0;
-  z_ret_code = inflateInit (&z_state);
-  if (Z_OK != z_ret_code)
-    {
-      free (buf);
-      return 0;                 /* crc error? */
-    }
-  z_ret_code = inflate (&z_state, Z_NO_FLUSH);
-  if ((z_ret_code != Z_OK) && (z_ret_code != Z_STREAM_END))
-    {
-      free (buf);
-      return 0;                 /* decode error? */
-    }
-  z_ret_code = inflateEnd (&z_state);
-  if (Z_OK != z_ret_code)
-    {
-      free (buf);
-      return 0;                 /* decode error? */
-    }
-  ret = handleAtom (all_handlers, buf, s, 0, list);
-  free (buf);
-  return ret;
-}
-
-typedef struct
-{
-  short integer;
-  short fraction;
-} QTFixed;
-
-typedef struct
-{
-  Atom hdr;
-  unsigned int flags;           /* 1 byte of version, 3 bytes of flags */
-  /* in seconds since midnight, January 1, 1904 */
-  unsigned int creationTime;
-  /* in seconds since midnight, January 1, 1904 */
-  unsigned int modificationTime;
-  unsigned int trackID;
-  unsigned int reserved_0;
-  unsigned int duration;
-  unsigned int reserved_1;
-  unsigned int reserved_2;
-  unsigned short layer;
-  unsigned short alternate_group;
-  unsigned short volume;
-  unsigned short reserved_3;
-  QTFixed matrix[3][3];
-  /* in pixels */
-  QTFixed track_width;
-  /* in pixels */
-  QTFixed track_height;
-} TrackAtom;
-
-static int
-tkhdHandler (const char *input,
-             size_t size, size_t pos, struct EXTRACTOR_Keywords **list)
-{
-  const TrackAtom *m;
-  char dimensions[40];
-
-  if (getAtomSize (&input[pos]) < sizeof (TrackAtom))
-    return 0;
-  m = (const TrackAtom *) &input[pos];
-  if (ntohs (m->track_width.integer) != 0)
-    {
-      /* if actually a/the video track */
-      snprintf (dimensions,
-                40,
-                "%dx%d",
-                ntohs (m->track_width.integer),
-                ntohs (m->track_height.integer));
-      addKeyword (EXTRACTOR_FORMAT, dimensions, list);
-    }
-  return 1;
-}
-
-static int
-trakHandler (const char *input,
-             size_t size, size_t pos, struct EXTRACTOR_Keywords **list)
-{
-  unsigned int hdr = getAtomHeaderSize (&input[pos]);
-  return processAllAtoms (&input[pos + hdr],
-                          getAtomSize (&input[pos]) - hdr, list);
-}
-
-static int
-metaHandler (const char *input,
-             size_t size, size_t pos, struct EXTRACTOR_Keywords **list)
-{
-  unsigned int hdr = getAtomHeaderSize (&input[pos]);
-  if (getAtomSize (&input[pos]) < hdr + 4)
-    return 0;
-  return processAllAtoms (&input[pos + hdr + 4],
-                          getAtomSize (&input[pos]) - hdr - 4, list);
-}
-
-typedef struct
-{
-  Atom header;
-  unsigned short length;
-  unsigned short language;
-} InternationalText;
-
 static const char *languages[] = {
   "English",
   "French",
@@ -725,6 +292,533 @@ static const char *languages[] = {
   "JavaneseRom",
 };
 
+
+typedef struct
+{
+  const char *ext;
+  const char *mime;
+} C2M;
+
+/* see http://www.mp4ra.org/filetype.html 
+ *     http://www.ftyps.com/ */
+static C2M ftMap[] = {
+  {"qt  ", "video/quicktime"},
+  {"isom", "video/mp4"},        /* ISO Base Media files */
+  {"iso2", "video/mp4"},
+  {"mp41", "video/mp4"},        /* MPEG-4 (ISO/IEC 14491-1) version 1 */
+  {"mp42", "video/mp4"},        /* MPEG-4 (ISO/IEC 14491-1) version 2 */
+  {"3gp1", "video/3gpp"},
+  {"3gp2", "video/3gpp"},
+  {"3gp3", "video/3gpp"},
+  {"3gp4", "video/3gpp"},
+  {"3gp5", "video/3gpp"},
+  {"3g2a", "video/3gpp2"},
+  {"mmp4", "video/mp4"},        /* Mobile MPEG-4 */
+  {"M4A ", "audio/mp4"},
+  {"M4B ", "audio/mp4"},
+  {"M4P ", "audio/mp4"},
+  {"M4V ", "video/mp4"},
+  {"mj2s", "video/mj2"},        /* Motion JPEG 2000 */
+  {"mjp2", "video/mj2"},
+  {NULL, NULL},
+};
+
+typedef struct CHE
+{
+  const char *pfx;
+  enum EXTRACTOR_MetaType type;
+} CHE;
+
+static CHE cHm[] = {
+  {"aut", EXTRACTOR_METATYPE_AUTHOR_NAME},
+  {"cpy", EXTRACTOR_METATYPE_COPYRIGHT},
+  {"day", EXTRACTOR_METATYPE_CREATION_DATE},
+  {"ed1", EXTRACTOR_METATYPE_MODIFICATION_DATE},
+  {"ed2", EXTRACTOR_METATYPE_MODIFICATION_DATE},
+  {"ed3", EXTRACTOR_METATYPE_MODIFICATION_DATE},
+  {"ed4", EXTRACTOR_METATYPE_MODIFICATION_DATE},
+  {"ed5", EXTRACTOR_METATYPE_MODIFICATION_DATE},
+  {"ed6", EXTRACTOR_METATYPE_MODIFICATION_DATE},
+  {"ed7", EXTRACTOR_METATYPE_MODIFICATION_DATE},
+  {"ed8", EXTRACTOR_METATYPE_MODIFICATION_DATE},
+  {"ed9", EXTRACTOR_METATYPE_MODIFICATION_DATE},
+  {"cmt", EXTRACTOR_METATYPE_COMMENT},
+  {"url", EXTRACTOR_METATYPE_URL},
+  {"enc", EXTRACTOR_METATYPE_CREATED_BY_SOFTWARE},
+  {"hst", EXTRACTOR_METATYPE_BUILDHOST},
+  {"nam", EXTRACTOR_METATYPE_TITLE},
+  {"gen", EXTRACTOR_METATYPE_GENRE},
+  {"mak", EXTRACTOR_METATYPE_CAMERA_MAKE},
+  {"mod", EXTRACTOR_METATYPE_CAMERA_MODEL},
+  {"des", EXTRACTOR_METATYPE_DESCRIPTION},
+  {"dis", EXTRACTOR_METATYPE_DISCLAIMER},
+  {"dir", EXTRACTOR_METATYPE_MOVIE_DIRECTOR},
+  {"src", EXTRACTOR_METATYPE_CONTRIBUTOR_NAME},
+  {"prf", EXTRACTOR_METATYPE_PERFORMER },
+  {"prd", EXTRACTOR_METATYPE_PRODUCER},
+  {"PRD", EXTRACTOR_METATYPE_PRODUCT_VERSION}, 
+  {"swr", EXTRACTOR_METATYPE_PRODUCED_BY_SOFTWARE},
+  {"isr", EXTRACTOR_METATYPE_ISRC},
+  {"wrt", EXTRACTOR_METATYPE_WRITER},
+  {"wrn", EXTRACTOR_METATYPE_WARNING},
+  {"chp", EXTRACTOR_METATYPE_CHAPTER_NAME},
+  {"inf", EXTRACTOR_METATYPE_DESCRIPTION},
+  {"req", EXTRACTOR_METATYPE_TARGET_PLATFORM},      /* hardware requirements */
+  {"fmt", EXTRACTOR_METATYPE_FORMAT},
+  {NULL, EXTRACTOR_METATYPE_RESERVED },
+};
+
+
+typedef struct
+{
+  const char *atom_type;
+  enum EXTRACTOR_MetaType type;
+} ITTagConversionEntry;
+
+/* iTunes Tags:
+ * see http://atomicparsley.sourceforge.net/mpeg-4files.html */
+static ITTagConversionEntry it_to_extr_table[] = {
+  {"\xa9" "alb", EXTRACTOR_METATYPE_ALBUM},
+  {"\xa9" "ART", EXTRACTOR_METATYPE_ARTIST},
+  {"aART", EXTRACTOR_METATYPE_ARTIST},
+  {"\xa9" "cmt", EXTRACTOR_METATYPE_COMMENT},
+  {"\xa9" "day", EXTRACTOR_METATYPE_UNKNOWN_DATE},
+  {"\xa9" "nam", EXTRACTOR_METATYPE_TITLE},
+  {"trkn", EXTRACTOR_METATYPE_TRACK_NUMBER},
+  {"disk", EXTRACTOR_METATYPE_DISC_NUMBER},
+  {"\xa9" "gen", EXTRACTOR_METATYPE_GENRE},
+  {"gnre", EXTRACTOR_METATYPE_GENRE},
+  {"\xa9" "wrt", EXTRACTOR_METATYPE_WRITER},
+  {"\xa9" "too", EXTRACTOR_METATYPE_CREATED_BY_SOFTWARE},
+  {"cprt", EXTRACTOR_METATYPE_COPYRIGHT},
+  {"\xa9" "grp", EXTRACTOR_METATYPE_GROUP},
+  {"catg", EXTRACTOR_METATYPE_SECTION},
+  {"keyw", EXTRACTOR_METATYPE_KEYWORDS},
+  {"desc", EXTRACTOR_METATYPE_DESCRIPTION},
+  {"tvnn", EXTRACTOR_METATYPE_TV_NETWORK_NAME},
+  {"tvsh", EXTRACTOR_METATYPE_TV_SHOW_NAME}, 
+  {"tven", EXTRACTOR_METATYPE_TV_NETWORK_NAME},
+  {NULL, EXTRACTOR_METATYPE_RESERVED}
+};
+
+
+typedef struct
+{
+  unsigned int size;
+  unsigned int type;
+} Atom;
+
+typedef struct
+{
+  unsigned int one;
+  unsigned int type;
+  unsigned long long size;
+} LongAtom;
+
+static unsigned long long
+ntohll (unsigned long long n)
+{
+#if __BYTE_ORDER == __BIG_ENDIAN
+  return n;
+#else
+  return (((unsigned long long) ntohl (n)) << 32) + ntohl (n >> 32);
+#endif
+}
+
+
+/**
+ * Check if at position pos there is a valid atom.
+ * @return 0 if the atom is invalid, 1 if it is valid
+ */
+static int
+checkAtomValid (const char *buffer, size_t size, size_t pos)
+{
+  unsigned long long atomSize;
+  const Atom *atom;
+  const LongAtom *latom;
+  if ((pos >= size) ||
+      (pos + sizeof (Atom) > size) || (pos + sizeof (Atom) < pos))
+    return 0;
+  atom = (const Atom *) &buffer[pos];
+  if (ntohl (atom->size) == 1)
+    {
+      if ((pos + sizeof (LongAtom) > size) || (pos + sizeof (LongAtom) < pos))
+        return 0;
+      latom = (const LongAtom *) &buffer[pos];
+      atomSize = ntohll (latom->size);
+      if ((atomSize < sizeof (LongAtom)) ||
+          (atomSize + pos > size) || (atomSize + pos < atomSize))
+        return 0;
+    }
+  else
+    {
+      atomSize = ntohl (atom->size);
+      if ((atomSize < sizeof (Atom)) ||
+          (atomSize + pos > size) || (atomSize + pos < atomSize))
+        return 0;
+    }
+  return 1;
+}
+
+/**
+ * Assumes that checkAtomValid has already been called.
+ */
+static unsigned long long
+getAtomSize (const char *buf)
+{
+  const Atom *atom;
+  const LongAtom *latom;
+  atom = (const Atom *) buf;
+  if (ntohl (atom->size) == 1)
+    {
+      latom = (const LongAtom *) buf;
+      return ntohll (latom->size);
+    }
+  return ntohl (atom->size);
+}
+
+/**
+ * Assumes that checkAtomValid has already been called.
+ */
+static unsigned int
+getAtomHeaderSize (const char *buf)
+{
+  const Atom *atom;
+
+  atom = (const Atom *) buf;
+  if (ntohl (atom->size) == 1)
+    return sizeof (const LongAtom);
+  return sizeof (Atom);
+}
+
+struct ExtractContext
+{
+  EXTRACTOR_MetaDataProcessor proc;
+  void *proc_cls;
+  int ret;
+};
+
+static void
+addKeyword (enum EXTRACTOR_MetaType type,
+	    const char *str,
+	    struct ExtractContext *ec)
+{
+  if (ec->ret != 0)
+    return;
+  ec->ret = ec->proc (ec->proc_cls,
+		      "qt",
+		      type,
+		      EXTRACTOR_METAFORMAT_UTF8,
+		      "text/plain",
+		      str,
+		      strlen(str)+1);
+}
+
+
+
+/**
+ * Assumes that checkAtomValid has already been called.
+ */
+typedef int (*AtomHandler) (const char *input,
+                            size_t size,
+                            size_t pos, struct ExtractContext *ec);
+
+typedef struct
+{
+  char *name;
+  AtomHandler handler;
+} HandlerEntry;
+
+/**
+ * Call the handler for the atom at the given position.
+ * Will check validity of the given atom.
+ *
+ * @return 0 on error, 1 for success, -1 for unknown atom type
+ */
+static int handleAtom (HandlerEntry *handlers,
+                       const char *input,
+                       size_t size,
+                       size_t pos, 
+		       struct ExtractContext *ec);
+
+static HandlerEntry all_handlers[];
+static HandlerEntry ilst_handlers[];
+
+/**
+ * Process atoms.
+ * @return 0 on error, 1 for success, -1 for unknown atom type
+ */
+static int
+processAtoms (HandlerEntry *handlers, const char *input,
+                 size_t size, struct ExtractContext *ec)
+{
+  size_t pos;
+
+  if (size < sizeof (Atom))
+    return 1;
+  pos = 0;
+  while (pos < size - sizeof (Atom))
+    {
+      if (0 == handleAtom (handlers, input, size, pos, ec))
+        return 0;
+      pos += getAtomSize (&input[pos]);
+    }
+  return 1;
+}
+
+/**
+ * Process all atoms.
+ * @return 0 on error, 1 for success, -1 for unknown atom type
+ */
+static int
+processAllAtoms (const char *input,
+                 size_t size, struct ExtractContext *ec)
+{
+  return processAtoms(all_handlers, input, size, ec);
+}
+
+/**
+ * Handle the moov atom.
+ * @return 0 on error, 1 for success, -1 for unknown atom type
+ */
+static int
+moovHandler (const char *input,
+             size_t size, size_t pos, struct ExtractContext *ec)
+{
+  unsigned int hdr = getAtomHeaderSize (&input[pos]);
+  return processAllAtoms (&input[pos + hdr],
+                          getAtomSize (&input[pos]) - hdr, ec);
+}
+
+/* see http://developer.apple.com/documentation/QuickTime/QTFF/QTFFChap1/chapter_2_section_5.html */
+typedef struct
+{
+  Atom header;
+  /* major brand */
+  char type[4];
+  /* minor version */
+  unsigned int version;
+  /* compatible brands */
+  char compatibility[4];
+} FileType;
+
+static int
+ftypHandler (const char *input,
+             size_t size, size_t pos, struct ExtractContext *ec)
+{
+  const FileType *ft;
+  int i;
+
+  if (getAtomSize (&input[pos]) < sizeof (FileType)) {
+    return 0;
+  }
+  ft = (const FileType *) &input[pos];
+
+  i = 0;
+  while ((ftMap[i].ext != NULL) && (0 != memcmp (ft->type, ftMap[i].ext, 4)))
+    i++;
+  if (ftMap[i].ext != NULL)
+    addKeyword (EXTRACTOR_METATYPE_MIMETYPE, ftMap[i].mime, ec);
+  return 1;
+}
+
+typedef struct
+{
+  Atom hdr;
+  unsigned char version;
+  unsigned char flags[3];
+  /* in seconds since midnight, January 1, 1904 */
+  unsigned int creationTime;
+  /* in seconds since midnight, January 1, 1904 */
+  unsigned int modificationTime;
+  /* number of time units that pass per second in the movies time
+     coordinate system */
+  unsigned int timeScale;
+  /* A time value that indicates the duration of the movie in time
+     scale units. */
+  unsigned int duration;
+  unsigned int preferredRate;
+  /* A 16-bit fixed-point number that specifies how loud to
+     play. 1.0 indicates full volume */
+  unsigned short preferredVolume;
+  unsigned char reserved[10];
+  unsigned char matrix[36];
+  unsigned int previewTime;
+  unsigned int previewDuration;
+  unsigned int posterTime;
+  unsigned int selectionTime;
+  unsigned int selectionDuration;
+  unsigned int currentTime;
+  unsigned int nextTrackId;
+} MovieHeaderAtom;
+
+static int
+mvhdHandler (const char *input,
+             size_t size, size_t pos, struct ExtractContext *ec)
+{
+  const MovieHeaderAtom *m;
+  char duration[16];
+  if (getAtomSize (&input[pos]) != sizeof (MovieHeaderAtom))
+    return 0;
+  m = (const MovieHeaderAtom *) &input[pos];
+  snprintf (duration,
+	    sizeof(duration),
+	    "%us",
+	    ntohl (m->duration) / ntohl (m->timeScale));
+  addKeyword (EXTRACTOR_METATYPE_DURATION, duration, ec);
+  return 1;
+}
+
+typedef struct
+{
+  Atom cmovAtom;
+  Atom dcomAtom;
+  char compressor[4];
+  Atom cmvdAtom;
+  unsigned int decompressedSize;
+} CompressedMovieHeaderAtom;
+
+static int
+cmovHandler (const char *input,
+             size_t size, size_t pos, struct ExtractContext *ec)
+{
+  const CompressedMovieHeaderAtom *c;
+  unsigned int s;
+  char *buf;
+  int ret;
+  z_stream z_state;
+  int z_ret_code;
+
+
+  if (getAtomSize (&input[pos]) < sizeof (CompressedMovieHeaderAtom))
+    return 0;
+  c = (const CompressedMovieHeaderAtom *) &input[pos];
+  if ((ntohl (c->dcomAtom.size) != 12) ||
+      (0 != memcmp (&c->dcomAtom.type, "dcom", 4)) ||
+      (0 != memcmp (c->compressor, "zlib", 4)) ||
+      (0 != memcmp (&c->cmvdAtom.type, "cmvd", 4)) ||
+      (ntohl (c->cmvdAtom.size) !=
+       getAtomSize (&input[pos]) - sizeof (Atom) * 2 - 4))
+    {
+      return 0;                 /* dcom must be 12 bytes */
+    }
+  s = ntohl (c->decompressedSize);
+  if (s > 16 * 1024 * 1024)
+    return 1;                   /* ignore, too big! */
+  buf = malloc (s);
+  if (buf == NULL)
+    return 1;                   /* out of memory, handle gracefully */
+
+  z_state.next_in = (unsigned char *) &c[1];
+  z_state.avail_in = ntohl (c->cmvdAtom.size);
+  z_state.avail_out = s;
+  z_state.next_out = (unsigned char *) buf;
+  z_state.zalloc = (alloc_func) 0;
+  z_state.zfree = (free_func) 0;
+  z_state.opaque = (voidpf) 0;
+  z_ret_code = inflateInit (&z_state);
+  if (Z_OK != z_ret_code)
+    {
+      free (buf);
+      return 0;                 /* crc error? */
+    }
+  z_ret_code = inflate (&z_state, Z_NO_FLUSH);
+  if ((z_ret_code != Z_OK) && (z_ret_code != Z_STREAM_END))
+    {
+      free (buf);
+      return 0;                 /* decode error? */
+    }
+  z_ret_code = inflateEnd (&z_state);
+  if (Z_OK != z_ret_code)
+    {
+      free (buf);
+      return 0;                 /* decode error? */
+    }
+  ret = handleAtom (all_handlers, buf, s, 0, ec);
+  free (buf);
+  return ret;
+}
+
+typedef struct
+{
+  short integer;
+  short fraction;
+} QTFixed;
+
+typedef struct
+{
+  Atom hdr;
+  unsigned int flags;           /* 1 byte of version, 3 bytes of flags */
+  /* in seconds since midnight, January 1, 1904 */
+  unsigned int creationTime;
+  /* in seconds since midnight, January 1, 1904 */
+  unsigned int modificationTime;
+  unsigned int trackID;
+  unsigned int reserved_0;
+  unsigned int duration;
+  unsigned int reserved_1;
+  unsigned int reserved_2;
+  unsigned short layer;
+  unsigned short alternate_group;
+  unsigned short volume;
+  unsigned short reserved_3;
+  QTFixed matrix[3][3];
+  /* in pixels */
+  QTFixed track_width;
+  /* in pixels */
+  QTFixed track_height;
+} TrackAtom;
+
+static int
+tkhdHandler (const char *input,
+             size_t size, size_t pos, struct ExtractContext *ec)
+{
+  const TrackAtom *m;
+  char dimensions[40];
+
+  if (getAtomSize (&input[pos]) < sizeof (TrackAtom))
+    return 0;
+  m = (const TrackAtom *) &input[pos];
+  if (ntohs (m->track_width.integer) != 0)
+    {
+      /* if actually a/the video track */
+      snprintf (dimensions,
+                sizeof(dimensions),
+                "%dx%d",
+                ntohs (m->track_width.integer),
+                ntohs (m->track_height.integer));
+      addKeyword (EXTRACTOR_METATYPE_IMAGE_DIMENSIONS, dimensions, ec);
+    }
+  return 1;
+}
+
+static int
+trakHandler (const char *input,
+             size_t size, size_t pos, struct ExtractContext *ec)
+{
+  unsigned int hdr = getAtomHeaderSize (&input[pos]);
+  return processAllAtoms (&input[pos + hdr],
+                          getAtomSize (&input[pos]) - hdr, ec);
+}
+
+static int
+metaHandler (const char *input,
+             size_t size, size_t pos, struct ExtractContext *ec)
+{
+  unsigned int hdr = getAtomHeaderSize (&input[pos]);
+  if (getAtomSize (&input[pos]) < hdr + 4)
+    return 0;
+  return processAllAtoms (&input[pos + hdr + 4],
+                          getAtomSize (&input[pos]) - hdr - 4, ec);
+}
+
+typedef struct
+{
+  Atom header;
+  unsigned short length;
+  unsigned short language;
+} InternationalText;
+
 /*
  * see http://developer.apple.com/documentation/QuickTime/QTFF/QTFFChap2/chapter
 _3_section_2.html
@@ -735,7 +829,7 @@ static int
 processTextTag (const char *input,
                 size_t size,
                 size_t pos,
-                EXTRACTOR_KeywordType type, struct EXTRACTOR_Keywords **list)
+                enum EXTRACTOR_MetaType type, struct ExtractContext *ec)
 {
   unsigned long long as;
   unsigned short len;
@@ -756,7 +850,7 @@ processTextTag (const char *input,
   lang = ntohs (txt->language);
   if (lang >= sizeof (languages) / sizeof (char *))
     return 0;                   /* invalid */
-  addKeyword (EXTRACTOR_LANGUAGE, languages[lang], list);
+  addKeyword (EXTRACTOR_METATYPE_DOCUMENT_LANGUAGE, languages[lang], ec);
 
   meta = malloc (len + 1);
   memcpy (meta, &txt[1], len);
@@ -764,55 +858,15 @@ processTextTag (const char *input,
   for (i = 0; i < len; i++)
     if (meta[i] == '\r')
       meta[i] = '\n';
-  addKeyword (type, meta, list);
+  addKeyword (type, meta, ec);
   free (meta);
   return 1;
 }
 
-typedef struct CHE
-{
-  const char *pfx;
-  EXTRACTOR_KeywordType type;
-} CHE;
-
-static CHE cHm[] = {
-  {"aut", EXTRACTOR_AUTHOR,},
-  {"cpy", EXTRACTOR_COPYRIGHT,},
-  {"day", EXTRACTOR_CREATION_DATE,},
-  {"cmt", EXTRACTOR_COMMENT,},
-  {"hst", EXTRACTOR_BUILDHOST,},
-  {"inf", EXTRACTOR_INFORMATION,},
-  {"nam", EXTRACTOR_FULL_NAME,},
-  {"mak", EXTRACTOR_CAMERA_MAKE,},
-  {"mod", EXTRACTOR_CAMERA_MODEL,},
-  {"des", EXTRACTOR_DESCRIPTION,},
-  {"dis", EXTRACTOR_DISCLAIMER,},
-  {"dir", EXTRACTOR_MOVIE_DIRECTOR,},
-  {"src", EXTRACTOR_CONTRIBUTOR,},
-  {"prf", EXTRACTOR_ARTIST,},   /* performer */
-  {"req", EXTRACTOR_CREATED_FOR,},      /* hardware requirements */
-  {"fmt", EXTRACTOR_FORMAT,},
-  {"prd", EXTRACTOR_PRODUCER,},
-  {"PRD", EXTRACTOR_PRODUCTVERSION,},   /* just product */
-  {"swr", EXTRACTOR_SOFTWARE,},
-  {"wrt", EXTRACTOR_AUTHOR,},   /* writer */
-  {"wrn", EXTRACTOR_WARNING,},
-  {"ed1", EXTRACTOR_REVISION_HISTORY,},
-  {"ed2", EXTRACTOR_REVISION_HISTORY,},
-  {"ed3", EXTRACTOR_REVISION_HISTORY,},
-  {"ed4", EXTRACTOR_REVISION_HISTORY,},
-  {"ed5", EXTRACTOR_REVISION_HISTORY,},
-  {"ed6", EXTRACTOR_REVISION_HISTORY,},
-  {"ed7", EXTRACTOR_REVISION_HISTORY,},
-  {"ed8", EXTRACTOR_REVISION_HISTORY,},
-  {"ed9", EXTRACTOR_REVISION_HISTORY,},
-  {"chp", EXTRACTOR_CHAPTER,},
-  {NULL, EXTRACTOR_UNKNOWN},
-};
 
 static int
 c_Handler (const char *input,
-           size_t size, size_t pos, struct EXTRACTOR_Keywords **list)
+           size_t size, size_t pos, struct ExtractContext *ec)
 {
   int i;
 
@@ -820,26 +874,26 @@ c_Handler (const char *input,
   while ((cHm[i].pfx != NULL) && (0 != memcmp (&input[pos+5], cHm[i].pfx, 3)))
     i++;
   if (cHm[i].pfx != NULL)
-    return processTextTag (input, size, pos, cHm[i].type, list);
+    return processTextTag (input, size, pos, cHm[i].type, ec);
   return -1;                    /* not found */
 }
 
 static int
 udtaHandler (const char *input,
-             size_t size, size_t pos, struct EXTRACTOR_Keywords **list)
+             size_t size, size_t pos, struct ExtractContext *ec)
 {
   unsigned int hdr = getAtomHeaderSize (&input[pos]);
   return processAllAtoms (&input[pos + hdr],
-                          getAtomSize (&input[pos]) - hdr, list);
+                          getAtomSize (&input[pos]) - hdr, ec);
 }
 
 static int
 processDataAtom (const char *input,
-                size_t size, /* parent atom size */
-                size_t pos,
-                const char *patom,
-                EXTRACTOR_KeywordType type,
-                struct EXTRACTOR_Keywords **list)
+		 size_t size, /* parent atom size */
+		 size_t pos,
+		 const char *patom,
+		 enum EXTRACTOR_MetaType type,
+		 struct ExtractContext *ec)
 {
   char *meta;
   unsigned char version;
@@ -877,7 +931,7 @@ processDataAtom (const char *input,
         unsigned short genre = ((unsigned char)input[pos+16] << 8) |
                                 (unsigned char)input[pos+17];
         if (genre > 0 && genre < GENRE_NAME_COUNT)
-          addKeyword(type, genre_names[genre-1], list);
+          addKeyword(type, genre_names[genre-1], ec);
       }
       return 1;
     }
@@ -888,7 +942,7 @@ processDataAtom (const char *input,
                             (unsigned char)input[pos+19];
         char s[8];
 	snprintf(s, 8, "%d", n);
-        addKeyword(type, s, list);
+        addKeyword(type, s, ec);
       }
     }
     else {
@@ -902,7 +956,7 @@ processDataAtom (const char *input,
     for (i = 0; i < len; i++)
       if (meta[i] == '\r')
         meta[i] = '\n';
-    addKeyword (type, meta, list);
+    addKeyword (type, meta, ec);
     free (meta);
     return 1;
   }
@@ -910,44 +964,12 @@ processDataAtom (const char *input,
   return -1;
 }
 
-typedef struct
-{
-  const char *atom_type;
-  EXTRACTOR_KeywordType type;
-} ITTagConversionEntry;
-
-/* iTunes Tags:
- * see http://atomicparsley.sourceforge.net/mpeg-4files.html */
-static ITTagConversionEntry it_to_extr_table[] = {
-  {"\xa9" "alb", EXTRACTOR_ALBUM,},
-  {"\xa9" "ART", EXTRACTOR_ARTIST,},
-  {"aART", EXTRACTOR_ARTIST,},
-  {"\xa9" "cmt", EXTRACTOR_COMMENT,},
-  {"\xa9" "day", EXTRACTOR_YEAR,},
-  {"\xa9" "nam", EXTRACTOR_TITLE,},
-  {"trkn", EXTRACTOR_TRACK_NUMBER,},
-  {"disk", EXTRACTOR_DISC_NUMBER,},
-  {"\xa9" "gen", EXTRACTOR_GENRE,},
-  {"gnre", EXTRACTOR_GENRE,},
-  {"\xa9" "wrt", EXTRACTOR_AUTHOR,},
-  {"\xa9" "too", EXTRACTOR_ENCODED_BY,},
-  {"cprt", EXTRACTOR_COPYRIGHT,},
-  {"\xa9" "grp", EXTRACTOR_GROUP,},
-  {"catg", EXTRACTOR_CATEGORY,},
-  {"keyw", EXTRACTOR_KEYWORDS,},
-  {"desc", EXTRACTOR_DESCRIPTION,},
-  {"tvnn", EXTRACTOR_PUBLISHER,}, /* TV Network Name */
-  {"tvsh", EXTRACTOR_TITLE,}, /* TV Show Name */
-/*  {"tven", EXTRACTOR_i,},*/ /* TV Network Name */
-  {NULL, EXTRACTOR_UNKNOWN},
-};
-
 /* NOTE: iTunes tag processing should, in theory, be limited to iTunes
  * file types (from ftyp), but, in reality, it seems that there are other
  * files, like 3gpp, out in the wild with iTunes tags. */
 static int
 iTunesTagHandler (const char *input,
-           size_t size, size_t pos, struct EXTRACTOR_Keywords **list)
+           size_t size, size_t pos, struct ExtractContext *ec)
 {
   unsigned long long asize;
   unsigned int hdr;
@@ -965,7 +987,7 @@ iTunesTagHandler (const char *input,
     i++;
   if (it_to_extr_table[i].atom_type != NULL)
     return processDataAtom(input, asize, pos+hdr, &input[pos],  
-                           it_to_extr_table[i].type, list);
+                           it_to_extr_table[i].type, ec);
 
   return -1;
 }
@@ -973,11 +995,11 @@ iTunesTagHandler (const char *input,
 
 static int 
 ilstHandler (const char *input,
-             size_t size, size_t pos, struct EXTRACTOR_Keywords **list)
+             size_t size, size_t pos, struct ExtractContext *ec)
 {
   unsigned int hdr = getAtomHeaderSize (&input[pos]);
   return processAtoms(ilst_handlers, &input[pos + hdr],
-                      getAtomSize(&input[pos]) - hdr, list);
+                      getAtomSize(&input[pos]) - hdr, ec);
 }
 
 
@@ -1069,7 +1091,7 @@ static HandlerEntry ilst_handlers[] = {
  */
 static int
 handleAtom (HandlerEntry *handlers, const char *input,
-            size_t size, size_t pos, struct EXTRACTOR_Keywords **list)
+            size_t size, size_t pos, struct ExtractContext *ec)
 {
   int i;
   if (0 == checkAtomValid (input, size, pos))
@@ -1090,7 +1112,7 @@ handleAtom (HandlerEntry *handlers, const char *input,
 #endif
       return -1;
     }
-  i = handlers[i].handler (input, size, pos, list);
+  i = handlers[i].handler (input, size, pos, ec);
 #if DEBUG
   printf ("Running handler for `%4s' at %u completed with result %d\n",
           &input[pos + 4], pos, i);
@@ -1103,13 +1125,20 @@ handleAtom (HandlerEntry *handlers, const char *input,
    video/x-quicktime: mov,qt: Quicktime animation;
    application/x-quicktimeplayer: qtl: Quicktime list;
  */
-struct EXTRACTOR_Keywords *
-libextractor_qt_extract (const char *filename,
-                         const char *data,
-                         size_t size, struct EXTRACTOR_Keywords *prev)
+
+int 
+EXTRACTOR_qt_extract (const char *data,
+		      size_t size,
+		      EXTRACTOR_MetaDataProcessor proc,
+		      void *proc_cls,
+		      const char *options)
 {
-  processAllAtoms (data, size, &prev);
-  return prev;
+  struct ExtractContext ec;
+  ec.proc = proc;
+  ec.proc_cls = proc_cls;
+  ec.ret = 0;
+  processAllAtoms (data, size, &ec);
+  return ec.ret;
 }
 
-/*  end of qtextractor.c */
+/*  end of qt_extractor.c */
