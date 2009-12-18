@@ -88,7 +88,8 @@ plugin_LTLIBRARIES = \
   $(pdf) \
   libextractor_real.la \
   $(rpm) \
-  $(thumbgtk)
+  $(thumbgtk) \
+  libextractor_wav.la 
 
 libextractor_applefile_la_SOURCES = \
   applefile_extractor.c
@@ -244,6 +245,14 @@ libextractor_thumbnailgtk_la_LDFLAGS = \
 libextractor_thumbnailgtk_la_SOURCES = \
   thumbnailgtk_extractor.c
 
+libextractor_wav_la_SOURCES = \
+  wav_extractor.c
+libextractor_wav_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+libextractor_wav_la_LIBADD = \
+  $(LE_LIBINTL)
+
+
 
 
 
@@ -268,7 +277,6 @@ OLD_LIBS = \
   libextractor_tar.la \
   libextractor_tiff.la \
   $(thumbqt) \
-  libextractor_wav.la \
   libextractor_xm.la \
   libextractor_zip.la 
 
@@ -287,13 +295,6 @@ libextractor_ps_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_ps_la_LIBADD = \
   $(top_builddir)/src/main/libextractor.la
-
-libextractor_wav_la_SOURCES = \
-  wavextractor.c
-libextractor_wav_la_LDFLAGS = \
-  $(PLUGINFLAGS)
-libextractor_wav_la_LIBADD = \
-  $(LE_LIBINTL)
 
 libextractor_id3v2_la_SOURCES = \
   id3v2extractor.c 

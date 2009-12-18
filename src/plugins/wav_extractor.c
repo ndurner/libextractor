@@ -1,6 +1,6 @@
 /*
      This file is part of libextractor.
-     (C) 2004 Vidyut Samanta and Christian Grothoff
+     (C) 2004, 2009 Vidyut Samanta and Christian Grothoff
 
      libextractor is free software; you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published
@@ -28,19 +28,6 @@
 
 #include "platform.h"
 #include "extractor.h"
-#include "pack.h"
-
-static void
-addKeyword (struct EXTRACTOR_Keywords **list,
-            char *keyword, EXTRACTOR_KeywordType type)
-{
-  EXTRACTOR_KeywordList *next;
-  next = malloc (sizeof (EXTRACTOR_KeywordList));
-  next->next = *list;
-  next->keyword = keyword;
-  next->keywordType = type;
-  *list = next;
-}
 
 #if BIG_ENDIAN_HOST
 static short
@@ -70,18 +57,19 @@ toLittleEndian32 (unsigned int in)
   22      2 bytes  <channels>     // Channels: 1 = mono, 2 = stereo
   24      4 bytes  <sample rate>  // Samples per second: e.g., 44100
 */
-struct EXTRACTOR_Keywords *
-libextractor_wav_extract (char *filename,
-                          const unsigned char *buf,
-                          size_t bufLen, struct EXTRACTOR_Keywords *prev)
+int 
+EXTRACTOR_wav_extract (const unsigned char *buf,
+		       size_t bufLen,
+		       EXTRACTOR_MetaDataProcessor proc,
+		       void *proc_cls,
+		       const char *options)
 {
   unsigned short channels;
   unsigned short sampleSize;
   unsigned int sampleRate;
   unsigned int dataLen;
   unsigned int samples;
-  char *scratch;
-
+  char scratch[256];
 
   if ((bufLen < 44) ||
       (buf[0] != 'R' || buf[1] != 'I' ||
@@ -89,7 +77,7 @@ libextractor_wav_extract (char *filename,
        buf[8] != 'W' || buf[9] != 'A' ||
        buf[10] != 'V' || buf[11] != 'E' ||
        buf[12] != 'f' || buf[13] != 'm' || buf[14] != 't' || buf[15] != ' '))
-    return prev;                /* not a WAV file */
+    return 0;                /* not a WAV file */
 
   channels = *((unsigned short *) &buf[22]);
   sampleRate = *((unsigned int *) &buf[24]);
@@ -104,20 +92,33 @@ libextractor_wav_extract (char *filename,
 #endif
 
   if (sampleSize != 8 && sampleSize != 16)
-    return prev;                /* invalid sample size found in wav file */
+    return 0;                /* invalid sample size found in wav file */
   if (channels == 0)
-    return prev;                /* invalid channels value -- avoid division by 0! */
+    return 0;                /* invalid channels value -- avoid division by 0! */
   samples = dataLen / (channels * (sampleSize >> 3));
 
-  scratch = malloc (256);
   snprintf (scratch,
-            256,
+            sizeof (scratch),
             "%u ms, %d Hz, %s",
             (samples < sampleRate)
             ? (samples * 1000 / sampleRate)
             : (samples / sampleRate) * 1000,
             sampleRate, channels == 1 ? _("mono") : _("stereo"));
-  addKeyword (&prev, scratch, EXTRACTOR_FORMAT);
-  addKeyword (&prev, strdup ("audio/x-wav"), EXTRACTOR_MIMETYPE);
-  return prev;
+  if (0 != proc (proc_cls, 
+		 "wav",
+		 EXTRACTOR_METATYPE_RESOURCE_TYPE,
+		 EXTRACTOR_METAFORMAT_UTF8,
+		 "text/plain",
+		 scratch,
+		 strlen (scratch) +1))
+    return 1;
+  if (0 != proc (proc_cls, 
+		 "wav",
+		 EXTRACTOR_METATYPE_MIMETYPE,
+		 EXTRACTOR_METAFORMAT_UTF8,
+		 "text/plain",
+		 "audio/x-wav",
+		 strlen ("audio/x-wav") +1))
+    return 1;
+  return 0;
 }
