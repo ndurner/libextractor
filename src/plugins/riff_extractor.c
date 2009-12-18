@@ -1,6 +1,6 @@
 /*
      This file is part of libextractor.
-     (C) 2004 Vidyut Samanta and Christian Grothoff
+     (C) 2004, 2009 Vidyut Samanta and Christian Grothoff
 
      libextractor is free software; you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published
@@ -30,49 +30,12 @@
 #include "extractor.h"
 #include <math.h>
 
-static void
-addKeyword (struct EXTRACTOR_Keywords **list,
-            char *keyword, EXTRACTOR_KeywordType type)
-{
-  EXTRACTOR_KeywordList *next;
-  next = malloc (sizeof (EXTRACTOR_KeywordList));
-  next->next = *list;
-  next->keyword = keyword;
-  next->keywordType = type;
-  *list = next;
-}
-
-
-#ifdef FIXME
-static struct EXTRACTOR_Keywords *
-riffparse_INFO (char *buffer, size_t size, struct EXTRACTOR_Keywords *prev)
-{
-  size_t c = 0;
-  char *word;
-
-  if (size < 64)
-    return prev;
-  c = 8;
-  while ((c < size) && isprint (buffer[c]))
-    c++;
-  if (c > 8)
-    {
-      word = malloc (c + 1 - 8);
-      memcpy (word, &buffer[8], c - 8);
-      word[c - 8] = '\0';
-      addKeyword (&prev, word, EXTRACTOR_UNKNOWN);      /* eh, what exactly is it */
-    }
-  return prev;
-}
-#endif
-
-
 /**
  * Read the specified number of bytes as a little-endian (least
  * significant byte first) integer.
  */
 static unsigned int
-fread_le (char *data)
+fread_le (const char *data)
 {
   int x;
   unsigned int result = 0;
@@ -92,11 +55,15 @@ round_double (double num)
   return floor (num + 0.5);
 }
 
+#define ADD(s,t) do { if (0 != (ret = proc (proc_cls, "riff", t, EXTRACTOR_METAFORMAT_UTF8, "text/plain", s, strlen(s)+1))) goto FINISH; } while (0)
+
 /* video/x-msvideo */
-struct EXTRACTOR_Keywords *
-libextractor_riff_extract (char *filename,
-                           char *xdata,
-                           size_t xsize, struct EXTRACTOR_Keywords *prev)
+int 
+EXTRACTOR_riff_extract (const char *xdata,
+			size_t xsize,
+			EXTRACTOR_MetaDataProcessor proc,
+			void *proc_cls,
+			const char *options)
 {
   unsigned int blockLen;
   unsigned int fps;
@@ -105,20 +72,18 @@ libextractor_riff_extract (char *filename,
   unsigned int width;
   unsigned int height;
   char codec[5];
-  char *format;
+  char format[256];
+  int ret;
 
   if (xsize < 32)
-    return prev;
-
+    return 0;
   if ((memcmp (&xdata[0],
                "RIFF", 4) != 0) || (memcmp (&xdata[8], "AVI ", 4) != 0))
-    return prev;
-
+    return 0;
   if (memcmp (&xdata[12], "LIST", 4) != 0)
-    return prev;
+    return 0;
   if (memcmp (&xdata[20], "hdrlavih", 8) != 0)
-    return prev;
-
+    return 0;
 
   blockLen = fread_le (&xdata[28]);
 
@@ -128,31 +93,31 @@ libextractor_riff_extract (char *filename,
                                           * 1000 / fps);
   width = fread_le (&xdata[64]);
   height = fread_le (&xdata[68]);
-
-
   /* pos: begin of video stream header */
   pos = blockLen + 32;
 
   if ((pos < blockLen) || (pos + 32 > xsize) || (pos > xsize))
-    return prev;
-
+    return 0;
   if (memcmp (&xdata[pos], "LIST", 4) != 0)
-    return prev;
+    return 0;
   blockLen = fread_le (&xdata[pos + 4]);
   if (memcmp (&xdata[pos + 8], "strlstrh", 8) != 0)
-    return prev;
+    return 0;
   if (memcmp (&xdata[pos + 20], "vids", 4) != 0)
-    return prev;
+    return 0;
+  ret = 0;
   /* pos + 24: video stream header */
   memcpy (codec, &xdata[pos + 24], 4);
   codec[4] = '\0';
-
-  format = malloc (256);
-  snprintf (format, 256, _("codec: %s, %u fps, %u ms"), codec, fps, duration);
-  addKeyword (&prev, format, EXTRACTOR_FORMAT);
-  format = malloc (256);
-  snprintf (format, 256, "%ux%u", width, height);
-  addKeyword (&prev, format, EXTRACTOR_SIZE);
-  addKeyword (&prev, strdup ("video/x-msvideo"), EXTRACTOR_MIMETYPE);
-  return prev;
+  snprintf (format,
+	    sizeof(format),
+	    _("codec: %s, %u fps, %u ms"), codec, fps, duration);
+  ADD (format, EXTRACTOR_METATYPE_FORMAT);
+  snprintf (format, 
+	    sizeof(format), 
+	    "%ux%u", width, height);
+  ADD (format, EXTRACTOR_METATYPE_IMAGE_DIMENSIONS);
+  ADD ("video/x-msvideo", EXTRACTOR_METATYPE_MIMETYPE);
+ FINISH:
+  return ret;
 }

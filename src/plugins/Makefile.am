@@ -91,6 +91,7 @@ plugin_LTLIBRARIES = \
   libextractor_ps.la \
   libextractor_qt.la \
   libextractor_real.la \
+  libextractor_riff.la \
   $(rpm) \
   libextractor_tar.la \
   $(thumbgtk) \
@@ -263,6 +264,14 @@ libextractor_real_la_SOURCES = \
 libextractor_real_la_LDFLAGS = \
   $(PLUGINFLAGS)
 
+libextractor_riff_la_SOURCES = \
+  riff_extractor.c 
+libextractor_riff_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+libextractor_riff_la_LIBADD = \
+  $(LE_LIBINTL) \
+  -lm 
+
 libextractor_rpm_la_SOURCES = \
   rpm_extractor.c 
 libextractor_rpm_la_LDFLAGS = \
@@ -319,7 +328,6 @@ OLD_LIBS = \
   $(extrampeg) \
   libextractor_nsf.la \
   libextractor_nsfe.la \
-  libextractor_riff.la \
   libextractor_s3m.la \
   libextractor_sid.la \
   libextractor_tar.la \
@@ -349,15 +357,6 @@ libextractor_id3v24_la_LDFLAGS = \
 libextractor_id3v24_la_LIBADD = \
   $(top_builddir)/src/common/libextractor_common.la
 
-
-libextractor_riff_la_SOURCES = \
-  riffextractor.c 
-libextractor_riff_la_LDFLAGS = \
-  $(PLUGINFLAGS)
-libextractor_riff_la_LIBADD = \
-  $(top_builddir)/src/main/libextractor.la \
-  $(LE_LIBINTL) \
-  -lm 
 
 libextractor_sid_la_SOURCES = \
   sidextractor.c 
