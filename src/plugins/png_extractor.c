@@ -1,6 +1,6 @@
 /*
      This file is part of libextractor.
-     (C) 2002, 2003, 2004, 2005 Vidyut Samanta and Christian Grothoff
+     (C) 2002, 2003, 2004, 2005, 2009 Vidyut Samanta and Christian Grothoff
 
      libextractor is free software; you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published
@@ -47,20 +47,6 @@ stnlen (const char *str, size_t maxlen)
   return ret;
 }
 
-static struct EXTRACTOR_Keywords *
-addKeyword (EXTRACTOR_KeywordType type,
-            char *keyword, struct EXTRACTOR_Keywords *next)
-{
-  EXTRACTOR_KeywordList *result;
-
-  if (keyword == NULL)
-    return next;
-  result = malloc (sizeof (EXTRACTOR_KeywordList));
-  result->next = next;
-  result->keyword = keyword;
-  result->keywordType = type;
-  return result;
-}
 
 static int
 getIntAt (const void *pos)
@@ -75,61 +61,65 @@ getIntAt (const void *pos)
 static struct
 {
   char *name;
-  EXTRACTOR_KeywordType type;
+  enum EXTRACTOR_MetaType type;
 } tagmap[] =
 {
-  {
-  "Author", EXTRACTOR_AUTHOR},
-  {
-  "Description", EXTRACTOR_DESCRIPTION},
-  {
-  "Comment", EXTRACTOR_COMMENT},
-  {
-  "Copyright", EXTRACTOR_COPYRIGHT},
-  {
-  "Source", EXTRACTOR_SOURCE},
-  {
-  "Creation Time", EXTRACTOR_CREATION_DATE},
-  {
-  "Title", EXTRACTOR_TITLE},
-  {
-  "Software", EXTRACTOR_SOFTWARE},
-  {
-  "Disclaimer", EXTRACTOR_DISCLAIMER},
-  {
-  "Warning", EXTRACTOR_WARNING},
-  {
-  "Signature", EXTRACTOR_RESOURCE_IDENTIFIER},
-  {
-NULL, EXTRACTOR_UNKNOWN},};
+  { "Author", EXTRACTOR_METATYPE_AUTHOR_NAME},
+  { "Description", EXTRACTOR_METATYPE_DESCRIPTION},
+  { "Comment", EXTRACTOR_METATYPE_COMMENT},
+  { "Copyright", EXTRACTOR_METATYPE_COPYRIGHT},
+  { "Source", EXTRACTOR_METATYPE_SOURCE_DEVICE },
+  { "Creation Time", EXTRACTOR_METATYPE_CREATION_DATE},
+  { "Title", EXTRACTOR_METATYPE_TITLE},
+  { "Software", EXTRACTOR_METATYPE_PRODUCED_BY_SOFTWARE},
+  { "Disclaimer", EXTRACTOR_METATYPE_DISCLAIMER},
+  { "Warning", EXTRACTOR_METATYPE_WARNING},
+  { NULL, EXTRACTOR_METATYPE_RESERVED }
+};
 
-static struct EXTRACTOR_Keywords *
+
+#define ADD(t,s) do { if (0 != (ret = proc (proc_cls, "tar", t, EXTRACTOR_METAFORMAT_UTF8, "text/plain", s, strlen(s)+1))) goto FINISH; } while (0)
+#define ADDF(t,s) do { if (0 != (ret = proc (proc_cls, "tar", t, EXTRACTOR_METAFORMAT_UTF8, "text/plain", s, strlen(s)+1))) { free(s); goto FINISH; } free (s); } while (0)
+
+
+static int
 processtEXt (const char *data,
-             unsigned int length, struct EXTRACTOR_Keywords *prev)
+             unsigned int length,
+	     EXTRACTOR_MetaDataProcessor proc,
+	     void *proc_cls)
 {
   char *keyword;
   unsigned int off;
   int i;
+  int ret;
 
   data += 4;
   off = stnlen (data, length) + 1;
   if (off >= length)
-    return prev;                /* failed to find '\0' */
+    return 0;                /* failed to find '\0' */
   keyword = EXTRACTOR_common_convert_to_utf8 (&data[off], length - off, "ISO-8859-1");
   i = 0;
+  ret = 0;
   while (tagmap[i].name != NULL)
     {
       if (0 == strcmp (tagmap[i].name, data))
-        return addKeyword (tagmap[i].type, keyword, prev);
+	{
+	  ADDF (tagmap[i].type, keyword);
+	  return 0;
+	}
 
       i++;
     }
-  return addKeyword (EXTRACTOR_UNKNOWN, keyword, prev);
+  ADDF (EXTRACTOR_METATYPE_KEYWORDS, keyword);
+ FINISH:
+  return ret;
 }
 
-static struct EXTRACTOR_Keywords *
+static int
 processiTXt (const char *data,
-             unsigned int length, struct EXTRACTOR_Keywords *prev)
+             unsigned int length, 
+	     EXTRACTOR_MetaDataProcessor proc,
+	     void *proc_cls)
 {
   unsigned int pos;
   char *keyword;
@@ -140,27 +130,29 @@ processiTXt (const char *data,
   char *buf;
   uLongf bufLen;
   int ret;
+  int zret;
 
   pos = stnlen (data, length) + 1;
   if (pos + 3 >= length)
-    return prev;
+    return 0;
   compressed = data[pos++];
   if (compressed && (data[pos++] != 0))
-    return prev;                /* bad compression method */
+    return 0;                /* bad compression method */
   language = &data[pos];
+  ret = 0;
   if (stnlen (language, length - pos) > 0)
-    prev = addKeyword (EXTRACTOR_LANGUAGE,
-                       stndup (language, length - pos), prev);
+    ADDF (EXTRACTOR_METATYPE_DOCUMENT_LANGUAGE,
+	  stndup (language, length - pos));
   pos += stnlen (language, length - pos) + 1;
   if (pos + 1 >= length)
-    return prev;
+    return 0;
   translated = &data[pos];      /* already in utf-8! */
   if (stnlen (translated, length - pos) > 0)
-    prev = addKeyword (EXTRACTOR_TRANSLATED,
-                       stndup (translated, length - pos), prev);
+    ADDF (EXTRACTOR_METATYPE_KEYWORDS,
+	  stndup (translated, length - pos));
   pos += stnlen (translated, length - pos) + 1;
   if (pos >= length)
-    return prev;
+    return 0;
 
   if (compressed)
     {
@@ -168,30 +160,30 @@ processiTXt (const char *data,
       while (1)
         {
           if (bufLen * 2 < bufLen)
-            return prev;
+            return 0;
           bufLen *= 2;
           if (bufLen > 50 * (length - pos))
             {
               /* printf("zlib problem"); */
-              return prev;
+              return 0;
             }
           buf = malloc (bufLen);
           if (buf == NULL)
             {
               /* printf("out of memory"); */
-              return prev;      /* out of memory */
+              return 0;      /* out of memory */
             }
-          ret = uncompress ((Bytef *) buf,
+          zret = uncompress ((Bytef *) buf,
                             &bufLen,
                             (const Bytef *) &data[pos], length - pos);
-          if (ret == Z_OK)
+          if (zret == Z_OK)
             {
               /* printf("zlib ok"); */
               break;
             }
           free (buf);
-          if (ret != Z_BUF_ERROR)
-            return prev;        /* unknown error, abort */
+          if (zret != Z_BUF_ERROR)
+            return 0;        /* unknown error, abort */
         }
       keyword = stndup (buf, bufLen);
       free (buf);
@@ -204,33 +196,44 @@ processiTXt (const char *data,
   while (tagmap[i].name != NULL)
     {
       if (0 == strcmp (tagmap[i].name, data))
-        return addKeyword (tagmap[i].type, keyword,     /* already in utf-8 */
-                           prev);
+	{
+	  ADDF (tagmap[i].type, keyword /* already in utf8 */);
+	  return 0;
+	}
       i++;
     }
-  return addKeyword (EXTRACTOR_UNKNOWN, keyword, prev);
+  ADDF (EXTRACTOR_METATYPE_COMMENT, keyword);
+ FINISH:
+  return ret;
 }
 
-static struct EXTRACTOR_Keywords *
+
+static int
 processIHDR (const char *data,
-             unsigned int length, struct EXTRACTOR_Keywords *prev)
+             unsigned int length, 
+	     EXTRACTOR_MetaDataProcessor proc,
+	     void *proc_cls)
 {
-  char *tmp;
+  char tmp[128];
+  int ret;
 
   if (length < 12)
-    return prev;
-
-  tmp = malloc (128);
+    return 0;
+  ret = 0;
   snprintf (tmp,
-            128,
+            sizeof(tmp),
             "%ux%u",
             htonl (getIntAt (&data[4])), htonl (getIntAt (&data[8])));
-  return addKeyword (EXTRACTOR_SIZE, tmp, prev);
+  ADD (EXTRACTOR_METATYPE_IMAGE_DIMENSIONS, tmp);
+ FINISH:
+  return ret;
 }
 
-static struct EXTRACTOR_Keywords *
+static int
 processzTXt (const char *data,
-             unsigned int length, struct EXTRACTOR_Keywords *prev)
+             unsigned int length,
+	     EXTRACTOR_MetaDataProcessor proc,
+	     void *proc_cls)
 {
   char *keyword;
   unsigned int off;
@@ -238,42 +241,43 @@ processzTXt (const char *data,
   char *buf;
   uLongf bufLen;
   int ret;
+  int zret;
 
   data += 4;
   off = stnlen (data, length) + 1;
   if (off >= length)
-    return prev;                /* failed to find '\0' */
+    return 0;                /* failed to find '\0' */
   if (data[off] != 0)
-    return prev;                /* compression method must be 0 */
+    return 0;                /* compression method must be 0 */
   off++;
 
   bufLen = 1024 + 2 * (length - off);
   while (1)
     {
       if (bufLen * 2 < bufLen)
-        return prev;
+        return 0;
       bufLen *= 2;
       if (bufLen > 50 * (length - off))
         {
           /* printf("zlib problem"); */
-          return prev;
+          return 0;
         }
       buf = malloc (bufLen);
       if (buf == NULL)
         {
           /* printf("out of memory"); */
-          return prev;          /* out of memory */
+          return 0;          /* out of memory */
         }
-      ret = uncompress ((Bytef *) buf,
-                        &bufLen, (const Bytef *) &data[off], length - off);
-      if (ret == Z_OK)
+      zret = uncompress ((Bytef *) buf,
+			 &bufLen, (const Bytef *) &data[off], length - off);
+      if (zret == Z_OK)
         {
           /* printf("zlib ok"); */
           break;
         }
       free (buf);
-      if (ret != Z_BUF_ERROR)
-        return prev;            /* unknown error, abort */
+      if (zret != Z_BUF_ERROR)
+        return 0;            /* unknown error, abort */
     }
   keyword = EXTRACTOR_common_convert_to_utf8 (buf, bufLen, "ISO-8859-1");
   free (buf);
@@ -281,16 +285,22 @@ processzTXt (const char *data,
   while (tagmap[i].name != NULL)
     {
       if (0 == strcmp (tagmap[i].name, data))
-        return addKeyword (tagmap[i].type, keyword, prev);
-
+	{
+	  ADDF (tagmap[i].type, keyword);
+	  return 0;
+	}
       i++;
     }
-  return addKeyword (EXTRACTOR_UNKNOWN, keyword, prev);
+  ADDF (EXTRACTOR_METATYPE_COMMENT, keyword);
+ FINISH:
+  return ret;
 }
 
-static struct EXTRACTOR_Keywords *
+static int
 processtIME (const char *data,
-             unsigned int length, struct EXTRACTOR_Keywords *prev)
+             unsigned int length,
+	     EXTRACTOR_MetaDataProcessor proc,
+	     void *proc_cls)
 {
   unsigned short y;
   unsigned int year;
@@ -300,9 +310,11 @@ processtIME (const char *data,
   unsigned int m;
   unsigned int s;
   char val[256];
+  int ret;
 
   if (length != 7)
-    return prev;
+    return 0;
+  ret = 0;
   memcpy (&y, &data[4], sizeof (unsigned short));
   year = ntohs (y);
   mo = (unsigned char) data[6];
@@ -310,33 +322,39 @@ processtIME (const char *data,
   h = (unsigned char) data[8];
   m = (unsigned char) data[9];
   s = (unsigned char) data[10];
-  sprintf (val, "%04u-%02u-%02u %02d:%02d:%02d", year, mo, day, h, m, s);
-  return addKeyword (EXTRACTOR_MODIFICATION_DATE, strdup (val), prev);
+  snprintf (val, 
+	    sizeof(val),
+	    "%04u-%02u-%02u %02d:%02d:%02d", year, mo, day, h, m, s);
+  ADD (EXTRACTOR_METATYPE_MODIFICATION_DATE, val);
+ FINISH:
+  return ret;
 }
 
 #define PNG_HEADER "\211PNG\r\n\032\n"
 
 
 
-struct EXTRACTOR_Keywords *
-libextractor_png_extract (const char *filename,
-                          const char *data,
-                          size_t size, struct EXTRACTOR_Keywords *prev)
+int 
+EXTRACTOR_png_extract (const char *data,
+		       size_t size,
+		       EXTRACTOR_MetaDataProcessor proc,
+		       void *proc_cls,
+		       const char *options)
 {
   const char *pos;
   const char *end;
-  struct EXTRACTOR_Keywords *result;
   unsigned int length;
+  int ret;
 
   if (size < strlen (PNG_HEADER))
-    return prev;
+    return 0;
   if (0 != strncmp (data, PNG_HEADER, strlen (PNG_HEADER)))
-    return prev;
-  result = prev;
+    return 0;
   end = &data[size];
   pos = &data[strlen (PNG_HEADER)];
-  result = addKeyword (EXTRACTOR_MIMETYPE, strdup ("image/png"), result);
-  while (1)
+  ADD (EXTRACTOR_METATYPE_MIMETYPE, "image/png");
+  ret = 0;
+  while (ret == 0)
     {
       if (pos + 12 >= end)
         break;
@@ -345,18 +363,18 @@ libextractor_png_extract (const char *filename,
       /* printf("Length: %u, pos %u\n", length, pos - data); */
       if ((pos + 4 + length + 4 > end) || (pos + 4 + length + 4 < pos + 8))
         break;
-
       if (0 == strncmp (pos, "IHDR", 4))
-        result = processIHDR (pos, length, result);
+        ret = processIHDR (pos, length, proc, proc_cls);
       if (0 == strncmp (pos, "iTXt", 4))
-        result = processiTXt (pos, length, result);
+        ret = processiTXt (pos, length, proc, proc_cls);
       if (0 == strncmp (pos, "tEXt", 4))
-        result = processtEXt (pos, length, result);
+        ret = processtEXt (pos, length, proc, proc_cls);
       if (0 == strncmp (pos, "zTXt", 4))
-        result = processzTXt (pos, length, result);
+        ret = processzTXt (pos, length, proc, proc_cls);
       if (0 == strncmp (pos, "tIME", 4))
-        result = processtIME (pos, length, result);
+        ret = processtIME (pos, length, proc, proc_cls);
       pos += 4 + length + 4;    /* Chunk type, data, crc */
     }
-  return result;
+ FINISH:
+  return ret;
 }

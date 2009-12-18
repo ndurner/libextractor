@@ -87,6 +87,7 @@ plugin_LTLIBRARIES = \
   $(ogg) \
   $(ole2) \
   $(pdf) \
+  libextractor_png.la \
   libextractor_real.la \
   $(rpm) \
   libextractor_tar.la \
@@ -234,6 +235,14 @@ libextractor_pdf_la_LIBADD = \
   $(top_builddir)/src/common/libextractor_common.la \
   -lpoppler
 
+libextractor_png_la_SOURCES = \
+  png_extractor.c
+libextractor_png_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+libextractor_png_la_LIBADD = \
+  $(top_builddir)/src/common/libextractor_common.la \
+  -lz
+
 libextractor_real_la_SOURCES = \
   real_extractor.c 
 libextractor_real_la_LDFLAGS = \
@@ -288,7 +297,6 @@ OLD_LIBS = \
   $(extrampeg) \
   libextractor_nsf.la \
   libextractor_nsfe.la \
-  libextractor_png.la \
   libextractor_ps.la \
   $(extraqt) \
   libextractor_riff.la \
@@ -352,15 +360,6 @@ libextractor_riff_la_LIBADD = \
   $(top_builddir)/src/main/libextractor.la \
   $(LE_LIBINTL) \
   -lm 
-
-libextractor_png_la_SOURCES = \
-  pngextractor.c
-libextractor_png_la_LDFLAGS = \
-  $(PLUGINFLAGS)
-libextractor_png_la_LIBADD = \
-  $(top_builddir)/src/common/libextractor_common.la \
-  $(top_builddir)/src/main/libextractor.la \
-  -lz
 
 libextractor_sid_la_SOURCES = \
   sidextractor.c 
