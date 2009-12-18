@@ -1,6 +1,6 @@
 /*
      This file is part of libextractor.
-     (C) 2004 Vidyut Samanta and Christian Grothoff
+     (C) 2004, 2009 Vidyut Samanta and Christian Grothoff
 
      libextractor is free software; you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published
@@ -24,16 +24,19 @@
 
 #define DEBUG 0
 
-static void
-addKeyword (struct EXTRACTOR_Keywords **list,
-            char *keyword, EXTRACTOR_KeywordType type)
+static int
+addKeyword (EXTRACTOR_MetaDataProcessor proc,
+	    void *proc_cls,
+            const char *keyword, 
+	    enum EXTRACTOR_MetaType type)
 {
-  EXTRACTOR_KeywordList *next;
-  next = malloc (sizeof (EXTRACTOR_KeywordList));
-  next->next = *list;
-  next->keyword = keyword;
-  next->keywordType = type;
-  *list = next;
+  return proc (proc_cls,
+	       "tiff",
+	       type,
+	       EXTRACTOR_METAFORMAT_UTF8,
+	       "text/plain",
+	       keyword,
+	       strlen(keyword)+1);
 }
 
 typedef struct
@@ -88,28 +91,32 @@ static char *DIRECTORY_ENTRY_SPECS[] = {
 #define TYPE_LONG 4
 #define TYPE_RATIONAL 5
 
-static void
-addASCII (struct EXTRACTOR_Keywords **prev,
-          char *data,
-          size_t size, DIRECTORY_ENTRY * entry, EXTRACTOR_KeywordType type)
+static int
+addASCII (EXTRACTOR_MetaDataProcessor proc,
+	  void *proc_cls,
+          const char *data,
+          size_t size, DIRECTORY_ENTRY * entry,
+	  enum EXTRACTOR_MetaType type)
 {
   if (entry->count > size)
-    return;                     /* invalid! */
+    return 0;                     /* invalid! */
   if (entry->type != TYPE_ASCII)
-    return;                     /* huh? */
+    return 0;                     /* huh? */
   if (entry->count + entry->value_or_offset > size)
-    return;
+    return 0;
   if (data[entry->value_or_offset + entry->count - 1] != 0)
-    return;
-  addKeyword (prev,
-              strdup (&data[entry->value_or_offset]), type);
+    return 0;
+  return addKeyword (proc, proc_cls,
+		     &data[entry->value_or_offset], type);
 }
 
 
-struct EXTRACTOR_Keywords *
-libextractor_tiff_extract (char *filename,
-                           char *data,
-                           size_t size, struct EXTRACTOR_Keywords *prev)
+int 
+EXTRACTOR_tiff_extract (const char *data,
+			size_t size,
+			EXTRACTOR_MetaDataProcessor proc,
+			void *proc_cls,
+			const char *options)
 {
   TIFF_HEADER hdr;
   int byteOrder;                /* 0: do not convert;
@@ -119,22 +126,23 @@ libextractor_tiff_extract (char *filename,
   unsigned int width = -1;
 
   if (size < TIFF_HEADER_SIZE)
-    return prev;                /*  can not be tiff */
+    return 0;                /*  can not be tiff */
   if ((data[0] == 0x49) && (data[1] == 0x49))
     byteOrder = 0;
   else if ((data[0] == 0x4D) && (data[1] == 0x4D))
     byteOrder = 1;
   else
-    return prev;                /* can not be tiff */
+    return 0;                /* can not be tiff */
 #if __BYTE_ORDER == __BIG_ENDIAN
   byteOrder = 1 - byteOrder;
 #endif
   EXTRACTOR_common_cat_unpack (data, TIFF_HEADER_SPECS[byteOrder], TIFF_HEADER_FIELDS (&hdr));
   if (hdr.fourty_two != 42)
-    return prev;                /* can not be tiff */
+    return 0;                /* can not be tiff */
   if (hdr.ifd_offset + 6 > size)
-    return prev;                /* malformed tiff */
-  addKeyword (&prev, strdup ("image/tiff"), EXTRACTOR_MIMETYPE);
+    return 0;                /* malformed tiff */
+  if (0 != addKeyword (proc, proc_cls, "image/tiff", EXTRACTOR_METATYPE_MIMETYPE))
+    return 1;
   current_ifd = hdr.ifd_offset;
   while (current_ifd != 0)
     {
@@ -143,7 +151,7 @@ libextractor_tiff_extract (char *filename,
       int i;
       if ( (current_ifd + 6 > size) ||
 	   (current_ifd + 6 < current_ifd) )
-        return prev;
+        return 0;
       if (byteOrder == 0)
         len = data[current_ifd + 1] << 8 | data[current_ifd];
       else
@@ -153,7 +161,7 @@ libextractor_tiff_extract (char *filename,
 #if DEBUG
           printf ("WARNING: malformed tiff\n");
 #endif
-          return prev;
+          return 0;
         }
       for (i = 0; i < len; i++)
         {
@@ -177,9 +185,10 @@ libextractor_tiff_extract (char *filename,
               if (width != -1)
                 {
                   char tmp[128];
-                  snprintf (tmp, 128, "%ux%u",
+                  snprintf (tmp, 
+			    sizeof(tmp), "%ux%u",
 			    width, length);
-                  addKeyword (&prev, strdup (tmp), EXTRACTOR_SIZE);
+                  addKeyword (proc, proc_cls, strdup (tmp), EXTRACTOR_METATYPE_IMAGE_DIMENSIONS);
                 }
               break;
             case TAG_WIDTH:
@@ -190,34 +199,44 @@ libextractor_tiff_extract (char *filename,
               if (length != -1)
                 {
                   char tmp[128];
-                  snprintf (tmp, 128, "%ux%u",
+                  snprintf (tmp, 
+			    sizeof(tmp), 
+			    "%ux%u",
 			    width, length);
-                  addKeyword (&prev, strdup (tmp), EXTRACTOR_SIZE);
+                  addKeyword (proc, proc_cls, strdup (tmp), EXTRACTOR_METATYPE_IMAGE_DIMENSIONS);
                 }
               break;
             case TAG_SOFTWARE:
-              addASCII (&prev, data, size, &entry, EXTRACTOR_SOFTWARE);
+              if (0 != addASCII (proc, proc_cls, data, size, &entry, EXTRACTOR_METATYPE_SOFTWARE))
+		return 1;
               break;
             case TAG_ARTIST:
-              addASCII (&prev, data, size, &entry, EXTRACTOR_ARTIST);
+              if (0 != addASCII (proc, proc_cls, data, size, &entry, EXTRACTOR_METATYPE_ARTIST))
+		return 1;
               break;
             case TAG_DOCUMENT_NAME:
-              addASCII (&prev, data, size, &entry, EXTRACTOR_TITLE);
+              if (0 != addASCII (proc, proc_cls, data, size, &entry, EXTRACTOR_METATYPE_TITLE))
+		return 1;
               break;
             case TAG_COPYRIGHT:
-              addASCII (&prev, data, size, &entry, EXTRACTOR_COPYRIGHT);
+              if (0 != addASCII (proc, proc_cls, data, size, &entry, EXTRACTOR_METATYPE_COPYRIGHT))
+		return 1;
               break;
             case TAG_DESCRIPTION:
-              addASCII (&prev, data, size, &entry, EXTRACTOR_DESCRIPTION);
+              if (0 != addASCII (proc, proc_cls, data, size, &entry, EXTRACTOR_METATYPE_DESCRIPTION))
+		return 1;
               break;
             case TAG_HOST:
-              addASCII (&prev, data, size, &entry, EXTRACTOR_BUILDHOST);
+              if (0 != addASCII (proc, proc_cls, data, size, &entry, EXTRACTOR_METATYPE_BUILDHOST))
+		return 1;
               break;
             case TAG_SCANNER:
-              addASCII (&prev, data, size, &entry, EXTRACTOR_SOURCE);
+              if (0 != addASCII (proc, proc_cls, data, size, &entry, EXTRACTOR_METATYPE_SOURCE))
+		return 1;
               break;
             case TAG_DAYTIME:
-              addASCII (&prev, data, size, &entry, EXTRACTOR_CREATION_DATE);
+              if (0 != addASCII (proc, proc_cls, data, size, &entry, EXTRACTOR_METATYPE_CREATION_DATE))
+		return 1;
               break;
             }
         }
@@ -232,5 +251,5 @@ libextractor_tiff_extract (char *filename,
           data[off] << 24 | data[off + 1] << 16 |
 	  data[off + 2] << 8 | data[off + 3];
     }
-  return prev;
+  return 0;
 }

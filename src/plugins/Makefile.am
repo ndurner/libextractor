@@ -94,6 +94,7 @@ plugin_LTLIBRARIES = \
   $(rpm) \
   libextractor_tar.la \
   $(thumbgtk) \
+  libextractor_tiff.la \
   libextractor_wav.la \
   libextractor_zip.la
 
@@ -283,6 +284,13 @@ libextractor_thumbnailgtk_la_LDFLAGS = \
 libextractor_thumbnailgtk_la_SOURCES = \
   thumbnailgtk_extractor.c
 
+libextractor_tiff_la_SOURCES = \
+  tiff_extractor.c 
+libextractor_tiff_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+libextractor_tiff_la_LIBADD = \
+  $(top_builddir)/src/common/libextractor_common.la
+
 libextractor_wav_la_SOURCES = \
   wav_extractor.c
 libextractor_wav_la_LDFLAGS = \
@@ -315,7 +323,6 @@ OLD_LIBS = \
   libextractor_s3m.la \
   libextractor_sid.la \
   libextractor_tar.la \
-  libextractor_tiff.la \
   $(thumbqt) \
   libextractor_xm.la \
   libextractor_zip.la 
@@ -342,12 +349,6 @@ libextractor_id3v24_la_LDFLAGS = \
 libextractor_id3v24_la_LIBADD = \
   $(top_builddir)/src/common/libextractor_common.la
 
-libextractor_tiff_la_SOURCES = \
-  tiffextractor.c 
-libextractor_tiff_la_LDFLAGS = \
-  $(PLUGINFLAGS)
-libextractor_tiff_la_LIBADD = \
-  $(top_builddir)/src/common/libextractor_common.la
 
 libextractor_riff_la_SOURCES = \
   riffextractor.c 
