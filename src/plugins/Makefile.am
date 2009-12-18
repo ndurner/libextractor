@@ -86,6 +86,7 @@ plugin_LTLIBRARIES = \
   $(ogg) \
   $(ole2) \
   $(pdf) \
+  libextractor_real.la \
   $(rpm) \
   $(thumbgtk)
 
@@ -222,6 +223,11 @@ libextractor_pdf_la_LIBADD = \
   $(top_builddir)/src/common/libextractor_common.la \
   -lpoppler
 
+libextractor_real_la_SOURCES = \
+  real_extractor.c 
+libextractor_real_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+
 libextractor_rpm_la_SOURCES = \
   rpm_extractor.c 
 libextractor_rpm_la_LDFLAGS = \
@@ -256,7 +262,6 @@ OLD_LIBS = \
   libextractor_png.la \
   libextractor_ps.la \
   $(extraqt) \
-  libextractor_real.la \
   libextractor_riff.la \
   libextractor_s3m.la \
   libextractor_sid.la \
@@ -331,11 +336,6 @@ libextractor_zip_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_zip_la_LIBADD = \
   $(top_builddir)/src/main/libextractor.la
-
-libextractor_real_la_SOURCES = \
-  realextractor.c 
-libextractor_real_la_LDFLAGS = \
-  $(PLUGINFLAGS)
 
 libextractor_mpeg_la_SOURCES = \
   mpegextractor.c 

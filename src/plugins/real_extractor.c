@@ -1,6 +1,6 @@
 /*
      This file is part of libextractor.
-     (C) 2002, 2003 Vidyut Samanta and Christian Grothoff
+     (C) 2002, 2003, 2009 Vidyut Samanta and Christian Grothoff
 
      libextractor is free software; you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published
@@ -20,10 +20,11 @@
 
 #include "platform.h"
 #include "extractor.h"
+#include <stdint.h>
 
-#define UINT32 unsigned int
-#define UINT16 unsigned short
-#define UINT8 unsigned char
+#define UINT32 uint32_t
+#define UINT16 uint16_t
+#define UINT8 uint8_t
 
 typedef struct
 {
@@ -74,57 +75,51 @@ typedef struct
 
 #define RAFF4_HEADER 0x2E7261FD
 
-static struct EXTRACTOR_Keywords *
-addKeyword (EXTRACTOR_KeywordType type,
-            char *keyword, struct EXTRACTOR_Keywords *next)
-{
-  EXTRACTOR_KeywordList *result;
 
-  if (keyword == NULL)
-    return next;
-  result = malloc (sizeof (EXTRACTOR_KeywordList));
-  result->next = next;
-  result->keyword = keyword;
-  result->keywordType = type;
-  return result;
-}
-
-static struct EXTRACTOR_Keywords *
+static int
 processMediaProperties (const Media_Properties * prop,
-                        struct EXTRACTOR_Keywords *prev)
+			EXTRACTOR_MetaDataProcessor proc,
+			void *proc_cls)
 {
 
   UINT8 mime_type_size;
   UINT32 prop_size;
-  char *data;
 
   prop_size = ntohl (prop->size);
   if (prop_size <= sizeof (Media_Properties))
-    return prev;
+    return 0;
   if (0 != prop->object_version)
-    return prev;
+    return 0;
   if (prop_size <= prop->stream_name_size + sizeof (UINT8)
       + sizeof (Media_Properties))
-    return prev;
+    return 0;
 
   mime_type_size = prop->data[prop->stream_name_size];
-  if (prop_size <= prop->stream_name_size + sizeof (UINT8) +
+  if (mime_type_size > 2048)
+    return 0; /* unrealistic */
+  if (prop_size > prop->stream_name_size + sizeof (UINT8) +
       +mime_type_size + sizeof (Media_Properties))
-    return prev;
-
-  data = malloc (mime_type_size + 1);
-  memcpy (data, &prop->data[prop->stream_name_size + 1], mime_type_size);
-  data[mime_type_size] = '\0';
-
-  return addKeyword (EXTRACTOR_MIMETYPE, data, prev);
+    {
+      char data[mime_type_size + 1];
+      memcpy (data, &prop->data[prop->stream_name_size + 1], mime_type_size);
+      data[mime_type_size] = '\0';
+      
+      return proc (proc_cls,
+		   "real",
+		   EXTRACTOR_METATYPE_MIMETYPE,
+		   EXTRACTOR_METAFORMAT_UTF8,
+		   "text/plain",
+		   data,
+		   strlen (data));
+    }
+  return 0;
 }
 
-static struct EXTRACTOR_Keywords *
+static int
 processContentDescription (const Content_Description * prop,
-                           struct EXTRACTOR_Keywords *prev)
+			   EXTRACTOR_MetaDataProcessor proc,
+			   void *proc_cls)
 {
-
-
   UINT16 author_len;
   UINT16 copyright_len;
   UINT16 comment_len;
@@ -134,22 +129,20 @@ processContentDescription (const Content_Description * prop,
   char *copyright;
   char *comment;
   UINT32 prop_size;
+  int ret;
 
   prop_size = ntohl (prop->size);
   if (prop_size <= sizeof (Content_Description))
-    return prev;
+    return 0;
   if (0 != prop->object_version)
-    return prev;
+    return 0;
   title_len = ntohs (prop->title_len);
   if (prop_size <= title_len + sizeof (UINT16) + sizeof (Content_Description))
-    return prev;
-
-
+    return 0;
   author_len = ntohs (*(UINT16 *) & prop->data[title_len]);
-
   if (prop_size <= title_len + sizeof (UINT16)
       + author_len + sizeof (Content_Description))
-    return prev;
+    return 0;
 
   copyright_len = ntohs (*(UINT16 *) & prop->data[title_len +
                                                   author_len +
@@ -157,7 +150,7 @@ processContentDescription (const Content_Description * prop,
 
   if (prop_size <= title_len + 2 * sizeof (UINT16)
       + author_len + copyright_len + sizeof (Content_Description))
-    return prev;
+    return 0;
 
   comment_len = ntohs (*(UINT16 *) & prop->data[title_len +
                                                 author_len +
@@ -167,39 +160,68 @@ processContentDescription (const Content_Description * prop,
   if (prop_size < title_len + 3 * sizeof (UINT16)
       + author_len + copyright_len + comment_len
       + sizeof (Content_Description))
-    return prev;
+    return 0;
 
   title = malloc (title_len + 1);
   memcpy (title, &prop->data[0], title_len);
   title[title_len] = '\0';
-
-  prev = addKeyword (EXTRACTOR_TITLE, title, prev);
+  ret = proc (proc_cls,
+	      "real",
+	      EXTRACTOR_METATYPE_TITLE,
+	      EXTRACTOR_METAFORMAT_UTF8,
+	      "text/plain",
+	      title,
+	      strlen (title)+1);
+  free (title);
+  if (ret != 0)
+    return ret;
 
   author = malloc (author_len + 1);
   memcpy (author, &prop->data[title_len + sizeof (UINT16)], author_len);
   author[author_len] = '\0';
-
-  prev = addKeyword (EXTRACTOR_AUTHOR, author, prev);
+  ret = proc (proc_cls,
+	      "real",
+	      EXTRACTOR_METATYPE_AUTHOR_NAME,
+	      EXTRACTOR_METAFORMAT_UTF8,
+	      "text/plain",
+	      author,
+	      strlen (author)+1);
+  free (author);
+  if (ret != 0)
+    return ret;
 
   copyright = malloc (copyright_len + 1);
   memcpy (copyright,
           &prop->data[title_len + sizeof (UINT16) * 2 + author_len],
           copyright_len);
   copyright[copyright_len] = '\0';
-
-
-  prev = addKeyword (EXTRACTOR_COPYRIGHT, copyright, prev);
-
+  ret = proc (proc_cls,
+	      "real",
+	      EXTRACTOR_METATYPE_COPYRIGHT,
+	      EXTRACTOR_METAFORMAT_UTF8,
+	      "text/plain",
+	      copyright,
+	      strlen (copyright)+1);
+  free (copyright);
+  if (ret != 0)
+    return ret;
 
   comment = malloc (comment_len + 1);
   memcpy (comment,
           &prop->data[title_len + sizeof (UINT16) * 3 + author_len +
                       copyright_len], comment_len);
   comment[comment_len] = '\0';
-
-  prev = addKeyword (EXTRACTOR_COMMENT, comment, prev);
-
-  return prev;
+  ret = proc (proc_cls,
+	      "real",
+	      EXTRACTOR_METATYPE_COMMENT,
+	      EXTRACTOR_METAFORMAT_UTF8,
+	      "text/plain",
+	      comment,
+	      strlen (comment)+1);
+  free (comment);
+  if (ret != 0)
+    return ret;
+  return 0;
 }
 
 typedef struct RAFF4_header
@@ -247,76 +269,112 @@ stndup (const char *str, size_t n)
 }
 
 /* audio/vnd.rn-realaudio */
-struct EXTRACTOR_Keywords *
-libextractor_real_extract (unsigned char *filename,
-                           const unsigned char *data,
-                           size_t size, struct EXTRACTOR_Keywords *prev)
+int 
+EXTRACTOR_real_extract (const unsigned char *data,
+			size_t size,
+			EXTRACTOR_MetaDataProcessor proc,
+			void *proc_cls,
+			const char *options)
 {
   const unsigned char *pos;
   const unsigned char *end;
-  struct EXTRACTOR_Keywords *result;
   unsigned int length;
   const RAFF4_header *hdr;
   unsigned char tlen;
   unsigned char alen;
   unsigned char clen;
   unsigned char aplen;
+  char *x;
+  int ret;
 
   if (size <= 2 * sizeof (int))
-    return prev;
-
+    return 0;
   if (RAFF4_HEADER == ntohl (*(int *) data))
     {
       /* HELIX */
       if (size <= RAFF4_HDR_SIZE + 16 + 4)
-        return prev;
-      prev = addKeyword (EXTRACTOR_MIMETYPE,
-                         strdup ("audio/vnd.rn-realaudio"), prev);
+        return 0;
+      if (0 != proc (proc_cls,
+		     "real",
+		     EXTRACTOR_METATYPE_MIMETYPE,
+		     EXTRACTOR_METAFORMAT_UTF8,
+		     "text/plain",
+		     "audio/vnd.rn-realaudio",
+		     strlen ("audio/vnd.rn-realaudio")+1))
+	return 1;
       hdr = (const RAFF4_header *) &data[16];
       if (ntohs (hdr->header_length) + 16 > size)
-        return prev;
+        return 0;
       tlen = data[16 + RAFF4_HDR_SIZE];
       if (tlen + RAFF4_HDR_SIZE + 20 > size)
-        return prev;
+        return 0;
       alen = data[17 + tlen + RAFF4_HDR_SIZE];
       if (tlen + alen + RAFF4_HDR_SIZE + 20 > size)
-        return prev;
+        return 0;
       clen = data[18 + tlen + alen + RAFF4_HDR_SIZE];
       if (tlen + alen + clen + RAFF4_HDR_SIZE + 20 > size)
-        return prev;
+        return 0;
       aplen = data[19 + tlen + clen + alen + RAFF4_HDR_SIZE];
       if (tlen + alen + clen + aplen + RAFF4_HDR_SIZE + 20 > size)
-        return prev;
-
-      if (tlen > 0)
-        prev = addKeyword (EXTRACTOR_TITLE,
-                           stndup ((const char *) &data[17 + RAFF4_HDR_SIZE],
-                                   tlen), prev);
-      if (alen > 0)
-        prev = addKeyword (EXTRACTOR_AUTHOR,
-                           stndup ((const char *)
-                                   &data[18 + RAFF4_HDR_SIZE + tlen], alen),
-                           prev);
-      if (clen > 0)
-        prev = addKeyword (EXTRACTOR_COPYRIGHT,
-                           stndup ((const char *)
-                                   &data[19 + RAFF4_HDR_SIZE + tlen + alen],
-                                   clen), prev);
-      if (aplen > 0)
-        prev = addKeyword (EXTRACTOR_SOFTWARE,
-                           stndup ((const char *)
-                                   &data[20 + RAFF4_HDR_SIZE + tlen + alen +
-                                         clen], aplen), prev);
-      return prev;
-
+        return 0;
+      ret = 0;
+      if ( (tlen > 0) && (ret == 0) )
+	{
+	  x = stndup ((const char *) &data[17 + RAFF4_HDR_SIZE], tlen);
+	  ret = proc (proc_cls,
+		      "real",
+		      EXTRACTOR_METATYPE_MIMETYPE,
+		      EXTRACTOR_METAFORMAT_UTF8,
+		      "text/plain",
+		      x,
+		      strlen (x)+1);
+	  free (x);
+	}
+      if ( (alen > 0) && (ret == 0) )
+	{
+	  x = stndup ((const char *) &data[18 + RAFF4_HDR_SIZE + tlen], alen);
+	  ret = proc (proc_cls,
+		      "real",
+		      EXTRACTOR_METATYPE_MIMETYPE,
+		      EXTRACTOR_METAFORMAT_UTF8,
+		      "text/plain",
+		      x,
+		      strlen (x)+1);
+	  free (x);
+	}
+      if ( (clen > 0) && (ret == 0) )
+	{
+	  x = stndup ((const char *) &data[19 + RAFF4_HDR_SIZE + tlen + alen], clen);
+	  ret = proc (proc_cls,
+		      "real",
+		      EXTRACTOR_METATYPE_MIMETYPE,
+		      EXTRACTOR_METAFORMAT_UTF8,
+		      "text/plain",
+		      x,
+		      strlen (x)+1);
+	  free (x);
+	}
+      if ( (aplen > 0) && (ret == 0) )
+	{
+	  x = stndup ((const char *) &data[20 + RAFF4_HDR_SIZE + tlen + alen + clen], aplen);
+	  ret = proc (proc_cls,
+		      "real",
+		      EXTRACTOR_METATYPE_MIMETYPE,
+		      EXTRACTOR_METAFORMAT_UTF8,
+		      "text/plain",
+		      x,
+		      strlen (x)+1);
+	  free (x);
+	}
+      return ret;
     }
   if (REAL_HEADER == ntohl (*(int *) data))
     {
       /* old real */
-      result = prev;
       end = &data[size];
       pos = &data[0];
-      while (1)
+      ret = 0;
+      while (0 == ret)
         {
           if ((pos + 8 >= end) || (pos + 8 < pos))
             break;
@@ -328,13 +386,15 @@ libextractor_real_extract (unsigned char *filename,
           switch (ntohl (*((unsigned int *) pos)))
             {
             case MDPR_HEADER:
-              result = processMediaProperties ((Media_Properties *) pos,
-                                               result);
+              ret = processMediaProperties ((Media_Properties *) pos,
+                                               proc,
+					       proc_cls);
               pos += length;
               break;
             case CONT_HEADER:
-              result = processContentDescription ((Content_Description *) pos,
-                                                  result);
+              ret = processContentDescription ((Content_Description *) pos,
+					       proc,
+					       proc_cls);
               pos += length;
               break;
             case REAL_HEADER:  /* treat like default */
@@ -343,7 +403,7 @@ libextractor_real_extract (unsigned char *filename,
               break;
             }
         }
-      return result;
+      return ret;
     }
-  return prev;
+  return 0;
 }
