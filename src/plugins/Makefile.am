@@ -82,6 +82,7 @@ plugin_LTLIBRARIES = \
   libextractor_man.la \
   libextractor_mime.la \
   libextractor_mp3.la \
+  $(mpeg) \
   libextractor_odf.la \
   $(ogg) \
   $(ole2) \
@@ -190,6 +191,13 @@ libextractor_mp3_la_LDFLAGS = \
 libextractor_mp3_la_LIBADD = \
   $(top_builddir)/src/common/libextractor_common.la \
   $(LE_LIBINTL)
+
+libextractor_mpeg_la_SOURCES = \
+  mpeg_extractor.c 
+libextractor_mpeg_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+libextractor_mpeg_la_LIBADD = \
+  -lmpeg2
 
 libextractor_odf_la_SOURCES = \
   odf_extractor.c
@@ -336,14 +344,6 @@ libextractor_zip_la_SOURCES = \
 libextractor_zip_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_zip_la_LIBADD = \
-  $(top_builddir)/src/main/libextractor.la
-
-libextractor_mpeg_la_SOURCES = \
-  mpegextractor.c 
-libextractor_mpeg_la_LDFLAGS = \
-  $(PLUGINFLAGS)
-libextractor_mpeg_la_LIBADD = \
-  -lmpeg2 \
   $(top_builddir)/src/main/libextractor.la
 
 libextractor_riff_la_SOURCES = \
