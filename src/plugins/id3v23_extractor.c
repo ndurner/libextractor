@@ -35,19 +35,6 @@
 
 #include "convert.h"
 
-static struct EXTRACTOR_Keywords *
-addKeyword (EXTRACTOR_KeywordList * oldhead,
-            char *phrase, EXTRACTOR_KeywordType type)
-{
-  EXTRACTOR_KeywordList *keyword;
-
-  keyword = malloc (sizeof (EXTRACTOR_KeywordList));
-  keyword->next = oldhead;
-  keyword->keyword = phrase;
-  keyword->keywordType = type;
-  return keyword;
-}
-
 typedef struct
 {
   const char *text;
@@ -122,7 +109,7 @@ EXTRACTOR_id3v23_extract (const unsigned char *data,
       (data[0] != 0x49) ||
       (data[1] != 0x44) ||
       (data[2] != 0x33) || (data[3] != 0x03) || (data[4] != 0x00))
-    return prev;
+    return 0;
   unsync = (data[5] & 0x80) > 0;
   extendedHdr = (data[5] & 0x40) > 0;
   experimental = (data[5] & 0x20) > 0;
@@ -130,7 +117,7 @@ EXTRACTOR_id3v23_extract (const unsigned char *data,
            ((data[7] & 0x7F) << 14) |
            ((data[8] & 0x7F) << 7) | ((data[9] & 0x7F) << 0));
   if ((tsize + 10 > size) || (experimental))
-    return prev;
+    return 0;
   pos = 10;
   padding = 0;
   if (extendedHdr)
@@ -144,14 +131,14 @@ EXTRACTOR_id3v23_extract (const unsigned char *data,
       if (padding < tsize)
         tsize -= padding;
       else
-        return prev;
+        return 0;
     }
 
 
   while (pos < tsize)
     {
       if (pos + 10 > tsize)
-        return prev;
+        return 0;
       csize =
         (data[pos + 4] << 24) + (data[pos + 5] << 16) + (data[pos + 6] << 8) +
         data[pos + 7];
@@ -200,20 +187,26 @@ EXTRACTOR_id3v23_extract (const unsigned char *data,
               pos++;
               if ((word != NULL) && (strlen (word) > 0))
                 {
-                  prev = addKeyword (prev, word, tmap[i].type);
+		  if (0 != proc (proc_cls,
+				 "id3v2",
+				 tmap[i].type,
+				 EXTRACTOR_METAFORMAT_UTF8,
+				 "text/plain",
+				 word,
+				 strlen(word)+1))
+		    {
+		      free (word);
+		      return 1;
+		    }
                 }
-              else
-                {
-                  if (word != NULL)
-                    free (word);
-                }
+	      free (word);
               break;
             }
           i++;
         }
       pos += 10 + csize;
     }
-  return prev;
+  return 0;
 }
 
 /* end of id3v23_extractor.c */

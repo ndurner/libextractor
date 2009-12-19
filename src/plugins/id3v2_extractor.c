@@ -337,7 +337,7 @@ EXTRACTOR_id3v2_extract (const unsigned char *data,
                 {
 		  if (0 != proc (proc_cls,
 				 "id3v2",
-				 type,
+				 tmap[i].type,
 				 EXTRACTOR_METAFORMAT_UTF8,
 				 "text/plain",
 				 word,
