@@ -32,19 +32,7 @@ struct header
   char magicid[4];
 };
 
-
-static struct EXTRACTOR_Keywords *addkword
-  (EXTRACTOR_KeywordList * oldhead,
-   const char *phrase, EXTRACTOR_KeywordType type)
-{
-  EXTRACTOR_KeywordList *keyword;
-
-  keyword = malloc (sizeof (EXTRACTOR_KeywordList));
-  keyword->next = oldhead;
-  keyword->keyword = strdup (phrase);
-  keyword->keywordType = type;
-  return (keyword);
-}
+#define ADD(s,t) do { if (0 != proc (proc_cls, "s3m", t, EXTRACTOR_METAFORMAT_UTF8, "text/plain", s, strlen(s)+1)) return 1; } while (0)
 
 
 /* "extract" keyword from a Scream Tracker 3 Module
@@ -54,39 +42,27 @@ static struct EXTRACTOR_Keywords *addkword
  * written.
  *
  */
-struct EXTRACTOR_Keywords *libextractor_s3m_extract
-  (const char *filename,
-   char *data, size_t size, struct EXTRACTOR_Keywords *prev)
+int 
+EXTRACTOR_s3m_extract (const unsigned char *data,
+		       size_t size,
+		       EXTRACTOR_MetaDataProcessor proc,
+		       void *proc_cls,
+		       const char *options)
 {
   char title[29];
-  struct header *head;
+  const struct header *head;
 
   /* Check header size */
 
-  if (size < HEADER_SIZE)
-    {
-      return (prev);
-    }
-
-  head = (struct header *) data;
-
-  /* Check "magic" id bytes */
-
+  if (size < HEADER_SIZE)    
+    return 0;    
+  head = (const struct header *) data;
   if (memcmp (head->magicid, "SCRM", 4))
-    {
-      return (prev);
-    }
-
-  /* Mime-type */
-
-  prev = addkword (prev, "audio/x-s3m", EXTRACTOR_MIMETYPE);
-
-  /* Song title */
+    return 0;
+  ADD ("audio/x-s3m", EXTRACTOR_METATYPE_MIMETYPE);
 
   memcpy (&title, head->title, 28);
   title[28] = '\0';
-  prev = addkword (prev, title, EXTRACTOR_TITLE);
-
-  return (prev);
-
+  ADD (title, EXTRACTOR_METATYPE_TITLE);
+  return 0;
 }

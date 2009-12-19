@@ -102,6 +102,7 @@ plugin_LTLIBRARIES = \
   libextractor_real.la \
   libextractor_riff.la \
   $(rpm) \
+  libextractor_s3m.la \
   libextractor_sid.la \
   libextractor_tar.la \
   $(thumbgtk) \
@@ -290,6 +291,11 @@ libextractor_rpm_la_LDFLAGS = \
 libextractor_rpm_la_LIBADD = \
   -lrpm
 
+libextractor_s3m_la_SOURCES = \
+  s3m_extractor.c 
+libextractor_s3m_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+
 libextractor_sid_la_SOURCES = \
   sid_extractor.c 
 libextractor_sid_la_LDFLAGS = \
@@ -349,7 +355,6 @@ OLD_LIBS = \
   $(extrampeg) \
   libextractor_nsf.la \
   libextractor_nsfe.la \
-  libextractor_s3m.la \
   libextractor_tar.la \
   $(thumbqt) \
   libextractor_xm.la \
@@ -390,13 +395,6 @@ libextractor_nsfe_la_SOURCES = \
 libextractor_nsfe_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_nsfe_la_LIBADD = \
-  $(top_builddir)/src/main/libextractor.la
-
-libextractor_s3m_la_SOURCES = \
-  s3mextractor.c 
-libextractor_s3m_la_LDFLAGS = \
-  $(PLUGINFLAGS)
-libextractor_s3m_la_LIBADD = \
   $(top_builddir)/src/main/libextractor.la
 
 libextractor_thumbnailqt_la_SOURCES = \
