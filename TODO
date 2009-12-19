@@ -1,8 +1,15 @@
 * ffmpeg needs make 3.81: add configure check for it
 
 Core:
-* error reporting facilities
-* add support for different character sets (to 'all' extractors)
+* check for symbolic links, do not load same plugin twice! 
+  (happens right now for installations with multiple
+   available thumbnailers)
+* support "hash" plugins as *optional* plugins
+  (need a way to indicate that they should not be used
+   "by default")
+* use "-" in config not to append plugin, but to remove one!
+* document
+* port test cases
 
 'Unclean' code:
 * ASF

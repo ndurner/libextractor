@@ -1,6 +1,6 @@
 /*
      This file is part of libextractor.
-     (C) 2002, 2003, 2004, 2006 Vidyut Samanta and Christian Grothoff
+     (C) 2002, 2003, 2004, 2006, 2009 Vidyut Samanta and Christian Grothoff
 
      libextractor is free software; you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published
@@ -28,69 +28,57 @@
 
 #define DEBUG_EXTRACT_ID3v2 0
 
-
-static struct EXTRACTOR_Keywords *
-addKeyword (EXTRACTOR_KeywordList * oldhead,
-            char *phrase, EXTRACTOR_KeywordType type)
-{
-  EXTRACTOR_KeywordList *keyword;
-
-  keyword = (EXTRACTOR_KeywordList *) malloc (sizeof (EXTRACTOR_KeywordList));
-  keyword->next = oldhead;
-  keyword->keyword = phrase;
-  keyword->keywordType = type;
-  return keyword;
-}
-
 typedef struct
 {
-  char *text;
-  EXTRACTOR_KeywordType type;
+  const char *text;
+  enum EXTRACTOR_MetaType type;
 } Matches;
 
 static Matches tmap[] = {
-  {"TAL", EXTRACTOR_TITLE},
-  {"TT1", EXTRACTOR_GROUP},
-  {"TT2", EXTRACTOR_TITLE},
-  {"TT3", EXTRACTOR_TITLE},
-  {"TXT", EXTRACTOR_DESCRIPTION},
-  {"TPB", EXTRACTOR_PUBLISHER},
-  {"WAF", EXTRACTOR_LOCATION},
-  {"WAR", EXTRACTOR_LOCATION},
-  {"WAS", EXTRACTOR_LOCATION},
-  {"WCP", EXTRACTOR_COPYRIGHT},
-  {"WAF", EXTRACTOR_LOCATION},
-  {"WCM", EXTRACTOR_DISCLAIMER},
-  {"TSS", EXTRACTOR_FORMAT},
-  {"TYE", EXTRACTOR_DATE},
-  {"TLA", EXTRACTOR_LANGUAGE},
-  {"TP1", EXTRACTOR_ARTIST},
-  {"TP2", EXTRACTOR_ARTIST},
-  {"TP3", EXTRACTOR_CONDUCTOR},
-  {"TP4", EXTRACTOR_INTERPRET},
-  {"IPL", EXTRACTOR_CONTRIBUTOR},
-  {"TOF", EXTRACTOR_FILENAME},
-  {"TEN", EXTRACTOR_PRODUCER},
-  {"TCO", EXTRACTOR_SUBJECT},
-  {"TCR", EXTRACTOR_COPYRIGHT},
-  {"SLT", EXTRACTOR_LYRICS},
-  {"TOA", EXTRACTOR_ARTIST},
-  {"TRC", EXTRACTOR_ISRC},
-  {"TRK", EXTRACTOR_TRACK_NUMBER},
-  {"TCM", EXTRACTOR_CREATOR},
-  {"TOT", EXTRACTOR_ALBUM},
-  {"TOL", EXTRACTOR_AUTHOR},
-  {"COM", EXTRACTOR_COMMENT},
-  {"", EXTRACTOR_KEYWORDS},
+  {"TAL", EXTRACTOR_METATYPE_TITLE},
+  {"TT1", EXTRACTOR_METATYPE_GROUP},
+  {"TT2", EXTRACTOR_METATYPE_TITLE},
+  {"TT3", EXTRACTOR_METATYPE_TITLE},
+  {"TXT", EXTRACTOR_METATYPE_DESCRIPTION},
+  {"TPB", EXTRACTOR_METATYPE_PUBLISHER},
+  {"WAF", EXTRACTOR_METATYPE_LOCATION},
+  {"WAR", EXTRACTOR_METATYPE_LOCATION},
+  {"WAS", EXTRACTOR_METATYPE_LOCATION},
+  {"WCP", EXTRACTOR_METATYPE_COPYRIGHT},
+  {"WAF", EXTRACTOR_METATYPE_LOCATION},
+  {"WCM", EXTRACTOR_METATYPE_DISCLAIMER},
+  {"TSS", EXTRACTOR_METATYPE_FORMAT},
+  {"TYE", EXTRACTOR_METATYPE_DATE},
+  {"TLA", EXTRACTOR_METATYPE_LANGUAGE},
+  {"TP1", EXTRACTOR_METATYPE_ARTIST},
+  {"TP2", EXTRACTOR_METATYPE_ARTIST},
+  {"TP3", EXTRACTOR_METATYPE_CONDUCTOR},
+  {"TP4", EXTRACTOR_METATYPE_INTERPRET},
+  {"IPL", EXTRACTOR_METATYPE_CONTRIBUTOR},
+  {"TOF", EXTRACTOR_METATYPE_FILENAME},
+  {"TEN", EXTRACTOR_METATYPE_PRODUCER},
+  {"TCO", EXTRACTOR_METATYPE_SUBJECT},
+  {"TCR", EXTRACTOR_METATYPE_COPYRIGHT},
+  {"SLT", EXTRACTOR_METATYPE_LYRICS},
+  {"TOA", EXTRACTOR_METATYPE_ARTIST},
+  {"TRC", EXTRACTOR_METATYPE_ISRC},
+  {"TRK", EXTRACTOR_METATYPE_TRACK_NUMBER},
+  {"TCM", EXTRACTOR_METATYPE_CREATOR},
+  {"TOT", EXTRACTOR_METATYPE_ALBUM},
+  {"TOL", EXTRACTOR_METATYPE_AUTHOR},
+  {"COM", EXTRACTOR_METATYPE_COMMENT},
+  {"", EXTRACTOR_METATYPE_KEYWORDS},
   {NULL, 0},
 };
 
 
 /* mimetype = audio/mpeg */
-struct EXTRACTOR_Keywords *
-libextractor_id3v2_extract (const char *filename,
-                            const unsigned char *data,
-                            size_t size, struct EXTRACTOR_Keywords *prev)
+int 
+EXTRACTOR_id3v2_extract (const unsigned char *data,
+			 size_t size,
+			 EXTRACTOR_MetaDataProcessor proc,
+			 void *proc_cls,
+			 const char *options)
 {
   int unsync;
   unsigned int tsize;
@@ -100,14 +88,14 @@ libextractor_id3v2_extract (const char *filename,
       (data[0] != 0x49) ||
       (data[1] != 0x44) ||
       (data[2] != 0x33) || (data[3] != 0x02) || (data[4] != 0x00))
-    return prev;
+    return 0;
   unsync = (data[5] & 0x80) > 0;
   tsize = (((data[6] & 0x7F) << 21) |
            ((data[7] & 0x7F) << 14) |
            ((data[8] & 0x7F) << 07) | ((data[9] & 0x7F) << 00));
 
   if (tsize + 10 > size)
-    return prev;
+    return 0;
   pos = 10;
   while (pos < tsize)
     {
@@ -115,7 +103,7 @@ libextractor_id3v2_extract (const char *filename,
       int i;
 
       if (pos + 6 > tsize)
-        return prev;
+        return 0;
       csize = (data[pos + 3] << 16) + (data[pos + 4] << 8) + data[pos + 5];
       if ((pos + 6 + csize > tsize) || (csize > tsize) || (csize == 0))
         break;
@@ -161,7 +149,7 @@ libextractor_id3v2_extract (const char *filename,
         }
       pos += 6 + csize;
     }
-  return prev;
+  return 0;
 }
 
-/* end of id3v2extractor.c */
+/* end of id3v2_extractor.c */

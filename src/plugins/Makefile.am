@@ -86,6 +86,9 @@ plugin_LTLIBRARIES = \
   libextractor_flv.la \
   libextractor_gif.la \
   libextractor_html.la \
+  libextractor_id3v2.la \
+  libextractor_id3v23.la \
+  libextractor_id3v24.la \
   libextractor_it.la \
   libextractor_jpeg.la \
   libextractor_man.la \
@@ -108,6 +111,8 @@ plugin_LTLIBRARIES = \
   libextractor_sid.la \
   libextractor_tar.la \
   $(thumbgtk) \
+  $(thumbqt) \
+  $(thumbffmpeg) \
   libextractor_tiff.la \
   libextractor_wav.la \
   libextractor_xm.la \
@@ -179,6 +184,27 @@ libextractor_html_la_SOURCES = \
 libextractor_html_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_html_la_LIBADD = \
+  $(top_builddir)/src/common/libextractor_common.la
+
+libextractor_id3v2_la_SOURCES = \
+  id3v2_extractor.c 
+libextractor_id3v2_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+libextractor_id3v2_la_LIBADD = \
+  $(top_builddir)/src/common/libextractor_common.la
+
+libextractor_id3v23_la_SOURCES = \
+  id3v23_extractor.c 
+libextractor_id3v23_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+libextractor_id3v23_la_LIBADD = \
+  $(top_builddir)/src/common/libextractor_common.la
+
+libextractor_id3v24_la_SOURCES = \
+  id3v24_extractor.c 
+libextractor_id3v24_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+libextractor_id3v24_la_LIBADD = \
   $(top_builddir)/src/common/libextractor_common.la
 
 libextractor_it_la_SOURCES = \
@@ -318,6 +344,13 @@ libextractor_tar_la_SOURCES = \
 libextractor_tar_la_LDFLAGS = \
   $(PLUGINFLAGS)
 
+libextractor_thumbnailffmpeg_la_SOURCES = \
+  thumbnailffmpeg_extractor.c
+libextractor_thumbnailffmpeg_la_LIBADD = \
+  -lavformat -lavcodec -lswscale -lavutil -lz -lbz2
+libextractor_thumbnailffmpeg_la_LDFLAGS = \
+  $(PLUGINFLAGS) 
+
 libextractor_thumbnailgtk_la_CFLAGS = \
   $(GLIB_CFLAGS) $(GTK_CFLAGS)
 libextractor_thumbnailgtk_la_LIBADD = \
@@ -326,6 +359,15 @@ libextractor_thumbnailgtk_la_LDFLAGS = \
   $(PLUGINFLAGS) 
 libextractor_thumbnailgtk_la_SOURCES = \
   thumbnailgtk_extractor.c
+
+libextractor_thumbnailqt_la_SOURCES = \
+  thumbnailqt_extractor.cc
+libextractor_thumbnailqt_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+libextractor_thumbnailqt_la_LIBADD = \
+  $(qtflags) $(svgflags) 
+libextractor_thumbnailqt_la_CPPFLAGS = \
+  $(QT_CFLAGS) $(QT_SVG_CFLAGS)
 
 libextractor_tiff_la_SOURCES = \
   tiff_extractor.c 
@@ -354,56 +396,6 @@ libextractor_zip_la_LDFLAGS = \
 EXTRA_DIST = template_extractor.c 
 
 
-
-# stuff below still needs to be ported to 0.6.x
-
-# SUBDIRS = . $(thumbffmpeg) hash
-
-
-OLD_LIBS = \
-  libextractor_id3v2.la \
-  libextractor_id3v24.la \
-  libextractor_id3v23.la \
-  $(extrampeg) \
-  $(thumbqt) 
-
-
-libextractor_id3v2_la_SOURCES = \
-  id3v2extractor.c 
-libextractor_id3v2_la_LDFLAGS = \
-  $(PLUGINFLAGS)
-libextractor_id3v2_la_LIBADD = \
-  $(top_builddir)/src/common/libextractor_common.la
-
-libextractor_id3v23_la_SOURCES = \
-  id3v23extractor.c 
-libextractor_id3v23_la_LDFLAGS = \
-  $(PLUGINFLAGS)
-libextractor_id3v23_la_LIBADD = \
-  $(top_builddir)/src/common/libextractor_common.la
-
-libextractor_id3v24_la_SOURCES = \
-  id3v24extractor.c 
-libextractor_id3v24_la_LDFLAGS = \
-  $(PLUGINFLAGS)
-libextractor_id3v24_la_LIBADD = \
-  $(top_builddir)/src/common/libextractor_common.la
-
-
-libextractor_thumbnailqt_la_SOURCES = \
-  thumbnailextractorqt.cc
-libextractor_thumbnailqt_la_LDFLAGS = \
-  $(PLUGINFLAGS)
-libextractor_thumbnailqt_la_LIBADD = \
-  $(qtflags) $(svgflags) \
-  $(top_builddir)/src/main/libextractor.la
-libextractor_thumbnailqt_la_CPPFLAGS = \
-  -I$(top_scrdir)/include \
-  $(QT_CFLAGS) $(QT_SVG_CFLAGS)
-
-
-# FIXME: is this still working ok? Doubtful!
-
 install-exec-hook:
 	mkdir -p $(DESTDIR)$(plugindir) &> /dev/null || true
 	rm -f $(DESTDIR)$(plugindir)/libextractor_thumbnail$(LIBEXT)
@@ -422,5 +414,3 @@ install-exec-hook:
 			fi \
 		fi \
 	fi
-
-

@@ -19,18 +19,28 @@
  */
 
 /**
- * @file thumbnailextractorffmpeg.c
+ * @file thumbnailffmpeg_extractor.c
  * @author Heikki Lindholm
  * @brief this extractor produces a binary encoded
  * thumbnail of images and videos using the ffmpeg libs.
  */
 
+/* This is a thumbnail extractor using the ffmpeg libraries that will eventually
+   support extracting thumbnails from both image and video files. 
+
+   Note that ffmpeg has a few issues:
+   (1) there are no recent official releases of the ffmpeg libs
+   (2) ffmpeg has a history of having security issues (parser is not robust)
+
+   So this plugin cannot be recommended for system with high security
+   requirements. 
+*/
+
 #include "platform.h"
 #include "extractor.h"
-
-#include <avformat.h>
-#include <avcodec.h>
-#include <swscale.h>
+#include <libavformat/avformat.h>
+#include <libavcodec/avcodec.h>
+#include <libswscale/swscale.h>
 
 #define DEBUG 0
 
@@ -148,21 +158,19 @@ static const struct MimeToDecoderMapping m2d_map[] = {
 #define THUMBSIZE 128           /* max dimension in pixels */
 #define MAX_THUMB_SIZE (100*1024)       /* in bytes */
 
-struct EXTRACTOR_Keywords *
-libextractor_thumbnailffmpeg_extract (const char *filename,
-                                      const unsigned char *data,
-                                      size_t size,
-                                      struct EXTRACTOR_Keywords *prev)
+int 
+EXTRACTOR_thumbnailffmpeg_extract (const unsigned char *data,
+				   size_t size,
+				   EXTRACTOR_MetaDataProcessor proc,
+				   void *proc_cls,
+				   const char *options)
 {
   int score;
-
   AVInputFormat *fmt;
   AVProbeData pdat;
-
   ByteIOContext *bio_ctx = NULL;
   uint8_t *bio_buffer;
   struct StreamDescriptor reader_state;
-
   AVFormatContext *format_ctx = NULL;
   AVCodecContext *codec_ctx = NULL;
   AVPacket packet;
@@ -515,14 +523,14 @@ out:
   return prev;
 }
 
-struct EXTRACTOR_Keywords *
-libextractor_thumbnail_extract (const char *filename,
-                                const unsigned char *data,
-                                size_t size,
-                                struct EXTRACTOR_Keywords *prev,
-                                const char *options)
+int 
+EXTRACTOR_thumbnail_extract (const unsigned char *data,
+			     size_t size,
+			     EXTRACTOR_MetaDataProcessor proc,
+			     void *proc_cls,
+			     const char *options)
 {
-  return libextractor_thumbnailffmpeg_extract (filename, data, size, prev);
+  return EXTRACTOR_thumbnailffmpeg_extract (data, size, proc, proc_cls, options);
 }
 
-/* end of thumbnailextractorffmpeg.c */
+/* end of thumbnailffmpeg_extractor.c */
