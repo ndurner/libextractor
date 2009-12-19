@@ -539,8 +539,6 @@ src/intlemu/Makefile
 src/common/Makefile
 src/main/Makefile
 src/plugins/Makefile
-src/plugins/hash/Makefile
-src/plugins/thumbnailffmpeg/Makefile
 src/test/Makefile
 ])
 
