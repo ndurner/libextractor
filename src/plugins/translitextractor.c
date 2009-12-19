@@ -468,7 +468,7 @@ libextractor_translit_extract (const char *filename, const char *data,
           long long unicode;
           int idx;
           char *tr;
-          
+          
             /* Get length of character */ 
             c = srcdata[src];
           if ((c & 0xC0) == 0xC0)
@@ -493,7 +493,7 @@ libextractor_translit_extract (const char *filename, const char *data,
                 src = len;
               continue;
             }
-          
+          
             /* Copy character to destination */ 
             if (charlen > 1)
             {
@@ -527,7 +527,7 @@ libextractor_translit_extract (const char *filename, const char *data,
                     ((srcdata[src + 1] & 0x3F) *
                      64) | (srcdata[src + 2] & 0x3F);
                 }
-              
+              
                 /* Look it up */ 
                 idx = 0;
               tr = srcdata + src;
