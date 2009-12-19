@@ -97,6 +97,7 @@ plugin_LTLIBRARIES = \
   $(thumbgtk) \
   libextractor_tiff.la \
   libextractor_wav.la \
+  libextractor_xm.la \
   libextractor_zip.la
 
 libextractor_applefile_la_SOURCES = \
@@ -307,6 +308,11 @@ libextractor_wav_la_LDFLAGS = \
 libextractor_wav_la_LIBADD = \
   $(LE_LIBINTL)
 
+libextractor_xm_la_SOURCES = \
+  xm_extractor.c 
+libextractor_xm_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+
 libextractor_zip_la_SOURCES = \
   zip_extractor.c
 libextractor_zip_la_LDFLAGS = \
@@ -377,13 +383,6 @@ libextractor_nsfe_la_SOURCES = \
 libextractor_nsfe_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_nsfe_la_LIBADD = \
-  $(top_builddir)/src/main/libextractor.la
-
-libextractor_xm_la_SOURCES = \
-  xmextractor.c 
-libextractor_xm_la_LDFLAGS = \
-  $(PLUGINFLAGS)
-libextractor_xm_la_LIBADD = \
   $(top_builddir)/src/main/libextractor.la
 
 libextractor_s3m_la_SOURCES = \

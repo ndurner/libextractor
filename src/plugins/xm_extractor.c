@@ -1,6 +1,6 @@
 /*
  * This file is part of libextractor.
- * (C) 2008 Toni Ruottu
+ * (C) 2008, 2009 Toni Ruottu
  *
  * libextractor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published
@@ -34,19 +34,7 @@ struct header
   char version[2];
 };
 
-
-static struct EXTRACTOR_Keywords *addkword
-  (EXTRACTOR_KeywordList * oldhead,
-   const char *phrase, EXTRACTOR_KeywordType type)
-{
-  EXTRACTOR_KeywordList *keyword;
-
-  keyword = malloc (sizeof (EXTRACTOR_KeywordList));
-  keyword->next = oldhead;
-  keyword->keyword = strdup (phrase);
-  keyword->keywordType = type;
-  return (keyword);
-}
+#define ADD(s,t) do { if (0 != proc (proc_cls, "xm", t, EXTRACTOR_METAFORMAT_UTF8, "text/plain", s, strlen(s)+1)) return 1; } while (0)
 
 
 /* "extract" keyword from an Extended Module
@@ -57,52 +45,40 @@ static struct EXTRACTOR_Keywords *addkword
  * was originally written.
  *
  */
-struct EXTRACTOR_Keywords *libextractor_xm_extract
-  (const char *filename,
-   char *data, size_t size, struct EXTRACTOR_Keywords *prev)
+int 
+EXTRACTOR_xm_extract (const unsigned char *data,
+		      size_t size,
+		      EXTRACTOR_MetaDataProcessor proc,
+		      void *proc_cls,
+		      const char *options)
 {
   char title[21];
   char tracker[21];
   char xmversion[8];
-  struct header *head;
+  const struct header *head;
 
   /* Check header size */
-
   if (size < HEADER_SIZE)
-    {
-      return (prev);
-    }
-
-  head = (struct header *) data;
-
+    return 0;
+  head = (const struct header *) data;
   /* Check "magic" id bytes */
-
   if (memcmp (head->magicid, "Extended Module: ", 17))
-    {
-      return (prev);
-    }
-
-  /* Mime-type */
-
-  prev = addkword (prev, "audio/x-xm", EXTRACTOR_MIMETYPE);
-
+    return 0;
+  ADD("audio/x-xm", EXTRACTOR_METATYPE_MIMETYPE);
   /* Version of Tracker */
-
-  sprintf (xmversion, "%d.%d", head->version[1],head->version[0]);
-  prev = addkword (prev, xmversion, EXTRACTOR_FORMAT_VERSION);
-
+  snprintf (xmversion, 
+	    sizeof(xmversion),
+	    "%d.%d", 
+	    head->version[1],
+	    head->version[0]);
+  ADD (xmversion, EXTRACTOR_METATYPE_FORMAT_VERSION);
   /* Song title */
-
   memcpy (&title, head->title, 20);
   title[20] = '\0';
-  prev = addkword (prev, title, EXTRACTOR_TITLE);
-
+  ADD (title, EXTRACTOR_METATYPE_TITLE);
   /* software used for creating the data */
-
   memcpy (&tracker, head->tracker, 20);
   tracker[20] = '\0';
-  prev = addkword (prev, tracker, EXTRACTOR_SOFTWARE);
-
-  return (prev);
-
+  ADD (tracker, EXTRACTOR_METATYPE_CREATED_BY_SOFTWARE);
+  return 0;
 }
