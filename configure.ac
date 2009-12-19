@@ -539,7 +539,6 @@ src/intlemu/Makefile
 src/common/Makefile
 src/main/Makefile
 src/plugins/Makefile
-src/test/Makefile
 ])
 
 AX_CREATE_PKGCONFIG_INFO([libextractor.pc],,[-lextractor],[Metadata extraction library],,)
