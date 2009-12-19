@@ -217,7 +217,7 @@ static const struct MetaTypeDescription meta_type_descriptions[] = {
   { gettext_noop ("is essential"),
     gettext_noop ("package is marked as essential") },
   { gettext_noop ("target architecture"),
-    gettext_noop ("hardware architecture the package can be used for") },
+    gettext_noop ("hardware architecture the contents can be used for") },
   { gettext_noop ("pre-dependency"),
     gettext_noop ("dependency that must be satisfied before installation") }, 
   /* 85 */
@@ -375,6 +375,17 @@ static const struct MetaTypeDescription meta_type_descriptions[] = {
     gettext_noop ("name of the TV show") }, 
   { gettext_noop ("chapter name"),
     gettext_noop ("name of the chapter") }, 
+  { gettext_noop ("song count"),
+    gettext_noop ("number of songs") }, 
+  /* 155 */
+  { gettext_noop ("starting song"),
+    gettext_noop ("number of the first song to play") }, 
+  { gettext_noop (""),
+    gettext_noop ("") }, 
+  { gettext_noop (""),
+    gettext_noop ("") }, 
+  { gettext_noop (""),
+    gettext_noop ("") }, 
   { gettext_noop (""),
     gettext_noop ("") }, 
   { gettext_noop (""),
@@ -498,7 +509,6 @@ static const struct MetaTypeDescription meta_type_descriptions[] = {
   gettext_noop("format version"), /* 125 */
   gettext_noop("television system"),
   gettext_noop("song count"),
-  gettext_noop("starting song"),
   gettext_noop("hardware dependency"),
   gettext_noop("ripper"), /* 130 */
   gettext_noop("filesize"),
