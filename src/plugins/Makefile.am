@@ -92,6 +92,8 @@ plugin_LTLIBRARIES = \
   libextractor_mime.la \
   libextractor_mp3.la \
   $(mpeg) \
+  libextractor_nsf.la \
+  libextractor_nsfe.la \
   libextractor_odf.la \
   $(ogg) \
   $(ole2) \
@@ -217,6 +219,16 @@ libextractor_mpeg_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_mpeg_la_LIBADD = \
   -lmpeg2
+
+libextractor_nsf_la_SOURCES = \
+  nsf_extractor.c 
+libextractor_nsf_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+
+libextractor_nsfe_la_SOURCES = \
+  nsfe_extractor.c 
+libextractor_nsfe_la_LDFLAGS = \
+  $(PLUGINFLAGS)
 
 libextractor_odf_la_SOURCES = \
   odf_extractor.c
@@ -353,12 +365,7 @@ OLD_LIBS = \
   libextractor_id3v24.la \
   libextractor_id3v23.la \
   $(extrampeg) \
-  libextractor_nsf.la \
-  libextractor_nsfe.la \
-  libextractor_tar.la \
-  $(thumbqt) \
-  libextractor_xm.la \
-  libextractor_zip.la 
+  $(thumbqt) 
 
 
 libextractor_id3v2_la_SOURCES = \
@@ -383,20 +390,6 @@ libextractor_id3v24_la_LIBADD = \
   $(top_builddir)/src/common/libextractor_common.la
 
 
-libextractor_nsf_la_SOURCES = \
-  nsfextractor.c 
-libextractor_nsf_la_LDFLAGS = \
-  $(PLUGINFLAGS)
-libextractor_nsf_la_LIBADD = \
-  $(top_builddir)/src/main/libextractor.la
-
-libextractor_nsfe_la_SOURCES = \
-  nsfeextractor.c 
-libextractor_nsfe_la_LDFLAGS = \
-  $(PLUGINFLAGS)
-libextractor_nsfe_la_LIBADD = \
-  $(top_builddir)/src/main/libextractor.la
-
 libextractor_thumbnailqt_la_SOURCES = \
   thumbnailextractorqt.cc
 libextractor_thumbnailqt_la_LDFLAGS = \
@@ -409,7 +402,7 @@ libextractor_thumbnailqt_la_CPPFLAGS = \
   $(QT_CFLAGS) $(QT_SVG_CFLAGS)
 
 
-# Fixme: is this still working ok? Doubtful!
+# FIXME: is this still working ok? Doubtful!
 
 install-exec-hook:
 	mkdir -p $(DESTDIR)$(plugindir) &> /dev/null || true
