@@ -1,4 +1,13 @@
-include Makefile-plugins.am
+INCLUDES = -I$(top_srcdir)/src/include -I$(top_srcdir)/src/common
+
+# install plugins under:
+plugindir = $(libdir)/@RPLUGINDIR@
+
+if HAVE_GNU_LD
+ makesymbolic=-Wl,-Bsymbolic
+endif
+
+PLUGINFLAGS = $(makesymbolic) $(LE_PLUGIN_LDFLAGS)
 
 SUBDIRS = . 
 
