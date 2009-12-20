@@ -115,7 +115,7 @@ typedef struct Ecls {
 
 
 int 
-EXTRACTOR_ole2_extract (const char *data,
+EXTRACTOR_odf_extract (const char *data,
 			size_t size,
 			EXTRACTOR_MetaDataProcessor proc,
 			void *proc_cls,

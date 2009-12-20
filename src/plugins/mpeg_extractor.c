@@ -28,11 +28,11 @@
 
 /* video/mpeg */
 int 
-EXTRACTOR_wav_extract (const unsigned char *data,
-		       size_t size,
-		       EXTRACTOR_MetaDataProcessor proc,
-		       void *proc_cls,
-		       const char *options)
+EXTRACTOR_mpeg_extract (const unsigned char *data,
+			size_t size,
+			EXTRACTOR_MetaDataProcessor proc,
+			void *proc_cls,
+			const char *options)
 {
   mpeg2dec_t *handle;
   uint8_t *start;

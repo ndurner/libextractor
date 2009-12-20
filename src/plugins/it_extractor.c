@@ -47,11 +47,11 @@ struct header
  *
  */
 int 
-EXTRACTOR_mime_extract (const char *data,
-			size_t size,
-			EXTRACTOR_MetaDataProcessor proc,
-			void *proc_cls,
-			const char *options)
+EXTRACTOR_it_extract (const char *data,
+		      size_t size,
+		      EXTRACTOR_MetaDataProcessor proc,
+		      void *proc_cls,
+		      const char *options)
 {
   char title[27];
   char itversion[8];
