@@ -1702,7 +1702,7 @@ EXTRACTOR_extract (struct EXTRACTOR_PluginList *plugins,
 			  proc,
 			  proc_cls);
   if (buffer != NULL)
-    MUNMAP (buffer, size);
+    MUNMAP (buffer, fsize);
   if (-1 != fd)
     close(fd);  
 }

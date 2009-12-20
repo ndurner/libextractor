@@ -205,6 +205,10 @@ print_selected_keywords (void *cls,
 
   if (print[type] != YES)
     return 0;
+  if (verbose > 3)
+    fprintf (stdout,
+	     _("Found by `%s' plugin:\n"),
+	     plugin_name);
   stype = gettext(EXTRACTOR_metatype_to_string(type));
   switch (format)
     {
