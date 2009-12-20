@@ -44,7 +44,11 @@
  */
 #define MAX_MIME_LEN 256
 
-#define DEBUG 0
+/**
+ * Set to 1 to get failure info,
+ * 2 for actual debug info.
+ */ 
+#define DEBUG 1
 
 
 #if HAVE_LTDL_H
@@ -535,7 +539,7 @@ load_plugins_from_dir (void *cls,
       dot = strstr (sym, ".");
       if (dot != NULL)
 	*dot = '\0';
-#if DEBUG
+#if DEBUG > 1
       fprintf (stderr,
 	       "Adding default plugin `%s'\n",
 	       sym);
@@ -859,6 +863,12 @@ stop_process (struct EXTRACTOR_PluginList *plugin)
 {
   int status;
 
+#if DEBUG
+  if (plugin->cpid == -1)
+    fprintf (stderr,
+	     "Plugin `%s' choked on this input\n",
+	     plugin->short_libname);
+#endif
   if ( (plugin->cpid == -1) ||
        (plugin->cpid == 0) )
     return;
@@ -1067,6 +1077,11 @@ process_requests (struct EXTRACTOR_PluginList *plugin,
     {
       close (in);
       close (out);
+#if DEBUG
+      fprintf (stderr,
+	       "Plugin `%s' failed to load!\n",
+	       plugin->short_libname);
+#endif
       return;
     }  
   memset (&hdr, 0, sizeof (hdr));
@@ -1140,6 +1155,8 @@ start_process (struct EXTRACTOR_PluginList *plugin)
       close (p1[1]);
       close (p2[0]);
       process_requests (plugin, p1[0], p2[1]);
+      fprintf (stderr,
+	       "Plugin done with requests!\n");
       _exit (0);
     }
   plugin->cpid = pid;
@@ -1189,6 +1206,8 @@ extract_oop (struct EXTRACTOR_PluginList *plugin,
 			 &hdr,
 			 sizeof(hdr)))
 	{
+	  stop_process (plugin);
+	  plugin->cpid = -1;
 	  if (plugin->flags != EXTRACTOR_OPTION_AUTO_RESTART)
 	    plugin->flags = EXTRACTOR_OPTION_DISABLED;
 	  return 0;
@@ -1200,7 +1219,8 @@ extract_oop (struct EXTRACTOR_PluginList *plugin,
 	break;
       if (hdr.mime_len > MAX_MIME_LEN)
 	{
-	  stop_process (plugin);
+	  stop_process (plugin);	  
+	  plugin->cpid = -1;
 	  if (plugin->flags != EXTRACTOR_OPTION_AUTO_RESTART)
 	    plugin->flags = EXTRACTOR_OPTION_DISABLED;
 	  return 0;
@@ -1219,6 +1239,7 @@ extract_oop (struct EXTRACTOR_PluginList *plugin,
 			    hdr.data_len))) )
 	{
 	  stop_process (plugin);
+	  plugin->cpid = -1;
 	  free (data);
 	  if (plugin->flags != EXTRACTOR_OPTION_AUTO_RESTART)
 	    plugin->flags = EXTRACTOR_OPTION_DISABLED;
@@ -1312,6 +1333,8 @@ extract (struct EXTRACTOR_PluginList *plugins,
 	  memcpy (ptr, data, size);
 	}
     }
+  else
+    shmid = -1;
   if (want_shm && (shmid == -1))
     _exit(1);
   ppos = plugins;

@@ -22,6 +22,8 @@
 #include "extractor.h"
 #include "getopt.h"
 
+#include <signal.h>
+
 #define YES 1
 #define NO 0
 
@@ -40,6 +42,34 @@ static int verbose;
  * Run plugins in-process.
  */
 static int in_process;
+
+
+static void
+catcher (int sig)
+{
+}
+
+/**
+ * Install a signal handler to ignore SIGPIPE.
+ */
+static void
+ignore_sigpipe ()
+{
+  struct sigaction oldsig;
+  struct sigaction sig;
+
+  sig.sa_handler = &catcher;
+  sigemptyset (&sig.sa_mask);
+#ifdef SA_INTERRUPT
+  sig.sa_flags = SA_INTERRUPT;  /* SunOS */
+#else
+  sig.sa_flags = SA_RESTART;
+#endif
+  if (0 != sigaction (SIGPIPE, &sig, &oldsig))
+    fprintf (stderr,
+             "Failed to install SIGPIPE handler: %s\n", strerror (errno));
+}
+
 
 
 typedef struct {
@@ -536,6 +566,7 @@ main (int argc, char *argv[])
   setlocale(LC_ALL, "");
   textdomain(PACKAGE);
 #endif
+  ignore_sigpipe ();
   print = malloc (sizeof (int) * EXTRACTOR_metatype_get_max ());
   for (i = 0; i < EXTRACTOR_metatype_get_max (); i++)
     print[i] = YES;		/* default: print everything */
