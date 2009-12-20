@@ -207,7 +207,7 @@ EXTRACTOR_tiff_extract (const char *data,
                 }
               break;
             case TAG_SOFTWARE:
-              if (0 != addASCII (proc, proc_cls, data, size, &entry, EXTRACTOR_METATYPE_SOFTWARE))
+              if (0 != addASCII (proc, proc_cls, data, size, &entry, EXTRACTOR_METATYPE_CREATED_BY_SOFTWARE))
 		return 1;
               break;
             case TAG_ARTIST:

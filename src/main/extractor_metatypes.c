@@ -417,140 +417,24 @@ static const struct MetaTypeDescription meta_type_descriptions[] = {
     gettext_noop ("keywords reflecting the mood of the piece") }, 
   { gettext_noop ("subtitle"),
     gettext_noop ("subtitle of this part") }, 
-  { gettext_noop (""),
-    gettext_noop ("") }, 
-  { gettext_noop (""),
-    gettext_noop ("") }, 
-#if 0
-  
-  gettext_noop("author"),
-  gettext_noop("artist"), /* 5 */
-  gettext_noop("description"),
-  gettext_noop("date"),
-  gettext_noop("publisher"),
-  gettext_noop("language"), /* 10 */
-  gettext_noop("album"),
-  gettext_noop("genre"),
-  gettext_noop("location"),
-  gettext_noop("version"),
-  gettext_noop("organization"), /* 15 */
-  gettext_noop("copyright"),
-  gettext_noop("subject"),
-  gettext_noop("keywords"),
-  gettext_noop("contributor"),
-  gettext_noop("resource-type"), /* 20 */
-  gettext_noop("format"),
-  gettext_noop("resource-identifier"),
-  gettext_noop("source"),
-  gettext_noop("relation"),
-  gettext_noop("coverage"), /* 25 */
-  gettext_noop("software"),
-  gettext_noop("disclaimer"),
-  gettext_noop("warning"),
-  gettext_noop("translated"),
-  gettext_noop("creation date"), /* 30 */
-  gettext_noop("modification date"),
-  gettext_noop("creator"),
-  gettext_noop("producer"),
-  gettext_noop("page count"),
-  gettext_noop("page orientation"), /* 35 */
-  gettext_noop("paper size"),
-  gettext_noop("used fonts"),
-  gettext_noop("page order"),
-  gettext_noop("created for"),
-  gettext_noop("magnification"), /* 40 */
-  gettext_noop("release"),
-  gettext_noop("group"),
-  gettext_noop("size"),
-  gettext_noop("summary"),
-  gettext_noop("packager"), /* 45 */
-  gettext_noop("vendor"),
-  gettext_noop("license"),
-  gettext_noop("distribution"),
-  gettext_noop("build-host"),
-  gettext_noop("operating system"), /* 50 */
-  gettext_noop("dependency"),
-  gettext_noop("resolution"),
-  gettext_noop("category"),
-  gettext_noop("book title"),
-  gettext_noop("priority"), /* 60 */
-  gettext_noop("conflicts"),
-  gettext_noop("replaces"),
-  gettext_noop("provides"),
-  gettext_noop("conductor"),
-  gettext_noop("interpreter"), /* 65 */
-  gettext_noop("owner"),
-  gettext_noop("lyrics"),
-  gettext_noop("media type"),
-  gettext_noop("contact"),
-  gettext_noop("binary thumbnail data"), /* 70 */
-  gettext_noop("publication date"),
-  gettext_noop("camera make"),
-  gettext_noop("camera model"),
-  gettext_noop("exposure"),
-  gettext_noop("aperture"), /* 75 */
-  gettext_noop("exposure bias"),
-  gettext_noop("flash"),
-  gettext_noop("flash bias"),
-  gettext_noop("focal length"),
-  gettext_noop("focal length (35mm equivalent)"), /* 80 */
-  gettext_noop("iso speed"),
-  gettext_noop("exposure mode"),
-  gettext_noop("metering mode"),
-  gettext_noop("macro mode"),
-  gettext_noop("image quality"), /* 85 */
-  gettext_noop("white balance"),
-  gettext_noop("orientation"),
-  gettext_noop("template"),
-  gettext_noop("split"),
-  gettext_noop("product version"), /* 90 */
-  gettext_noop("last saved by"),
-  gettext_noop("last printed"),
-  gettext_noop("word count"),
-  gettext_noop("character count"),
-  gettext_noop("total editing time"), /* 95 */
-  gettext_noop("thumbnails"),
-  gettext_noop("security"),
-  gettext_noop("created by software"),
-  gettext_noop("modified by software"),
-  gettext_noop("revision history"), /* 100 */
-  gettext_noop("company"),
-  gettext_noop("generator"),
-  gettext_noop("character set"),
-  gettext_noop("line count"), /* 105 */
-  gettext_noop("paragraph count"),
-  gettext_noop("editing cycles"),
-  gettext_noop("scale"),
-  gettext_noop("manager"),
-  gettext_noop(/* movie director */"director"), /* 110 */
-  gettext_noop("duration"),
-  gettext_noop("information"),
-  gettext_noop("full name"),
-  gettext_noop("chapter"),
-  gettext_noop("year"), /* 115 */
-  gettext_noop("link"),
-  gettext_noop("music CD identifier"),
-  gettext_noop("play counter"),
-  gettext_noop("popularity meter"),
-  gettext_noop("content type"), /* 120 */
-  gettext_noop("encoded by"),
-  gettext_noop("time"),
-  gettext_noop("musician credits list"),
-  gettext_noop("mood"),
-  gettext_noop("format version"), /* 125 */
-  gettext_noop("television system"),
-  gettext_noop("song count"),
-  gettext_noop("hardware dependency"),
-  gettext_noop("ripper"), /* 130 */
-  gettext_noop("filesize"),
-  gettext_noop("track number"),
-  gettext_noop("disc number"), 
-  gettext_noop("preferred display style (GNUnet)"), /* 135 */
-  gettext_noop("GNUnet URI of ECBC data"),
-  gettext_noop("Complete file data (for non-binary files only)"),
-  gettext_noop("rating"), /* 145 */
-
-#endif
+  { gettext_noop ("display type"),
+    gettext_noop ("what rendering method should be used to display this item") }, 
+  { gettext_noop ("full data"),
+    gettext_noop ("entry that contains the full, original binary data (not really meta data)") }, 
+  /* 175 */
+  { gettext_noop ("rating"),
+    gettext_noop ("rating of the content") },
+  { gettext_noop ("organization"),
+    gettext_noop ("") },
+  { gettext_noop ("ripper"), /* any difference to "encoded by"? */
+    gettext_noop ("") },
+  { gettext_noop ("producer"), 
+    gettext_noop ("") },
+  { gettext_noop ("group"), 
+    gettext_noop ("name of the group or band") },
+  /* 180 */
+  { gettext_noop ("last"),
+    gettext_noop ("") }
 };
 
 /**
