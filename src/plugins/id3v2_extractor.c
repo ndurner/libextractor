@@ -113,7 +113,7 @@ static Matches tmap[] = {
   /* skipping CRM */
   /* skipping CRA */
   /* {"LNK", EXTRACTOR_METATYPE_URL, XXX}, */
-  {NULL, 0},
+  {NULL, 0, T},
 };
 
 

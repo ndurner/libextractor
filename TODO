@@ -17,12 +17,12 @@ Core:
 
 Incomplete code (missing features):
 * RIFF (idx1 attribute)
-* IDv2{3,4} (some attributes, make testcases in test/id3v2/ work)
 * StarOffice sdw (some attributes, see doc/)
 * man pages (interpret sections for authors, brief description)
 * pdf: full-text extraction!
 * EXIV2
 * ELF: 64-bit support, lists of architectures, OSes, etc. are incomplete
+* ID3v2x: unsynchronization support, (de)compression support, footer support (24)
 
 Desirable missing formats:
 * mbox / various e-mail formats

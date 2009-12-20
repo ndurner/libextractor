@@ -107,7 +107,7 @@ static Matches tmap[] = {
   { "meta:generator", EXTRACTOR_METATYPE_CREATED_BY_SOFTWARE },
   { "meta:template", EXTRACTOR_METATYPE_TEMPLATE },
   { "meta:editing-cycles", EXTRACTOR_METATYPE_EDITING_CYCLES }, 
-  /* { "Dictionary", EXTRACTOR_METATYPE_DOCUMENT_LANGUAGE },  */
+  /* { "Dictionary", EXTRACTOR_METATYPE_LANGUAGE },  */
   /* { "gsf:security", EXTRACTOR_SECURITY }, */
   /* { "gsf:scale", EXTRACTOR_SCALE }, // always "false"? */
   /* { "meta:editing-duration", EXTRACTOR_METATYPE_TOTAL_EDITING_TIME }, // encoding? */
@@ -544,7 +544,7 @@ EXTRACTOR_ole2_extract (const char *data,
   if ( (lang != NULL) && (ret == 0) )
     ret = addKeyword(proc, proc_cls,
 		     lang,
-		     EXTRACTOR_METATYPE_DOCUMENT_LANGUAGE);  
+		     EXTRACTOR_METATYPE_LANGUAGE);  
   if (lcb >= 6) {
     for (i=0;i<gsf_infile_num_children(infile);i++) {
       if (ret != 0)

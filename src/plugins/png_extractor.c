@@ -141,7 +141,7 @@ processiTXt (const char *data,
   language = &data[pos];
   ret = 0;
   if (stnlen (language, length - pos) > 0)
-    ADDF (EXTRACTOR_METATYPE_DOCUMENT_LANGUAGE,
+    ADDF (EXTRACTOR_METATYPE_LANGUAGE,
 	  stndup (language, length - pos));
   pos += stnlen (language, length - pos) + 1;
   if (pos + 1 >= length)

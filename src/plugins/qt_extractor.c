@@ -395,9 +395,9 @@ static ITTagConversionEntry it_to_extr_table[] = {
   {"catg", EXTRACTOR_METATYPE_SECTION},
   {"keyw", EXTRACTOR_METATYPE_KEYWORDS},
   {"desc", EXTRACTOR_METATYPE_DESCRIPTION},
-  {"tvnn", EXTRACTOR_METATYPE_TV_NETWORK_NAME},
-  {"tvsh", EXTRACTOR_METATYPE_TV_SHOW_NAME}, 
-  {"tven", EXTRACTOR_METATYPE_TV_NETWORK_NAME},
+  {"tvnn", EXTRACTOR_METATYPE_NETWORK_NAME},
+  {"tvsh", EXTRACTOR_METATYPE_SHOW_NAME}, 
+  {"tven", EXTRACTOR_METATYPE_NETWORK_NAME},
   {NULL, EXTRACTOR_METATYPE_RESERVED}
 };
 
@@ -850,7 +850,7 @@ processTextTag (const char *input,
   lang = ntohs (txt->language);
   if (lang >= sizeof (languages) / sizeof (char *))
     return 0;                   /* invalid */
-  addKeyword (EXTRACTOR_METATYPE_DOCUMENT_LANGUAGE, languages[lang], ec);
+  addKeyword (EXTRACTOR_METATYPE_LANGUAGE, languages[lang], ec);
 
   meta = malloc (len + 1);
   memcpy (meta, &txt[1], len);

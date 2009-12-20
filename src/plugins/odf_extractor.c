@@ -44,7 +44,7 @@ static Matches tmap[] = {
   { "meta:creation-date", EXTRACTOR_METATYPE_CREATION_DATE },
   { "dc:date",            EXTRACTOR_METATYPE_UNKNOWN_DATE },
   { "dc:creator",         EXTRACTOR_METATYPE_CREATOR },
-  { "dc:language",        EXTRACTOR_METATYPE_DOCUMENT_LANGUAGE },
+  { "dc:language",        EXTRACTOR_METATYPE_LANGUAGE },
   { "dc:title",           EXTRACTOR_METATYPE_TITLE },
   { "dc:description",     EXTRACTOR_METATYPE_DESCRIPTION },
   { "dc:subject",         EXTRACTOR_METATYPE_SUBJECT },
