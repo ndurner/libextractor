@@ -1,4 +1,4 @@
-.TH EXTRACT 1 "Dec 14, 2009" "libextractor 0.6.0"
+.TH EXTRACT 1 "Dec 20, 2009" "libextractor 0.6.0"
 .\" $Id
 .SH NAME
 extract
@@ -7,10 +7,6 @@ extract
 .B extract
 [
 .B \-bghLnvV
-]
-[
-.B \-B
-.I language
 ]
 [
 .B \-H
@@ -54,9 +50,6 @@ Display the output in BiBTeX format. This implies the
 .B \-d
 option
 .TP 8
-.B \-B LANG
-Use the generic plaintext extractor for the language with the 2\-letter language code LANG.  Supported languages are DA (Danish), DE (German), EN (English), ES (Spanish), FI (Finnish), FR (French), GA (Gaelic), IT (Italian), NO (Norwegian) and SV (Swedish).
-.TP 8
 .B \-g
 Use grep\-friendly output (all keywords on a single line for each file).  Use the verbose option to print the filename first, followed by the keywords.  Use the verbose option twice to also display the keyword types.  This option will not print keyword types or non\-textual metadata.
 .TP 8
@@ -69,28 +62,25 @@ Use the ALGORITHM to compute a hash of each file (possible algorithms are sha1 a
 .B \-i
 Run plugins in-process (for debugging).  By default, each plugin is run in its own process.
 .TP 8
+.BI \-l " libraries"
+Use the specified libraries to extract keywords. The general format of libraries is .I [[\-]LIBRARYNAME[:[\-]LIBRARYNAME]*] where LIBRARYNAME is a libextractor compatible library and typically of the form .Ijpeg\. The minus before the libraryname indicates that this library should be removed from the existing list.  To run only a few selected plugins, use \-l in combination with \-n.
+.TP 8
 .B \-L
 Print a list of all known keyword types.
 .TP 8
 .B \-n
 Do not use the default set of extractors (typically all standard extractors, currently mp3, ogg, jpg, gif, png, tiff, real, html, pdf and mime\-types), use only the extractors specified with the .B \-l option.
+.TP
+.B \-p " type"
+Print only the keywords matching the specified type. By default, all keywords that are found and not removed as duplicates are printed.
 .TP 8
 .B \-v
 Print the version number and exit.
 .TP 8
 .B \-V
-Be verbose.
+Be verbose.  This option can be specified multiple times to increase verbosity further.
 .TP 8
-.B \-B
-Run the printable extractor (costly, generic extractor for binaries)
-.TP 8
-.BI \-l " libraries"
-Use the specified libraries to extract keywords. The general format of libraries is .I [[\-]LIBRARYNAME[:[\-]LIBRARYNAME]*] where LIBRARYNAME is a libextractor compatible library and typically of the form .I libextractor_jpeg.so\. The minus before the libraryname indicates that this library should be run after all the libraries that were specified so far. If the minus is missing, the library is run before all previously specified libraries.
-.TP 8
-.BI \-p " type"
-Print only the keywords matching the specified type. By default, all keywords that are found and not removed as duplicates are printed.
-.TP 8
-.BI \-x " type"
+.I \-x " type"
 Exclude keywords of the specified type from the output. By default, all keywords that are found and not removed as duplicates are printed.
 .SH SEE ALSO
 .BR libextractor (3)
@@ -122,10 +112,7 @@ A couple of file\-formats (on the order of 10^3) are not recognized...
 
 .SH AUTHORS
 .B extract
-was originally written by Christian Grothoff <christian@grothoff.org> and
-Vidyut Samanta <vids@cs.ucla.edu>. Use <libextractor@gnu.org>
-to contact the current maintainer(s).
+was originally written by Christian Grothoff <christian@grothoff.org> and Vidyut Samanta <vids@cs.ucla.edu>. Use <libextractor@gnu.org> to contact the current maintainer(s).
 
 .SH AVAILABILITY
-You can obtain the original author's latest version from
-http://www.gnu.org/software/libextractor/
+You can obtain the original author's latest version from http://www.gnu.org/software/libextractor/
