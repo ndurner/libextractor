@@ -103,6 +103,11 @@ EXTRACTOR_thumbnailqt_extract (const char *data,
 
   height = img->height();
   width = img->width();
+  if ( (height == 0) || (width == 0) )
+    {
+      delete img;
+      return 0;
+    }
   snprintf(format,
 	   sizeof(format),
 	   "%ux%u",
