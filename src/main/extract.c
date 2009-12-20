@@ -697,13 +697,15 @@ main (int argc, char *argv[])
 
   /* build list of libraries */
   if (nodefault == NO)
-    plugins = EXTRACTOR_plugin_add_defaults (EXTRACTOR_OPTION_NONE);
+    plugins = EXTRACTOR_plugin_add_defaults (in_process
+					     ? EXTRACTOR_OPTION_NONE
+					     : EXTRACTOR_OPTION_AUTO_RESTART);
   else
     plugins = NULL;
   if (libraries != NULL)
     plugins = EXTRACTOR_plugin_add_config (plugins, 
 					   libraries,
-					   in_process 
+					   in_process
 					   ? EXTRACTOR_OPTION_NONE
 					   : EXTRACTOR_OPTION_AUTO_RESTART);
   if (binary != NULL) 
@@ -727,7 +729,7 @@ main (int argc, char *argv[])
       plugins = EXTRACTOR_plugin_add_last(plugins,
 					  name,
 					  NULL,
-					  in_process 
+					  in_process
 					  ? EXTRACTOR_OPTION_NONE
 					  : EXTRACTOR_OPTION_AUTO_RESTART);
       free(name);

@@ -1060,8 +1060,8 @@ process_requests (struct EXTRACTOR_PluginList *plugin,
   FILE *fin;
   void *ptr;
   int shmid;
-  struct stat sbuf;
   struct IpcHeader hdr;
+  size_t size;
 
   if (0 != plugin_load (plugin))
     {
@@ -1073,12 +1073,16 @@ process_requests (struct EXTRACTOR_PluginList *plugin,
   fin = fdopen (in, "r");
   while (NULL != fgets (fn, sizeof(fn), fin))
     {
+      if (strlen (fn) == 0)
+	break;
+      fn[strlen(fn)-1] = '\0'; /* kill newline */
       if ( (-1 != (shmid = shm_open (fn, O_RDONLY, 0))) &&
-	   (0 == fstat (shmid, &sbuf)) &&
-	   (NULL != (ptr = shmat (shmid, NULL, SHM_RDONLY))) )
+	   (((off_t)-1) != (size = lseek (shmid, 0, SEEK_END))) &&
+	   (NULL != (ptr = mmap (NULL, size, PROT_READ, MAP_SHARED, shmid, 0))) &&
+	   (ptr != (void*) -1) )
 	{
 	  if (0 != plugin->extractMethod (ptr,
-					  sbuf.st_size,
+					  size,
 					  &transmit_reply,
 					  &out,
 					  plugin->plugin_options))
@@ -1087,7 +1091,7 @@ process_requests (struct EXTRACTOR_PluginList *plugin,
 	    break;
 	}
       if (ptr != NULL)
-	shmdt (ptr);
+	munmap (ptr, size);
       if (-1 != shmid)
 	close (shmid);
     }
@@ -1105,7 +1109,7 @@ start_process (struct EXTRACTOR_PluginList *plugin)
   int p1[2];
   int p2[2];
   pid_t pid;
-  
+
   if (0 != pipe (p1))
     {
       plugin->cpid = -1;
@@ -1138,10 +1142,12 @@ start_process (struct EXTRACTOR_PluginList *plugin)
       process_requests (plugin, p1[0], p2[1]);
       _exit (0);
     }
-  plugin->cpid = 0;
+  plugin->cpid = pid;
   close (p1[0]);
   close (p2[1]);
   plugin->cpipe_in = fdopen (p1[1], "w");
+  if (plugin->cpipe_in == NULL)
+    perror ("fdopen");
   plugin->cpipe_out = p2[0];
 }
 
@@ -1166,7 +1172,9 @@ extract_oop (struct EXTRACTOR_PluginList *plugin,
   char mimetype[MAX_MIME_LEN + 1];
   char *data;
 
-  if (0 <= fprintf (plugin->cpipe_in, "%s\n", shmfn))
+  if (plugin->cpid == -1)
+    return 0;
+  if (0 >= fprintf (plugin->cpipe_in, "%s\n", shmfn))
     {
       stop_process (plugin);
       plugin->cpid = -1;
@@ -1174,6 +1182,7 @@ extract_oop (struct EXTRACTOR_PluginList *plugin,
 	plugin->flags = EXTRACTOR_OPTION_DISABLED;
       return 0;
     }
+  fflush (plugin->cpipe_in);
   while (1)
     {
       if (0 != read_all (plugin->cpipe_out,
@@ -1267,14 +1276,14 @@ extract (struct EXTRACTOR_PluginList *plugins,
 	case EXTRACTOR_OPTION_NONE:
 	  break;
 	case EXTRACTOR_OPTION_OUT_OF_PROCESS:
-	  if (0 == plugins->cpid)
-	    start_process (plugins);
+	  if (0 == ppos->cpid)
+	    start_process (ppos);
 	  want_shm = 1;
 	  break;
 	case EXTRACTOR_OPTION_AUTO_RESTART:
-	  if ( (0 == plugins->cpid) ||
-	       (-1 == plugins->cpid) )
-	    start_process (plugins);
+	  if ( (0 == ppos->cpid) ||
+	       (-1 == ppos->cpid) )
+	    start_process (ppos);
 	  want_shm = 1;
 	  break;
 	case EXTRACTOR_OPTION_DISABLED:
@@ -1282,19 +1291,20 @@ extract (struct EXTRACTOR_PluginList *plugins,
 	}      
       ppos = ppos->next;
     }
-
   if (want_shm)
     {
-      sprintf (fn,
-	       "/tmp/libextractor-shm-%u-XXXXXX",
-	       getpid());	   
-      mktemp (fn);
+      snprintf (fn,
+		sizeof(fn),
+		"/libextractor-shm-%u-%u",
+		getpid(),
+		(unsigned int) random());
       shmid = shm_open (fn, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
       ptr = NULL;
       if (shmid != -1)
 	{
 	  if ( (0 != ftruncate (shmid, size)) ||
-	       (NULL == (ptr = shmat (shmid, NULL, 0))) )
+	       (NULL == (ptr = mmap (NULL, size, PROT_WRITE, MAP_SHARED, shmid, 0))) ||
+	       (ptr == (void*) -1) )
 	    {
 	      close (shmid);	
 	      shmid = -1;
@@ -1302,6 +1312,8 @@ extract (struct EXTRACTOR_PluginList *plugins,
 	  memcpy (ptr, data, size);
 	}
     }
+  if (want_shm && (shmid == -1))
+    _exit(1);
   ppos = plugins;
   while (NULL != ppos)
     {
@@ -1334,11 +1346,10 @@ extract (struct EXTRACTOR_PluginList *plugins,
   if (want_shm)
     {
       if (NULL != ptr)
-	shmdt (ptr);
+	munmap (ptr, size);
       if (shmid != -1)
 	close (shmid);
       shm_unlink (fn);
-      unlink (fn);
     }
 }
 
