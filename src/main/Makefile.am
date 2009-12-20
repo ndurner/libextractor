@@ -38,7 +38,7 @@ libextractor_la_LIBADD = \
 EXTRA_DIST = \
   iconv.c
 
-libextractor_la_CPPFLAGS = -DPLUGINDIR=\"@RPLUGINDIR@\" $(AM_CPPFLAGS)
+libextractor_la_CPPFLAGS = -DPLUGINDIR=\"@RPLUGINDIR@\" -DPLUGININSTDIR=\"${plugindir}\" $(AM_CPPFLAGS)
 
 libextractor_la_SOURCES = \
   extractor.c \
@@ -50,5 +50,62 @@ extract_SOURCES = \
   getopt.c \
   getopt.h \
   getopt1.c 
+
+
+
+
+ELIBDIR = $(libdir)
+
+LDADD = \
+ $(top_builddir)/src/main/libextractor.la  
+
+if HAVE_ZZUF
+  fuzz_tests=fuzz_default.sh fuzz_thumbnail.sh
+endif
+
+TESTS_ENVIRONMENT = testdatadir=$(top_srcdir)/test
+TESTS_ENVIRONMENT += bindir=${bindir}
+
+check_PROGRAMS = \
+ test_trivial \
+ test_plugin_loading \
+ test_plugin_load_multi
+
+nocheck = \
+ mt_plugintest1 \
+ mt_plugintest2 \
+ mt_extracttest1 \
+ mt_extracttest2
+
+TESTS = $(check_PROGRAMS) $(fuzz_tests)
+
+test_trivial_SOURCES = \
+ test_trivial.c 
+
+test_plugin_loading_SOURCES = \
+ test_plugin_loading.c 
+
+test_plugin_load_multi_SOURCES = \
+ test_plugin_load_multi.c 
+
+mt_plugintest1_SOURCES = \
+ mt_plugintest1.c 
+mt_plugintest1_LDFLAGS = \
+ -lpthread
+
+mt_plugintest2_SOURCES = \
+ mt_plugintest2.c 
+mt_plugintest2_LDFLAGS = \
+ -lpthread
+
+mt_extracttest1_SOURCES = \
+ mt_extracttest1.c 
+mt_extracttest1_LDFLAGS = \
+ -lpthread
+
+mt_extracttest2_SOURCES = \
+ mt_extracttest2.c 
+mt_extracttest2_LDFLAGS = \
+ -lpthread
 
 

@@ -10,7 +10,7 @@ LDADD = \
  $(top_builddir)/src/main/libextractor.la  
 
 if HAVE_ZZUF
-fuzz_tests=fuzz_default.sh fuzz_thumbnail.sh
+  fuzz_tests=fuzz_default.sh fuzz_thumbnail.sh
 endif
 
 TESTS_ENVIRONMENT = testdatadir=$(top_srcdir)/test

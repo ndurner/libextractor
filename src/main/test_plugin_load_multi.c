@@ -1,5 +1,5 @@
 /**
- * @file test/multiload.c
+ * @file main/test_plugin_load_multi.c
  * @brief testcase for libextractor plugin loading that loads the same
  *    plugins multiple times!
  * @author Christian Grothoff
@@ -11,18 +11,19 @@
 static int
 testLoadPlugins ()
 {
-  EXTRACTOR_ExtractorList *el1;
-  EXTRACTOR_ExtractorList *el2;
+  struct EXTRACTOR_PluginList *el1;
+  struct EXTRACTOR_PluginList *el2;
 
-  el1 = EXTRACTOR_loadDefaultLibraries ();
-  el2 = EXTRACTOR_loadDefaultLibraries ();
+  el1 = EXTRACTOR_plugin_add_defaults (EXTRACTOR_OPTION_DEFAULT_POLICY);
+  el2 = EXTRACTOR_plugin_add_defaults (EXTRACTOR_OPTION_DEFAULT_POLICY);
   if ((el1 == NULL) || (el2 == NULL))
     {
-      printf ("Failed to load default plugins!\n");
+      fprintf (stderr,
+	       "Failed to load default plugins!\n");
       return 1;
     }
-  EXTRACTOR_removeAll (el1);
-  EXTRACTOR_removeAll (el2);
+  EXTRACTOR_plugin_remove_all (el1);
+  EXTRACTOR_plugin_remove_all (el2);
   return 0;
 }
 

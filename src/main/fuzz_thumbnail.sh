@@ -26,7 +26,7 @@ do
     do
 #      echo "file $file seed $seed"
       zzuf -c -s $seed cat "$file" > "$tmpfile"
-      if ! "$bindir/extract" -n -l libextractor_thumbnail:libextractor_mime "$tmpfile" > /dev/null
+      if ! "$bindir/extract" -n -l thumbnailffmpeg:thumbnailqt:thumbnailgtk "$tmpfile" > /dev/null
       then
         echo "$tmpfile caused error exit"
         exit 1

@@ -349,15 +349,38 @@ append_to_dir (const char *path,
 {
   char *ret;
 
-  ret = malloc (strlen (path) + strlen(fname) + 2);
-  sprintf (ret,
 #ifdef MINGW
-	   "%s\%s",
+  if (fname[0] == '\\')
+    fname++;
 #else
-	   "%s/%s",
+  if (fname[0] == '/')
+    fname++;
 #endif
+  ret = malloc (strlen (path) + strlen(fname) + 2);
+
+#ifdef MINGW
+  if (path[strlen(path)-1] == '\\')
+    sprintf (ret,
+	     "%s%s",
+	     path, 
+	     fname);
+  else
+    sprintf (ret,
+	     "%s\%s",
+	     path, 
+	     fname);
+#else
+  if (path[strlen(path)-1] == '/')
+    sprintf (ret,
+	   "%s%s",
 	   path, 
 	   fname);
+  else
+    sprintf (ret,
+	   "%s/%s",
+	   path, 
+	   fname);
+#endif
   return ret;
 }
 
@@ -406,12 +429,15 @@ get_installation_paths (PathProcessor pp,
 #endif
   if (prefix == NULL)
     prefix = get_path_from_PATH();
+  pp (pp_cls, PLUGININSTDIR);
   if (prefix == NULL)
     return;
   if (prefix != NULL)
     {
       path = append_to_dir (prefix, PLUGINDIR);
-      pp (pp_cls, path);
+      if (0 != strcmp (path,
+		       PLUGININSTDIR))
+	pp (pp_cls, path);
       free (path);
       free (prefix);
       return;
@@ -458,7 +484,7 @@ find_plugin_in_path (void *cls,
 	continue; /* only load '.so' and '.dll' */
       sym_name = strstr (ent->d_name, "_");
       if (sym_name == NULL)
-	continue;
+	continue;	
       sym_name++;
       sym = strdup (sym_name);
       dot = strstr (sym, ".");
@@ -751,7 +777,12 @@ EXTRACTOR_plugin_add (struct EXTRACTOR_PluginList * prev,
 
   libname = find_plugin (library);
   if (libname == NULL)
-    return prev;
+    {
+      fprintf (stderr,
+	       "Could not load `%s'\n",
+	       library);
+      return prev;
+    }
   result = calloc (1, sizeof (struct EXTRACTOR_PluginList));
   result->next = prev;
   result->short_libname = strdup (library);
