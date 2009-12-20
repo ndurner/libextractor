@@ -42,26 +42,32 @@ extern "C" {
  */
 enum EXTRACTOR_Options
   {
+
     /**
-     * Run plugins in-process.
+     * Run plugin out-of-process, starting the process once the plugin
+     * is to be run.  If a plugin crashes, automatically restart the
+     * respective process for the same file and try once more
+     * (since the crash may be caused by the previous file).  If
+     * the process crashes immediately again, it is not restarted
+     * until the next file.
      */
-    EXTRACTOR_OPTION_NONE = 0,
+    EXTRACTOR_OPTION_DEFAULT_POLICY = 0,
 
     /**
      * Run plugins out-of-process, starting the process
      * once at the time the plugin is loaded.  This will
      * prevent the main process crashing if a plugin dies.
      * Ignored on platforms where out-of-process starts
-     * are not supported.
+     * are not supported (in-process execution will be
+     * attempted, unless the plugin itself forbids it).
      */
-    EXTRACTOR_OPTION_OUT_OF_PROCESS = 1,
+    EXTRACTOR_OPTION_OUT_OF_PROCESS_NO_RESTART = 1,
 
     /**
-     * If a plugin crashes, automatically restart the respective
-     * process for the next file.  Implies
-     * EXTRACTOR_OPTION_OUT_OF_PROCESS.
+     * Run plugins in-process.  Unsafe, not recommended,
+     * can be nice for debugging.
      */
-    EXTRACTOR_OPTION_AUTO_RESTART = 2,
+    EXTRACTOR_OPTION_IN_PROCESS = 2,
 
     /**
      * Internal value for plugins that have been disabled.
@@ -478,23 +484,6 @@ EXTRACTOR_plugin_add (struct EXTRACTOR_PluginList * prev,
 		      const char *options,
 		      enum EXTRACTOR_Options flags);
 
-
-/**
- * Add a library for keyword extraction at the END of the list.
- * @param prev the previous list of libraries, may be NULL
- * @param library the name of the library (full path)
- * @param options options to give to the library
- * @param flags options to use
- * @return the new list of libraries, always equal to prev
- *         except if prev was NULL and no error occurs
- */
-struct EXTRACTOR_PluginList *
-EXTRACTOR_plugin_add_last(struct EXTRACTOR_PluginList *prev,
-			  const char *library,
-			  const char *options,
-			  enum EXTRACTOR_Options flags);
-
-
 /**
  * Load multiple libraries as specified by the user.
  *
@@ -503,8 +492,8 @@ EXTRACTOR_plugin_add_last(struct EXTRACTOR_PluginList *prev,
  *        "[[-]LIBRARYNAME[(options)][:[-]LIBRARYNAME[(options)]]]*".
  *        For example, 'mp3:ogg' loads the
  *        mp3 and the ogg plugins. The '-' before the LIBRARYNAME
- *        indicates that the library should be added to the end
- *        of the library list (addLibraryLast).
+ *        indicates that the library should be removed from
+ *        the library list.
  * @param prev the  previous list of libraries, may be NULL
  * @param flags options to use
  * @return the new list of libraries, equal to prev iff an error occured

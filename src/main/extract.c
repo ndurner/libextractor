@@ -170,8 +170,6 @@ printHelp ()
   static Help help[] = {
     { 'b', "bibtex", NULL,
       gettext_noop("print output in bibtex format") },
-    { 'B', "binary", "LANG",
-      gettext_noop("use the generic plaintext extractor for the language with the 2-letter language code LANG") },
     { 'g', "grep-friendly", NULL,
       gettext_noop("produce grep-friendly output (all results on one line per file)") },
     { 'h', "help", NULL,
@@ -557,7 +555,6 @@ main (int argc, char *argv[])
   int defaultAll = YES;
   int bibtex = NO;
   int grepfriendly = NO;
-  char * binary = NULL;
   char * name;
   int ret = 0;
   EXTRACTOR_MetaDataProcessor processor = NULL;
@@ -574,7 +571,6 @@ main (int argc, char *argv[])
   while (1)
     {
       static struct option long_options[] = {
-	{"binary", 1, 0, 'B'},
 	{"bibtex", 0, 0, 'b'},
 	{"grep-friendly", 0, 0, 'g'},
 	{"help", 0, 0, 'h'},
@@ -609,9 +605,6 @@ main (int argc, char *argv[])
 	      return 0;
 	    }
 	  processor = &print_bibtex;
-	  break;
-	case 'B':
-	  binary = optarg;
 	  break;
 	case 'g':
 	  grepfriendly = YES;
@@ -729,40 +722,27 @@ main (int argc, char *argv[])
   /* build list of libraries */
   if (nodefault == NO)
     plugins = EXTRACTOR_plugin_add_defaults (in_process
-					     ? EXTRACTOR_OPTION_NONE
-					     : EXTRACTOR_OPTION_AUTO_RESTART);
+					     ? EXTRACTOR_OPTION_IN_PROCESS
+					     : EXTRACTOR_OPTION_DEFAULT_POLICY);
   else
     plugins = NULL;
   if (libraries != NULL)
     plugins = EXTRACTOR_plugin_add_config (plugins, 
 					   libraries,
 					   in_process
-					   ? EXTRACTOR_OPTION_NONE
-					   : EXTRACTOR_OPTION_AUTO_RESTART);
-  if (binary != NULL) 
-    {
-      name = malloc(strlen(binary) + strlen("printable_") + 1);
-      strcpy(name, "libextractor_printable_");
-      strcat(name, binary);
-      plugins = EXTRACTOR_plugin_add_last(plugins,
-					  name,
-					  NULL,
-					  in_process 
-					  ? EXTRACTOR_OPTION_NONE
-					  : EXTRACTOR_OPTION_AUTO_RESTART);
-      free(name);
-    }
+					   ? EXTRACTOR_OPTION_IN_PROCESS
+					   : EXTRACTOR_OPTION_DEFAULT_POLICY);
   if (hash != NULL) 
     {
       name = malloc(strlen(hash) + strlen("hash_") + 1);
       strcpy(name, "libextractor_hash_");
       strcat(name, hash);
-      plugins = EXTRACTOR_plugin_add_last(plugins,
-					  name,
-					  NULL,
-					  in_process
-					  ? EXTRACTOR_OPTION_NONE
-					  : EXTRACTOR_OPTION_AUTO_RESTART);
+      plugins = EXTRACTOR_plugin_add(plugins,
+				     name,
+				     NULL,
+				     in_process
+				     ? EXTRACTOR_OPTION_IN_PROCESS
+				     : EXTRACTOR_OPTION_DEFAULT_POLICY);
       free(name);
     }
 

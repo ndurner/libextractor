@@ -265,7 +265,7 @@ static Pattern patterns[] = {
   {"moov", 4, "video/quicktime", DEFAULT},
   {"mdat", 4, "video/quicktime", DEFAULT},
   {"\x8aMNG", 4, "video/x-mng", DEFAULT},
-  {"\x30\x26\xb2\x75\x8e\x66", 6, "video/asf", DEFAULT},        /* same as .wmv ? */
+  {"\x30\x26\xb2\x75\x8e\x66", 6, "video/x-ms-asf", DEFAULT},        /* same as .wmv ? */
   {"FWS", 3, "application/x-shockwave-flash", DEFAULT},
   {"MThd", 4, "audio/midi", DEFAULT},
   {"ID3", 3, "audio/mpeg", DEFAULT},

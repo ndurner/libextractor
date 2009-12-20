@@ -10,6 +10,11 @@ Core:
 * use "-" in config not to append plugin, but to remove one!
 * document
 * port test cases
+* document special options; we have:
+  - force-kill: plugin process committs suicide after each file
+  - oop-only: plugin is never run in-process 
+  - close-stdout: stdout is closed for the (external) plugin process
+  - close-stderr: stderr is closed for the (external) plugin process
 
 'Unclean' code:
 * ASF
