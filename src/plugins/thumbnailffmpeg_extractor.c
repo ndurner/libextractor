@@ -88,31 +88,31 @@ stream_read (void *opaque, uint8_t * buf, int buf_size)
   return -1;
 }
 
-static offset_t
-stream_seek (void *opaque, offset_t offset, int whence)
+static int64_t
+stream_seek (void *opaque, int64_t offset, int whence)
 {
   struct StreamDescriptor *rs = (struct StreamDescriptor *) opaque;
-  offset_t off_abs;
+  int64_t off_abs;
 #if DEBUG
   printf ("my_seek: %lld %d\n", offset, whence);
 #endif
   if (rs)
     {
       if (whence == AVSEEK_SIZE)
-        return (offset_t) rs->size;
+        return (int64_t) rs->size;
       else if (whence == SEEK_CUR)
-        off_abs = (offset_t) rs->offset + offset;
+        off_abs = (int64_t) rs->offset + offset;
       else if (whence == SEEK_SET)
         off_abs = offset;
       else if (whence == SEEK_END)
-        off_abs = (offset_t) rs->size + offset;
+        off_abs = (int64_t) rs->size + offset;
       else
         {
           printf ("whence error %d\n", whence);
           abort ();
           return AVERROR (EINVAL);
         }
-      if (off_abs >= 0 && off_abs < (offset_t) rs->size)
+      if (off_abs >= 0 && off_abs < (int64_t) rs->size)
         rs->offset = (size_t) off_abs;
       else
         off_abs = AVERROR (EINVAL);
@@ -120,22 +120,6 @@ stream_seek (void *opaque, offset_t offset, int whence)
     }
   return -1;
 }
-
-static EXTRACTOR_KeywordList *
-addKeyword (EXTRACTOR_KeywordType type,
-            char *keyword, EXTRACTOR_KeywordList * next)
-{
-  EXTRACTOR_KeywordList *result;
-
-  if (keyword == NULL)
-    return next;
-  result = malloc (sizeof (EXTRACTOR_KeywordList));
-  result->next = next;
-  result->keyword = keyword;
-  result->keywordType = type;
-  return result;
-}
-
 
 struct MimeToDecoderMapping
 {
@@ -157,6 +141,187 @@ static const struct MimeToDecoderMapping m2d_map[] = {
 #define BIOBUF_SIZE (64*1024)
 #define THUMBSIZE 128           /* max dimension in pixels */
 #define MAX_THUMB_SIZE (100*1024)       /* in bytes */
+
+
+/* ******** mime type detection code (copied from mime_extractor) ************* */
+
+
+/**
+ * Detect a file-type.
+ * @param data the contents of the file
+ * @param len the length of the file
+ * @param arg closure...
+ * @return 0 if the file does not match, 1 if it does
+ **/
+typedef int (*Detector) (const char *data, size_t len, void *arg);
+
+/**
+ * Detect a file-type.
+ * @param data the contents of the file
+ * @param len the length of the file
+ * @return always 1
+ **/
+static int
+defaultDetector (const char *data, size_t len, void *arg)
+{
+  return 1;
+}
+
+/**
+ * Detect a file-type.
+ * @param data the contents of the file
+ * @param len the length of the file
+ * @return always 0
+ **/
+static int
+disableDetector (const char *data, size_t len, void *arg)
+{
+  return 0;
+}
+
+typedef struct ExtraPattern
+{
+  int pos;
+  int len;
+  const char *pattern;
+} ExtraPattern;
+
+/**
+ * Define special matching rules for complicated formats...
+ **/
+static ExtraPattern xpatterns[] = {
+#define AVI_XPATTERN 0
+  {8, 4, "AVI "},
+  {0, 0, NULL},
+#define WAVE_XPATTERN 2
+  {8, 4, "WAVE"},
+  {0, 0, NULL},
+#define ACON_XPATTERN 12
+  {8, 4, "ACON"},
+  {0, 0, NULL},
+#define CR2_PATTERN 14
+  {8, 3, "CR\x02"},
+  {0, 0, NULL},
+};
+
+/**
+ * Detect AVI. A pattern matches if all XPatterns until the next {0,
+ * 0, NULL} slot match. OR-ing patterns can be achieved using multiple
+ * entries in the main table, so this "AND" (all match) semantics are
+ * the only reasonable answer.
+ **/
+static int
+xPatternMatcher (const char *data, size_t len, void *cls)
+{
+  ExtraPattern *arg = cls;
+
+  while (arg->pattern != NULL)
+    {
+      if (arg->pos + arg->len > len)
+        return 0;
+      if (0 != memcmp (&data[arg->pos], arg->pattern, arg->len))
+        return 0;
+      arg++;
+    }
+  return 1;
+}
+
+/**
+ * Use this detector, if the simple header-prefix matching is
+ * sufficient.
+ */
+#define DEFAULT &defaultDetector, NULL
+
+/**
+ * Use this detector, to disable the mime-type (effectively comment it
+ * out).
+ */
+#define DISABLED &disableDetector, NULL
+
+/**
+ * Select an entry in xpatterns for matching
+ */
+#define XPATTERN(a) &xPatternMatcher, &xpatterns[(a)]
+
+
+typedef struct Pattern
+{
+  const char *pattern;
+  int size;
+  const char *mimetype;
+  Detector detector;
+  void *arg;
+} Pattern;
+
+
+/* FIXME: find out if ffmpeg actually makes sense for all of these,
+   and add those for which it does make sense to the m2d_map! */
+static Pattern patterns[] = {
+  {"\xFF\xD8", 2, "image/jpeg", DEFAULT},
+  {"\211PNG\r\n\032\n", 8, "image/png", DEFAULT},
+  {"/* XPM */", 9, "image/x-xpm", DEFAULT},
+  {"GIF8", 4, "image/gif", DEFAULT},
+  {"P1", 2, "image/x-portable-bitmap", DEFAULT},
+  {"P2", 2, "image/x-portable-graymap", DEFAULT},
+  {"P3", 2, "image/x-portable-pixmap", DEFAULT},
+  {"P4", 2, "image/x-portable-bitmap", DEFAULT},
+  {"P5", 2, "image/x-portable-graymap", DEFAULT},
+  {"P6", 2, "image/x-portable-pixmap", DEFAULT},
+  {"P7", 2, "image/x-portable-anymap", DEFAULT},
+  {"BM", 2, "image/x-bmp", DEFAULT},
+  {"\x89PNG", 4, "image/x-png", DEFAULT},
+  {"id=ImageMagick", 14, "application/x-imagemagick-image", DEFAULT},
+  {"hsi1", 4, "image/x-jpeg-proprietary", DEFAULT},
+  {"FLV", 3, "video/x-flv", DEFAULT},
+  {"\x2E\x52\x4d\x46", 4, "video/real", DEFAULT},
+  {"\x2e\x72\x61\xfd", 4, "audio/real", DEFAULT},
+  {"gimp xcf", 8, "image/xcf", DEFAULT},
+  {"II\x2a\x00\x10", 5, "image/x-canon-cr2", XPATTERN (CR2_PATTERN)},
+  {"IIN1", 4, "image/tiff", DEFAULT},
+  {"MM\x00\x2a", 4, "image/tiff", DEFAULT},     /* big-endian */
+  {"II\x2a\x00", 4, "image/tiff", DEFAULT},     /* little-endian */
+  {"RIFF", 4, "video/x-msvideo", XPATTERN (AVI_XPATTERN)},
+  {"RIFF", 4, "audio/x-wav", XPATTERN (WAVE_XPATTERN)},
+  {"RIFX", 4, "video/x-msvideo", XPATTERN (AVI_XPATTERN)},
+  {"RIFX", 4, "audio/x-wav", XPATTERN (WAVE_XPATTERN)},
+  {"RIFF", 4, "image/x-animated-cursor", XPATTERN (ACON_XPATTERN)},
+  {"RIFX", 4, "image/x-animated-cursor", XPATTERN (ACON_XPATTERN)},
+  {"\x00\x00\x01\xb3", 4, "video/mpeg", DEFAULT},
+  {"\x00\x00\x01\xba", 4, "video/mpeg", DEFAULT},
+  {"moov", 4, "video/quicktime", DEFAULT},
+  {"mdat", 4, "video/quicktime", DEFAULT},
+  {"\x8aMNG", 4, "video/x-mng", DEFAULT},
+  {"\x30\x26\xb2\x75\x8e\x66", 6, "video/asf", DEFAULT},        /* same as .wmv ? */
+  {"FWS", 3, "application/x-shockwave-flash", DEFAULT},
+  {NULL, 0, NULL, DISABLED}
+};
+
+
+
+static const char *
+find_mime (const char *data,
+	   size_t size)
+{
+  int i;
+
+  i = 0;
+  while (patterns[i].pattern != NULL)
+    {
+      if (size < patterns[i].size)
+        {
+          i++;
+          continue;
+        }
+      if (0 == memcmp (patterns[i].pattern, data, patterns[i].size))
+        {
+          if (patterns[i].detector (data, size, patterns[i].arg))
+	    return patterns[i].mimetype;
+	}
+      i++;
+    }
+  return NULL;
+}
+
 
 int 
 EXTRACTOR_thumbnailffmpeg_extract (const unsigned char *data,
@@ -193,9 +358,9 @@ EXTRACTOR_thumbnailffmpeg_extract (const unsigned char *data,
 
   int i;
   int err;
+  int ret = 0;
   int frame_finished;
 
-  char *binary;
   const char *mime;
   int is_image;
   enum CodecID image_codec_id;
@@ -214,7 +379,9 @@ EXTRACTOR_thumbnailffmpeg_extract (const unsigned char *data,
 
   is_image = 0;
 
-  mime = EXTRACTOR_extractLast (EXTRACTOR_MIMETYPE, prev);
+  mime = find_mime ((const char*) data, size);
+  if (mime == NULL)
+    return 0;
   if (mime != NULL)
     {
       i = 0;
@@ -235,13 +402,13 @@ EXTRACTOR_thumbnailffmpeg_extract (const unsigned char *data,
 #endif
   if (!is_image)
     {
-      pdat.filename = filename;
+      pdat.filename = NULL;
       pdat.buf = (unsigned char *) data;
       pdat.buf_size = (size > PROBE_MAX) ? PROBE_MAX : size;
 
       fmt = av_probe_input_format (&pdat, 1);
       if (fmt == NULL)
-        return prev;
+        return 0;
 #if DEBUG
       printf ("format %p [%s] [%s]\n", fmt, fmt->name, fmt->long_name);
 #endif
@@ -251,7 +418,7 @@ EXTRACTOR_thumbnailffmpeg_extract (const unsigned char *data,
 #if DEBUG
       printf ("score: %d\n", score);
 #endif
-      /*if (score < 50) return prev; */
+      /*if (score < 50) return 0; */
     }
 
   if (is_image)
@@ -487,15 +654,14 @@ EXTRACTOR_thumbnailffmpeg_extract (const unsigned char *data,
   err = avcodec_encode_video (enc_codec_ctx,
                               encoder_output_buffer,
                               encoder_output_buffer_size, thumb_frame);
-  if (err <= 0)
-    goto out;
-
-  binary =
-    EXTRACTOR_binaryEncode ((const unsigned char *) encoder_output_buffer,
-                            err);
-  if (binary != NULL)
-    prev = addKeyword (EXTRACTOR_THUMBNAIL_DATA, binary, prev);
-
+  if (err > 0)
+    ret = proc (proc_cls,
+		"thumbnailffmpeg",
+		EXTRACTOR_METATYPE_THUMBNAIL,
+		EXTRACTOR_METAFORMAT_BINARY,
+		"image/png",
+		(const char*) encoder_output_buffer,
+		err);
 out:
   if (enc_codec != NULL)
     avcodec_close (enc_codec_ctx);
@@ -520,7 +686,7 @@ out:
   if (bio_buffer != NULL)
     free (bio_buffer);
 
-  return prev;
+  return ret;
 }
 
 int 

@@ -59,7 +59,7 @@ typedef struct ExtraPattern
 {
   int pos;
   int len;
-  char *pattern;
+  const char *pattern;
 } ExtraPattern;
 
 /**
@@ -181,9 +181,9 @@ svgMatcher (const char *data, size_t len, void *cls)
 
 typedef struct Pattern
 {
-  char *pattern;
+  const char *pattern;
   int size;
-  char *mimetype;
+  const char *mimetype;
   Detector detector;
   void *arg;
 } Pattern;
@@ -282,7 +282,7 @@ static Pattern patterns[] = {
   {"#!/bin/tcsh", 11, "application/x-shellscript", DEFAULT},
   {"#!/bin/perl", 11, "application/x-perl", DEFAULT},
   {"<?xml", 5, "image/svg+xml", svgMatcher, NULL},
-  {NULL, 0, NULL, DISABLED},
+  {NULL, 0, NULL, DISABLED}
 };
 
 

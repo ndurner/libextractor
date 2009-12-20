@@ -475,13 +475,6 @@ AC_ARG_ENABLE(ffmpeg,
         ffmpeg_enabled=0])
 AM_CONDITIONAL(HAVE_FFMPEG, test x$ffmpeg_enabled != x0)
 
-ffmpegarch=""
-AC_ARG_WITH(ffmpeg-arch,
-	AC_HELP_STRING(
-		[--with-ffmpeg-arch],
-		[set FFmpeg --arch setting for cross-compiling.]),
-	[ffmpegarch=$withval])
-
 
 LE_INTLINCL=""
 LE_LIBINTL="$LTLIBINTL"

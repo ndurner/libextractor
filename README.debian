@@ -1,33 +1,36 @@
-This is a list of debian (sarge) packages that you may want to install
-prior to compiling libextractor.
+This is a list of debian (unstable) packages that you may want to
+install prior to compiling GNU libextractor.
 
-=====================================================================
+=================================================
 
-Basic compilation tools and dependencies:
-
+Absolutely needed:
 libtool
 gcc
 make
 g++ 
 libltdl7-dev
+zlib1g-dev
+libbz2-dev
+
+Recommended:
 libgtk2.0-dev
 libvorbis-dev
 libflac-dev
-zlib1g-dev
-libbz2-dev
 libgsf-1-dev
 libmpeg2-4-dev
 libqt4-dev
 librpm-dev
+libpoppler-dev
+
+Optional:
 libexiv2-dev # if you compile with --enable-exiv2
-libavformat-dev
-libswscale-dev
+libavformat-dev # if you compile with --enable-ffmpeg
+libswscale-dev # if you compile with --enable-ffmpeg
 
 For Subversion access and compilation:
-
 subversion
 autoconf
-automake1.8
+automake
 
 ==============================================
 
