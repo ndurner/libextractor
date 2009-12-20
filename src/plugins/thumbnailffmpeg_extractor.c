@@ -132,8 +132,17 @@ static const struct MimeToDecoderMapping m2d_map[] = {
   {"image/x-bmp", CODEC_ID_BMP},
   {"image/gif", CODEC_ID_GIF},
   {"image/jpeg", CODEC_ID_MJPEG},
+  {"image/jpeg-proprietary", CODEC_ID_MJPEG},
   {"image/png", CODEC_ID_PNG},
+  {"image/x-png", CODEC_ID_PNG},
+  {"image/tiff", CODEC_ID_TIFF},
   {"image/x-portable-pixmap", CODEC_ID_PPM},
+#if DOES_THIS_WORK
+  { "video/mpeg", CODEC_ID_MPEG2VIDEO },
+  { "video/x-flv", CODEC_ID_FLV1 },
+  { "video/x-msvideo", CODEC_ID_MSVIDEO1 },
+  { "video/asf", CODEC_ID_WMV1 /* or is this WMV2? */ },
+#endif
   {NULL, CODEC_ID_NONE}
 };
 
@@ -254,9 +263,10 @@ typedef struct Pattern
 } Pattern;
 
 
-/* FIXME: find out if ffmpeg actually makes sense for all of these,
-   and add those for which it does make sense to the m2d_map! */
 static Pattern patterns[] = {
+  /* FIXME: add patterns for other mime-types
+     supported by ffmpeg (also add those to 
+     the mime extractor itself!) */
   {"\xFF\xD8", 2, "image/jpeg", DEFAULT},
   {"\211PNG\r\n\032\n", 8, "image/png", DEFAULT},
   {"/* XPM */", 9, "image/x-xpm", DEFAULT},
@@ -270,28 +280,23 @@ static Pattern patterns[] = {
   {"P7", 2, "image/x-portable-anymap", DEFAULT},
   {"BM", 2, "image/x-bmp", DEFAULT},
   {"\x89PNG", 4, "image/x-png", DEFAULT},
-  {"id=ImageMagick", 14, "application/x-imagemagick-image", DEFAULT},
   {"hsi1", 4, "image/x-jpeg-proprietary", DEFAULT},
   {"FLV", 3, "video/x-flv", DEFAULT},
   {"\x2E\x52\x4d\x46", 4, "video/real", DEFAULT},
-  {"\x2e\x72\x61\xfd", 4, "audio/real", DEFAULT},
-  {"gimp xcf", 8, "image/xcf", DEFAULT},
-  {"II\x2a\x00\x10", 5, "image/x-canon-cr2", XPATTERN (CR2_PATTERN)},
   {"IIN1", 4, "image/tiff", DEFAULT},
   {"MM\x00\x2a", 4, "image/tiff", DEFAULT},     /* big-endian */
   {"II\x2a\x00", 4, "image/tiff", DEFAULT},     /* little-endian */
   {"RIFF", 4, "video/x-msvideo", XPATTERN (AVI_XPATTERN)},
-  {"RIFF", 4, "audio/x-wav", XPATTERN (WAVE_XPATTERN)},
   {"RIFX", 4, "video/x-msvideo", XPATTERN (AVI_XPATTERN)},
-  {"RIFX", 4, "audio/x-wav", XPATTERN (WAVE_XPATTERN)},
-  {"RIFF", 4, "image/x-animated-cursor", XPATTERN (ACON_XPATTERN)},
-  {"RIFX", 4, "image/x-animated-cursor", XPATTERN (ACON_XPATTERN)},
   {"\x00\x00\x01\xb3", 4, "video/mpeg", DEFAULT},
   {"\x00\x00\x01\xba", 4, "video/mpeg", DEFAULT},
+
+  /* FIXME: find out if ffmpeg actually makes sense for those below,
+     and add those for which it does make sense to the m2d_map! */
   {"moov", 4, "video/quicktime", DEFAULT},
   {"mdat", 4, "video/quicktime", DEFAULT},
   {"\x8aMNG", 4, "video/x-mng", DEFAULT},
-  {"\x30\x26\xb2\x75\x8e\x66", 6, "video/asf", DEFAULT},        /* same as .wmv ? */
+  {"\x30\x26\xb2\x75\x8e\x66", 6, "video/asf", DEFAULT},  /* same as .wmv ? */
   {"FWS", 3, "application/x-shockwave-flash", DEFAULT},
   {NULL, 0, NULL, DISABLED}
 };
