@@ -588,7 +588,7 @@ main (int argc, char *argv[])
       option_index = 0;
       c = getopt_long (argc,
 		       argv, 
-		       "abB:ghH:il:Lnp:vVx:",
+		       "abghH:il:Lnp:vVx:",
 		       long_options,
 		       &option_index);
 
