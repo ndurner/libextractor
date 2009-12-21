@@ -432,16 +432,12 @@ get_installation_paths (PathProcessor pp,
   pp (pp_cls, PLUGININSTDIR);
   if (prefix == NULL)
     return;
-  if (prefix != NULL)
-    {
-      path = append_to_dir (prefix, PLUGINDIR);
-      if (0 != strcmp (path,
-		       PLUGININSTDIR))
-	pp (pp_cls, path);
-      free (path);
-      free (prefix);
-      return;
-    }
+  path = append_to_dir (prefix, PLUGINDIR);
+  if (0 != strcmp (path,
+		   PLUGININSTDIR))
+    pp (pp_cls, path);
+  free (path);
+  free (prefix);
 }
 
 
