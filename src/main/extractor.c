@@ -1367,7 +1367,10 @@ extract (struct EXTRACTOR_PluginList *plugins,
 	      close (shmid);	
 	      shmid = -1;
 	    }
-	  memcpy (ptr, data, size);
+	  else
+	    {
+	      memcpy (ptr, data, size);
+	    }
 	}
     }
   else
