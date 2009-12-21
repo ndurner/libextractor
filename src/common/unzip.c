@@ -1290,14 +1290,12 @@ long EXTRACTOR_common_unzip_zlib_seek_file_func(voidpf opaque,
 
   switch (origin) {
   case ZLIB_FILEFUNC_SEEK_SET:
-    if ( (offset > e->size) ||
-	 (offset < 0) )
+    if (offset > e->size) 
       return -1;
     e->pos = offset;
     break;
   case ZLIB_FILEFUNC_SEEK_END:
-    if ( (offset > e->size) ||
-	 (offset < 0) )
+    if (offset > e->size) 
       return -1;
     e->pos = e->size - offset;
     break;
