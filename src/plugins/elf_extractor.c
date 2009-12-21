@@ -420,9 +420,9 @@ getELFHdr (const char *data,
       EXTRACTOR_common_cat_unpack (&data[EI_NIDENT],
 				   ELF64_HEADER_SPECS[getByteorder (data[EI_DATA])],
 				   ELF64_HEADER_FIELDS (ehdr64));
-      if (ehdr64->e_shoff + ehdr64->e_shentsize * ehdr64->e_shnum > size)
+      if (ehdr64->e_shoff + ((uint32_t) ehdr64->e_shentsize * ehdr64->e_shnum) > size)
 	return -1;                  /* invalid offsets... */
-      if (ehdr64->e_phoff + ehdr64->e_phensize * ehdr64->e_phnum > size)
+      if (ehdr64->e_phoff + ((uint32_t) ehdr64->e_phensize * ehdr64->e_phnum) > size)
 	return -1;
       return 1;
     default:
