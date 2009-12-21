@@ -129,6 +129,7 @@ processControl (const char *data,
 			     strlen(val) + 1))
 		{
 		  free (val);
+		  free (key);
 		  return 1;
 		}
 	      free (val);
