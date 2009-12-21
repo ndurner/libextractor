@@ -151,7 +151,8 @@ EXTRACTOR_ps_extract (const char *data,
      "%%EndComments", this should allow us to not read through most of
      the file for all the sane applications... For Windows-generated
      PS files, we will bail out at the end of the file. */
-  while (0 != strncmp ("%%EndComments", line, strlen ("%%EndComments")))
+  while ( (line == NULL) ||
+	  (0 != strncmp ("%%EndComments", line, strlen ("%%EndComments"))) )
     {
       free (line);
       line = readline (data, size, pos);
