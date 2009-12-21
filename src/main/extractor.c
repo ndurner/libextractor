@@ -1117,6 +1117,7 @@ process_requests (struct EXTRACTOR_PluginList *plugin,
     {
       if (strlen (fn) == 0)
 	break;
+      ptr = NULL;
       fn[strlen(fn)-1] = '\0'; /* kill newline */
       if ( (-1 != (shmid = shm_open (fn, O_RDONLY, 0))) &&
 	   (((off_t)-1) != (size = lseek (shmid, 0, SEEK_END))) &&
@@ -1132,7 +1133,8 @@ process_requests (struct EXTRACTOR_PluginList *plugin,
 	  if (0 != write_all (out, &hdr, sizeof(hdr)))
 	    break;
 	}
-      if (ptr != NULL)
+      if ( (ptr != NULL) &&
+	   (ptr != (void*) -1) )
 	munmap (ptr, size);
       if (-1 != shmid)
 	close (shmid);
