@@ -248,12 +248,11 @@ tar_time (long long timeval, char *rtime, unsigned int rsize)
 #define ADD(t,s) do { if (0 != (ret = proc (proc_cls, "tar", t, EXTRACTOR_METAFORMAT_UTF8, "text/plain", s, strlen(s)+1))) goto FINISH; } while (0)
 #define ADDF(t,s) do { if (0 != (ret = proc (proc_cls, "tar", t, EXTRACTOR_METAFORMAT_UTF8, "text/plain", s, strlen(s)+1))) { free(s); goto FINISH; } free (s); } while (0)
 
-int 
+int
 EXTRACTOR_tar_extract (const char *data,
-		       size_t size,
-		       EXTRACTOR_MetaDataProcessor proc,
-		       void *proc_cls,
-		       const char *options)
+                       size_t size,
+                       EXTRACTOR_MetaDataProcessor proc,
+                       void *proc_cls, const char *options)
 {
   char *fname = NULL;
   size_t pos = 0;
@@ -263,11 +262,11 @@ EXTRACTOR_tar_extract (const char *data,
   int ret;
 
   if (512 != TAR_HEADER_SIZE)
-    return 0;                /* compiler should remove this when optimising */
+    return 0;                   /* compiler should remove this when optimising */
   if (0 != (size % TAR_HEADER_SIZE))
-    return 0;                /* cannot be tar! */
+    return 0;                   /* cannot be tar! */
   if (size < TAR_HEADER_SIZE)
-    return 0;                /* too short, or somehow truncated */
+    return 0;                   /* too short, or somehow truncated */
 
   ret = 0;
   pos = 0;
@@ -732,126 +731,124 @@ EXTRACTOR_tar_extract (const char *data,
    * Report mimetype; report also format(s) and most recent date
    * when at least one archive member was found.
    */
-  if (0 != format_archive)
+  if (0 == format_archive)
+    return ret;
+  if (0 == contents_are_empty)
     {
-      if (0 == contents_are_empty)
+
+      const char *formats[5] = { NULL, NULL, NULL, NULL, NULL };
+      unsigned int formats_count = 0;
+      unsigned int formats_u = 0;
+      unsigned int format_length = 0;
+      char *format = NULL;
+
+      if (TAR_TIME_FENCE < maxftime)
         {
+          char iso8601_time[24];
 
-          const char *formats[5] = { NULL, NULL, NULL, NULL, NULL };
-          unsigned int formats_count = 0;
-          unsigned int formats_u = 0;
-          unsigned int format_length = 0;
-          char *format = NULL;
+          if (0 == tar_time (maxftime, iso8601_time, sizeof (iso8601_time)))
+            ADD (EXTRACTOR_METATYPE_CREATION_DATE, iso8601_time);
+        }
 
-          if (TAR_TIME_FENCE < maxftime)
+      /*
+       * We only keep the most recent POSIX format.
+       */
+      if (0 != (format_archive & TAR_POSIX2001_FORMAT))
+        formats[formats_count++] = "POSIX 2001";
+
+      else if (0 != (format_archive & TAR_POSIX1988_FORMAT))
+        formats[formats_count++] = "POSIX 1988";
+
+      /*
+       * We only keep the most recent GNU format.
+       */
+      if (0 != (format_archive & TAR_GNU2004_FORMAT))
+        formats[formats_count++] = "GNU 2004";
+
+      else if (0 != (format_archive & TAR_GNU1997_FORMAT))
+        formats[formats_count++] = "GNU 1997";
+
+      else if (0 != (format_archive & TAR_GNU1991_FORMAT))
+        formats[formats_count++] = "GNU 1991";
+
+      /*
+       * We only keep the most recent Schilling format.
+       */
+      if (0 != (format_archive & TAR_SCHILLING2001_FORMAT))
+        formats[formats_count++] = "Schilling 2001";
+
+      else if (0 != (format_archive & TAR_SCHILLING1994_FORMAT))
+        formats[formats_count++] = "Schilling 1994";
+
+      else if (0 != (format_archive & TAR_SCHILLING1985_FORMAT))
+        formats[formats_count++] = "Schilling 1985";
+
+      /*
+       * We only keep the most recent Solaris format.
+       */
+      if (0 != (format_archive & TAR_SOLARIS2001_FORMAT))
+        formats[formats_count++] = "Solaris 2001";
+
+      /*
+       * We only keep the (supposedly) most recent UNIX V7 format.
+       */
+      if (0 != (format_archive & TAR_V7EXTENDED_FORMAT))
+        formats[formats_count++] = "UNIX extended V7";
+
+      else if (0 != (format_archive & TAR_V7ORIGINAL_FORMAT))
+        formats[formats_count++] = "UNIX original V7";
+
+      /*
+       * Build the format string
+       */
+      for (formats_u = 0; formats_u < formats_count; formats_u += 1)
+        {
+          if ((NULL != formats[formats_u]) && (0 != *formats[formats_u]))
             {
-              char iso8601_time[24];
-
-              if (0 == tar_time (maxftime, iso8601_time, sizeof(iso8601_time)))
-                ADD (EXTRACTOR_METATYPE_CREATION_DATE, iso8601_time);
-            }
-
-          /*
-           * We only keep the most recent POSIX format.
-           */
-          if (0 != (format_archive & TAR_POSIX2001_FORMAT))
-            formats[formats_count++] = "POSIX 2001";
-
-          else if (0 != (format_archive & TAR_POSIX1988_FORMAT))
-            formats[formats_count++] = "POSIX 1988";
-
-          /*
-           * We only keep the most recent GNU format.
-           */
-          if (0 != (format_archive & TAR_GNU2004_FORMAT))
-            formats[formats_count++] = "GNU 2004";
-
-          else if (0 != (format_archive & TAR_GNU1997_FORMAT))
-            formats[formats_count++] = "GNU 1997";
-
-          else if (0 != (format_archive & TAR_GNU1991_FORMAT))
-            formats[formats_count++] = "GNU 1991";
-
-          /*
-           * We only keep the most recent Schilling format.
-           */
-          if (0 != (format_archive & TAR_SCHILLING2001_FORMAT))
-            formats[formats_count++] = "Schilling 2001";
-
-          else if (0 != (format_archive & TAR_SCHILLING1994_FORMAT))
-            formats[formats_count++] = "Schilling 1994";
-
-          else if (0 != (format_archive & TAR_SCHILLING1985_FORMAT))
-            formats[formats_count++] = "Schilling 1985";
-
-          /*
-           * We only keep the most recent Solaris format.
-           */
-          if (0 != (format_archive & TAR_SOLARIS2001_FORMAT))
-            formats[formats_count++] = "Solaris 2001";
-
-          /*
-           * We only keep the (supposedly) most recent UNIX V7 format.
-           */
-          if (0 != (format_archive & TAR_V7EXTENDED_FORMAT))
-            formats[formats_count++] = "UNIX extended V7";
-
-          else if (0 != (format_archive & TAR_V7ORIGINAL_FORMAT))
-            formats[formats_count++] = "UNIX original V7";
-
-          /*
-           * Build the format string
-           */
-          for (formats_u = 0; formats_u < formats_count; formats_u += 1)
-            {
-              if ((NULL != formats[formats_u]) && (0 != *formats[formats_u]))
-                {
-                  if (0 < format_length)
-                    format_length += 3;
-                  format_length += strlen (formats[formats_u]);
-                }
-            }
-
-          if (0 < format_length)
-            {
-              format = malloc (format_length + 5);
-
-              if (NULL != format)
-                {
-
-                  format_length = 0;
-
-                  for (formats_u = 0; formats_u < formats_count;
-                       formats_u += 1)
-                    {
-                      if ((NULL != formats[formats_u])
-                          && (0 != *formats[formats_u]))
-                        {
-                          if (0 < format_length)
-                            {
-                              strcpy (format + format_length, " + ");
-                              format_length += 3;
-                            }
-                          strcpy (format + format_length, formats[formats_u]);
-                          format_length += strlen (formats[formats_u]);
-                        }
-                    }
-
-                  if (0 < format_length)
-                    {
-                      strcpy (format + format_length, " TAR");
-                      ADDF (EXTRACTOR_METATYPE_FORMAT_VERSION, format);
-                    }
-                  else
-                    {
-                      free (format);
-                    }
-                }
+              if (0 < format_length)
+                format_length += 3;
+              format_length += strlen (formats[formats_u]);
             }
         }
 
-      ADD (EXTRACTOR_METATYPE_MIMETYPE, "application/x-tar");
+      if (0 < format_length)
+        {
+          format = malloc (format_length + 5);
+
+          if (NULL != format)
+            {
+
+              format_length = 0;
+
+              for (formats_u = 0; formats_u < formats_count; formats_u += 1)
+                {
+                  if ((NULL != formats[formats_u])
+                      && (0 != *formats[formats_u]))
+                    {
+                      if (0 < format_length)
+                        {
+                          strcpy (format + format_length, " + ");
+                          format_length += 3;
+                        }
+                      strcpy (format + format_length, formats[formats_u]);
+                      format_length += strlen (formats[formats_u]);
+                    }
+                }
+
+              if (0 < format_length)
+                {
+                  strcpy (format + format_length, " TAR");
+                  ADDF (EXTRACTOR_METATYPE_FORMAT_VERSION, format);
+                }
+              else
+                {
+                  free (format);
+                }
+            }
+        }
     }
- FINISH:
+
+  ADD (EXTRACTOR_METATYPE_MIMETYPE, "application/x-tar");
+FINISH:
   return ret;
 }
