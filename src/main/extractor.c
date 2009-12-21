@@ -1201,7 +1201,7 @@ process_requests (struct EXTRACTOR_PluginList *plugin,
 }
 
 #ifdef WINDOWS
-void write_plugin_data (HANDLE h, const struct EXTRACTOR_PluginList *plugin)
+static void write_plugin_data (HANDLE h, const struct EXTRACTOR_PluginList *plugin)
 {
   size_t i;
 
@@ -1218,7 +1218,7 @@ void write_plugin_data (HANDLE h, const struct EXTRACTOR_PluginList *plugin)
   WriteFile (h, plugin->plugin_options, i, NULL, NULL);
 }
 
-struct EXTRACTOR_PluginList *read_plugin_data (FILE *f)
+static struct EXTRACTOR_PluginList *read_plugin_data (FILE *f)
 {
   struct EXTRACTOR_PluginList *ret;
   size_t i;
