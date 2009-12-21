@@ -124,11 +124,6 @@ EXTRACTOR_thumbnailqt_extract (const char *data,
       delete img;
       return 1;
     }
-  if (height == 0)
-    height = 1;
-  if (width == 0)
-    width = 1;
-
   /* Change color depth */
   QImage thumb = img->convertToFormat(colors);
   delete img;
