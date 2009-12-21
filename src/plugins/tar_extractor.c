@@ -515,8 +515,6 @@ EXTRACTOR_tar_extract (const char *data,
                   && ((size - (nameptr - data)) >= namelength)
                   && (1 < namelength))
                 {
-                  if (NULL != fname)
-                    free (fname);
                   /*
                    * There is an 1-offset because POSIX.1-2001
                    * field separator is counted in field length.
@@ -555,8 +553,6 @@ EXTRACTOR_tar_extract (const char *data,
 
               if (0 < length)
                 {
-                  if (NULL != fname)
-                    free (fname);
                   fname = malloc (1 + length);
                   if (NULL != fname)
                     {
