@@ -1,6 +1,6 @@
 /*
      This file is part of libextractor.
-     (C) 2002, 2003, 2004, 2005 Vidyut Samanta and Christian Grothoff
+     (C) 2002, 2003, 2004, 2005, 2009 Vidyut Samanta and Christian Grothoff
 
      libextractor is free software; you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published
@@ -155,7 +155,7 @@ findEntry (const char *key,
       start++;
       if (start[len] != '=')
         continue;
-      if (0 == strncmp (start, key, len))
+      if (0 == strncasecmp (start, key, len))
         {
           start += len + 1;
           *mstart = start;
@@ -314,7 +314,7 @@ EXTRACTOR_html_extract (const char *data,
       /* ideally, tmp == "test/html; charset=ISO-XXXX-Y" or something like that;
          if text/html is present, we take that as the mime-type; if charset=
          is present, we try to use that for character set conversion. */
-      if (0 == strncmp (tmp, "text/html", strlen ("text/html")))
+      if (0 == strncasecmp (tmp, "text/html", strlen ("text/html")))
         ret = proc (proc_cls, 
 		    "html",
 		    EXTRACTOR_METATYPE_MIMETYPE,
@@ -322,7 +322,7 @@ EXTRACTOR_html_extract (const char *data,
 		    "text/plain",
 		    "text/html",
 		    strlen ("text/html")+1);
-      charset = strstr (tmp, "charset=");
+      charset = strcasestr (tmp, "charset=");
       if (charset != NULL)
         charset = strdup (&charset[strlen ("charset=")]);
       free (tmp);
@@ -356,8 +356,8 @@ EXTRACTOR_html_extract (const char *data,
 			  strlen (xtmp) + 1);
 	      free (xtmp);
 	    }
-          free (tmp);
         }
+      free (tmp);
       i++;
     }
   while (tags != NULL) 
@@ -382,8 +382,8 @@ EXTRACTOR_html_extract (const char *data,
 	    }
 	  else
 	    {
-	      xtmp = EXTRACTOR_common_convert_to_utf8 (tmp,
-						       strlen (tmp),
+	      xtmp = EXTRACTOR_common_convert_to_utf8 (t->dataStart,
+						       t->dataEnd - t->dataStart,
 						       charset);
 	      ret = proc (proc_cls,
 			  "html",
