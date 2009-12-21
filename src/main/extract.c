@@ -49,6 +49,7 @@ catcher (int sig)
 {
 }
 
+#ifndef WINDOWS
 /**
  * Install a signal handler to ignore SIGPIPE.
  */
@@ -69,6 +70,7 @@ ignore_sigpipe ()
     fprintf (stderr,
              "Failed to install SIGPIPE handler: %s\n", strerror (errno));
 }
+#endif
 
 
 
@@ -563,7 +565,9 @@ main (int argc, char *argv[])
   setlocale(LC_ALL, "");
   textdomain(PACKAGE);
 #endif
+#ifndef WINDOWS
   ignore_sigpipe ();
+#endif
   print = malloc (sizeof (int) * EXTRACTOR_metatype_get_max ());
   for (i = 0; i < EXTRACTOR_metatype_get_max (); i++)
     print[i] = YES;		/* default: print everything */

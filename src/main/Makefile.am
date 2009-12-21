@@ -17,6 +17,7 @@ extract_LDADD = \
   $(top_builddir)/src/main/libextractor.la 
 
 if !MINGW
+    rtflag=-lrt
 if !SOMEBSD
     dlflag=-ldl
 endif
@@ -32,7 +33,7 @@ endif
 libextractor_la_LDFLAGS = \
   $(LE_LIB_LDFLAGS) -version-info @LIB_VERSION_CURRENT@:@LIB_VERSION_REVISION@:@LIB_VERSION_AGE@
 libextractor_la_LIBADD = \
-  $(LIBLTDL) $(dlflag) $(zlib) $(bz2lib) $(LIBICONV) -lrt
+  $(LIBLTDL) $(dlflag) $(zlib) $(bz2lib) $(LIBICONV) $(rtflag)
 
 
 EXTRA_DIST = \

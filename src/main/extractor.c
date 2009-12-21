@@ -19,11 +19,14 @@
  */
 
 #include "platform.h"
+#include "plibc.h"
 #include "extractor.h"
 #include <dirent.h>
 #include <sys/types.h>
+#ifndef WINDOWS
 #include <sys/wait.h>
 #include <sys/shm.h>
+#endif
 #include <signal.h>
 
 
@@ -120,20 +123,31 @@ struct EXTRACTOR_PluginList
    * Process ID of the child process for this plugin. 0 for 
    * none.
    */
+#ifndef WINDOWS
   pid_t cpid;
+#else
+  DWORD cpid;
+#endif
 
   /**
    * Pipe used to send information about shared memory segments to
    * the child process.  NULL if not initialized.
    */
+#ifndef WINDOWS
   FILE *cpipe_in;
+#else
+  HANDLE cpipe_in;
+#endif
 
   /**
    * Pipe used to read information about extracted meta data from
    * the child process.  -1 if not initialized.
    */
+#ifndef WINDOWS
   int cpipe_out;
-
+#else
+  HANDLE cpipe_out;
+#endif
 };
 
 
@@ -874,6 +888,9 @@ static void
 stop_process (struct EXTRACTOR_PluginList *plugin)
 {
   int status;
+#ifdef WINDOWS
+  HANDLE process;
+#endif
 
 #if DEBUG
   if (plugin->cpid == -1)
@@ -884,12 +901,23 @@ stop_process (struct EXTRACTOR_PluginList *plugin)
   if ( (plugin->cpid == -1) ||
        (plugin->cpid == 0) )
     return;
+#ifndef WINDOWS
   kill (plugin->cpid, SIGKILL);
   waitpid (plugin->cpid, &status, 0);
+#else
+  process = OpenProcess (PROCESS_TERMINATE, FALSE, plugin->cpid);
+  TerminateProcess (process, 0);
+  CloseHandle (process);
+#endif
   plugin->cpid = -1;
+#ifndef WINDOWS
   close (plugin->cpipe_out);
-  plugin->cpipe_out = -1;
   fclose (plugin->cpipe_in);
+#else
+  CloseHandle (plugin->cpipe_out);
+  CloseHandle (plugin->cpipe_in);
+#endif
+  plugin->cpipe_out = -1;
   plugin->cpipe_in = NULL;
 }
 
@@ -975,7 +1003,12 @@ write_all (int fd,
 
 
 static int
-read_all (int fd,
+read_all (
+#ifndef WINDOWS
+    int fd,
+#else
+    HANDLE fd,
+#endif
 	  void *buf,
 	  size_t size)
 {
@@ -985,7 +1018,11 @@ read_all (int fd,
   
   while (off < size)
     {
+#ifndef WINDOWS
       ret = read (fd, &data[off], size - off);
+#else
+      ReadFile (fd, &data[off], size - off, &ret, NULL);
+#endif
       if (ret <= 0)
 	return -1;
       off += ret;
@@ -1082,6 +1119,9 @@ process_requests (struct EXTRACTOR_PluginList *plugin,
   int shmid;
   struct IpcHeader hdr;
   size_t size;
+#ifdef WINDOWS
+  HANDLE map;
+#endif
 
   if (0 != plugin_load (plugin))
     {
@@ -1115,10 +1155,16 @@ process_requests (struct EXTRACTOR_PluginList *plugin,
 	break;
       ptr = NULL;
       fn[strlen(fn)-1] = '\0'; /* kill newline */
+#ifndef WINDOWS
       if ( (-1 != (shmid = shm_open (fn, O_RDONLY, 0))) &&
 	   (((off_t)-1) != (size = lseek (shmid, 0, SEEK_END))) &&
 	   (NULL != (ptr = mmap (NULL, size, PROT_READ, MAP_SHARED, shmid, 0))) &&
 	   (ptr != (void*) -1) )
+#else
+      map = OpenFileMapping (PAGE_READONLY, FALSE, fn);
+      ptr = MapViewOfFile (map, FILE_MAP_READ, 0, 0, 0);
+      if (ptr != NULL)
+#endif
 	{
 	  if (0 != plugin->extractMethod (ptr,
 					  size,
@@ -1129,11 +1175,18 @@ process_requests (struct EXTRACTOR_PluginList *plugin,
 	  if (0 != write_all (out, &hdr, sizeof(hdr)))
 	    break;
 	}
+#ifndef WINDOWS
       if ( (ptr != NULL) &&
 	   (ptr != (void*) -1) )
 	munmap (ptr, size);
       if (-1 != shmid)
 	close (shmid);
+#else
+      if (ptr != NULL && ptr != (void*) -1)
+        UnmapViewOfFile (ptr);
+      if (map != NULL)
+        CloseHandle (map);
+#endif
       if ( (plugin->specials != NULL) &&
 	   (NULL != strstr (plugin->specials,
 			    "force-kill")) )
@@ -1147,6 +1200,59 @@ process_requests (struct EXTRACTOR_PluginList *plugin,
   close (out);
 }
 
+#ifdef WINDOWS
+void write_plugin_data (HANDLE h, const struct EXTRACTOR_PluginList *plugin)
+{
+  size_t i;
+
+  i = strlen (plugin->libname);
+  WriteFile (h, &i, sizeof (size_t), NULL, NULL);
+  WriteFile (h, plugin->libname, i, NULL, NULL);
+
+  i = strlen (plugin->short_libname);
+  WriteFile (h, &i, sizeof (size_t), NULL, NULL);
+  WriteFile (h, plugin->short_libname,i, NULL, NULL);
+
+  i = strlen (plugin->plugin_options);
+  WriteFile (h, &i, sizeof (size_t), NULL, NULL);
+  WriteFile (h, plugin->plugin_options, i, NULL, NULL);
+}
+
+struct EXTRACTOR_PluginList *read_plugin_data (FILE *f)
+{
+  struct EXTRACTOR_PluginList *ret;
+  size_t i;
+
+  ret = malloc (sizeof (struct EXTRACTOR_PluginList));
+
+  fread (&i, sizeof (size_t), 1, f);
+  ret->libname = malloc (i);
+  fread (ret->libname, i, 1, f);
+
+  fread (&i, sizeof (size_t), 1, f);
+  ret->short_libname = malloc (i);
+  fread (ret->short_libname, i, 1, f);
+
+  fread (&i, sizeof (size_t), 1, f);
+  ret->plugin_options = malloc (i);
+  fread (ret->plugin_options, i, 1, f);
+
+  return ret;
+}
+
+void CALLBACK RundllEntryPoint(HWND hwnd, HINSTANCE hinst, LPSTR lpszCmdLine, int nCmdShow)
+{
+  int in, out;
+
+  in = fileno (stdin);
+  out = fileno (stdout);
+
+  setmode (in, _O_BINARY);
+  setmode (out, _O_BINARY);
+
+  process_requests (read_plugin_data (stdin), in, out);
+}
+#endif
 
 /**
  * Start the process for the given plugin.
@@ -1154,6 +1260,7 @@ process_requests (struct EXTRACTOR_PluginList *plugin,
 static void
 start_process (struct EXTRACTOR_PluginList *plugin)
 {
+#ifndef WINDOWS
   int p1[2];
   int p2[2];
   pid_t pid;
@@ -1199,6 +1306,22 @@ start_process (struct EXTRACTOR_PluginList *plugin)
   if (plugin->cpipe_in == NULL)
     perror ("fdopen");
   plugin->cpipe_out = p2[0];
+#else
+  STARTUPINFO startup;
+  PROCESS_INFORMATION proc;
+
+  memset (&startup, 0, sizeof (STARTUPINFO));
+  CreatePipe (&startup.hStdInput, &plugin->cpipe_in, NULL, 0);
+  CreatePipe (&plugin->cpipe_out, &startup.hStdOutput, NULL, 0);
+
+  write_plugin_data (plugin->cpipe_in, plugin);
+
+  // FIXME library name
+  CreateProcess (NULL, "rundll32 libextractor-1.dll,RundllEntryPoint", NULL, NULL, FALSE, 0, NULL, NULL, &startup, &proc);
+  CloseHandle (proc.hProcess);
+  CloseHandle (proc.hThread);
+  plugin->cpid = proc.dwProcessId;
+#endif
 }
 
 
@@ -1315,7 +1438,11 @@ extract (struct EXTRACTOR_PluginList *plugins,
 	 void *proc_cls) 
 {
   struct EXTRACTOR_PluginList *ppos;
+#ifndef WINDOWS
   int shmid;
+#else
+  HANDLE map, mappedFile;
+#endif
   enum EXTRACTOR_Options flags;
   void *ptr;
   char fn[255];
@@ -1349,9 +1476,15 @@ extract (struct EXTRACTOR_PluginList *plugins,
     {
       snprintf (fn,
 		sizeof(fn),
-		"/libextractor-shm-%u-%u",
+#ifdef WINDOWS
+		"%TEMP%\\"
+#else
+		"/"
+#endif
+		"libextractor-shm-%u-%u",
 		getpid(),
-		(unsigned int) random());
+		(unsigned int) RANDOM());
+#ifndef WINDOWS
       shmid = shm_open (fn, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
       ptr = NULL;
       if (shmid != -1)
@@ -1368,16 +1501,41 @@ extract (struct EXTRACTOR_PluginList *plugins,
 	      memcpy (ptr, data, size);
 	    }
 	}
+#else
+      mappedFile = CreateFile (fn, GENERIC_READ | GENERIC_WRITE,
+          FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, CREATE_ALWAYS,
+          FILE_FLAG_DELETE_ON_CLOSE, NULL);
+      map = CreateFileMapping (mappedFile, NULL, PAGE_READWRITE, 1, 0, NULL);
+      ptr = MapViewOfFile (map, FILE_MAP_READ, 0, 0, 0);
+      if (ptr == NULL)
+        {
+          CloseHandle (map);
+          CloseHandle (mappedFile);
+          map = NULL;
+        }
+      else
+        memcpy (ptr, data, size);
+#endif
     }
   else
+#ifndef WINDOWS
     shmid = -1;
   if (want_shm && (shmid == -1))
     _exit(1);
+#else
+    map = NULL;
+  if (want_shm && map == NULL)
+    _exit(1);
+#endif
   ppos = plugins;
   while (NULL != ppos)
     {
       flags = ppos->flags;
+#ifndef WINDOWS
       if (shmid == -1)
+#else
+      if (map == NULL)
+#endif
 	flags = EXTRACTOR_OPTION_IN_PROCESS;
       switch (flags)
 	{
@@ -1416,11 +1574,17 @@ extract (struct EXTRACTOR_PluginList *plugins,
     }
   if (want_shm)
     {
+#ifndef WINDOWS
       if (NULL != ptr)
 	munmap (ptr, size);
       if (shmid != -1)
 	close (shmid);
       shm_unlink (fn);
+#else
+      UnmapViewOfFile (ptr);
+      CloseHandle (map);
+      CloseHandle (mappedFile);
+#endif
     }
 }
 
@@ -1788,7 +1952,6 @@ EXTRACTOR_extract (struct EXTRACTOR_PluginList *plugins,
   if (-1 != fd)
     close(fd);  
 }
-
 
 /**
  * Initialize gettext and libltdl (and W32 if needed).
