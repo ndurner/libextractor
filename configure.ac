@@ -224,6 +224,18 @@ AC_CHECK_LIB(poppler, _ZTI9MemStream,
          AM_CONDITIONAL(HAVE_POPPLER, false))],
          AM_CONDITIONAL(HAVE_POPPLER, false))
 
+AC_MSG_CHECKING(for getPDFMajorVersion in -lpoppler)
+AC_LANG_PUSH(C++)
+SAVED_LDFLAGS=$LDFLAGS
+LDFLAGS="$LDFLAGS -lpoppler"
+AC_LINK_IFELSE(
+  [AC_LANG_PROGRAM([[#include <poppler/PDFDoc.h>]],
+    [[PDFDoc foo; foo->getPDFMajorVersion(); ]])],
+  [AC_MSG_RESULT(yes)
+   AC_DEFINE(HAVE_POPPLER_GETPDFMAJORVERSION,1,[Have getPDFMajorVersion in libpoppler])],
+  [AC_MSG_RESULT(no)])
+LDFLAGS=$SAVED_LDFLAGS
+AC_LANG_POP(C++)
 
 # restore LIBS
 LIBS=$LIBSOLD

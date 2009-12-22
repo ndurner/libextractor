@@ -203,9 +203,14 @@ extern "C" {
       }
       {
 	char pcnt[64];
+#if HAVE_POPPLER_GETPDFMAJORVERSION
 	sprintf(pcnt, "PDF %d.%d", 
 		doc->getPDFMajorVersion(),
 		doc->getPDFMinorVersion());
+#else
+	sprintf(pcnt, "PDF %.1f", 
+		doc->getPDFVersion());
+#endif
 	ADD (pcnt, EXTRACTOR_METATYPE_FORMAT);
       }
       PID ("CreationDate", EXTRACTOR_METATYPE_CREATION_DATE);
