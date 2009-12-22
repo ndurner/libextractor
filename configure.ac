@@ -230,7 +230,7 @@ SAVED_LDFLAGS=$LDFLAGS
 LDFLAGS="$LDFLAGS -lpoppler"
 AC_LINK_IFELSE(
   [AC_LANG_PROGRAM([[#include <poppler/PDFDoc.h>]],
-    [[PDFDoc foo; foo->getPDFMajorVersion(); ]])],
+    [[PDFDoc *foo = NULL; foo->getPDFMajorVersion(); ]])],
   [AC_MSG_RESULT(yes)
    AC_DEFINE(HAVE_POPPLER_GETPDFMAJORVERSION,1,[Have getPDFMajorVersion in libpoppler])],
   [AC_MSG_RESULT(no)])
