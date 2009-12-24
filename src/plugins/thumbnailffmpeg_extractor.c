@@ -46,7 +46,6 @@
 
 void __attribute__ ((constructor)) ffmpeg_lib_init (void)
 {
-  printf("av_register_all\n");
   av_register_all ();
 }
 
