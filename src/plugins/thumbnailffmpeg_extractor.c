@@ -425,13 +425,16 @@ RETRY_PROBE:
                           &encoded_thumbnail, MAX_THUMB_SIZE);
 
   if (err > 0)
-    ret = proc (proc_cls,
-		"thumbnailffmpeg",
-		EXTRACTOR_METATYPE_THUMBNAIL,
-		EXTRACTOR_METAFORMAT_BINARY,
-		"image/png",
-		(const char*) encoded_thumbnail,
-		err);
+    {
+      ret = proc (proc_cls,
+                  "thumbnailffmpeg",
+                  EXTRACTOR_METATYPE_THUMBNAIL,
+                  EXTRACTOR_METAFORMAT_BINARY,
+                  "image/png",
+                  (const char*) encoded_thumbnail,
+                  err);
+      av_free (encoded_thumbnail);
+    }
 
   avcodec_close (codec_ctx);
   av_close_input_stream (format_ctx);
