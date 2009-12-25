@@ -42,7 +42,7 @@
 #include <libavcodec/avcodec.h>
 #include <libswscale/swscale.h>
 
-#include "mime_extractor.c"
+#include "mime_extractor.c" /* TODO: do this cleaner */
 
 #define DEBUG 0
 
@@ -62,11 +62,11 @@ void __attribute__ ((constructor)) ffmpeg_lib_init (void)
   av_register_all ();
 }
 
-#define THUMBSIZE 128           /* max dimension in pixels */
-#define MAX_THUMB_SIZE (100*1024)       /* in bytes */
+#define MAX_THUMB_DIMENSION 128         /* max dimension in pixels */
+#define MAX_THUMB_BYTES (100*1024)
 
 /*
- * Rescale and encode a png thumbnail
+ * Rescale and encode a PNG thumbnail
  * on success, fills in output_data and returns the number of bytes used
  */
 static size_t create_thumbnail(
@@ -255,13 +255,13 @@ static void calculate_thumbnail_dimensions(int src_width,
     }
   if ((src_width * src_sar_num) / src_sar_den > src_height)
     {
-      *dst_width = THUMBSIZE;
+      *dst_width = MAX_THUMB_DIMENSION;
       *dst_height = (*dst_width * src_height) /
                      ((src_width * src_sar_num) / src_sar_den);
     }
   else
     {
-      *dst_height = THUMBSIZE;
+      *dst_height = MAX_THUMB_DIMENSION;
       *dst_width = (*dst_height *
                     ((src_width * src_sar_num) / src_sar_den)) /
                     src_height;
@@ -360,7 +360,7 @@ extract_image (enum CodecID image_codec_id,
   err = create_thumbnail (codec_ctx->width, codec_ctx->height,
                           frame->linesize, codec_ctx->pix_fmt, frame->data,
                           thumb_width, thumb_height,
-                          &encoded_thumbnail, MAX_THUMB_SIZE);
+                          &encoded_thumbnail, MAX_THUMB_BYTES);
 
   if (err > 0)
     {
@@ -376,6 +376,7 @@ extract_image (enum CodecID image_codec_id,
 
   av_free (frame);
   avcodec_close (codec_ctx);
+  av_free (codec_ctx);
   return ret;
 }
 
@@ -564,7 +565,7 @@ RETRY_PROBE:
   err = create_thumbnail (codec_ctx->width, codec_ctx->height,
                           frame->linesize, codec_ctx->pix_fmt, frame->data,
                           thumb_width, thumb_height,
-                          &encoded_thumbnail, MAX_THUMB_SIZE);
+                          &encoded_thumbnail, MAX_THUMB_BYTES);
 
   if (err > 0)
     {
