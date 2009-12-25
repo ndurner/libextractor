@@ -44,26 +44,24 @@
 
 #define DEBUG 0
 
+static void thumbnailffmpeg_av_log_callback(void* ptr, 
+                                            int level,
+                                            const char *format,
+                                            va_list ap)
+{
+#if DEBUG
+  vfprintf(stderr, format, ap);
+#endif
+}
+
 void __attribute__ ((constructor)) ffmpeg_lib_init (void)
 {
+  av_log_set_callback (thumbnailffmpeg_av_log_callback);
   av_register_all ();
 }
 
 #define THUMBSIZE 128           /* max dimension in pixels */
 #define MAX_THUMB_SIZE (100*1024)       /* in bytes */
-
-
-const char *
-EXTRACTOR_thumbnailffmpeg_options ()
-{
-  return "close-stderr";
-}
-
-const char *
-EXTRACTOR_thumbnail_options ()
-{
-  return "close-stderr";
-}
 
 /*
  * Rescale and encode a png thumbnail
