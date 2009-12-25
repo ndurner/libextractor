@@ -42,6 +42,8 @@
 #include <libavcodec/avcodec.h>
 #include <libswscale/swscale.h>
 
+#include "mime_extractor.c"
+
 #define DEBUG 0
 
 static void thumbnailffmpeg_av_log_callback(void* ptr, 
@@ -200,12 +202,189 @@ static size_t create_thumbnail(
   return err < 0 ? 0 : err;
 }
 
-int 
-EXTRACTOR_thumbnailffmpeg_extract (const unsigned char *data,
-				   size_t size,
-				   EXTRACTOR_MetaDataProcessor proc,
-				   void *proc_cls,
-				   const char *options)
+struct MIMEToDecoderMapping
+{
+ const char *mime_type;
+ enum CodecID codec_id;
+};
+
+/* map MIME image types to an ffmpeg decoder */
+static const struct MIMEToDecoderMapping m2d_map[] = {
+  {"image/x-bmp", CODEC_ID_BMP},
+  {"image/gif", CODEC_ID_GIF},
+  {"image/jpeg", CODEC_ID_MJPEG},
+  {"image/png", CODEC_ID_PNG},
+  {"image/x-portable-pixmap", CODEC_ID_PPM},
+  {NULL, CODEC_ID_NONE}
+};
+
+static char *mime_type;
+
+static int
+mime_processor (void *cls,
+			 const char *plugin_name,
+			 enum EXTRACTOR_MetaType type,
+			 enum EXTRACTOR_MetaFormat format,
+			 const char *data_mime_type,
+			 const char *data,
+			 size_t data_len)
+{ 
+  switch (format)
+    {
+    case EXTRACTOR_METAFORMAT_UTF8:
+      mime_type = strdup(data);
+      break;
+    default:
+      break;
+    }
+  return 0;
+}
+
+/* calculate the thumbnail dimensions, taking pixel aspect into account */
+static void calculate_thumbnail_dimensions(int src_width,
+                                           int src_height,
+                                           int src_sar_num,
+                                           int src_sar_den,
+                                           int *dst_width,
+                                           int *dst_height)
+{
+  if (src_sar_num <= 0 || src_sar_den <= 0)
+    {
+      src_sar_num = 1;
+      src_sar_den = 1;
+    }
+  if ((src_width * src_sar_num) / src_sar_den > src_height)
+    {
+      *dst_width = THUMBSIZE;
+      *dst_height = (*dst_width * src_height) /
+                     ((src_width * src_sar_num) / src_sar_den);
+    }
+  else
+    {
+      *dst_height = THUMBSIZE;
+      *dst_width = (*dst_height *
+                    ((src_width * src_sar_num) / src_sar_den)) /
+                    src_height;
+    }
+  if (*dst_width < 8)
+    *dst_width = 8;
+  if (*dst_height < 1)
+    *dst_height = 1;
+#if DEBUG
+  fprintf (stderr,
+           "Thumbnail dimensions: %d %d\n", 
+           *dst_width, *dst_height);
+#endif
+}
+
+static int 
+extract_image (enum CodecID image_codec_id,
+               const unsigned char *data,
+               size_t size,
+               EXTRACTOR_MetaDataProcessor proc,
+               void *proc_cls,
+               const char *options)
+{
+  AVCodecContext *codec_ctx;
+  AVCodec *codec = NULL;
+  AVFrame *frame = NULL;
+  uint8_t *encoded_thumbnail;
+  int thumb_width;
+  int thumb_height;
+  int err;
+  int frame_finished;
+  int ret = 0;
+
+  codec_ctx = avcodec_alloc_context ();
+  if (codec_ctx == NULL)
+    {
+#if DEBUG
+      fprintf (stderr,
+               "Failed to allocate codec context\n");
+#endif
+      return 0;
+    }
+
+  codec = avcodec_find_decoder (image_codec_id);
+  if (codec != NULL)
+    {
+      if (avcodec_open (codec_ctx, codec) != 0)
+        {
+#if DEBUG
+          fprintf (stderr,
+                   "Failed to open image codec\n");
+#endif
+          av_free (codec_ctx);
+          return 0;
+        }
+    }
+  else
+    {
+#if DEBUG
+      fprintf (stderr,
+               "No suitable codec found\n");
+#endif
+      av_free (codec_ctx);
+      return 0;
+    }
+
+  frame = avcodec_alloc_frame ();
+  if (frame == NULL)
+    {
+#if DEBUG
+      fprintf (stderr,
+               "Failed to allocate frame\n");
+#endif
+      avcodec_close (codec_ctx);
+      av_free (codec_ctx);
+      return 0;
+    }
+
+  avcodec_decode_video (codec_ctx, frame, &frame_finished, data, size);
+
+  if (!frame_finished)
+    {
+      fprintf (stderr,
+	       "Failed to decode a complete frame\n");
+      av_free (frame);
+      avcodec_close (codec_ctx);
+      av_free (codec_ctx);
+      return 0;
+    }
+
+  calculate_thumbnail_dimensions (codec_ctx->width, codec_ctx->height,
+                                  codec_ctx->sample_aspect_ratio.num,
+                                  codec_ctx->sample_aspect_ratio.den,
+                                  &thumb_width, &thumb_height);
+
+  err = create_thumbnail (codec_ctx->width, codec_ctx->height,
+                          frame->linesize, codec_ctx->pix_fmt, frame->data,
+                          thumb_width, thumb_height,
+                          &encoded_thumbnail, MAX_THUMB_SIZE);
+
+  if (err > 0)
+    {
+      ret = proc (proc_cls,
+                  "thumbnailffmpeg",
+                  EXTRACTOR_METATYPE_THUMBNAIL,
+                  EXTRACTOR_METAFORMAT_BINARY,
+                  "image/png",
+                  (const char*) encoded_thumbnail,
+                  err);
+      av_free (encoded_thumbnail);
+    }
+
+  av_free (frame);
+  avcodec_close (codec_ctx);
+  return ret;
+}
+
+static int 
+extract_video (const unsigned char *data,
+               size_t size,
+               EXTRACTOR_MetaDataProcessor proc,
+               void *proc_cls,
+               const char *options)
 {
   AVProbeData pd; 
   AVPacket packet;
@@ -220,8 +399,6 @@ EXTRACTOR_thumbnailffmpeg_extract (const unsigned char *data,
   int video_stream_index;
   int thumb_width;
   int thumb_height;
-  int sar_num;
-  int sar_den;
   int i;
   int err;
   int frame_finished;
@@ -241,11 +418,11 @@ RETRY_PROBE:
     {
 #if DEBUG
       fprintf (stderr,
-	       "Failed to probe input format\n");
+               "Failed to probe input format\n");
 #endif
       if (pd.buf_size != size) /* retry probe once with full data size */
         {
-	  pd.buf_size = size;
+          pd.buf_size = size;
           goto RETRY_PROBE;
         }
       return 0;
@@ -260,7 +437,7 @@ RETRY_PROBE:
     {
  #if DEBUG
       fprintf (stderr,
-	       "Failed to open input stream\n");
+               "Failed to open input stream\n");
 #endif
       url_close_buf (bio_ctx);
       if (!input_format_nofileflag)
@@ -285,19 +462,20 @@ RETRY_PROBE:
     {
       codec_ctx = format_ctx->streams[i]->codec;
       if (codec_ctx->codec_type != CODEC_TYPE_VIDEO)
-	continue;
+        continue;
       codec = avcodec_find_decoder (codec_ctx->codec_id);
       if (codec == NULL)
-	continue;
+        continue;
       err = avcodec_open (codec_ctx, codec);
       if (err != 0)
-	{
-	  codec = NULL;
-	  continue;
-	}
+        {
+          codec = NULL;
+          continue;
+        }
       video_stream_index = i;
       break;
-    } 
+    }
+
   if ( (codec_ctx == NULL) || 
        (codec == NULL) ||
        (codec_ctx->width == 0) || 
@@ -307,8 +485,8 @@ RETRY_PROBE:
       fprintf (stderr,
                "No video streams or no suitable codec found\n");
 #endif
-      if (codec_ctx != NULL)
-	avcodec_close (codec_ctx);
+      if (codec != NULL)
+        avcodec_close (codec_ctx);
       av_close_input_stream (format_ctx);
       url_close_buf (bio_ctx);
       if (!input_format_nofileflag)
@@ -323,8 +501,7 @@ RETRY_PROBE:
       fprintf (stderr,
                "Failed to allocate frame\n");
 #endif
-      if (codec != NULL)
-	avcodec_close (codec_ctx);
+      avcodec_close (codec_ctx);
       av_close_input_stream (format_ctx);
       url_close_buf (bio_ctx);
       if (!input_format_nofileflag)
@@ -347,75 +524,42 @@ RETRY_PROBE:
     avcodec_flush_buffers (codec_ctx);        
   frame_finished = 0;
 
-  if (0 /* is_image */)
+  while (1)
     {
-      avcodec_decode_video (codec_ctx, frame, &frame_finished, data, size);
-    }
-  else
-    {
-      while (1)
+      err = av_read_frame (format_ctx, &packet);
+      if (err < 0)
+        break;
+      if (packet.stream_index == video_stream_index)
         {
-          err = av_read_frame (format_ctx, &packet);
-          if (err < 0)
-            break;
-          if (packet.stream_index == video_stream_index)
+          avcodec_decode_video (codec_ctx,
+                                frame,
+                                &frame_finished,
+                                packet.data, packet.size);
+          if (frame_finished && frame->key_frame)
             {
-              avcodec_decode_video (codec_ctx,
-                                    frame,
-                                    &frame_finished,
-                                    packet.data, packet.size);
-              if (frame_finished && frame->key_frame)
-                {
-                  av_free_packet (&packet);
-                  break;
-                }
+              av_free_packet (&packet);
+              break;
             }
-          av_free_packet (&packet);
         }
+      av_free_packet (&packet);
     }
   if (!frame_finished)
     {
       fprintf (stderr,
 	       "Failed to decode a complete frame\n");
-      if (frame != NULL)
-	av_free (frame);
+      av_free (frame);
+      avcodec_close (codec_ctx);
       av_close_input_stream (format_ctx);
-      free (bio_ctx);
+      url_close_buf (bio_ctx);
       if (!input_format_nofileflag)
         input_format->flags ^= AVFMT_NOFILE;
       return 0;
     }
 
-  /* calculate the thumbnail dimensions, taking pixel aspect into account */
-  sar_num = codec_ctx->sample_aspect_ratio.num;
-  sar_den = codec_ctx->sample_aspect_ratio.den;
-  if (sar_num <= 0 || sar_den <= 0)
-    {
-      sar_num = 1;
-      sar_den = 1;
-    }
-  if ((codec_ctx->width * sar_num) / sar_den > codec_ctx->height)
-    {
-      thumb_width = THUMBSIZE;
-      thumb_height = (thumb_width * codec_ctx->height) /
-                     ((codec_ctx->width * sar_num) / sar_den);
-    }
-  else
-    {
-      thumb_height = THUMBSIZE;
-      thumb_width = (thumb_height *
-                    ((codec_ctx->width * sar_num) / sar_den)) /
-      codec_ctx->height;
-    }
-  if (thumb_width < 8)
-    thumb_width = 8;
-  if (thumb_height < 1)
-    thumb_height = 1;
-#if DEBUG
-  fprintf (stderr,
-           "Thumbnail dimensions: %d %d\n", 
-           thumb_width, thumb_height);
-#endif
+  calculate_thumbnail_dimensions (codec_ctx->width, codec_ctx->height,
+                                  codec_ctx->sample_aspect_ratio.num,
+                                  codec_ctx->sample_aspect_ratio.den,
+                                  &thumb_width, &thumb_height);
 
   err = create_thumbnail (codec_ctx->width, codec_ctx->height,
                           frame->linesize, codec_ctx->pix_fmt, frame->data,
@@ -434,13 +578,48 @@ RETRY_PROBE:
       av_free (encoded_thumbnail);
     }
 
+  av_free (frame);
   avcodec_close (codec_ctx);
   av_close_input_stream (format_ctx);
+  url_close_buf (bio_ctx);
   if (!input_format_nofileflag)
     input_format->flags ^= AVFMT_NOFILE;
-  av_free (frame);
-  url_close_buf (bio_ctx);
   return ret;
+}
+
+int 
+EXTRACTOR_thumbnailffmpeg_extract (const unsigned char *data,
+				   size_t size,
+				   EXTRACTOR_MetaDataProcessor proc,
+				   void *proc_cls,
+				   const char *options)
+{
+  enum CodecID image_codec_id;
+  int is_image = 0;
+  int i;
+
+  mime_type = NULL;
+  EXTRACTOR_mime_extract(data, size, mime_processor, NULL, NULL);
+  if (mime_type != NULL) 
+    {
+      i = 0;
+      while (m2d_map[i].mime_type != NULL)
+        {
+          if (!strcmp (m2d_map[i].mime_type, mime_type))
+            {
+              is_image = 1;
+              image_codec_id = m2d_map[i].codec_id;
+              break;
+            }
+          i++;
+        }
+      free(mime_type);
+    }
+
+  if (is_image)
+    return extract_image (image_codec_id, data, size, proc, proc_cls, options);
+  else
+    return extract_video (data, size, proc, proc_cls, options);
 }
 
 int 
