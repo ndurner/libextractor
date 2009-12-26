@@ -38,9 +38,26 @@
 
 #include "platform.h"
 #include "extractor.h"
+#if HAVE_LIBAVUTIL_AVUTIL_H
+#include <libavutil/avutil.h>
+#elif HAVE_FFMPEG_AVUTIL_H
+#include <ffmpeg/avutil.h>
+#endif
+#if HAVE_LIBAVFORMAT_AVFORMAT_H
 #include <libavformat/avformat.h>
+#elif HAVE_FFMPEG_AVFORMAT_H
+#include <ffmpeg/avformat.h>
+#endif
+#if HAVE_LIBAVCODEC_AVCODEC_H
 #include <libavcodec/avcodec.h>
+#elif HAVE_FFMPEG_AVCODEC_H
+#include <ffmpeg/avcodec.h>
+#endif
+#if HAVE_LIBSWSCALE_SWSCALE_H
 #include <libswscale/swscale.h>
+#elif HAVE_FFMPEG_SWSCALE_H
+#include <ffmpeg/swscale.h>
+#endif
 
 #include "mime_extractor.c" /* TODO: do this cleaner */
 

@@ -486,6 +486,13 @@ AC_ARG_ENABLE(ffmpeg,
   [     AC_MSG_RESULT(no)
         ffmpeg_enabled=0])
 AM_CONDITIONAL(HAVE_FFMPEG, test x$ffmpeg_enabled != x0)
+if test x$ffmpeg_enabled = x1
+then
+  AC_CHECK_HEADERS(libavutil/avutil.h ffmpeg/avutil.h)
+  AC_CHECK_HEADERS(libavformat/avformat.h ffmpeg/avformat.h)
+  AC_CHECK_HEADERS(libavcodec/avcodec.h ffmpeg/avcodec.h)
+  AC_CHECK_HEADERS(libswscale/swscale.h ffmpeg/swscale.h)
+fi
 
 
 LE_INTLINCL=""
