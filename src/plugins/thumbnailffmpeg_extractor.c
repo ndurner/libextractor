@@ -618,7 +618,7 @@ EXTRACTOR_thumbnailffmpeg_extract (const unsigned char *data,
   int i;
 
   mime_type = NULL;
-  EXTRACTOR_mime_extract(data, size, mime_processor, NULL, NULL);
+  EXTRACTOR_mime_extract((const char*) data, size, mime_processor, NULL, NULL);
   if (mime_type != NULL) 
     {
       i = 0;
