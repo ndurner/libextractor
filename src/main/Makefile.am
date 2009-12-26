@@ -6,7 +6,7 @@ INCLUDES = -I$(top_srcdir)/src/include $(LTDLINCL)
 plugindir = $(libdir)/@RPLUGINDIR@
 
 LIBS = \
- @LE_LIBINTL@ @LIBS@
+ @LE_LIBINTL@ @LE_EXTRACTOR_LIBS@
 
 lib_LTLIBRARIES = \
   libextractor.la 
@@ -15,13 +15,6 @@ bin_PROGRAMS = extract
 
 extract_LDADD = \
   $(top_builddir)/src/main/libextractor.la 
-
-if !MINGW
-    rtflag=-lrt
-if !SOMEBSD
-    dlflag=-ldl
-endif
-endif
 
 if HAVE_ZLIB
   zlib =-lz
@@ -33,7 +26,7 @@ endif
 libextractor_la_LDFLAGS = \
   $(LE_LIB_LDFLAGS) -version-info @LIB_VERSION_CURRENT@:@LIB_VERSION_REVISION@:@LIB_VERSION_AGE@
 libextractor_la_LIBADD = \
-  $(LIBLTDL) $(dlflag) $(zlib) $(bz2lib) $(LIBICONV) $(rtflag)
+  $(LIBLTDL) $(zlib) $(bz2lib) $(LIBICONV)
 
 
 EXTRA_DIST = \

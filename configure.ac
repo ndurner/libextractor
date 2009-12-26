@@ -274,7 +274,10 @@ AC_FUNC_VPRINTF
 AC_FUNC_MMAP
 AC_FUNC_STAT
 AC_FUNC_ERROR_AT_LINE
-AC_CHECK_FUNCS([mkstemp strndup munmap strcasecmp strdup strncasecmp memmove memset strtoul floor getcwd pow setenv sqrt strchr strcspn strrchr strnlen strndup ftruncate])
+AC_SEARCH_LIBS(shm_open, rt)
+AC_CHECK_FUNCS([mkstemp strndup munmap strcasecmp strdup strncasecmp memmove memset strtoul floor getcwd pow setenv sqrt strchr strcspn strrchr strnlen strndup ftruncate shm_open shm_unlink])
+LE_EXTRACTOR_LIBS=$LIBS
+LIBS=$LIBSOLD
 
 AM_GNU_GETTEXT_VERSION([0.16.1])
 AM_GNU_GETTEXT([external])
@@ -530,6 +533,7 @@ AC_SUBST(LE_LIB_LDFLAGS)
 AC_SUBST(LE_PLUGIN_LDFLAGS)
 AC_SUBST(LE_INTLINCL)
 AC_SUBST(LE_LIBINTL)
+AC_SUBST(LE_EXTRACTOR_LIBS)
 
 AC_SUBST(CPPFLAGS)
 AC_SUBST(LDFLAGS)
