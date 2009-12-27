@@ -1,4 +1,4 @@
-INCLUDES = -I$(top_srcdir)/src/include $(LTDLINCL)
+INCLUDES = -I$(top_srcdir)/src/include
 
 LIBS = \
  @LE_LIBINTL@ @LIBS@
@@ -6,17 +6,11 @@ LIBS = \
 lib_LTLIBRARIES = \
   libextractor_common.la
 
-if !MINGW
-if !SOMEBSD
-    dlflag=-ldl
-endif
-endif
-
 libextractor_common_la_LDFLAGS = \
   $(LE_LIB_LDFLAGS)
 
 libextractor_common_la_LIBADD = \
-  $(LIBLTDL) $(dlflag) $(LIBICONV) -lz
+  $(LIBICONV) -lz
 
 libextractor_common_la_SOURCES = \
   unzip.c \
