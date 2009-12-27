@@ -6,7 +6,7 @@ INCLUDES = -I$(top_srcdir)/src/include $(LTDLINCL)
 plugindir = $(libdir)/@RPLUGINDIR@
 
 LIBS = \
- @LE_LIBINTL@ @LE_EXTRACTOR_LIBS@
+ @LE_LIBINTL@ @LE_LIB_LIBS@
 
 lib_LTLIBRARIES = \
   libextractor.la 

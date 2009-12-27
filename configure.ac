@@ -26,6 +26,9 @@ AC_PROG_LN_S
 AC_PROG_MAKE_SET
 LT_CONFIG_LTDL_DIR([libltdl])
 AC_CANONICAL_HOST
+# save LIBS, libtool does a AC_SEARCH_LIBS(dlopen, dl), but plugins
+# need not have -ldl added
+LIBSOLD=$LIBS
 LT_INIT([disable-static dlopen win32-dll])
 LTDL_INIT
 AC_SUBST(LTDLINCL)
@@ -149,15 +152,10 @@ AM_CONDITIONAL(HAVE_CXX, test "x$HAVE_CXX" = "xyes")
 
 # Checks for libraries.
 
-# the library tests that follow should not result in every plugin linking to them,
-# thus we need to backup LIBS and restore
-LIBSOLD=$LIBS
-
 # Redhat 9, gcc 3.2, libextractor_pdf barfs if we don't check for this
 AC_CHECK_LIB(stdc++, fclose)
 
 AC_CHECK_HEADERS(langinfo.h)
-AC_CHECK_LIB(dl, dlopen)
 LIBS=$LIBSOLD
 # FIXME: allow --with-oggvorbis=PFX
 
@@ -274,9 +272,10 @@ AC_FUNC_VPRINTF
 AC_FUNC_MMAP
 AC_FUNC_STAT
 AC_FUNC_ERROR_AT_LINE
+AC_SEARCH_LIBS(dlopen, dl)
 AC_SEARCH_LIBS(shm_open, rt)
 AC_CHECK_FUNCS([mkstemp strndup munmap strcasecmp strdup strncasecmp memmove memset strtoul floor getcwd pow setenv sqrt strchr strcspn strrchr strnlen strndup ftruncate shm_open shm_unlink])
-LE_EXTRACTOR_LIBS=$LIBS
+LE_LIB_LIBS=$LIBS
 LIBS=$LIBSOLD
 
 AM_GNU_GETTEXT_VERSION([0.16.1])
@@ -533,7 +532,7 @@ AC_SUBST(LE_LIB_LDFLAGS)
 AC_SUBST(LE_PLUGIN_LDFLAGS)
 AC_SUBST(LE_INTLINCL)
 AC_SUBST(LE_LIBINTL)
-AC_SUBST(LE_EXTRACTOR_LIBS)
+AC_SUBST(LE_LIB_LIBS)
 
 AC_SUBST(CPPFLAGS)
 AC_SUBST(LDFLAGS)
