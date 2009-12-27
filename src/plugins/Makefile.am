@@ -363,10 +363,12 @@ libextractor_thumbnailgtk_la_SOURCES = \
 libextractor_thumbnailqt_la_SOURCES = \
   thumbnailqt_extractor.cc
 libextractor_thumbnailqt_la_LDFLAGS = \
+  $(QT_LDFLAGS) \
   $(PLUGINFLAGS)
 libextractor_thumbnailqt_la_LIBADD = \
   $(qtflags) $(svgflags) 
 libextractor_thumbnailqt_la_CPPFLAGS = \
+  $(QT_CPPFLAGS) \
   $(QT_CFLAGS) $(QT_SVG_CFLAGS)
 
 libextractor_tiff_la_SOURCES = \
