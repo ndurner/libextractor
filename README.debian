@@ -4,36 +4,7 @@ install prior to compiling GNU libextractor.
 =================================================
 
 Absolutely needed:
-libtool
-gcc
-make
-g++ 
-libltdl7-dev
-zlib1g-dev
-libbz2-dev
 
-Recommended:
-libgtk2.0-dev
-libvorbis-dev
-libflac-dev
-libgsf-1-dev
-libmpeg2-4-dev
-libqt4-dev
-librpm-dev
-libpoppler-dev
-
-Optional:
-libexiv2-dev # if you compile with --enable-exiv2
-libavformat-dev # if you compile with --enable-ffmpeg
-libswscale-dev # if you compile with --enable-ffmpeg
-
-For Subversion access and compilation:
-subversion
-autoconf
-automake
 
 ==============================================
 
-Please notify us if we missed some dependencies
-(note that the list is supposed to only list direct
-dependencies, not transitive dependencies).

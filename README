@@ -5,10 +5,10 @@ libextractor is a simple library for keyword extraction.  libextractor
 does not support all formats but supports a simple plugging mechanism
 such that you can quickly add extractors for additional formats, even
 without recompiling libextractor.  libextractor typically ships with a
-dozen helper-libraries that can be used to obtain keywords from common
-file-types.
+few dozen helper-libraries (plugins) that can be used to obtain
+keywords from common file-types.
 
-libextractor is a part of the GNU project (http://www.gnu.org/).
+libextractor is a GNU package (http://www.gnu.org/).
 
 
 
@@ -22,17 +22,11 @@ extract is a simple command-line interface to libextractor.
 Dependencies
 ============
 
-libextractor requires Python (2.3, better 2.4 including development
-files) and a JNI header file (jni.h) for Java.  Further requirements
-include:
-* libvorbisfile
 * zlib (compression library)
-* c++ compiler
+* GNU C/C++ compiler
 * libltdl 2.2.x (from GNU libtool)
-* libtool 1.5 or higher
+* GNU libtool 2.2 or higher
 * GNU gettext
-* glib 2.6
-* gtk 2.6 (for thumbnails, gdk-pixbuf)
 
 When building libextractor binaries, please make sure all of these
 dependencies are available.  Otherwise the build system may
@@ -49,26 +43,24 @@ need to do is write a little library that implements a single method
 with this signature:
 
 
-KeywordList * <libraryname>_extract(const char * filename,
-                                    const char * data,
-                                    size_t size,
-                                    KeywordList * prev,
-                                    const char * options);
+int
+EXTRACTOR_XXX_extract
+   (const char *data,
+    size_t data_size,
+    EXTRACTOR_MetaDataProcessor proc,
+    void *proc_cls,
+    const char * options);
 
-where <libraryname> is the name of the library file that you will tell
-libExtractor to load, minus the suffix.  For example, if you link your
-extractor into a file called 'myextractor.so', the method above should
-be called 'myextractor_extract'.
+where XXX is the name of the library file that you will tell
+libextractor to load, minus the suffix.  For example, if you link your
+extractor into a file called 'libextractor_my.so', the method above should
+be called 'EXTRACTOR_my_extract'.
 
-The filename is the name of the file and maybe NULL, data is a pointer
-to the contents of the file and size is the size of the file.  The
-extract method must prepend keywords that it finds to the linked list
-'prev' and return the new head.  The library must allocate (malloc)
-the entry in the keyword list and the memory for the filename since
-both will be free'ed by libextractor once the application calls
-freeKeywords.
+data is a pointer to the contents of the file and data_size is the
+size of data.  The extract method must call the proc function with all
+of the meta data found.  
 
-An example implementation can be found in mp3extractor.c.
+An example implementation can be found in mp3_extractor.c.
 
 
 
@@ -80,12 +72,6 @@ problems compiling one of the extractors.  GCC 3.3 and 2.95.2 are
 known to work well; as such, libextractor will first look for 3.3 (by
 attempting to run gcc-3.3, cpp-3.3, and g++-3.3) and then 2.95.2 (by
 attempting to run gcc2 and g++2).
-
-exiv2 requires G++ 3.0 or higher.  With older GCC versions (and other
-broken C++ compilers), you have to manually disable exiv2 by passing
-"--disable-exiv2" to "configure" in order to avoid compilation
-problems.
-
 
 If libextractor fails to find the plugins, a possible method of last
 resort is to set the environment variable LIBEXTRACTOR_PREFIX to the
