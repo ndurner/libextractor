@@ -544,13 +544,24 @@ with older versions of Java.
 
 @section Mono
 
+This binding is undocumented at this point.
+
 @section Perl
+
+This binding is undocumented at this point.
 
 @section Python
 
+This binding is undocumented at this point.
+
 @section PHP
 
+This binding is undocumented at this point.
+
 @section Ruby
+
+This binding is undocumented at this point.
+
 
 
 @node Utility functions
@@ -593,7 +604,7 @@ The @verb{|EXTRACTOR_meta_data_print|} is a simple function which prints the met
 @node Existing Plugins
 @chapter Existing Plugins
 
-@itemize
+@itemize @bullet
 @item
 APPLEFILE
 @item
