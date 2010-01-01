@@ -1295,8 +1295,6 @@ start_process (struct EXTRACTOR_PluginList *plugin)
       close (p1[1]);
       close (p2[0]);
       process_requests (plugin, p1[0], p2[1]);
-      fprintf (stderr,
-	       "Plugin done with requests!\n");
       _exit (0);
     }
   plugin->cpid = pid;
