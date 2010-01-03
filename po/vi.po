@@ -13,19 +13,17 @@
 #: src/main/extractor_metatypes.c:273 src/main/extractor_metatypes.c:275
 #: src/main/extractor_metatypes.c:277 src/main/extractor_metatypes.c:280
 #: src/main/extractor_metatypes.c:282 src/main/extractor_metatypes.c:286
-#: src/main/extractor_metatypes.c:306 src/main/extractor_metatypes.c:308
-#: src/main/extractor_metatypes.c:312 src/main/extractor_metatypes.c:314
-#: src/main/extractor_metatypes.c:316 src/main/extractor_metatypes.c:317
-#: src/main/extractor_metatypes.c:318 src/main/extractor_metatypes.c:319
-#: src/main/extractor_metatypes.c:320 src/main/extractor_metatypes.c:321
-#: src/main/extractor_metatypes.c:322 src/main/extractor_metatypes.c:323
-#: src/main/extractor_metatypes.c:324 src/main/extractor_metatypes.c:325
-#: src/main/extractor_metatypes.c:326
+#: src/main/extractor_metatypes.c:309 src/main/extractor_metatypes.c:311
+#: src/main/extractor_metatypes.c:316 src/main/extractor_metatypes.c:318
+#: src/main/extractor_metatypes.c:320 src/main/extractor_metatypes.c:329
+#: src/main/extractor_metatypes.c:366 src/main/extractor_metatypes.c:393
+#: src/main/extractor_metatypes.c:428 src/main/extractor_metatypes.c:430
+#: src/main/extractor_metatypes.c:432 src/main/extractor_metatypes.c:437
 msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.5.22\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2009-12-16 15:44+0100\n"
+"POT-Creation-Date: 2010-01-03 01:21+0100\n"
 "PO-Revision-Date: 2009-05-12 22:57+0930\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
@@ -35,7 +33,7 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: LocFactoryEditor 1.8\n"
 
-#: src/main/extract.c:65
+#: src/main/extract.c:97
 #, c-format
 msgid ""
 "Usage: %s\n"
@@ -46,7 +44,7 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: src/main/extract.c:68
+#: src/main/extract.c:100
 #, c-format
 msgid ""
 "Arguments mandatory for long options are also mandatory for short options.\n"
@@ -54,113 +52,110 @@ msgstr ""
 "Mọi đối số bắt buộc phải sử dụng với tùy chọn dài cũng bắt buộc với tùy chọn "
 "ngắn.\n"
 
-#: src/main/extract.c:142
+#: src/main/extract.c:174
 msgid "print output in bibtex format"
 msgstr "hiển thị dữ liệu xuất có dạng bibtex"
 
-#: src/main/extract.c:144
-msgid ""
-"use the generic plaintext extractor for the language with the 2-letter "
-"language code LANG"
-msgstr ""
-"sử dụng trình rút văn bản thuần thuộc giống loại cho ngôn ngữ có mã ngôn ngữ "
-"bằng hai chữ là LANG"
-
-#: src/main/extract.c:146
+#: src/main/extract.c:176
 msgid "produce grep-friendly output (all results on one line per file)"
 msgstr ""
 "tạo ra kết xuất thân thiện với grep (mọi kết quả trên cùng dòng của mỗi tập "
 "tin)"
 
-#: src/main/extract.c:148
+#: src/main/extract.c:178
 msgid "print this help"
 msgstr "hiển thị trợ giúp này"
 
-#: src/main/extract.c:150
+#: src/main/extract.c:180
 msgid "compute hash using the given ALGORITHM (currently sha1 or md5)"
 msgstr "tính băm bằng THUẬT TOÁN đã cho (hiện là sha1 hay md5)"
 
-#: src/main/extract.c:152
+#: src/main/extract.c:182
 msgid "run plugins in-process (simplifies debugging)"
 msgstr ""
 
-#: src/main/extract.c:154
+#: src/main/extract.c:184
 msgid "load an extractor plugin named LIBRARY"
 msgstr "tải một trình cầm phít rút có tên LIBRARY (THƯ VIÊN)"
 
-#: src/main/extract.c:156
+#: src/main/extract.c:186
 msgid "list all keyword types"
 msgstr "liệt kê mọi kiểu từ khoá"
 
-#: src/main/extract.c:158
+#: src/main/extract.c:188
 msgid "do not use the default set of extractor plugins"
 msgstr "đừng dùng bộ trình rút mặc định"
 
-#: src/main/extract.c:160
+#: src/main/extract.c:190
 msgid "print only keywords of the given TYPE (use -L to get a list)"
 msgstr ""
 "hiển thị chỉ từ khoá KIỂU (TYPE) đã cho thôi (dùng « -L » để xem danh sách)"
 
-#: src/main/extract.c:162
+#: src/main/extract.c:192
 msgid "print the version number"
 msgstr "hiển thị số thứ tự phiên bản"
 
-#: src/main/extract.c:164
+#: src/main/extract.c:194
 msgid "be verbose"
 msgstr "xuất chi tiết"
 
-#: src/main/extract.c:166
+#: src/main/extract.c:196
 msgid "do not print keywords of the given TYPE"
 msgstr "đừng hiển thị từ khoá KIỂU (TYPE) đã cho"
 
-#: src/main/extract.c:169
+#: src/main/extract.c:199
 msgid "extract [OPTIONS] [FILENAME]*"
 msgstr ""
 "extract [TÙY_CHỌN] [TÊN_TẬP_TIN]*\n"
 "[extract: trích ra]"
 
-#: src/main/extract.c:170
+#: src/main/extract.c:200
 msgid "Extract metadata from files."
 msgstr "Rút siêu dữ liệu ra tập tin."
 
-#: src/main/extract.c:213
+#: src/main/extract.c:240
+#, fuzzy, c-format
+msgid "Found by `%s' plugin:\n"
+msgstr "Việc tải bổ sung « %s » bị lỗi: %s\n"
+
+#: src/main/extract.c:247
 #, c-format
 msgid "%s - (unknown, %u bytes)\n"
 msgstr ""
 
-#: src/main/extract.c:234
+#: src/main/extract.c:268
 #, fuzzy, c-format
 msgid "%s - (binary, %u bytes)\n"
 msgstr "%s - (nhị phân)\n"
 
-#: src/main/extract.c:573 src/main/extract.c:586
+#: src/main/extract.c:608 src/main/extract.c:618
 #, c-format
 msgid ""
 "Illegal combination of options, cannot combine multiple styles of printing.\n"
 msgstr ""
 
-#: src/main/extract.c:616
+#: src/main/extract.c:648
 #, c-format
 msgid "You must specify an argument for the `%s' option (option ignored).\n"
 msgstr "Bạn phải ghi rõ một đối số cho tùy chọn « %s » (tùy chọn bị bỏ qua).\n"
 
-#: src/main/extract.c:681
+#: src/main/extract.c:713
 #, c-format
 msgid "Use --help to get a list of options.\n"
 msgstr ""
 "Hãy sử dụng lệnh « --help » (trợ giúp) để xem một danh sách các tùy chọn.\n"
 
-#: src/main/extract.c:738
+#: src/main/extract.c:759
 #, c-format
 msgid "%% BiBTeX file\n"
 msgstr "%% tập tin BiBTeX\n"
 
-#: src/main/extract.c:745
+#: src/main/extract.c:766
 #, c-format
 msgid "Keywords for file %s:\n"
 msgstr "Từ khoá cho tập tin %s:\n"
 
-#: src/main/extractor.c:1725
+#: src/main/extractor.c:1968
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "Việc khởi động cơ chế cầm phít bị lỗi: %s\n"
@@ -207,7 +202,7 @@ msgstr "tựa"
 msgid "title of the work"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:48 src/main/extractor_metatypes.c:378
+#: src/main/extractor_metatypes.c:48
 msgid "book title"
 msgstr "tên sách"
 
@@ -260,7 +255,7 @@ msgstr "số thứ tự rãnh"
 msgid "number of a journal, magazine or tech-report"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:61 src/main/extractor_metatypes.c:358
+#: src/main/extractor_metatypes.c:61
 msgid "page count"
 msgstr "tổng số trang"
 
@@ -304,7 +299,7 @@ msgstr "hướng"
 msgid "institution the author worked for"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:72 src/main/extractor_metatypes.c:333
+#: src/main/extractor_metatypes.c:72
 msgid "publisher"
 msgstr "nhà xuất bản"
 
@@ -379,7 +374,7 @@ msgid ""
 "the given month"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:89 src/main/extractor_metatypes.c:390
+#: src/main/extractor_metatypes.c:89
 msgid "publication date"
 msgstr "ngày xuất bản"
 
@@ -404,7 +399,7 @@ msgstr "kiểu nội dung"
 msgid "type of the publication for bibTeX bibliographies"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:96 src/main/extractor_metatypes.c:334
+#: src/main/extractor_metatypes.c:96
 msgid "language"
 msgstr "ngôn ngữ"
 
@@ -558,18 +553,16 @@ msgid "specifics are not known"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:138 src/main/extractor_metatypes.c:139
-#: src/main/extractor_metatypes.c:331
 msgid "description"
 msgstr "mô tả"
 
-#: src/main/extractor_metatypes.c:140 src/main/extractor_metatypes.c:340
+#: src/main/extractor_metatypes.c:140
 msgid "copyright"
 msgstr "bản quyền"
 
 #: src/main/extractor_metatypes.c:141
-#, fuzzy
-msgid "copyright information"
-msgstr "thông tin"
+msgid "Name of the entity holding the copyright"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:142
 #, fuzzy
@@ -582,7 +575,6 @@ msgid "information about rights"
 msgstr "thông tin"
 
 #: src/main/extractor_metatypes.c:144 src/main/extractor_metatypes.c:145
-#: src/main/extractor_metatypes.c:342
 msgid "keywords"
 msgstr "từ khoá"
 
@@ -591,11 +583,10 @@ msgid "abstract"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:149 src/main/extractor_metatypes.c:150
-#: src/main/extractor_metatypes.c:368
 msgid "summary"
 msgstr "tóm tắt"
 
-#: src/main/extractor_metatypes.c:151 src/main/extractor_metatypes.c:341
+#: src/main/extractor_metatypes.c:151
 msgid "subject"
 msgstr "chủ đề"
 
@@ -605,7 +596,6 @@ msgid "subject matter"
 msgstr "chủ đề"
 
 #: src/main/extractor_metatypes.c:153 src/main/extractor_metatypes.c:186
-#: src/main/extractor_metatypes.c:356
 msgid "creator"
 msgstr "người tạo"
 
@@ -613,7 +603,7 @@ msgstr "người tạo"
 msgid "name of the person who created the document"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:155 src/main/extractor_metatypes.c:345
+#: src/main/extractor_metatypes.c:155
 msgid "format"
 msgstr "định dạng"
 
@@ -621,7 +611,7 @@ msgstr "định dạng"
 msgid "name of the document format"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:158 src/main/extractor_metatypes.c:443
+#: src/main/extractor_metatypes.c:158
 msgid "format version"
 msgstr "phiên bản định dạng"
 
@@ -629,7 +619,7 @@ msgstr "phiên bản định dạng"
 msgid "version of the document format"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:160 src/main/extractor_metatypes.c:417
+#: src/main/extractor_metatypes.c:160
 msgid "created by software"
 msgstr "bị phần mềm tạo"
 
@@ -648,7 +638,7 @@ msgid ""
 "time)"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:164 src/main/extractor_metatypes.c:354
+#: src/main/extractor_metatypes.c:164
 msgid "creation date"
 msgstr "ngày tạo"
 
@@ -656,7 +646,7 @@ msgstr "ngày tạo"
 msgid "date the document was created"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:166 src/main/extractor_metatypes.c:355
+#: src/main/extractor_metatypes.c:166
 msgid "modification date"
 msgstr "ngày sửa đổi"
 
@@ -664,7 +654,7 @@ msgstr "ngày sửa đổi"
 msgid "date the document was modified"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:169 src/main/extractor_metatypes.c:411
+#: src/main/extractor_metatypes.c:169
 msgid "last printed"
 msgstr "in cuối cùng"
 
@@ -672,7 +662,7 @@ msgstr "in cuối cùng"
 msgid "date the document was last printed"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:171 src/main/extractor_metatypes.c:410
+#: src/main/extractor_metatypes.c:171
 msgid "last saved by"
 msgstr "lưu cuối cùng bởi"
 
@@ -680,7 +670,7 @@ msgstr "lưu cuối cùng bởi"
 msgid "name of the user who saved the document last"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:173 src/main/extractor_metatypes.c:414
+#: src/main/extractor_metatypes.c:173
 msgid "total editing time"
 msgstr "tổng thời gian sửa"
 
@@ -688,7 +678,7 @@ msgstr "tổng thời gian sửa"
 msgid "time spent editing the document"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:175 src/main/extractor_metatypes.c:425
+#: src/main/extractor_metatypes.c:175
 msgid "editing cycles"
 msgstr "chu kỳ hiệu chỉnh"
 
@@ -697,7 +687,7 @@ msgstr "chu kỳ hiệu chỉnh"
 msgid "number of editing cycles"
 msgstr "chu kỳ hiệu chỉnh"
 
-#: src/main/extractor_metatypes.c:177 src/main/extractor_metatypes.c:418
+#: src/main/extractor_metatypes.c:177
 msgid "modified by software"
 msgstr "bị phần mềm sửa đổi"
 
@@ -705,7 +695,7 @@ msgstr "bị phần mềm sửa đổi"
 msgid "name of software making modifications"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:180 src/main/extractor_metatypes.c:419
+#: src/main/extractor_metatypes.c:180
 msgid "revision history"
 msgstr "lược sử sửa đổi"
 
@@ -798,7 +788,7 @@ msgstr "thay thế"
 msgid "packages made obsolete by this package"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:204 src/main/extractor_metatypes.c:382
+#: src/main/extractor_metatypes.c:204
 msgid "provides"
 msgstr "cung cấp"
 
@@ -842,7 +832,6 @@ msgid "space consumption after installation"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:215 src/main/extractor_metatypes.c:295
-#: src/main/extractor_metatypes.c:347
 msgid "source"
 msgstr "nguồn"
 
@@ -863,7 +852,7 @@ msgid "target architecture"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:220
-msgid "hardware architecture the package can be used for"
+msgid "hardware architecture the contents can be used for"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:221
@@ -875,15 +864,15 @@ msgstr "phụ thuộc"
 msgid "dependency that must be satisfied before installation"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:224 src/main/extractor_metatypes.c:371
+#: src/main/extractor_metatypes.c:224
 msgid "license"
 msgstr "quyền phép"
 
 #: src/main/extractor_metatypes.c:225
-msgid "applicable license"
+msgid "applicable copyright license"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:226 src/main/extractor_metatypes.c:372
+#: src/main/extractor_metatypes.c:226
 msgid "distribution"
 msgstr "bản phân phối"
 
@@ -900,7 +889,7 @@ msgstr "máy hỗ trợ xây dựng"
 msgid "machine the package was build on"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:230 src/main/extractor_metatypes.c:370
+#: src/main/extractor_metatypes.c:230
 msgid "vendor"
 msgstr "nhà bán"
 
@@ -965,35 +954,35 @@ msgstr "phụ thuộc vào phần cứng"
 msgid "name of a library that this file depends on"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:246 src/main/extractor_metatypes.c:391
+#: src/main/extractor_metatypes.c:246
 msgid "camera make"
 msgstr "nhà chế tạo máy ảnh"
 
-#: src/main/extractor_metatypes.c:248 src/main/extractor_metatypes.c:392
+#: src/main/extractor_metatypes.c:248
 msgid "camera model"
 msgstr "mô hình máy ảnh"
 
-#: src/main/extractor_metatypes.c:250 src/main/extractor_metatypes.c:393
+#: src/main/extractor_metatypes.c:250
 msgid "exposure"
 msgstr "sự phơi nắng"
 
-#: src/main/extractor_metatypes.c:252 src/main/extractor_metatypes.c:394
+#: src/main/extractor_metatypes.c:252
 msgid "aperture"
 msgstr "lỗ ống kính"
 
-#: src/main/extractor_metatypes.c:254 src/main/extractor_metatypes.c:395
+#: src/main/extractor_metatypes.c:254
 msgid "exposure bias"
 msgstr "khuynh hướng phơi nắng"
 
-#: src/main/extractor_metatypes.c:257 src/main/extractor_metatypes.c:396
+#: src/main/extractor_metatypes.c:257
 msgid "flash"
 msgstr "đèn nháy"
 
-#: src/main/extractor_metatypes.c:259 src/main/extractor_metatypes.c:397
+#: src/main/extractor_metatypes.c:259
 msgid "flash bias"
 msgstr "khuynh hướng đèn nháy"
 
-#: src/main/extractor_metatypes.c:261 src/main/extractor_metatypes.c:398
+#: src/main/extractor_metatypes.c:261
 msgid "focal length"
 msgstr "tiêu cự"
 
@@ -1002,35 +991,35 @@ msgstr "tiêu cự"
 msgid "focal length 35mm"
 msgstr "tiêu cự"
 
-#: src/main/extractor_metatypes.c:265 src/main/extractor_metatypes.c:400
+#: src/main/extractor_metatypes.c:265
 msgid "iso speed"
 msgstr "tốc độ ISO"
 
-#: src/main/extractor_metatypes.c:268 src/main/extractor_metatypes.c:401
+#: src/main/extractor_metatypes.c:268
 msgid "exposure mode"
 msgstr "chế độ phơi nắng"
 
-#: src/main/extractor_metatypes.c:270 src/main/extractor_metatypes.c:402
+#: src/main/extractor_metatypes.c:270
 msgid "metering mode"
 msgstr "chế độ do"
 
-#: src/main/extractor_metatypes.c:272 src/main/extractor_metatypes.c:403
+#: src/main/extractor_metatypes.c:272
 msgid "macro mode"
 msgstr "chế độ macrô"
 
-#: src/main/extractor_metatypes.c:274 src/main/extractor_metatypes.c:404
+#: src/main/extractor_metatypes.c:274
 msgid "image quality"
 msgstr "chất lượng ảnh"
 
-#: src/main/extractor_metatypes.c:276 src/main/extractor_metatypes.c:405
+#: src/main/extractor_metatypes.c:276
 msgid "white balance"
 msgstr "cán cân trắng"
 
-#: src/main/extractor_metatypes.c:279 src/main/extractor_metatypes.c:406
+#: src/main/extractor_metatypes.c:279
 msgid "orientation"
 msgstr "hướng"
 
-#: src/main/extractor_metatypes.c:281 src/main/extractor_metatypes.c:364
+#: src/main/extractor_metatypes.c:281
 msgid "magnification"
 msgstr "phóng to"
 
@@ -1071,7 +1060,7 @@ msgstr "%ux%u chấm trên mỗi insơ"
 msgid "Originating entity"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:297 src/main/extractor_metatypes.c:422
+#: src/main/extractor_metatypes.c:297
 msgid "character set"
 msgstr "bộ ký tự"
 
@@ -1080,7 +1069,7 @@ msgstr "bộ ký tự"
 msgid "character encoding used"
 msgstr "tổng số ký tự"
 
-#: src/main/extractor_metatypes.c:299 src/main/extractor_metatypes.c:423
+#: src/main/extractor_metatypes.c:299
 msgid "line count"
 msgstr "số đếm trang"
 
@@ -1088,7 +1077,7 @@ msgstr "số đếm trang"
 msgid "number of lines"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:301 src/main/extractor_metatypes.c:424
+#: src/main/extractor_metatypes.c:301
 msgid "paragraph count"
 msgstr "số đếm đoạn văn"
 
@@ -1096,343 +1085,491 @@ msgstr "số đếm đoạn văn"
 msgid "number o paragraphs"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:303 src/main/extractor_metatypes.c:412
+#: src/main/extractor_metatypes.c:304
 msgid "word count"
 msgstr "tổng số từ"
 
-#: src/main/extractor_metatypes.c:304
+#: src/main/extractor_metatypes.c:305
 msgid "number of words"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:305 src/main/extractor_metatypes.c:359
+#: src/main/extractor_metatypes.c:306
+msgid "character count"
+msgstr "tổng số ký tự"
+
+#: src/main/extractor_metatypes.c:307
+#, fuzzy
+msgid "number of characters"
+msgstr "chu kỳ hiệu chỉnh"
+
+#: src/main/extractor_metatypes.c:308
 msgid "page orientation"
 msgstr "hướng trang"
 
-#: src/main/extractor_metatypes.c:307 src/main/extractor_metatypes.c:360
+#: src/main/extractor_metatypes.c:310
 msgid "paper size"
 msgstr "cỡ giấy"
 
-#: src/main/extractor_metatypes.c:309 src/main/extractor_metatypes.c:407
+#: src/main/extractor_metatypes.c:312
 msgid "template"
 msgstr "mẫu"
 
-#: src/main/extractor_metatypes.c:310
+#: src/main/extractor_metatypes.c:313
 msgid "template the document uses or is based on"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:311 src/main/extractor_metatypes.c:420
+#: src/main/extractor_metatypes.c:315
 msgid "company"
 msgstr "công ty"
 
-#: src/main/extractor_metatypes.c:313 src/main/extractor_metatypes.c:427
+#: src/main/extractor_metatypes.c:317
 msgid "manager"
 msgstr "nhà quản lý"
 
-#: src/main/extractor_metatypes.c:315
+#: src/main/extractor_metatypes.c:319
 #, fuzzy
 msgid "revision number"
 msgstr "hiển thị số thứ tự phiên bản"
 
-#: src/main/extractor_metatypes.c:329
-msgid "author"
-msgstr "tác giả"
-
-#: src/main/extractor_metatypes.c:330
-msgid "artist"
-msgstr "nhạc sĩ"
-
-#: src/main/extractor_metatypes.c:332
-msgid "date"
-msgstr "ngày"
-
-#: src/main/extractor_metatypes.c:335
-msgid "album"
-msgstr "tập"
-
-#: src/main/extractor_metatypes.c:336
-msgid "genre"
-msgstr "thể loại"
-
-#: src/main/extractor_metatypes.c:337
-msgid "location"
-msgstr "địa điểm"
-
-#: src/main/extractor_metatypes.c:338
-msgid "version"
-msgstr "phiên bản"
-
-#: src/main/extractor_metatypes.c:339
-msgid "organization"
-msgstr "tổ chức"
-
-#: src/main/extractor_metatypes.c:343
-msgid "contributor"
-msgstr "người đóng góp"
-
-#: src/main/extractor_metatypes.c:344
-msgid "resource-type"
-msgstr "kiểu tài nguyên"
-
-#: src/main/extractor_metatypes.c:346
-msgid "resource-identifier"
-msgstr "điều nhận diện tài nguyên"
-
-#: src/main/extractor_metatypes.c:348
-msgid "relation"
-msgstr "liên quan"
-
-#: src/main/extractor_metatypes.c:349
-msgid "coverage"
-msgstr "phạm vị"
-
-#: src/main/extractor_metatypes.c:350
-msgid "software"
-msgstr "phần mềm"
-
-#: src/main/extractor_metatypes.c:351
-msgid "disclaimer"
-msgstr "từ chối trách nhiệm"
-
-#: src/main/extractor_metatypes.c:352
-msgid "warning"
-msgstr "cảnh báo"
-
-#: src/main/extractor_metatypes.c:353
-msgid "translated"
-msgstr "dịch"
-
-#: src/main/extractor_metatypes.c:357
-msgid "producer"
-msgstr "người cung cấp"
-
-#: src/main/extractor_metatypes.c:361
-msgid "used fonts"
-msgstr "phông chữ đã dùng"
-
-#: src/main/extractor_metatypes.c:362
-msgid "page order"
-msgstr "thứ tự trang"
-
-#: src/main/extractor_metatypes.c:363
-msgid "created for"
-msgstr "tạo cho"
-
-#: src/main/extractor_metatypes.c:365
-msgid "release"
-msgstr "bản phát hành"
-
-#: src/main/extractor_metatypes.c:366
-msgid "group"
-msgstr "nhóm"
-
-#: src/main/extractor_metatypes.c:367
-msgid "size"
-msgstr "cỡ"
-
-#: src/main/extractor_metatypes.c:369
-msgid "packager"
-msgstr "nhà đóng gói"
-
-#: src/main/extractor_metatypes.c:373
-msgid "build-host"
-msgstr "máy hỗ trợ xây dựng"
-
-#: src/main/extractor_metatypes.c:374
-msgid "operating system"
-msgstr "hệ điều hành"
-
-#: src/main/extractor_metatypes.c:375
-msgid "dependency"
-msgstr "phụ thuộc"
-
-#: src/main/extractor_metatypes.c:376
-msgid "resolution"
-msgstr "độ phân giải"
-
-#: src/main/extractor_metatypes.c:377
-msgid "category"
-msgstr "phân loại"
-
-#: src/main/extractor_metatypes.c:379
-msgid "priority"
-msgstr "ưu tiên"
-
-#: src/main/extractor_metatypes.c:380
-msgid "conflicts"
-msgstr "xung đột"
-
-#: src/main/extractor_metatypes.c:381
-msgid "replaces"
-msgstr "thay thế"
-
-#: src/main/extractor_metatypes.c:383
-msgid "conductor"
-msgstr "người chỉ huy"
-
-#: src/main/extractor_metatypes.c:384
-msgid "interpreter"
-msgstr "người dịch"
-
-#: src/main/extractor_metatypes.c:385
-msgid "owner"
-msgstr "sở hữu"
-
-#: src/main/extractor_metatypes.c:386
-msgid "lyrics"
-msgstr "lời bài hát"
-
-#: src/main/extractor_metatypes.c:387
-msgid "media type"
-msgstr "kiểu vật chứa"
-
-#: src/main/extractor_metatypes.c:388
-msgid "contact"
-msgstr "liên lạc"
-
-#: src/main/extractor_metatypes.c:389
-msgid "binary thumbnail data"
-msgstr "dữ liệu hình thu nhỏ nhị phân"
-
-#: src/main/extractor_metatypes.c:399
-msgid "focal length (35mm equivalent)"
-msgstr "tiêu dự (35mm tương đương)"
-
-#: src/main/extractor_metatypes.c:408
-msgid "split"
-msgstr "phần"
-
-#: src/main/extractor_metatypes.c:409
-msgid "product version"
-msgstr "phiên bản sản phẩm"
-
-#: src/main/extractor_metatypes.c:413
-msgid "character count"
-msgstr "tổng số ký tự"
-
-#: src/main/extractor_metatypes.c:415
-msgid "thumbnails"
-msgstr "hình thu nhỏ"
-
-#: src/main/extractor_metatypes.c:416
-msgid "security"
-msgstr "giấy chứng khoán"
-
-#: src/main/extractor_metatypes.c:421
-msgid "generator"
-msgstr "bộ tạo ra"
-
-#: src/main/extractor_metatypes.c:426
-msgid "scale"
-msgstr "tỷ lệ"
-
-#: src/main/extractor_metatypes.c:428
-msgid "director"
-msgstr "giám đốc"
-
-#: src/main/extractor_metatypes.c:429
+#: src/main/extractor_metatypes.c:321
 msgid "duration"
 msgstr "thời lượng"
 
-#: src/main/extractor_metatypes.c:430
-msgid "information"
-msgstr "thông tin"
+#: src/main/extractor_metatypes.c:322
+msgid "play time for the medium"
+msgstr ""
 
-#: src/main/extractor_metatypes.c:431
-msgid "full name"
-msgstr "họ tên"
+#: src/main/extractor_metatypes.c:323
+msgid "album"
+msgstr "tập"
 
-#: src/main/extractor_metatypes.c:432
-msgid "chapter"
-msgstr "chương"
+#: src/main/extractor_metatypes.c:324
+#, fuzzy
+msgid "name of the album"
+msgstr "nhà xuất bản"
 
-#: src/main/extractor_metatypes.c:433
-msgid "year"
-msgstr "năm"
+#: src/main/extractor_metatypes.c:326
+msgid "artist"
+msgstr "nhạc sĩ"
 
-#: src/main/extractor_metatypes.c:434
-msgid "link"
-msgstr "liên kết"
+#: src/main/extractor_metatypes.c:327
+#, fuzzy
+msgid "name of the artist or band"
+msgstr "nhà xuất bản"
 
-#: src/main/extractor_metatypes.c:435
-msgid "music CD identifier"
-msgstr "bộ nhận diện đĩa CD nhạc"
+#: src/main/extractor_metatypes.c:328
+msgid "genre"
+msgstr "thể loại"
 
-#: src/main/extractor_metatypes.c:436
-msgid "play counter"
-msgstr "bộ đếm chơi"
-
-#: src/main/extractor_metatypes.c:437
-msgid "popularity meter"
-msgstr "cái đo ưa thích"
-
-#: src/main/extractor_metatypes.c:438
-msgid "content type"
-msgstr "kiểu nội dung"
-
-#: src/main/extractor_metatypes.c:439
-msgid "encoded by"
-msgstr "má hoá theo"
-
-#: src/main/extractor_metatypes.c:440
-msgid "time"
-msgstr "giờ"
-
-#: src/main/extractor_metatypes.c:441
-msgid "musician credits list"
-msgstr "danh sách công trạng nhạc sĩ"
-
-#: src/main/extractor_metatypes.c:442
-msgid "mood"
-msgstr "tâm trạng"
-
-#: src/main/extractor_metatypes.c:444
-msgid "television system"
-msgstr "hệ thống TV"
-
-#: src/main/extractor_metatypes.c:445
-msgid "song count"
-msgstr "số đếm bài hát"
-
-#: src/main/extractor_metatypes.c:446
-msgid "starting song"
-msgstr "bài hát bắt đầu"
-
-#: src/main/extractor_metatypes.c:447
-msgid "hardware dependency"
-msgstr "phụ thuộc vào phần cứng"
-
-#: src/main/extractor_metatypes.c:448
-msgid "ripper"
-msgstr "bộ trích ra"
-
-#: src/main/extractor_metatypes.c:449
-msgid "filesize"
-msgstr "cỡ tập tin"
-
-#: src/main/extractor_metatypes.c:450
+#: src/main/extractor_metatypes.c:330
 msgid "track number"
 msgstr "số thứ tự rãnh"
 
-#: src/main/extractor_metatypes.c:451
-msgid "disc number"
-msgstr "số thứ tự đĩa"
-
-#: src/main/extractor_metatypes.c:452
-msgid "preferred display style (GNUnet)"
-msgstr "kiểu trình bày ưa thích (GNUnet)"
-
-#: src/main/extractor_metatypes.c:453
-msgid "GNUnet URI of ECBC data"
-msgstr "URI GNUnet của dữ liệu ECBC"
-
-#: src/main/extractor_metatypes.c:454
-msgid "Complete file data (for non-binary files only)"
+#: src/main/extractor_metatypes.c:331
+msgid "original number of the track on the distribution medium"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:455
+#: src/main/extractor_metatypes.c:332
+#, fuzzy
+msgid "disk number"
+msgstr "số thứ tự đĩa"
+
+#: src/main/extractor_metatypes.c:333
+msgid "number of the disk in a multi-disk (or volume) distribution"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:334
+#, fuzzy
+msgid "performer"
+msgstr "thứ tự trang"
+
+#: src/main/extractor_metatypes.c:335
+msgid ""
+"The artist(s) who performed the work (conductor, orchestra, soloists, actor, "
+"etc.)"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:337
+msgid "contact"
+msgstr "liên lạc"
+
+#: src/main/extractor_metatypes.c:338
+msgid "Contact information for the creator or distributor"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:339
+#, fuzzy
+msgid "song version"
+msgstr "phiên bản"
+
+#: src/main/extractor_metatypes.c:340
+msgid "name of the version of the song (i.e. remix information)"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:341
+#, fuzzy
+msgid "picture"
+msgstr "lỗ ống kính"
+
+#: src/main/extractor_metatypes.c:342
+msgid "associated misc. picture"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:343
+msgid "cover picture"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:344
+msgid "picture of the cover of the distribution medium"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:345
+#, fuzzy
+msgid "contributor picture"
+msgstr "người đóng góp"
+
+#: src/main/extractor_metatypes.c:346
+msgid "picture of one of the contributors"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:348
+msgid "event picture"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:349
+msgid "picture of an associated event"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:350
+msgid "logo"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:351
+msgid "logo of an associated organization"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:352
+#, fuzzy
+msgid "broadcast television system"
+msgstr "hệ thống TV"
+
+#: src/main/extractor_metatypes.c:353
+msgid "name of the television system for which the data is coded"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:354
+#, fuzzy
+msgid "source device"
+msgstr "nguồn"
+
+#: src/main/extractor_metatypes.c:355
+msgid "device used to create the object"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:356
+msgid "disclaimer"
+msgstr "từ chối trách nhiệm"
+
+#: src/main/extractor_metatypes.c:357
+#, fuzzy
+msgid "legal disclaimer"
+msgstr "từ chối trách nhiệm"
+
+#: src/main/extractor_metatypes.c:359
+msgid "warning"
+msgstr "cảnh báo"
+
+#: src/main/extractor_metatypes.c:360
+msgid "warning about the nature of the content"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:361
+msgid "page order"
+msgstr "thứ tự trang"
+
+#: src/main/extractor_metatypes.c:362
+msgid "order of the pages"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:363
+#, fuzzy
+msgid "writer"
+msgstr "bộ trích ra"
+
+#: src/main/extractor_metatypes.c:364
+#, fuzzy
+msgid "contributing writer"
+msgstr "người đóng góp"
+
+#: src/main/extractor_metatypes.c:365
+msgid "product version"
+msgstr "phiên bản sản phẩm"
+
+#: src/main/extractor_metatypes.c:367
+msgid "contributor"
+msgstr "người đóng góp"
+
+#: src/main/extractor_metatypes.c:368
+#, fuzzy
+msgid "name of a contributor"
+msgstr "người đóng góp"
+
+#: src/main/extractor_metatypes.c:370
+#, fuzzy
+msgid "movie director"
+msgstr "giám đốc"
+
+#: src/main/extractor_metatypes.c:371
+#, fuzzy
+msgid "name of the director"
+msgstr "nhà xuất bản"
+
+#: src/main/extractor_metatypes.c:372
+#, fuzzy
+msgid "network"
+msgstr "bộ tạo ra"
+
+#: src/main/extractor_metatypes.c:373
+msgid "name of the broadcasting network or station"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:374
+msgid "show"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:375
+#, fuzzy
+msgid "name of the show"
+msgstr "nhà xuất bản"
+
+#: src/main/extractor_metatypes.c:376
+#, fuzzy
+msgid "chapter name"
+msgstr "số thứ tự rãnh"
+
+#: src/main/extractor_metatypes.c:377
+#, fuzzy
+msgid "name of the chapter"
+msgstr "nhà xuất bản"
+
+#: src/main/extractor_metatypes.c:378
+msgid "song count"
+msgstr "số đếm bài hát"
+
+#: src/main/extractor_metatypes.c:379
+#, fuzzy
+msgid "number of songs"
+msgstr "chu kỳ hiệu chỉnh"
+
+#: src/main/extractor_metatypes.c:381
+msgid "starting song"
+msgstr "bài hát bắt đầu"
+
+#: src/main/extractor_metatypes.c:382
+#, fuzzy
+msgid "number of the first song to play"
+msgstr "chu kỳ hiệu chỉnh"
+
+#: src/main/extractor_metatypes.c:383
+msgid "play counter"
+msgstr "bộ đếm chơi"
+
+#: src/main/extractor_metatypes.c:384
+msgid "number of times the media has been played"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:385
+msgid "conductor"
+msgstr "người chỉ huy"
+
+#: src/main/extractor_metatypes.c:386
+#, fuzzy
+msgid "name of the conductor"
+msgstr "nhà xuất bản"
+
+#: src/main/extractor_metatypes.c:387
+#, fuzzy
+msgid "interpretation"
+msgstr "người dịch"
+
+#: src/main/extractor_metatypes.c:388
+msgid ""
+"information about the people behind interpretations of an existing piece"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:389
+msgid "composer"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:390
+#, fuzzy
+msgid "name of the composer"
+msgstr "nhà xuất bản"
+
+#: src/main/extractor_metatypes.c:392
+#, fuzzy
+msgid "beats per minute"
+msgstr "in cuối cùng"
+
+#: src/main/extractor_metatypes.c:394
+msgid "encoded by"
+msgstr "má hoá theo"
+
+#: src/main/extractor_metatypes.c:395
+msgid "name of person or organization that encoded the file"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:396
+#, fuzzy
+msgid "original title"
+msgstr "gốc"
+
+#: src/main/extractor_metatypes.c:397
+msgid "title of the original work"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:398
+#, fuzzy
+msgid "original artist"
+msgstr "gốc"
+
+#: src/main/extractor_metatypes.c:399
+#, fuzzy
+msgid "name of the original artist"
+msgstr "nhà xuất bản"
+
+#: src/main/extractor_metatypes.c:400
+#, fuzzy
+msgid "original writer"
+msgstr "gốc"
+
+#: src/main/extractor_metatypes.c:401
+msgid "name of the original lyricist or writer"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:403
+msgid "original release year"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:404
+msgid "year of the original release"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:405
+#, fuzzy
+msgid "original performer"
+msgstr "gốc"
+
+#: src/main/extractor_metatypes.c:406
+msgid "name of the original performer"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:407
+msgid "lyrics"
+msgstr "lời bài hát"
+
+#: src/main/extractor_metatypes.c:408
+msgid "lyrics of the song or text description of vocal activities"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:409
+#, fuzzy
+msgid "popularity"
+msgstr "cái đo ưa thích"
+
+#: src/main/extractor_metatypes.c:410
+#, fuzzy
+msgid "information about the file's popularity"
+msgstr "thông tin"
+
+#: src/main/extractor_metatypes.c:411
+#, fuzzy
+msgid "licensee"
+msgstr "quyền phép"
+
+#: src/main/extractor_metatypes.c:412
+msgid "name of the owner or licensee of the file"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:414
+#, fuzzy
+msgid "musician credit list"
+msgstr "danh sách công trạng nhạc sĩ"
+
+#: src/main/extractor_metatypes.c:415
+msgid "names of contributing musicians"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:416
+msgid "mood"
+msgstr "tâm trạng"
+
+#: src/main/extractor_metatypes.c:417
+msgid "keywords reflecting the mood of the piece"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:418
+#, fuzzy
+msgid "subtitle"
+msgstr "tựa"
+
+#: src/main/extractor_metatypes.c:419
+msgid "subtitle of this part"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:420
+#, fuzzy
+msgid "display type"
+msgstr "kiểu vật chứa"
+
+#: src/main/extractor_metatypes.c:421
+msgid "what rendering method should be used to display this item"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:422
+#, fuzzy
+msgid "full data"
+msgstr "họ tên"
+
+#: src/main/extractor_metatypes.c:423
+msgid ""
+"entry that contains the full, original binary data (not really meta data)"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:425
 #, fuzzy
 msgid "rating"
 msgstr "Dân tộc Tây-ban-nha"
+
+#: src/main/extractor_metatypes.c:426
+msgid "rating of the content"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:427
+msgid "organization"
+msgstr "tổ chức"
+
+#: src/main/extractor_metatypes.c:429
+msgid "ripper"
+msgstr "bộ trích ra"
+
+#: src/main/extractor_metatypes.c:431
+msgid "producer"
+msgstr "người cung cấp"
+
+#: src/main/extractor_metatypes.c:433
+msgid "group"
+msgstr "nhóm"
+
+#: src/main/extractor_metatypes.c:434
+#, fuzzy
+msgid "name of the group or band"
+msgstr "nhà xuất bản"
+
+#: src/main/extractor_metatypes.c:436
+#, fuzzy
+msgid "last"
+msgstr "đèn nháy"
 
 #: src/main/getopt.c:684
 #, c-format
@@ -1606,6 +1743,137 @@ msgstr "Pha-xi"
 msgid "Revision #%u: Author '%s' worked on '%s'"
 msgstr "Bản sửa đổi #%u: Tác giả « %s » đã làm việc « %s »."
 
+#~ msgid ""
+#~ "use the generic plaintext extractor for the language with the 2-letter "
+#~ "language code LANG"
+#~ msgstr ""
+#~ "sử dụng trình rút văn bản thuần thuộc giống loại cho ngôn ngữ có mã ngôn "
+#~ "ngữ bằng hai chữ là LANG"
+
+#, fuzzy
+#~ msgid "copyright information"
+#~ msgstr "thông tin"
+
+#~ msgid "author"
+#~ msgstr "tác giả"
+
+#~ msgid "date"
+#~ msgstr "ngày"
+
+#~ msgid "location"
+#~ msgstr "địa điểm"
+
+#~ msgid "resource-type"
+#~ msgstr "kiểu tài nguyên"
+
+#~ msgid "resource-identifier"
+#~ msgstr "điều nhận diện tài nguyên"
+
+#~ msgid "relation"
+#~ msgstr "liên quan"
+
+#~ msgid "coverage"
+#~ msgstr "phạm vị"
+
+#~ msgid "software"
+#~ msgstr "phần mềm"
+
+#~ msgid "translated"
+#~ msgstr "dịch"
+
+#~ msgid "used fonts"
+#~ msgstr "phông chữ đã dùng"
+
+#~ msgid "created for"
+#~ msgstr "tạo cho"
+
+#~ msgid "release"
+#~ msgstr "bản phát hành"
+
+#~ msgid "size"
+#~ msgstr "cỡ"
+
+#~ msgid "packager"
+#~ msgstr "nhà đóng gói"
+
+#~ msgid "build-host"
+#~ msgstr "máy hỗ trợ xây dựng"
+
+#~ msgid "operating system"
+#~ msgstr "hệ điều hành"
+
+#~ msgid "dependency"
+#~ msgstr "phụ thuộc"
+
+#~ msgid "resolution"
+#~ msgstr "độ phân giải"
+
+#~ msgid "category"
+#~ msgstr "phân loại"
+
+#~ msgid "priority"
+#~ msgstr "ưu tiên"
+
+#~ msgid "conflicts"
+#~ msgstr "xung đột"
+
+#~ msgid "replaces"
+#~ msgstr "thay thế"
+
+#~ msgid "owner"
+#~ msgstr "sở hữu"
+
+#~ msgid "binary thumbnail data"
+#~ msgstr "dữ liệu hình thu nhỏ nhị phân"
+
+#~ msgid "focal length (35mm equivalent)"
+#~ msgstr "tiêu dự (35mm tương đương)"
+
+#~ msgid "split"
+#~ msgstr "phần"
+
+#~ msgid "thumbnails"
+#~ msgstr "hình thu nhỏ"
+
+#~ msgid "security"
+#~ msgstr "giấy chứng khoán"
+
+#~ msgid "scale"
+#~ msgstr "tỷ lệ"
+
+#~ msgid "information"
+#~ msgstr "thông tin"
+
+#~ msgid "chapter"
+#~ msgstr "chương"
+
+#~ msgid "year"
+#~ msgstr "năm"
+
+#~ msgid "link"
+#~ msgstr "liên kết"
+
+#~ msgid "music CD identifier"
+#~ msgstr "bộ nhận diện đĩa CD nhạc"
+
+#~ msgid "content type"
+#~ msgstr "kiểu nội dung"
+
+#~ msgid "time"
+#~ msgstr "giờ"
+
+#~ msgid "hardware dependency"
+#~ msgstr "phụ thuộc vào phần cứng"
+
+#~ msgid "filesize"
+#~ msgstr "cỡ tập tin"
+
+#~ msgid "preferred display style (GNUnet)"
+#~ msgstr "kiểu trình bày ưa thích (GNUnet)"
+
+#~ msgid "GNUnet URI of ECBC data"
+#~ msgstr "URI GNUnet của dữ liệu ECBC"
+
 #~ msgid "do not remove any duplicates"
 #~ msgstr "đừng gỡ bỏ bản sao nào"
 
@@ -1636,9 +1904,6 @@ msgstr "Bản sửa đổi #%u: Tác giả « %s » đã làm việc « %s »."
 #~ msgstr ""
 #~ "Việc tháo gỡ ký hiệu « %s » trong thư viện « %s » bị lỗi, thì đã cố « %s », "
 #~ "nhưng mà nó cũng không thành công. Gặp lỗi « %s » và « %s ».\n"
-
-#~ msgid "Loading `%s' plugin failed: %s\n"
-#~ msgstr "Việc tải bổ sung « %s » bị lỗi: %s\n"
 
 #~ msgid "Unloading plugin `%s' failed!\n"
 #~ msgstr "Việc bỏ tải bổ sung « %s » bị lỗi.\n"
@@ -2137,9 +2402,6 @@ msgstr "Bản sửa đổi #%u: Tác giả « %s » đã làm việc « %s »."
 
 #~ msgid "no copyright"
 #~ msgstr "không có tác quyền"
-
-#~ msgid "original"
-#~ msgstr "gốc"
 
 #~ msgid "copy"
 #~ msgstr "chép"

@@ -11,19 +11,17 @@
 #: src/main/extractor_metatypes.c:273 src/main/extractor_metatypes.c:275
 #: src/main/extractor_metatypes.c:277 src/main/extractor_metatypes.c:280
 #: src/main/extractor_metatypes.c:282 src/main/extractor_metatypes.c:286
-#: src/main/extractor_metatypes.c:306 src/main/extractor_metatypes.c:308
-#: src/main/extractor_metatypes.c:312 src/main/extractor_metatypes.c:314
-#: src/main/extractor_metatypes.c:316 src/main/extractor_metatypes.c:317
-#: src/main/extractor_metatypes.c:318 src/main/extractor_metatypes.c:319
-#: src/main/extractor_metatypes.c:320 src/main/extractor_metatypes.c:321
-#: src/main/extractor_metatypes.c:322 src/main/extractor_metatypes.c:323
-#: src/main/extractor_metatypes.c:324 src/main/extractor_metatypes.c:325
-#: src/main/extractor_metatypes.c:326
+#: src/main/extractor_metatypes.c:309 src/main/extractor_metatypes.c:311
+#: src/main/extractor_metatypes.c:316 src/main/extractor_metatypes.c:318
+#: src/main/extractor_metatypes.c:320 src/main/extractor_metatypes.c:329
+#: src/main/extractor_metatypes.c:366 src/main/extractor_metatypes.c:393
+#: src/main/extractor_metatypes.c:428 src/main/extractor_metatypes.c:430
+#: src/main/extractor_metatypes.c:432 src/main/extractor_metatypes.c:437
 msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.5.20\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2009-12-16 15:44+0100\n"
+"POT-Creation-Date: 2010-01-03 01:21+0100\n"
 "PO-Revision-Date: 2008-03-21 20:46-0700\n"
 "Last-Translator: Kevin Scannell <kscanne@gmail.com>\n"
 "Language-Team: Irish <gaeilge-gnulinux@lists.sourceforge.net>\n"
@@ -31,7 +29,7 @@ msgstr ""
 "Content-Type: text/plain; charset=ISO-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/main/extract.c:65
+#: src/main/extract.c:97
 #, c-format
 msgid ""
 "Usage: %s\n"
@@ -42,7 +40,7 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: src/main/extract.c:68
+#: src/main/extract.c:100
 #, c-format
 msgid ""
 "Arguments mandatory for long options are also mandatory for short options.\n"
@@ -50,111 +48,108 @@ msgstr ""
 "Is riachtanach le rogha ghearr aon argóint atá riachtanach leis an rogha "
 "fhada.\n"
 
-#: src/main/extract.c:142
+#: src/main/extract.c:174
 msgid "print output in bibtex format"
 msgstr "priontáil aschur i bhformáid bibtex"
 
-#: src/main/extract.c:144
-msgid ""
-"use the generic plaintext extractor for the language with the 2-letter "
-"language code LANG"
-msgstr ""
-"úsáid an t-asbhainteoir ginearálta téacs le haghaidh na teanga leis an chód "
-"LANG de réir ISO-639-1"
-
-#: src/main/extract.c:146
+#: src/main/extract.c:176
 msgid "produce grep-friendly output (all results on one line per file)"
 msgstr ""
 "aschur is féidir próiseáil le grep (gach toradh ar líne amháin sa chomhad)"
 
-#: src/main/extract.c:148
+#: src/main/extract.c:178
 msgid "print this help"
 msgstr "taispeáin an chabhair seo"
 
-#: src/main/extract.c:150
+#: src/main/extract.c:180
 msgid "compute hash using the given ALGORITHM (currently sha1 or md5)"
 msgstr "úsáid an tALGARTAM haiseála tugtha (sha1 nó md5 faoi láthair)"
 
-#: src/main/extract.c:152
+#: src/main/extract.c:182
 msgid "run plugins in-process (simplifies debugging)"
 msgstr ""
 
-#: src/main/extract.c:154
+#: src/main/extract.c:184
 msgid "load an extractor plugin named LIBRARY"
 msgstr "luchtaigh breiseán asbhainteora darb ainm LEABHARLANN"
 
-#: src/main/extract.c:156
+#: src/main/extract.c:186
 msgid "list all keyword types"
 msgstr "taispeáin gach cineál lorgfhocail"
 
-#: src/main/extract.c:158
+#: src/main/extract.c:188
 msgid "do not use the default set of extractor plugins"
 msgstr "ná húsáid na breiseáin asbhainteora réamhshocraithe"
 
-#: src/main/extract.c:160
+#: src/main/extract.c:190
 msgid "print only keywords of the given TYPE (use -L to get a list)"
 msgstr ""
 "ná taispeáin ach lorgfhocail den CHINEÁL tugtha (úsáid -L chun liosta a "
 "fháil)"
 
-#: src/main/extract.c:162
+#: src/main/extract.c:192
 msgid "print the version number"
 msgstr "taispeáin an leagan"
 
-#: src/main/extract.c:164
+#: src/main/extract.c:194
 msgid "be verbose"
 msgstr "bí foclach"
 
-#: src/main/extract.c:166
+#: src/main/extract.c:196
 msgid "do not print keywords of the given TYPE"
 msgstr "ná taispeáin lorgfhocail den CHINEÁL tugtha"
 
-#: src/main/extract.c:169
+#: src/main/extract.c:199
 msgid "extract [OPTIONS] [FILENAME]*"
 msgstr "extract [ROGHANNA] [COMHADAINM]*"
 
-#: src/main/extract.c:170
+#: src/main/extract.c:200
 msgid "Extract metadata from files."
 msgstr "Bain meiteashonraí as comhaid."
 
-#: src/main/extract.c:213
+#: src/main/extract.c:240
+#, fuzzy, c-format
+msgid "Found by `%s' plugin:\n"
+msgstr "Theip ar luchtú an bhreiseáin `%s': %s\n"
+
+#: src/main/extract.c:247
 #, c-format
 msgid "%s - (unknown, %u bytes)\n"
 msgstr ""
 
-#: src/main/extract.c:234
+#: src/main/extract.c:268
 #, fuzzy, c-format
 msgid "%s - (binary, %u bytes)\n"
 msgstr "%s - (dénártha)\n"
 
-#: src/main/extract.c:573 src/main/extract.c:586
+#: src/main/extract.c:608 src/main/extract.c:618
 #, c-format
 msgid ""
 "Illegal combination of options, cannot combine multiple styles of printing.\n"
 msgstr ""
 
-#: src/main/extract.c:616
+#: src/main/extract.c:648
 #, c-format
 msgid "You must specify an argument for the `%s' option (option ignored).\n"
 msgstr ""
 "Ní mór duit argóint a thabhairt i ndiaidh na rogha `%s' (á ligean thart).\n"
 
-#: src/main/extract.c:681
+#: src/main/extract.c:713
 #, c-format
 msgid "Use --help to get a list of options.\n"
 msgstr "Bain úsáid as '--help' le haghaidh níos mó roghanna.\n"
 
-#: src/main/extract.c:738
+#: src/main/extract.c:759
 #, c-format
 msgid "%% BiBTeX file\n"
 msgstr "%% Comhad BiBTeX\n"
 
-#: src/main/extract.c:745
+#: src/main/extract.c:766
 #, c-format
 msgid "Keywords for file %s:\n"
 msgstr "Lorgfhocail do chomhad %s:\n"
 
-#: src/main/extractor.c:1725
+#: src/main/extractor.c:1968
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "Theip ar thúsú meicníocht na mbreiseán: %s!\n"
@@ -201,7 +196,7 @@ msgstr "teideal"
 msgid "title of the work"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:48 src/main/extractor_metatypes.c:378
+#: src/main/extractor_metatypes.c:48
 msgid "book title"
 msgstr "teideal an leabhair"
 
@@ -254,7 +249,7 @@ msgstr "uimhir an riain"
 msgid "number of a journal, magazine or tech-report"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:61 src/main/extractor_metatypes.c:358
+#: src/main/extractor_metatypes.c:61
 msgid "page count"
 msgstr "líon na leathanach"
 
@@ -298,7 +293,7 @@ msgstr "treoshuíomh"
 msgid "institution the author worked for"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:72 src/main/extractor_metatypes.c:333
+#: src/main/extractor_metatypes.c:72
 msgid "publisher"
 msgstr "foilsitheoir"
 
@@ -373,7 +368,7 @@ msgid ""
 "the given month"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:89 src/main/extractor_metatypes.c:390
+#: src/main/extractor_metatypes.c:89
 msgid "publication date"
 msgstr "dáta foilsithe"
 
@@ -398,7 +393,7 @@ msgstr "cineál an ábhair"
 msgid "type of the publication for bibTeX bibliographies"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:96 src/main/extractor_metatypes.c:334
+#: src/main/extractor_metatypes.c:96
 msgid "language"
 msgstr "teanga"
 
@@ -544,18 +539,16 @@ msgid "specifics are not known"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:138 src/main/extractor_metatypes.c:139
-#: src/main/extractor_metatypes.c:331
 msgid "description"
 msgstr "cur síos"
 
-#: src/main/extractor_metatypes.c:140 src/main/extractor_metatypes.c:340
+#: src/main/extractor_metatypes.c:140
 msgid "copyright"
 msgstr "cóipcheart"
 
 #: src/main/extractor_metatypes.c:141
-#, fuzzy
-msgid "copyright information"
-msgstr "eolas"
+msgid "Name of the entity holding the copyright"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:142
 #, fuzzy
@@ -568,7 +561,6 @@ msgid "information about rights"
 msgstr "eolas"
 
 #: src/main/extractor_metatypes.c:144 src/main/extractor_metatypes.c:145
-#: src/main/extractor_metatypes.c:342
 msgid "keywords"
 msgstr "lorgfhocail"
 
@@ -577,11 +569,10 @@ msgid "abstract"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:149 src/main/extractor_metatypes.c:150
-#: src/main/extractor_metatypes.c:368
 msgid "summary"
 msgstr "achoimre"
 
-#: src/main/extractor_metatypes.c:151 src/main/extractor_metatypes.c:341
+#: src/main/extractor_metatypes.c:151
 msgid "subject"
 msgstr "ábhar"
 
@@ -591,7 +582,6 @@ msgid "subject matter"
 msgstr "ábhar"
 
 #: src/main/extractor_metatypes.c:153 src/main/extractor_metatypes.c:186
-#: src/main/extractor_metatypes.c:356
 msgid "creator"
 msgstr "cruthaitheoir"
 
@@ -599,7 +589,7 @@ msgstr "cruthaitheoir"
 msgid "name of the person who created the document"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:155 src/main/extractor_metatypes.c:345
+#: src/main/extractor_metatypes.c:155
 msgid "format"
 msgstr "formáid"
 
@@ -607,7 +597,7 @@ msgstr "formáid"
 msgid "name of the document format"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:158 src/main/extractor_metatypes.c:443
+#: src/main/extractor_metatypes.c:158
 msgid "format version"
 msgstr "leagan na formáide"
 
@@ -615,7 +605,7 @@ msgstr "leagan na formáide"
 msgid "version of the document format"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:160 src/main/extractor_metatypes.c:417
+#: src/main/extractor_metatypes.c:160
 msgid "created by software"
 msgstr "cruthaithe ag bogearraí"
 
@@ -634,7 +624,7 @@ msgid ""
 "time)"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:164 src/main/extractor_metatypes.c:354
+#: src/main/extractor_metatypes.c:164
 msgid "creation date"
 msgstr "dáta a cruthaíodh"
 
@@ -642,7 +632,7 @@ msgstr "dáta a cruthaíodh"
 msgid "date the document was created"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:166 src/main/extractor_metatypes.c:355
+#: src/main/extractor_metatypes.c:166
 msgid "modification date"
 msgstr "dáta mionathraithe"
 
@@ -650,7 +640,7 @@ msgstr "dáta mionathraithe"
 msgid "date the document was modified"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:169 src/main/extractor_metatypes.c:411
+#: src/main/extractor_metatypes.c:169
 msgid "last printed"
 msgstr "priontáilte"
 
@@ -658,7 +648,7 @@ msgstr "priontáilte"
 msgid "date the document was last printed"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:171 src/main/extractor_metatypes.c:410
+#: src/main/extractor_metatypes.c:171
 msgid "last saved by"
 msgstr "sábháilte is déanaí ag"
 
@@ -666,7 +656,7 @@ msgstr "sábháilte is déanaí ag"
 msgid "name of the user who saved the document last"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:173 src/main/extractor_metatypes.c:414
+#: src/main/extractor_metatypes.c:173
 msgid "total editing time"
 msgstr "am iomlán eagair"
 
@@ -674,7 +664,7 @@ msgstr "am iomlán eagair"
 msgid "time spent editing the document"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:175 src/main/extractor_metatypes.c:425
+#: src/main/extractor_metatypes.c:175
 msgid "editing cycles"
 msgstr "timthriallta eagarthóireachta"
 
@@ -683,7 +673,7 @@ msgstr "timthriallta eagarthóireachta"
 msgid "number of editing cycles"
 msgstr "timthriallta eagarthóireachta"
 
-#: src/main/extractor_metatypes.c:177 src/main/extractor_metatypes.c:418
+#: src/main/extractor_metatypes.c:177
 msgid "modified by software"
 msgstr "mionathraithe ag bogearraí"
 
@@ -691,7 +681,7 @@ msgstr "mionathraithe ag bogearraí"
 msgid "name of software making modifications"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:180 src/main/extractor_metatypes.c:419
+#: src/main/extractor_metatypes.c:180
 msgid "revision history"
 msgstr "stair leasaithe"
 
@@ -784,7 +774,7 @@ msgstr "ionadaíonn"
 msgid "packages made obsolete by this package"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:204 src/main/extractor_metatypes.c:382
+#: src/main/extractor_metatypes.c:204
 msgid "provides"
 msgstr "soláthraíonn"
 
@@ -828,7 +818,6 @@ msgid "space consumption after installation"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:215 src/main/extractor_metatypes.c:295
-#: src/main/extractor_metatypes.c:347
 msgid "source"
 msgstr "foinse"
 
@@ -849,7 +838,7 @@ msgid "target architecture"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:220
-msgid "hardware architecture the package can be used for"
+msgid "hardware architecture the contents can be used for"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:221
@@ -861,15 +850,15 @@ msgstr "spleáchas"
 msgid "dependency that must be satisfied before installation"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:224 src/main/extractor_metatypes.c:371
+#: src/main/extractor_metatypes.c:224
 msgid "license"
 msgstr "ceadúnas"
 
 #: src/main/extractor_metatypes.c:225
-msgid "applicable license"
+msgid "applicable copyright license"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:226 src/main/extractor_metatypes.c:372
+#: src/main/extractor_metatypes.c:226
 msgid "distribution"
 msgstr "dáileadh"
 
@@ -886,7 +875,7 @@ msgstr "óstríomhaire-tógála"
 msgid "machine the package was build on"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:230 src/main/extractor_metatypes.c:370
+#: src/main/extractor_metatypes.c:230
 msgid "vendor"
 msgstr "díoltóir"
 
@@ -951,35 +940,35 @@ msgstr "spleáchas crua-earraí"
 msgid "name of a library that this file depends on"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:246 src/main/extractor_metatypes.c:391
+#: src/main/extractor_metatypes.c:246
 msgid "camera make"
 msgstr "déantús an cheamara"
 
-#: src/main/extractor_metatypes.c:248 src/main/extractor_metatypes.c:392
+#: src/main/extractor_metatypes.c:248
 msgid "camera model"
 msgstr "déanamh an cheamara"
 
-#: src/main/extractor_metatypes.c:250 src/main/extractor_metatypes.c:393
+#: src/main/extractor_metatypes.c:250
 msgid "exposure"
 msgstr "nochtadh"
 
-#: src/main/extractor_metatypes.c:252 src/main/extractor_metatypes.c:394
+#: src/main/extractor_metatypes.c:252
 msgid "aperture"
 msgstr "cró"
 
-#: src/main/extractor_metatypes.c:254 src/main/extractor_metatypes.c:395
+#: src/main/extractor_metatypes.c:254
 msgid "exposure bias"
 msgstr "laofacht nochta"
 
-#: src/main/extractor_metatypes.c:257 src/main/extractor_metatypes.c:396
+#: src/main/extractor_metatypes.c:257
 msgid "flash"
 msgstr "splanc"
 
-#: src/main/extractor_metatypes.c:259 src/main/extractor_metatypes.c:397
+#: src/main/extractor_metatypes.c:259
 msgid "flash bias"
 msgstr "laofacht splaince"
 
-#: src/main/extractor_metatypes.c:261 src/main/extractor_metatypes.c:398
+#: src/main/extractor_metatypes.c:261
 msgid "focal length"
 msgstr "fad fócais"
 
@@ -988,35 +977,35 @@ msgstr "fad fócais"
 msgid "focal length 35mm"
 msgstr "fad fócais"
 
-#: src/main/extractor_metatypes.c:265 src/main/extractor_metatypes.c:400
+#: src/main/extractor_metatypes.c:265
 msgid "iso speed"
 msgstr "luas ISO"
 
-#: src/main/extractor_metatypes.c:268 src/main/extractor_metatypes.c:401
+#: src/main/extractor_metatypes.c:268
 msgid "exposure mode"
 msgstr "mód nochta"
 
-#: src/main/extractor_metatypes.c:270 src/main/extractor_metatypes.c:402
+#: src/main/extractor_metatypes.c:270
 msgid "metering mode"
 msgstr "mód méadrála"
 
-#: src/main/extractor_metatypes.c:272 src/main/extractor_metatypes.c:403
+#: src/main/extractor_metatypes.c:272
 msgid "macro mode"
 msgstr "mód macra"
 
-#: src/main/extractor_metatypes.c:274 src/main/extractor_metatypes.c:404
+#: src/main/extractor_metatypes.c:274
 msgid "image quality"
 msgstr "cáilíocht íomhá"
 
-#: src/main/extractor_metatypes.c:276 src/main/extractor_metatypes.c:405
+#: src/main/extractor_metatypes.c:276
 msgid "white balance"
 msgstr "cothromaíocht bhán"
 
-#: src/main/extractor_metatypes.c:279 src/main/extractor_metatypes.c:406
+#: src/main/extractor_metatypes.c:279
 msgid "orientation"
 msgstr "treoshuíomh"
 
-#: src/main/extractor_metatypes.c:281 src/main/extractor_metatypes.c:364
+#: src/main/extractor_metatypes.c:281
 msgid "magnification"
 msgstr "formhéadú"
 
@@ -1057,7 +1046,7 @@ msgstr "%u×%u poncanna san orlach"
 msgid "Originating entity"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:297 src/main/extractor_metatypes.c:422
+#: src/main/extractor_metatypes.c:297
 msgid "character set"
 msgstr "tacar carachtar"
 
@@ -1066,7 +1055,7 @@ msgstr "tacar carachtar"
 msgid "character encoding used"
 msgstr "líon na gcarachtar"
 
-#: src/main/extractor_metatypes.c:299 src/main/extractor_metatypes.c:423
+#: src/main/extractor_metatypes.c:299
 msgid "line count"
 msgstr "líon na línte"
 
@@ -1074,7 +1063,7 @@ msgstr "líon na línte"
 msgid "number of lines"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:301 src/main/extractor_metatypes.c:424
+#: src/main/extractor_metatypes.c:301
 msgid "paragraph count"
 msgstr "líon na n-alt"
 
@@ -1082,343 +1071,487 @@ msgstr "líon na n-alt"
 msgid "number o paragraphs"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:303 src/main/extractor_metatypes.c:412
+#: src/main/extractor_metatypes.c:304
 msgid "word count"
 msgstr "líon na bhfocal"
 
-#: src/main/extractor_metatypes.c:304
+#: src/main/extractor_metatypes.c:305
 msgid "number of words"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:305 src/main/extractor_metatypes.c:359
+#: src/main/extractor_metatypes.c:306
+msgid "character count"
+msgstr "líon na gcarachtar"
+
+#: src/main/extractor_metatypes.c:307
+#, fuzzy
+msgid "number of characters"
+msgstr "timthriallta eagarthóireachta"
+
+#: src/main/extractor_metatypes.c:308
 msgid "page orientation"
 msgstr "treoshuíomh an leathanaigh"
 
-#: src/main/extractor_metatypes.c:307 src/main/extractor_metatypes.c:360
+#: src/main/extractor_metatypes.c:310
 msgid "paper size"
 msgstr "páipéarmhéid"
 
-#: src/main/extractor_metatypes.c:309 src/main/extractor_metatypes.c:407
+#: src/main/extractor_metatypes.c:312
 msgid "template"
 msgstr "teimpléad"
 
-#: src/main/extractor_metatypes.c:310
+#: src/main/extractor_metatypes.c:313
 msgid "template the document uses or is based on"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:311 src/main/extractor_metatypes.c:420
+#: src/main/extractor_metatypes.c:315
 msgid "company"
 msgstr "comhlacht"
 
-#: src/main/extractor_metatypes.c:313 src/main/extractor_metatypes.c:427
+#: src/main/extractor_metatypes.c:317
 msgid "manager"
 msgstr "bainisteoir"
 
-#: src/main/extractor_metatypes.c:315
+#: src/main/extractor_metatypes.c:319
 #, fuzzy
 msgid "revision number"
 msgstr "taispeáin an leagan"
 
-#: src/main/extractor_metatypes.c:329
-msgid "author"
-msgstr "údar"
-
-#: src/main/extractor_metatypes.c:330
-msgid "artist"
-msgstr "ealaíontóir"
-
-#: src/main/extractor_metatypes.c:332
-msgid "date"
-msgstr "dáta"
-
-#: src/main/extractor_metatypes.c:335
-msgid "album"
-msgstr "albam"
-
-#: src/main/extractor_metatypes.c:336
-msgid "genre"
-msgstr "seánra"
-
-#: src/main/extractor_metatypes.c:337
-msgid "location"
-msgstr "suíomh"
-
-#: src/main/extractor_metatypes.c:338
-msgid "version"
-msgstr "leagan"
-
-#: src/main/extractor_metatypes.c:339
-msgid "organization"
-msgstr "eagras"
-
-#: src/main/extractor_metatypes.c:343
-msgid "contributor"
-msgstr "cuiditheoir"
-
-#: src/main/extractor_metatypes.c:344
-msgid "resource-type"
-msgstr "cineál-acmhainne"
-
-#: src/main/extractor_metatypes.c:346
-msgid "resource-identifier"
-msgstr "aitheantóir-acmhainne"
-
-#: src/main/extractor_metatypes.c:348
-msgid "relation"
-msgstr "gaol"
-
-#: src/main/extractor_metatypes.c:349
-msgid "coverage"
-msgstr "clúdach"
-
-#: src/main/extractor_metatypes.c:350
-msgid "software"
-msgstr "bogearraí"
-
-#: src/main/extractor_metatypes.c:351
-msgid "disclaimer"
-msgstr "séanadh"
-
-#: src/main/extractor_metatypes.c:352
-msgid "warning"
-msgstr "rabhadh"
-
-#: src/main/extractor_metatypes.c:353
-msgid "translated"
-msgstr "aistrithe"
-
-#: src/main/extractor_metatypes.c:357
-msgid "producer"
-msgstr "táirgeoir"
-
-#: src/main/extractor_metatypes.c:361
-msgid "used fonts"
-msgstr "clófhoirne úsáidte"
-
-#: src/main/extractor_metatypes.c:362
-msgid "page order"
-msgstr "ord na leathanach"
-
-#: src/main/extractor_metatypes.c:363
-msgid "created for"
-msgstr "cruthaithe ar son"
-
-#: src/main/extractor_metatypes.c:365
-msgid "release"
-msgstr "scaoileadh"
-
-#: src/main/extractor_metatypes.c:366
-msgid "group"
-msgstr "grúpa"
-
-#: src/main/extractor_metatypes.c:367
-msgid "size"
-msgstr "méid"
-
-#: src/main/extractor_metatypes.c:369
-msgid "packager"
-msgstr "pacáisteoir"
-
-#: src/main/extractor_metatypes.c:373
-msgid "build-host"
-msgstr "óstríomhaire-tógála"
-
-#: src/main/extractor_metatypes.c:374
-msgid "operating system"
-msgstr "córas oibriúcháin"
-
-#: src/main/extractor_metatypes.c:375
-msgid "dependency"
-msgstr "spleáchas"
-
-#: src/main/extractor_metatypes.c:376
-msgid "resolution"
-msgstr "taifeach"
-
-#: src/main/extractor_metatypes.c:377
-msgid "category"
-msgstr "catagóir"
-
-#: src/main/extractor_metatypes.c:379
-msgid "priority"
-msgstr "tosaíocht"
-
-#: src/main/extractor_metatypes.c:380
-msgid "conflicts"
-msgstr "coinbhleachtaí"
-
-#: src/main/extractor_metatypes.c:381
-msgid "replaces"
-msgstr "ionadaíonn"
-
-#: src/main/extractor_metatypes.c:383
-msgid "conductor"
-msgstr "stiúrthóir"
-
-#: src/main/extractor_metatypes.c:384
-msgid "interpreter"
-msgstr "léirmhínitheoir"
-
-#: src/main/extractor_metatypes.c:385
-msgid "owner"
-msgstr "úinéir"
-
-#: src/main/extractor_metatypes.c:386
-msgid "lyrics"
-msgstr "liricí"
-
-#: src/main/extractor_metatypes.c:387
-msgid "media type"
-msgstr "cineál an mheáin"
-
-#: src/main/extractor_metatypes.c:388
-msgid "contact"
-msgstr "teagmháil"
-
-#: src/main/extractor_metatypes.c:389
-msgid "binary thumbnail data"
-msgstr "sonraí dénártha mionsamhla"
-
-#: src/main/extractor_metatypes.c:399
-msgid "focal length (35mm equivalent)"
-msgstr "fad fócais (35mm coibhéiseach)"
-
-#: src/main/extractor_metatypes.c:408
-msgid "split"
-msgstr "roinn"
-
-#: src/main/extractor_metatypes.c:409
-msgid "product version"
-msgstr "leagan an táirge"
-
-#: src/main/extractor_metatypes.c:413
-msgid "character count"
-msgstr "líon na gcarachtar"
-
-#: src/main/extractor_metatypes.c:415
-msgid "thumbnails"
-msgstr "mionsamhlacha"
-
-#: src/main/extractor_metatypes.c:416
-msgid "security"
-msgstr "slándáil"
-
-#: src/main/extractor_metatypes.c:421
-msgid "generator"
-msgstr "gineadóir"
-
-#: src/main/extractor_metatypes.c:426
-msgid "scale"
-msgstr "scála"
-
-#: src/main/extractor_metatypes.c:428
-msgid "director"
-msgstr "stiúrthóir"
-
-#: src/main/extractor_metatypes.c:429
+#: src/main/extractor_metatypes.c:321
 msgid "duration"
 msgstr "achar"
 
-#: src/main/extractor_metatypes.c:430
-msgid "information"
-msgstr "eolas"
+#: src/main/extractor_metatypes.c:322
+msgid "play time for the medium"
+msgstr ""
 
-#: src/main/extractor_metatypes.c:431
-msgid "full name"
-msgstr "ainm iomlán"
+#: src/main/extractor_metatypes.c:323
+msgid "album"
+msgstr "albam"
 
-#: src/main/extractor_metatypes.c:432
-msgid "chapter"
-msgstr "caibidil"
+#: src/main/extractor_metatypes.c:324
+#, fuzzy
+msgid "name of the album"
+msgstr "foilsitheoir"
 
-#: src/main/extractor_metatypes.c:433
-msgid "year"
-msgstr "bliain"
+#: src/main/extractor_metatypes.c:326
+msgid "artist"
+msgstr "ealaíontóir"
 
-#: src/main/extractor_metatypes.c:434
-msgid "link"
-msgstr "nasc"
+#: src/main/extractor_metatypes.c:327
+#, fuzzy
+msgid "name of the artist or band"
+msgstr "foilsitheoir"
 
-#: src/main/extractor_metatypes.c:435
-msgid "music CD identifier"
-msgstr "aitheantas dlúthdhiosca ceoil"
+#: src/main/extractor_metatypes.c:328
+msgid "genre"
+msgstr "seánra"
 
-#: src/main/extractor_metatypes.c:436
-msgid "play counter"
-msgstr "áiritheoir seinnte"
-
-#: src/main/extractor_metatypes.c:437
-msgid "popularity meter"
-msgstr "méadar éilimh"
-
-#: src/main/extractor_metatypes.c:438
-msgid "content type"
-msgstr "cineál an ábhair"
-
-#: src/main/extractor_metatypes.c:439
-msgid "encoded by"
-msgstr "ionchódaithe ag"
-
-#: src/main/extractor_metatypes.c:440
-msgid "time"
-msgstr "am"
-
-#: src/main/extractor_metatypes.c:441
-msgid "musician credits list"
-msgstr "admhálacha na gceoltóirí"
-
-#: src/main/extractor_metatypes.c:442
-msgid "mood"
-msgstr "fonn"
-
-#: src/main/extractor_metatypes.c:444
-msgid "television system"
-msgstr "córas teilifíse"
-
-#: src/main/extractor_metatypes.c:445
-msgid "song count"
-msgstr "líon na n-amhrán"
-
-#: src/main/extractor_metatypes.c:446
-msgid "starting song"
-msgstr "amhrán tosaigh"
-
-#: src/main/extractor_metatypes.c:447
-msgid "hardware dependency"
-msgstr "spleáchas crua-earraí"
-
-#: src/main/extractor_metatypes.c:448
-msgid "ripper"
-msgstr "sracaire"
-
-#: src/main/extractor_metatypes.c:449
-msgid "filesize"
-msgstr "méid comhaid"
-
-#: src/main/extractor_metatypes.c:450
+#: src/main/extractor_metatypes.c:330
 msgid "track number"
 msgstr "uimhir an riain"
 
-#: src/main/extractor_metatypes.c:451
-msgid "disc number"
+#: src/main/extractor_metatypes.c:331
+msgid "original number of the track on the distribution medium"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:332
+#, fuzzy
+msgid "disk number"
 msgstr "uimhir an diosca"
 
-#: src/main/extractor_metatypes.c:452
-msgid "preferred display style (GNUnet)"
+#: src/main/extractor_metatypes.c:333
+msgid "number of the disk in a multi-disk (or volume) distribution"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:453
-msgid "GNUnet URI of ECBC data"
+#: src/main/extractor_metatypes.c:334
+#, fuzzy
+msgid "performer"
+msgstr "ord na leathanach"
+
+#: src/main/extractor_metatypes.c:335
+msgid ""
+"The artist(s) who performed the work (conductor, orchestra, soloists, actor, "
+"etc.)"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:454
-msgid "Complete file data (for non-binary files only)"
+#: src/main/extractor_metatypes.c:337
+msgid "contact"
+msgstr "teagmháil"
+
+#: src/main/extractor_metatypes.c:338
+msgid "Contact information for the creator or distributor"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:455
+#: src/main/extractor_metatypes.c:339
+#, fuzzy
+msgid "song version"
+msgstr "leagan"
+
+#: src/main/extractor_metatypes.c:340
+msgid "name of the version of the song (i.e. remix information)"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:341
+#, fuzzy
+msgid "picture"
+msgstr "cró"
+
+#: src/main/extractor_metatypes.c:342
+msgid "associated misc. picture"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:343
+msgid "cover picture"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:344
+msgid "picture of the cover of the distribution medium"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:345
+#, fuzzy
+msgid "contributor picture"
+msgstr "cuiditheoir"
+
+#: src/main/extractor_metatypes.c:346
+msgid "picture of one of the contributors"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:348
+msgid "event picture"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:349
+msgid "picture of an associated event"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:350
+msgid "logo"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:351
+msgid "logo of an associated organization"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:352
+#, fuzzy
+msgid "broadcast television system"
+msgstr "córas teilifíse"
+
+#: src/main/extractor_metatypes.c:353
+msgid "name of the television system for which the data is coded"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:354
+#, fuzzy
+msgid "source device"
+msgstr "foinse"
+
+#: src/main/extractor_metatypes.c:355
+msgid "device used to create the object"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:356
+msgid "disclaimer"
+msgstr "séanadh"
+
+#: src/main/extractor_metatypes.c:357
+#, fuzzy
+msgid "legal disclaimer"
+msgstr "séanadh"
+
+#: src/main/extractor_metatypes.c:359
+msgid "warning"
+msgstr "rabhadh"
+
+#: src/main/extractor_metatypes.c:360
+msgid "warning about the nature of the content"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:361
+msgid "page order"
+msgstr "ord na leathanach"
+
+#: src/main/extractor_metatypes.c:362
+msgid "order of the pages"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:363
+#, fuzzy
+msgid "writer"
+msgstr "sracaire"
+
+#: src/main/extractor_metatypes.c:364
+#, fuzzy
+msgid "contributing writer"
+msgstr "cuiditheoir"
+
+#: src/main/extractor_metatypes.c:365
+msgid "product version"
+msgstr "leagan an táirge"
+
+#: src/main/extractor_metatypes.c:367
+msgid "contributor"
+msgstr "cuiditheoir"
+
+#: src/main/extractor_metatypes.c:368
+#, fuzzy
+msgid "name of a contributor"
+msgstr "cuiditheoir"
+
+#: src/main/extractor_metatypes.c:370
+#, fuzzy
+msgid "movie director"
+msgstr "stiúrthóir"
+
+#: src/main/extractor_metatypes.c:371
+#, fuzzy
+msgid "name of the director"
+msgstr "foilsitheoir"
+
+#: src/main/extractor_metatypes.c:372
+#, fuzzy
+msgid "network"
+msgstr "gineadóir"
+
+#: src/main/extractor_metatypes.c:373
+msgid "name of the broadcasting network or station"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:374
+msgid "show"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:375
+#, fuzzy
+msgid "name of the show"
+msgstr "foilsitheoir"
+
+#: src/main/extractor_metatypes.c:376
+#, fuzzy
+msgid "chapter name"
+msgstr "uimhir an riain"
+
+#: src/main/extractor_metatypes.c:377
+#, fuzzy
+msgid "name of the chapter"
+msgstr "foilsitheoir"
+
+#: src/main/extractor_metatypes.c:378
+msgid "song count"
+msgstr "líon na n-amhrán"
+
+#: src/main/extractor_metatypes.c:379
+#, fuzzy
+msgid "number of songs"
+msgstr "timthriallta eagarthóireachta"
+
+#: src/main/extractor_metatypes.c:381
+msgid "starting song"
+msgstr "amhrán tosaigh"
+
+#: src/main/extractor_metatypes.c:382
+#, fuzzy
+msgid "number of the first song to play"
+msgstr "timthriallta eagarthóireachta"
+
+#: src/main/extractor_metatypes.c:383
+msgid "play counter"
+msgstr "áiritheoir seinnte"
+
+#: src/main/extractor_metatypes.c:384
+msgid "number of times the media has been played"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:385
+msgid "conductor"
+msgstr "stiúrthóir"
+
+#: src/main/extractor_metatypes.c:386
+#, fuzzy
+msgid "name of the conductor"
+msgstr "foilsitheoir"
+
+#: src/main/extractor_metatypes.c:387
+#, fuzzy
+msgid "interpretation"
+msgstr "léirmhínitheoir"
+
+#: src/main/extractor_metatypes.c:388
+msgid ""
+"information about the people behind interpretations of an existing piece"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:389
+msgid "composer"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:390
+#, fuzzy
+msgid "name of the composer"
+msgstr "foilsitheoir"
+
+#: src/main/extractor_metatypes.c:392
+#, fuzzy
+msgid "beats per minute"
+msgstr "priontáilte"
+
+#: src/main/extractor_metatypes.c:394
+msgid "encoded by"
+msgstr "ionchódaithe ag"
+
+#: src/main/extractor_metatypes.c:395
+msgid "name of person or organization that encoded the file"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:396
+msgid "original title"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:397
+msgid "title of the original work"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:398
+msgid "original artist"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:399
+#, fuzzy
+msgid "name of the original artist"
+msgstr "foilsitheoir"
+
+#: src/main/extractor_metatypes.c:400
+msgid "original writer"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:401
+msgid "name of the original lyricist or writer"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:403
+msgid "original release year"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:404
+msgid "year of the original release"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:405
+msgid "original performer"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:406
+msgid "name of the original performer"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:407
+msgid "lyrics"
+msgstr "liricí"
+
+#: src/main/extractor_metatypes.c:408
+msgid "lyrics of the song or text description of vocal activities"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:409
+#, fuzzy
+msgid "popularity"
+msgstr "méadar éilimh"
+
+#: src/main/extractor_metatypes.c:410
+#, fuzzy
+msgid "information about the file's popularity"
+msgstr "eolas"
+
+#: src/main/extractor_metatypes.c:411
+#, fuzzy
+msgid "licensee"
+msgstr "ceadúnas"
+
+#: src/main/extractor_metatypes.c:412
+msgid "name of the owner or licensee of the file"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:414
+#, fuzzy
+msgid "musician credit list"
+msgstr "admhálacha na gceoltóirí"
+
+#: src/main/extractor_metatypes.c:415
+msgid "names of contributing musicians"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:416
+msgid "mood"
+msgstr "fonn"
+
+#: src/main/extractor_metatypes.c:417
+msgid "keywords reflecting the mood of the piece"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:418
+#, fuzzy
+msgid "subtitle"
+msgstr "teideal"
+
+#: src/main/extractor_metatypes.c:419
+msgid "subtitle of this part"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:420
+#, fuzzy
+msgid "display type"
+msgstr "cineál an mheáin"
+
+#: src/main/extractor_metatypes.c:421
+msgid "what rendering method should be used to display this item"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:422
+#, fuzzy
+msgid "full data"
+msgstr "ainm iomlán"
+
+#: src/main/extractor_metatypes.c:423
+msgid ""
+"entry that contains the full, original binary data (not really meta data)"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:425
 #, fuzzy
 msgid "rating"
 msgstr "Laidineach"
+
+#: src/main/extractor_metatypes.c:426
+msgid "rating of the content"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:427
+msgid "organization"
+msgstr "eagras"
+
+#: src/main/extractor_metatypes.c:429
+msgid "ripper"
+msgstr "sracaire"
+
+#: src/main/extractor_metatypes.c:431
+msgid "producer"
+msgstr "táirgeoir"
+
+#: src/main/extractor_metatypes.c:433
+msgid "group"
+msgstr "grúpa"
+
+#: src/main/extractor_metatypes.c:434
+#, fuzzy
+msgid "name of the group or band"
+msgstr "foilsitheoir"
+
+#: src/main/extractor_metatypes.c:436
+#, fuzzy
+msgid "last"
+msgstr "splanc"
 
 #: src/main/getopt.c:684
 #, c-format
@@ -1592,6 +1725,131 @@ msgstr "Fairsis"
 msgid "Revision #%u: Author '%s' worked on '%s'"
 msgstr "Leasú #%u: D'oibrigh údar '%s' ar '%s'"
 
+#~ msgid ""
+#~ "use the generic plaintext extractor for the language with the 2-letter "
+#~ "language code LANG"
+#~ msgstr ""
+#~ "úsáid an t-asbhainteoir ginearálta téacs le haghaidh na teanga leis an "
+#~ "chód LANG de réir ISO-639-1"
+
+#, fuzzy
+#~ msgid "copyright information"
+#~ msgstr "eolas"
+
+#~ msgid "author"
+#~ msgstr "údar"
+
+#~ msgid "date"
+#~ msgstr "dáta"
+
+#~ msgid "location"
+#~ msgstr "suíomh"
+
+#~ msgid "resource-type"
+#~ msgstr "cineál-acmhainne"
+
+#~ msgid "resource-identifier"
+#~ msgstr "aitheantóir-acmhainne"
+
+#~ msgid "relation"
+#~ msgstr "gaol"
+
+#~ msgid "coverage"
+#~ msgstr "clúdach"
+
+#~ msgid "software"
+#~ msgstr "bogearraí"
+
+#~ msgid "translated"
+#~ msgstr "aistrithe"
+
+#~ msgid "used fonts"
+#~ msgstr "clófhoirne úsáidte"
+
+#~ msgid "created for"
+#~ msgstr "cruthaithe ar son"
+
+#~ msgid "release"
+#~ msgstr "scaoileadh"
+
+#~ msgid "size"
+#~ msgstr "méid"
+
+#~ msgid "packager"
+#~ msgstr "pacáisteoir"
+
+#~ msgid "build-host"
+#~ msgstr "óstríomhaire-tógála"
+
+#~ msgid "operating system"
+#~ msgstr "córas oibriúcháin"
+
+#~ msgid "dependency"
+#~ msgstr "spleáchas"
+
+#~ msgid "resolution"
+#~ msgstr "taifeach"
+
+#~ msgid "category"
+#~ msgstr "catagóir"
+
+#~ msgid "priority"
+#~ msgstr "tosaíocht"
+
+#~ msgid "conflicts"
+#~ msgstr "coinbhleachtaí"
+
+#~ msgid "replaces"
+#~ msgstr "ionadaíonn"
+
+#~ msgid "owner"
+#~ msgstr "úinéir"
+
+#~ msgid "binary thumbnail data"
+#~ msgstr "sonraí dénártha mionsamhla"
+
+#~ msgid "focal length (35mm equivalent)"
+#~ msgstr "fad fócais (35mm coibhéiseach)"
+
+#~ msgid "split"
+#~ msgstr "roinn"
+
+#~ msgid "thumbnails"
+#~ msgstr "mionsamhlacha"
+
+#~ msgid "security"
+#~ msgstr "slándáil"
+
+#~ msgid "scale"
+#~ msgstr "scála"
+
+#~ msgid "information"
+#~ msgstr "eolas"
+
+#~ msgid "chapter"
+#~ msgstr "caibidil"
+
+#~ msgid "year"
+#~ msgstr "bliain"
+
+#~ msgid "link"
+#~ msgstr "nasc"
+
+#~ msgid "music CD identifier"
+#~ msgstr "aitheantas dlúthdhiosca ceoil"
+
+#~ msgid "content type"
+#~ msgstr "cineál an ábhair"
+
+#~ msgid "time"
+#~ msgstr "am"
+
+#~ msgid "hardware dependency"
+#~ msgstr "spleáchas crua-earraí"
+
+#~ msgid "filesize"
+#~ msgstr "méid comhaid"
+
 #~ msgid "do not remove any duplicates"
 #~ msgstr "ná bain macasamhla amach"
 
@@ -1624,9 +1882,6 @@ msgstr "Leasú #%u: D'oibrigh údar '%s' ar '%s'"
 #~ "Níorbh fhéidir siombail `%s' a réiteach i leabharlann `%s'.  Dá bhrí sin, "
 #~ "bhain mé triail as `%s', ach theip ar an cheann sin freisin.  Na "
 #~ "hearráidí: `%s' agus `%s'.\n"
-
-#~ msgid "Loading `%s' plugin failed: %s\n"
-#~ msgstr "Theip ar luchtú an bhreiseáin `%s': %s\n"
 
 #~ msgid "Unloading plugin `%s' failed!\n"
 #~ msgstr "Theip ar dhíluchtú an bhreiseáin `%s'!\n"

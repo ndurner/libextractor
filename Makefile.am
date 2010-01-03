@@ -7,4 +7,4 @@ pkgconfigdatadir = $(libdir)/pkgconfig
 pkgconfigdata_DATA = libextractor.pc
 
 
-ACLOCAL_AMFLAGS = -I m4 -I libltdl/m4
+ACLOCAL_AMFLAGS = -I m4 

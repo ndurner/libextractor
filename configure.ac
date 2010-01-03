@@ -1,7 +1,6 @@
 # Process this file with autoconf to produce a configure script.
 AC_PREREQ(2.61)
 AC_INIT([libextractor], [0.6.0], [bug-libextractor@gnu.org])
-AC_CONFIG_AUX_DIR([libltdl/config])
 AM_INIT_AUTOMAKE([libextractor], [0.6.0])
 AC_CONFIG_HEADERS([config.h])
 AH_TOP([#define _GNU_SOURCE  1])
@@ -24,7 +23,6 @@ AC_CHECK_PROG(HAVE_CXX, $CXX, yes, no)
 AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_PROG_MAKE_SET
-LT_CONFIG_LTDL_DIR([libltdl])
 AC_CANONICAL_HOST
 # save LIBS, libtool does a AC_SEARCH_LIBS(dlopen, dl), but plugins
 # need not have -ldl added

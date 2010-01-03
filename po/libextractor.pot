@@ -12,20 +12,18 @@
 #: src/main/extractor_metatypes.c:273 src/main/extractor_metatypes.c:275
 #: src/main/extractor_metatypes.c:277 src/main/extractor_metatypes.c:280
 #: src/main/extractor_metatypes.c:282 src/main/extractor_metatypes.c:286
-#: src/main/extractor_metatypes.c:306 src/main/extractor_metatypes.c:308
-#: src/main/extractor_metatypes.c:312 src/main/extractor_metatypes.c:314
-#: src/main/extractor_metatypes.c:316 src/main/extractor_metatypes.c:317
-#: src/main/extractor_metatypes.c:318 src/main/extractor_metatypes.c:319
-#: src/main/extractor_metatypes.c:320 src/main/extractor_metatypes.c:321
-#: src/main/extractor_metatypes.c:322 src/main/extractor_metatypes.c:323
-#: src/main/extractor_metatypes.c:324 src/main/extractor_metatypes.c:325
-#: src/main/extractor_metatypes.c:326
+#: src/main/extractor_metatypes.c:309 src/main/extractor_metatypes.c:311
+#: src/main/extractor_metatypes.c:316 src/main/extractor_metatypes.c:318
+#: src/main/extractor_metatypes.c:320 src/main/extractor_metatypes.c:329
+#: src/main/extractor_metatypes.c:366 src/main/extractor_metatypes.c:393
+#: src/main/extractor_metatypes.c:428 src/main/extractor_metatypes.c:430
+#: src/main/extractor_metatypes.c:432 src/main/extractor_metatypes.c:437
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2009-12-16 15:44+0100\n"
+"POT-Creation-Date: 2010-01-03 01:21+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -33,7 +31,7 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/main/extract.c:65
+#: src/main/extract.c:97
 #, c-format
 msgid ""
 "Usage: %s\n"
@@ -41,111 +39,110 @@ msgid ""
 "\n"
 msgstr ""
 
-#: src/main/extract.c:68
+#: src/main/extract.c:100
 #, c-format
 msgid ""
 "Arguments mandatory for long options are also mandatory for short options.\n"
 msgstr ""
 
-#: src/main/extract.c:142
+#: src/main/extract.c:174
 msgid "print output in bibtex format"
 msgstr ""
 
-#: src/main/extract.c:144
-msgid ""
-"use the generic plaintext extractor for the language with the 2-letter "
-"language code LANG"
-msgstr ""
-
-#: src/main/extract.c:146
+#: src/main/extract.c:176
 msgid "produce grep-friendly output (all results on one line per file)"
 msgstr ""
 
-#: src/main/extract.c:148
+#: src/main/extract.c:178
 msgid "print this help"
 msgstr ""
 
-#: src/main/extract.c:150
+#: src/main/extract.c:180
 msgid "compute hash using the given ALGORITHM (currently sha1 or md5)"
 msgstr ""
 
-#: src/main/extract.c:152
+#: src/main/extract.c:182
 msgid "run plugins in-process (simplifies debugging)"
 msgstr ""
 
-#: src/main/extract.c:154
+#: src/main/extract.c:184
 msgid "load an extractor plugin named LIBRARY"
 msgstr ""
 
-#: src/main/extract.c:156
+#: src/main/extract.c:186
 msgid "list all keyword types"
 msgstr ""
 
-#: src/main/extract.c:158
+#: src/main/extract.c:188
 msgid "do not use the default set of extractor plugins"
 msgstr ""
 
-#: src/main/extract.c:160
+#: src/main/extract.c:190
 msgid "print only keywords of the given TYPE (use -L to get a list)"
 msgstr ""
 
-#: src/main/extract.c:162
+#: src/main/extract.c:192
 msgid "print the version number"
 msgstr ""
 
-#: src/main/extract.c:164
+#: src/main/extract.c:194
 msgid "be verbose"
 msgstr ""
 
-#: src/main/extract.c:166
+#: src/main/extract.c:196
 msgid "do not print keywords of the given TYPE"
 msgstr ""
 
-#: src/main/extract.c:169
+#: src/main/extract.c:199
 msgid "extract [OPTIONS] [FILENAME]*"
 msgstr ""
 
-#: src/main/extract.c:170
+#: src/main/extract.c:200
 msgid "Extract metadata from files."
 msgstr ""
 
-#: src/main/extract.c:213
+#: src/main/extract.c:240
+#, c-format
+msgid "Found by `%s' plugin:\n"
+msgstr ""
+
+#: src/main/extract.c:247
 #, c-format
 msgid "%s - (unknown, %u bytes)\n"
 msgstr ""
 
-#: src/main/extract.c:234
+#: src/main/extract.c:268
 #, c-format
 msgid "%s - (binary, %u bytes)\n"
 msgstr ""
 
-#: src/main/extract.c:573 src/main/extract.c:586
+#: src/main/extract.c:608 src/main/extract.c:618
 #, c-format
 msgid ""
 "Illegal combination of options, cannot combine multiple styles of printing.\n"
 msgstr ""
 
-#: src/main/extract.c:616
+#: src/main/extract.c:648
 #, c-format
 msgid "You must specify an argument for the `%s' option (option ignored).\n"
 msgstr ""
 
-#: src/main/extract.c:681
+#: src/main/extract.c:713
 #, c-format
 msgid "Use --help to get a list of options.\n"
 msgstr ""
 
-#: src/main/extract.c:738
+#: src/main/extract.c:759
 #, c-format
 msgid "%% BiBTeX file\n"
 msgstr ""
 
-#: src/main/extract.c:745
+#: src/main/extract.c:766
 #, c-format
 msgid "Keywords for file %s:\n"
 msgstr ""
 
-#: src/main/extractor.c:1725
+#: src/main/extractor.c:1968
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr ""
@@ -190,7 +187,7 @@ msgstr ""
 msgid "title of the work"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:48 src/main/extractor_metatypes.c:378
+#: src/main/extractor_metatypes.c:48
 msgid "book title"
 msgstr ""
 
@@ -238,7 +235,7 @@ msgstr ""
 msgid "number of a journal, magazine or tech-report"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:61 src/main/extractor_metatypes.c:358
+#: src/main/extractor_metatypes.c:61
 msgid "page count"
 msgstr ""
 
@@ -278,7 +275,7 @@ msgstr ""
 msgid "institution the author worked for"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:72 src/main/extractor_metatypes.c:333
+#: src/main/extractor_metatypes.c:72
 msgid "publisher"
 msgstr ""
 
@@ -346,7 +343,7 @@ msgid ""
 "the given month"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:89 src/main/extractor_metatypes.c:390
+#: src/main/extractor_metatypes.c:89
 msgid "publication date"
 msgstr ""
 
@@ -370,7 +367,7 @@ msgstr ""
 msgid "type of the publication for bibTeX bibliographies"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:96 src/main/extractor_metatypes.c:334
+#: src/main/extractor_metatypes.c:96
 msgid "language"
 msgstr ""
 
@@ -507,16 +504,15 @@ msgid "specifics are not known"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:138 src/main/extractor_metatypes.c:139
-#: src/main/extractor_metatypes.c:331
 msgid "description"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:140 src/main/extractor_metatypes.c:340
+#: src/main/extractor_metatypes.c:140
 msgid "copyright"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:141
-msgid "copyright information"
+msgid "Name of the entity holding the copyright"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:142
@@ -528,7 +524,6 @@ msgid "information about rights"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:144 src/main/extractor_metatypes.c:145
-#: src/main/extractor_metatypes.c:342
 msgid "keywords"
 msgstr ""
 
@@ -537,11 +532,10 @@ msgid "abstract"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:149 src/main/extractor_metatypes.c:150
-#: src/main/extractor_metatypes.c:368
 msgid "summary"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:151 src/main/extractor_metatypes.c:341
+#: src/main/extractor_metatypes.c:151
 msgid "subject"
 msgstr ""
 
@@ -550,7 +544,6 @@ msgid "subject matter"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:153 src/main/extractor_metatypes.c:186
-#: src/main/extractor_metatypes.c:356
 msgid "creator"
 msgstr ""
 
@@ -558,7 +551,7 @@ msgstr ""
 msgid "name of the person who created the document"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:155 src/main/extractor_metatypes.c:345
+#: src/main/extractor_metatypes.c:155
 msgid "format"
 msgstr ""
 
@@ -566,7 +559,7 @@ msgstr ""
 msgid "name of the document format"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:158 src/main/extractor_metatypes.c:443
+#: src/main/extractor_metatypes.c:158
 msgid "format version"
 msgstr ""
 
@@ -574,7 +567,7 @@ msgstr ""
 msgid "version of the document format"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:160 src/main/extractor_metatypes.c:417
+#: src/main/extractor_metatypes.c:160
 msgid "created by software"
 msgstr ""
 
@@ -592,7 +585,7 @@ msgid ""
 "time)"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:164 src/main/extractor_metatypes.c:354
+#: src/main/extractor_metatypes.c:164
 msgid "creation date"
 msgstr ""
 
@@ -600,7 +593,7 @@ msgstr ""
 msgid "date the document was created"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:166 src/main/extractor_metatypes.c:355
+#: src/main/extractor_metatypes.c:166
 msgid "modification date"
 msgstr ""
 
@@ -608,7 +601,7 @@ msgstr ""
 msgid "date the document was modified"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:169 src/main/extractor_metatypes.c:411
+#: src/main/extractor_metatypes.c:169
 msgid "last printed"
 msgstr ""
 
@@ -616,7 +609,7 @@ msgstr ""
 msgid "date the document was last printed"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:171 src/main/extractor_metatypes.c:410
+#: src/main/extractor_metatypes.c:171
 msgid "last saved by"
 msgstr ""
 
@@ -624,7 +617,7 @@ msgstr ""
 msgid "name of the user who saved the document last"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:173 src/main/extractor_metatypes.c:414
+#: src/main/extractor_metatypes.c:173
 msgid "total editing time"
 msgstr ""
 
@@ -632,7 +625,7 @@ msgstr ""
 msgid "time spent editing the document"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:175 src/main/extractor_metatypes.c:425
+#: src/main/extractor_metatypes.c:175
 msgid "editing cycles"
 msgstr ""
 
@@ -640,7 +633,7 @@ msgstr ""
 msgid "number of editing cycles"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:177 src/main/extractor_metatypes.c:418
+#: src/main/extractor_metatypes.c:177
 msgid "modified by software"
 msgstr ""
 
@@ -648,7 +641,7 @@ msgstr ""
 msgid "name of software making modifications"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:180 src/main/extractor_metatypes.c:419
+#: src/main/extractor_metatypes.c:180
 msgid "revision history"
 msgstr ""
 
@@ -732,7 +725,7 @@ msgstr ""
 msgid "packages made obsolete by this package"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:204 src/main/extractor_metatypes.c:382
+#: src/main/extractor_metatypes.c:204
 msgid "provides"
 msgstr ""
 
@@ -773,7 +766,6 @@ msgid "space consumption after installation"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:215 src/main/extractor_metatypes.c:295
-#: src/main/extractor_metatypes.c:347
 msgid "source"
 msgstr ""
 
@@ -794,7 +786,7 @@ msgid "target architecture"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:220
-msgid "hardware architecture the package can be used for"
+msgid "hardware architecture the contents can be used for"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:221
@@ -805,15 +797,15 @@ msgstr ""
 msgid "dependency that must be satisfied before installation"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:224 src/main/extractor_metatypes.c:371
+#: src/main/extractor_metatypes.c:224
 msgid "license"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:225
-msgid "applicable license"
+msgid "applicable copyright license"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:226 src/main/extractor_metatypes.c:372
+#: src/main/extractor_metatypes.c:226
 msgid "distribution"
 msgstr ""
 
@@ -829,7 +821,7 @@ msgstr ""
 msgid "machine the package was build on"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:230 src/main/extractor_metatypes.c:370
+#: src/main/extractor_metatypes.c:230
 msgid "vendor"
 msgstr ""
 
@@ -890,35 +882,35 @@ msgstr ""
 msgid "name of a library that this file depends on"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:246 src/main/extractor_metatypes.c:391
+#: src/main/extractor_metatypes.c:246
 msgid "camera make"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:248 src/main/extractor_metatypes.c:392
+#: src/main/extractor_metatypes.c:248
 msgid "camera model"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:250 src/main/extractor_metatypes.c:393
+#: src/main/extractor_metatypes.c:250
 msgid "exposure"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:252 src/main/extractor_metatypes.c:394
+#: src/main/extractor_metatypes.c:252
 msgid "aperture"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:254 src/main/extractor_metatypes.c:395
+#: src/main/extractor_metatypes.c:254
 msgid "exposure bias"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:257 src/main/extractor_metatypes.c:396
+#: src/main/extractor_metatypes.c:257
 msgid "flash"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:259 src/main/extractor_metatypes.c:397
+#: src/main/extractor_metatypes.c:259
 msgid "flash bias"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:261 src/main/extractor_metatypes.c:398
+#: src/main/extractor_metatypes.c:261
 msgid "focal length"
 msgstr ""
 
@@ -926,35 +918,35 @@ msgstr ""
 msgid "focal length 35mm"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:265 src/main/extractor_metatypes.c:400
+#: src/main/extractor_metatypes.c:265
 msgid "iso speed"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:268 src/main/extractor_metatypes.c:401
+#: src/main/extractor_metatypes.c:268
 msgid "exposure mode"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:270 src/main/extractor_metatypes.c:402
+#: src/main/extractor_metatypes.c:270
 msgid "metering mode"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:272 src/main/extractor_metatypes.c:403
+#: src/main/extractor_metatypes.c:272
 msgid "macro mode"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:274 src/main/extractor_metatypes.c:404
+#: src/main/extractor_metatypes.c:274
 msgid "image quality"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:276 src/main/extractor_metatypes.c:405
+#: src/main/extractor_metatypes.c:276
 msgid "white balance"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:279 src/main/extractor_metatypes.c:406
+#: src/main/extractor_metatypes.c:279
 msgid "orientation"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:281 src/main/extractor_metatypes.c:364
+#: src/main/extractor_metatypes.c:281
 msgid "magnification"
 msgstr ""
 
@@ -990,7 +982,7 @@ msgstr ""
 msgid "Originating entity"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:297 src/main/extractor_metatypes.c:422
+#: src/main/extractor_metatypes.c:297
 msgid "character set"
 msgstr ""
 
@@ -998,7 +990,7 @@ msgstr ""
 msgid "character encoding used"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:299 src/main/extractor_metatypes.c:423
+#: src/main/extractor_metatypes.c:299
 msgid "line count"
 msgstr ""
 
@@ -1006,7 +998,7 @@ msgstr ""
 msgid "number of lines"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:301 src/main/extractor_metatypes.c:424
+#: src/main/extractor_metatypes.c:301
 msgid "paragraph count"
 msgstr ""
 
@@ -1014,340 +1006,448 @@ msgstr ""
 msgid "number o paragraphs"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:303 src/main/extractor_metatypes.c:412
+#: src/main/extractor_metatypes.c:304
 msgid "word count"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:304
+#: src/main/extractor_metatypes.c:305
 msgid "number of words"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:305 src/main/extractor_metatypes.c:359
-msgid "page orientation"
-msgstr ""
-
-#: src/main/extractor_metatypes.c:307 src/main/extractor_metatypes.c:360
-msgid "paper size"
-msgstr ""
-
-#: src/main/extractor_metatypes.c:309 src/main/extractor_metatypes.c:407
-msgid "template"
-msgstr ""
-
-#: src/main/extractor_metatypes.c:310
-msgid "template the document uses or is based on"
-msgstr ""
-
-#: src/main/extractor_metatypes.c:311 src/main/extractor_metatypes.c:420
-msgid "company"
-msgstr ""
-
-#: src/main/extractor_metatypes.c:313 src/main/extractor_metatypes.c:427
-msgid "manager"
-msgstr ""
-
-#: src/main/extractor_metatypes.c:315
-msgid "revision number"
-msgstr ""
-
-#: src/main/extractor_metatypes.c:329
-msgid "author"
-msgstr ""
-
-#: src/main/extractor_metatypes.c:330
-msgid "artist"
-msgstr ""
-
-#: src/main/extractor_metatypes.c:332
-msgid "date"
-msgstr ""
-
-#: src/main/extractor_metatypes.c:335
-msgid "album"
-msgstr ""
-
-#: src/main/extractor_metatypes.c:336
-msgid "genre"
-msgstr ""
-
-#: src/main/extractor_metatypes.c:337
-msgid "location"
-msgstr ""
-
-#: src/main/extractor_metatypes.c:338
-msgid "version"
-msgstr ""
-
-#: src/main/extractor_metatypes.c:339
-msgid "organization"
-msgstr ""
-
-#: src/main/extractor_metatypes.c:343
-msgid "contributor"
-msgstr ""
-
-#: src/main/extractor_metatypes.c:344
-msgid "resource-type"
-msgstr ""
-
-#: src/main/extractor_metatypes.c:346
-msgid "resource-identifier"
-msgstr ""
-
-#: src/main/extractor_metatypes.c:348
-msgid "relation"
-msgstr ""
-
-#: src/main/extractor_metatypes.c:349
-msgid "coverage"
-msgstr ""
-
-#: src/main/extractor_metatypes.c:350
-msgid "software"
-msgstr ""
-
-#: src/main/extractor_metatypes.c:351
-msgid "disclaimer"
-msgstr ""
-
-#: src/main/extractor_metatypes.c:352
-msgid "warning"
-msgstr ""
-
-#: src/main/extractor_metatypes.c:353
-msgid "translated"
-msgstr ""
-
-#: src/main/extractor_metatypes.c:357
-msgid "producer"
-msgstr ""
-
-#: src/main/extractor_metatypes.c:361
-msgid "used fonts"
-msgstr ""
-
-#: src/main/extractor_metatypes.c:362
-msgid "page order"
-msgstr ""
-
-#: src/main/extractor_metatypes.c:363
-msgid "created for"
-msgstr ""
-
-#: src/main/extractor_metatypes.c:365
-msgid "release"
-msgstr ""
-
-#: src/main/extractor_metatypes.c:366
-msgid "group"
-msgstr ""
-
-#: src/main/extractor_metatypes.c:367
-msgid "size"
-msgstr ""
-
-#: src/main/extractor_metatypes.c:369
-msgid "packager"
-msgstr ""
-
-#: src/main/extractor_metatypes.c:373
-msgid "build-host"
-msgstr ""
-
-#: src/main/extractor_metatypes.c:374
-msgid "operating system"
-msgstr ""
-
-#: src/main/extractor_metatypes.c:375
-msgid "dependency"
-msgstr ""
-
-#: src/main/extractor_metatypes.c:376
-msgid "resolution"
-msgstr ""
-
-#: src/main/extractor_metatypes.c:377
-msgid "category"
-msgstr ""
-
-#: src/main/extractor_metatypes.c:379
-msgid "priority"
-msgstr ""
-
-#: src/main/extractor_metatypes.c:380
-msgid "conflicts"
-msgstr ""
-
-#: src/main/extractor_metatypes.c:381
-msgid "replaces"
-msgstr ""
-
-#: src/main/extractor_metatypes.c:383
-msgid "conductor"
-msgstr ""
-
-#: src/main/extractor_metatypes.c:384
-msgid "interpreter"
-msgstr ""
-
-#: src/main/extractor_metatypes.c:385
-msgid "owner"
-msgstr ""
-
-#: src/main/extractor_metatypes.c:386
-msgid "lyrics"
-msgstr ""
-
-#: src/main/extractor_metatypes.c:387
-msgid "media type"
-msgstr ""
-
-#: src/main/extractor_metatypes.c:388
-msgid "contact"
-msgstr ""
-
-#: src/main/extractor_metatypes.c:389
-msgid "binary thumbnail data"
-msgstr ""
-
-#: src/main/extractor_metatypes.c:399
-msgid "focal length (35mm equivalent)"
-msgstr ""
-
-#: src/main/extractor_metatypes.c:408
-msgid "split"
-msgstr ""
-
-#: src/main/extractor_metatypes.c:409
-msgid "product version"
-msgstr ""
-
-#: src/main/extractor_metatypes.c:413
+#: src/main/extractor_metatypes.c:306
 msgid "character count"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:415
-msgid "thumbnails"
+#: src/main/extractor_metatypes.c:307
+msgid "number of characters"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:416
-msgid "security"
+#: src/main/extractor_metatypes.c:308
+msgid "page orientation"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:421
-msgid "generator"
+#: src/main/extractor_metatypes.c:310
+msgid "paper size"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:426
-msgid "scale"
+#: src/main/extractor_metatypes.c:312
+msgid "template"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:428
-msgid "director"
+#: src/main/extractor_metatypes.c:313
+msgid "template the document uses or is based on"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:429
+#: src/main/extractor_metatypes.c:315
+msgid "company"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:317
+msgid "manager"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:319
+msgid "revision number"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:321
 msgid "duration"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:430
-msgid "information"
+#: src/main/extractor_metatypes.c:322
+msgid "play time for the medium"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:431
-msgid "full name"
+#: src/main/extractor_metatypes.c:323
+msgid "album"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:432
-msgid "chapter"
+#: src/main/extractor_metatypes.c:324
+msgid "name of the album"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:433
-msgid "year"
+#: src/main/extractor_metatypes.c:326
+msgid "artist"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:434
-msgid "link"
+#: src/main/extractor_metatypes.c:327
+msgid "name of the artist or band"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:435
-msgid "music CD identifier"
+#: src/main/extractor_metatypes.c:328
+msgid "genre"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:436
-msgid "play counter"
-msgstr ""
-
-#: src/main/extractor_metatypes.c:437
-msgid "popularity meter"
-msgstr ""
-
-#: src/main/extractor_metatypes.c:438
-msgid "content type"
-msgstr ""
-
-#: src/main/extractor_metatypes.c:439
-msgid "encoded by"
-msgstr ""
-
-#: src/main/extractor_metatypes.c:440
-msgid "time"
-msgstr ""
-
-#: src/main/extractor_metatypes.c:441
-msgid "musician credits list"
-msgstr ""
-
-#: src/main/extractor_metatypes.c:442
-msgid "mood"
-msgstr ""
-
-#: src/main/extractor_metatypes.c:444
-msgid "television system"
-msgstr ""
-
-#: src/main/extractor_metatypes.c:445
-msgid "song count"
-msgstr ""
-
-#: src/main/extractor_metatypes.c:446
-msgid "starting song"
-msgstr ""
-
-#: src/main/extractor_metatypes.c:447
-msgid "hardware dependency"
-msgstr ""
-
-#: src/main/extractor_metatypes.c:448
-msgid "ripper"
-msgstr ""
-
-#: src/main/extractor_metatypes.c:449
-msgid "filesize"
-msgstr ""
-
-#: src/main/extractor_metatypes.c:450
+#: src/main/extractor_metatypes.c:330
 msgid "track number"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:451
-msgid "disc number"
+#: src/main/extractor_metatypes.c:331
+msgid "original number of the track on the distribution medium"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:452
-msgid "preferred display style (GNUnet)"
+#: src/main/extractor_metatypes.c:332
+msgid "disk number"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:453
-msgid "GNUnet URI of ECBC data"
+#: src/main/extractor_metatypes.c:333
+msgid "number of the disk in a multi-disk (or volume) distribution"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:454
-msgid "Complete file data (for non-binary files only)"
+#: src/main/extractor_metatypes.c:334
+msgid "performer"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:455
+#: src/main/extractor_metatypes.c:335
+msgid ""
+"The artist(s) who performed the work (conductor, orchestra, soloists, actor, "
+"etc.)"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:337
+msgid "contact"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:338
+msgid "Contact information for the creator or distributor"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:339
+msgid "song version"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:340
+msgid "name of the version of the song (i.e. remix information)"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:341
+msgid "picture"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:342
+msgid "associated misc. picture"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:343
+msgid "cover picture"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:344
+msgid "picture of the cover of the distribution medium"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:345
+msgid "contributor picture"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:346
+msgid "picture of one of the contributors"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:348
+msgid "event picture"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:349
+msgid "picture of an associated event"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:350
+msgid "logo"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:351
+msgid "logo of an associated organization"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:352
+msgid "broadcast television system"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:353
+msgid "name of the television system for which the data is coded"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:354
+msgid "source device"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:355
+msgid "device used to create the object"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:356
+msgid "disclaimer"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:357
+msgid "legal disclaimer"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:359
+msgid "warning"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:360
+msgid "warning about the nature of the content"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:361
+msgid "page order"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:362
+msgid "order of the pages"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:363
+msgid "writer"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:364
+msgid "contributing writer"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:365
+msgid "product version"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:367
+msgid "contributor"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:368
+msgid "name of a contributor"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:370
+msgid "movie director"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:371
+msgid "name of the director"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:372
+msgid "network"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:373
+msgid "name of the broadcasting network or station"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:374
+msgid "show"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:375
+msgid "name of the show"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:376
+msgid "chapter name"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:377
+msgid "name of the chapter"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:378
+msgid "song count"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:379
+msgid "number of songs"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:381
+msgid "starting song"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:382
+msgid "number of the first song to play"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:383
+msgid "play counter"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:384
+msgid "number of times the media has been played"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:385
+msgid "conductor"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:386
+msgid "name of the conductor"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:387
+msgid "interpretation"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:388
+msgid ""
+"information about the people behind interpretations of an existing piece"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:389
+msgid "composer"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:390
+msgid "name of the composer"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:392
+msgid "beats per minute"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:394
+msgid "encoded by"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:395
+msgid "name of person or organization that encoded the file"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:396
+msgid "original title"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:397
+msgid "title of the original work"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:398
+msgid "original artist"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:399
+msgid "name of the original artist"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:400
+msgid "original writer"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:401
+msgid "name of the original lyricist or writer"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:403
+msgid "original release year"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:404
+msgid "year of the original release"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:405
+msgid "original performer"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:406
+msgid "name of the original performer"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:407
+msgid "lyrics"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:408
+msgid "lyrics of the song or text description of vocal activities"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:409
+msgid "popularity"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:410
+msgid "information about the file's popularity"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:411
+msgid "licensee"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:412
+msgid "name of the owner or licensee of the file"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:414
+msgid "musician credit list"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:415
+msgid "names of contributing musicians"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:416
+msgid "mood"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:417
+msgid "keywords reflecting the mood of the piece"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:418
+msgid "subtitle"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:419
+msgid "subtitle of this part"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:420
+msgid "display type"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:421
+msgid "what rendering method should be used to display this item"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:422
+msgid "full data"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:423
+msgid ""
+"entry that contains the full, original binary data (not really meta data)"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:425
 msgid "rating"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:426
+msgid "rating of the content"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:427
+msgid "organization"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:429
+msgid "ripper"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:431
+msgid "producer"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:433
+msgid "group"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:434
+msgid "name of the group or band"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:436
+msgid "last"
 msgstr ""
 
 #: src/main/getopt.c:684
