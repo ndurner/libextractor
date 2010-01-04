@@ -32,6 +32,7 @@ LTDL_INIT
 AC_SUBST(LTDLINCL)
 AC_SUBST(LIBLTDL)
 AC_SUBST(MKDIR_P)
+LIBS=$LIBSOLD
 
 case "$host_os" in
 linux*)
@@ -154,7 +155,6 @@ AM_CONDITIONAL(HAVE_CXX, test "x$HAVE_CXX" = "xyes")
 AC_CHECK_LIB(stdc++, fclose)
 
 AC_CHECK_HEADERS(langinfo.h)
-LIBS=$LIBSOLD
 # FIXME: allow --with-oggvorbis=PFX
 
 # test if we have vorbisfile
