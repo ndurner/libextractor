@@ -32,7 +32,6 @@ LTDL_INIT
 AC_SUBST(LTDLINCL)
 AC_SUBST(LIBLTDL)
 AC_SUBST(MKDIR_P)
-LIBS=$LIBSOLD
 
 case "$host_os" in
 linux*)
@@ -97,6 +96,7 @@ mingw*)
      AC_CHECK_LIB(ws2_32, _head_libws2_32_a,,[AC_MSG_ERROR([libextractor requires Winsock2])])
      AC_CHECK_LIB(plibc, plibc_init,,[AC_MSG_ERROR([libextractor requires PlibC])])
      LDFLAGS="$LDFLAGS -no-undefined -Wl,--export-all-symbols"
+		 LIBSOLD=$LIBS
      AM_CONDITIONAL(HAVE_GNU_LD, true)
      AM_CONDITIONAL(SOMEBSD, false)
      LIBEXT=.dll
@@ -155,6 +155,7 @@ AM_CONDITIONAL(HAVE_CXX, test "x$HAVE_CXX" = "xyes")
 AC_CHECK_LIB(stdc++, fclose)
 
 AC_CHECK_HEADERS(langinfo.h)
+LIBS=$LIBSOLD
 # FIXME: allow --with-oggvorbis=PFX
 
 # test if we have vorbisfile
