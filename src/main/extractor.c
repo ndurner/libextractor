@@ -363,13 +363,8 @@ append_to_dir (const char *path,
 {
   char *ret;
 
-#ifdef MINGW
-  if (fname[0] == '\\')
+  if (fname[0] == DIR_SEPARATOR)
     fname++;
-#else
-  if (fname[0] == '/')
-    fname++;
-#endif
   ret = malloc (strlen (path) + strlen(fname) + 2);
 
 #ifdef MINGW
@@ -380,7 +375,7 @@ append_to_dir (const char *path,
 	     fname);
   else
     sprintf (ret,
-	     "%s\%s",
+	     "%s\\%s",
 	     path, 
 	     fname);
 #else
@@ -1204,18 +1199,22 @@ process_requests (struct EXTRACTOR_PluginList *plugin,
 static void write_plugin_data (HANDLE h, const struct EXTRACTOR_PluginList *plugin)
 {
   size_t i;
+  DWORD len;
 
   i = strlen (plugin->libname);
-  WriteFile (h, &i, sizeof (size_t), NULL, NULL);
-  WriteFile (h, plugin->libname, i, NULL, NULL);
+  WriteFile (h, &i, sizeof (size_t), &len, NULL);
+  WriteFile (h, plugin->libname, i, &len, NULL);
 
   i = strlen (plugin->short_libname);
-  WriteFile (h, &i, sizeof (size_t), NULL, NULL);
-  WriteFile (h, plugin->short_libname,i, NULL, NULL);
+  WriteFile (h, &i, sizeof (size_t), &len, NULL);
+  WriteFile (h, plugin->short_libname,i, &len, NULL);
 
-  i = strlen (plugin->plugin_options);
-  WriteFile (h, &i, sizeof (size_t), NULL, NULL);
-  WriteFile (h, plugin->plugin_options, i, NULL, NULL);
+  if (plugin->plugin_options != NULL)
+    i = strlen (plugin->plugin_options);
+  else
+    i = 0;
+  WriteFile (h, &i, sizeof (size_t), &len, NULL);
+  WriteFile (h, plugin->plugin_options, i, &len, NULL);
 }
 
 static struct EXTRACTOR_PluginList *read_plugin_data (FILE *f)
@@ -1309,13 +1308,16 @@ start_process (struct EXTRACTOR_PluginList *plugin)
   PROCESS_INFORMATION proc;
 
   memset (&startup, 0, sizeof (STARTUPINFO));
-  CreatePipe (&startup.hStdInput, &plugin->cpipe_in, NULL, 0);
-  CreatePipe (&plugin->cpipe_out, &startup.hStdOutput, NULL, 0);
+  if (!CreatePipe (&startup.hStdInput, &plugin->cpipe_in, NULL, 0))
+    perror ("CreatePipe");
+  if (!CreatePipe (&plugin->cpipe_out, &startup.hStdOutput, NULL, 0))
+    perror ("CreatePipe");
 
   write_plugin_data (plugin->cpipe_in, plugin);
+  CloseHandle (plugin->cpipe_in);
 
   // FIXME library name
-  CreateProcess (NULL, "rundll32 libextractor-1.dll,RundllEntryPoint", NULL, NULL, FALSE, 0, NULL, NULL, &startup, &proc);
+  CreateProcess (NULL, "rundll32 libextractor-3.dll,RundllEntryPoint@16", NULL, NULL, FALSE, 0, NULL, NULL, &startup, &proc);
   CloseHandle (proc.hProcess);
   CloseHandle (proc.hThread);
   plugin->cpid = proc.dwProcessId;
