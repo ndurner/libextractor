@@ -1,17 +1,17 @@
 /*
      This file is part of PlibC.
-     (C) 2005 Nils Durner (and other contributing authors)
+     (C) 2005, 2006, 2007, 2008, 2009 Nils Durner (and other contributing authors)
 
 	   This library is free software; you can redistribute it and/or
 	   modify it under the terms of the GNU Lesser General Public
 	   License as published by the Free Software Foundation; either
 	   version 2.1 of the License, or (at your option) any later version.
-	
+
 	   This library is distributed in the hope that it will be useful,
 	   but WITHOUT ANY WARRANTY; without even the implied warranty of
 	   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 	   Lesser General Public License for more details.
-	
+
 	   You should have received a copy of the GNU Lesser General Public
 	   License along with this library; if not, write to the Free Software
 	   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -22,7 +22,7 @@
  * @brief PlibC header
  * @attention This file is usually not installed under Unix,
  *            so ship it with your application
- * @version $Revision: 1.30 $
+ * @version $Revision: 53 $
  */
 
 #ifndef _PLIBC_H_
@@ -35,6 +35,14 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#include <stddef.h>
+
+#ifdef Q_OS_WIN32
+ #define WINDOWS 1
+#endif
+
+#define HAVE_PLIBC_FD 0
 
 #ifdef WINDOWS
 
@@ -50,6 +58,7 @@ extern "C" {
 #include <sys/stat.h>
 #include <dirent.h>
 #include <errno.h>
+#include <stdarg.h>
 
 #define __BYTE_ORDER BYTE_ORDER
 #define __BIG_ENDIAN BIG_ENDIAN
@@ -63,19 +72,39 @@ extern "C" {
 
 #define socklen_t int
 #define ssize_t int
-#ifndef HAVE_FTRUNCATE
-#define ftruncate chsize
-#endif
 #define off_t int
 #define int64_t long long
 #define int32_t long
+
+struct stat64
+{
+    _dev_t st_dev;
+    _ino_t st_ino;
+    _mode_t st_mode;
+    short st_nlink;
+    short st_uid;
+    short st_gid;
+    _dev_t st_rdev;
+    __int64 st_size;
+    __time64_t st_atime;
+    __time64_t st_mtime;
+    __time64_t st_ctime;
+};
 
 #ifndef pid_t
 	#define pid_t int
 #endif
 
+#ifndef error_t
+  #define error_t int
+#endif
+
 #ifndef WEXITSTATUS
 	#define WEXITSTATUS(status) (((status) & 0xff00) >> 8)
+#endif
+
+#ifndef MSG_DONTWAIT
+  #define MSG_DONTWAIT 0
 #endif
 
 /* Thanks to the Cygwin project */
@@ -205,6 +234,9 @@ struct statfs
   long f_spare[6];              /* spare for later */
 };
 
+extern const struct in6_addr in6addr_any;        /* :: */
+extern const struct in6_addr in6addr_loopback;   /* ::1 */
+
 /* Taken from the Wine project <http://www.winehq.org>
     /wine/include/winternl.h */
 enum SYSTEM_INFORMATION_CLASS
@@ -281,12 +313,14 @@ typedef struct
 #define S_IRWXG 0
 #define S_IRWXO 0
 
-#define SetErrnoFromWinError(e) _SetErrnoFromWinError(e, __FILE__, __LINE__)
+#define SHUT_WR SD_SEND
+#define SHUT_RD SD_RECEIVE
+#define SHUT_RDWR SD_BOTH
 
-/**
- * @brief index() - same as strchr()
- */
-#define index(s, c) strchr(s, c)
+#define SIGKILL 9
+#define SIGTERM 15
+
+#define SetErrnoFromWinError(e) _SetErrnoFromWinError(e, __FILE__, __LINE__)
 
 BOOL _plibc_CreateShortcut(const char *pszSrc, const char *pszDest);
 BOOL _plibc_DereferenceShortcut(char *pszShortcut);
@@ -300,6 +334,7 @@ void __win_SetHandleBlockingMode(SOCKET s, BOOL bBlocking);
 void __win_DiscardHandleBlockingMode(SOCKET s);
 int _win_isSocketValid(int s);
 int plibc_conv_to_win_path(const char *pszUnix, char *pszWindows);
+unsigned plibc_get_handle_count();
 
 typedef void (*TPanicProc) (int, char *);
 void plibc_set_panic_proc(TPanicProc proc);
@@ -314,18 +349,19 @@ int inet_pton6(const char *src, u_char *dst);
 int truncate(const char *fname, int distance);
 int statfs(const char *path, struct statfs *buf);
 const char *hstrerror(int err);
-void gettimeofday(struct timeval *tp, void *tzp);
 int mkstemp(char *tmplate);
 char *strptime (const char *buf, const char *format, struct tm *tm);
-char *ctime(const time_t *clock);
-char *ctime_r(const time_t *clock, char *buf);
+const char *inet_ntop(int af, const void *src, char *dst, size_t size);
+
 int plibc_init(char *pszOrg, char *pszApp);
 void plibc_shutdown();
+int plibc_initialized();
 int plibc_conv_to_win_path_ex(const char *pszUnix, char *pszWindows, int derefLinks);
 void _SetErrnoFromWinError(long lWinError, char *pszCaller, int iLine);
 void SetErrnoFromWinsockError(long lWinError);
 void SetHErrnoFromWinError(long lWinError);
 void SetErrnoFromHRESULT(HRESULT hRes);
+int GetErrnoFromWinsockError(long lWinError);
 FILE *_win_fopen(const char *filename, const char *mode);
 DIR *_win_opendir(const char *dirname);
 int _win_open(const char *filename, int oflag, ...);
@@ -335,16 +371,23 @@ char *_win_bindtextdomain(const char *domainname, const char *dirname);
 int _win_chdir(const char *path);
 int _win_close(int fd);
 int _win_creat(const char *path, mode_t mode);
+char *_win_ctime(const time_t *clock);
+char *_win_ctime_r(const time_t *clock, char *buf);
 int _win_fstat(int handle, struct stat *buffer);
+int _win_ftruncate(int fildes, off_t length);
+void _win_gettimeofday(struct timeval *tp, void *tzp);
+int _win_kill(pid_t pid, int sig);
 int _win_pipe(int *phandles);
 int _win_rmdir(const char *path);
 int _win_access( const char *path, int mode );
 int _win_chmod(const char *filename, int pmode);
 char *realpath(const char *file_name, char *resolved_name);
 long _win_random(void);
+void _win_srandom(unsigned int seed);
 int _win_remove(const char *path);
 int _win_rename(const char *oldname, const char *newname);
 int _win_stat(const char *path, struct stat *buffer);
+int _win_stat64(const char *path, struct stat64 *buffer);
 int _win_unlink(const char *filename);
 int _win_write(int fildes, const void *buf, size_t nbyte);
 int _win_read(int fildes, void *buf, size_t nbyte);
@@ -355,6 +398,7 @@ void *_win_mmap(void *start, size_t len, int access, int flags, int fd,
                 unsigned long long offset);
 int _win_munmap(void *start, size_t length);
 int _win_lstat(const char *path, struct stat *buf);
+int _win_lstat64(const char *path, struct stat64 *buf);
 int _win_readlink(const char *path, char *buf, size_t bufsize);
 int _win_accept(SOCKET s, struct sockaddr *addr, int *addrlen);
 int _win_printf(const char *format,...);
@@ -395,8 +439,10 @@ int _win_shutdown(SOCKET s, int how);
 SOCKET _win_socket(int af, int type, int protocol);
 struct hostent *_win_gethostbyaddr(const char *addr, int len, int type);
 struct hostent *_win_gethostbyname(const char *name);
+struct hostent *gethostbyname2(const char *name, int af);
 char *_win_strerror(int errnum);
 int IsWinNT();
+char *index(const char *s, int c);
 
 #if !HAVE_STRNDUP
 char *strndup (const char *s, size_t n);
@@ -404,32 +450,45 @@ char *strndup (const char *s, size_t n);
 #if !HAVE_STRNLEN
 size_t strnlen (const char *str, size_t maxlen);
 #endif
+char *stpcpy(char *dest, const char *src);
+char *strcasestr(const char *haystack_start, const char *needle_start);
+
+#define strcasecmp(a, b) stricmp(a, b)
+#define strncasecmp(a, b, c) strnicmp(a, b, c)
 
 #endif /* WINDOWS */
 
 #ifndef WINDOWS
  #define DIR_SEPARATOR '/'
  #define DIR_SEPARATOR_STR "/"
+ #define PATH_SEPARATOR ';'
+ #define PATH_SEPARATOR_STR ";"
  #define NEWLINE "\n"
 
 #ifdef ENABLE_NLS
  #define BINDTEXTDOMAIN(d, n) bindtextdomain(d, n)
 #endif
  #define CREAT(p, m) creat(p, m)
+ #define PLIBC_CTIME(c) ctime(c)
+ #define CTIME_R(c, b) ctime_r(c, b)
  #undef FOPEN
  #define FOPEN(f, m) fopen(f, m)
+ #define FTRUNCATE(f, l) ftruncate(f, l)
  #define OPENDIR(d) opendir(d)
- #define OPEN(f) open(f)
+ #define OPEN open
  #define CHDIR(d) chdir(d)
  #define CLOSE(f) close(f)
+ #define LSEEK(f, o, w) lseek(f, o, w)
  #define RMDIR(f) rmdir(f)
  #define ACCESS(p, m) access(p, m)
  #define CHMOD(f, p) chmod(f, p)
  #define FSTAT(h, b) fstat(h, b)
+ #define PLIBC_KILL(p, s) kill(p, s)
  #define PIPE(h) pipe(h)
  #define REMOVE(p) remove(p)
  #define RENAME(o, n) rename(o, n)
  #define STAT(p, b) stat(p, b)
+ #define STAT64(p, b) stat64(p, b)
  #define UNLINK(f) unlink(f)
  #define WRITE(f, b, n) write(f, b, n)
  #define READ(f, b, n) read(f, b, n)
@@ -440,8 +499,10 @@ size_t strnlen (const char *str, size_t maxlen);
  #define MUNMAP(s, l) munmap(s, l)
  #define STRERROR(i) strerror(i)
  #define RANDOM() random()
+ #define SRANDOM(s) srandom(s)
  #define READLINK(p, b, s) readlink(p, b, s)
  #define LSTAT(p, b) lstat(p, b)
+ #define LSTAT64(p, b) lstat64(p, b)
  #define PRINTF printf
  #define FPRINTF fprintf
  #define VPRINTF(f, a) vprintf(f, a)
@@ -474,29 +535,54 @@ size_t strnlen (const char *str, size_t maxlen);
  #define SOCKET(a, t, p) socket(a, t, p)
  #define GETHOSTBYADDR(a, l, t) gethostbyname(a, l, t)
  #define GETHOSTBYNAME(n) gethostbyname(n)
+ #define GETTIMEOFDAY(t, n) gettimeofday(t, n)
+ #define INSQUE(e, p) insque(e, p)
+ #define REMQUE(e) remque(e)
+ #define HSEARCH(i, a) hsearch(i, a)
+ #define HCREATE(n) hcreate(n)
+ #define HDESTROY() hdestroy()
+ #define HSEARCH_R(i, a, r, h) hsearch_r(i, a, r, h)
+ #define HCREATE_R(n, h) hcreate_r(n, h)
+ #define HDESTROY_R(h) hdestroy_r(h)
+ #define TSEARCH(k, r, c) tsearch(k, r, c)
+ #define TFIND(k, r, c) tfind(k, r, c)
+ #define TDELETE(k, r, c) tdelete(k, r, c)
+ #define TWALK(r, a) twalk(r, a)
+ #define TDESTROY(r, f) tdestroy(r, f)
+ #define LFIND(k, b, n, s, c) lfind(k, b, n, s, c)
+ #define LSEARCH(k, b, n, s, c) lsearch(k, b, n, s, c)
 #else
  #define DIR_SEPARATOR '\\'
  #define DIR_SEPARATOR_STR "\\"
+ #define PATH_SEPARATOR ':'
+ #define PATH_SEPARATOR_STR ":"
  #define NEWLINE "\r\n"
 
 #ifdef ENABLE_NLS
  #define BINDTEXTDOMAIN(d, n) _win_bindtextdomain(d, n)
 #endif
  #define CREAT(p, m) _win_creat(p, m)
+ #define PLIBC_CTIME(c) _win_ctime(c)
+ #define CTIME_R(c, b) _win_ctime_r(c, b)
  #define FOPEN(f, m) _win_fopen(f, m)
+ #define FTRUNCATE(f, l) _win_ftruncate(f, l)
  #define OPENDIR(d) _win_opendir(d)
- #define OPEN(f) _win_open(f)
+ #define OPEN _win_open
  #define CHDIR(d) _win_chdir(d)
  #define CLOSE(f) _win_close(f)
+ #define PLIBC_KILL(p, s) _win_kill(p, s)
+ #define LSEEK(f, o, w) _win_lseek(f, o, w)
  #define FSTAT(h, b) _win_fstat(h, b)
  #define RMDIR(f) _win_rmdir(f)
  #define ACCESS(p, m) _win_access(p, m)
  #define CHMOD(f, p) _win_chmod(f, p)
  #define PIPE(h) _win_pipe(h)
  #define RANDOM() _win_random()
+ #define SRANDOM(s) _win_srandom(s)
  #define REMOVE(p) _win_remove(p)
  #define RENAME(o, n) _win_rename(o, n)
  #define STAT(p, b) _win_stat(p, b)
+ #define STAT64(p, b) _win_stat64(p, b)
  #define UNLINK(f) _win_unlink(f)
  #define WRITE(f, b, n) _win_write(f, b, n)
  #define READ(f, b, n) _win_read(f, b, n)
@@ -508,6 +594,7 @@ size_t strnlen (const char *str, size_t maxlen);
  #define STRERROR(i) _win_strerror(i)
  #define READLINK(p, b, s) _win_readlink(p, b, s)
  #define LSTAT(p, b) _win_lstat(p, b)
+ #define LSTAT64(p, b) _win_lstat64(p, b)
  #define PRINTF(f, ...) _win_printf(f , __VA_ARGS__)
  #define FPRINTF(fil, fmt, ...) _win_fprintf(fil, fmt, __VA_ARGS__)
  #define VPRINTF(f, a) _win_vprintf(f, a)
@@ -540,7 +627,160 @@ size_t strnlen (const char *str, size_t maxlen);
  #define SOCKET(a, t, p) _win_socket(a, t, p)
  #define GETHOSTBYADDR(a, l, t) _win_gethostbyname(a, l, t)
  #define GETHOSTBYNAME(n) _win_gethostbyname(n)
+ #define GETTIMEOFDAY(t, n) _win_gettimeofday(t, n)
+ #define INSQUE(e, p) _win_insque(e, p)
+ #define REMQUE(e) _win_remque(e)
+ #define HSEARCH(i, a) _win_hsearch(i, a)
+ #define HCREATE(n) _win_hcreate(n)
+ #define HDESTROY() _win_hdestroy()
+ #define HSEARCH_R(i, a, r, h) _win_hsearch_r(i, a, r, h)
+ #define HCREATE_R(n, h) _win_hcreate_r(n, h)
+ #define HDESTROY_R(h) _win_hdestroy_r(h)
+ #define TSEARCH(k, r, c) _win_tsearch(k, r, c)
+ #define TFIND(k, r, c) _win_tfind(k, r, c)
+ #define TDELETE(k, r, c) _win_tdelete(k, r, c)
+ #define TWALK(r, a) _win_twalk(r, a)
+ #define TDESTROY(r, f) _win_tdestroy(r, f)
+ #define LFIND(k, b, n, s, c) _win_lfind(k, b, n, s, c)
+ #define LSEARCH(k, b, n, s, c) _win_lsearch(k, b, n, s, c)
 #endif
+
+/* search.h */
+
+/* Prototype structure for a linked-list data structure.
+   This is the type used by the `insque' and `remque' functions.  */
+
+struct PLIBC_SEARCH_QELEM
+  {
+    struct qelem *q_forw;
+    struct qelem *q_back;
+    char q_data[1];
+  };
+
+
+/* Insert ELEM into a doubly-linked list, after PREV.  */
+void _win_insque (void *__elem, void *__prev);
+
+/* Unlink ELEM from the doubly-linked list that it is in.  */
+void _win_remque (void *__elem);
+
+
+/* For use with hsearch(3).  */
+typedef int (*PLIBC_SEARCH__compar_fn_t) (__const void *, __const void *);
+
+typedef PLIBC_SEARCH__compar_fn_t _win_comparison_fn_t;
+
+/* Action which shall be performed in the call the hsearch.  */
+typedef enum
+  {
+    PLIBC_SEARCH_FIND,
+    PLIBC_SEARCH_ENTER
+  }
+PLIBC_SEARCH_ACTION;
+
+typedef struct PLIBC_SEARCH_entry
+  {
+    char *key;
+    void *data;
+  }
+PLIBC_SEARCH_ENTRY;
+
+/* The reentrant version has no static variables to maintain the state.
+   Instead the interface of all functions is extended to take an argument
+   which describes the current status.  */
+typedef struct _PLIBC_SEARCH_ENTRY
+{
+  unsigned int used;
+  PLIBC_SEARCH_ENTRY entry;
+}
+_PLIBC_SEARCH_ENTRY;
+
+
+/* Family of hash table handling functions.  The functions also
+   have reentrant counterparts ending with _r.  The non-reentrant
+   functions all work on a signle internal hashing table.  */
+
+/* Search for entry matching ITEM.key in internal hash table.  If
+   ACTION is `FIND' return found entry or signal error by returning
+   NULL.  If ACTION is `ENTER' replace existing data (if any) with
+   ITEM.data.  */
+PLIBC_SEARCH_ENTRY *_win_hsearch (PLIBC_SEARCH_ENTRY __item, PLIBC_SEARCH_ACTION __action);
+
+/* Create a new hashing table which will at most contain NEL elements.  */
+int _win_hcreate (size_t __nel);
+
+/* Destroy current internal hashing table.  */
+void _win_hdestroy (void);
+
+/* Data type for reentrant functions.  */
+struct PLIBC_SEARCH_hsearch_data
+  {
+    struct _PLIBC_SEARCH_ENTRY *table;
+    unsigned int size;
+    unsigned int filled;
+  };
+
+/* Reentrant versions which can handle multiple hashing tables at the
+   same time.  */
+int _win_hsearch_r (PLIBC_SEARCH_ENTRY __item, PLIBC_SEARCH_ACTION __action, PLIBC_SEARCH_ENTRY **__retval,
+          struct PLIBC_SEARCH_hsearch_data *__htab);
+int _win_hcreate_r (size_t __nel, struct PLIBC_SEARCH_hsearch_data *__htab);
+void _win_hdestroy_r (struct PLIBC_SEARCH_hsearch_data *__htab);
+
+
+/* The tsearch routines are very interesting. They make many
+   assumptions about the compiler.  It assumes that the first field
+   in node must be the "key" field, which points to the datum.
+   Everything depends on that.  */
+/* For tsearch */
+typedef enum
+{
+  PLIBC_SEARCH_preorder,
+  PLIBC_SEARCH_postorder,
+  PLIBC_SEARCH_endorder,
+  PLIBC_SEARCH_leaf
+}
+PLIBC_SEARCH_VISIT;
+
+/* Search for an entry matching the given KEY in the tree pointed to
+   by *ROOTP and insert a new element if not found.  */
+void *_win_tsearch (__const void *__key, void **__rootp,
+          PLIBC_SEARCH__compar_fn_t __compar);
+
+/* Search for an entry matching the given KEY in the tree pointed to
+   by *ROOTP.  If no matching entry is available return NULL.  */
+void *_win_tfind (__const void *__key, void *__const *__rootp,
+        PLIBC_SEARCH__compar_fn_t __compar);
+
+/* Remove the element matching KEY from the tree pointed to by *ROOTP.  */
+void *_win_tdelete (__const void *__restrict __key,
+          void **__restrict __rootp,
+          PLIBC_SEARCH__compar_fn_t __compar);
+
+typedef void (*PLIBC_SEARCH__action_fn_t) (__const void *__nodep, PLIBC_SEARCH_VISIT __value,
+             int __level);
+
+/* Walk through the whole tree and call the ACTION callback for every node
+   or leaf.  */
+void _win_twalk (__const void *__root, PLIBC_SEARCH__action_fn_t __action);
+
+/* Callback type for function to free a tree node.  If the keys are atomic
+   data this function should do nothing.  */
+typedef void (*PLIBC_SEARCH__free_fn_t) (void *__nodep);
+
+/* Destroy the whole tree, call FREEFCT for each node or leaf.  */
+void _win_tdestroy (void *__root, PLIBC_SEARCH__free_fn_t __freefct);
+
+
+/* Perform linear search for KEY by comparing by COMPAR in an array
+   [BASE,BASE+NMEMB*SIZE).  */
+void *_win_lfind (__const void *__key, __const void *__base,
+        size_t *__nmemb, size_t __size, PLIBC_SEARCH__compar_fn_t __compar);
+
+/* Perform linear search for KEY by comparing by COMPAR function in
+   array [BASE,BASE+NMEMB*SIZE) and insert entry if not found.  */
+void *_win_lsearch (__const void *__key, void *__base,
+          size_t *__nmemb, size_t __size, PLIBC_SEARCH__compar_fn_t __compar);
 
 
 #ifdef __cplusplus
