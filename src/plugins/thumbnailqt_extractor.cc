@@ -133,6 +133,11 @@ EXTRACTOR_thumbnailqt_extract (const char *data,
    * Qt's scaled() produces poor quality if the image is resized to less than
    * half the size. Therefore, we resize the image in multiple steps.
    * http://lists.trolltech.com/qt-interest/2006-04/msg00376.html */
+  while ( (width > 32*THUMBSIZE) || (height > 32*THUMBSIZE) )
+    {
+      width /= 2;
+      height /= 2;
+    }
   while ( (width > THUMBSIZE) || (height > THUMBSIZE) )
     {
       width /= 2;
