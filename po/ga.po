@@ -2,26 +2,11 @@
 # Copyright (C) 2005 Free Software Foundation, Inc.
 # This file is distributed under the same license as the libextractor package.
 # Kevin Patrick Scannell <scannell@SLU.EDU>, 2005, 2006, 2007, 2008.
-#: src/main/extractor_metatypes.c:247 src/main/extractor_metatypes.c:249
-#: src/main/extractor_metatypes.c:251 src/main/extractor_metatypes.c:253
-#: src/main/extractor_metatypes.c:255 src/main/extractor_metatypes.c:258
-#: src/main/extractor_metatypes.c:260 src/main/extractor_metatypes.c:262
-#: src/main/extractor_metatypes.c:264 src/main/extractor_metatypes.c:266
-#: src/main/extractor_metatypes.c:269 src/main/extractor_metatypes.c:271
-#: src/main/extractor_metatypes.c:273 src/main/extractor_metatypes.c:275
-#: src/main/extractor_metatypes.c:277 src/main/extractor_metatypes.c:280
-#: src/main/extractor_metatypes.c:282 src/main/extractor_metatypes.c:286
-#: src/main/extractor_metatypes.c:309 src/main/extractor_metatypes.c:311
-#: src/main/extractor_metatypes.c:316 src/main/extractor_metatypes.c:318
-#: src/main/extractor_metatypes.c:320 src/main/extractor_metatypes.c:329
-#: src/main/extractor_metatypes.c:366 src/main/extractor_metatypes.c:393
-#: src/main/extractor_metatypes.c:428 src/main/extractor_metatypes.c:430
-#: src/main/extractor_metatypes.c:432 src/main/extractor_metatypes.c:437
 msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.5.20\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2010-01-13 14:40+0100\n"
+"POT-Creation-Date: 2010-01-13 15:34+0100\n"
 "PO-Revision-Date: 2008-03-21 20:46-0700\n"
 "Last-Translator: Kevin Scannell <kscanne@gmail.com>\n"
 "Language-Team: Irish <gaeilge-gnulinux@lists.sourceforge.net>\n"
@@ -942,89 +927,85 @@ msgid "print this help"
 msgstr "taispeáin an chabhair seo"
 
 #: src/main/extract.c:180
-msgid "compute hash using the given ALGORITHM (currently sha1 or md5)"
-msgstr "úsáid an tALGARTAM haiseála tugtha (sha1 nó md5 faoi láthair)"
-
-#: src/main/extract.c:182
 msgid "run plugins in-process (simplifies debugging)"
 msgstr ""
 
-#: src/main/extract.c:184
+#: src/main/extract.c:182
 msgid "load an extractor plugin named LIBRARY"
 msgstr "luchtaigh breiseán asbhainteora darb ainm LEABHARLANN"
 
-#: src/main/extract.c:186
+#: src/main/extract.c:184
 msgid "list all keyword types"
 msgstr "taispeáin gach cineál lorgfhocail"
 
-#: src/main/extract.c:188
+#: src/main/extract.c:186
 msgid "do not use the default set of extractor plugins"
 msgstr "ná húsáid na breiseáin asbhainteora réamhshocraithe"
 
-#: src/main/extract.c:190
+#: src/main/extract.c:188
 msgid "print only keywords of the given TYPE (use -L to get a list)"
 msgstr ""
 "ná taispeáin ach lorgfhocail den CHINEÁL tugtha (úsáid -L chun liosta a "
 "fháil)"
 
-#: src/main/extract.c:192
+#: src/main/extract.c:190
 msgid "print the version number"
 msgstr "taispeáin an leagan"
 
-#: src/main/extract.c:194
+#: src/main/extract.c:192
 msgid "be verbose"
 msgstr "bí foclach"
 
-#: src/main/extract.c:196
+#: src/main/extract.c:194
 msgid "do not print keywords of the given TYPE"
 msgstr "ná taispeáin lorgfhocail den CHINEÁL tugtha"
 
-#: src/main/extract.c:199
+#: src/main/extract.c:197
 msgid "extract [OPTIONS] [FILENAME]*"
 msgstr "extract [ROGHANNA] [COMHADAINM]*"
 
-#: src/main/extract.c:200
+#: src/main/extract.c:198
 msgid "Extract metadata from files."
 msgstr "Bain meiteashonraí as comhaid."
 
-#: src/main/extract.c:240
+#: src/main/extract.c:238
 #, fuzzy, c-format
 msgid "Found by `%s' plugin:\n"
 msgstr "Theip ar luchtú an bhreiseáin `%s': %s\n"
 
-#: src/main/extract.c:247
+#: src/main/extract.c:245
 #, c-format
 msgid "%s - (unknown, %u bytes)\n"
 msgstr ""
 
-#: src/main/extract.c:268
+#: src/main/extract.c:266
 #, fuzzy, c-format
 msgid "%s - (binary, %u bytes)\n"
 msgstr "%s - (dénártha)\n"
 
-#: src/main/extract.c:608 src/main/extract.c:618
+#: src/main/extract.c:604 src/main/extract.c:614
 #, c-format
 msgid ""
 "Illegal combination of options, cannot combine multiple styles of printing.\n"
 msgstr ""
 
-#: src/main/extract.c:648
+#: src/main/extract.c:641
 #, c-format
 msgid "You must specify an argument for the `%s' option (option ignored).\n"
 msgstr ""
 "Ní mór duit argóint a thabhairt i ndiaidh na rogha `%s' (á ligean thart).\n"
 
-#: src/main/extract.c:713
+#: src/main/extract.c:706
 #, c-format
 msgid "Use --help to get a list of options.\n"
 msgstr "Bain úsáid as '--help' le haghaidh níos mó roghanna.\n"
 
-#: src/main/extract.c:759
+#: src/main/extract.c:738
 #, c-format
 msgid "%% BiBTeX file\n"
 msgstr "%% Comhad BiBTeX\n"
 
-#: src/main/extract.c:766
+#: src/main/extract.c:745
 #, c-format
 msgid "Keywords for file %s:\n"
 msgstr "Lorgfhocail do chomhad %s:\n"
@@ -1811,72 +1792,72 @@ msgstr "spleáchas crua-earraí"
 msgid "name of a library that this file depends on"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:246
+#: src/main/extractor_metatypes.c:246 src/main/extractor_metatypes.c:247
 msgid "camera make"
 msgstr "déantús an cheamara"
 
-#: src/main/extractor_metatypes.c:248
+#: src/main/extractor_metatypes.c:248 src/main/extractor_metatypes.c:249
 msgid "camera model"
 msgstr "déanamh an cheamara"
 
-#: src/main/extractor_metatypes.c:250
+#: src/main/extractor_metatypes.c:250 src/main/extractor_metatypes.c:251
 msgid "exposure"
 msgstr "nochtadh"
 
-#: src/main/extractor_metatypes.c:252
+#: src/main/extractor_metatypes.c:252 src/main/extractor_metatypes.c:253
 msgid "aperture"
 msgstr "cró"
 
-#: src/main/extractor_metatypes.c:254
+#: src/main/extractor_metatypes.c:254 src/main/extractor_metatypes.c:255
 msgid "exposure bias"
 msgstr "laofacht nochta"
 
-#: src/main/extractor_metatypes.c:257
+#: src/main/extractor_metatypes.c:257 src/main/extractor_metatypes.c:258
 msgid "flash"
 msgstr "splanc"
 
-#: src/main/extractor_metatypes.c:259
+#: src/main/extractor_metatypes.c:259 src/main/extractor_metatypes.c:260
 msgid "flash bias"
 msgstr "laofacht splaince"
 
-#: src/main/extractor_metatypes.c:261
+#: src/main/extractor_metatypes.c:261 src/main/extractor_metatypes.c:262
 msgid "focal length"
 msgstr "fad fócais"
 
-#: src/main/extractor_metatypes.c:263
+#: src/main/extractor_metatypes.c:263 src/main/extractor_metatypes.c:264
 #, fuzzy
 msgid "focal length 35mm"
 msgstr "fad fócais"
 
-#: src/main/extractor_metatypes.c:265
+#: src/main/extractor_metatypes.c:265 src/main/extractor_metatypes.c:266
 msgid "iso speed"
 msgstr "luas ISO"
 
-#: src/main/extractor_metatypes.c:268
+#: src/main/extractor_metatypes.c:268 src/main/extractor_metatypes.c:269
 msgid "exposure mode"
 msgstr "mód nochta"
 
-#: src/main/extractor_metatypes.c:270
+#: src/main/extractor_metatypes.c:270 src/main/extractor_metatypes.c:271
 msgid "metering mode"
 msgstr "mód méadrála"
 
-#: src/main/extractor_metatypes.c:272
+#: src/main/extractor_metatypes.c:272 src/main/extractor_metatypes.c:273
 msgid "macro mode"
 msgstr "mód macra"
 
-#: src/main/extractor_metatypes.c:274
+#: src/main/extractor_metatypes.c:274 src/main/extractor_metatypes.c:275
 msgid "image quality"
 msgstr "cáilíocht íomhá"
 
-#: src/main/extractor_metatypes.c:276
+#: src/main/extractor_metatypes.c:276 src/main/extractor_metatypes.c:277
 msgid "white balance"
 msgstr "cothromaíocht bhán"
 
-#: src/main/extractor_metatypes.c:279
+#: src/main/extractor_metatypes.c:279 src/main/extractor_metatypes.c:280
 msgid "orientation"
 msgstr "treoshuíomh"
 
-#: src/main/extractor_metatypes.c:281
+#: src/main/extractor_metatypes.c:281 src/main/extractor_metatypes.c:282
 msgid "magnification"
 msgstr "formhéadú"
 
@@ -1889,7 +1870,7 @@ msgstr "treoshuíomh an leathanaigh"
 msgid "size of the image in pixels (width times height)"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:285
+#: src/main/extractor_metatypes.c:285 src/main/extractor_metatypes.c:286
 #, fuzzy
 msgid "produced by software"
 msgstr "mionathraithe ag bogearraí"
@@ -1959,11 +1940,11 @@ msgstr "líon na gcarachtar"
 msgid "number of characters"
 msgstr "timthriallta eagarthóireachta"
 
-#: src/main/extractor_metatypes.c:308
+#: src/main/extractor_metatypes.c:308 src/main/extractor_metatypes.c:309
 msgid "page orientation"
 msgstr "treoshuíomh an leathanaigh"
 
-#: src/main/extractor_metatypes.c:310
+#: src/main/extractor_metatypes.c:310 src/main/extractor_metatypes.c:311
 msgid "paper size"
 msgstr "páipéarmhéid"
 
@@ -1975,15 +1956,15 @@ msgstr "teimpléad"
 msgid "template the document uses or is based on"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:315
+#: src/main/extractor_metatypes.c:315 src/main/extractor_metatypes.c:316
 msgid "company"
 msgstr "comhlacht"
 
-#: src/main/extractor_metatypes.c:317
+#: src/main/extractor_metatypes.c:317 src/main/extractor_metatypes.c:318
 msgid "manager"
 msgstr "bainisteoir"
 
-#: src/main/extractor_metatypes.c:319
+#: src/main/extractor_metatypes.c:319 src/main/extractor_metatypes.c:320
 #, fuzzy
 msgid "revision number"
 msgstr "taispeáin an leagan"
@@ -2014,7 +1995,7 @@ msgstr "ealaíontóir"
 msgid "name of the artist or band"
 msgstr "foilsitheoir"
 
-#: src/main/extractor_metatypes.c:328
+#: src/main/extractor_metatypes.c:328 src/main/extractor_metatypes.c:329
 msgid "genre"
 msgstr "seánra"
 
@@ -2158,7 +2139,7 @@ msgstr "sracaire"
 msgid "contributing writer"
 msgstr "cuiditheoir"
 
-#: src/main/extractor_metatypes.c:365
+#: src/main/extractor_metatypes.c:365 src/main/extractor_metatypes.c:366
 msgid "product version"
 msgstr "leagan an táirge"
 
@@ -2263,7 +2244,7 @@ msgstr ""
 msgid "name of the composer"
 msgstr "foilsitheoir"
 
-#: src/main/extractor_metatypes.c:392
+#: src/main/extractor_metatypes.c:392 src/main/extractor_metatypes.c:393
 #, fuzzy
 msgid "beats per minute"
 msgstr "priontáilte"
@@ -2398,15 +2379,15 @@ msgstr "Laidineach"
 msgid "rating of the content"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:427
+#: src/main/extractor_metatypes.c:427 src/main/extractor_metatypes.c:428
 msgid "organization"
 msgstr "eagras"
 
-#: src/main/extractor_metatypes.c:429
+#: src/main/extractor_metatypes.c:429 src/main/extractor_metatypes.c:430
 msgid "ripper"
 msgstr "sracaire"
 
-#: src/main/extractor_metatypes.c:431
+#: src/main/extractor_metatypes.c:431 src/main/extractor_metatypes.c:432
 msgid "producer"
 msgstr "táirgeoir"
 
@@ -2419,10 +2400,13 @@ msgstr "grúpa"
 msgid "name of the group or band"
 msgstr "foilsitheoir"
 
-#: src/main/extractor_metatypes.c:436
+#: src/main/extractor_metatypes.c:436 src/main/extractor_metatypes.c:437
 #, fuzzy
 msgid "last"
 msgstr "splanc"
+
+#~ msgid "compute hash using the given ALGORITHM (currently sha1 or md5)"
+#~ msgstr "úsáid an tALGARTAM haiseála tugtha (sha1 nó md5 faoi láthair)"
 
 #~ msgid ""
 #~ "use the generic plaintext extractor for the language with the 2-letter "

@@ -12,26 +12,11 @@
 # Donatien NSENGIYUMVA <ndonatienuk@yahoo.co.uk>, 2005.
 # Antoine Bigirimana <antoine@e-tools.com>, 2005.
 #
-#: src/main/extractor_metatypes.c:247 src/main/extractor_metatypes.c:249
-#: src/main/extractor_metatypes.c:251 src/main/extractor_metatypes.c:253
-#: src/main/extractor_metatypes.c:255 src/main/extractor_metatypes.c:258
-#: src/main/extractor_metatypes.c:260 src/main/extractor_metatypes.c:262
-#: src/main/extractor_metatypes.c:264 src/main/extractor_metatypes.c:266
-#: src/main/extractor_metatypes.c:269 src/main/extractor_metatypes.c:271
-#: src/main/extractor_metatypes.c:273 src/main/extractor_metatypes.c:275
-#: src/main/extractor_metatypes.c:277 src/main/extractor_metatypes.c:280
-#: src/main/extractor_metatypes.c:282 src/main/extractor_metatypes.c:286
-#: src/main/extractor_metatypes.c:309 src/main/extractor_metatypes.c:311
-#: src/main/extractor_metatypes.c:316 src/main/extractor_metatypes.c:318
-#: src/main/extractor_metatypes.c:320 src/main/extractor_metatypes.c:329
-#: src/main/extractor_metatypes.c:366 src/main/extractor_metatypes.c:393
-#: src/main/extractor_metatypes.c:428 src/main/extractor_metatypes.c:430
-#: src/main/extractor_metatypes.c:432 src/main/extractor_metatypes.c:437
 msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.4.2\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2010-01-13 14:40+0100\n"
+"POT-Creation-Date: 2010-01-13 15:34+0100\n"
 "PO-Revision-Date: 2005-04-04 10:55-0700\n"
 "Last-Translator: Steven Michael Murphy <murf@e-tools.com>\n"
 "Language-Team: Kinyarwanda <translation-team-rw@lists.sourceforge.net>\n"
@@ -1004,94 +989,89 @@ msgid "print this help"
 msgstr "Gucapa iyi Ifashayobora"
 
 #: src/main/extract.c:180
-#, fuzzy
-msgid "compute hash using the given ALGORITHM (currently sha1 or md5)"
-msgstr "ikoresha i Cyangwa"
-
-#: src/main/extract.c:182
 msgid "run plugins in-process (simplifies debugging)"
 msgstr ""
 
-#: src/main/extract.c:184
+#: src/main/extract.c:182
 #, fuzzy
 msgid "load an extractor plugin named LIBRARY"
 msgstr "Ibirimo"
 
-#: src/main/extract.c:186
+#: src/main/extract.c:184
 #, fuzzy
 msgid "list all keyword types"
 msgstr "Urutonde Byose Ijambo- banze"
 
-#: src/main/extract.c:188
+#: src/main/extract.c:186
 #, fuzzy
 msgid "do not use the default set of extractor plugins"
 msgstr "OYA Gukoresha i Mburabuzi Gushyiraho Bya"
 
-#: src/main/extract.c:190
+#: src/main/extract.c:188
 #, fuzzy
 msgid "print only keywords of the given TYPE (use -L to get a list)"
 msgstr "Gucapa Amagambo fatizo Bya i Gukoresha Kuri Kubona a Urutonde"
 
-#: src/main/extract.c:192
+#: src/main/extract.c:190
 #, fuzzy
 msgid "print the version number"
 msgstr "Gucapa i Verisiyo Umubare"
 
-#: src/main/extract.c:194
+#: src/main/extract.c:192
 msgid "be verbose"
 msgstr ""
 
-#: src/main/extract.c:196
+#: src/main/extract.c:194
 #, fuzzy
 msgid "do not print keywords of the given TYPE"
 msgstr "OYA Gucapa Amagambo fatizo Bya i"
 
-#: src/main/extract.c:199
+#: src/main/extract.c:197
 msgid "extract [OPTIONS] [FILENAME]*"
 msgstr ""
 
-#: src/main/extract.c:200
+#: src/main/extract.c:198
 #, fuzzy
 msgid "Extract metadata from files."
 msgstr "Bivuye Idosiye"
 
-#: src/main/extract.c:240
+#: src/main/extract.c:238
 #, fuzzy, c-format
 msgid "Found by `%s' plugin:\n"
 msgstr "Byanze"
 
-#: src/main/extract.c:247
+#: src/main/extract.c:245
 #, c-format
 msgid "%s - (unknown, %u bytes)\n"
 msgstr ""
 
-#: src/main/extract.c:268
+#: src/main/extract.c:266
 #, fuzzy, c-format
 msgid "%s - (binary, %u bytes)\n"
 msgstr "%s-(Nyabibiri"
 
-#: src/main/extract.c:608 src/main/extract.c:618
+#: src/main/extract.c:604 src/main/extract.c:614
 #, c-format
 msgid ""
 "Illegal combination of options, cannot combine multiple styles of printing.\n"
 msgstr ""
 
-#: src/main/extract.c:648
+#: src/main/extract.c:641
 #, fuzzy, c-format
 msgid "You must specify an argument for the `%s' option (option ignored).\n"
 msgstr "kugirango i Ihitamo Ihitamo"
 
-#: src/main/extract.c:713
+#: src/main/extract.c:706
 #, fuzzy, c-format
 msgid "Use --help to get a list of options.\n"
 msgstr "Ifashayobora Kuri Kubona a Urutonde Bya Amahitamo"
 
-#: src/main/extract.c:759
+#: src/main/extract.c:738
 #, c-format
 msgid "%% BiBTeX file\n"
 msgstr ""
 
-#: src/main/extract.c:766
+#: src/main/extract.c:745
 #, fuzzy, c-format
 msgid "Keywords for file %s:\n"
 msgstr "kugirango IDOSIYE"
@@ -1965,72 +1945,72 @@ msgstr ""
 msgid "name of a library that this file depends on"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:246
+#: src/main/extractor_metatypes.c:246 src/main/extractor_metatypes.c:247
 msgid "camera make"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:248
+#: src/main/extractor_metatypes.c:248 src/main/extractor_metatypes.c:249
 msgid "camera model"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:250
+#: src/main/extractor_metatypes.c:250 src/main/extractor_metatypes.c:251
 msgid "exposure"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:252
+#: src/main/extractor_metatypes.c:252 src/main/extractor_metatypes.c:253
 msgid "aperture"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:254
+#: src/main/extractor_metatypes.c:254 src/main/extractor_metatypes.c:255
 msgid "exposure bias"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:257
+#: src/main/extractor_metatypes.c:257 src/main/extractor_metatypes.c:258
 msgid "flash"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:259
+#: src/main/extractor_metatypes.c:259 src/main/extractor_metatypes.c:260
 msgid "flash bias"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:261
+#: src/main/extractor_metatypes.c:261 src/main/extractor_metatypes.c:262
 msgid "focal length"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:263
+#: src/main/extractor_metatypes.c:263 src/main/extractor_metatypes.c:264
 msgid "focal length 35mm"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:265
+#: src/main/extractor_metatypes.c:265 src/main/extractor_metatypes.c:266
 msgid "iso speed"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:268
+#: src/main/extractor_metatypes.c:268 src/main/extractor_metatypes.c:269
 msgid "exposure mode"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:270
+#: src/main/extractor_metatypes.c:270 src/main/extractor_metatypes.c:271
 msgid "metering mode"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:272
+#: src/main/extractor_metatypes.c:272 src/main/extractor_metatypes.c:273
 msgid "macro mode"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:274
+#: src/main/extractor_metatypes.c:274 src/main/extractor_metatypes.c:275
 msgid "image quality"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:276
+#: src/main/extractor_metatypes.c:276 src/main/extractor_metatypes.c:277
 msgid "white balance"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:279
+#: src/main/extractor_metatypes.c:279 src/main/extractor_metatypes.c:280
 #, fuzzy
 msgid "orientation"
 msgstr "Ipaji Icyerekezo"
 
-#: src/main/extractor_metatypes.c:281
+#: src/main/extractor_metatypes.c:281 src/main/extractor_metatypes.c:282
 msgid "magnification"
 msgstr ""
 
@@ -2043,7 +2023,7 @@ msgstr "Ipaji Icyerekezo"
 msgid "size of the image in pixels (width times height)"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:285
+#: src/main/extractor_metatypes.c:285 src/main/extractor_metatypes.c:286
 #, fuzzy
 msgid "produced by software"
 msgstr "Byaremwe kugirango"
@@ -2124,13 +2104,13 @@ msgstr "Kubara amapaje"
 msgid "number of characters"
 msgstr "Umubare Inyuma Bya Urutonde"
 
-#: src/main/extractor_metatypes.c:308
+#: src/main/extractor_metatypes.c:308 src/main/extractor_metatypes.c:309
 #, fuzzy
 msgid "page orientation"
 msgstr "Ipaji Icyerekezo"
 
 # padmin/source\rtsetup.src:RID_RTS_PAPERPAGE.RID_RTS_PAPER_PAPER_TXT.text
-#: src/main/extractor_metatypes.c:310
+#: src/main/extractor_metatypes.c:310 src/main/extractor_metatypes.c:311
 #, fuzzy
 msgid "paper size"
 msgstr "Ingano y'urupapuro"
@@ -2143,17 +2123,17 @@ msgstr ""
 msgid "template the document uses or is based on"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:315
+#: src/main/extractor_metatypes.c:315 src/main/extractor_metatypes.c:316
 msgid "company"
 msgstr ""
 
 # sc/source\ui\src\sortdlg.src:RID_SCPAGE_SORT_OPTIONS.FT_LANGUAGE.text
-#: src/main/extractor_metatypes.c:317
+#: src/main/extractor_metatypes.c:317 src/main/extractor_metatypes.c:318
 #, fuzzy
 msgid "manager"
 msgstr "Ururimi"
 
-#: src/main/extractor_metatypes.c:319
+#: src/main/extractor_metatypes.c:319 src/main/extractor_metatypes.c:320
 #, fuzzy
 msgid "revision number"
 msgstr "Gucapa i Verisiyo Umubare"
@@ -2187,7 +2167,7 @@ msgstr "Umuhanzi"
 msgid "name of the artist or band"
 msgstr "Uwasohoye inyandiko"
 
-#: src/main/extractor_metatypes.c:328
+#: src/main/extractor_metatypes.c:328 src/main/extractor_metatypes.c:329
 msgid "genre"
 msgstr ""
 
@@ -2368,7 +2348,7 @@ msgstr ""
 msgid "contributing writer"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:365
+#: src/main/extractor_metatypes.c:365 src/main/extractor_metatypes.c:366
 #, fuzzy
 msgid "product version"
 msgstr "Umwanditsi"
@@ -2495,7 +2475,7 @@ msgstr ""
 msgid "name of the composer"
 msgstr "Uwasohoye inyandiko"
 
-#: src/main/extractor_metatypes.c:392
+#: src/main/extractor_metatypes.c:392 src/main/extractor_metatypes.c:393
 msgid "beats per minute"
 msgstr ""
 
@@ -2628,16 +2608,16 @@ msgstr "Ikiratini"
 msgid "rating of the content"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:427
+#: src/main/extractor_metatypes.c:427 src/main/extractor_metatypes.c:428
 #, fuzzy
 msgid "organization"
 msgstr "Ihuzagahunda"
 
-#: src/main/extractor_metatypes.c:429
+#: src/main/extractor_metatypes.c:429 src/main/extractor_metatypes.c:430
 msgid "ripper"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:431
+#: src/main/extractor_metatypes.c:431 src/main/extractor_metatypes.c:432
 #, fuzzy
 msgid "producer"
 msgstr "Umwanditsi"
@@ -2656,10 +2636,14 @@ msgstr "Itsinda"
 msgid "name of the group or band"
 msgstr "Uwasohoye inyandiko"
 
-#: src/main/extractor_metatypes.c:436
+#: src/main/extractor_metatypes.c:436 src/main/extractor_metatypes.c:437
 #, fuzzy
 msgid "last"
 msgstr "Umuhanzi"
+
+#, fuzzy
+#~ msgid "compute hash using the given ALGORITHM (currently sha1 or md5)"
+#~ msgstr "ikoresha i Cyangwa"
 
 #, fuzzy
 #~ msgid ""

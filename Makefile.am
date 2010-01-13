@@ -1,7 +1,6 @@
 SUBDIRS  = m4 po src doc . 
 EXTRA_DIST = config.rpath \
-  ABOUT-NLS mkinstalldirs install-sh \
-  PLATFORMS  
+  ABOUT-NLS mkinstalldirs install-sh   
 
 pkgconfigdatadir = $(libdir)/pkgconfig
 pkgconfigdata_DATA = libextractor.pc
