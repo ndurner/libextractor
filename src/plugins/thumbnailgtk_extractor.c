@@ -41,6 +41,20 @@ void __attribute__ ((constructor)) ole_gobject_init ()
 }
 
 
+const char *
+EXTRACTOR_thumbnailgtk_options ()
+{
+  /* 
+     Since the Gnome developers think that being unable to
+     unload plugins is an 'acceptable' limitation, we
+     require out-of-process execution for plugins depending
+     on libgsf and other glib-based plugins.
+     See also https://bugzilla.gnome.org/show_bug.cgi?id=374940 
+  */
+  return "oop-only"; 
+}
+
+
 int 
 EXTRACTOR_thumbnailgtk_extract (const char *data,
 				size_t size,
