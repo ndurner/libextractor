@@ -43,6 +43,14 @@
 extern "C"
 {
 
+
+static void 
+mh (QtMsgType mtype, const char *msg)
+{
+  /* just discard */
+}
+
+
 int 
 EXTRACTOR_thumbnailqt_extract (const char *data,
 			       size_t size,
@@ -57,7 +65,9 @@ EXTRACTOR_thumbnailqt_extract (const char *data,
   unsigned long height;
   char format[64];
   QImage::Format colors;
+  QtMsgHandler oh;
 
+  oh = qInstallMsgHandler (&mh);
   /* Determine image format to use */
   if (options == NULL)
     colors = QImage::Format_Indexed8;
@@ -106,6 +116,7 @@ EXTRACTOR_thumbnailqt_extract (const char *data,
   if ( (height == 0) || (width == 0) )
     {
       delete img;
+      qInstallMsgHandler (oh);
       return 0;
     }
   snprintf(format,
@@ -122,6 +133,7 @@ EXTRACTOR_thumbnailqt_extract (const char *data,
 		 strlen(format)+1))
     {
       delete img;
+      qInstallMsgHandler (oh);
       return 1;
     }
   /* Change color depth */
@@ -154,6 +166,7 @@ EXTRACTOR_thumbnailqt_extract (const char *data,
   buffer.setBuffer(&bytes);
   buffer.open(QIODevice::WriteOnly);
   thumb.save(&buffer, "PNG");
+  qInstallMsgHandler (oh);
   return proc (proc_cls,
 	       "thumbnailqt",
 	       EXTRACTOR_METATYPE_THUMBNAIL,

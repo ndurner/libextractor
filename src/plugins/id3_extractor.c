@@ -272,7 +272,6 @@ EXTRACTOR_id3_extract (const char *data,
   char track[16];
   int ret;
 
-  fprintf (stderr, "called with %llu bytes\n", (unsigned long long) size);
   if (OK != get_id3 (data, size, &info))
     return 0;
   if (strlen (info.title) > 0)
