@@ -176,8 +176,6 @@ printHelp ()
       gettext_noop("produce grep-friendly output (all results on one line per file)") },
     { 'h', "help", NULL,
       gettext_noop("print this help") },
-    { 'H', "hash", "ALGORITHM",
-      gettext_noop("compute hash using the given ALGORITHM (currently sha1 or md5)") },
     { 'i', "in-process", NULL,
       gettext_noop("run plugins in-process (simplifies debugging)") },
     { 'l', "library", "LIBRARY",
@@ -552,7 +550,6 @@ main (int argc, char *argv[])
   int option_index;
   int c;
   char * libraries = NULL;
-  char * hash = NULL;
   int nodefault = NO;
   int defaultAll = YES;
   int bibtex = NO;
@@ -578,7 +575,6 @@ main (int argc, char *argv[])
 	{"bibtex", 0, 0, 'b'},
 	{"grep-friendly", 0, 0, 'g'},
 	{"help", 0, 0, 'h'},
-	{"hash", 1, 0, 'H'},
 	{"in-process", 0, 0, 'i'},
 	{"list", 0, 0, 'L'},
 	{"library", 1, 0, 'l'},
@@ -592,7 +588,7 @@ main (int argc, char *argv[])
       option_index = 0;
       c = getopt_long (argc,
 		       argv, 
-		       "abghH:il:Lnp:vVx:",
+		       "abghil:Lnp:vVx:",
 		       long_options,
 		       &option_index);
 
@@ -623,9 +619,6 @@ main (int argc, char *argv[])
 	case 'h':
 	  printHelp();
 	  return 0;
-	case 'H':
-	  hash = optarg;
-	  break;
 	case 'i':
 	  in_process = 1;
 	  break;
@@ -736,20 +729,6 @@ main (int argc, char *argv[])
 					   in_process
 					   ? EXTRACTOR_OPTION_IN_PROCESS
 					   : EXTRACTOR_OPTION_DEFAULT_POLICY);
-  if (hash != NULL) 
-    {
-      name = malloc(strlen(hash) + strlen("hash_") + 1);
-      strcpy(name, "libextractor_hash_");
-      strcat(name, hash);
-      plugins = EXTRACTOR_plugin_add(plugins,
-				     name,
-				     NULL,
-				     in_process
-				     ? EXTRACTOR_OPTION_IN_PROCESS
-				     : EXTRACTOR_OPTION_DEFAULT_POLICY);
-      free(name);
-    }
-
   if (processor == NULL)
     processor = &print_selected_keywords;
 

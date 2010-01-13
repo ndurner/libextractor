@@ -46,9 +46,7 @@ option.
 .SH OPTIONS
 .TP 8
 .B \-b
-Display the output in BiBTeX format. This implies the
-.B \-d
-option
+Display the output in BiBTeX format.
 .TP 8
 .B \-g
 Use grep\-friendly output (all keywords on a single line for each file).  Use the verbose option to print the filename first, followed by the keywords.  Use the verbose option twice to also display the keyword types.  This option will not print keyword types or non\-textual metadata.
@@ -56,11 +54,8 @@ Use grep\-friendly output (all keywords on a single line for each file).  Use th
 .B \-h
 Print a brief summary of the options.
 .TP 8
-.B \-H ALGORITHM
-Use the ALGORITHM to compute a hash of each file (possible algorithms are sha1 and md5).
-.TP 8
 .B \-i
-Run plugins in-process (for debugging).  By default, each plugin is run in its own process.
+Run plugins in\-process (for debugging).  By default, each plugin is run in its own process.
 .TP 8
 .BI \-l " libraries"
 Use the specified libraries to extract keywords. The general format of libraries is .I [[\-]LIBRARYNAME[:[\-]LIBRARYNAME]*] where LIBRARYNAME is a libextractor compatible library and typically of the form .Ijpeg\. The minus before the libraryname indicates that this library should be removed from the existing list.  To run only a few selected plugins, use \-l in combination with \-n.
@@ -99,7 +94,7 @@ mimetype \- image/jpeg
 $ extract \-p comment test/test.jpg
 comment \- (C) 2001 by Christian Grothoff, using gimp 1.2 1
 
-$ extract \-nV \-l libextractor_png.so \-p comment test/test.jpg test/test.png
+$ extract \-nV \-l png.so \-p comment test/test.jpg test/test.png
 Keywords for file test/test.jpg:
 Keywords for file test/test.png:
 comment \- Testing keyword extraction

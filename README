@@ -10,6 +10,7 @@ keywords from common file-types.
 
 libextractor is a GNU package (http://www.gnu.org/).
 
+More detailed documentation is available in the GNU libextractor manual.
 
 
 extract
@@ -31,57 +32,3 @@ Dependencies
 When building libextractor binaries, please make sure all of these
 dependencies are available.  Otherwise the build system may
 automatically build only a subset of libextractor.
-
-
-
-Writing plugins
-===============
-
-
-If you want to write your own extractor for some filetype, all you
-need to do is write a little library that implements a single method
-with this signature:
-
-
-int
-EXTRACTOR_XXX_extract
-   (const char *data,
-    size_t data_size,
-    EXTRACTOR_MetaDataProcessor proc,
-    void *proc_cls,
-    const char * options);
-
-where XXX is the name of the library file that you will tell
-libextractor to load, minus the suffix.  For example, if you link your
-extractor into a file called 'libextractor_my.so', the method above should
-be called 'EXTRACTOR_my_extract'.
-
-data is a pointer to the contents of the file and data_size is the
-size of data.  The extract method must call the proc function with all
-of the meta data found.  
-
-An example implementation can be found in mp3_extractor.c.
-
-
-
-Notes
-=====
-
-On Mac OS X, libextractor will avoid using GCC 3.1, because of
-problems compiling one of the extractors.  GCC 3.3 and 2.95.2 are
-known to work well; as such, libextractor will first look for 3.3 (by
-attempting to run gcc-3.3, cpp-3.3, and g++-3.3) and then 2.95.2 (by
-attempting to run gcc2 and g++2).
-
-If libextractor fails to find the plugins, a possible method of last
-resort is to set the environment variable LIBEXTRACTOR_PREFIX to the
-parent of the directory where the plugins are installed (i.e., if the
-plugins are in "/foo/bar/lib/libextractor/*.so", set the variable to
-"/foo/bar/lib").  This should not be needed if "extract" is in
-"/foo/bar/bin/extract" and "/foo/bar/bin" is in the PATH, if you are
-running Linux and "libextractor.so" is in
-"/foo/bar/lib/libextractor.so", or if you are on linux and the binary
-using libextractor resides in "/foo/bar/bin", or if you are under
-Windows and "GetModuleFileName" returns "/foo/bar/bin".  If none of
-these common circumstances apply, you may have to set the environment
-variable.

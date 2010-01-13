@@ -171,10 +171,15 @@ always been licensed under GPLv2 @emph{or any later version}.}
 @node Preparation
 @chapter Preparation
 
-Compiling @gnule{} follows the standard GNU autotools
-build process using @command{configure} and @command{make}.  For
-details, read the @file{INSTALL} file and query 
-@verb{|./configure --help|} for additional options.
+This chapter first describes the general build instructions that
+should apply to all systems.  Specific instructions for known problems
+for particular platforms are then described in individual sections
+afterwards.
+
+Compiling @gnule{} follows the standard GNU autotools build process
+using @command{configure} and @command{make}.  For details on the GNU
+autotools build process, read the @file{INSTALL} file and query
+@verb{|./configure --help|} for additional options.  
 
 @gnule{} has various dependencies, some of which are optional. 
 Instead of specifying the names of the software packages, we
@@ -271,6 +276,135 @@ environment variable @verb{|LIBEXTRACTOR_PREFIX|}.  If
 @gnule{} cannot locate a plugin, it will look in
 @verb{|LIBEXTRACTOR_PREFIX/lib/libextractor/|}.
 
+
+@section Installation on GNU/Linux
+
+Should work using the standard instructions without problems.
+
+
+@section Installation on FreeBSD
+
+Should work using the standard instructions without problems.
+
+
+@section Installation on OpenBSD
+
+OpenBSD 3.8 also doesn't have CODESET in @file{langinfo.h}.  CODESET
+is used in @gnule{} in about three places.  This causes problems
+during compilation.
+
+
+@section Installation on NetBSD
+
+No reports so far.
+
+
+@section Installation using MinGW
+
+Linking -lstdc++ with the provided libtool fails on Cygwin, this
+is a problem with libtool, there is unfortunately no flag to tell
+libtool how to do its job on Cygwin and it seems that it cannot be the
+default to set the library check to 'pass_all'.  Patching libtool may
+help.
+
+Note: this is a rather dated report and may no longer apply.
+
+
+@section Installation on OS X
+
+libextractor has two installation methods on Mac OS X: it can be
+installed as a Mac OS X framework or with the standard
+@command{./configure; make; make install} shell commands. The
+framework package is self-contained, but currently omits some of the
+extractor plugins that can be compiled in if libextractor is installed
+with @command{./configure; make; make install} (provided that the
+required dependencies exist.)
+
+@subsection Installing and uninstalling the framework
+
+The binary framework is distributed as a disk image (@file{Extractor-x.x.xx.dmg}).
+Installation is done by opening the disk image and clicking @file{Extractor.pkg}
+inside it. The Mac OS X installer application will then run. The framework
+is installed to the root volume's @file{/Library/Frameworks} folder and installing
+will require admin privileges.
+
+The framework can be uninstalled by dragging
+@file{/Library/Frameworks/Extractor.framework} cto the @file{Trash}.
+
+
+@subsection Using the framework
+
+In the framework, the @command{extract} command line tool can be found at 
+@file{/Library/Frameworks/Extractor.framework/Versions/Current/bin/extract}
+
+The framework can be used in software projects as a framework or as a dynamic
+library. 
+
+When using the framework as a dynamic library in projects using autotools,
+one would most likely want to add 
+"-I/Library/Frameworks/Extractor.framework/Versions/Current/include"
+to CPPFLAGS and 
+"-L/Library/Frameworks/Extractor.framework/Versions/Current/lib"
+to LDFLAGS.
+
+
+@subsection Example for using the framework
+
+@example
+@verbatim
+// hello.c
+#include <Extractor/extractor.h>
+
+int main()
+{
+  struct EXTRACTOR_PluginList *el;
+  el = EXTRACTOR_plugin_load_defaults (EXTRACTOR_OPTION_DEFAULT_POLICY);
+  // ...
+  EXTRACTOR_plugin_remove_all (el);
+  return 0;
+}
+@end verbatim
+@end example
+
+You can then compile the example using
+
+@verbatim
+$ gcc -o hello hello.c -framework Extractor
+@end verbatim
+
+@subsection Example for using the dynamic library
+
+@example
+@verbatim
+// hello.c
+#include <extractor.h>
+int main()
+{
+  struct EXTRACTOR_PluginList *el;
+  el = EXTRACTOR_plugin_load_defaults (EXTRACTOR_OPTION_DEFAULT_POLICY);
+  // ...
+  EXTRACTOR_plugin_remove_all (el);
+  return 0;
+}
+@end verbatim
+@end example
+
+You can then compile the example using
+
+@verbatim
+$ gcc -I/Library/Frameworks/Extractor.framework/Versions/Current/include \
+  -o hello hello.c \
+  -L/Library/Frameworks/Extractor.framework/Versions/Current/lib \
+  -lextractor
+@end verbatim
+
+Notice the difference in the @code{#include} line.
+
+
+
+
+
+
 @section Note to package maintainers
 
 The suggested way to package GNU libextractor is to split it into
@@ -304,6 +438,52 @@ resources.
 @node Generalities
 @chapter Generalities
 
+@section Introduction to the ``extract'' command
+
+The @command{extract} command takes a list of file names as arguments,
+extracts meta data from each of those files and prints the result to
+the console.  By default, @command{extract} will use all available
+plugins and print all (non-binary) meta data that is found.
+
+The set of plugins used by @command{extract} can be controlled using
+the ``-l'' and ``-n'' options.  Use ``-n'' to not load all of the
+default plugins.  Use ``-l NAME'' to specifically load a certain
+plugin.  For example, specify ``-n -l mime'' to only use the MIME
+plugin.
+
+Using the ``-p'' option the output of @command{extract} can be limited
+to only certain keyword types.  Similarly, using the ``-x'' option,
+certain keyword types can be excluded.  A list of all known keyword
+types can be obtained using the ``-L'' option.
+
+The output format of @command{extract} can be influenced with the
+``-V'' (more verbose, lists filenames), ``-g'' (grep-friendly, all
+meta data on a single line per file) and ``-b'' (bibTeX style)
+options.
+
+@section Common usage examples for ``extract''
+
+@example
+$ extract test/test.jpg
+comment - (C) 2001 by Christian Grothoff, using gimp 1.2 1
+mimetype - image/jpeg
+
+$ extract -V -x comment test/test.jpg
+Keywords for file test/test.jpg:
+mimetype - image/jpeg
+
+$ extract -p comment test/test.jpg
+comment - (C) 2001 by Christian Grothoff, using gimp 1.2 1
+
+$ extract -nV -l png.so -p comment test/test.jpg test/test.png
+Keywords for file test/test.jpg:
+Keywords for file test/test.png:
+comment - Testing keyword extraction
+@end example
+
+
+@section Introduction to the libextractor library
+
 Each public symbol exported by @gnule{} has the prefix
 @verb{|EXTRACTOR_|}.  All-caps names are used for constants.  For the
 impatient, the minimal C code for using @gnule{} (on the
@@ -322,6 +502,11 @@ int main(int argc, char ** argv) {
 }
 @end verbatim
 
+The minimal API illustrated by this example is actually sufficient for
+many applications.  The full external C API of @gnule{} is described
+in chapter @xref{Extracting meta data}.  Bindings for other languages
+are described in chapter @xref{Language bindings}.  The API for
+writing new plugins is described in chapter @xref{Writing new Plugins}.
 
 @node Extracting meta data
 @chapter Extracting meta data
@@ -508,7 +693,6 @@ Meta data extraction should never really fail --- at worst, @gnule{} should not 
 
 @node Language bindings
 @chapter Language bindings
-
 @cindex Java
 @cindex Mono
 @cindex Perl
