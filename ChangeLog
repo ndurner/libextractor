@@ -1,6 +1,10 @@
+Wed Jan 13 14:36:24 CET 2010
+	Adding support for extracting data from the end of files. -CG
+
 Sun Dec 13 16:53:35 CET 2009
 	Starting with major API breakage with the goal to fix all of
-	the not-so-nice things that have accumulated since version 0.0.0. -CG
+	the not-so-nice things that have accumulated since version 0.0.0.
+	Added support for out-of-process execution from plugins. -CG
 
 Sat Dec  5 11:32:30 CET 2009
 	Adding extraction of Iptc data using exiv2.
