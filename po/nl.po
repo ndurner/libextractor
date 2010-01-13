@@ -22,7 +22,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor-0.5.20a\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2010-01-03 01:21+0100\n"
+"POT-Creation-Date: 2010-01-13 14:38+0100\n"
 "PO-Revision-Date: 2009-03-08 16:59+0100\n"
 "Last-Translator: Erwin Poeze <erwin.poeze@gmail.com>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
@@ -151,7 +151,7 @@ msgstr "%% BiBTeX-bestand\n"
 msgid "Keywords for file %s:\n"
 msgstr "Trefwoorden voor bestand %s:\n"
 
-#: src/main/extractor.c:1968
+#: src/main/extractor.c:2145
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "Initialisatie van plugin-mechanisme is mislukt: %s\n"

@@ -21,7 +21,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.5.20\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2010-01-03 01:21+0100\n"
+"POT-Creation-Date: 2010-01-13 14:38+0100\n"
 "PO-Revision-Date: 2008-03-21 20:46-0700\n"
 "Last-Translator: Kevin Scannell <kscanne@gmail.com>\n"
 "Language-Team: Irish <gaeilge-gnulinux@lists.sourceforge.net>\n"
@@ -149,7 +149,7 @@ msgstr "%% Comhad BiBTeX\n"
 msgid "Keywords for file %s:\n"
 msgstr "Lorgfhocail do chomhad %s:\n"
 
-#: src/main/extractor.c:1968
+#: src/main/extractor.c:2145
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "Theip ar thúsú meicníocht na mbreiseán: %s!\n"

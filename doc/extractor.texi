@@ -490,7 +490,7 @@ Return 0 to continue extracting, 1 to abort.
 
 
 
-@deftypefun void EXTRACTOR_extract(struct EXTRACTOR_PluginList *plugins, const char *filename, const void *data, size_t size, EXTRACTOR_MetaDataProcessor proc, void *proc_cls)
+@deftypefun void EXTRACTOR_extract (struct EXTRACTOR_PluginList *plugins, const char *filename, const void *data, size_t size, EXTRACTOR_MetaDataProcessor proc, void *proc_cls)
 @findex EXTRACTOR_extract
 @cindex reentrant
 @cindex concurrency
@@ -736,7 +736,7 @@ plugins.
 The following example shows how a plugin can return the mime type of
 a file.
 @example
-
+@verbatim
 int
 EXTRACTOR_mymime_extract
    (const char *data,
@@ -760,7 +760,7 @@ EXTRACTOR_mymime_extract
   /* more calls to 'proc' here as needed */
   return 0;
 }
-
+@end verbatim
 @end example
 
 @section Plugin execution options
@@ -833,11 +833,13 @@ always a kludge and should thus be avoided.
 
 The following example shows how a plugin can set some of the options listed above:
 @example
+@verbatim
 const char *
 EXTRACTOR_id3_options ()
 {
   return "close-stderr;want-tail";
 }
+@end verbatim
 @end example
 
 @node Internal utility functions

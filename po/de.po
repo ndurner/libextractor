@@ -23,7 +23,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.5.14\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2010-01-03 01:21+0100\n"
+"POT-Creation-Date: 2010-01-13 14:38+0100\n"
 "PO-Revision-Date: 2007-03-23 23:16+0100\n"
 "Last-Translator: Nils Durner <durner@gnunet.org>\n"
 "Language-Team: German <translation-team-de@lists.sourceforge.net>\n"
@@ -153,7 +153,7 @@ msgstr "%% BibTeX Datei\n"
 msgid "Keywords for file %s:\n"
 msgstr "Schlüsserwörter für die Datei %s:\n"
 
-#: src/main/extractor.c:1968
+#: src/main/extractor.c:2145
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "Initialisierung des Plugin-Mechanismus' ist fehlgeschlagen: %s.\n"
