@@ -221,6 +221,26 @@ AC_CHECK_LIB(poppler, _ZTI9MemStream,
          AM_CONDITIONAL(HAVE_POPPLER, false))],
          AM_CONDITIONAL(HAVE_POPPLER, false))
 
+AC_MSG_CHECKING(for ImageFactory::iptcData in -lexiv2)
+AC_LANG_PUSH(C++)
+SAVED_LDFLAGS=$LDFLAGS
+LDFLAGS="$LDFLAGS -lexiv2"
+AC_LINK_IFELSE(
+  [AC_LANG_PROGRAM([[#include <iostream>
+#include <exiv2/exif.hpp>
+#include <exiv2/image.hpp>
+#include <exiv2/futils.hpp>]],
+    [[Exiv2::Image *foo = NULL; foo->iptcData(); ]])],
+  [AC_MSG_RESULT(yes)
+   AM_CONDITIONAL(HAVE_EXIV2, true)
+   AC_DEFINE(HAVE_EXIV2,1,[Have exifData in libexiv2])],
+  [AC_MSG_RESULT(no)
+   AM_CONDITIONAL(HAVE_EXIV2, false)])
+LDFLAGS=$SAVED_LDFLAGS
+AC_LANG_POP(C++)
+
+
+
 AC_MSG_CHECKING(for getPDFMajorVersion in -lpoppler)
 AC_LANG_PUSH(C++)
 SAVED_LDFLAGS=$LDFLAGS
@@ -329,7 +349,6 @@ else
 fi
 
 # check for all C++ dependencies...
-exiv2=0
 qt=0
 qt4=0
 
@@ -423,22 +442,6 @@ QT_LDFLAGS=$LDFLAGS
 LDFLAGS=$SAVED_LDFLAGS
 CPPFLAGS=$SAVED_CPPFLAGS
 
-exiv2=1
-AC_MSG_CHECKING([whether to enable exiv2 extractor])
-AC_ARG_ENABLE(exiv2,
- [AC_HELP_STRING([--enable-exiv2],[Enable exiv2 support])
-  AC_HELP_STRING([--disable-exiv2],[Disable exiv2 support])],
- [case "$enableval" in
-  no)	AC_MSG_RESULT(no)
-        exiv2=0
-	;;
-  *)    AC_MSG_RESULT(yes)
-        exiv2=1
-	;;
-  esac],
-  [     AC_MSG_RESULT(yes)
-        exiv2=1])
-AC_LANG_POP([C++])
 # end C++ checks
 fi
 
@@ -465,10 +468,9 @@ fi
 AM_CONDITIONAL(HAVE_QT_SVG, test x$qt_svg != x0)
 AM_CONDITIONAL(HAVE_QT_SVG4, test x$qt_svg4 != x0)
 
-AM_CONDITIONAL(HAVE_EXIV2, test x$exiv2 != x0)
-AC_DEFINE_UNQUOTED([HAVE_EXIV2], $exiv2, [We use EXIV2])
-
 ABI_GSF
+
+AM_CONDITIONAL(WITH_GSF, test "x$have_gsf" = "xtrue")
 
 # produce new line
 echo ""
@@ -572,7 +574,7 @@ then
  AC_MSG_ERROR([FATAL: zlib not found (headers not installed?)])
 fi
 
-if test "x$exiv2" = "x0"
+if test "x$HAVE_EXIV2" = "x#"
 then
  AC_MSG_NOTICE([NOTICE: exiv2 disabled])
 fi

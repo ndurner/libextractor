@@ -554,7 +554,6 @@ main (int argc, char *argv[])
   int defaultAll = YES;
   int bibtex = NO;
   int grepfriendly = NO;
-  char * name;
   int ret = 0;
   EXTRACTOR_MetaDataProcessor processor = NULL;
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.5.22\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2010-01-13 15:34+0100\n"
+"POT-Creation-Date: 2010-01-13 15:36+0100\n"
 "PO-Revision-Date: 2009-05-12 17:45+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
@@ -979,28 +979,28 @@ msgstr ""
 msgid "%s - (binary, %u bytes)\n"
 msgstr "%s - (binär)\n"
 
-#: src/main/extract.c:604 src/main/extract.c:614
+#: src/main/extract.c:603 src/main/extract.c:613
 #, c-format
 msgid ""
 "Illegal combination of options, cannot combine multiple styles of printing.\n"
 msgstr ""
 
-#: src/main/extract.c:641
+#: src/main/extract.c:640
 #, c-format
 msgid "You must specify an argument for the `%s' option (option ignored).\n"
 msgstr "Du måste ange ett argument för flaggan \"%s\" (flagga ignoreras).\n"
 
-#: src/main/extract.c:706
+#: src/main/extract.c:705
 #, c-format
 msgid "Use --help to get a list of options.\n"
 msgstr "Använd --help för att få en lista på flaggor.\n"
 
-#: src/main/extract.c:738
+#: src/main/extract.c:737
 #, c-format
 msgid "%% BiBTeX file\n"
 msgstr "%% BiBTeX-fil\n"
 
-#: src/main/extract.c:745
+#: src/main/extract.c:744
 #, c-format
 msgid "Keywords for file %s:\n"
 msgstr "Nyckelord för filen %s:\n"
