@@ -36,172 +36,6 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-typedef struct
-{
-  char *title;
-  char *artist;
-  char *album;
-  char *year;
-  char *comment;
-  const char *genre;
-  unsigned int track_number;
-} id3tag;
-
-static const char *const genre_names[] = {
-  gettext_noop ("Blues"),
-  gettext_noop ("Classic Rock"),
-  gettext_noop ("Country"),
-  gettext_noop ("Dance"),
-  gettext_noop ("Disco"),
-  gettext_noop ("Funk"),
-  gettext_noop ("Grunge"),
-  gettext_noop ("Hip-Hop"),
-  gettext_noop ("Jazz"),
-  gettext_noop ("Metal"),
-  gettext_noop ("New Age"),
-  gettext_noop ("Oldies"),
-  gettext_noop ("Other"),
-  gettext_noop ("Pop"),
-  gettext_noop ("R&B"),
-  gettext_noop ("Rap"),
-  gettext_noop ("Reggae"),
-  gettext_noop ("Rock"),
-  gettext_noop ("Techno"),
-  gettext_noop ("Industrial"),
-  gettext_noop ("Alternative"),
-  gettext_noop ("Ska"),
-  gettext_noop ("Death Metal"),
-  gettext_noop ("Pranks"),
-  gettext_noop ("Soundtrack"),
-  gettext_noop ("Euro-Techno"),
-  gettext_noop ("Ambient"),
-  gettext_noop ("Trip-Hop"),
-  gettext_noop ("Vocal"),
-  gettext_noop ("Jazz+Funk"),
-  gettext_noop ("Fusion"),
-  gettext_noop ("Trance"),
-  gettext_noop ("Classical"),
-  gettext_noop ("Instrumental"),
-  gettext_noop ("Acid"),
-  gettext_noop ("House"),
-  gettext_noop ("Game"),
-  gettext_noop ("Sound Clip"),
-  gettext_noop ("Gospel"),
-  gettext_noop ("Noise"),
-  gettext_noop ("Alt. Rock"),
-  gettext_noop ("Bass"),
-  gettext_noop ("Soul"),
-  gettext_noop ("Punk"),
-  gettext_noop ("Space"),
-  gettext_noop ("Meditative"),
-  gettext_noop ("Instrumental Pop"),
-  gettext_noop ("Instrumental Rock"),
-  gettext_noop ("Ethnic"),
-  gettext_noop ("Gothic"),
-  gettext_noop ("Darkwave"),
-  gettext_noop ("Techno-Industrial"),
-  gettext_noop ("Electronic"),
-  gettext_noop ("Pop-Folk"),
-  gettext_noop ("Eurodance"),
-  gettext_noop ("Dream"),
-  gettext_noop ("Southern Rock"),
-  gettext_noop ("Comedy"),
-  gettext_noop ("Cult"),
-  gettext_noop ("Gangsta Rap"),
-  gettext_noop ("Top 40"),
-  gettext_noop ("Christian Rap"),
-  gettext_noop ("Pop/Funk"),
-  gettext_noop ("Jungle"),
-  gettext_noop ("Native American"),
-  gettext_noop ("Cabaret"),
-  gettext_noop ("New Wave"),
-  gettext_noop ("Psychedelic"),
-  gettext_noop ("Rave"),
-  gettext_noop ("Showtunes"),
-  gettext_noop ("Trailer"),
-  gettext_noop ("Lo-Fi"),
-  gettext_noop ("Tribal"),
-  gettext_noop ("Acid Punk"),
-  gettext_noop ("Acid Jazz"),
-  gettext_noop ("Polka"),
-  gettext_noop ("Retro"),
-  gettext_noop ("Musical"),
-  gettext_noop ("Rock & Roll"),
-  gettext_noop ("Hard Rock"),
-  gettext_noop ("Folk"),
-  gettext_noop ("Folk/Rock"),
-  gettext_noop ("National Folk"),
-  gettext_noop ("Swing"),
-  gettext_noop ("Fast-Fusion"),
-  gettext_noop ("Bebob"),
-  gettext_noop ("Latin"),
-  gettext_noop ("Revival"),
-  gettext_noop ("Celtic"),
-  gettext_noop ("Bluegrass"),
-  gettext_noop ("Avantgarde"),
-  gettext_noop ("Gothic Rock"),
-  gettext_noop ("Progressive Rock"),
-  gettext_noop ("Psychedelic Rock"),
-  gettext_noop ("Symphonic Rock"),
-  gettext_noop ("Slow Rock"),
-  gettext_noop ("Big Band"),
-  gettext_noop ("Chorus"),
-  gettext_noop ("Easy Listening"),
-  gettext_noop ("Acoustic"),
-  gettext_noop ("Humour"),
-  gettext_noop ("Speech"),
-  gettext_noop ("Chanson"),
-  gettext_noop ("Opera"),
-  gettext_noop ("Chamber Music"),
-  gettext_noop ("Sonata"),
-  gettext_noop ("Symphony"),
-  gettext_noop ("Booty Bass"),
-  gettext_noop ("Primus"),
-  gettext_noop ("Porn Groove"),
-  gettext_noop ("Satire"),
-  gettext_noop ("Slow Jam"),
-  gettext_noop ("Club"),
-  gettext_noop ("Tango"),
-  gettext_noop ("Samba"),
-  gettext_noop ("Folklore"),
-  gettext_noop ("Ballad"),
-  gettext_noop ("Power Ballad"),
-  gettext_noop ("Rhythmic Soul"),
-  gettext_noop ("Freestyle"),
-  gettext_noop ("Duet"),
-  gettext_noop ("Punk Rock"),
-  gettext_noop ("Drum Solo"),
-  gettext_noop ("A Cappella"),
-  gettext_noop ("Euro-House"),
-  gettext_noop ("Dance Hall"),
-  gettext_noop ("Goa"),
-  gettext_noop ("Drum & Bass"),
-  gettext_noop ("Club-House"),
-  gettext_noop ("Hardcore"),
-  gettext_noop ("Terror"),
-  gettext_noop ("Indie"),
-  gettext_noop ("BritPop"),
-  gettext_noop ("Negerpunk"),
-  gettext_noop ("Polsk Punk"),
-  gettext_noop ("Beat"),
-  gettext_noop ("Christian Gangsta Rap"),
-  gettext_noop ("Heavy Metal"),
-  gettext_noop ("Black Metal"),
-  gettext_noop ("Crossover"),
-  gettext_noop ("Contemporary Christian"),
-  gettext_noop ("Christian Rock"),
-  gettext_noop ("Merengue"),
-  gettext_noop ("Salsa"),
-  gettext_noop ("Thrash Metal"),
-  gettext_noop ("Anime"),
-  gettext_noop ("JPop"),
-  gettext_noop ("Synthpop"),
-};
-
-#define GENRE_NAME_COUNT \
-    ((unsigned int)(sizeof genre_names / sizeof (const char *const)))
-
-
 #define MAX_MP3_SCAN_DEEP 16768
 const int max_frames_scan = 1024;
 enum
@@ -270,64 +104,15 @@ static const char * const layer_names[3] = {
 #define SYSERR     1
 #define INVALID_ID3 2
 
-static void
-trim (char *k)
-{
-  while ((strlen (k) > 0) && (isspace (k[strlen (k) - 1])))
-    k[strlen (k) - 1] = '\0';
-}
-
-static int
-get_id3 (const char *data, size_t size, id3tag * id3)
-{
-  const char *pos;
-
-  if (size < 128)
-    return INVALID_ID3;
-
-  pos = &data[size - 128];
-  if (0 != strncmp ("TAG", pos, 3))
-    return INVALID_ID3;
-  pos += 3;
-
-  id3->title = EXTRACTOR_common_convert_to_utf8 (pos, 30, "ISO-8859-1");
-  trim (id3->title);
-  pos += 30;
-  id3->artist = EXTRACTOR_common_convert_to_utf8 (pos, 30, "ISO-8859-1");
-  trim (id3->artist);
-  pos += 30;
-  id3->album = EXTRACTOR_common_convert_to_utf8 (pos, 30, "ISO-8859-1");
-  trim (id3->album);
-  pos += 30;
-  id3->year = EXTRACTOR_common_convert_to_utf8 (pos, 4, "ISO-8859-1");
-  trim (id3->year);
-  pos += 4;
-  id3->comment = EXTRACTOR_common_convert_to_utf8 (pos, 30, "ISO-8859-1");
-  trim (id3->comment);
-  if ( (pos[28] == '\0') &&
-       (pos[29] != '\0') )
-    {
-      /* ID3v1.1 */
-      id3->track_number = pos[29];
-    }
-  else
-    {
-      id3->track_number = 0;
-    }
-  pos += 30;
-  id3->genre = "";
-  if (pos[0] < GENRE_NAME_COUNT)
-    id3->genre = dgettext (PACKAGE, genre_names[(unsigned) pos[0]]);
-  return OK;
-}
-
-
 #define ADDR(s,t) do { if (0 != proc (proc_cls, "mp3", t, EXTRACTOR_METAFORMAT_UTF8, "text/plain", s, strlen(s)+1)) return 1; } while (0)
 
-static int
-mp3parse (const unsigned char *data, size_t size,
-	  EXTRACTOR_MetaDataProcessor proc,
-	  void *proc_cls)
+/* mimetype = audio/mpeg */
+int 
+EXTRACTOR_mp3_extract (const unsigned char *data,
+		       size_t size,
+		       EXTRACTOR_MetaDataProcessor proc,
+		       void *proc_cls,
+		       const char *options)
 {
   unsigned int header;
   int counter = 0;
@@ -472,52 +257,6 @@ mp3parse (const unsigned char *data, size_t size,
             length / 60, length % 60);
   ADDR (format, EXTRACTOR_METATYPE_DURATION);
   return 0;
-}
-
-
-#define ADD(s,t) do { if (0 != (ret = proc (proc_cls, "mp3", t, EXTRACTOR_METAFORMAT_UTF8, "text/plain", s, strlen(s)+1))) goto FINISH; } while (0)
-
-
-/* mimetype = audio/mpeg */
-int 
-EXTRACTOR_mp3_extract (const char *data,
-		       size_t size,
-		       EXTRACTOR_MetaDataProcessor proc,
-		       void *proc_cls,
-		       const char *options)
-{
-  id3tag info;
-  char track[16];
-  int ret;
-
-  if (0 != get_id3 (data, size, &info))
-    return 0;
-  if (strlen (info.title) > 0)
-    ADD (info.title, EXTRACTOR_METATYPE_TITLE);
-  if (strlen (info.artist) > 0)
-    ADD (info.artist, EXTRACTOR_METATYPE_ARTIST);
-  if (strlen (info.album) > 0)
-    ADD (info.album, EXTRACTOR_METATYPE_ALBUM);
-  if (strlen (info.year) > 0)
-    ADD (info.year, EXTRACTOR_METATYPE_PUBLICATION_YEAR);
-  if (strlen (info.genre) > 0)
-    ADD (info.genre, EXTRACTOR_METATYPE_GENRE);
-  if (strlen (info.comment) > 0)
-    ADD (info.comment, EXTRACTOR_METATYPE_COMMENT);
-  if (info.track_number != 0)
-    {
-      snprintf(track, 
-	       sizeof(track), "%u", info.track_number);
-      ADD (track, EXTRACTOR_METATYPE_TRACK_NUMBER);
-    }
-  ret = mp3parse ((const unsigned char *) data, size, proc, proc_cls);
-FINISH:
-  free (info.title);
-  free (info.year);
-  free (info.album);
-  free (info.artist);
-  free (info.comment);
-  return ret; 
 }
 
 /* end of mp3_extractor.c */

@@ -86,6 +86,7 @@ plugin_LTLIBRARIES = \
   libextractor_flv.la \
   libextractor_gif.la \
   libextractor_html.la \
+  libextractor_id3.la \
   libextractor_id3v2.la \
   libextractor_id3v23.la \
   libextractor_id3v24.la \
@@ -184,6 +185,13 @@ libextractor_html_la_SOURCES = \
 libextractor_html_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_html_la_LIBADD = \
+  $(top_builddir)/src/common/libextractor_common.la
+
+libextractor_id3_la_SOURCES = \
+  id3_extractor.c 
+libextractor_id3_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+libextractor_id3_la_LIBADD = \
   $(top_builddir)/src/common/libextractor_common.la
 
 libextractor_id3v2_la_SOURCES = \

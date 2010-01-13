@@ -630,6 +630,7 @@ EXTRACTOR_plugin_add_defaults(enum EXTRACTOR_Options flags)
  */
 static void *
 get_symbol_with_prefix(void *lib_handle,
+		       const char *template,
 		       const char *prefix,
 		       const char **options)
 {
@@ -649,9 +650,9 @@ get_symbol_with_prefix(void *lib_handle,
   dot = strstr (sym, ".");
   if (dot != NULL)
     *dot = '\0';
-  name = malloc(strlen(sym) + 32);
+  name = malloc(strlen(sym) + strlen(template) + 1);
   sprintf(name,
-	  "_EXTRACTOR_%s_extract",
+	  template,
 	  sym);
   /* try without '_' first */
   symbol = lt_dlsym(lib_handle, name + 1);
@@ -678,7 +679,8 @@ get_symbol_with_prefix(void *lib_handle,
 #endif
     }
 
-  if (symbol != NULL)
+  if ( (symbol != NULL) &&
+       (NULL != options) )
     {
       /* get special options */
       sprintf(name,
@@ -741,6 +743,7 @@ plugin_load (struct EXTRACTOR_PluginList *plugin)
       return -1;
     }
   plugin->extractMethod = get_symbol_with_prefix (plugin->libraryHandle,
+						  "_EXTRACTOR_%s_extract",
 						  plugin->libname,
 						  &plugin->specials);
   if (plugin->extractMethod == NULL) 
@@ -1094,10 +1097,9 @@ transmit_reply (void *cls,
 
 
 /**
- * 'main' function of the child process.
- * Reads shm-filenames from 'in' (line-by-line) and
- * writes meta data blocks to 'out'.  The meta data
- * stream is terminated by an empty entry.
+ * 'main' function of the child process.  Reads shm-filenames from
+ * 'in' (line-by-line) and writes meta data blocks to 'out'.  The meta
+ * data stream is terminated by an empty entry.
  *
  * @param plugin extractor plugin to use
  * @param in stream to read from
@@ -1108,12 +1110,15 @@ process_requests (struct EXTRACTOR_PluginList *plugin,
 		  int in,
 		  int out)
 {
-  char fn[256];
+  char hfn[256];
+  char tfn[256];
+  char *fn;
   FILE *fin;
   void *ptr;
   int shmid;
   struct IpcHeader hdr;
   size_t size;
+  int want_tail;
 #ifdef WINDOWS
   HANDLE map;
 #endif
@@ -1129,6 +1134,13 @@ process_requests (struct EXTRACTOR_PluginList *plugin,
 #endif
       return;
     }  
+  want_tail = 0;
+  if ( (plugin->specials != NULL) &&
+       (NULL != strstr (plugin->specials,
+			"want-tail")) )
+    {
+      want_tail = 1;
+    }
   if ( (plugin->specials != NULL) &&
        (NULL != strstr (plugin->specials,
 			"close-stderr")) )
@@ -1144,12 +1156,27 @@ process_requests (struct EXTRACTOR_PluginList *plugin,
 
   memset (&hdr, 0, sizeof (hdr));
   fin = fdopen (in, "r");
-  while (NULL != fgets (fn, sizeof(fn), fin))
+  while (NULL != fgets (hfn, sizeof(hfn), fin))
     {
-      if (strlen (fn) == 0)
+      if (strlen (hfn) <= 1)
 	break;
       ptr = NULL;
-      fn[strlen(fn)-1] = '\0'; /* kill newline */
+      hfn[strlen(hfn)-1] = '\0'; /* kill newline */
+      if (NULL == fgets (tfn, sizeof(tfn), fin))
+	break;
+      if ('!' != tfn[0])
+	break;
+      tfn[strlen(tfn)-1] = '\0'; /* kill newline */
+      if ( (want_tail) &&
+	   (strlen (tfn) > 1) )
+	{
+	  fn = &tfn[1];
+	}
+      else
+	{
+	  fn = hfn;	
+	}
+
 #ifndef WINDOWS
       if ( (-1 != (shmid = shm_open (fn, O_RDONLY, 0))) &&
 	   (((off_t)-1) != (size = lseek (shmid, 0, SEEK_END))) &&
@@ -1161,12 +1188,13 @@ process_requests (struct EXTRACTOR_PluginList *plugin,
       if (ptr != NULL)
 #endif
 	{
-	  if (0 != plugin->extractMethod (ptr,
-					  size,
-					  &transmit_reply,
-					  &out,
-					  plugin->plugin_options))
-	    break;
+	  if ( (plugin->extractMethod != NULL) &&
+	       (0 != plugin->extractMethod (ptr,
+					    size,
+					    &transmit_reply,
+					    &out,
+					    plugin->plugin_options)) )
+	    break;	    
 	  if (0 != write_all (out, &hdr, sizeof(hdr)))
 	    break;
 	}
@@ -1195,8 +1223,10 @@ process_requests (struct EXTRACTOR_PluginList *plugin,
   close (out);
 }
 
+
 #ifdef WINDOWS
-static void write_plugin_data (HANDLE h, const struct EXTRACTOR_PluginList *plugin)
+static void 
+write_plugin_data (HANDLE h, const struct EXTRACTOR_PluginList *plugin)
 {
   size_t i;
   DWORD len;
@@ -1217,7 +1247,9 @@ static void write_plugin_data (HANDLE h, const struct EXTRACTOR_PluginList *plug
   WriteFile (h, plugin->plugin_options, i, &len, NULL);
 }
 
-static struct EXTRACTOR_PluginList *read_plugin_data (FILE *f)
+
+static struct EXTRACTOR_PluginList *
+read_plugin_data (FILE *f)
 {
   struct EXTRACTOR_PluginList *ret;
   size_t i;
@@ -1239,7 +1271,9 @@ static struct EXTRACTOR_PluginList *read_plugin_data (FILE *f)
   return ret;
 }
 
-void CALLBACK RundllEntryPoint(HWND hwnd, HINSTANCE hinst, LPSTR lpszCmdLine, int nCmdShow)
+
+void CALLBACK 
+RundllEntryPoint(HWND hwnd, HINSTANCE hinst, LPSTR lpszCmdLine, int nCmdShow)
 {
   int in, out;
 
@@ -1252,6 +1286,7 @@ void CALLBACK RundllEntryPoint(HWND hwnd, HINSTANCE hinst, LPSTR lpszCmdLine, in
   process_requests (read_plugin_data (stdin), in, out);
 }
 #endif
+
 
 /**
  * Start the process for the given plugin.
@@ -1331,6 +1366,7 @@ start_process (struct EXTRACTOR_PluginList *plugin)
  *
  * @param plugin which plugin to call
  * @param shmfn file name of the shared memory segment
+ * @param tshmfn file name of the shared memory segment for the end of the data
  * @param proc function to call on the meta data
  * @param proc_cls cls for proc
  * @return 0 if proc did not return non-zero
@@ -1338,6 +1374,7 @@ start_process (struct EXTRACTOR_PluginList *plugin)
 static int
 extract_oop (struct EXTRACTOR_PluginList *plugin,
 	     const char *shmfn,
+	     const char *tshmfn,
 	     EXTRACTOR_MetaDataProcessor proc,
 	     void *proc_cls)
 {
@@ -1347,7 +1384,19 @@ extract_oop (struct EXTRACTOR_PluginList *plugin,
 
   if (plugin->cpid == -1)
     return 0;
-  if (0 >= fprintf (plugin->cpipe_in, "%s\n", shmfn))
+  if (0 >= fprintf (plugin->cpipe_in, 
+		    "%s\n",
+		    shmfn))
+    {
+      stop_process (plugin);
+      plugin->cpid = -1;
+      if (plugin->flags != EXTRACTOR_OPTION_DEFAULT_POLICY)
+	plugin->flags = EXTRACTOR_OPTION_DISABLED;
+      return 0;
+    }
+  if (0 >= fprintf (plugin->cpipe_in, 
+		    "!%s\n",
+		    (tshmfn != NULL) ? tshmfn : ""))
     {
       stop_process (plugin);
       plugin->cpid = -1;
@@ -1420,33 +1469,108 @@ extract_oop (struct EXTRACTOR_PluginList *plugin,
 
 
 /**
- * Extract keywords from a file using the given set of plugins.
+ * Setup a shared memory segment.
+ *
+ * @param ptr set to the location of the shm segment
+ * @param shmid where to store the shm ID
+ * @param fn name of the shared segment
+ * @param fn_size size available in fn
+ * @param size number of bytes to allocated for the segment
+ * @return 0 on success
+ */
+static int
+make_shm (int is_tail,
+	  void **ptr,
+#ifndef WINDOWS
+	  int *shmid,
+#else
+	  HANDLE *mappedFile,
+	  HANDLE *map,
+#endif	  
+	  char *fn,
+	  size_t fn_size,
+	  size_t size)
+{
+  snprintf (fn,
+	    fn_size,
+#ifdef WINDOWS
+	    "%TEMP%\\"
+#else
+	    "/"
+#endif
+	    "libextractor-%sshm-%u-%u",
+	    (is_tail) ? "t" : "",
+	    getpid(),
+	    (unsigned int) RANDOM());
+#ifndef WINDOWS
+  *shmid = shm_open (fn, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
+  *ptr = NULL;
+  if (-1 == (*shmid))
+    return 1;    
+  if ( (0 != ftruncate (*shmid, size)) ||
+       (NULL == (*ptr = mmap (NULL, size, PROT_WRITE, MAP_SHARED, *shmid, 0))) ||
+       (*ptr == (void*) -1) )
+    {
+      close (*shmid);	
+      *shmid = -1;
+      return 1;
+    }
+  return 0;
+#else
+  *mappedFile = CreateFile (fn, 
+			   GENERIC_READ | GENERIC_WRITE,
+			   FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, CREATE_ALWAYS,
+			   FILE_FLAG_DELETE_ON_CLOSE, NULL);
+  *map = CreateFileMapping (*mappedFile, NULL, PAGE_READWRITE, 1, 0, NULL);
+  ptr = MapViewOfFile (*map, FILE_MAP_READ, 0, 0, 0);
+  if (ptr == NULL)
+    {
+      CloseHandle (*map);
+      CloseHandle (*mappedFile);
+      return 1;
+    }
+#endif
+  return 0;
+}
+
+
+/**
+ * Extract keywords using the given set of plugins.
  *
  * @param plugins the list of plugins to use
- * @param filename the name of the file, can be NULL 
  * @param data data to process, never NULL
  * @param size number of bytes in data, ignored if data is NULL
+ * @param tdata end of file data, or NULL
+ * @param tsize number of bytes in tdata
  * @param proc function to call for each meta data item found
  * @param proc_cls cls argument to proc
  */
 static void
 extract (struct EXTRACTOR_PluginList *plugins,
-	 const char * filename,
 	 const char * data,
 	 size_t size,
+	 const char * tdata,
+	 size_t tsize,
 	 EXTRACTOR_MetaDataProcessor proc,
 	 void *proc_cls) 
 {
   struct EXTRACTOR_PluginList *ppos;
-#ifndef WINDOWS
-  int shmid;
-#else
-  HANDLE map, mappedFile;
-#endif
   enum EXTRACTOR_Options flags;
   void *ptr;
+  void *tptr;
   char fn[255];
+  char tfn[255];
   int want_shm;
+  int want_tail;
+#ifndef WINDOWS
+  int shmid;
+  int tshmid;
+#else
+  HANDLE map;
+  HANDLE mappedFile;
+  HANDLE tmap;
+  HANDLE tmappedFile;
+#endif
 
   want_shm = 0;
   ppos = plugins;
@@ -1472,100 +1596,106 @@ extract (struct EXTRACTOR_PluginList *plugins,
 	}      
       ppos = ppos->next;
     }
+  ptr = NULL;
+  tptr = NULL;
   if (want_shm)
     {
-      snprintf (fn,
-		sizeof(fn),
-#ifdef WINDOWS
-		"%TEMP%\\"
-#else
-		"/"
-#endif
-		"libextractor-shm-%u-%u",
-		getpid(),
-		(unsigned int) RANDOM());
+      if (size > MAX_READ)
+	size = MAX_READ;
+      if (0 == make_shm (0, 
+			 &ptr,
 #ifndef WINDOWS
-      shmid = shm_open (fn, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
-      ptr = NULL;
-      if (shmid != -1)
+			 &shmid,
+#else
+			 &mappedFile,
+			 &map,
+#endif
+			 fn, sizeof(fn), size))
 	{
-	  if ( (0 != ftruncate (shmid, size)) ||
-	       (NULL == (ptr = mmap (NULL, size, PROT_WRITE, MAP_SHARED, shmid, 0))) ||
-	       (ptr == (void*) -1) )
+	  memcpy (ptr, data, size);      
+	  if ( (tdata != NULL) &&
+	       (0 == make_shm (1,
+			       &tptr,
+#ifndef WINDOWS
+			       &tshmid,
+#else
+			       &tmappedFile,
+			       &tmap,
+#endif
+			       tfn, sizeof(tfn), tsize)) )
 	    {
-	      close (shmid);	
-	      shmid = -1;
+	      memcpy (tptr, tdata, tsize);      
 	    }
 	  else
 	    {
-	      memcpy (ptr, data, size);
+	      tptr = NULL;
 	    }
 	}
-#else
-      mappedFile = CreateFile (fn, GENERIC_READ | GENERIC_WRITE,
-          FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, CREATE_ALWAYS,
-          FILE_FLAG_DELETE_ON_CLOSE, NULL);
-      map = CreateFileMapping (mappedFile, NULL, PAGE_READWRITE, 1, 0, NULL);
-      ptr = MapViewOfFile (map, FILE_MAP_READ, 0, 0, 0);
-      if (ptr == NULL)
-        {
-          CloseHandle (map);
-          CloseHandle (mappedFile);
-          map = NULL;
-        }
       else
-        memcpy (ptr, data, size);
-#endif
+	{
+	  want_shm = 0;
+	}	    
     }
-  else
-#ifndef WINDOWS
-    shmid = -1;
-  if (want_shm && (shmid == -1))
-    _exit(1);
-#else
-    map = NULL;
-  if (want_shm && map == NULL)
-    _exit(1);
-#endif
   ppos = plugins;
   while (NULL != ppos)
     {
       flags = ppos->flags;
-#ifndef WINDOWS
-      if (shmid == -1)
-#else
-      if (map == NULL)
-#endif
+      if (! want_shm)
 	flags = EXTRACTOR_OPTION_IN_PROCESS;
       switch (flags)
 	{
 	case EXTRACTOR_OPTION_DEFAULT_POLICY:
-	  if (0 != extract_oop (ppos, fn, proc, proc_cls))
+	  if (0 != extract_oop (ppos, fn, 
+				(tptr != NULL) ? tfn : NULL,
+				proc, proc_cls))
 	    return;
 	  if (ppos->cpid == -1)
 	    {
 	      start_process (ppos);
-	      if (0 != extract_oop (ppos, fn, proc, proc_cls))
+	      if (0 != extract_oop (ppos, fn, 
+				    (tptr != NULL) ? tfn : NULL,
+				    proc, proc_cls))
 		return;
 	    }
 	  break;
 	case EXTRACTOR_OPTION_OUT_OF_PROCESS_NO_RESTART:
-	  if (0 != extract_oop (ppos, fn, proc, proc_cls))
+	  if (0 != extract_oop (ppos, fn,
+				(tptr != NULL) ? tfn : NULL,
+				proc, proc_cls))
 	    return;
 	  break;
 	case EXTRACTOR_OPTION_IN_PROCESS:	  	  
-	  if (NULL == ppos->extractMethod)  
+	  want_tail = ( (ppos->specials != NULL) &&
+			(NULL != strstr (ppos->specials,
+					 "want-tail")));
+	  if (NULL == ppos->extractMethod) 
 	    plugin_load (ppos);	    
 	  if ( ( (ppos->specials == NULL) ||
 		 (NULL == strstr (ppos->specials,
-				  "oop-only")) ) &&
-	       (NULL != ppos->extractMethod) &&
-	       (0 != ppos->extractMethod (data, 
-					  size, 
-					  proc, 
-					  proc_cls,
-					  ppos->plugin_options)) )
-	    return;
+				  "oop-only")) ) )
+	    {
+	      if (want_tail)
+		{
+		  if ( (NULL != ppos->extractMethod) &&
+		       (tdata != NULL) &&
+		       (0 != ppos->extractMethod (tdata, 
+						  tsize, 
+						  proc, 
+						  proc_cls,
+						  ppos->plugin_options)) )
+		    return;
+		}
+	      else
+		{
+		  if ( (NULL != ppos->extractMethod) &&
+		       (0 != ppos->extractMethod (data, 
+						  size, 
+						  proc, 
+						  proc_cls,
+						  ppos->plugin_options)) )
+		    return;
+		}
+	    }
 	  break;
 	case EXTRACTOR_OPTION_DISABLED:
 	  break;
@@ -1580,10 +1710,21 @@ extract (struct EXTRACTOR_PluginList *plugins,
       if (shmid != -1)
 	close (shmid);
       shm_unlink (fn);
+      if (NULL != tptr)
+	munmap (tptr, tsize);
+      if (tshmid != -1)
+	close (tshmid);
+      shm_unlink (tfn);
 #else
       UnmapViewOfFile (ptr);
       CloseHandle (map);
       CloseHandle (mappedFile);
+      if (tptr != NULL)
+	{
+	  UnmapViewOfFile (tptr);
+	  CloseHandle (tmap);
+	  CloseHandle (tmappedFile);
+	}
 #endif
     }
 }
@@ -1595,17 +1736,19 @@ extract (struct EXTRACTOR_PluginList *plugins,
  * contents if they were not compressed).
  *
  * @param plugins the list of plugins to use
- * @param filename the name of the file, can be NULL 
  * @param data data to process, never NULL
- * @param size number of bytes in data, ignored if data is NULL
+ * @param size number of bytes in data
+ * @param tdata end of file data, or NULL
+ * @param tsize number of bytes in tdata
  * @param proc function to call for each meta data item found
  * @param proc_cls cls argument to proc
  */
 static void
 decompress_and_extract (struct EXTRACTOR_PluginList *plugins,
-			const char * filename,
 			const unsigned char * data,
 			size_t size,
+			const char * tdata,
+			size_t tsize,
 			EXTRACTOR_MetaDataProcessor proc,
 			void *proc_cls) {
   unsigned char * buf;
@@ -1838,9 +1981,10 @@ decompress_and_extract (struct EXTRACTOR_PluginList *plugins,
       size = dsize;
     }
   extract (plugins,
-	   filename,
 	   (const char*) data,
 	   size,
+	   tdata, 
+	   tsize,
 	   proc,
 	   proc_cls);
   if (buf != NULL)
@@ -1908,9 +2052,13 @@ EXTRACTOR_extract (struct EXTRACTOR_PluginList *plugins,
 {
   int fd;
   void * buffer;
+  void * tbuffer;
   struct stat fstatbuf;
   size_t fsize;
+  size_t tsize;
   int eno;
+  off_t offset;
+  long pg;
 
   fd = -1;
   buffer = NULL;
@@ -1941,14 +2089,41 @@ EXTRACTOR_extract (struct EXTRACTOR_PluginList *plugins,
   if ( (buffer == NULL) &&
        (data == NULL) )
     return;
+  /* for footer extraction */
+  tsize = 0;
+  tbuffer = NULL;
+  if ( (data == NULL) &&
+       (fstatbuf.st_size > fsize) &&
+       (fstatbuf.st_size > MAX_READ) )
+    {
+      pg = sysconf (_SC_PAGE_SIZE);      
+      if ( (pg > 0) &&
+	   (pg < MAX_READ) )
+	{
+	  offset = (1 + (fstatbuf.st_size - MAX_READ) / pg) * pg;
+	  if (offset < fstatbuf.st_size)
+	    {
+	      tsize = fstatbuf.st_size - offset;
+	      tbuffer = MMAP (NULL, tsize, PROT_READ, MAP_PRIVATE, fd, offset);
+	      if ( (tbuffer == NULL) || (tbuffer == (void *) -1) ) 
+		{
+		  tsize = 0;
+		  tbuffer = NULL;
+		}
+	    }
+	}
+    }
   decompress_and_extract (plugins,
-			  filename,
 			  buffer != NULL ? buffer : data,
 			  buffer != NULL ? fsize : size,
+			  tbuffer,
+			  tsize,
 			  proc,
 			  proc_cls);
   if (buffer != NULL)
     MUNMAP (buffer, fsize);
+  if (tbuffer != NULL)
+    MUNMAP (tbuffer, tsize);
   if (-1 != fd)
     close(fd);  
 }

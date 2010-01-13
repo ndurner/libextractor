@@ -10,8 +10,10 @@
 @c %**end of header
 @copying
 This manual is for GNU libextractor
-(version @value{VERSION}, @value{UPDATED}),
-which is GNU's library for meta data extraction.
+(version @value{VERSION}, @value{UPDATED}).
+
+GNU libextractor is a GNU package.
+
 
 Copyright @copyright{} 2007, 2010 Christian Grothoff
 
@@ -73,7 +75,7 @@ Free Documentation License".
 @code{NULL}
 @end macro
 
-@macro le{}
+@macro gnule{}
 @acronym{GNU libextractor}
 @end macro
 
@@ -84,24 +86,22 @@ Free Documentation License".
 @insertcopying
 @end ifnottex
 
-GNU libextractor is a GNU package.
-
 @menu
-* Introduction::                 What is @le{}.
+* Introduction::                 What is @gnule{}.
 * Preparation::                  What you should do before using the library.
 * Generalities::                 General library functions and data types.
-* Extracting meta data::         How to use @le{} to obtain meta data.
-* Language bindings::            How to use @le{} from languages other than C.
-* Utility functions::            Utility functions of @le{}.
+* Extracting meta data::         How to use @gnule{} to obtain meta data.
+* Language bindings::            How to use @gnule{} from languages other than C.
+* Utility functions::            Utility functions of @gnule{}.
 * Existing Plugins::             What plugins are available.
-* Writing new Plugins::          How to write new plugins for @le{}.
-* Internal utility functions::   Utility functions of @le{} for writing plugins.
+* Writing new Plugins::          How to write new plugins for @gnule{}.
+* Internal utility functions::   Utility functions of @gnule{} for writing plugins.
 * Reporting bugs::               How to report bugs or request new features.
 
 Appendices
 
 * Copying::                     The GNU General Public License says how you
-                                can copy and share some parts of @le{}.
+                                can copy and share some parts of @gnule{}.
 
 Indices
 
@@ -120,7 +120,7 @@ Indices
 @chapter Introduction
 
 @cindex error handling
-@le{} is GNU's library for extracting meta data from
+@gnule{} is GNU's library for extracting meta data from
 files.  Meta data includes format information (such as mime type,
 image dimensions, color depth, recording frequency), content
 descriptions (such as document title or document description) and
@@ -128,55 +128,55 @@ copyright information (such as license, author and contributors).
 Meta data extraction is an inherently uncertain business --- a parse
 error can be a corrupt file, an incompatibility in the file format
 version, an entirely different file format or a bug in the parser.  As
-a result of this uncertainty, @le{} deliberately
+a result of this uncertainty, @gnule{} deliberately
 avoids to ever report any errors.  Unexpected file contents simply
 result in less or possibly no meta data being extracted.  
 
 @cindex plugin
-@le{} uses plugins to handle various file formats.
+@gnule{} uses plugins to handle various file formats.
 Technically a plugin can support multiple file formats; however, most
 plugins only support one particular format.  By default,
-@le{} will use all plugins that are available and found
+@gnule{} will use all plugins that are available and found
 in the plugin installation directory.  Applications can
 request the use of only specific plugins or the exclusion of
 certain plugins.
 
-@le{} is distributed with the @command{extract} 
+@gnule{} is distributed with the @command{extract} 
 command@footnote{Some distributions ship @command{extract} in a
 seperate package.} which is a command-line tool for extracting
 meta data.  @command{extract} is given a list of filenames and 
 prints the resulting meta data to the console.  The @command{extract}
 source code also serves as an advanced example for how to use
-@le{}.  
+@gnule{}.  
 
 This manual focuses on providing documentation for writing software
-with @le{}.  The only relevant parts for end-users
-are the chapter on compiling and installing @le{}
+with @gnule{}.  The only relevant parts for end-users
+are the chapter on compiling and installing @gnule{}
 (@xref{Preparation}.).  Also, the chapter on existing plugins maybe of
 interest (@xref{Existing Plugins}.).  Additional documentation for
 end-users can be find in the man page on @command{extract} (using
 @verb{|man extract|}).
 
 @cindex license
-@le{} is licensed under the GNU General Public License.  The
+@gnule{} is licensed under the GNU General Public License.  The
 developers have frequently received requests to license GNU
-libextractor under alternative terms.  However, @le{}
+libextractor under alternative terms.  However, @gnule{}
 borrows plenty of GPL-licensed code from various other projects.
 Hence we cannot change the license (even if we wanted to).@footnote{It
 maybe possible to switch to GPLv3 in the future.  For this, an audit
 of the license status of our dependencies would be required.  The new
-code that was developed specifically for @le{} has
+code that was developed specifically for @gnule{} has
 always been licensed under GPLv2 @emph{or any later version}.}
 
 @node Preparation
 @chapter Preparation
 
-Compiling @le{} follows the standard GNU autotools
+Compiling @gnule{} follows the standard GNU autotools
 build process using @command{configure} and @command{make}.  For
 details, read the @file{INSTALL} file and query 
 @verb{|./configure --help|} for additional options.
 
-@le{} has various dependencies, some of which are optional. 
+@gnule{} has various dependencies, some of which are optional. 
 Instead of specifying the names of the software packages, we
 will give the list in terms of the names of the respective
 Debian (unstable) packages that should be installed.
@@ -246,29 +246,29 @@ Please notify us if we missed some dependencies (note that the list is
 supposed to only list direct dependencies, not transitive
 dependencies).
 
-Once you have compiled and installed @le{}, you should have a file
+Once you have compiled and installed @gnule{}, you should have a file
 @file{extractor.h} installed in your @file{include/} directory.  This
 file should be the starting point for your C and C++ development with
-@le{}.  The build process also installs the @file{extract} binary and
-man pages for @file{extract} and @le{}.  The @file{extract} man page
-documents the @file{extract} tool.  The @le{} man page gives a brief
-summary of the C API for @le{}.
+@gnule{}.  The build process also installs the @file{extract} binary and
+man pages for @file{extract} and @gnule{}.  The @file{extract} man page
+documents the @file{extract} tool.  The @gnule{} man page gives a brief
+summary of the C API for @gnule{}.
 
 @cindex packageing
 @cindex directory structure
 @cindex plugin
 @cindex environment variables
 @vindex LIBEXTRACTOR_PREFIX
-When you install @le{}, various plugins will be
+When you install @gnule{}, various plugins will be
 installed in the @file{lib/libextractor/} directory.  The main library
 will be installed as @file{lib/libextractor.so}.  Note that
-@le{} will attempt to find the plugins relative to the
+@gnule{} will attempt to find the plugins relative to the
 path of the main library.  Consequently, a package manager can move
 the library and its plugins to a different location later --- as long
 as the relative path between the main library and the plugins is
 preserved.  As a method of last resort, the user can specify an
 environment variable @verb{|LIBEXTRACTOR_PREFIX|}.  If
-@le{} cannot locate a plugin, it will look in
+@gnule{} cannot locate a plugin, it will look in
 @verb{|LIBEXTRACTOR_PREFIX/lib/libextractor/|}.
 
 @section Note to package maintainers
@@ -304,9 +304,9 @@ resources.
 @node Generalities
 @chapter Generalities
 
-Each public symbol exported by @le{} has the prefix
+Each public symbol exported by @gnule{} has the prefix
 @verb{|EXTRACTOR_|}.  All-caps names are used for constants.  For the
-impatient, the minimal C code for using @le{} (on the
+impatient, the minimal C code for using @gnule{} (on the
 executing binary itself) looks like this:
 
 @verbatim
@@ -325,6 +325,13 @@ int main(int argc, char ** argv) {
 
 @node Extracting meta data
 @chapter Extracting meta data
+
+In order to extract meta data with @gnule{} you first need to
+load the respective plugins and then call the extraction API
+with the plugins and the data to process.  This section
+documents how to load and unload plugins, the various types
+and formats in which meta data is returned to the application
+and finally the extraction API itself.
 
 @menu
 * Plugin management::   How to load and unload plugins
@@ -350,7 +357,7 @@ from multiple threads at the same time is not safe.  Creating multiple
 plugin lists and using them concurrently is supported as long as
 the @code{EXTRACTOR_OPTION_IN_PROCESS} option is not used. 
 
-Generally, @le{} is fully thread-safe and mostly reentrant.
+Generally, @gnule{} is fully thread-safe and mostly reentrant.
 All plugin code is expected required to be reentrant and state-less,
 but due to the extensive use of 3rd party libraries this cannot
 be guaranteed.  Hence plugins are executed (by default) out of
@@ -402,7 +409,7 @@ Loads and unloads plugins based on a configuration string, modifying the existin
 @deftypefun {struct EXTRACTOR_PluginList *} EXTRACTOR_plugin_add_defaults (enum EXTRACTOR_Options flags)
 @findex EXTRACTOR_plugin_add_defaults
 
-Loads all of the plugins in the plugin directory.  This function is what most @le{} applications should use to setup the plugins.
+Loads all of the plugins in the plugin directory.  This function is what most @gnule{} applications should use to setup the plugins.
 @end deftypefun
 
 
@@ -414,14 +421,14 @@ Loads all of the plugins in the plugin directory.  This function is what most @l
 @tindex enum EXTRACTOR_MetaType
 @findex EXTRACTOR_metatype_get_max
 
-@verb{|enum EXTRACTOR_MetaType|} is a C enum which defines a list of over 100 different types of meta data.  The total number can differ between different @le{} releases; the maximum value for the current release can be obtained using the @verb{|EXTRACTOR_metatype_get_max|} function.  All values in this enumeration are of the form @verb{|EXTRACTOR_METATYPE_XXX|}.
+@verb{|enum EXTRACTOR_MetaType|} is a C enum which defines a list of over 100 different types of meta data.  The total number can differ between different @gnule{} releases; the maximum value for the current release can be obtained using the @verb{|EXTRACTOR_metatype_get_max|} function.  All values in this enumeration are of the form @verb{|EXTRACTOR_METATYPE_XXX|}.
 
 @deftypefun {const char *} EXTRACTOR_metatype_to_string (enum EXTRACTOR_MetaType type)
 @findex EXTRACTOR_metatype_to_string
 @cindex gettext
 @cindex internationalization
 
-The function @verb{|EXTRACTOR_metatype_to_string|} can be used to obtain a short English string @samp{s} describing the meta data type.  The string can be translated into other languages using GNU gettext with the domain set to @le{} (@verb{|dgettext("libextractor", s)|}).  
+The function @verb{|EXTRACTOR_metatype_to_string|} can be used to obtain a short English string @samp{s} describing the meta data type.  The string can be translated into other languages using GNU gettext with the domain set to @gnule{} (@verb{|dgettext("libextractor", s)|}).  
 @end deftypefun
 
 @deftypefun {const char *} EXTRACTOR_metatype_to_description (enum EXTRACTOR_MetaType type)
@@ -429,7 +436,7 @@ The function @verb{|EXTRACTOR_metatype_to_string|} can be used to obtain a short
 @cindex gettext
 @cindex internationalization
 
-The function @verb{|EXTRACTOR_metatype_to_description|} can be used to obtain a longer English string @samp{s} describing the meta data type.  The description may be empty if the short description returned by @code{EXTRACTOR_metatype_to_string} is already comprehensive.  The string can be translated into other languages using GNU gettext with the domain set to @le{} (@verb{|dgettext("libextractor", s)|}).  
+The function @verb{|EXTRACTOR_metatype_to_description|} can be used to obtain a longer English string @samp{s} describing the meta data type.  The description may be empty if the short description returned by @code{EXTRACTOR_metatype_to_string} is already comprehensive.  The string can be translated into other languages using GNU gettext with the domain set to @gnule{} (@verb{|dgettext("libextractor", s)|}).  
 @end deftypefun
 
 
@@ -490,11 +497,11 @@ Return 0 to continue extracting, 1 to abort.
 @cindex threads
 @cindex thread-safety
 
-This is the main function for extracting keywords with @le{}.  The first argument is a plugin list which specifies the set of plugins that should be used for extracting meta data.  The @samp{filename} argument is optional and can be used to specify the name of a file to process.  If @samp{filename} is NULL, then the @samp{data} argument must point to the in-memory data to extract meta data from.  If @samp{filename} is non-NULL, @samp{data} can be NULL.  If @samp{data} is non-null, then @samp{size} is the size of @samp{data} in bytes.  Otherwise @samp{size} should be zero.  For each meta data item found, GNU libextractor will call the @samp{proc} function, passing @samp{proc_cls} as the first argument to @samp{proc}.  The other arguments to @samp{proc} depend on the specific meta data found.  
+This is the main function for extracting keywords with @gnule{}.  The first argument is a plugin list which specifies the set of plugins that should be used for extracting meta data.  The @samp{filename} argument is optional and can be used to specify the name of a file to process.  If @samp{filename} is NULL, then the @samp{data} argument must point to the in-memory data to extract meta data from.  If @samp{filename} is non-NULL, @samp{data} can be NULL.  If @samp{data} is non-null, then @samp{size} is the size of @samp{data} in bytes.  Otherwise @samp{size} should be zero.  For each meta data item found, GNU libextractor will call the @samp{proc} function, passing @samp{proc_cls} as the first argument to @samp{proc}.  The other arguments to @samp{proc} depend on the specific meta data found.  
 
 @cindex SIGBUS
 @cindex bus error
-Meta data extraction should never really fail --- at worst, @le{} should not call @samp{proc} with any meta data. By design, @le{} should never crash or leak memory, even given corrupt files as input.  Note however, that running @le{} on a corrupt file system (or incorrectly @verb{|mmap|}ed files) can result in the operating system sending a SIGBUS (bus error) to the process.  While @le{} runs plugins out-of-process, it first maps the file into memory and then attempts to decompress it.  During decompression it is possible to encounter a SIGBUS.   @le{} will @emph{not} attempt to catch this signal and your application is likely to crash.  Note again that this should only happen if the file @emph{system} is corrupt (not if individual files are corrupt).  If this is not acceptable, you might want to consider running @le{} itself also out-of-process (as done, for example, by @url{http://grothoff.org/christian/doodle/,doodle}).
+Meta data extraction should never really fail --- at worst, @gnule{} should not call @samp{proc} with any meta data. By design, @gnule{} should never crash or leak memory, even given corrupt files as input.  Note however, that running @gnule{} on a corrupt file system (or incorrectly @verb{|mmap|}ed files) can result in the operating system sending a SIGBUS (bus error) to the process.  While @gnule{} runs plugins out-of-process, it first maps the file into memory and then attempts to decompress it.  During decompression it is possible to encounter a SIGBUS.   @gnule{} will @emph{not} attempt to catch this signal and your application is likely to crash.  Note again that this should only happen if the file @emph{system} is corrupt (not if individual files are corrupt).  If this is not acceptable, you might want to consider running @gnule{} itself also out-of-process (as done, for example, by @url{http://grothoff.org/christian/doodle/,doodle}).
 
 @end deftypefun
 
@@ -509,7 +516,7 @@ Meta data extraction should never really fail --- at worst, @le{} should not cal
 @cindex PHP
 @cindex Ruby
 
-@le{} works immediately with C and C++ code. Bindings for Java, Mono, Ruby, Perl, PHP and Python are available for download from the main @le{} website.  Documentation for these bindings (if available) is part of the downloads for the respective binding.  In all cases, a full installation of the C library is required before the binding can be installed.
+@gnule{} works immediately with C and C++ code. Bindings for Java, Mono, Ruby, Perl, PHP and Python are available for download from the main @gnule{} website.  Documentation for these bindings (if available) is part of the downloads for the respective binding.  In all cases, a full installation of the C library is required before the binding can be installed.
 
 @section Java
 
@@ -571,7 +578,7 @@ This binding is undocumented at this point.
 @cindex concurrency
 @cindex threads
 @cindex thread-safety
-This chapter describes various utility functions for @le{} usage. All of the functions are reentrant.
+This chapter describes various utility functions for @gnule{} usage. All of the functions are reentrant.
 
 @menu
 * Utility Constants::
@@ -724,6 +731,115 @@ in-process (making it easier to debug) and without any of the other
 plugins.
 
 
+@section Example for a minimal extract method
+
+The following example shows how a plugin can return the mime type of
+a file.
+@example
+
+int
+EXTRACTOR_mymime_extract
+   (const char *data,
+    size_t data_size,
+    EXTRACTOR_MetaDataProcessor proc,
+    void *proc_cls,
+    const char * options)
+{
+  if (data_size < 4)
+    return 0;
+  if (0 != memcmp (data, "\177ELF", 4))
+    return 0;
+  if (0 != proc (proc_cls, 
+                 "mymime",
+                 EXTRACTOR_METATYPE_MIMETYPE,
+                 EXTRACTOR_METAFORMAT_UTF8,
+                 "text/plain",
+                 "application/x-executable",
+                 1 + strlen("application/x-executable")))
+    return 1;
+  /* more calls to 'proc' here as needed */
+  return 0;
+}
+
+@end example
+
+@section Plugin execution options
+
+Plugins can request that their execution be done in a particular way.
+For this, the plugin defines a function with the following signature:
+
+@verbatim
+const char *
+EXTRACTOR_XXX_options (void);
+@end verbatim
+
+The function should return a string with the execution options.
+Individual options in this string should be separated by semicolons.
+Options that are included in the string but not known to the library
+are ignored.  The following options are supported:
+
+@itemize @bullet
+@item
+@code{oop-only} ensures that the plugin is only run out-of-process; if
+this is not possible, the plugin will not be executed at all if this
+option is set.
+
+@item
+@code{close-stderr} ensures that @code{stderr} is closed during the
+execution of the plugin.  This is useful if the plugin uses libraries
+that write (error) messages to @code{stderr} and where this behavior cannot be 
+turned off.  This option only works if the plugin is executed out-of-process.
+
+@item
+@code{close-stdout} ensures that @code{stdout} is closed during the
+execution of the plugin.  This is useful if the plugin uses libraries
+that write messages to @code{stdout} and where this behavior cannot be 
+turned off.  This option only works if the plugin is executed out-of-process.
+
+@item
+@code{force-kill} kills and restarts the plugin process for each
+file that is being analyzed.  This is useful if the plugin uses
+libraries that keep global state between runs that is problematic or
+if the plugin uses libraries that are known to have serious resource
+leaks (such as memory leaks).
+
+@item
+@code{want-tail} 
+In order to limit memory consumption, limit the amount if reading from
+disk and to keep the API simple, the @samp{data} argument passed to
+the @code{EXTRACTOR_XXX_extract} method bounded (to 32 MB of normal
+data; for compressed data, a limit of 16 MB is imposed).@footnote{If
+@gnule{} was given a pointer to an existing, uncompressed block of
+data in memory, no bound is imposed for plugins executing in-process;
+for out-of-process plugins, a 32 MB limit is still imposed.}  Since
+some file formats contain meta data at the end of the file, this option
+provides a way for plugins to access not the first 16--32 MB of a file
+but instead the last (roughly) 32 MB. 
+
+Note that even for files larger than 32 MB, @samp{size} is not
+guaranteed to be 32 MB since @samp{data} will be aligned to the page
+size of the operating system.  However, the last byte of @samp{data}
+is guaranteed to be the last byte of the file.  Furthermore, if the
+file was large and compressed, unlike in the case of meta data
+extraction from the header, the end of the file will not be
+automatically decompressed by @gnule{}.  
+
+@end itemize
+
+Note that using options other than @code{want-tail} is pretty much
+always a kludge and should thus be avoided.
+
+@section Example for an options method
+
+The following example shows how a plugin can set some of the options listed above:
+@example
+const char *
+EXTRACTOR_id3_options ()
+{
+  return "close-stderr;want-tail";
+}
+@end example
+
 @node Internal utility functions
 @chapter Internal utility functions
 
@@ -752,12 +868,12 @@ below.
 @cindex UTF-8
 @cindex character set
 @findex EXTRACTOR_common_convert_to_utf8
-Various @le{} plugins make use of the internal
+Various @gnule{} plugins make use of the internal
 @file{convert.h} header which defines a function
 
 @verb{|EXTRACTOR_common_convert_to_utf8|} which can be used to easily convert text from
 any character set to UTF-8.  This conversion is important since the
-linked list of keywords that is returned by @le{} is
+linked list of keywords that is returned by @gnule{} is
 expected to contain only UTF-8 strings.  Naturally, proper conversion
 may not always be possible since some file formats fail to specify the
 character set.  In that case, it is often better to not convert at
@@ -781,9 +897,9 @@ caller, so storing the string in the keyword list is acceptable.
 @chapter Reporting bugs
 
 @cindex bug
-@le{} uses the @url{http://gnunet.org/bugs/,Mantis bugtracking
+@gnule{} uses the @url{http://gnunet.org/bugs/,Mantis bugtracking
 system}.  If possible, please report bugs there.  You can also e-mail
-the @le{} mailinglist at @url{libextractor@@gnu.org}.
+the @gnule{} mailinglist at @url{libextractor@@gnu.org}.
 
 
 
