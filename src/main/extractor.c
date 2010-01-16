@@ -1323,7 +1323,7 @@ start_process (struct EXTRACTOR_PluginList *plugin)
 
   itoa(p1[0], arg1, 10);
   itoa(p2[1], arg2, 10);
-  pid = _spawnl(_P_NOWAIT, "C:\\WINDOWS\\SYSTEM32\\rundll32.exe", "C:\\WINDOWS\\SYSTEM32\\rundll32.exe",
+  pid = _spawnl(_P_NOWAIT, "rundll32.exe", "rundll32.exe",
         "libextractor-3.dll,RundllEntryPoint@16", arg1, arg2, NULL);
 #endif
   if (pid == -1)
@@ -2052,6 +2052,9 @@ EXTRACTOR_extract (struct EXTRACTOR_PluginList *plugins,
   int eno;
   off_t offset;
   long pg;
+#ifdef WINDOWS
+  SYSTEM_INFO sys;
+#endif
 
   fd = -1;
   buffer = NULL;
@@ -2089,7 +2092,12 @@ EXTRACTOR_extract (struct EXTRACTOR_PluginList *plugins,
        (fstatbuf.st_size > fsize) &&
        (fstatbuf.st_size > MAX_READ) )
     {
-      pg = sysconf (_SC_PAGE_SIZE);      
+#ifndef WINDOWS
+      pg = sysconf (_SC_PAGE_SIZE);
+#else
+      GetSystemInfo(&sys);
+      pg = sys.dwPageSize;
+#endif
       if ( (pg > 0) &&
 	   (pg < MAX_READ) )
 	{
