@@ -641,7 +641,7 @@ get_symbol_with_prefix(void *lib_handle,
   char *dot;
   const char *(*opt_fun)(void);
 
-  *options = NULL;
+  if (NULL != options) *options = NULL;
   sym_name = strstr (prefix, "_");
   if (sym_name == NULL)
     return NULL;
