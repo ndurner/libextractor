@@ -558,7 +558,9 @@ load_plugins_from_dir (void *cls,
       if (ent->d_name[0] == '.')
 	continue;
       if ( (NULL != (la = strstr (ent->d_name, ".la"))) &&
-	   (la[3] == '\0') )
+	   (la[3] == '\0') ||
+	   (NULL != (la = strstr (ent->d_name, ".a"))) &&
+	              (la[2] == '\0'))
 	continue; /* only load '.so' and '.dll' */
 
       sym_name = strstr (ent->d_name, "_");
