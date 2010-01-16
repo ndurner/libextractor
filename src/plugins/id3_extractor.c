@@ -272,6 +272,7 @@ EXTRACTOR_id3_extract (const char *data,
   char track[16];
   int ret;
 
+  ret = 0;
   if (OK != get_id3 (data, size, &info))
     return 0;
   if (strlen (info.title) > 0)
