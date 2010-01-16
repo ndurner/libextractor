@@ -133,21 +133,13 @@ struct EXTRACTOR_PluginList
    * Pipe used to send information about shared memory segments to
    * the child process.  NULL if not initialized.
    */
-#ifndef WINDOWS
   FILE *cpipe_in;
-#else
-  HANDLE cpipe_in;
-#endif
 
   /**
    * Pipe used to read information about extracted meta data from
    * the child process.  -1 if not initialized.
    */
-#ifndef WINDOWS
   int cpipe_out;
-#else
-  HANDLE cpipe_out;
-#endif
 };
 
 
@@ -1002,11 +994,7 @@ write_all (int fd,
 
 static int
 read_all (
-#ifndef WINDOWS
     int fd,
-#else
-    HANDLE fd,
-#endif
 	  void *buf,
 	  size_t size)
 {
@@ -1016,11 +1004,7 @@ read_all (
   
   while (off < size)
     {
-#ifndef WINDOWS
       ret = read (fd, &data[off], size - off);
-#else
-      ReadFile (fd, &data[off], size - off, &ret, NULL);
-#endif
       if (ret <= 0)
 	return -1;
       off += ret;
@@ -1225,48 +1209,54 @@ process_requests (struct EXTRACTOR_PluginList *plugin,
 
 
 #ifdef WINDOWS
-static void 
-write_plugin_data (HANDLE h, const struct EXTRACTOR_PluginList *plugin)
+static void
+write_plugin_data (int fd, const struct EXTRACTOR_PluginList *plugin)
 {
   size_t i;
   DWORD len;
+  char *str;
 
-  i = strlen (plugin->libname);
-  WriteFile (h, &i, sizeof (size_t), &len, NULL);
-  WriteFile (h, plugin->libname, i, &len, NULL);
+  i = strlen (plugin->libname) + 1;
+  write (fd, &i, sizeof (size_t));
+  write (fd, plugin->libname, i);
 
-  i = strlen (plugin->short_libname);
-  WriteFile (h, &i, sizeof (size_t), &len, NULL);
-  WriteFile (h, plugin->short_libname,i, &len, NULL);
+  i = strlen (plugin->short_libname) + 1;
+  write (fd, &i, sizeof (size_t));
+  write (fd, plugin->short_libname, i);
 
   if (plugin->plugin_options != NULL)
-    i = strlen (plugin->plugin_options);
+    {
+      i = strlen (plugin->plugin_options) + 1;
+      str = plugin->plugin_options;
+    }
   else
-    i = 0;
-  WriteFile (h, &i, sizeof (size_t), &len, NULL);
-  WriteFile (h, plugin->plugin_options, i, &len, NULL);
+    {
+      i = 1;
+      str = "";
+    }
+  write (fd, &i, sizeof (size_t));
+  write (fd, str, i);
 }
 
-
 static struct EXTRACTOR_PluginList *
-read_plugin_data (FILE *f)
+read_plugin_data (int fd)
 {
   struct EXTRACTOR_PluginList *ret;
   size_t i;
 
   ret = malloc (sizeof (struct EXTRACTOR_PluginList));
 
-  fread (&i, sizeof (size_t), 1, f);
+  read (fd, &i, sizeof (size_t));
   ret->libname = malloc (i);
-  fread (ret->libname, i, 1, f);
+  read (fd, ret->libname, i);
 
-  fread (&i, sizeof (size_t), 1, f);
+  read (fd, &i, sizeof (size_t));
   ret->short_libname = malloc (i);
-  fread (ret->short_libname, i, 1, f);
+  read (fd, ret->short_libname, i);
 
-  fread (&i, sizeof (size_t), 1, f);
+  read (fd, &i, sizeof (size_t));
   ret->plugin_options = malloc (i);
-  fread (ret->plugin_options, i, 1, f);
+  read (fd, ret->plugin_options, i);
 
   return ret;
 }
@@ -1277,13 +1267,12 @@ RundllEntryPoint(HWND hwnd, HINSTANCE hinst, LPSTR lpszCmdLine, int nCmdShow)
 {
   int in, out;
 
-  in = fileno (stdin);
-  out = fileno (stdout);
+  sscanf(lpszCmdLine, "%u %u", &in, &out);
 
   setmode (in, _O_BINARY);
   setmode (out, _O_BINARY);
 
-  process_requests (read_plugin_data (stdin), in, out);
+  process_requests (read_plugin_data (in), in, out);
 }
 #endif
 
@@ -1294,18 +1283,25 @@ RundllEntryPoint(HWND hwnd, HINSTANCE hinst, LPSTR lpszCmdLine, int nCmdShow)
 static void
 start_process (struct EXTRACTOR_PluginList *plugin)
 {
-#ifndef WINDOWS
   int p1[2];
   int p2[2];
   pid_t pid;
 
+#ifndef WINDOWS
   if (0 != pipe (p1))
+#else
+    if (0 != _pipe (p1, 0, _O_BINARY))
+#endif
     {
       plugin->cpid = -1;
       plugin->flags = EXTRACTOR_OPTION_DISABLED;
       return;
     }
+#ifndef WINDOWS
   if (0 != pipe (p2))
+#else
+    if (0 != _pipe (p2, 0, _O_BINARY))
+#endif
     {
       close (p1[0]);
       close (p1[1]);
@@ -1313,7 +1309,23 @@ start_process (struct EXTRACTOR_PluginList *plugin)
       plugin->flags = EXTRACTOR_OPTION_DISABLED;
       return;
     }
+#ifndef WINDOWS
   pid = fork ();
+#else
+  STARTUPINFO startup;
+  PROCESS_INFORMATION proc;
+  char cmd[100];
+  char arg1[10], arg2[10];
+
+  memset (&startup, 0, sizeof (STARTUPINFO));
+  write_plugin_data (p1[1], plugin);
+
+
+  itoa(p1[0], arg1, 10);
+  itoa(p2[1], arg2, 10);
+  pid = _spawnl(_P_NOWAIT, "C:\\WINDOWS\\SYSTEM32\\rundll32.exe", "C:\\WINDOWS\\SYSTEM32\\rundll32.exe",
+        "libextractor-3.dll,RundllEntryPoint@16", arg1, arg2, NULL);
+#endif
   if (pid == -1)
     {
       close (p1[0]);
@@ -1326,8 +1338,8 @@ start_process (struct EXTRACTOR_PluginList *plugin)
     }
   if (pid == 0)
     {
-      close (p1[1]);
-      close (p2[0]);
+    close (p1[1]);
+    close (p2[0]);
       process_requests (plugin, p1[0], p2[1]);
       _exit (0);
     }
@@ -1338,25 +1350,6 @@ start_process (struct EXTRACTOR_PluginList *plugin)
   if (plugin->cpipe_in == NULL)
     perror ("fdopen");
   plugin->cpipe_out = p2[0];
-#else
-  STARTUPINFO startup;
-  PROCESS_INFORMATION proc;
-
-  memset (&startup, 0, sizeof (STARTUPINFO));
-  if (!CreatePipe (&startup.hStdInput, &plugin->cpipe_in, NULL, 0))
-    perror ("CreatePipe");
-  if (!CreatePipe (&plugin->cpipe_out, &startup.hStdOutput, NULL, 0))
-    perror ("CreatePipe");
-
-  write_plugin_data (plugin->cpipe_in, plugin);
-  CloseHandle (plugin->cpipe_in);
-
-  // FIXME library name
-  CreateProcess (NULL, "rundll32 libextractor-3.dll,RundllEntryPoint@16", NULL, NULL, FALSE, 0, NULL, NULL, &startup, &proc);
-  CloseHandle (proc.hProcess);
-  CloseHandle (proc.hThread);
-  plugin->cpid = proc.dwProcessId;
-#endif
 }
 
 
