@@ -192,7 +192,8 @@ libextractor_id3_la_SOURCES = \
 libextractor_id3_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_id3_la_LIBADD = \
-  $(top_builddir)/src/common/libextractor_common.la
+  $(top_builddir)/src/common/libextractor_common.la \
+  $(LE_LIBINTL)
 
 libextractor_id3v2_la_SOURCES = \
   id3v2_extractor.c 
