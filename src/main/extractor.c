@@ -191,7 +191,7 @@ get_path_from_proc_exe() {
   if (f != NULL) {
     while (NULL != fgets(line, 1024, f)) {
       if ( (1 == sscanf(line,
-			"%*x-%*x %*c%*c%*c%*c %*x %*2u:%*2u %*u%*[ ]%s",
+			"%*x-%*x %*c%*c%*c%*c %*x %*2x:%*2x %*u%*[ ]%s",
 			dir)) &&
 	   (NULL != strstr(dir,
 			   "libextractor")) ) {
