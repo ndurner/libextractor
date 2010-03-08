@@ -1486,14 +1486,22 @@ make_shm (int is_tail,
 	  size_t fn_size,
 	  size_t size)
 {
+  const char *tpath;
+
+#ifdef WINDOWS
+  tpath = "%TEMP%\\";
+#elif SOMEBSD
+  /* this works on FreeBSD, not sure about others... */
+  tpath = getenv ("TMPDIR");
+  if (tpath == NULL)
+    tpath = "/tmp/";
+#else
+  tpath = "/"; /* Linux */
+#endif 
   snprintf (fn,
 	    fn_size,
-#ifdef WINDOWS
-	    "%TEMP%\\"
-#else
-	    "/"
-#endif
-	    "libextractor-%sshm-%u-%u",
+	    "%slibextractor-%sshm-%u-%u",
+	    tpath,
 	    (is_tail) ? "t" : "",
 	    getpid(),
 	    (unsigned int) RANDOM());
