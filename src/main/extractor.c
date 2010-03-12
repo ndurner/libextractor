@@ -1714,10 +1714,12 @@ extract (struct EXTRACTOR_PluginList *plugins,
 	close (shmid);
       shm_unlink (fn);
       if (NULL != tptr)
-	munmap (tptr, tsize);
-      if (tshmid != -1)
-	close (tshmid);
-      shm_unlink (tfn);
+	{
+	  munmap (tptr, tsize);
+	  shm_unlink (tfn);
+	  if (tshmid != -1)
+	    close (tshmid);
+	}
 #else
       UnmapViewOfFile (ptr);
       CloseHandle (map);
