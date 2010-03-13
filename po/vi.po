@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.6.0\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2010-01-13 15:36+0100\n"
+"POT-Creation-Date: 2010-03-14 00:09+0100\n"
 "PO-Revision-Date: 2010-02-11 00:13+0930\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
@@ -887,7 +887,7 @@ msgstr "%s: tùy chọn « -W %s » là mơ hồ\n"
 msgid "%s: option `-W %s' doesn't allow an argument\n"
 msgstr "%s: tùy chọn « -W %s » không cho phép đối số\n"
 
-#: src/main/extractor.c:2145
+#: src/main/extractor.c:2158
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "Việc khởi động cơ chế cầm phít bị lỗi: %s\n"
@@ -905,8 +905,11 @@ msgstr ""
 
 #: src/main/extract.c:100
 #, c-format
-msgid "Arguments mandatory for long options are also mandatory for short options.\n"
-msgstr "Mọi đối số bắt buộc phải sử dụng với tùy chọn dài cũng bắt buộc với tùy chọn ngắn.\n"
+msgid ""
+"Arguments mandatory for long options are also mandatory for short options.\n"
+msgstr ""
+"Mọi đối số bắt buộc phải sử dụng với tùy chọn dài cũng bắt buộc với tùy chọn "
+"ngắn.\n"
 
 #: src/main/extract.c:174
 msgid "print output in bibtex format"
@@ -914,7 +917,9 @@ msgstr "hiển thị dữ liệu xuất có dạng bibtex"
 
 #: src/main/extract.c:176
 msgid "produce grep-friendly output (all results on one line per file)"
-msgstr "tạo ra kết xuất thân thiện với grep (mọi kết quả trên cùng dòng của mỗi tập tin)"
+msgstr ""
+"tạo ra kết xuất thân thiện với grep (mọi kết quả trên cùng dòng của mỗi tập "
+"tin)"
 
 #: src/main/extract.c:178
 msgid "print this help"
@@ -938,7 +943,8 @@ msgstr "đừng dùng bộ trình rút mặc định"
 
 #: src/main/extract.c:188
 msgid "print only keywords of the given TYPE (use -L to get a list)"
-msgstr "hiển thị chỉ từ khoá KIỂU (TYPE) đã cho thôi (dùng « -L » để xem danh sách)"
+msgstr ""
+"hiển thị chỉ từ khoá KIỂU (TYPE) đã cho thôi (dùng « -L » để xem danh sách)"
 
 #: src/main/extract.c:190
 msgid "print the version number"
@@ -979,7 +985,8 @@ msgstr "%s - (nhị phân, %u byte)\n"
 
 #: src/main/extract.c:603 src/main/extract.c:613
 #, c-format
-msgid "Illegal combination of options, cannot combine multiple styles of printing.\n"
+msgid ""
+"Illegal combination of options, cannot combine multiple styles of printing.\n"
 msgstr "sai tổ hợp các tuỳ chọn này, không thể kết hợp nhiều cách in.\n"
 
 #: src/main/extract.c:640
@@ -990,7 +997,8 @@ msgstr "Bạn phải ghi rõ một đối số cho tùy chọn « %s » (tùy ch
 #: src/main/extract.c:705
 #, c-format
 msgid "Use --help to get a list of options.\n"
-msgstr "Hãy sử dụng lệnh « --help » (trợ giúp) để xem một danh sách các tùy chọn.\n"
+msgstr ""
+"Hãy sử dụng lệnh « --help » (trợ giúp) để xem một danh sách các tùy chọn.\n"
 
 #: src/main/extract.c:737
 #, c-format
@@ -1151,7 +1159,9 @@ msgid "publishing institution"
 msgstr "tổ chức xuất bản"
 
 #: src/main/extractor_metatypes.c:77
-msgid "institution that was involved in the publishing, but not necessarily the publisher"
+msgid ""
+"institution that was involved in the publishing, but not necessarily the "
+"publisher"
 msgstr "tổ chức liên quan đến xuất bản, không nhất thiết là nhà xuất bản"
 
 #: src/main/extractor_metatypes.c:78
@@ -1191,7 +1201,9 @@ msgid "publication day"
 msgstr "ngày xuất bản"
 
 #: src/main/extractor_metatypes.c:88
-msgid "day of publication (or, if unpublished, the day of creation), relative to the given month"
+msgid ""
+"day of publication (or, if unpublished, the day of creation), relative to "
+"the given month"
 msgstr "ngày xuất bản (chưa xuất bản thì ngày tạo), tương đối với tháng đưa ra"
 
 #: src/main/extractor_metatypes.c:89
@@ -1432,8 +1444,11 @@ msgid "unknown date"
 msgstr "không rõ ngày tháng"
 
 #: src/main/extractor_metatypes.c:163
-msgid "ambiguous date (could specify creation time, modification time or access time)"
-msgstr "ngày tháng không rõ (có thể đưa ra giờ tạo, giờ sửa đổi hay giờ truy cập)"
+msgid ""
+"ambiguous date (could specify creation time, modification time or access "
+"time)"
+msgstr ""
+"ngày tháng không rõ (có thể đưa ra giờ tạo, giờ sửa đổi hay giờ truy cập)"
 
 #: src/main/extractor_metatypes.c:164
 msgid "creation date"
@@ -1700,15 +1715,21 @@ msgid "target platform"
 msgstr "nền tảng đích"
 
 #: src/main/extractor_metatypes.c:238
-msgid "name of the architecture, operating system and distribution this package is for"
-msgstr "tên của kiến trúc, hệ điều hành và bản phân phối cho chúng gói này được thiết kế"
+msgid ""
+"name of the architecture, operating system and distribution this package is "
+"for"
+msgstr ""
+"tên của kiến trúc, hệ điều hành và bản phân phối cho chúng gói này được "
+"thiết kế"
 
 #: src/main/extractor_metatypes.c:239
 msgid "resource type"
 msgstr "kiểu tài nguyên"
 
 #: src/main/extractor_metatypes.c:240
-msgid "categorization of the nature of the resource that is more specific than the file format"
+msgid ""
+"categorization of the nature of the resource that is more specific than the "
+"file format"
 msgstr "phân loại tài nguyên một cách chính xác hơn định dạng tập tin"
 
 #: src/main/extractor_metatypes.c:241
@@ -1716,8 +1737,10 @@ msgid "library search path"
 msgstr "đường dẫn tìm kiếm thư viện"
 
 #: src/main/extractor_metatypes.c:242
-msgid "path in the file system to be considered when looking for required libraries"
-msgstr "đường dẫn trong hệ thống tập tin cần theo khi quét tìm các thư viện cần thiết"
+msgid ""
+"path in the file system to be considered when looking for required libraries"
+msgstr ""
+"đường dẫn trong hệ thống tập tin cần theo khi quét tìm các thư viện cần thiết"
 
 #: src/main/extractor_metatypes.c:243
 msgid "library dependency"
@@ -1944,8 +1967,12 @@ msgid "performer"
 msgstr "người biểu diễn"
 
 #: src/main/extractor_metatypes.c:335
-msgid "The artist(s) who performed the work (conductor, orchestra, soloists, actor, etc.)"
-msgstr "Các nhạc sĩ đã biểu diễn tác phẩm (nhạc trưởng, dàn nhạc hợp tấu, người diễn đơn, diễn viên v.v.)"
+msgid ""
+"The artist(s) who performed the work (conductor, orchestra, soloists, actor, "
+"etc.)"
+msgstr ""
+"Các nhạc sĩ đã biểu diễn tác phẩm (nhạc trưởng, dàn nhạc hợp tấu, người diễn "
+"đơn, diễn viên v.v.)"
 
 #: src/main/extractor_metatypes.c:337
 msgid "contact"
@@ -2132,7 +2159,8 @@ msgid "interpretation"
 msgstr "thể hiện"
 
 #: src/main/extractor_metatypes.c:388
-msgid "information about the people behind interpretations of an existing piece"
+msgid ""
+"information about the people behind interpretations of an existing piece"
 msgstr "thông tin về các người đã thể hiện một bản nhạc đã có"
 
 #: src/main/extractor_metatypes.c:389
@@ -2256,8 +2284,10 @@ msgid "full data"
 msgstr "dữ liệu đầy đủ"
 
 #: src/main/extractor_metatypes.c:423
-msgid "entry that contains the full, original binary data (not really meta data)"
-msgstr "mục nhập chứa dữ liệu nhị phân gốc hoàn toàn (không phải siêu dữ liệu thật)"
+msgid ""
+"entry that contains the full, original binary data (not really meta data)"
+msgstr ""
+"mục nhập chứa dữ liệu nhị phân gốc hoàn toàn (không phải siêu dữ liệu thật)"
 
 #: src/main/extractor_metatypes.c:425
 msgid "rating"
