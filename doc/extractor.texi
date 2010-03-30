@@ -1050,7 +1050,7 @@ byte order at the same time.
 @file{convert.h} provides a function for character set conversion described
 below.
 
-@deftypefun {char *} EXTRACTOR_common_convert_to_utf8(const char *input, size_t len, const char * charset)
+@deftypefun {char *} EXTRACTOR_common_convert_to_utf8 (const char *input, size_t len, const char * charset)
 @cindex UTF-8
 @cindex character set
 @findex EXTRACTOR_common_convert_to_utf8
