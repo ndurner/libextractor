@@ -28,6 +28,16 @@
 #include <sys/shm.h>
 #endif
 #include <signal.h>
+#include <ltdl.h>
+
+#if HAVE_LIBBZ2
+#include <bzlib.h>
+#endif
+
+#if HAVE_ZLIB
+#include <zlib.h>
+#endif
+
 
 
 /**
@@ -52,21 +62,6 @@
  * 2 for actual debug info.
  */ 
 #define DEBUG 1
-
-
-#if HAVE_LTDL_H
-#include <ltdl.h>
-#else
-#include <../../libltdl/ltdl.h>
-#endif
-
-#if HAVE_LIBBZ2
-#include <bzlib.h>
-#endif
-
-#if HAVE_ZLIB
-#include <zlib.h>
-#endif
 
 
 /**
