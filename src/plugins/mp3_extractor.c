@@ -149,7 +149,6 @@ EXTRACTOR_mp3_extract (const unsigned char *data,
   while (counter < MAX_MP3_SCAN_DEEP);
   if (counter >= MAX_MP3_SCAN_DEEP)
     return 0;
-  ADDR ("audio/mpeg", EXTRACTOR_METATYPE_MIMETYPE);
 
   do
     {                           /*ok, now we found a mp3 frame header */
@@ -167,8 +166,7 @@ EXTRACTOR_mp3_extract (const unsigned char *data,
           break;
         case (MPA_VERSION_MASK):
         default:
-          mpeg_ver = MPEG_ERR;  /*error */
-          break;
+          return 0;
         }
       switch (header & (MPA_LAYER_MASK << MPA_LAYER_SHIFT))
         {
@@ -183,7 +181,7 @@ EXTRACTOR_mp3_extract (const unsigned char *data,
           break;
         case 0x0:
         default:
-          layer = LAYER_ERR;        /*error */
+          return 0;
         }
       if (!layer || !mpeg_ver)
         return 0;            /*unknown mpeg type */
@@ -227,6 +225,7 @@ EXTRACTOR_mp3_extract (const unsigned char *data,
 
   if (!frames)
     return 0;                /*no valid frames */
+  ADDR ("audio/mpeg", EXTRACTOR_METATYPE_MIMETYPE);
   avg_bps = avg_bps / frames;
   if (max_frames_scan)
     {                           /*if not all frames scaned */
