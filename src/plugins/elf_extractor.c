@@ -360,8 +360,8 @@ getDynTag (const char *data,
   if ((off + osize > size) || ((idx + 1) * ELF_DYN_SIZE > osize))
     return -1;
   EXTRACTOR_common_cat_unpack (&data[off + idx * ELF_DYN_SIZE],
-              ELF_DYN_SPECS[getByteorder (data[EI_CLASS])],
-              ELF_DYN_FIELDS (ret));
+			       ELF_DYN_SPECS[getByteorder (data[EI_CLASS])],
+			       ELF_DYN_FIELDS (ret));
   return 0;
 }
 

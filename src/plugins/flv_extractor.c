@@ -793,8 +793,8 @@ static void handleASEnd(unsigned char type, void * value, void * userdata)
 	short *tz;
         millis = (double *)tmp[0];
 	tz = (short *)tmp[1];
-	s = tmpstr;
-	flv_to_iso_date(*millis, *tz, tmpstr, sizeof(tmpstr));
+	if (0 == flv_to_iso_date(*millis, *tz, tmpstr, sizeof(tmpstr)))
+	  s = tmpstr;
         break;
       }
     }
