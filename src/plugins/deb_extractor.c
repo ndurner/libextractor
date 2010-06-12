@@ -223,9 +223,6 @@ processControlTar (const char *data,
 }
 
 #define MAX_CONTROL_SIZE (1024 * 1024)
-#ifndef SIZE_MAX
-#define SIZE_MAX ((size_t)-1)
-#endif
 
 static voidpf
 Emalloc (voidpf opaque, uInt items, uInt size)

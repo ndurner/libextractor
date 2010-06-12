@@ -853,6 +853,8 @@ processTextTag (const char *input,
   addKeyword (EXTRACTOR_METATYPE_LANGUAGE, languages[lang], ec);
 
   meta = malloc (len + 1);
+  if (meta == NULL)
+    return 0;
   memcpy (meta, &txt[1], len);
   meta[len] = '\0';
   for (i = 0; i < len; i++)
@@ -951,6 +953,8 @@ processDataAtom (const char *input,
   }
   else if (flags == 0x1) { /* text data */
     meta = malloc (len + 1);
+    if (meta == NULL)
+      return 0;
     memcpy (meta, &input[pos+16], len);
     meta[len] = '\0';
     for (i = 0; i < len; i++)

@@ -112,6 +112,8 @@ process_COM (const unsigned char **data, const unsigned char *end)
   if (length <= 0)
     return NULL;
   comment = malloc (length + 1);
+  if (comment == NULL)
+    return NULL;
   pos = 0;
   while (length > 0)
     {

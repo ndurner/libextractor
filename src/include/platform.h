@@ -44,6 +44,7 @@
 #include <ctype.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdint.h>
 #include <fcntl.h>
 #include <time.h>
 #include <utime.h>
@@ -64,6 +65,10 @@
 #include <locale.h>
 #include <iconv.h>
 #include <langinfo.h>
+
+#ifndef SIZE_MAX
+#define SIZE_MAX ((size_t)-1)
+#endif
 
 #if DARWIN
 #include <mach-o/dyld.h>

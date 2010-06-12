@@ -70,25 +70,25 @@ printInfoString(Dict *infoDict,
     } else {
       size_t len = strlen(s);
       
-      while(0 < len) {
-        /*
-         * Avoid outputting trailing spaces.
-         *
-         * The following expression might be rewritten as
-         * (! isspace(s[len - 1]) && 0xA0 != s[len - 1]).
-         * There seem to exist isspace() implementations
-         * which do return non-zero from NBSP (maybe locale-dependent).
-         * Remove ISO-8859 non-breaking space (NBSP, hex value 0xA0) from
-         * the expression if it looks suspicious (locale issues for instance).
-         *
-         * Squeezing out all non-printable characters might also be useful.
-         */
-          if ( (' '  != s[len - 1]) && ((char)0xA0 != s[len - 1]) &&
+      while(0 < len) 
+	{
+	  /*
+	   * Avoid outputting trailing spaces.
+	   *
+	   * The following expression might be rewritten as
+	   * (! isspace(s[len - 1]) && 0xA0 != s[len - 1]).
+	   * There seem to exist isspace() implementations
+	   * which do return non-zero from NBSP (maybe locale-dependent).
+	   * Remove ISO-8859 non-breaking space (NBSP, hex value 0xA0) from
+	   * the expression if it looks suspicious (locale issues for instance).
+	   *
+	   * Squeezing out all non-printable characters might also be useful.
+	   */
+  	  if ( (' '  != s[len - 1]) && (((char)0xA0) != s[len - 1]) &&
                ('\r' != s[len - 1]) && ('\n' != s[len - 1]) &&
                ('\t' != s[len - 1]) && ('\v' != s[len - 1]) &&
                ('\f' != s[len - 1]) )
-             break;
-
+	    break;	  
           else
             len --;
         }

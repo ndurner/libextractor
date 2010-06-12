@@ -1249,7 +1249,7 @@ process_requests (struct EXTRACTOR_PluginList *plugin,
 
 #ifndef WINDOWS
       if ( (-1 != (shmid = shm_open (fn, O_RDONLY, 0))) &&
-	   (((size_t)-1) != (size = lseek (shmid, 0, SEEK_END))) &&
+	   (SIZE_MAX != (size = lseek (shmid, 0, SEEK_END))) &&
 	   (NULL != (ptr = mmap (NULL, size, PROT_READ, MAP_SHARED, shmid, 0))) &&
 	   (ptr != (void*) -1) )
 #else

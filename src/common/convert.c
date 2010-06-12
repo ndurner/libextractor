@@ -53,7 +53,7 @@ EXTRACTOR_common_convert_to_utf8 (const char *input, size_t len, const char *cha
     return NULL;
   itmp = tmp;
   finSize = tmpSize;
-  if (iconv (cd, (char **) &input, &len, &itmp, &finSize) == (size_t) - 1)
+  if (iconv (cd, (char **) &input, &len, &itmp, &finSize) == SIZE_MAX)
     {
       iconv_close (cd);
       free (tmp);

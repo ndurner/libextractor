@@ -134,6 +134,8 @@ static char * xstrndup(const char * s, size_t n){
   char * d;
 
   d= malloc(n+1);
+  if (d == NULL)
+    return NULL;
   memcpy(d,s,n);
   d[n]='\0';
   return d;
@@ -162,8 +164,11 @@ check(const char * type,
 	{
 	  tmp = xstrndup(value,
 			 value_length);
-	  ADD (tmap[i].type, tmp);
-	  free (tmp);
+	  if (tmp != NULL)
+	    {
+	      ADD (tmap[i].type, tmp);
+	      free (tmp);
+	    }
 	  break;
 	}
       i++;

@@ -39,6 +39,8 @@ readline (const char *data, size_t size, size_t pos)
          (data[end] != (char) 0x0d) && (data[end] != (char) 0x0a))
     end++;
   res = malloc (end - pos + 1);
+  if (res == NULL)
+    return NULL;
   memcpy (res, &data[pos], end - pos);
   res[end - pos] = '\0';
 

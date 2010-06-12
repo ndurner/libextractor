@@ -71,16 +71,23 @@ parseZZZ (const char *data,
                     slen++;
                   slen = slen - pos;
                   value = malloc (slen + 1);
-                  value[slen] = '\0';
-                  memcpy (value, &data[pos], slen);
-		  if (0 != proc (proc_cls, 
-				 "dvi",
-				 tmap[i].type,
-				 EXTRACTOR_METAFORMAT_C_STRING,
-				 "text/plain",
-				 value,
-				 strlen (value) +1))
-		    return 1;
+		  if (value != NULL)
+		    {
+		      value[slen] = '\0';
+		      memcpy (value, &data[pos], slen);
+		      if (0 != proc (proc_cls, 
+				     "dvi",
+				     tmap[i].type,
+				     EXTRACTOR_METAFORMAT_C_STRING,
+				     "text/plain",
+				     value,
+				     strlen (value) +1))
+			{
+			  free (value);
+			  return 1;
+			}
+		      free (value);
+		    }
                   pos += slen + 1;
                 }
             }
@@ -119,8 +126,8 @@ EXTRACTOR_dvi_extract (const unsigned char *data,
 {
   unsigned int klen;
   char *comment;
-  unsigned int pos;
-  unsigned int opos;
+  uint32_t pos;
+  uint32_t opos;
   unsigned int len;
   unsigned int pageCount;
   char pages[16];
@@ -153,7 +160,7 @@ EXTRACTOR_dvi_extract (const unsigned char *data,
   pos = ntohl (getIntAt (&data[opos + 1]));
   while (1)
     {
-      if (pos == (unsigned int) -1)
+      if (pos == UINT32_MAX)
         break;
       if (pos + 45 > size)
         return 0;
@@ -162,13 +169,21 @@ EXTRACTOR_dvi_extract (const unsigned char *data,
       pageCount++;
       opos = pos;
       pos = ntohl (getIntAt (&data[opos + 41]));
-      if (pos == (unsigned int) -1)
+      if (pos == UINT32_MAX)
         break;
       if (pos >= opos)
         return 0;            /* invalid! */
     }
   /* ok, now we believe it's a dvi... */
   snprintf (pages, sizeof(pages), "%u", pageCount);
+  if (0 != proc (proc_cls, 
+		 "dvi",
+		 EXTRACTOR_METATYPE_PAGE_COUNT,
+		 EXTRACTOR_METAFORMAT_UTF8,
+		 "text/plain",
+		 pages,
+		 strlen (pages) +1))
+    return 1;
   if (0 != proc (proc_cls, 
 		 "dvi",
 		 EXTRACTOR_METATYPE_MIMETYPE,
@@ -178,28 +193,23 @@ EXTRACTOR_dvi_extract (const unsigned char *data,
 		 strlen ("application/x-dvi") +1))
     return 1;
   comment = malloc (klen + 1);
-  comment[klen] = '\0';
-  memcpy (comment, &data[15], klen);
-  if (0 != proc (proc_cls, 
-		 "dvi",
-		 EXTRACTOR_METATYPE_COMMENT,
-		 EXTRACTOR_METAFORMAT_UTF8,
-		 "text/plain",
-		 comment,
-		 strlen (comment) +1))
+  if (comment != NULL)
     {
+      comment[klen] = '\0';
+      memcpy (comment, &data[15], klen);
+      if (0 != proc (proc_cls, 
+		     "dvi",
+		     EXTRACTOR_METATYPE_COMMENT,
+		     EXTRACTOR_METAFORMAT_UTF8,
+		     "text/plain",
+		     comment,
+		     strlen (comment) +1))
+	{
+	  free (comment);
+	  return 1;
+	}
       free (comment);
-      return 1;
     }
-  free (comment);
-  if (0 != proc (proc_cls, 
-		 "dvi",
-		 EXTRACTOR_METATYPE_PAGE_COUNT,
-		 EXTRACTOR_METAFORMAT_UTF8,
-		 "text/plain",
-		 pages,
-		 strlen (pages) +1))
-    return 1;
   /* try to find PDF/ps special */
   pos = opos;
   while (pos < size - 100)

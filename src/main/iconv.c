@@ -24,7 +24,8 @@
  */
 static char * 
 iconv_helper(iconv_t cd,
-	     const char * in) {
+	     const char * in) 
+{
   size_t inSize;
   char * buf;
   char * ibuf;
@@ -50,10 +51,11 @@ iconv_helper(iconv_t cd,
 	    (char**) &in,
 	    &inSize,
 	    &ibuf,
-	    &outLeft) == (size_t)-1) {
-    /* conversion failed */
-    free(buf);
-    return strdup(i);
-  }
+	    &outLeft) == SIZE_MAX)
+    {
+      /* conversion failed */
+      free(buf);
+      return strdup(i);
+    }
   return buf;
 }
