@@ -129,7 +129,7 @@ svgMatcher (const char *data, size_t len, void *cls)
 
   while (i < len)
     {
-      if (!isprint (data[i]))
+      if (!isprint ( (unsigned char) data[i]))
         return 0;
       switch (state)
         {
@@ -137,7 +137,7 @@ svgMatcher (const char *data, size_t len, void *cls)
           if (i + 6 >= len)
             return 0;
           else if (memcmp (data + i, "<?xml", 5) == 0
-                   && isspace (*(data + i + 5)))
+                   && isspace ( (unsigned char) *(data + i + 5)))
             state = XMLCLOSE;
           break;
         case XMLCLOSE:
@@ -150,7 +150,7 @@ svgMatcher (const char *data, size_t len, void *cls)
           if (i + 5 >= len)
             return 0;
           else if (memcmp (data + i, "<svg", 4) == 0
-                   && isspace (*(data + i + 4)))
+                   && isspace ( (unsigned char) *(data + i + 4)))
             return 1;
           break;
         default:

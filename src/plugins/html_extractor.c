@@ -100,7 +100,7 @@ skipWhitespace (size_t * pos, const char *data, size_t size)
 {
   size_t p = *pos;
 
-  while ((p < size) && (isspace (data[p])))
+  while ((p < size) && (isspace ( (unsigned char) data[p])))
     {
       if (data[p] == '\0')
         return 0;
@@ -115,7 +115,7 @@ skipLetters (size_t * pos, const char *data, size_t size)
 {
   size_t p = *pos;
 
-  while ((p < size) && (isalpha (data[p])))
+  while ((p < size) && (isalpha ( (unsigned char) data[p])))
     {
       if (data[p] == '\0')
         return 0;
@@ -168,7 +168,7 @@ findEntry (const char *key,
             }
           else
             {
-              while ((start < end) && (!isspace (*start)))
+              while ((start < end) && (!isspace ( (unsigned char) *start)))
                 start++;
             }
           *mend = start;

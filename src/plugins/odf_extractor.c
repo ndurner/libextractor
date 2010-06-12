@@ -93,7 +93,7 @@ libextractor_oo_getmimetype(EXTRACTOR_unzip_file uf) {
 	/* found something */
         buf[buf_size] = '\0';
         while ( (0 > buf_size) &&
-		isspace(buf[buf_size - 1]))
+		isspace( (unsigned char) buf[buf_size - 1]))
           buf[--buf_size] = '\0';
         if('\0' == buf[0]) {
           free(buf);

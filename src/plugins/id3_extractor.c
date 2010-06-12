@@ -202,7 +202,7 @@ static const char *const genre_names[] = {
 static void
 trim (char *k)
 {
-  while ((strlen (k) > 0) && (isspace (k[strlen (k) - 1])))
+  while ((strlen (k) > 0) && (isspace ((unsigned char) k[strlen (k) - 1])))
     k[strlen (k) - 1] = '\0';
 }
 

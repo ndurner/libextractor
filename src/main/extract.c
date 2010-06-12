@@ -128,7 +128,7 @@ static void formatHelp(const char * general,
   OUTER:
     while (ml - p > 78 - slen) {
       for (j=p+78-slen;j>p;j--) {
-	if (isspace(trans[j])) {
+	if (isspace( (unsigned char) trans[j])) {
 	  scp = malloc(j-p+1);
 	  memcpy(scp,
 		 &trans[p],
@@ -372,7 +372,7 @@ str_splice(const char * title,
     if (! isalnum(temp[i]) )
       temp[i] = '_';
     else
-      temp[i] = tolower(temp[i]);
+      temp[i] = tolower( (unsigned int) temp[i]);
   }
   return temp;
 }

@@ -104,7 +104,7 @@ processControl (const char *data,
           colon++;
         }
       colon++;
-      while ((colon < size) && (isspace (data[colon])))
+      while ((colon < size) && (isspace ((unsigned char) data[colon])))
         colon++;
       eol = colon;
       while ((eol < size) &&

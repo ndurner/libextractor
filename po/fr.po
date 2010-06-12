@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor-0.5.20a\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2010-03-14 00:09+0100\n"
+"POT-Creation-Date: 2010-05-31 14:54+0200\n"
 "PO-Revision-Date: 2008-08-24 19:08+0100\n"
 "Last-Translator: Nicolas Provost <nprovost@quadriv.com>\n"
 "Language-Team: French <traduc@traduc.org>\n"
@@ -912,7 +912,7 @@ msgstr "%s: l'option `-W %s' est ambiguë\n"
 msgid "%s: option `-W %s' doesn't allow an argument\n"
 msgstr "%s: l'option `-W %s' ne prend pas d'argument\n"
 
-#: src/main/extractor.c:2158
+#: src/main/extractor.c:2153
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "Echec de l'initialisation du module %s !\n"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.5.22\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2010-03-14 00:09+0100\n"
+"POT-Creation-Date: 2010-05-31 14:54+0200\n"
 "PO-Revision-Date: 2009-05-12 17:45+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
@@ -888,7 +888,7 @@ msgstr "%s: flagga \"-W %s\" är tvetydig\n"
 msgid "%s: option `-W %s' doesn't allow an argument\n"
 msgstr "%s: flagga \"-W %s\" tillåter inte ett argument\n"
 
-#: src/main/extractor.c:2158
+#: src/main/extractor.c:2153
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "Initiering av insticksmekanism misslyckades: %s!\n"

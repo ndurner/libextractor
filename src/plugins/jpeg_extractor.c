@@ -118,7 +118,7 @@ process_COM (const unsigned char **data, const unsigned char *end)
       ch = NEXTC (data, end);
       if ((ch == '\r') || (ch == '\n'))
         comment[pos++] = '\n';
-      else if (isprint (ch))
+      else if (isprint ((unsigned char) ch))
         comment[pos++] = ch;
       length--;
     }
