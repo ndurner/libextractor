@@ -116,7 +116,8 @@ EXTRACTOR_man_extract (const char *buf,
                          &buf[pos],
                          xlen)) || ((pos != 0) && (buf[pos - 1] != '\n'))))
     {
-      if (!isgraph (buf[pos]) && !isspace ((unsigned char) buf[pos]))
+      if (!isgraph ((unsigned char) buf[pos]) && 
+	  !isspace ((unsigned char) buf[pos]))
         return 0;
       pos++;
     }
