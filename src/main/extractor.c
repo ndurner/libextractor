@@ -1398,14 +1398,15 @@ start_process (struct EXTRACTOR_PluginList *plugin)
   int p1[2];
   int p2[2];
   pid_t pid;
+  int status;
 
+  plugin->cpid = -1;
 #ifndef WINDOWS
   if (0 != pipe (p1))
 #else
     if (0 != _pipe (p1, 0, _O_BINARY))
 #endif
     {
-      plugin->cpid = -1;
       plugin->flags = EXTRACTOR_OPTION_DISABLED;
       return;
     }
@@ -1417,7 +1418,6 @@ start_process (struct EXTRACTOR_PluginList *plugin)
     {
       close (p1[0]);
       close (p1[1]);
-      plugin->cpid = -1;
       plugin->flags = EXTRACTOR_OPTION_DISABLED;
       return;
     }
@@ -1444,14 +1444,13 @@ start_process (struct EXTRACTOR_PluginList *plugin)
       close (p1[1]);
       close (p2[0]);
       close (p2[1]);
-      plugin->cpid = -1;
       plugin->flags = EXTRACTOR_OPTION_DISABLED;
       return;
     }
   if (pid == 0)
     {
-    close (p1[1]);
-    close (p2[0]);
+      close (p1[1]);
+      close (p2[0]);
       process_requests (plugin, p1[0], p2[1]);
       _exit (0);
     }
@@ -1460,7 +1459,16 @@ start_process (struct EXTRACTOR_PluginList *plugin)
   close (p2[1]);
   plugin->cpipe_in = fdopen (p1[1], "w");
   if (plugin->cpipe_in == NULL)
-    perror ("fdopen");
+    {
+      perror ("fdopen");
+      (void) kill (plugin->cpid, SIGKILL);
+      waitpid (plugin->cpid, &status, 0);
+      close (p1[0]);
+      close (p2[1]);
+      plugin->cpid = -1;
+      plugin->flags = EXTRACTOR_OPTION_DISABLED;
+      return;
+    }
   plugin->cpipe_out = p2[0];
 }
 

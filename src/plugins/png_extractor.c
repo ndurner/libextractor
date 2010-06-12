@@ -130,6 +130,7 @@ processiTXt (const char *data,
   int i;
   int compressed;
   char *buf;
+  char *lan;
   uLongf bufLen;
   int ret;
   int zret;
@@ -143,15 +144,21 @@ processiTXt (const char *data,
   language = &data[pos];
   ret = 0;
   if (stnlen (language, length - pos) > 0)
-    ADDF (EXTRACTOR_METATYPE_LANGUAGE,
-	  stndup (language, length - pos));
+    {
+      lan = stndup (language, length - pos);
+      ADDF (EXTRACTOR_METATYPE_LANGUAGE,
+	    lan);
+    }
   pos += stnlen (language, length - pos) + 1;
   if (pos + 1 >= length)
     return 0;
   translated = &data[pos];      /* already in utf-8! */
   if (stnlen (translated, length - pos) > 0)
-    ADDF (EXTRACTOR_METATYPE_KEYWORDS,
-	  stndup (translated, length - pos));
+    {
+      lan = stndup (translated, length - pos);
+      ADDF (EXTRACTOR_METATYPE_KEYWORDS,
+	    lan);
+    }
   pos += stnlen (translated, length - pos) + 1;
   if (pos >= length)
     return 0;
