@@ -1220,6 +1220,12 @@ process_requests (struct EXTRACTOR_PluginList *plugin,
 
   memset (&hdr, 0, sizeof (hdr));
   fin = fdopen (in, "r");
+  if (fin == NULL)
+    {
+      close (in);
+      close (out);
+      return;
+    }
   while (NULL != fgets (hfn, sizeof(hfn), fin))
     {
       if (strlen (hfn) <= 1)

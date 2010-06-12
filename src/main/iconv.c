@@ -37,7 +37,9 @@ iconv_helper(iconv_t cd,
   iconv(cd, NULL, NULL, NULL, NULL);
 
   inSize = strlen(in);
-  outSize = 4 * strlen(in) + 2;
+  if (inSize > 1024 * 1024)
+    return NULL; /* too big to be meta data */
+  outSize = 4 * inSize + 2;
   outLeft = outSize - 2; /* make sure we have 2 0-terminations! */
   buf = malloc(outSize);
   if (buf == NULL)

@@ -91,7 +91,7 @@ static void formatHelp(const char * general,
   int j;
   int ml;
   int p;
-  char * scp;
+  char scp[80];
   const char * trans;
 	
   printf(_("Usage: %s\n%s\n\n"),
@@ -129,7 +129,6 @@ static void formatHelp(const char * general,
     while (ml - p > 78 - slen) {
       for (j=p+78-slen;j>p;j--) {
 	if (isspace( (unsigned char) trans[j])) {
-	  scp = malloc(j-p+1);
 	  memcpy(scp,
 		 &trans[p],
 		 j-p);
@@ -138,14 +137,12 @@ static void formatHelp(const char * general,
 		 scp,
 		 BORDER+2,
 		 "");
-	  free(scp);
 	  p = j+1;
 	  slen = BORDER+2;
 	  goto OUTER;
 	}
       }
       /* could not find space to break line */
-      scp = malloc(78 - slen + 1);
       memcpy(scp,
 	     &trans[p],
 	     78 - slen);
@@ -154,7 +151,6 @@ static void formatHelp(const char * general,
 	     scp,
 	     BORDER+2,
 	     "");	
-      free(scp);
       slen = BORDER+2;
       p = p + 78 - slen;
     }
@@ -230,6 +226,7 @@ print_selected_keywords (void *cls,
   char * keyword;
   iconv_t cd;
   const char *stype;
+  const char *mt;
 
   if (print[type] != YES)
     return 0;
@@ -237,7 +234,8 @@ print_selected_keywords (void *cls,
     fprintf (stdout,
 	     _("Found by `%s' plugin:\n"),
 	     plugin_name);
-  stype = gettext(EXTRACTOR_metatype_to_string(type));
+  mt = EXTRACTOR_metatype_to_string(type);
+  stype = (mt == NULL) ? _("unknown") : gettext(mt);
   switch (format)
     {
     case EXTRACTOR_METAFORMAT_UNKNOWN:
@@ -312,9 +310,13 @@ print_selected_keywords_grep_friendly (void *cls,
 { 
   char * keyword;
   iconv_t cd;
+  const char *mt;
 
   if (print[type] != YES)
     return 0;
+  mt = EXTRACTOR_metatype_to_string(type);
+  if (mt == NULL)
+    mt = gettext_noop ("unknown");
   switch (format)
     {
     case EXTRACTOR_METAFORMAT_UNKNOWN:      
@@ -323,7 +325,7 @@ print_selected_keywords_grep_friendly (void *cls,
       if (verbose > 1)
 	fprintf (stdout,
 		 "%s: ",
-		 gettext(EXTRACTOR_metatype_to_string(type)));
+		 gettext(mt));
       cd = iconv_open(nl_langinfo(CODESET), "UTF-8");
       if (cd != (iconv_t) -1)
 	keyword = iconv_helper(cd,
@@ -333,7 +335,7 @@ print_selected_keywords_grep_friendly (void *cls,
       if (keyword != NULL)
 	{
 	  fprintf (stdout,
-		   "'%s' ",
+		   "`%s' ",
 		   keyword);
 	  free(keyword);
 	}
@@ -346,9 +348,9 @@ print_selected_keywords_grep_friendly (void *cls,
       if (verbose > 1)
 	fprintf (stdout,
 		 "%s ",
-		 gettext(EXTRACTOR_metatype_to_string(type)));      
+		 gettext(mt));
       fprintf (stdout,
-	       "'%s'",
+	       "`%s'",
 	       data);
       break;
     default:

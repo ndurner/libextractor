@@ -162,63 +162,76 @@ processContentDescription (const Content_Description * prop,
       + sizeof (Content_Description))
     return 0;
 
+  ret = 0;
   title = malloc (title_len + 1);
-  memcpy (title, &prop->data[0], title_len);
-  title[title_len] = '\0';
-  ret = proc (proc_cls,
-	      "real",
-	      EXTRACTOR_METATYPE_TITLE,
-	      EXTRACTOR_METAFORMAT_UTF8,
-	      "text/plain",
-	      title,
-	      strlen (title)+1);
-  free (title);
+  if (title != NULL)
+    {
+      memcpy (title, &prop->data[0], title_len);
+      title[title_len] = '\0';
+      ret = proc (proc_cls,
+		  "real",
+		  EXTRACTOR_METATYPE_TITLE,
+		  EXTRACTOR_METAFORMAT_UTF8,
+		  "text/plain",
+		  title,
+		  strlen (title)+1);
+      free (title);
+    }
   if (ret != 0)
     return ret;
 
   author = malloc (author_len + 1);
-  memcpy (author, &prop->data[title_len + sizeof (UINT16)], author_len);
-  author[author_len] = '\0';
-  ret = proc (proc_cls,
-	      "real",
-	      EXTRACTOR_METATYPE_AUTHOR_NAME,
-	      EXTRACTOR_METAFORMAT_UTF8,
-	      "text/plain",
-	      author,
-	      strlen (author)+1);
-  free (author);
+  if (author != NULL)
+    {
+      memcpy (author, &prop->data[title_len + sizeof (UINT16)], author_len);
+      author[author_len] = '\0';
+      ret = proc (proc_cls,
+		  "real",
+		  EXTRACTOR_METATYPE_AUTHOR_NAME,
+		  EXTRACTOR_METAFORMAT_UTF8,
+		  "text/plain",
+		  author,
+		  strlen (author)+1);
+      free (author);
+    }
   if (ret != 0)
     return ret;
 
   copyright = malloc (copyright_len + 1);
-  memcpy (copyright,
-          &prop->data[title_len + sizeof (UINT16) * 2 + author_len],
-          copyright_len);
-  copyright[copyright_len] = '\0';
-  ret = proc (proc_cls,
-	      "real",
-	      EXTRACTOR_METATYPE_COPYRIGHT,
-	      EXTRACTOR_METAFORMAT_UTF8,
-	      "text/plain",
-	      copyright,
-	      strlen (copyright)+1);
-  free (copyright);
+  if (copyright != NULL)
+    {
+      memcpy (copyright,
+	      &prop->data[title_len + sizeof (UINT16) * 2 + author_len],
+	      copyright_len);
+      copyright[copyright_len] = '\0';
+      ret = proc (proc_cls,
+		  "real",
+		  EXTRACTOR_METATYPE_COPYRIGHT,
+		  EXTRACTOR_METAFORMAT_UTF8,
+		  "text/plain",
+		  copyright,
+		  strlen (copyright)+1);
+      free (copyright);
+    }
   if (ret != 0)
     return ret;
 
   comment = malloc (comment_len + 1);
-  memcpy (comment,
-          &prop->data[title_len + sizeof (UINT16) * 3 + author_len +
-                      copyright_len], comment_len);
-  comment[comment_len] = '\0';
-  ret = proc (proc_cls,
-	      "real",
-	      EXTRACTOR_METATYPE_COMMENT,
-	      EXTRACTOR_METAFORMAT_UTF8,
-	      "text/plain",
-	      comment,
-	      strlen (comment)+1);
-  free (comment);
+  if (comment != NULL)
+    {
+      memcpy (comment,
+	      &prop->data[title_len + sizeof (UINT16) * 3 + author_len +
+			  copyright_len], comment_len);
+      comment[comment_len] = '\0';
+      ret = proc (proc_cls,
+		  "real",
+		  EXTRACTOR_METATYPE_COMMENT,
+		  EXTRACTOR_METAFORMAT_UTF8,
+		  "text/plain",
+		  comment,
+		  strlen (comment)+1);
+      free (comment);
+    }
   if (ret != 0)
     return ret;
   return 0;
@@ -263,6 +276,8 @@ stndup (const char *str, size_t n)
 {
   char *tmp;
   tmp = malloc (n + 1);
+  if (tmp == NULL)
+    return NULL;
   tmp[n] = '\0';
   memcpy (tmp, str, n);
   return tmp;
@@ -321,50 +336,62 @@ EXTRACTOR_real_extract (const unsigned char *data,
       if ( (tlen > 0) && (ret == 0) )
 	{
 	  x = stndup ((const char *) &data[17 + RAFF4_HDR_SIZE], tlen);
-	  ret = proc (proc_cls,
-		      "real",
-		      EXTRACTOR_METATYPE_MIMETYPE,
-		      EXTRACTOR_METAFORMAT_UTF8,
-		      "text/plain",
-		      x,
-		      strlen (x)+1);
-	  free (x);
+	  if (x != NULL)
+	    {
+	      ret = proc (proc_cls,
+			  "real",
+			  EXTRACTOR_METATYPE_MIMETYPE,
+			  EXTRACTOR_METAFORMAT_UTF8,
+			  "text/plain",
+			  x,
+			  strlen (x)+1);
+	      free (x);
+	    }
 	}
       if ( (alen > 0) && (ret == 0) )
 	{
 	  x = stndup ((const char *) &data[18 + RAFF4_HDR_SIZE + tlen], alen);
-	  ret = proc (proc_cls,
-		      "real",
-		      EXTRACTOR_METATYPE_MIMETYPE,
-		      EXTRACTOR_METAFORMAT_UTF8,
-		      "text/plain",
-		      x,
-		      strlen (x)+1);
-	  free (x);
+	  if (x != NULL)
+	    {
+	      ret = proc (proc_cls,
+			  "real",
+			  EXTRACTOR_METATYPE_MIMETYPE,
+			  EXTRACTOR_METAFORMAT_UTF8,
+			  "text/plain",
+			  x,
+			  strlen (x)+1);
+	      free (x);
+	    }
 	}
       if ( (clen > 0) && (ret == 0) )
 	{
 	  x = stndup ((const char *) &data[19 + RAFF4_HDR_SIZE + tlen + alen], clen);
-	  ret = proc (proc_cls,
-		      "real",
-		      EXTRACTOR_METATYPE_MIMETYPE,
-		      EXTRACTOR_METAFORMAT_UTF8,
-		      "text/plain",
-		      x,
-		      strlen (x)+1);
-	  free (x);
+	  if (x != NULL)
+	    {
+	      ret = proc (proc_cls,
+			  "real",
+			  EXTRACTOR_METATYPE_MIMETYPE,
+			  EXTRACTOR_METAFORMAT_UTF8,
+			  "text/plain",
+			  x,
+			  strlen (x)+1);
+	      free (x);
+	    }
 	}
       if ( (aplen > 0) && (ret == 0) )
 	{
 	  x = stndup ((const char *) &data[20 + RAFF4_HDR_SIZE + tlen + alen + clen], aplen);
-	  ret = proc (proc_cls,
-		      "real",
-		      EXTRACTOR_METATYPE_MIMETYPE,
-		      EXTRACTOR_METAFORMAT_UTF8,
-		      "text/plain",
-		      x,
-		      strlen (x)+1);
-	  free (x);
+	  if (x != NULL)
+	    {
+	      ret = proc (proc_cls,
+			  "real",
+			  EXTRACTOR_METATYPE_MIMETYPE,
+			  EXTRACTOR_METAFORMAT_UTF8,
+			  "text/plain",
+			  x,
+			  strlen (x)+1);
+	      free (x);
+	    }
 	}
       return ret;
     }

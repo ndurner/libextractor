@@ -51,6 +51,7 @@ EXTRACTOR_meta_data_print(void * handle,
   iconv_t cd;
   char * buf;
   int ret;
+  const char *mt;
 
   if (format != EXTRACTOR_METAFORMAT_UTF8)
     return 0;
@@ -61,10 +62,11 @@ EXTRACTOR_meta_data_print(void * handle,
   buf = iconv_helper(cd, data);
   if (buf != NULL)
     {
+      mt = EXTRACTOR_metatype_to_string (type);
       ret = fprintf(handle,
 		    "%s - %s\n",
-		    dgettext ("libextractor",
-			      EXTRACTOR_metatype_to_string (type)),
+		    (mt == NULL) ? _("unknown") : dgettext ("libextractor",
+							    mt),
 		    buf);
       free(buf);
     }
