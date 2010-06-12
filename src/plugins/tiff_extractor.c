@@ -30,6 +30,8 @@ addKeyword (EXTRACTOR_MetaDataProcessor proc,
             const char *keyword, 
 	    enum EXTRACTOR_MetaType type)
 {
+  if (keyword == NULL)
+    return 0;
   return proc (proc_cls,
 	       "tiff",
 	       type,
@@ -188,7 +190,10 @@ EXTRACTOR_tiff_extract (const char *data,
                   snprintf (tmp, 
 			    sizeof(tmp), "%ux%u",
 			    width, length);
-                  addKeyword (proc, proc_cls, strdup (tmp), EXTRACTOR_METATYPE_IMAGE_DIMENSIONS);
+                  addKeyword (proc, 
+			      proc_cls, 
+			      tmp, 
+			      EXTRACTOR_METATYPE_IMAGE_DIMENSIONS);
                 }
               break;
             case TAG_WIDTH:
@@ -203,7 +208,9 @@ EXTRACTOR_tiff_extract (const char *data,
 			    sizeof(tmp), 
 			    "%ux%u",
 			    width, length);
-                  addKeyword (proc, proc_cls, strdup (tmp), EXTRACTOR_METATYPE_IMAGE_DIMENSIONS);
+                  addKeyword (proc, proc_cls, 
+			      tmp, 
+			      EXTRACTOR_METATYPE_IMAGE_DIMENSIONS);
                 }
               break;
             case TAG_SOFTWARE:

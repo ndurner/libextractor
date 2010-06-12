@@ -202,6 +202,8 @@ static const char *const genre_names[] = {
 static void
 trim (char *k)
 {
+  if (k == NULL)
+    return;
   while ((strlen (k) > 0) && (isspace ((unsigned char) k[strlen (k) - 1])))
     k[strlen (k) - 1] = '\0';
 }
@@ -251,7 +253,7 @@ get_id3 (const char *data, size_t size, id3tag * id3)
 }
 
 
-#define ADD(s,t) do { if (0 != (ret = proc (proc_cls, "id3", t, EXTRACTOR_METAFORMAT_UTF8, "text/plain", s, strlen(s)+1))) goto FINISH; } while (0)
+#define ADD(s,t) do { if ( (s != NULL) && (strlen(s) > 0) && (0 != (ret = proc (proc_cls, "id3", t, EXTRACTOR_METAFORMAT_UTF8, "text/plain", s, strlen(s)+1)))) goto FINISH; } while (0)
 
 
 const char *
@@ -275,18 +277,12 @@ EXTRACTOR_id3_extract (const char *data,
   ret = 0;
   if (OK != get_id3 (data, size, &info))
     return 0;
-  if (strlen (info.title) > 0)
-    ADD (info.title, EXTRACTOR_METATYPE_TITLE);
-  if (strlen (info.artist) > 0)
-    ADD (info.artist, EXTRACTOR_METATYPE_ARTIST);
-  if (strlen (info.album) > 0)
-    ADD (info.album, EXTRACTOR_METATYPE_ALBUM);
-  if (strlen (info.year) > 0)
-    ADD (info.year, EXTRACTOR_METATYPE_PUBLICATION_YEAR);
-  if (strlen (info.genre) > 0)
-    ADD (info.genre, EXTRACTOR_METATYPE_GENRE);
-  if (strlen (info.comment) > 0)
-    ADD (info.comment, EXTRACTOR_METATYPE_COMMENT);
+  ADD (info.title, EXTRACTOR_METATYPE_TITLE);
+  ADD (info.artist, EXTRACTOR_METATYPE_ARTIST);
+  ADD (info.album, EXTRACTOR_METATYPE_ALBUM);
+  ADD (info.year, EXTRACTOR_METATYPE_PUBLICATION_YEAR);
+  ADD (info.genre, EXTRACTOR_METATYPE_GENRE);
+  ADD (info.comment, EXTRACTOR_METATYPE_COMMENT);
   if (info.track_number != 0)
     {
       snprintf(track, 
@@ -294,11 +290,11 @@ EXTRACTOR_id3_extract (const char *data,
       ADD (track, EXTRACTOR_METATYPE_TRACK_NUMBER);
     }
 FINISH:
-  free (info.title);
-  free (info.year);
-  free (info.album);
-  free (info.artist);
-  free (info.comment);
+  if (info.title != NULL) free (info.title);
+  if (info.year != NULL) free (info.year);
+  if (info.album != NULL) free (info.album);
+  if (info.artist != NULL) free (info.artist);
+  if (info.comment != NULL) free (info.comment);
   return ret; 
 }
 

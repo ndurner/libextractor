@@ -27,6 +27,8 @@ stndup (const char *str, size_t n)
 {
   char *tmp;
   tmp = malloc (n + 1);
+  if (tmp == NULL)
+    return NULL;
   tmp[n] = '\0';
   memcpy (tmp, str, n);
   return tmp;
@@ -53,6 +55,8 @@ addKeyword (enum EXTRACTOR_MetaType type,
       keyword[strlen (keyword) - 1] = '\0';
       tmp = strdup (&keyword[1]);
       free (keyword);
+      if (tmp == NULL)
+	return 0;
       keyword = tmp;
     }
   if (strlen (keyword) == 0)

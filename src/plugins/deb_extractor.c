@@ -40,6 +40,8 @@ stndup (const char *str, size_t n)
 {
   char *tmp;
   tmp = malloc (n + 1);
+  if (tmp == NULL)
+    return NULL;
   tmp[n] = '\0';
   memcpy (tmp, str, n);
   return tmp;
@@ -114,12 +116,19 @@ processControl (const char *data,
       if ((eol == colon) || (eol > size))
         return 0;
       key = stndup (&data[pos], colon - pos);
+      if (key == NULL)
+	return 0;
       i = 0;
       while (tmap[i].text != NULL)
         {
           if (0 == strcmp (key, tmap[i].text))
             {
               val = stndup (&data[colon], eol - colon);
+	      if (val == NULL)
+		{
+		  free (key);
+		  return 0;
+		}
 	      if (0 != proc (proc_cls, 
 			     "deb",
 			     tmap[i].type,

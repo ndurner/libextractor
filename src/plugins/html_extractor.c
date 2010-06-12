@@ -339,26 +339,31 @@ EXTRACTOR_html_extract (const char *data,
 	   (ret == 0) )
         {
 	  if (charset == NULL)
-	    ret = proc (proc_cls,
-			"html",
-			tagmap[i].type,
-			EXTRACTOR_METAFORMAT_C_STRING,
-			"text/plain",
-			tmp,
-			strlen (tmp) + 1);
+	    {
+	      ret = proc (proc_cls,
+			  "html",
+			  tagmap[i].type,
+			  EXTRACTOR_METAFORMAT_C_STRING,
+			  "text/plain",
+			  tmp,
+			  strlen (tmp) + 1);
+	    }
 	  else
 	    {
 	      xtmp = EXTRACTOR_common_convert_to_utf8 (tmp,
 						       strlen (tmp),
 						       charset);
-	      ret = proc (proc_cls,
-			  "html",
-			  tagmap[i].type,
-			  EXTRACTOR_METAFORMAT_UTF8,
-			  "text/plain",
-			  xtmp,
-			  strlen (xtmp) + 1);
-	      free (xtmp);
+	      if (xtmp != NULL)
+		{
+		  ret = proc (proc_cls,
+			      "html",
+			      tagmap[i].type,
+			      EXTRACTOR_METAFORMAT_UTF8,
+			      "text/plain",
+			      xtmp,
+			      strlen (xtmp) + 1);
+		  free (xtmp);
+		}
 	    }
         }
       if (tmp != NULL)
@@ -393,19 +398,23 @@ EXTRACTOR_html_extract (const char *data,
 	      xtmp = EXTRACTOR_common_convert_to_utf8 (t->dataStart,
 						       t->dataEnd - t->dataStart,
 						       charset);
-	      ret = proc (proc_cls,
-			  "html",
-			  EXTRACTOR_METATYPE_TITLE,
-			  EXTRACTOR_METAFORMAT_UTF8,
-			  "text/plain",
-			  xtmp,
-			  strlen (xtmp) + 1);
-	      free (xtmp);
+	      if (xtmp != NULL)
+		{
+		  ret = proc (proc_cls,
+			      "html",
+			      EXTRACTOR_METATYPE_TITLE,
+			      EXTRACTOR_METAFORMAT_UTF8,
+			      "text/plain",
+			      xtmp,
+			      strlen (xtmp) + 1);
+		  free (xtmp);
+		}
 	    }
 	}
       tags = t->next;
       free (t);
     }
-  free (charset);
+  if (charset != NULL)
+    free (charset);
   return ret;
 }

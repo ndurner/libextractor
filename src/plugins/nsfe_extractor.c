@@ -84,6 +84,8 @@ nsfestring (const char *data, size_t size)
 	  (data[length] != '\0') )
     length++;
   s = malloc (length + 1);
+  if (s == NULL)
+    return NULL;
   strncpy (s, data, length);
   s[strlen (data)] = '\0';
   return s;
@@ -157,8 +159,11 @@ libextractor_nsfe_tlbl_extract(const char *data,
   for (left = size; left > 0; left -= length)
     {
       title = nsfestring (&data[size - left], left);
-      length = strlen (title) + 1;
-      ADDF (title, EXTRACTOR_METATYPE_TITLE);
+      if (title != NULL)
+	{
+	  length = strlen (title) + 1;
+	  ADDF (title, EXTRACTOR_METATYPE_TITLE);
+	}
     }
   return 0;
 }
@@ -177,25 +182,34 @@ libextractor_nsfe_auth_extract (const char *data, size_t size,
   if (left < 1)
     return 0;
   album = nsfestring (&data[size - left], left);
-  left -= (strlen (album) + 1);
-  ADDF (album, EXTRACTOR_METATYPE_ALBUM);
-  if (left < 1)    
-    return 0;    
+  if (album != NULL)
+    {
+      left -= (strlen (album) + 1);
+      ADDF (album, EXTRACTOR_METATYPE_ALBUM);
+      if (left < 1)    
+	return 0;    
+    }
 
   artist = nsfestring (&data[size - left], left);
-  left -= (strlen (artist) + 1);
-  ADDF (artist, EXTRACTOR_METATYPE_ARTIST);
-  if (left < 1)    
-    return 0;
+  if (artist != NULL)
+    {
+      left -= (strlen (artist) + 1);
+      ADDF (artist, EXTRACTOR_METATYPE_ARTIST);
+      if (left < 1)    
+	return 0;
+    }
 
   copyright = nsfestring (&data[size - left], left);
-  left -= (strlen (copyright) + 1);
-  ADDF (copyright, EXTRACTOR_METATYPE_COPYRIGHT);
-  if (left < 1)
-    return 0;
-
+  if (copyright != NULL)
+    {
+      left -= (strlen (copyright) + 1);
+      ADDF (copyright, EXTRACTOR_METATYPE_COPYRIGHT);
+      if (left < 1)
+	return 0;
+    }
   ripper = nsfestring (&data[size - left], left);
-  ADDF (ripper, EXTRACTOR_METATYPE_RIPPER);
+  if (ripper != NULL)
+    ADDF (ripper, EXTRACTOR_METATYPE_RIPPER);
   return 0;
 }
 
