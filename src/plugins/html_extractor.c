@@ -205,6 +205,8 @@ findInTags (TagInfo * t,
               if (pstart != NULL)
                 {
                   char *ret = malloc (pend - pstart + 1);
+		  if (ret == NULL)
+		    return NULL;
                   memcpy (ret, pstart, pend - pstart);
                   ret[pend - pstart] = '\0';
                   return ret;
@@ -290,6 +292,8 @@ EXTRACTOR_html_extract (const char *data,
                                  tag.tagStart, tag.tagEnd - tag.tagStart)))
             {
               t = malloc (sizeof (TagInfo));
+	      if (t == NULL)
+		return 0;
               *t = tag;
               t->next = tags;
               tags = t;
@@ -357,7 +361,8 @@ EXTRACTOR_html_extract (const char *data,
 	      free (xtmp);
 	    }
         }
-      free (tmp);
+      if (tmp != NULL)
+	free (tmp);
       i++;
     }
   while (tags != NULL) 
@@ -369,16 +374,19 @@ EXTRACTOR_html_extract (const char *data,
 	  if (charset == NULL)
 	    {
 	      xtmp = malloc (t->dataEnd - t->dataStart + 1);
-	      memcpy (xtmp, t->dataStart, t->dataEnd - t->dataStart);
-	      xtmp[t->dataEnd - t->dataStart] = '\0';
-	      ret = proc (proc_cls,
-			  "html",
-			  EXTRACTOR_METATYPE_TITLE,
-			  EXTRACTOR_METAFORMAT_C_STRING,
-			  "text/plain",
-			  xtmp,
-			  strlen (xtmp) + 1);
-	      free (xtmp);
+	      if (xtmp != NULL)
+		{
+		  memcpy (xtmp, t->dataStart, t->dataEnd - t->dataStart);
+		  xtmp[t->dataEnd - t->dataStart] = '\0';
+		  ret = proc (proc_cls,
+			      "html",
+			      EXTRACTOR_METATYPE_TITLE,
+			      EXTRACTOR_METAFORMAT_C_STRING,
+			      "text/plain",
+			      xtmp,
+			      strlen (xtmp) + 1);
+		  free (xtmp);
+		}
 	    }
 	  else
 	    {

@@ -154,7 +154,8 @@ EXTRACTOR_ps_extract (const char *data,
   while ( (line == NULL) ||
 	  (0 != strncmp ("%%EndComments", line, strlen ("%%EndComments"))) )
     {
-      free (line);
+      if (line != NULL)
+	free (line);
       line = readline (data, size, pos);
       if (line == NULL)
         break;
@@ -186,7 +187,8 @@ EXTRACTOR_ps_extract (const char *data,
 	break; /* overflow */
       pos += strlen (line) + 1; /* skip newline, too; guarantee progress! */      
     }
-  free (line);
+  if (line != NULL)
+    free (line);
   return ret;
 }
 

@@ -366,8 +366,9 @@ EXTRACTOR_id3v24_extract (const unsigned char *data,
 		       (data[pos+off] != '\0') )
 		    return 0; /* malformed */
 		  off++;
-		  if (0 == strcasecmp ("-->",
-				       mime))
+		  if ( (mime != NULL) &&
+		       (0 == strcasecmp ("-->",
+					 mime)) )
 		    {
 		      /* not supported */
 		    }
@@ -381,11 +382,13 @@ EXTRACTOR_id3v24_extract (const unsigned char *data,
 				     (const char*) &data[pos + off],
 				     csize + 6 - off))			
 			{
-			  free (mime);
+			  if (mime != NULL)
+			    free (mime);
 			  return 1;
 			}
 		    }
-		  free (mime);
+		  if (mime != NULL)
+		    free (mime);
 		  word = NULL;
 		  break;
 		default:
@@ -405,7 +408,8 @@ EXTRACTOR_id3v24_extract (const unsigned char *data,
 		      return 1;
 		    }
                 }
-	      free (word);
+	      if (word != NULL)
+		free (word);
               break;
             }
           i++;

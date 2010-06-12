@@ -47,6 +47,8 @@ EXTRACTOR_common_convert_to_utf8 (const char *input, size_t len, const char *cha
     return strdup (i);
   tmpSize = 3 * len + 4;
   tmp = malloc (tmpSize);
+  if (tmp == NULL)
+    return NULL;
   itmp = tmp;
   finSize = tmpSize;
   if (iconv (cd, (char **) &input, &len, &itmp, &finSize) == (size_t) - 1)
@@ -56,6 +58,11 @@ EXTRACTOR_common_convert_to_utf8 (const char *input, size_t len, const char *cha
       return strdup (i);
     }
   ret = malloc (tmpSize - finSize + 1);
+  if (ret == NULL)
+    {
+      free (tmp);
+      return NULL;
+    }
   memcpy (ret, tmp, tmpSize - finSize);
   ret[tmpSize - finSize] = '\0';
   free (tmp);

@@ -40,6 +40,8 @@ iconv_helper(iconv_t cd,
   outSize = 4 * strlen(in) + 2;
   outLeft = outSize - 2; /* make sure we have 2 0-terminations! */
   buf = malloc(outSize);
+  if (buf == NULL)
+    return NULL;
   ibuf = buf;
   memset(buf, 0, outSize);
   if (iconv(cd,

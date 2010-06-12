@@ -253,11 +253,14 @@ print_selected_keywords (void *cls,
 			       data);
       else
 	keyword = strdup(data);
-      fprintf (stdout,
-	       "%s - %s\n",
-	       stype,
-	       keyword);
-      free(keyword);
+      if (keyword != NULL)
+	{
+	  fprintf (stdout,
+		   "%s - %s\n",
+		   stype,
+		   keyword);
+	  free(keyword);
+	}
       if (cd != (iconv_t) -1)
 	iconv_close(cd);
       break;
@@ -327,10 +330,13 @@ print_selected_keywords_grep_friendly (void *cls,
 			       data);
       else
 	keyword = strdup(data);
-      fprintf (stdout,
-	       "'%s' ",
-	       keyword);
-      free(keyword);
+      if (keyword != NULL)
+	{
+	  fprintf (stdout,
+		   "'%s' ",
+		   keyword);
+	  free(keyword);
+	}
       if (cd != (iconv_t) -1)
 	iconv_close(cd);
       break;

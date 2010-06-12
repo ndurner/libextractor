@@ -175,6 +175,7 @@ get_path_from_proc_exe() {
   char line[1024];
   char dir[1024];
   char * lnk;
+  char * ret;
   char * lestr;
   size_t size;
   FILE * f;
@@ -222,11 +223,14 @@ get_path_from_proc_exe() {
   }
   lnk[size] = '\0';
   lnk = cut_bin(lnk);
-  lnk = realloc(lnk, strlen(lnk) + 5);
-  if (lnk == NULL)
-    return NULL;
-  strcat(lnk, "lib/"); /* guess "lib/" as the library dir */
-  return lnk;
+  ret = realloc(lnk, strlen(lnk) + 5);
+  if (ret == NULL)
+    {
+      free (lnk);
+      return NULL;
+    }
+  strcat(ret, "lib/"); /* guess "lib/" as the library dir */
+  return ret;
 }
 #endif
 
@@ -234,11 +238,15 @@ get_path_from_proc_exe() {
 /**
  * Try to determine path with win32-specific function
  */
-static char * get_path_from_module_filename() {
+static char * 
+get_path_from_module_filename() {
   char * path;
+  char * ret;
   char * idx;
 
   path = malloc(4103); /* 4096+nil+6 for "/lib/" catenation */
+  if (path == NULL)
+    return NULL;
   GetModuleFileName(NULL, path, 4096);
   idx = path + strlen(path);
   while ( (idx > path) &&
@@ -247,9 +255,14 @@ static char * get_path_from_module_filename() {
     idx--;
   *idx = '\0';
   path = cut_bin(path);
-  path = realloc(path, strlen(path) + 6);
-  strcat(path, "/lib/"); /* guess "lib/" as the library dir */
-  return path;
+  ret = realloc(path, strlen(path) + 6);
+  if (ret == NULL)
+    {
+      free (path);
+      return NULL;
+    }
+  strcat(ret, "/lib/"); /* guess "lib/" as the library dir */
+  return ret;
 }
 #endif
 
@@ -293,6 +306,7 @@ get_path_from_PATH() {
   char * pos;
   char * end;
   char * buf;
+  char * ret;
   const char * p;
   size_t size;
 
@@ -321,11 +335,14 @@ get_path_from_PATH() {
       if (pos == NULL)
 	return NULL;
       pos = cut_bin(pos);
-      pos = realloc(pos, strlen(pos) + 5);
-      if (pos == NULL)
-	return NULL;
-      strcat(pos, "lib/");
-      return pos;
+      ret = realloc(pos, strlen(pos) + 5);
+      if (ret == NULL)
+	{
+	  free (pos);
+	  return NULL;
+	}
+      strcat(ret, "lib/");
+      return ret;
     }
     pos = end + 1;
   }
@@ -337,11 +354,14 @@ get_path_from_PATH() {
     if (pos == NULL)
       return NULL;
     pos = cut_bin(pos);
-    pos = realloc(pos, strlen(pos) + 5);
-    if (pos == NULL)
-      return NULL;
-    strcat(pos, "lib/");
-    return pos;
+    ret = realloc(pos, strlen(pos) + 5);
+    if (ret == NULL)
+      {
+	free (pos);
+	return NULL;
+      }
+    strcat(ret, "lib/");
+    return ret;
   }
   free(buf);
   free(path);
@@ -1157,6 +1177,12 @@ process_requests (struct EXTRACTOR_PluginList *plugin,
   HANDLE map;
 #endif
 
+  if (plugin == NULL)
+    {
+      close (in);
+      close (out);
+      return;
+    }
   if (0 != plugin_load (plugin))
     {
       close (in);
@@ -1269,11 +1295,9 @@ write_plugin_data (int fd, const struct EXTRACTOR_PluginList *plugin)
   i = strlen (plugin->libname) + 1;
   write (fd, &i, sizeof (size_t));
   write (fd, plugin->libname, i);
-
   i = strlen (plugin->short_libname) + 1;
   write (fd, &i, sizeof (size_t));
   write (fd, plugin->short_libname, i);
-
   if (plugin->plugin_options != NULL)
     {
       i = strlen (plugin->plugin_options) + 1;
@@ -1281,11 +1305,11 @@ write_plugin_data (int fd, const struct EXTRACTOR_PluginList *plugin)
     }
   else
     {
-      i = 1;
-      str = "";
+      i = 0;
     }
   write (fd, &i, sizeof (size_t));
-  write (fd, str, i);
+  if (i > 0)
+    write (fd, str, i);
 }
 
 static struct EXTRACTOR_PluginList *
@@ -1295,34 +1319,62 @@ read_plugin_data (int fd)
   size_t i;
 
   ret = malloc (sizeof (struct EXTRACTOR_PluginList));
-
+  if (ret == NULL)
+    return NULL;
   read (fd, &i, sizeof (size_t));
   ret->libname = malloc (i);
+  if (ret->libname == NULL)
+    {
+      free (ret);
+      return NULL;
+    }
   read (fd, ret->libname, i);
 
   read (fd, &i, sizeof (size_t));
   ret->short_libname = malloc (i);
+  if (ret->short_libname == NULL)
+    {
+      free (ret->libname);
+      free (ret);
+      return NULL;
+    }
   read (fd, ret->short_libname, i);
 
   read (fd, &i, sizeof (size_t));
-  ret->plugin_options = malloc (i);
-  read (fd, ret->plugin_options, i);
-
+  if (i == 0)
+    {
+      ret->plugin_options = NULL;
+    }
+  else
+    {
+      ret->plugin_options = malloc (i);
+      if (ret->plugin_options == NULL)
+	{
+	  free (ret->short_libname);
+	  free (ret->libname);
+	  free (ret);
+	  return NULL;
+	}
+      read (fd, ret->plugin_options, i);
+    }
   return ret;
 }
 
 
 void CALLBACK 
-RundllEntryPoint(HWND hwnd, HINSTANCE hinst, LPSTR lpszCmdLine, int nCmdShow)
+RundllEntryPoint(HWND hwnd, 
+		 HINSTANCE hinst, 
+		 LPSTR lpszCmdLine, 
+		 int nCmdShow)
 {
-  int in, out;
+  int in;
+  int out;
 
   sscanf(lpszCmdLine, "%u %u", &in, &out);
-
   setmode (in, _O_BINARY);
   setmode (out, _O_BINARY);
-
-  process_requests (read_plugin_data (in), in, out);
+  process_requests (read_plugin_data (in),
+		    in, out);
 }
 #endif
 
@@ -1805,6 +1857,7 @@ decompress_and_extract (struct EXTRACTOR_PluginList *plugins,
 			EXTRACTOR_MetaDataProcessor proc,
 			void *proc_cls) {
   unsigned char * buf;
+  unsigned char * rbuf;
   size_t dsize;
 #if HAVE_ZLIB
   z_stream strm;
@@ -1936,7 +1989,14 @@ decompress_and_extract (struct EXTRACTOR_PluginList *plugins,
 		    dsize *= 2;
 		    if (dsize > MAX_DECOMPRESS)
 		      dsize = MAX_DECOMPRESS;
-		    buf = realloc(buf, dsize);
+		    rbuf = realloc(buf, dsize);
+		    if (rbuf == NULL)
+		      {
+			free (buf);
+			buf = NULL;
+			break;
+		      }
+		    buf = rbuf;
 		    strm.next_out = (Bytef*) &buf[pos];
 		    strm.avail_out = dsize - pos;
 		  }
@@ -1950,10 +2010,12 @@ decompress_and_extract (struct EXTRACTOR_PluginList *plugins,
 			(ret != Z_STREAM_END) );
 	    dsize = pos + strm.total_out;
 	    inflateEnd(&strm);
-	    if (dsize == 0) {
-	      free(buf);
-	      buf = NULL;
-	    }
+	    if ( (dsize == 0) &&
+		 (buf != NULL) )
+	      {
+		free(buf);
+		buf = NULL;
+	      }
 	  }
       }
     }
@@ -2005,7 +2067,14 @@ decompress_and_extract (struct EXTRACTOR_PluginList *plugins,
 		    dsize *= 2;
 		    if (dsize > MAX_DECOMPRESS)
 		      dsize = MAX_DECOMPRESS;
-		    buf = realloc(buf, dsize);
+		    rbuf = realloc(buf, dsize);
+		    if (rbuf == NULL)
+		      {
+			free (buf);
+			buf = NULL;
+			break;
+		      }
+		    buf = rbuf;
 		    bstrm.next_out = (char*) &buf[bpos];
 		    bstrm.avail_out = dsize - bpos;
 		  } 
@@ -2019,7 +2088,8 @@ decompress_and_extract (struct EXTRACTOR_PluginList *plugins,
 			(bret != BZ_STREAM_END) );
 	      dsize = bpos + bstrm.total_out_lo32;
 	      BZ2_bzDecompressEnd(&bstrm);
-	      if (dsize == 0) 
+	      if ( (dsize == 0) &&
+		   (buf != NULL) )
 		{
 		  free(buf);
 		  buf = NULL;

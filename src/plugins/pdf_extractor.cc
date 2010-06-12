@@ -56,6 +56,8 @@ printInfoString(Dict *infoDict,
   int err = 0;
   char * result;
       
+  if (ckey == NULL)
+    return 0;
   result = NULL;
   if (infoDict->lookup(ckey, &obj)->isString()) {
     s1 = obj.getString();
@@ -63,7 +65,8 @@ printInfoString(Dict *infoDict,
     if ((((unsigned char)s[0]) & 0xff) == 0xfe &&
 	(((unsigned char)s[1]) & 0xff) == 0xff) {
       result = EXTRACTOR_common_convert_to_utf8(&s[2], s1->getLength() - 2, "UTF-16BE");
-      ADD (result, type);
+      if (result != NULL)
+	ADD (result, type);
     } else {
       size_t len = strlen(s);
       
@@ -95,13 +98,15 @@ printInfoString(Dict *infoDict,
       if (0 < len) {
 	result = EXTRACTOR_common_convert_to_utf8(s, len,
 						  "ISO-8859-1");
-	ADD (result, type);
+	if (result != NULL)
+	  ADD (result, type);
       }
     }
   }
  EXIT:
   obj.free();
-  free (result);
+  if (result != NULL)
+    free (result);
   free (ckey);
   return err;
 }
@@ -123,6 +128,8 @@ printInfoDate(Dict *infoDict,
   err = 0;
   result = NULL;
   gkey = strdup (key);
+  if (gkey == NULL)
+    return 0;
   if (infoDict->lookup(gkey, &obj)->isString()) {
     s1 = obj.getString();
     s = s1->getCString();
@@ -132,7 +139,8 @@ printInfoDate(Dict *infoDict,
       /* isUnicode */
       
       result = EXTRACTOR_common_convert_to_utf8((const char*)&s[2], s1->getLength() - 2, "UTF-16BE");
-      ADD (result, type);
+      if (result != NULL)
+	ADD (result, type);
     } else {
       if (s[0] == 'D' && s[1] == ':') 
 	s += 2;
@@ -143,7 +151,8 @@ printInfoDate(Dict *infoDict,
   }
  EXIT:
   obj.free();
-  free (result);
+  if (result != NULL)
+    free (result);
   free (gkey);
   return err;
 }

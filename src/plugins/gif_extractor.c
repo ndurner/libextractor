@@ -153,7 +153,6 @@ parseComment (const unsigned char *data,
 {
   size_t length = 0;
   size_t curr = pos;
-  char *comment;
   int ret;
 
   while ((data[curr] != 0) && (curr < size))
@@ -161,26 +160,32 @@ parseComment (const unsigned char *data,
       length += data[curr];
       curr += data[curr] + 1;
     }
-  comment = malloc (length + 1);
-  curr = pos;
-  length = 0;
-  while ((data[curr] != 0) && (curr < size))
+  if (length < 65536)
     {
-      length += data[curr];
-      if (length >= size)
-        break;
-      memcpy (&comment[length - data[curr]], &data[curr] + 1, data[curr]);
-      comment[length] = '\0';
-      curr += data[curr] + 1;
+      char comment[length+1];
+      curr = pos;
+      length = 0;
+      while ((data[curr] != 0) && (curr < size))
+	{
+	  length += data[curr];
+	  if (length >= size)
+	    break;
+	  memcpy (&comment[length - data[curr]], &data[curr] + 1, data[curr]);
+	  comment[length] = '\0';
+	  curr += data[curr] + 1;
+	}
+      ret = proc (proc_cls, 
+		  "gif",
+		  EXTRACTOR_METATYPE_COMMENT,
+		  EXTRACTOR_METAFORMAT_UTF8,
+		  "text/plain",
+		  comment,
+		  length+1);
     }
-  ret = proc (proc_cls, 
-	      "gif",
-	      EXTRACTOR_METATYPE_COMMENT,
-	      EXTRACTOR_METAFORMAT_UTF8,
-	      "text/plain",
-	      comment,
-	      length+1);
-  free (comment);
+  else
+    {
+      ret = 0;
+    }
   return ret;
 }
 

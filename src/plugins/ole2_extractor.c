@@ -430,6 +430,8 @@ history_extract(GsfInput * stream,
   if (gsf_input_remaining(stream) < lcbSttbSavedBy)
     return 0;
   lbuffer = malloc(lcbSttbSavedBy);
+  if (lbuffer == NULL)
+    return 0;
   // read all the revision history
   gsf_input_read(stream, lcbSttbSavedBy, lbuffer);
   // there are n strings, so n/2 revisions (author & file)
@@ -444,29 +446,41 @@ history_extract(GsfInput * stream,
 	 (where + 2 * length + 2 <= where) )
       break;
     author = EXTRACTOR_common_convert_to_utf8((const char*) &lbuffer[where],
-			   length * 2,
-			   "UTF-16BE");
+					      length * 2,
+					      "UTF-16BE");
     where += length * 2 + 1;
     length = lbuffer[where++];
     if ( (where + 2 * length >= lcbSttbSavedBy) ||
 	 (where + 2 * length + 1 <= where) ) {
-      free(author);
+      if (author != NULL)
+	free(author);
       break;
     }
     filename = EXTRACTOR_common_convert_to_utf8((const char*) &lbuffer[where],
-			     length * 2,
-			     "UTF-16BE");
+						length * 2,
+						"UTF-16BE");
     where += length * 2 + 1;
-    rbuf = malloc(strlen(author) + strlen(filename) + 512);
-    snprintf(rbuf, 512 + strlen(author) + strlen(filename),
-	     _("Revision #%u: Author '%s' worked on '%s'"),
-	     i, author, filename);
-    free(author);
-    free(filename);
-    ret = addKeyword(proc, proc_cls,
-		     rbuf,
-		     EXTRACTOR_METATYPE_REVISION_HISTORY);    
-    free(rbuf);
+    if ( (author != NULL) &&
+	 (filename != NULL) )
+      {
+	rbuf = malloc(strlen(author) + strlen(filename) + 512);
+	if (rbuf != NULL)
+	  {
+	    snprintf(rbuf, 
+		     512 + strlen(author) + strlen(filename),
+		     _("Revision #%u: Author '%s' worked on '%s'"),
+		     i, author, filename);
+	    ret = addKeyword(proc, proc_cls,
+			     rbuf,
+			     EXTRACTOR_METATYPE_REVISION_HISTORY);    
+	    if (rbuf != NULL)
+	      free(rbuf);
+	  }
+      }
+    if (author != NULL)
+      free(author);
+    if (filename != NULL)
+      free(filename);
     if (0 != ret)
       break;
   }

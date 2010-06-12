@@ -59,12 +59,19 @@ EXTRACTOR_meta_data_print(void * handle,
   if (cd == (iconv_t) -1)
     return 1;
   buf = iconv_helper(cd, data);
-  ret = fprintf(handle,
-		"%s - %s\n",
-		dgettext ("libextractor",
-			  EXTRACTOR_metatype_to_string (type)),
-		buf);
-  free(buf);
+  if (buf != NULL)
+    {
+      ret = fprintf(handle,
+		    "%s - %s\n",
+		    dgettext ("libextractor",
+			      EXTRACTOR_metatype_to_string (type)),
+		    buf);
+      free(buf);
+    }
+  else
+    {
+      ret = -1;
+    }
   iconv_close(cd);
   if (ret < 0)
     return 1;

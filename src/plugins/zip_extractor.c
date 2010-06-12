@@ -88,7 +88,7 @@ EXTRACTOR_zip_extract (const unsigned char *data,
   void *tmp;
   zip_entry * info;
   zip_entry * start;
-  char *filecomment = NULL;
+  char *filecomment;
   const unsigned char *pos;
   unsigned int offset, stop;
   unsigned int name_length, extra_length, comment_length;
@@ -174,8 +174,11 @@ EXTRACTOR_zip_extract (const unsigned char *data,
   if (filecomment_length > 0)
     {
       filecomment = malloc (filecomment_length + 1);
-      memcpy (filecomment, &pos[22], filecomment_length);
-      filecomment[filecomment_length] = '\0';
+      if (filecomment != NULL)
+	{
+	  memcpy (filecomment, &pos[22], filecomment_length);
+	  filecomment[filecomment_length] = '\0';
+	}
     }
   if ((0 != pos[4]) && (0 != pos[5]))
     {
@@ -281,12 +284,16 @@ EXTRACTOR_zip_extract (const unsigned char *data,
         if (start == NULL)
         {
           start = malloc (sizeof (zip_entry));
+	  if (start == NULL)
+	    break;
           start->next = NULL;
           info = start;
         }
       else
         {
           info->next = malloc (sizeof (zip_entry));
+	  if (info->next == NULL)
+	    break;
           info = info->next;
           info->next = NULL;
         }
@@ -294,35 +301,36 @@ EXTRACTOR_zip_extract (const unsigned char *data,
       info->comment = malloc (comment_length + 1);
       
         /* (strings in zip files are not null terminated) */ 
-        memcpy (info->filename, &pos[46], name_length);
-      info->filename[name_length] = '\0';
-      memcpy (info->comment, &pos[46 + name_length + extra_length],
-               comment_length);
-      info->comment[comment_length] = '\0';
-      
-#if DEBUG_EXTRACT_ZIP
-        fprintf (stderr, "Found file %s, Comment: %s\n", info->filename,
-                 info->comment);
-      
-#endif
-        offset += 46 + name_length + extra_length + comment_length;
-      pos = &data[offset];
-      
-        /* check for next header entry (0x02014b50) or (0x06054b50) if at end */ 
-        if (('P' != pos[0]) && ('K' != pos[1]))
+      if (info->filename != NULL)
+	{
+	  memcpy (info->filename, &pos[46], name_length);
+	  info->filename[name_length] = '\0';
+	}
+      if (info->comment != NULL)
+	{
+	  memcpy (info->comment, &pos[46 + name_length + extra_length],
+		  comment_length);
+	  info->comment[comment_length] = '\0';
+	}
+      offset += 46 + name_length + extra_length + comment_length;
+      pos = &data[offset];      
+      /* check for next header entry (0x02014b50) or (0x06054b50) if at end */ 
+      if (('P' != pos[0]) && ('K' != pos[1]))
         {
-          
+	  
 #if DEBUG_EXTRACT_ZIP
-            fprintf (stderr,
-                     "Did not find next header in central directory.\n");
+	  fprintf (stderr,
+		   "Did not find next header in central directory.\n");
           
 #endif
-            info = start;
+	  info = start;
           while (info != NULL)
             {
               start = info->next;
-              free (info->filename);
-              free (info->comment);
+	      if (info->filename != NULL)
+		free (info->filename);
+	      if (info->comment != NULL)
+		free (info->comment);
               free (info);
               info = start;
             }
@@ -364,7 +372,8 @@ EXTRACTOR_zip_extract (const unsigned char *data,
 		  filecomment,
 		  strlen (filecomment)+1);
     }
-  free (filecomment);
+  if (filecomment != NULL)
+    free (filecomment);
 
   
   /* if we've gotten to here then there is at least one zip entry (see get_zipinfo call above) */ 

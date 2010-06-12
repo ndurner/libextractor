@@ -347,7 +347,8 @@ EXTRACTOR_id3v2_extract (const unsigned char *data,
 		      return 1;
 		    }
 		}
-	      free (word);
+	      if (word != NULL)
+		free (word);
               break;
             }
           i++;
