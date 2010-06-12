@@ -175,6 +175,7 @@ get_path_from_proc_exe() {
   char line[1024];
   char dir[1024];
   char * lnk;
+  char * lestr;
   size_t size;
   FILE * f;
 
@@ -188,9 +189,9 @@ get_path_from_proc_exe() {
       if ( (1 == sscanf(line,
 			"%*x-%*x %*c%*c%*c%*c %*x %*2x:%*2x %*u%*[ ]%s",
 			dir)) &&
-	   (NULL != strstr(dir,
-			   "libextractor")) ) {
-	strstr(dir, "libextractor")[0] = '\0';
+	   (NULL != (lestr = strstr(dir,
+				    "libextractor")) ) ) {
+	lestr[0] = '\0';
 	fclose(f);
 	return strdup(dir);
       }
@@ -202,6 +203,8 @@ get_path_from_proc_exe() {
 	   "/proc/%u/exe",
 	   getpid());
   lnk = malloc(1029); /* 1024 + 5 for "lib/" catenation */
+  if (lnk == NULL)         
+    return NULL;
   size = readlink(fn, lnk, 1023);
   if ( (size == 0) || (size >= 1024) ) {
     free(lnk);
@@ -220,6 +223,8 @@ get_path_from_proc_exe() {
   lnk[size] = '\0';
   lnk = cut_bin(lnk);
   lnk = realloc(lnk, strlen(lnk) + 5);
+  if (lnk == NULL)
+    return NULL;
   strcat(lnk, "lib/"); /* guess "lib/" as the library dir */
   return lnk;
 }
@@ -262,6 +267,8 @@ static char * get_path_from_dyld_image() {
       path = _dyld_get_image_name(i);
       if (path != NULL && strlen(path) > 0) {
         p = strdup(path);
+	if (p == NULL)
+	  return NULL;
         s = p + strlen(p);
         while ( (s > p) && (*s != '/') )
           s--;
@@ -293,7 +300,14 @@ get_path_from_PATH() {
   if (p == NULL)
     return NULL;
   path = strdup(p); /* because we write on it */
+  if (path == NULL)
+    return NULL;
   buf = malloc(strlen(path) + 20);
+  if (buf == NULL)
+    {
+      free (path);
+      return NULL;
+    }
   size = strlen(path);
   pos = path;
 
@@ -306,6 +320,8 @@ get_path_from_PATH() {
       free(path);
       pos = cut_bin(pos);
       pos = realloc(pos, strlen(pos) + 5);
+      if (pos == NULL)
+	return NULL;
       strcat(pos, "lib/");
       return pos;
     }
@@ -318,6 +334,8 @@ get_path_from_PATH() {
     free(path);
     pos = cut_bin(pos);
     pos = realloc(pos, strlen(pos) + 5);
+    if (pos == NULL)
+      return NULL;
     strcat(pos, "lib/");
     return pos;
   }
@@ -353,7 +371,8 @@ append_to_dir (const char *path,
   if (fname[0] == DIR_SEPARATOR)
     fname++;
   ret = malloc (strlen (path) + strlen(fname) + 2);
-
+  if (ret == NULL)
+    return NULL;
 #ifdef MINGW
   if (path[strlen(path)-1] == '\\')
     sprintf (ret,
@@ -402,6 +421,8 @@ get_installation_paths (PathProcessor pp,
   if (p != NULL)
     {
       d = strdup (p);
+      if (d == NULL)
+	return;
       prefix = strtok (d, ":");
       while (NULL != prefix)
 	{
@@ -429,10 +450,13 @@ get_installation_paths (PathProcessor pp,
   if (prefix == NULL)
     return;
   path = append_to_dir (prefix, PLUGINDIR);
-  if (0 != strcmp (path,
-		   PLUGININSTDIR))
-    pp (pp_cls, path);
-  free (path);
+  if (path != NULL)
+    {
+      if (0 != strcmp (path,
+		       PLUGININSTDIR))
+	pp (pp_cls, path);
+      free (path);
+    }
   free (prefix);
 }
 

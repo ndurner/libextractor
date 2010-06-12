@@ -784,8 +784,6 @@ static void handleASEnd(unsigned char type, void * value, void * userdata)
       case ASTYPE_STRING:
       {
         s = (char *)value;
-	if (s != NULL)
-	  s = strdup(s);
         break;
       }
       case ASTYPE_DATE:
