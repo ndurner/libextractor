@@ -471,8 +471,8 @@ static void
 finish_bibtex (const char *fn)
 {
   int i;
-  char *tya;
   const char *et;
+  char temp[20];
 
   if (entry_type != NULL)
     et = entry_type;
@@ -487,12 +487,22 @@ finish_bibtex (const char *fn)
 	     fn);
   else
     {
+      snprintf (temp,
+		sizeof (temp),
+		"%.5s%.5s%.5s",
+		btm[2].value,
+		btm[1].value,
+		btm[0].value);
+      
+      for (i=strlen(temp)-1;i>=0;i-- )
+	if (! isalnum( (unsigned char) temp[i]) ) 
+	  temp[i] = '_';
+	else 
+	  temp[i] = tolower( (unsigned char) temp[i]);
       fprintf (stdout,
-	       "@%s %.5s%.5s%.5s { ",
+	       "@%s %s { ",
 	       et,
-	       btm[2].value,
-	       btm[1].value,
-	       btm[0].value);
+	       temp);
     }
 
 	     
