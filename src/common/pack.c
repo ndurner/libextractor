@@ -79,7 +79,7 @@ EXTRACTOR_common_cat_pack (void *buf, const char *fmt, ...)
     {
       nreps = 0;
 
-      if (isdigit (*fmt))
+      if (isdigit ( (unsigned char) *fmt))
         {
           /* We use cp instead of fmt to keep the 'const' qualifier of fmt */
           nreps = strtoul (fmt, &cp, 0);
@@ -274,7 +274,7 @@ EXTRACTOR_common_cat_unpack (const void *buf, const char *fmt, ...)
     {
       nreps = 1;
 
-      if (isdigit (*fmt))
+      if (isdigit ( (unsigned char) *fmt))
         {
           /* We use cp instead of format to keep the 'const' qualifier of fmt */
           nreps = strtoul (fmt, &cp, 0);

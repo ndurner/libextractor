@@ -54,7 +54,7 @@ addExiv2Tag(const Exiv2::ExifData& exifData,
   if (md != exifData.end()) {
     std::string ccstr = Exiv2::toString(*md);
     str = ccstr.c_str();
-    while ( (strlen(str) > 0) && isspace(str[0])) str++;
+    while ( (strlen(str) > 0) && isspace((unsigned char) str[0])) str++;
     if (strlen(str) > 0)
       ADD (str, type);
     md++;
@@ -80,7 +80,7 @@ addIptcData(const Exiv2::IptcData& iptcData,
 	  break;
       std::string ccstr = Exiv2::toString(*md);
       str = ccstr.c_str();
-      while ( (strlen(str) > 0) && isspace(str[0])) str++;
+      while ( (strlen(str) > 0) && isspace( (unsigned char) str[0])) str++;
       if (strlen(str) > 0)
 	ADD (str, type);
       md++;
@@ -106,7 +106,7 @@ addXmpData(const Exiv2::XmpData& xmpData,
 	break;
       std::string ccstr = Exiv2::toString(*md);
       str = ccstr.c_str();
-      while ( (strlen(str) > 0) && isspace(str[0])) str++;
+      while ( (strlen(str) > 0) && isspace( (unsigned char) str[0])) str++;
       if (strlen(str) > 0)
 	ADD (str, type);
       md++;

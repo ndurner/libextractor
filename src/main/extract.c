@@ -353,32 +353,6 @@ print_selected_keywords_grep_friendly (void *cls,
 
 
 /**
- * Take title, auth, year and return a string
- */
-static char *
-str_splice(const char * title,
-	   const char * year,
-	   const char * auth) {
-  char * temp = malloc(16);
-  int i = 0;
-
-  snprintf(temp, 
-	   15,
-	   "%.5s%.5s%.5s", 
-	   auth, 
-	   year, 
-	   title);
-  for (i=0;i<strlen(temp);i++ ) {
-    if (! isalnum(temp[i]) )
-      temp[i] = '_';
-    else
-      temp[i] = tolower( (unsigned int) temp[i]);
-  }
-  return temp;
-}
-
-
-/**
  * Entry in the map we construct for each file.
  */
 struct BibTexMap
@@ -513,14 +487,12 @@ finish_bibtex (const char *fn)
 	     fn);
   else
     {
-      tya = str_splice (btm[0].value,
-			btm[1].value,
-			btm[2].value);      
       fprintf (stdout,
-	       "@%s %s { ",
+	       "@%s %.5s%.5s%.5s { ",
 	       et,
-	       tya);
-      free (tya);
+	       btm[2].value,
+	       btm[1].value,
+	       btm[0].value);
     }
 
 	     
