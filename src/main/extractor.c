@@ -177,11 +177,11 @@ get_path_from_proc_exe() {
   char * lnk;
   char * ret;
   char * lestr;
-  size_t size;
+  ssize_t size;
   FILE * f;
 
   snprintf(fn,
-	   64,
+	   sizeof (fn),
 	   "/proc/%u/maps",
 	   getpid());
   f = fopen(fn, "r");
@@ -200,14 +200,14 @@ get_path_from_proc_exe() {
     fclose(f);
   }
   snprintf(fn,
-	   64,
+	   sizeof (fn),
 	   "/proc/%u/exe",
 	   getpid());
   lnk = malloc(1029); /* 1024 + 5 for "lib/" catenation */
   if (lnk == NULL)         
     return NULL;
   size = readlink(fn, lnk, 1023);
-  if ( (size == 0) || (size >= 1024) ) {
+  if ( (size <= 0) || (size >= 1024) ) {
     free(lnk);
     return NULL;
   }
@@ -391,14 +391,18 @@ append_to_dir (const char *path,
 	       const char *fname)
 {
   char *ret;
+  size_t slen;
 
+  slen = strlen (path);
+  if (slen == 0)
+    return NULL;
   if (fname[0] == DIR_SEPARATOR)
     fname++;
-  ret = malloc (strlen (path) + strlen(fname) + 2);
+  ret = malloc (slen + strlen(fname) + 2);
   if (ret == NULL)
     return NULL;
 #ifdef MINGW
-  if (path[strlen(path)-1] == '\\')
+  if (path[slen-1] == '\\')
     sprintf (ret,
 	     "%s%s",
 	     path, 
@@ -409,7 +413,7 @@ append_to_dir (const char *path,
 	     path, 
 	     fname);
 #else
-  if (path[strlen(path)-1] == '/')
+  if (path[slen-1] == '/')
     sprintf (ret,
 	   "%s%s",
 	   path, 

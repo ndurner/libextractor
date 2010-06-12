@@ -553,6 +553,13 @@ main (int argc, char *argv[])
   ignore_sigpipe ();
 #endif
   print = malloc (sizeof (int) * EXTRACTOR_metatype_get_max ());
+  if (print == NULL)
+    {
+      fprintf (stderr, 
+	       "malloc failed: %s\n",
+	       strerror (errno));
+      return 1;
+    }
   for (i = 0; i < EXTRACTOR_metatype_get_max (); i++)
     print[i] = YES;		/* default: print everything */
 

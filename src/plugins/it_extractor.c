@@ -75,9 +75,10 @@ EXTRACTOR_it_extract (const char *data,
     return 1;
 
   /* Version of Tracker */
-  sprintf (itversion, 
-	   "%d.%d", 
-	   (head->version[0]& 0x01),head->version[1]);
+  snprintf (itversion, 
+	    sizeof (itversion),
+	    "%d.%d", 
+	    (head->version[0]& 0x01),head->version[1]);
   if (0 != proc (proc_cls,
 		 "it",
 		 EXTRACTOR_METATYPE_FORMAT_VERSION,
