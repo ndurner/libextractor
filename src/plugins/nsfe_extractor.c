@@ -159,11 +159,10 @@ libextractor_nsfe_tlbl_extract(const char *data,
   for (left = size; left > 0; left -= length)
     {
       title = nsfestring (&data[size - left], left);
-      if (title != NULL)
-	{
-	  length = strlen (title) + 1;
-	  ADDF (title, EXTRACTOR_METATYPE_TITLE);
-	}
+      if (title == NULL)
+	return 0;	
+      length = strlen (title) + 1;
+      ADDF (title, EXTRACTOR_METATYPE_TITLE);
     }
   return 0;
 }

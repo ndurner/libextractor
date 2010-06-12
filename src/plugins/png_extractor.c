@@ -100,6 +100,8 @@ processtEXt (const char *data,
   if (off >= length)
     return 0;                /* failed to find '\0' */
   keyword = EXTRACTOR_common_convert_to_utf8 (&data[off], length - off, "ISO-8859-1");
+  if (keyword == NULL)
+    return 0;
   i = 0;
   ret = 0;
   while (tagmap[i].name != NULL)
@@ -249,8 +251,8 @@ processzTXt (const char *data,
   int i;
   char *buf;
   uLongf bufLen;
-  int ret;
   int zret;
+  int ret;
 
   data += 4;
   off = stnlen (data, length) + 1;
@@ -259,7 +261,7 @@ processzTXt (const char *data,
   if (data[off] != 0)
     return 0;                /* compression method must be 0 */
   off++;
-
+  ret = 0;
   bufLen = 1024 + 2 * (length - off);
   while (1)
     {

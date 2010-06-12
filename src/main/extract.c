@@ -703,7 +703,13 @@ main (int argc, char *argv[])
 	  return -1;
 	}			/* end of parsing commandline */
     }				/* while (1) */
-
+  if (optind < 0)
+    {
+      fprintf (stderr,
+	       "Unknown error parsing options\n");
+      free (print);
+      return -1;
+    }
   if (argc - optind < 1)
     {
       fprintf (stderr,

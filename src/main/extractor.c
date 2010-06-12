@@ -1463,8 +1463,8 @@ start_process (struct EXTRACTOR_PluginList *plugin)
       perror ("fdopen");
       (void) kill (plugin->cpid, SIGKILL);
       waitpid (plugin->cpid, &status, 0);
-      close (p1[0]);
-      close (p2[1]);
+      close (p1[1]);
+      close (p2[0]);
       plugin->cpid = -1;
       plugin->flags = EXTRACTOR_OPTION_DISABLED;
       return;
