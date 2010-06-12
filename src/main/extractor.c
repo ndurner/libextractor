@@ -318,6 +318,8 @@ get_path_from_PATH() {
       pos = strdup(pos);
       free(buf);
       free(path);
+      if (pos == NULL)
+	return NULL;
       pos = cut_bin(pos);
       pos = realloc(pos, strlen(pos) + 5);
       if (pos == NULL)
@@ -332,6 +334,8 @@ get_path_from_PATH() {
     pos = strdup(pos);
     free(buf);
     free(path);
+    if (pos == NULL)
+      return NULL;
     pos = cut_bin(pos);
     pos = realloc(pos, strlen(pos) + 5);
     if (pos == NULL)
@@ -503,6 +507,11 @@ find_plugin_in_path (void *cls,
 	continue;	
       sym_name++;
       sym = strdup (sym_name);
+      if (sym == NULL)
+	{
+	  closedir (dir);
+	  return;
+	}
       dot = strstr (sym, ".");
       if (dot != NULL)
 	*dot = '\0';
@@ -587,6 +596,11 @@ load_plugins_from_dir (void *cls,
 	continue;
       sym_name++;
       sym = strdup (sym_name);
+      if (NULL == sym)
+	{
+	  closedir (dir);
+	  return;
+	}
       dot = strstr (sym, ".");
       if (dot != NULL)
 	*dot = '\0';
@@ -660,10 +674,17 @@ get_symbol_with_prefix(void *lib_handle,
     return NULL;
   sym_name++;
   sym = strdup (sym_name);
+  if (sym == NULL)
+    return NULL;
   dot = strstr (sym, ".");
   if (dot != NULL)
     *dot = '\0';
   name = malloc(strlen(sym) + strlen(template) + 1);
+  if (name == NULL)
+    {
+      free (sym);
+      return NULL;
+    }
   sprintf(name,
 	  template,
 	  sym);
@@ -685,10 +706,11 @@ get_symbol_with_prefix(void *lib_handle,
 		  "`%s' and `%s'.\n",
 		  name+1,
 		  name,
-		  first_error,
+		  first_error == NULL ? "out of memory" : first_error,
 		  lt_dlerror());
 	}
-      free(first_error);
+      if (first_error != NULL)
+	free(first_error);
 #endif
     }
 
@@ -807,6 +829,11 @@ EXTRACTOR_plugin_add (struct EXTRACTOR_PluginList * prev,
   result = calloc (1, sizeof (struct EXTRACTOR_PluginList));
   result->next = prev;
   result->short_libname = strdup (library);
+  if (result->short_libname == NULL)
+    {
+      free (result);
+      return NULL;
+    }
   result->libname = libname;
   result->flags = flags;
   if (NULL != options)
@@ -847,6 +874,8 @@ EXTRACTOR_plugin_add_config (struct EXTRACTOR_PluginList * prev,
     return prev;
   len = strlen(config);
   cpy = strdup(config);
+  if (cpy == NULL)
+    return prev;
   pos = 0;
   last = 0;
   lastconf = 0;
