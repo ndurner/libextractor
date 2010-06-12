@@ -152,14 +152,13 @@ EXTRACTOR_zip_extract (const unsigned char *data,
     pos = &data[offset--];
   if (offset == stop)
     {
-      
 #if DEBUG_EXTRACT_ZIP
-        fprintf (stderr,
+      fprintf (stderr,
                  "Did not find end of central directory structure signature. offset: %i\n",
                  offset);
       
-#endif  /*  */
-        return 0;
+#endif
+      return 0;
     }
   
     /* offset should now point to the start of the end-of-central directory structure */ 
@@ -180,26 +179,20 @@ EXTRACTOR_zip_extract (const unsigned char *data,
 	  filecomment[filecomment_length] = '\0';
 	}
     }
+
+#if DEBUG_EXTRACT_ZIP
   if ((0 != pos[4]) && (0 != pos[5]))
-    {
+    fprintf (stderr,
+	     "WARNING: This seems to be the last disk in a multi-volume"
+	     " ZIP archive, and so this might not work.\n");          
+#endif
       
 #if DEBUG_EXTRACT_ZIP
-        fprintf (stderr,
-                 "WARNING: This seems to be the last disk in a multi-volume"
-                  " ZIP archive, and so this might not work.\n");
-      
-#endif  /*  */
-    }
   if ((pos[8] != pos[10]) && (pos[9] != pos[11]))
-    {
-      
-#if DEBUG_EXTRACT_ZIP
-        fprintf (stderr,
-                 "WARNING: May not be able to find all the files in this" 
-                 " ZIP archive (no multi-volume support right now).\n");
-      
-#endif  /*  */
-    }
+    fprintf (stderr,
+	     "WARNING: May not be able to find all the files in this" 
+	     " ZIP archive (no multi-volume support right now).\n");  
+#endif
   entry_total = pos[10] + (pos[11] << 8);
   entry_count = 0;
   
@@ -246,18 +239,17 @@ EXTRACTOR_zip_extract (const unsigned char *data,
      */ 
     if (!(('P' == pos[0]) && ('K' == pos[1]) && (0x01 == pos[2])
           && (0x02 == pos[3])))
-    {
-      
+      {      
 #if DEBUG_EXTRACT_ZIP
         fprintf (stderr,
                  "Did not find central directory structure signature. offset: %i\n",
                  offset);
-      
+	
 #endif
         if (filecomment != NULL)
 	  free (filecomment);
 	return 0;
-    }
+      }
   start = NULL;
   info = NULL;
   
@@ -278,8 +270,7 @@ EXTRACTOR_zip_extract (const unsigned char *data,
         fprintf (stderr, "Found filename length %i  Comment length: %i\n",
                  name_length, comment_length);
       
-#endif  /*  */
-        
+#endif        
         /* yay, finally get filenames */ 
         if (start == NULL)
         {
@@ -316,8 +307,7 @@ EXTRACTOR_zip_extract (const unsigned char *data,
       pos = &data[offset];      
       /* check for next header entry (0x02014b50) or (0x06054b50) if at end */ 
       if (('P' != pos[0]) && ('K' != pos[1]))
-        {
-	  
+        {         
 #if DEBUG_EXTRACT_ZIP
 	  fprintf (stderr,
 		   "Did not find next header in central directory.\n");
@@ -345,15 +335,11 @@ EXTRACTOR_zip_extract (const unsigned char *data,
     
     /* TODO: should this return an error? indicates corrupt zipfile (or
        disk missing in middle of multi-disk)? */ 
-    if (entry_count != entry_total)
-    {
-      
 #if DEBUG_EXTRACT_ZIP
-        fprintf (stderr,
-                 "WARNING: Did not find all of the zipfile entries that we should have.\n");
-      
-#endif  /*  */
-    }
+  if (entry_count != entry_total)
+    fprintf (stderr,
+	     "WARNING: Did not find all of the zipfile entries that we should have.\n");    
+#endif
   
   ret = proc (proc_cls,
 	      "zip",

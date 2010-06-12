@@ -89,9 +89,6 @@ typedef struct unz_global_info_s
 #ifndef ALLOC
 # define ALLOC(size) (malloc(size))
 #endif
-#ifndef TRYFREE
-# define TRYFREE(p) {if (p) free(p);}
-#endif
 
 #define SIZECENTRALDIRITEM (0x2e)
 #define SIZEZIPLOCALHEADER (0x1e)
@@ -356,7 +353,7 @@ unzlocal_SearchCentralDir(const EXTRACTOR_unzip_filefunc_def* pzlib_filefunc_def
         if (uPosFound!=0)
             break;
     }
-    TRYFREE(buf);
+    free(buf);
     return uPosFound;
 }
 
@@ -695,13 +692,14 @@ EXTRACTOR_common_unzip_close_current_file (EXTRACTOR_unzip_file file)
     }
 
 
-    TRYFREE(pfile_in_zip_read_info->read_buffer);
+    if (NULL != pfile_in_zip_read_info->read_buffer)
+      free(pfile_in_zip_read_info->read_buffer);
     pfile_in_zip_read_info->read_buffer = NULL;
     if (pfile_in_zip_read_info->stream_initialised)
         inflateEnd(&pfile_in_zip_read_info->stream);
 
     pfile_in_zip_read_info->stream_initialised = 0;
-    TRYFREE(pfile_in_zip_read_info);
+    free(pfile_in_zip_read_info);
 
     s->pfile_in_zip_read=NULL;
 
@@ -724,7 +722,7 @@ int EXTRACTOR_common_unzip_close (EXTRACTOR_unzip_file file)
         EXTRACTOR_common_unzip_close_current_file(file);
 
     ZCLOSE(s->z_filefunc, s->filestream);
-    TRYFREE(s);
+    free(s);
     return EXTRACTOR_UNZIP_OK;
 }
 
@@ -1127,10 +1125,10 @@ EXTRACTOR_common_unzip_open_current_file3 (EXTRACTOR_unzip_file file,
     pfile_in_zip_read_info->raw=raw;
 
     if (pfile_in_zip_read_info->read_buffer==NULL)
-    {
-        TRYFREE(pfile_in_zip_read_info);
+      {
+	free(pfile_in_zip_read_info);
         return EXTRACTOR_UNZIP_INTERNALERROR;
-    }
+      }
 
     pfile_in_zip_read_info->stream_initialised=0;
 
