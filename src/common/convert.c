@@ -46,7 +46,10 @@ EXTRACTOR_common_convert_to_utf8 (const char *input, size_t len, const char *cha
   if (cd == (iconv_t) - 1)
     return strdup (i);
   if (len > 1024 * 1024)
-    return NULL; /* too big for meta data */
+    {
+      iconv_close (cd);
+      return NULL; /* too big for meta data */
+    }
   tmpSize = 3 * len + 4;
   tmp = malloc (tmpSize);
   if (tmp == NULL)
