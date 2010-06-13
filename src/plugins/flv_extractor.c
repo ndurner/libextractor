@@ -261,7 +261,6 @@ static int parse_amf(const unsigned char **data,
     case ASTYPE_UNDEFINED:
     case ASTYPE_UNSUPPORTED:
     case ASTYPE_ENDOFOBJECT:
-      ret = 0;
       (*(handler->as_end_callback))(astype, NULL, handler->userdata);
       break;
     case ASTYPE_ARRAY:
@@ -690,7 +689,6 @@ static void handleASEnd(unsigned char type, void * value, void * userdata)
   {
     double n = *((double *)value);
     switch (state->currentAttribute) {
-      case FLV_NONE:
       case FLV_STEREO:
         break;
       case FLV_ACHANNELS:
