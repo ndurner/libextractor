@@ -65,6 +65,7 @@ EXTRACTOR_common_convert_to_utf8 (const char *input, size_t len, const char *cha
   ret = malloc (tmpSize - finSize + 1);
   if (ret == NULL)
     {
+      iconv_close (cd);
       free (tmp);
       return NULL;
     }
