@@ -255,7 +255,7 @@ EXTRACTOR_tar_extract (const char *data,
                        void *proc_cls, const char *options)
 {
   char *fname = NULL;
-  size_t pos = 0;
+  size_t pos;
   int contents_are_empty = 1;
   long long maxftime = TAR_TIME_FENCE;
   unsigned int format_archive = 0;
