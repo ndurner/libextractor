@@ -363,7 +363,7 @@ EXTRACTOR_common_floatformat_to_double (const struct EXTRACTOR_floatformat *fmt,
   mant_off = fmt->man_start;
   dto = 0.0;
 
-  special_exponent = exponent == 0 || (unsigned long) exponent == fmt->exp_nan;
+  special_exponent = (exponent == 0) || ((unsigned long) exponent == fmt->exp_nan);
 
   /* Don't bias zero's, denorms or NaNs.  */
   if (!special_exponent)
