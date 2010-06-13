@@ -379,6 +379,7 @@ EXTRACTOR_zip_extract (const unsigned char *data,
 			  info->filename,
 			  strlen (info->filename)+1);
             }
+	   free (info->filename);
         }
       if (info->comment != NULL)
 	{
@@ -392,9 +393,8 @@ EXTRACTOR_zip_extract (const unsigned char *data,
 			  info->comment,
 			  strlen (info->comment)+1);
 	    }
+	  free (info->comment);
 	}
-      free (info->filename);
-      free (info->comment);
       tmp = info;
       info = info->next;
       free (tmp);
