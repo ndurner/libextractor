@@ -661,6 +661,11 @@ EXTRACTOR_common_unzip_open2 (const char *path,
 
 
     s=(unz_s*)ALLOC(sizeof(unz_s));
+    if (s == NULL) 
+    {
+       ZCLOSE(us.z_filefunc, us.filestream);
+       return NULL;
+    }
     *s=us;
     EXTRACTOR_common_unzip_go_to_first_file((EXTRACTOR_unzip_file)s);
     return (EXTRACTOR_unzip_file)s;
