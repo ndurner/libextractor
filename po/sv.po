@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.5.22\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2010-05-31 14:54+0200\n"
+"POT-Creation-Date: 2010-06-13 13:15+0200\n"
 "PO-Revision-Date: 2009-05-12 17:45+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
@@ -686,7 +686,7 @@ msgstr "Serbokroatiska (Kyrillisk)"
 msgid "Farsi"
 msgstr "Farsi"
 
-#: src/plugins/ole2_extractor.c:462
+#: src/plugins/ole2_extractor.c:471
 #, c-format
 msgid "Revision #%u: Author '%s' worked on '%s'"
 msgstr "Revision %u: Upphovsmannen \"%s\" arbetade på \"%s\""
@@ -699,43 +699,43 @@ msgstr "mono"
 msgid "stereo"
 msgstr "stereo"
 
-#: src/plugins/man_extractor.c:156
+#: src/plugins/man_extractor.c:161
 msgid "Commands"
 msgstr "Kommandon"
 
-#: src/plugins/man_extractor.c:160
+#: src/plugins/man_extractor.c:165
 msgid "System calls"
 msgstr "Systemanrop"
 
-#: src/plugins/man_extractor.c:164
+#: src/plugins/man_extractor.c:169
 msgid "Library calls"
 msgstr "Biblioteksanrop"
 
-#: src/plugins/man_extractor.c:168
+#: src/plugins/man_extractor.c:173
 msgid "Special files"
 msgstr "Specialfiler"
 
-#: src/plugins/man_extractor.c:172
+#: src/plugins/man_extractor.c:177
 msgid "File formats and conventions"
 msgstr "Filformat och konventioner"
 
-#: src/plugins/man_extractor.c:176
+#: src/plugins/man_extractor.c:181
 msgid "Games"
 msgstr "Spel"
 
-#: src/plugins/man_extractor.c:180
+#: src/plugins/man_extractor.c:185
 msgid "Conventions and miscellaneous"
 msgstr "Konventioner och diverse"
 
-#: src/plugins/man_extractor.c:184
+#: src/plugins/man_extractor.c:189
 msgid "System management commands"
 msgstr "Kommandon för systemhantering"
 
-#: src/plugins/man_extractor.c:188
+#: src/plugins/man_extractor.c:193
 msgid "Kernel routines"
 msgstr "Kärnrutiner"
 
-#: src/plugins/flac_extractor.c:187
+#: src/plugins/flac_extractor.c:192
 #, fuzzy, c-format
 msgid "%u Hz, %u channels"
 msgstr "dual channel"
@@ -788,28 +788,28 @@ msgstr "Layer II"
 msgid "Layer III"
 msgstr "Layer III"
 
-#: src/plugins/mp3_extractor.c:248
+#: src/plugins/mp3_extractor.c:247
 msgid "VBR"
 msgstr "VBR"
 
-#: src/plugins/mp3_extractor.c:248
+#: src/plugins/mp3_extractor.c:247
 msgid "CBR"
 msgstr "CBR"
 
-#: src/plugins/mp3_extractor.c:251 src/main/extractor_metatypes.c:140
+#: src/plugins/mp3_extractor.c:250 src/main/extractor_metatypes.c:140
 msgid "copyright"
 msgstr "copyright"
 
-#: src/plugins/mp3_extractor.c:251
+#: src/plugins/mp3_extractor.c:250
 msgid "no copyright"
 msgstr "ingen copyright"
 
-#: src/plugins/mp3_extractor.c:252
+#: src/plugins/mp3_extractor.c:251
 #, fuzzy
 msgid "original"
 msgstr "original"
 
-#: src/plugins/mp3_extractor.c:252
+#: src/plugins/mp3_extractor.c:251
 msgid "copy"
 msgstr "kopia"
 
@@ -818,17 +818,17 @@ msgstr "kopia"
 msgid "codec: %s, %u fps, %u ms"
 msgstr "kodek: %s, %u bilder/s, %u ms"
 
-#: src/plugins/jpeg_extractor.c:180
+#: src/plugins/jpeg_extractor.c:182
 #, fuzzy, c-format
 msgid "%ux%u dots per inch"
 msgstr "%u×%u punkter per tum?"
 
-#: src/plugins/jpeg_extractor.c:195
+#: src/plugins/jpeg_extractor.c:197
 #, c-format
 msgid "%ux%u dots per cm"
 msgstr "%u×%u punkter per cm"
 
-#: src/plugins/jpeg_extractor.c:210
+#: src/plugins/jpeg_extractor.c:212
 #, c-format
 msgid "%ux%u dots per inch?"
 msgstr "%u×%u punkter per tum?"
@@ -888,7 +888,7 @@ msgstr "%s: flagga \"-W %s\" är tvetydig\n"
 msgid "%s: option `-W %s' doesn't allow an argument\n"
 msgstr "%s: flagga \"-W %s\" tillåter inte ett argument\n"
 
-#: src/main/extractor.c:2153
+#: src/main/extractor.c:2294
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "Initiering av insticksmekanism misslyckades: %s!\n"
@@ -912,95 +912,100 @@ msgstr ""
 "Argument som är obligatoriska för långa flaggor är också obligatoriska för "
 "korta flaggor.\n"
 
-#: src/main/extract.c:174
+#: src/main/extract.c:170
 msgid "print output in bibtex format"
 msgstr "skriv ut i bibtex-format"
 
-#: src/main/extract.c:176
+#: src/main/extract.c:172
 msgid "produce grep-friendly output (all results on one line per file)"
 msgstr "producera grep-vänligt utdata (alla resultat på en rad per fil)"
 
-#: src/main/extract.c:178
+#: src/main/extract.c:174
 msgid "print this help"
 msgstr "skriv ut denna hjälp"
 
-#: src/main/extract.c:180
+#: src/main/extract.c:176
 msgid "run plugins in-process (simplifies debugging)"
 msgstr ""
 
-#: src/main/extract.c:182
+#: src/main/extract.c:178
 msgid "load an extractor plugin named LIBRARY"
 msgstr "läser in instick för uppackning med namnet BIBLIOTEK"
 
-#: src/main/extract.c:184
+#: src/main/extract.c:180
 msgid "list all keyword types"
 msgstr "lista alla typer av nyckelord"
 
-#: src/main/extract.c:186
+#: src/main/extract.c:182
 msgid "do not use the default set of extractor plugins"
 msgstr "använd inte förvalda uppsättningen av uppackningsinstick"
 
-#: src/main/extract.c:188
+#: src/main/extract.c:184
 msgid "print only keywords of the given TYPE (use -L to get a list)"
 msgstr "skriv endast ut nyckelord av angiven TYP (använd -L för lista)"
 
-#: src/main/extract.c:190
+#: src/main/extract.c:186
 msgid "print the version number"
 msgstr "skriv ut versionsnummer"
 
-#: src/main/extract.c:192
+#: src/main/extract.c:188
 msgid "be verbose"
 msgstr "var informativ"
 
-#: src/main/extract.c:194
+#: src/main/extract.c:190
 msgid "do not print keywords of the given TYPE"
 msgstr "skriv inte ut nyckelord av angiven TYP"
 
-#: src/main/extract.c:197
+#: src/main/extract.c:193
 msgid "extract [OPTIONS] [FILENAME]*"
 msgstr "extract [FLAGGOR] [FILNAMN]*"
 
-#: src/main/extract.c:198
+#: src/main/extract.c:194
 msgid "Extract metadata from files."
 msgstr "Extrahera metadata från filer."
 
-#: src/main/extract.c:238
+#: src/main/extract.c:235
 #, fuzzy, c-format
 msgid "Found by `%s' plugin:\n"
 msgstr "Inläsning av instick \"%s\" misslyckades: %s\n"
 
-#: src/main/extract.c:245
+#: src/main/extract.c:238 src/main/extract.c:319
+#: src/main/extractor_metatypes.c:136 src/main/extractor_print.c:68
+msgid "unknown"
+msgstr "okänd"
+
+#: src/main/extract.c:243
 #, c-format
 msgid "%s - (unknown, %u bytes)\n"
 msgstr ""
 
-#: src/main/extract.c:266
+#: src/main/extract.c:267
 #, fuzzy, c-format
 msgid "%s - (binary, %u bytes)\n"
 msgstr "%s - (binär)\n"
 
-#: src/main/extract.c:603 src/main/extract.c:613
+#: src/main/extract.c:600 src/main/extract.c:610
 #, c-format
 msgid ""
 "Illegal combination of options, cannot combine multiple styles of printing.\n"
 msgstr ""
 
-#: src/main/extract.c:640
+#: src/main/extract.c:637
 #, c-format
 msgid "You must specify an argument for the `%s' option (option ignored).\n"
 msgstr "Du måste ange ett argument för flaggan \"%s\" (flagga ignoreras).\n"
 
-#: src/main/extract.c:705
+#: src/main/extract.c:702
 #, c-format
 msgid "Use --help to get a list of options.\n"
 msgstr "Använd --help för att få en lista på flaggor.\n"
 
-#: src/main/extract.c:737
+#: src/main/extract.c:740
 #, c-format
 msgid "%% BiBTeX file\n"
 msgstr "%% BiBTeX-fil\n"
 
-#: src/main/extract.c:744
+#: src/main/extract.c:747
 #, c-format
 msgid "Keywords for file %s:\n"
 msgstr "Nyckelord för filen %s:\n"
@@ -1380,10 +1385,6 @@ msgstr "Country"
 #: src/main/extractor_metatypes.c:134
 msgid "ISO 2-letter country code for the country of origin"
 msgstr ""
-
-#: src/main/extractor_metatypes.c:136
-msgid "unknown"
-msgstr "okänd"
 
 #: src/main/extractor_metatypes.c:137
 msgid "specifics are not known"

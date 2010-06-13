@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.5.3\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2010-05-31 14:54+0200\n"
+"POT-Creation-Date: 2010-06-13 13:15+0200\n"
 "PO-Revision-Date: 2005-08-16 12:00-0500\n"
 "Last-Translator: Laurentiu Buzdugan <lbuz@rolix.org>\n"
 "Language-Team: Romanian <translation-team-ro@lists.sourceforge.net>\n"
@@ -688,7 +688,7 @@ msgstr ""
 msgid "Farsi"
 msgstr ""
 
-#: src/plugins/ole2_extractor.c:462
+#: src/plugins/ole2_extractor.c:471
 #, c-format
 msgid "Revision #%u: Author '%s' worked on '%s'"
 msgstr ""
@@ -701,43 +701,43 @@ msgstr "mono"
 msgid "stereo"
 msgstr "stereo"
 
-#: src/plugins/man_extractor.c:156
+#: src/plugins/man_extractor.c:161
 msgid "Commands"
 msgstr "Comenzi"
 
-#: src/plugins/man_extractor.c:160
+#: src/plugins/man_extractor.c:165
 msgid "System calls"
 msgstr "Apeluri sistem"
 
-#: src/plugins/man_extractor.c:164
+#: src/plugins/man_extractor.c:169
 msgid "Library calls"
 msgstr "Apeluri de bibliotecã"
 
-#: src/plugins/man_extractor.c:168
+#: src/plugins/man_extractor.c:173
 msgid "Special files"
 msgstr "Fiºiere speciale"
 
-#: src/plugins/man_extractor.c:172
+#: src/plugins/man_extractor.c:177
 msgid "File formats and conventions"
 msgstr "Formate de fiºiere ºi convenþii"
 
-#: src/plugins/man_extractor.c:176
+#: src/plugins/man_extractor.c:181
 msgid "Games"
 msgstr "Jocuri"
 
-#: src/plugins/man_extractor.c:180
+#: src/plugins/man_extractor.c:185
 msgid "Conventions and miscellaneous"
 msgstr "Convenþii ºi diverse"
 
-#: src/plugins/man_extractor.c:184
+#: src/plugins/man_extractor.c:189
 msgid "System management commands"
 msgstr "Comenzi pentru managementul sistemului"
 
-#: src/plugins/man_extractor.c:188
+#: src/plugins/man_extractor.c:193
 msgid "Kernel routines"
 msgstr "Proceduri kernel"
 
-#: src/plugins/flac_extractor.c:187
+#: src/plugins/flac_extractor.c:192
 #, c-format
 msgid "%u Hz, %u channels"
 msgstr ""
@@ -792,28 +792,28 @@ msgstr ""
 msgid "Layer III"
 msgstr ""
 
-#: src/plugins/mp3_extractor.c:248
+#: src/plugins/mp3_extractor.c:247
 msgid "VBR"
 msgstr ""
 
-#: src/plugins/mp3_extractor.c:248
+#: src/plugins/mp3_extractor.c:247
 msgid "CBR"
 msgstr ""
 
-#: src/plugins/mp3_extractor.c:251 src/main/extractor_metatypes.c:140
+#: src/plugins/mp3_extractor.c:250 src/main/extractor_metatypes.c:140
 msgid "copyright"
 msgstr "copyright"
 
-#: src/plugins/mp3_extractor.c:251
+#: src/plugins/mp3_extractor.c:250
 #, fuzzy
 msgid "no copyright"
 msgstr "copyright"
 
-#: src/plugins/mp3_extractor.c:252
+#: src/plugins/mp3_extractor.c:251
 msgid "original"
 msgstr ""
 
-#: src/plugins/mp3_extractor.c:252
+#: src/plugins/mp3_extractor.c:251
 #, fuzzy
 msgid "copy"
 msgstr "copyright"
@@ -823,17 +823,17 @@ msgstr "copyright"
 msgid "codec: %s, %u fps, %u ms"
 msgstr "codec: %s, %u fps, %u ms"
 
-#: src/plugins/jpeg_extractor.c:180
+#: src/plugins/jpeg_extractor.c:182
 #, fuzzy, c-format
 msgid "%ux%u dots per inch"
 msgstr "%ux%u puncte pe inci?"
 
-#: src/plugins/jpeg_extractor.c:195
+#: src/plugins/jpeg_extractor.c:197
 #, c-format
 msgid "%ux%u dots per cm"
 msgstr "%ux%u puncte pe cm"
 
-#: src/plugins/jpeg_extractor.c:210
+#: src/plugins/jpeg_extractor.c:212
 #, c-format
 msgid "%ux%u dots per inch?"
 msgstr "%ux%u puncte pe inci?"
@@ -893,7 +893,7 @@ msgstr "%s: opþiunea `-W %s' este ambiguã\n"
 msgid "%s: option `-W %s' doesn't allow an argument\n"
 msgstr "%s: opþiunea `-W %s' nu permite un argument\n"
 
-#: src/main/extractor.c:2153
+#: src/main/extractor.c:2294
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "iniþializare mecanismului de plugin a eºuat: %s!\n"
@@ -917,98 +917,103 @@ msgstr ""
 "Argumentele obligatorii pentru opþiunile lungi sunt obligatorii ºi pentru "
 "opþiunile scurte.\n"
 
-#: src/main/extract.c:174
+#: src/main/extract.c:170
 msgid "print output in bibtex format"
 msgstr "afiºeazã ieºirea în format bibtex"
 
-#: src/main/extract.c:176
+#: src/main/extract.c:172
 msgid "produce grep-friendly output (all results on one line per file)"
 msgstr ""
 
-#: src/main/extract.c:178
+#: src/main/extract.c:174
 msgid "print this help"
 msgstr "afiºeazã acest mesaj de ajutor"
 
-#: src/main/extract.c:180
+#: src/main/extract.c:176
 msgid "run plugins in-process (simplifies debugging)"
 msgstr ""
 
-#: src/main/extract.c:182
+#: src/main/extract.c:178
 msgid "load an extractor plugin named LIBRARY"
 msgstr "încarcã un plugin extractor numit LIBRÃRIE"
 
-#: src/main/extract.c:184
+#: src/main/extract.c:180
 msgid "list all keyword types"
 msgstr "listeazã toate tipurile de cuvinte cheie"
 
-#: src/main/extract.c:186
+#: src/main/extract.c:182
 msgid "do not use the default set of extractor plugins"
 msgstr "nu folosi setul implicit de plugin-uri extractor"
 
-#: src/main/extract.c:188
+#: src/main/extract.c:184
 msgid "print only keywords of the given TYPE (use -L to get a list)"
 msgstr ""
 "afiºeazã numai cuvintele cheie pentru TIP-ul dat (foloseºte -L pentru a "
 "obþine o listã"
 
-#: src/main/extract.c:190
+#: src/main/extract.c:186
 msgid "print the version number"
 msgstr "afiºeazã numãrul versiunii"
 
-#: src/main/extract.c:192
+#: src/main/extract.c:188
 msgid "be verbose"
 msgstr "fi vorbãreþ"
 
-#: src/main/extract.c:194
+#: src/main/extract.c:190
 msgid "do not print keywords of the given TYPE"
 msgstr "nu afiºa cuvinte cheie de TIP-ul dat"
 
-#: src/main/extract.c:197
+#: src/main/extract.c:193
 msgid "extract [OPTIONS] [FILENAME]*"
 msgstr "extract [OPÞIUNI] [NUME_FIªIER]*"
 
-#: src/main/extract.c:198
+#: src/main/extract.c:194
 msgid "Extract metadata from files."
 msgstr "Extrage metadata din fiºiere."
 
-#: src/main/extract.c:238
+#: src/main/extract.c:235
 #, fuzzy, c-format
 msgid "Found by `%s' plugin:\n"
 msgstr "Încãrcarea plugin-ului '%s' a eºuat: %s\n"
 
-#: src/main/extract.c:245
+#: src/main/extract.c:238 src/main/extract.c:319
+#: src/main/extractor_metatypes.c:136 src/main/extractor_print.c:68
+msgid "unknown"
+msgstr "necunoscut"
+
+#: src/main/extract.c:243
 #, c-format
 msgid "%s - (unknown, %u bytes)\n"
 msgstr ""
 
-#: src/main/extract.c:266
+#: src/main/extract.c:267
 #, fuzzy, c-format
 msgid "%s - (binary, %u bytes)\n"
 msgstr "%s - (binar)\n"
 
-#: src/main/extract.c:603 src/main/extract.c:613
+#: src/main/extract.c:600 src/main/extract.c:610
 #, c-format
 msgid ""
 "Illegal combination of options, cannot combine multiple styles of printing.\n"
 msgstr ""
 
-#: src/main/extract.c:640
+#: src/main/extract.c:637
 #, fuzzy, c-format
 msgid "You must specify an argument for the `%s' option (option ignored).\n"
 msgstr ""
 "Trebuie sã specificaþi un argument pentru opþiunea '%s' (opþiune ignoratã).\n"
 
-#: src/main/extract.c:705
+#: src/main/extract.c:702
 #, c-format
 msgid "Use --help to get a list of options.\n"
 msgstr "Folosiþi --help pentru a obþine o listã de opþiuni.\n"
 
-#: src/main/extract.c:737
+#: src/main/extract.c:740
 #, c-format
 msgid "%% BiBTeX file\n"
 msgstr "%% BiBTeX file\n"
 
-#: src/main/extract.c:744
+#: src/main/extract.c:747
 #, c-format
 msgid "Keywords for file %s:\n"
 msgstr "Cuvinte cheie pentru fiºier %s:\n"
@@ -1385,10 +1390,6 @@ msgstr "Þarã"
 #: src/main/extractor_metatypes.c:134
 msgid "ISO 2-letter country code for the country of origin"
 msgstr ""
-
-#: src/main/extractor_metatypes.c:136
-msgid "unknown"
-msgstr "necunoscut"
 
 #: src/main/extractor_metatypes.c:137
 msgid "specifics are not known"
