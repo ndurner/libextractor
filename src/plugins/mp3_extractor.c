@@ -183,8 +183,6 @@ EXTRACTOR_mp3_extract (const unsigned char *data,
         default:
           return 0;
         }
-      if (!layer || !mpeg_ver)
-        return 0;            /*unknown mpeg type */
       if (mpeg_ver < MPEG_V25)
         idx_num = (mpeg_ver - 1) * 3 + layer - 1;
       else
