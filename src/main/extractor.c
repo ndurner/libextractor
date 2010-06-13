@@ -1650,8 +1650,8 @@ make_shm (int is_tail,
       CloseHandle (*mappedFile);
       return 1;
     }
-#endif
   return 0;
+#endif
 }
 
 

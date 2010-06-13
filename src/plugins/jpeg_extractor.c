@@ -81,7 +81,7 @@ next_marker (const unsigned char **data, const unsigned char *end)
     {
       c = NEXTC (data, end);
     }
-  while ((c == 0xFF) && (c != -1));
+  while (c == 0xFF);
   return c;
 }
 

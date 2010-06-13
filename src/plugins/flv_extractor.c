@@ -689,6 +689,8 @@ static void handleASEnd(unsigned char type, void * value, void * userdata)
   {
     double n = *((double *)value);
     switch (state->currentAttribute) {
+      case FLV_NONE: /* make gcc happy */
+	break;
       case FLV_STEREO:
         break;
       case FLV_ACHANNELS:
@@ -1089,11 +1091,11 @@ static char * printAudioFormat(FLVStreamInfo *stinfo)
   size_t len = MAX_FLV_FORMAT_LINE;
 
   n = 0;
-  if (stinfo->audioRate != -1 && n < len) {
+  if ( (stinfo->audioRate != -1) && (n < len)) {
       n += snprintf(s+n, len-n, "%s Hz", FLVAudioSampleRates[stinfo->audioRate]);
   }
 
-  if (stinfo->audioSampleBits != -1 && n < len) {
+  if ((stinfo->audioSampleBits != -1) && (n < len)) {
     if (n > 0)
       n += snprintf(s+n, len-n, ", ");
     if (n < len)
@@ -1101,7 +1103,7 @@ static char * printAudioFormat(FLVStreamInfo *stinfo)
                     FLVAudioSampleSizes[stinfo->audioSampleBits]);
   }
 
-  if (stinfo->audioChannels != -1 && n < len) {
+  if ((stinfo->audioChannels != -1) && (n < len)) {
     if (n > 0)
       n += snprintf(s+n, len-n, ", ");
     if (n < len) {
@@ -1114,21 +1116,21 @@ static char * printAudioFormat(FLVStreamInfo *stinfo)
     }
   }
 
-  if (stinfo->audioCodec > -1 && stinfo->audioCodec < 12 &&
-      FLVAudioCodecs[stinfo->audioCodec] != NULL && n < len) {
+  if ((stinfo->audioCodec > -1) && (stinfo->audioCodec < 12) &&
+      (FLVAudioCodecs[stinfo->audioCodec] != NULL) && (n < len)) {
     if (n > 0)
       n += snprintf(s+n, len-n, ", ");
     if (n < len)
       n += snprintf(s+n, len-n, "%s", FLVAudioCodecs[stinfo->audioCodec]);
   }
-  else if (stinfo->audioCodecStr != NULL && n < len) {
+  else if ((stinfo->audioCodecStr != NULL) && (n < len)) {
     if (n > 0)
       n += snprintf(s+n, len-n, ", ");
     if (n < len)
       n += snprintf(s+n, len-n, "%s", stinfo->audioCodecStr);    
   }
 
-  if (stinfo->audioDataRate != 0.0 && n < len) {
+  if ((stinfo->audioDataRate != 0.0) && (n < len)) {
     if (n > 0)
       n += snprintf(s+n, len-n, ", ");
     if (n < len)

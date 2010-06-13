@@ -18,6 +18,12 @@
      Boston, MA 02111-1307, USA.
 */
 
+/* This code is based in part on
+   unzip 1.00 Copyright 1998-2003 Gilles Vollant
+   http://www.winimage.com/zLibDll"
+*/
+
+
 #include "platform.h"
 #include <ctype.h>
 #include "extractor.h"
@@ -94,8 +100,6 @@ typedef struct unz_global_info_s
 #define SIZEZIPLOCALHEADER (0x1e)
 
 
-const char unz_copyright[] =
-   " unzip 1.00 Copyright 1998-2003 Gilles Vollant - http://www.winimage.com/zLibDll";
 
 /* EXTRACTOR_unzip_file_info_interntal contain internal info about a file in zipfile*/
 typedef struct unz_file_info_internal_s
@@ -583,8 +587,6 @@ EXTRACTOR_common_unzip_open2 (const char *path,
 
     int err=EXTRACTOR_UNZIP_OK;
 
-    if (unz_copyright[0]!=' ')
-        return NULL;
     memset (&us, 0, sizeof(us));	
     us.z_filefunc = *pzlib_filefunc_def;
 
@@ -1007,7 +1009,7 @@ unzlocal_CheckCurrentFileCoherencyHeader (unz_s* s,
     uLong uMagic,uData,uFlags;
     uLong size_filename;
     uLong size_extra_field;
-    int err=EXTRACTOR_UNZIP_OK;
+    int err = EXTRACTOR_UNZIP_OK;
 
     *piSizeVar = 0;
     *poffset_local_extrafield = 0;
@@ -1015,21 +1017,13 @@ unzlocal_CheckCurrentFileCoherencyHeader (unz_s* s,
 
     if (ZSEEK(s->z_filefunc, s->filestream,s->cur_file_info_internal.offset_curfile +
                                 s->byte_before_the_zipfile,ZLIB_FILEFUNC_SEEK_SET)!=0)
-        return EXTRACTOR_UNZIP_ERRNO;
-
-
-    if (err==EXTRACTOR_UNZIP_OK) {
-        if (unzlocal_getLong(&s->z_filefunc, s->filestream,&uMagic) != EXTRACTOR_UNZIP_OK)
-            err=EXTRACTOR_UNZIP_ERRNO;
-        else if (uMagic!=0x04034b50)
-            err=EXTRACTOR_UNZIP_BADZIPFILE;
-    }
+      return EXTRACTOR_UNZIP_ERRNO;
+    if (unzlocal_getLong(&s->z_filefunc, s->filestream,&uMagic) != EXTRACTOR_UNZIP_OK)
+      err=EXTRACTOR_UNZIP_ERRNO;
+    else if (uMagic!=0x04034b50)
+      err=EXTRACTOR_UNZIP_BADZIPFILE;   
     if (unzlocal_getShort(&s->z_filefunc, s->filestream,&uData) != EXTRACTOR_UNZIP_OK)
         err=EXTRACTOR_UNZIP_ERRNO;
-/*
-    else if ((err==EXTRACTOR_UNZIP_OK) && (uData!=s->cur_file_info.wVersion))
-        err=EXTRACTOR_UNZIP_BADZIPFILE;
-*/
     if (unzlocal_getShort(&s->z_filefunc, s->filestream,&uFlags) != EXTRACTOR_UNZIP_OK)
         err=EXTRACTOR_UNZIP_ERRNO;
 
