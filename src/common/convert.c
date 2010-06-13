@@ -50,7 +50,10 @@ EXTRACTOR_common_convert_to_utf8 (const char *input, size_t len, const char *cha
   tmpSize = 3 * len + 4;
   tmp = malloc (tmpSize);
   if (tmp == NULL)
-    return NULL;
+    {
+      iconv_close (cd);
+      return NULL;
+    }
   itmp = tmp;
   finSize = tmpSize;
   if (iconv (cd, (char **) &input, &len, &itmp, &finSize) == SIZE_MAX)
