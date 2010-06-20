@@ -1399,6 +1399,9 @@ start_process (struct EXTRACTOR_PluginList *plugin)
   int p2[2];
   pid_t pid;
   int status;
+#ifdef WINDOWS
+  HANDLE process;
+#endif
 
   plugin->cpid = -1;
 #ifndef WINDOWS
@@ -1461,8 +1464,15 @@ start_process (struct EXTRACTOR_PluginList *plugin)
   if (plugin->cpipe_in == NULL)
     {
       perror ("fdopen");
+#ifndef WINDOWS
       (void) kill (plugin->cpid, SIGKILL);
       waitpid (plugin->cpid, &status, 0);
+#else
+      process = OpenProcess (PROCESS_TERMINATE | SYNCHRONIZE, FALSE, plugin->cpid);
+      TerminateProcess (process, 0);
+      WaitForSingleObject (process, INFINITE);
+      CloseHandle (process);
+#endif
       close (p1[1]);
       close (p2[0]);
       plugin->cpid = -1;
