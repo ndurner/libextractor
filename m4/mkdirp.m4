@@ -43,7 +43,7 @@ AC_DEFUN([AM_PROG_MKDIR_P],
   #  To support the latter case, we have to write
   #     test -z "$(somedir)" || $(mkdir_p) $(DESTDIR)$(somedir),
   #  so the `.' trick is pointless.
-  mkdir_p='mkdir -p --'
+  MKDIR_P='mkdir -p --'
 else
   # On NextStep and OpenStep, the `mkdir' command does not
   # recognize any option.  It will interpret all options as
@@ -55,9 +55,9 @@ else
   done
   # $(mkinstalldirs) is defined by Automake if mkinstalldirs exists.
   if test -f "$ac_aux_dir/mkinstalldirs"; then
-    mkdir_p='$(mkinstalldirs)'
+    MKDIR_P='$(mkinstalldirs)'
   else
-    mkdir_p='$(install_sh) -d'
+    MKDIR_P='$(install_sh) -d'
   fi
 fi
-AC_SUBST([mkdir_p])])
+AC_SUBST([MKDIR_P])])
