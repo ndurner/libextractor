@@ -2250,12 +2250,7 @@ EXTRACTOR_extract (struct EXTRACTOR_PluginList *plugins,
        (fstatbuf.st_size > fsize) &&
        (fstatbuf.st_size > MAX_READ) )
     {
-#ifndef WINDOWS
-      pg = sysconf (_SC_PAGE_SIZE);
-#else
-      GetSystemInfo(&sys);
-      pg = sys.dwPageSize;
-#endif
+      pg = SYSCONF (_SC_PAGE_SIZE);
       if ( (pg > 0) &&
 	   (pg < MAX_READ) )
 	{
