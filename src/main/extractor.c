@@ -1783,21 +1783,30 @@ extract (struct EXTRACTOR_PluginList *plugins,
 	  if (0 != extract_oop (ppos, fn, 
 				(tptr != NULL) ? tfn : NULL,
 				proc, proc_cls))
-	    return;
+	    {
+	      ppos = NULL;
+	      break;
+	    }
 	  if (ppos->cpid == -1)
 	    {
 	      start_process (ppos);
 	      if (0 != extract_oop (ppos, fn, 
 				    (tptr != NULL) ? tfn : NULL,
 				    proc, proc_cls))
-		return;
+		{
+		  ppos = NULL;
+		  break;
+		}
 	    }
 	  break;
 	case EXTRACTOR_OPTION_OUT_OF_PROCESS_NO_RESTART:
 	  if (0 != extract_oop (ppos, fn,
 				(tptr != NULL) ? tfn : NULL,
 				proc, proc_cls))
-	    return;
+	    {
+	      ppos = NULL;
+	      break;
+	    }
 	  break;
 	case EXTRACTOR_OPTION_IN_PROCESS:	  	  
 	  want_tail = ( (ppos->specials != NULL) &&
@@ -1818,7 +1827,10 @@ extract (struct EXTRACTOR_PluginList *plugins,
 						  proc, 
 						  proc_cls,
 						  ppos->plugin_options)) )
-		    return;
+		    {
+		      ppos = NULL;
+		      break;
+		    }
 		}
 	      else
 		{
@@ -1828,7 +1840,10 @@ extract (struct EXTRACTOR_PluginList *plugins,
 						  proc, 
 						  proc_cls,
 						  ppos->plugin_options)) )
-		    return;
+		    {
+		      ppos = NULL;
+		      break;
+		    }
 		}
 	    }
 	  break;
