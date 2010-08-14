@@ -354,7 +354,11 @@ EXTRACTOR_id3v23_extract (const unsigned char *data,
 		    off++;
 		  if ( (off >= csize) ||
 		       (data[pos+off] != '\0') )
-		    return 0; /* malformed */
+		    {
+		      if (mime != NULL)
+			free (mime);
+		      return 0; /* malformed */
+		    }
 		  off++;
 		  if ( (mime != NULL) &&
 		       (0 == strcasecmp ("-->",
