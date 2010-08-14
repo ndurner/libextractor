@@ -1179,6 +1179,7 @@ process_requests (struct EXTRACTOR_PluginList *plugin,
   struct IpcHeader hdr;
   size_t size;
   int want_tail;
+  int do_break;
 #ifdef WINDOWS
   HANDLE map;
 #endif
@@ -1250,7 +1251,7 @@ process_requests (struct EXTRACTOR_PluginList *plugin,
 	{
 	  fn = hfn;	
 	}
-
+      do_break = 0;
 #ifndef WINDOWS
       if ( (-1 != (shmid = shm_open (fn, O_RDONLY, 0))) &&
 	   (SIZE_MAX != (size = lseek (shmid, 0, SEEK_END))) &&
@@ -1262,15 +1263,14 @@ process_requests (struct EXTRACTOR_PluginList *plugin,
       if (ptr != NULL)
 #endif
 	{
-	  if ( (plugin->extractMethod != NULL) &&
-	       (0 != plugin->extractMethod (ptr,
-					    size,
-					    &transmit_reply,
-					    &out,
-					    plugin->plugin_options)) )
-	    break;	    
-	  if (0 != write_all (out, &hdr, sizeof(hdr)))
-	    break;
+	  if ( ( (plugin->extractMethod != NULL) &&
+		 (0 != plugin->extractMethod (ptr,
+					      size,
+					      &transmit_reply,
+					      &out,
+					      plugin->plugin_options)) ) ||
+	       (0 != write_all (out, &hdr, sizeof(hdr))) )
+	    do_break = 1;
 	}
 #ifndef WINDOWS
       if ( (ptr != NULL) &&
@@ -1284,6 +1284,8 @@ process_requests (struct EXTRACTOR_PluginList *plugin,
       if (map != NULL)
         CloseHandle (map);
 #endif
+      if (do_break)
+	break;
       if ( (plugin->specials != NULL) &&
 	   (NULL != strstr (plugin->specials,
 			    "force-kill")) )
