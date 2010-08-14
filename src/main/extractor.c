@@ -1650,8 +1650,9 @@ make_shm (int is_tail,
        (NULL == (*ptr = mmap (NULL, size, PROT_WRITE, MAP_SHARED, *shmid, 0))) ||
        (*ptr == (void*) -1) )
     {
-      close (*shmid);	
+      close (*shmid);
       *shmid = -1;
+      shm_unlink (fn);
       return 1;
     }
   return 0;
