@@ -45,9 +45,6 @@ MODIFICATIONS.
    p - (unpack only) value is a pointer to a pointer.  Generate the buffer
        to hold the data.
  */
-
-int EXTRACTOR_common_cat_pack(void * buf, const char *fmt, ... );
-
 int EXTRACTOR_common_cat_unpack(const void * buf, const char *fmt, ... );
 
 struct cat_bvec {
