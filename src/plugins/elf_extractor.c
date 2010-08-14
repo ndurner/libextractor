@@ -602,6 +602,8 @@ EXTRACTOR_elf_extract (const char *data,
                   break;
                 }
             }
+	  if (six == ehdr.e_shnum)
+	    return 0; /* stringIdx not found */
 
           for (id = 0; id < dc; id++)
             {
