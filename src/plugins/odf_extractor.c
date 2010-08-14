@@ -196,18 +196,20 @@ EXTRACTOR_odf_extract (const char *data,
     return 0; /* hardly meta-data! */
   }
   buf = malloc(buf_size+1);
-  if (buf == NULL) {
-    EXTRACTOR_common_unzip_close_current_file(uf);
-    EXTRACTOR_common_unzip_close(uf);
-    return 0; /* out of memory */
-  }
+  if (buf == NULL) 
+    {
+      EXTRACTOR_common_unzip_close_current_file(uf);
+      EXTRACTOR_common_unzip_close(uf);
+      return 0; /* out of memory */
+    }
 
-  if (buf_size != EXTRACTOR_common_unzip_read_current_file(uf,buf,buf_size)) {
-    free(buf);
-    EXTRACTOR_common_unzip_close_current_file(uf);
-    EXTRACTOR_common_unzip_close(uf);
-    return 0;
-  }
+  if (buf_size != EXTRACTOR_common_unzip_read_current_file(uf,buf,buf_size)) 
+    {
+      free(buf);
+      EXTRACTOR_common_unzip_close_current_file(uf);
+      EXTRACTOR_common_unzip_close(uf);
+      return 0;
+    }
   EXTRACTOR_common_unzip_close_current_file(uf);
   /* we don't do "proper" parsing of the meta-data but rather use some heuristics
      to get values out that we understand */
@@ -223,7 +225,6 @@ EXTRACTOR_odf_extract (const char *data,
       char * spos;
       char * epos;
       char needle[256];
-      char * key;
       int oc;
 
       pbuf = buf;
@@ -263,24 +264,27 @@ EXTRACTOR_odf_extract (const char *data,
 	    epos++;
 	  }
 	}
-	if (spos != epos) {
-	  key = malloc(1+epos-spos);
-	  memcpy(key, spos, epos-spos);
-	  key[epos-spos] = '\0';
-	  if (0 != proc (proc_cls, 
-			 "odf",
-			 tmap[i].type,
-			 EXTRACTOR_METAFORMAT_UTF8,
-			 "text/plain",
-			 key,
-			 strlen (key)+1))
-	    {
-	      free(buf);
-	      EXTRACTOR_common_unzip_close(uf);
-	      return 1;	      
-	    }
-	  pbuf = epos;
-	} else
+	if (spos != epos) 
+	  {
+	    char key[epos - spos + 1];
+
+	    memcpy(key, spos, epos-spos);
+	    key[epos-spos] = '\0';
+	    if (0 != proc (proc_cls, 
+			   "odf",
+			   tmap[i].type,
+			   EXTRACTOR_METAFORMAT_UTF8,
+			   "text/plain",
+			   key,
+			   epos - spos + 1))
+	      {
+		free(buf);
+		EXTRACTOR_common_unzip_close(uf);
+		return 1;	      
+	      }	  
+	    pbuf = epos;
+	  } 
+	else
 	  break;
       }
     }
@@ -289,4 +293,5 @@ EXTRACTOR_odf_extract (const char *data,
   EXTRACTOR_common_unzip_close(uf);
   return 0;
 }
+
 
