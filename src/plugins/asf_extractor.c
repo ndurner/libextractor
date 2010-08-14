@@ -735,6 +735,7 @@ EXTRACTOR_asf_extract (const char *data,
 		       const char *options)
 {
   demux_asf_t this;
+  size_t slen;
 
   memset (&this, 0, sizeof (demux_asf_t));
   this.input = data;
@@ -743,38 +744,38 @@ EXTRACTOR_asf_extract (const char *data,
   if (0 == asf_read_header (&this))
     return 0;    
   
-  if ( ( (strlen(this.title) > 0) &&
+  if ( ( (0 < (slen = strlen(this.title))) &&
 	 (0 != proc (proc_cls, 
 		     "asf",
 		     EXTRACTOR_METATYPE_TITLE,
 		     EXTRACTOR_METAFORMAT_C_STRING,
 		     "text/plain",
 		     this.title,
-		     strlen(this.title) + 1)) ) ||
-       ( (strlen(this.author) > 0) &&
+		     slen + 1)) ) ||
+       ( (0 < (slen = strlen(this.author))) &&
 	 (0 != proc (proc_cls, 
 		     "asf",
 		     EXTRACTOR_METATYPE_AUTHOR_NAME,
 		     EXTRACTOR_METAFORMAT_C_STRING,
 		     "text/plain",
 		     this.author,
-		     strlen(this.author) + 1)) ) ||
-       ( (strlen(this.comment) > 0) &&
+		     slen + 1)) ) ||
+       ( (0 < (slen = strlen(this.comment))) &&
 	 (0 != proc (proc_cls, 
 		     "asf",
 		     EXTRACTOR_METATYPE_COMMENT,
 		     EXTRACTOR_METAFORMAT_C_STRING,
 		     "text/plain",
 		     this.comment,
-		     strlen(this.comment) + 1)) ) ||
-       ( (strlen(this.copyright) > 0) &&
+		     slen + 1)) ) ||
+       ( (0 < (slen = strlen(this.copyright))) &&
 	 (0 != proc (proc_cls, 
 		     "asf",
 		     EXTRACTOR_METATYPE_COPYRIGHT,
 		     EXTRACTOR_METAFORMAT_C_STRING,
 		     "text/plain",
 		     this.copyright,
-		     strlen(this.copyright) + 1)) ) ||
+		     slen + 1)) ) ||
        (0 != proc (proc_cls, 
 		   "asf",
 		   EXTRACTOR_METATYPE_MIMETYPE,
