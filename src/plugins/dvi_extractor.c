@@ -46,7 +46,6 @@ parseZZZ (const char *data,
   size_t slen;
   size_t end;
   int i;
-  char *value;
 
   end = pos + len;
   slen = strlen ("ps:SDict begin [");
@@ -70,24 +69,21 @@ parseZZZ (const char *data,
                   while ((slen < end) && (data[slen] != ')'))
                     slen++;
                   slen = slen - pos;
-                  value = malloc (slen + 1);
-		  if (value != NULL)
-		    {
-		      value[slen] = '\0';
-		      memcpy (value, &data[pos], slen);
-		      if (0 != proc (proc_cls, 
-				     "dvi",
-				     tmap[i].type,
-				     EXTRACTOR_METAFORMAT_C_STRING,
-				     "text/plain",
-				     value,
-				     strlen (value) +1))
-			{
-			  free (value);
-			  return 1;
-			}
-		      free (value);
-		    }
+		  {
+		    char value[slen + 1];
+		    value[slen] = '\0';
+		    memcpy (value, &data[pos], slen);
+		    if (0 != proc (proc_cls, 
+				   "dvi",
+				   tmap[i].type,
+				   EXTRACTOR_METAFORMAT_C_STRING,
+				   "text/plain",
+				   value,
+				   slen +1))
+		      {
+			return 1;
+		      }
+		  }
                   pos += slen + 1;
                 }
             }
