@@ -851,6 +851,8 @@ EXTRACTOR_plugin_add (struct EXTRACTOR_PluginList * prev,
       return prev;
     }
   result = calloc (1, sizeof (struct EXTRACTOR_PluginList));
+  if (result == NULL)
+    return prev;
   result->next = prev;
   result->short_libname = strdup (library);
   if (result->short_libname == NULL)
