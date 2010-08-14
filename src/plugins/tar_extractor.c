@@ -445,79 +445,81 @@ EXTRACTOR_tar_extract (const char *data,
        * Locate the file names.
        */
       if ((0 != (format_member & TAR_POSIX2001_FORMAT))
-          && (('x' == typeFlag) || ('X' == typeFlag)))
-        {
-
-          if (size <= pos)
-            break;
-
-          else if ((8 <= fsize) && fsize <= (unsigned long long) (size - pos))
-            {
-              const char *keyptr = data + pos;
-              const char *valptr = NULL;
-              const char *nameptr = NULL;
-              unsigned int keylength = 0;
-              unsigned int namelength = 0;
-
-              while (keyptr < data + pos + (size_t) fsize)
-                {
-                  if (('0' > *keyptr) || ('9' < *keyptr))
-                    {
-                      keyptr += 1;
-                      continue;
-                    }
-
-                  keylength =
-                    (unsigned int) strtoul (keyptr, (char **) &valptr, 10);
-                  if ((0 < keylength) && (NULL != valptr)
-                      && (keyptr != valptr))
-                    {
-                      unsigned int difflength = 0;
-
-                      while ((valptr < data + pos + (size_t) fsize)
-                             && (' ' == *valptr))
-                        valptr += 1;
-
-                      difflength = (valptr - keyptr);
-
-                      if (0 == memcmp (valptr, "path=", 5))
-                        {
-                          nameptr = valptr + 5;
-                          namelength = keylength - (nameptr - keyptr);
-                        }
-                      else
-                        {
-
-                          if ((keylength > (valptr - keyptr) + 4 + 2)
-                              && (0 == memcmp (valptr, "GNU.", 4)))
-                            format_archive |= TAR_GNU2004_FORMAT;
-
-                          else if ((keylength > (valptr - keyptr) + 7 + 2)
-                                   && (0 == memcmp (valptr, "SCHILY.", 7)))
-                            format_archive |= TAR_SCHILLING2001_FORMAT;
-
-                          else if ((keylength > (valptr - keyptr) + 4 + 2)
-                                   && (0 == memcmp (valptr, "SUN.", 4)))
-                            format_archive |= TAR_SOLARIS2001_FORMAT;
-                        }
-
-                      keyptr += keylength;
-                    }
-                  else
-                    {
-                      nameptr = NULL;
-                      break;
-                    }
+	  && (('x' == typeFlag) || ('X' == typeFlag)))
+	{
+	  
+	  if (size <= pos)
+	    break;
+	  
+	  else if ((8 <= fsize) && fsize <= (unsigned long long) (size - pos))
+	    {
+	      const char *keyptr = data + pos;
+	      const char *valptr = NULL;
+	      const char *nameptr = NULL;
+	      unsigned int keylength = 0;
+	      unsigned int namelength = 0;
+	      
+	      while (keyptr < data + pos + (size_t) fsize)
+		{
+		  if (('0' > *keyptr) || ('9' < *keyptr))
+		    {
+		      keyptr += 1;
+		      continue;
+		    }
+		  
+		  keylength =
+		    (unsigned int) strtoul (keyptr, (char **) &valptr, 10);
+		  if ((0 < keylength) && (NULL != valptr)
+		      && (keyptr != valptr))
+		    {
+		      unsigned int difflength = 0;
+		      
+		      while ((valptr < data + pos + (size_t) fsize)
+			     && (' ' == *valptr))
+			valptr += 1;
+		      
+		      difflength = (valptr - keyptr);
+		      
+		      if (0 == memcmp (valptr, "path=", 5))
+			{
+			  nameptr = valptr + 5;
+			  namelength = keylength - (nameptr - keyptr);
+			}
+		      else
+			{
+			  
+			  if ((keylength > (valptr - keyptr) + 4 + 2)
+			      && (0 == memcmp (valptr, "GNU.", 4)))
+			    format_archive |= TAR_GNU2004_FORMAT;
+			  
+			  else if ((keylength > (valptr - keyptr) + 7 + 2)
+				   && (0 == memcmp (valptr, "SCHILY.", 7)))
+			    format_archive |= TAR_SCHILLING2001_FORMAT;
+			  
+			  else if ((keylength > (valptr - keyptr) + 4 + 2)
+				   && (0 == memcmp (valptr, "SUN.", 4)))
+			    format_archive |= TAR_SOLARIS2001_FORMAT;
+			}
+		      
+		      keyptr += keylength;
+		    }
+		  else
+		    {
+		      nameptr = NULL;
+		      break;
+		    }
                 }
-
+	      
               if ((NULL != nameptr) && (0 != *nameptr)
                   && ((size - (nameptr - data)) >= namelength)
-                  && (1 < namelength))
+                  && (1 < namelength) )
                 {
                   /*
                    * There is an 1-offset because POSIX.1-2001
                    * field separator is counted in field length.
                    */
+		  if (fname != NULL)
+		    free (fname);
                   fname = malloc (namelength);
                   if (NULL != fname)
                     {
@@ -552,6 +554,8 @@ EXTRACTOR_tar_extract (const char *data,
 
               if (0 < length)
                 {
+		  if (fname != NULL)
+		    free (fname);
                   fname = malloc (1 + length);
                   if (NULL != fname)
                     {
@@ -813,6 +817,8 @@ EXTRACTOR_tar_extract (const char *data,
 
       if (0 < format_length)
         {
+	  if (fname != NULL)
+	    free (fname);
           format = malloc (format_length + 5);
 
           if (NULL != format)

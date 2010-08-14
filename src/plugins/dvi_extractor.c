@@ -121,7 +121,6 @@ EXTRACTOR_dvi_extract (const unsigned char *data,
 		       const char *options)
 {
   unsigned int klen;
-  char *comment;
   uint32_t pos;
   uint32_t opos;
   unsigned int len;
