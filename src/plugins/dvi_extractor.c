@@ -188,24 +188,20 @@ EXTRACTOR_dvi_extract (const unsigned char *data,
 		 "application/x-dvi",
 		 strlen ("application/x-dvi") +1))
     return 1;
-  comment = malloc (klen + 1);
-  if (comment != NULL)
-    {
-      comment[klen] = '\0';
-      memcpy (comment, &data[15], klen);
-      if (0 != proc (proc_cls, 
-		     "dvi",
-		     EXTRACTOR_METATYPE_COMMENT,
-		     EXTRACTOR_METAFORMAT_UTF8,
-		     "text/plain",
-		     comment,
-		     strlen (comment) +1))
-	{
-	  free (comment);
-	  return 1;
-	}
-      free (comment);
-    }
+  {
+    char comment[klen + 1];
+    
+    comment[klen] = '\0';
+    memcpy (comment, &data[15], klen);
+    if (0 != proc (proc_cls, 
+		   "dvi",
+		   EXTRACTOR_METATYPE_COMMENT,
+		   EXTRACTOR_METAFORMAT_UTF8,
+		   "text/plain",
+		   comment,
+		   klen +1))
+      return 1;
+  }
   /* try to find PDF/ps special */
   pos = opos;
   while (pos < size - 100)
