@@ -1170,6 +1170,8 @@ process_requests (struct EXTRACTOR_PluginList *plugin,
 {
   char hfn[256];
   char tfn[256];
+  size_t hfn_len;
+  size_t tfn_len;
   char *fn;
   FILE *fin;
   void *ptr;
@@ -1228,17 +1230,19 @@ process_requests (struct EXTRACTOR_PluginList *plugin,
     }
   while (NULL != fgets (hfn, sizeof(hfn), fin))
     {
-      if (strlen (hfn) <= 1)
+      hfn_len = strlen (hfn);
+      if (hfn_len <= 1)
 	break;
       ptr = NULL;
-      hfn[strlen(hfn)-1] = '\0'; /* kill newline */
+      hfn[--hfn_len] = '\0'; /* kill newline */
       if (NULL == fgets (tfn, sizeof(tfn), fin))
 	break;
       if ('!' != tfn[0])
 	break;
-      tfn[strlen(tfn)-1] = '\0'; /* kill newline */
+      tfn_len = strlen (tfn);
+      tfn[--tfn_len] = '\0'; /* kill newline */
       if ( (want_tail) &&
-	   (strlen (tfn) > 1) )
+	   (tfn_len > 1) )
 	{
 	  fn = &tfn[1];
 	}
