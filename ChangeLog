@@ -1,3 +1,6 @@
+Sat Aug 14 23:01:59 CEST 2010
+	Various minor bugfixes (largely resource leaks on error paths). -CG
+
 Sun Jun 13 13:15:43 CEST 2010
 	Releasing libextractor 0.6.2.
 
