@@ -1854,6 +1854,8 @@ extract (struct EXTRACTOR_PluginList *plugins,
 	case EXTRACTOR_OPTION_DISABLED:
 	  break;
 	}      
+      if (ppos == NULL)
+	break;
       ppos = ppos->next;
     }
   if (want_shm)
