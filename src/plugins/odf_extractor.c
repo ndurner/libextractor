@@ -68,41 +68,49 @@ libextractor_oo_getmimetype(EXTRACTOR_unzip_file uf) {
   char * buf = NULL;
   size_t buf_size = 0;
 
-  if (EXTRACTOR_UNZIP_OK == EXTRACTOR_common_unzip_local_file(uf,
-			      "mimetype",
-			      CASESENSITIVITY)) {
-    if ( (EXTRACTOR_UNZIP_OK == EXTRACTOR_common_unzip_get_current_file_info(uf,
-					  &file_info,
-					  filename_inzip,
-					  sizeof(filename_inzip),
-					  NULL,
-					  0,
-					  NULL,
-					  0) &&
-	  (EXTRACTOR_UNZIP_OK == EXTRACTOR_common_unzip_open_current_file3(uf,NULL, NULL, 0)) ) ) {
-      buf_size = file_info.uncompressed_size;
-
-      if (buf_size > 1024) {
+  if (EXTRACTOR_UNZIP_OK != EXTRACTOR_common_unzip_local_file(uf,
+							      "mimetype",
+							      CASESENSITIVITY))
+    return NULL;
+  if ( (EXTRACTOR_UNZIP_OK == EXTRACTOR_common_unzip_get_current_file_info(uf,
+									   &file_info,
+									   filename_inzip,
+									   sizeof(filename_inzip),
+									   NULL,
+									   0,
+									   NULL,
+									   0) &&
+	(EXTRACTOR_UNZIP_OK == EXTRACTOR_common_unzip_open_current_file3(uf, NULL, NULL, 0)) ) ) {
+    buf_size = file_info.uncompressed_size;
+    
+    if (buf_size > 1024) 
+      {
 	/* way too large! */
-      } else if (NULL == (buf = malloc(1 + buf_size))) {
-	/* memory exhausted! */
-      } else if (buf_size != (size_t) EXTRACTOR_common_unzip_read_current_file(uf,buf,buf_size)) {
-        free(buf);
-        buf = NULL;
-      } else {
-	/* found something */
-        buf[buf_size] = '\0';
-        while ( (0 > buf_size) &&
-		isspace( (unsigned char) buf[buf_size - 1]))
-          buf[--buf_size] = '\0';
-        if('\0' == buf[0]) {
-          free(buf);
-          buf = NULL;
-        }
       }
-    }
-    EXTRACTOR_common_unzip_close_current_file(uf);
+    else if (NULL == (buf = malloc(1 + buf_size))) 
+      {
+	/* memory exhausted! */
+      } 
+    else if (buf_size != (size_t) EXTRACTOR_common_unzip_read_current_file(uf,buf,buf_size)) 
+      {
+	free(buf);
+	buf = NULL;
+      }
+    else 
+      {
+	/* found something */
+	buf[buf_size] = '\0';
+	while ( (0 < buf_size) &&
+		isspace( (unsigned char) buf[buf_size - 1]))
+	  buf[--buf_size] = '\0';
+	if ('\0' == buf[0]) 
+	  {
+	    free(buf);
+	    buf = NULL;
+	  }
+      }
   }
+  EXTRACTOR_common_unzip_close_current_file(uf);  
   return buf;
 }
 
