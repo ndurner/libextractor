@@ -1170,9 +1170,15 @@ EXTRACTOR_common_unzip_open_current_file3 (EXTRACTOR_unzip_file file,
 
       err=inflateInit2(&pfile_in_zip_read_info->stream, -MAX_WBITS);
       if (err == Z_OK)
-        pfile_in_zip_read_info->stream_initialised=1;
+	{
+	  pfile_in_zip_read_info->stream_initialised=1;
+	}
       else
-        return err;
+	{
+	  free (pfile_in_zip_read_info->read_buffer);
+	  free (pfile_in_zip_read_info);
+	  return err;
+	}
         /* windowBits is passed < 0 to tell that there is no zlib header.
          * Note that in this case inflate *requires* an extra "dummy" byte
          * after the compressed stream in order to complete decompression and
