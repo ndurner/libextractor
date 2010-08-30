@@ -159,6 +159,8 @@ parseComment (const unsigned char *data,
     {
       length += data[curr];
       curr += data[curr] + 1;
+      if (length > 65536)
+	break;
     }
   if (length < 65536)
     {
