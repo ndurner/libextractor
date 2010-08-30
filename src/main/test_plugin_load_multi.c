@@ -20,6 +20,10 @@ testLoadPlugins ()
     {
       fprintf (stderr,
 	       "Failed to load default plugins!\n");
+      if (el1 != NULL)
+	EXTRACTOR_plugin_remove_all (el1);
+      if (el2 != NULL)
+	EXTRACTOR_plugin_remove_all (el2);
       return 1;
     }
   EXTRACTOR_plugin_remove_all (el1);
