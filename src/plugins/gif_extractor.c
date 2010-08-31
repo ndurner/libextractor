@@ -29,12 +29,12 @@
 #define PRINT(a,b)
 #endif
 
-typedef struct
+struct GifHeader
 {
   char gif[3];
   char version[3];
-  unsigned short screen_width;
-  unsigned short screen_height;
+  uint16_t screen_width;
+  uint16_t screen_height;
   unsigned char flags;
 #define HEADER_FLAGS__SIZE_OF_GLOBAL_COLOR_TABLE 0x07
 #define HEADER_FLAGS__SORT_FLAG 0x08
@@ -42,7 +42,7 @@ typedef struct
 #define HEADER_FLAGS__GLOBAL_COLOR_TABLE_FLAG 0x80
   unsigned char background_color_index;
   unsigned char pixel_aspect_ratio;
-} GIF_HEADER;
+};
 
 #define GIF_HEADER_SIZE 13
 #define GIF_HEADER_SPEC "3b3bhhbbb"
@@ -55,20 +55,21 @@ typedef struct
  &(p)->background_color_index, \
  &(p)->pixel_aspect_ratio
 
-typedef struct
+struct GifDescriptor
 {
   unsigned char image_separator;
-  unsigned short image_left;
-  unsigned short image_top;
-  unsigned short image_width;
-  unsigned short image_height;
+  uint16_t image_left;
+  uint16_t image_top;
+  uint16_t image_width;
+  uint16_t image_height;
   unsigned char flags;
 #define DESCRIPTOR_FLAGS__PIXEL_SIZE 0x07
 #define DESCRIPTOR_FLAGS__RESERVED 0x18
 #define DESCRIPTOR_FLAGS__SORT_FLAG 0x20
 #define DESCRIPTOR_FLAGS__INTERLACE_FLAG 0x40
 #define DESCRIPTOR_FLAGS__LOCAL_COLOR_TABLE_FLAG 0x80
-} GIF_DESCRIPTOR;
+};
+
 #define GIF_DESCRIPTOR_SIZE 10
 #define GIF_DESCRIPTOR_SPEC "chhhhc"
 #define GIF_DESCRIPTOR_FIELDS(p) \
@@ -79,16 +80,16 @@ typedef struct
  &(p)->image_height, \
  &(p)->flags
 
-typedef struct
+struct GifExtension
 {
   unsigned char extension_introducer;
   unsigned char graphic_control_label;
-} GIF_EXTENSION;
+};
 
 /**
  * Skip a data block.
  * @return the position after the block
- **/
+ */
 static size_t
 skipDataBlock (const unsigned char *data, size_t pos, const size_t size)
 {
@@ -100,20 +101,22 @@ skipDataBlock (const unsigned char *data, size_t pos, const size_t size)
 /**
  * skip an extention block
  * @return the position after the block
- **/
+ */
 static size_t
 skipExtensionBlock (const unsigned char *data,
-                    size_t pos, const size_t size, const GIF_EXTENSION * ext)
+                    size_t pos, const size_t size, 
+		    const struct GifExtension * ext)
 {
-  return skipDataBlock (data, pos + sizeof (GIF_EXTENSION), size);
+  return skipDataBlock (data, pos + sizeof (struct GifExtension), size);
 }
 
 /**
  * @return the offset after the global color map
- **/
+ */
 static size_t
 skipGlobalColorMap (const unsigned char *data,
-                    const size_t size, const GIF_HEADER * header)
+                    const size_t size,
+		    const struct GifHeader * header)
 {
   size_t gct_size;
 
@@ -128,10 +131,11 @@ skipGlobalColorMap (const unsigned char *data,
 
 /**
  * @return the offset after the local color map
- **/
+ */
 static size_t
 skipLocalColorMap (const unsigned char *data,
-                   size_t pos, const size_t size, GIF_DESCRIPTOR * descriptor)
+                   size_t pos, const size_t size,
+		   const struct GifDescriptor * descriptor)
 {
   size_t lct_size;
 
@@ -151,31 +155,38 @@ parseComment (const unsigned char *data,
 	      EXTRACTOR_MetaDataProcessor proc,
 	      void *proc_cls)
 {
-  size_t length = 0;
+  size_t length;
+  size_t off;
   size_t curr = pos;
   int ret;
 
-  while ((data[curr] != 0) && (curr < size))
+  length = 0;
+  while ( (curr < size) && 
+	  (data[curr] != 0) )
     {
       length += data[curr];
       curr += data[curr] + 1;
       if (length > 65536)
 	break;
     }
-  if (length < 65536)
+  if ( (length < 65536) &&
+       (curr < size) )
     {
       char comment[length+1];
+
       curr = pos;
-      length = 0;
+      off = 0;
       while ((data[curr] != 0) && (curr < size))
 	{
-	  length += data[curr];
-	  if (length >= size)
+	  if (off + data[curr] >= size)
 	    break;
-	  memcpy (&comment[length - data[curr]], &data[curr] + 1, data[curr]);
-	  comment[length] = '\0';
+	  memcpy (&comment[off], 
+		  &data[curr] + 1,
+		  data[curr]);
+	  off += data[curr];
 	  curr += data[curr] + 1;
 	}
+      comment[off] = '\0';
       ret = proc (proc_cls, 
 		  "gif",
 		  EXTRACTOR_METATYPE_COMMENT,
@@ -186,6 +197,7 @@ parseComment (const unsigned char *data,
     }
   else
     {
+      /* too big */
       ret = 0;
     }
   return ret;
@@ -200,7 +212,8 @@ EXTRACTOR_gif_extract (const unsigned char *data,
 		       const char *options)
 {
   size_t pos;
-  GIF_HEADER header;
+  struct GifHeader header;
+  struct GifDescriptor gd;
   char tmp[128];
 
   if (size < GIF_HEADER_SIZE)
@@ -234,8 +247,6 @@ EXTRACTOR_gif_extract (const unsigned char *data,
   PRINT ("global color map ends at %d\n", pos);
   while (pos < size)
     {
-      GIF_DESCRIPTOR gd;
-
       switch (data[pos])
         {
         case ',':              /* image descriptor block */
@@ -253,7 +264,7 @@ EXTRACTOR_gif_extract (const unsigned char *data,
 		return 1;
             }
           pos = skipExtensionBlock (data, pos, size,
-                                    (GIF_EXTENSION *) & data[pos]);
+                                    (const struct GifExtension *) & data[pos]);
           break;
         case ';':
           PRINT ("hit terminator at %d!\n", pos);
