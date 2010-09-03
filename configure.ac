@@ -278,7 +278,6 @@ AC_HEADER_STDC
 AC_HEADER_DIRENT
 AC_HEADER_STDBOOL
 AC_CHECK_HEADERS([iconv.h fcntl.h netinet/in.h stdlib.h string.h unistd.h libintl.h limits.h stddef.h zlib.h])
-AC_CHECK_HEADERS([ltdl.h],,AC_MSG_ERROR([Compiling GNU libextractor requires installed libltdl library (part of GNU libtool)]))
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_C_INLINE
