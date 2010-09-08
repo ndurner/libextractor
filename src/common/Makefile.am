@@ -10,7 +10,7 @@ libextractor_common_la_LDFLAGS = \
   $(LE_LIB_LDFLAGS)
 
 libextractor_common_la_LIBADD = \
-  $(LIBICONV) -lz
+  $(LTLIBICONV) -lz
 
 libextractor_common_la_SOURCES = \
   unzip.c \

@@ -26,7 +26,7 @@ endif
 libextractor_la_LDFLAGS = \
   $(LE_LIB_LDFLAGS) -version-info @LIB_VERSION_CURRENT@:@LIB_VERSION_REVISION@:@LIB_VERSION_AGE@
 libextractor_la_LIBADD = \
-  $(LIBLTDL) $(zlib) $(bz2lib) $(LIBICONV)
+  $(LIBLTDL) $(zlib) $(bz2lib) $(LTLIBICONV)
 
 
 EXTRA_DIST = \
