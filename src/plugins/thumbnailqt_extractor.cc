@@ -66,6 +66,7 @@ EXTRACTOR_thumbnailqt_extract (const char *data,
   char format[64];
   QImage::Format colors;
   QtMsgHandler oh;
+  int ret;
 
   oh = qInstallMsgHandler (&mh);
   /* Determine image format to use */
@@ -165,15 +166,21 @@ EXTRACTOR_thumbnailqt_extract (const char *data,
     }
   buffer.setBuffer(&bytes);
   buffer.open(QIODevice::WriteOnly);
-  thumb.save(&buffer, "PNG");
+  if (TRUE != thumb.save(&buffer, "PNG"))
+    {
+      qInstallMsgHandler (oh);
+      return 0;
+    }
+  buffer.close ();
+  ret = proc (proc_cls,
+	      "thumbnailqt",
+	      EXTRACTOR_METATYPE_THUMBNAIL,
+	      EXTRACTOR_METAFORMAT_BINARY,
+	      "image/png",
+	      bytes.data(),
+	      bytes.size());
   qInstallMsgHandler (oh);
-  return proc (proc_cls,
-	       "thumbnailqt",
-	       EXTRACTOR_METATYPE_THUMBNAIL,
-	       EXTRACTOR_METAFORMAT_BINARY,
-	       "image/png",
-	       bytes.data(),
-	       bytes.length());
+  return ret;
 }
 
 
