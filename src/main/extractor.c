@@ -119,9 +119,9 @@ struct EXTRACTOR_PluginList
    * none.
    */
 #ifndef WINDOWS
-  pid_t cpid;
+  int cpid;
 #else
-  DWORD cpid;
+  HANDLE hProcess;
 #endif
 
   /**
@@ -959,27 +959,31 @@ stop_process (struct EXTRACTOR_PluginList *plugin)
 #endif
 
 #if DEBUG
+#ifndef WINDOWS
   if (plugin->cpid == -1)
+#else
+  if (plugin->hProcess == INVALID_HANDLE_VALUE)
+#endif
     fprintf (stderr,
 	     "Plugin `%s' choked on this input\n",
 	     plugin->short_libname);
 #endif
+#ifndef WINDOWS
   if ( (plugin->cpid == -1) ||
        (plugin->cpid == 0) )
     return;
-#ifndef WINDOWS
   kill (plugin->cpid, SIGKILL);
   waitpid (plugin->cpid, &status, 0);
-#else
-  process = OpenProcess (PROCESS_TERMINATE, FALSE, plugin->cpid);
-  TerminateProcess (process, 0);
-  CloseHandle (process);
-#endif
   plugin->cpid = -1;
-#ifndef WINDOWS
   close (plugin->cpipe_out);
   fclose (plugin->cpipe_in);
 #else
+  if (plugin->hProcess == INVALID_HANDLE_VALUE ||
+      plugin->hProcess == NULL)
+  return;
+  TerminateProcess (plugin->hProcess, 0);
+  CloseHandle (plugin->hProcess);
+  plugin->hProcess = INVALID_HANDLE_VALUE;
   CloseHandle (plugin->cpipe_out);
   CloseHandle (plugin->cpipe_in);
 #endif
@@ -1411,10 +1415,11 @@ start_process (struct EXTRACTOR_PluginList *plugin)
   HANDLE process;
 #endif
 
-  plugin->cpid = -1;
 #ifndef WINDOWS
+  plugin->cpid = -1;
   if (0 != pipe (p1))
 #else
+    plugin->hProcess = NULL;
     if (0 != _pipe (p1, 0, _O_BINARY))
 #endif
     {
@@ -1434,6 +1439,8 @@ start_process (struct EXTRACTOR_PluginList *plugin)
     }
 #ifndef WINDOWS
   pid = fork ();
+  plugin->cpid = pid;
+  if (pid == -1)
 #else
   STARTUPINFO startup;
   PROCESS_INFORMATION proc;
@@ -1443,13 +1450,15 @@ start_process (struct EXTRACTOR_PluginList *plugin)
   memset (&startup, 0, sizeof (STARTUPINFO));
   write_plugin_data (p1[1], plugin);
 
-
-  itoa(p1[0], arg1, 10);
-  itoa(p2[1], arg2, 10);
-  pid = _spawnl(_P_NOWAIT, "rundll32.exe", "rundll32.exe",
-        "libextractor-3.dll,RundllEntryPoint@16", arg1, arg2, NULL);
+  sprintf(cmd, "libextractor-3.dll,RundllEntryPoint@16 %u %u", p1[0], p1[1]);
+  if (CreateProcess("rundll32.exe", "libextractor-3.dll,RundllEntryPoint@16", NULL, NULL, TRUE, 0, NULL, NULL,
+      &startup, &proc))
+  {
+    plugin->hProcess = proc.hProcess;
+    CloseHandle (proc.hThread);
+  }
+  else
 #endif
-  if (pid == -1)
     {
       close (p1[0]);
       close (p1[1]);
@@ -1458,6 +1467,7 @@ start_process (struct EXTRACTOR_PluginList *plugin)
       plugin->flags = EXTRACTOR_OPTION_DISABLED;
       return;
     }
+#ifndef WINDOWS
   if (pid == 0)
     {
       close (p1[1]);
@@ -1465,7 +1475,7 @@ start_process (struct EXTRACTOR_PluginList *plugin)
       process_requests (plugin, p1[0], p2[1]);
       _exit (0);
     }
-  plugin->cpid = pid;
+#endif
   close (p1[0]);
   close (p2[1]);
   plugin->cpipe_in = fdopen (p1[1], "w");
@@ -1476,14 +1486,17 @@ start_process (struct EXTRACTOR_PluginList *plugin)
       (void) kill (plugin->cpid, SIGKILL);
       waitpid (plugin->cpid, &status, 0);
 #else
-      process = OpenProcess (PROCESS_TERMINATE | SYNCHRONIZE, FALSE, plugin->cpid);
-      TerminateProcess (process, 0);
+      TerminateProcess (plugin->hProcess, 0);
       WaitForSingleObject (process, INFINITE);
-      CloseHandle (process);
+      CloseHandle (plugin->hProcess);
 #endif
       close (p1[1]);
       close (p2[0]);
+#ifndef WINDOWS
       plugin->cpid = -1;
+#else
+      plugin->hProcess = INVALID_HANDLE_VALUE;
+#endif
       plugin->flags = EXTRACTOR_OPTION_DISABLED;
       return;
     }
@@ -1513,14 +1526,22 @@ extract_oop (struct EXTRACTOR_PluginList *plugin,
   char mimetype[MAX_MIME_LEN + 1];
   char *data;
 
+#ifndef WINDOWS
   if (plugin->cpid == -1)
+#else
+  if (plugin->hProcess == INVALID_HANDLE_VALUE)
+#endif
     return 0;
   if (0 >= fprintf (plugin->cpipe_in, 
 		    "%s\n",
 		    shmfn))
     {
       stop_process (plugin);
+#ifndef WINDOWS
       plugin->cpid = -1;
+#else
+      plugin->hProcess = INVALID_HANDLE_VALUE;
+#endif
       if (plugin->flags != EXTRACTOR_OPTION_DEFAULT_POLICY)
 	plugin->flags = EXTRACTOR_OPTION_DISABLED;
       return 0;
@@ -1530,7 +1551,11 @@ extract_oop (struct EXTRACTOR_PluginList *plugin,
 		    (tshmfn != NULL) ? tshmfn : ""))
     {
       stop_process (plugin);
+#ifndef WINDOWS
       plugin->cpid = -1;
+#else
+      plugin->hProcess = INVALID_HANDLE_VALUE;
+#endif
       if (plugin->flags != EXTRACTOR_OPTION_DEFAULT_POLICY)
 	plugin->flags = EXTRACTOR_OPTION_DISABLED;
       return 0;
@@ -1543,7 +1568,11 @@ extract_oop (struct EXTRACTOR_PluginList *plugin,
 			 sizeof(hdr)))
 	{
 	  stop_process (plugin);
-	  plugin->cpid = -1;
+#ifndef WINDOWS
+      plugin->cpid = -1;
+#else
+      plugin->hProcess = INVALID_HANDLE_VALUE;
+#endif
 	  if (plugin->flags != EXTRACTOR_OPTION_DEFAULT_POLICY)
 	    plugin->flags = EXTRACTOR_OPTION_DISABLED;
 	  return 0;
@@ -1556,7 +1585,11 @@ extract_oop (struct EXTRACTOR_PluginList *plugin,
       if (hdr.mime_len > MAX_MIME_LEN)
 	{
 	  stop_process (plugin);	  
-	  plugin->cpid = -1;
+#ifndef WINDOWS
+      plugin->cpid = -1;
+#else
+      plugin->hProcess = INVALID_HANDLE_VALUE;
+#endif
 	  if (plugin->flags != EXTRACTOR_OPTION_DEFAULT_POLICY)
 	    plugin->flags = EXTRACTOR_OPTION_DISABLED;
 	  return 0;
@@ -1575,7 +1608,11 @@ extract_oop (struct EXTRACTOR_PluginList *plugin,
 			    hdr.data_len))) )
 	{
 	  stop_process (plugin);
-	  plugin->cpid = -1;
+#ifndef WINDOWS
+      plugin->cpid = -1;
+#else
+      plugin->hProcess = INVALID_HANDLE_VALUE;
+#endif
 	  free (data);
 	  if (plugin->flags != EXTRACTOR_OPTION_DEFAULT_POLICY)
 	    plugin->flags = EXTRACTOR_OPTION_DISABLED;
@@ -1719,13 +1756,21 @@ extract (struct EXTRACTOR_PluginList *plugins,
       switch (ppos->flags)
 	{
 	case EXTRACTOR_OPTION_DEFAULT_POLICY:
+#ifndef WINDOWS
 	  if ( (0 == ppos->cpid) ||
 	       (-1 == ppos->cpid) )
+#else
+	  if (ppos->hProcess == NULL || ppos->hProcess == INVALID_HANDLE_VALUE)
+#endif
 	    start_process (ppos);
 	  want_shm = 1;
 	  break;
 	case EXTRACTOR_OPTION_OUT_OF_PROCESS_NO_RESTART:
+#ifndef WINDOWS
 	  if (0 == ppos->cpid)
+#else
+	  if (ppos->hProcess == NULL)
+#endif
 	    start_process (ppos);
 	  want_shm = 1;
 	  break;
@@ -1792,7 +1837,11 @@ extract (struct EXTRACTOR_PluginList *plugins,
 	      ppos = NULL;
 	      break;
 	    }
+#ifndef WINDOWS
 	  if (ppos->cpid == -1)
+#else
+      if (ppos->hProcess == INVALID_HANDLE_VALUE)
+#endif
 	    {
 	      start_process (ppos);
 	      if (0 != extract_oop (ppos, fn, 
