@@ -288,18 +288,18 @@ EXTRACTOR_id3v23_extract (const unsigned char *data,
 		  switch (data[pos + 10])
 		    {
 		    case 0x00:
-		      word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[pos + 14],
-							       csize - 4, "ISO-8859-1");
+		      word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[pos + 15],
+							       csize - 5, "ISO-8859-1");
 		      break;
 		    case 0x01:
-		      word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[pos + 14],
-							       csize - 4, "UCS-2");
+		      word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[pos + 15],
+							       csize - 5, "UCS-2");
 		      break;
 		    default:
 		      /* bad encoding byte,
 			 try to convert from iso-8859-1 */
-		      word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[pos + 14],
-							       csize - 4, "ISO-8859-1");
+		      word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[pos + 15],
+							       csize - 5, "ISO-8859-1");
 		      break;
 		    }
 		  break;
