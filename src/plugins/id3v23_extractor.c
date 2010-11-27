@@ -136,6 +136,7 @@ EXTRACTOR_id3v23_extract (const unsigned char *data,
   char *mime;
   enum EXTRACTOR_MetaType type;
   size_t off;
+  int obo;
 
   if ((size < 16) ||
       (data[0] != 0x49) ||
@@ -285,21 +286,24 @@ EXTRACTOR_id3v23_extract (const unsigned char *data,
 		  if (csize < 5)
 		    return 0; /* malformed */
 		  /* find end of description */
+		  obo = data[pos + 14] == '\0' ? 1 : 0; /* someone put a \0 in front of comments... */
+		  if (csize < 6)
+		    obo = 0;
 		  switch (data[pos + 10])
 		    {
 		    case 0x00:
-		      word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[pos + 15],
-							       csize - 5, "ISO-8859-1");
+		      word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[pos + 14 + obo],
+							       csize - 4 - obo, "ISO-8859-1");
 		      break;
 		    case 0x01:
-		      word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[pos + 15],
-							       csize - 5, "UCS-2");
+		      word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[pos + 14 + obo],
+							       csize - 4 - obo, "UCS-2");
 		      break;
 		    default:
 		      /* bad encoding byte,
 			 try to convert from iso-8859-1 */
-		      word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[pos + 15],
-							       csize - 5, "ISO-8859-1");
+		      word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[pos + 14 + obo],
+							       csize - 4 - obo, "ISO-8859-1");
 		      break;
 		    }
 		  break;
