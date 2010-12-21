@@ -59,6 +59,7 @@ ignore_sigpipe ()
   struct sigaction oldsig;
   struct sigaction sig;
 
+  memset (&sig, 0, sizeof (struct sigaction));
   sig.sa_handler = &catcher;
   sigemptyset (&sig.sa_mask);
 #ifdef SA_INTERRUPT
