@@ -80,8 +80,8 @@ static struct
 };
 
 
-#define ADD(t,s) do { if (0 != (ret = proc (proc_cls, "tar", t, EXTRACTOR_METAFORMAT_UTF8, "text/plain", s, strlen(s)+1))) goto FINISH; } while (0)
-#define ADDF(t,s) do { if ( (s != NULL) && (0 != (ret = proc (proc_cls, "tar", t, EXTRACTOR_METAFORMAT_UTF8, "text/plain", s, strlen(s)+1))) ) { free(s); goto FINISH; } if (s != NULL) free (s); } while (0)
+#define ADD(t,s) do { if (0 != (ret = proc (proc_cls, "png", t, EXTRACTOR_METAFORMAT_UTF8, "text/plain", s, strlen(s)+1))) goto FINISH; } while (0)
+#define ADDF(t,s) do { if ( (s != NULL) && (0 != (ret = proc (proc_cls, "png", t, EXTRACTOR_METAFORMAT_UTF8, "text/plain", s, strlen(s)+1))) ) { free(s); goto FINISH; } if (s != NULL) free (s); } while (0)
 
 
 static int

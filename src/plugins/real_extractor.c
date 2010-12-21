@@ -95,8 +95,6 @@ processMediaProperties (const Media_Properties * prop,
     return 0;
 
   mime_type_size = prop->data[prop->stream_name_size];
-  if (mime_type_size > 2048)
-    return 0; /* unrealistic */
   if (prop_size > prop->stream_name_size + sizeof (UINT8) +
       +mime_type_size + sizeof (Media_Properties))
     {
