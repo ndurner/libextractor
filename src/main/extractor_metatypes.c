@@ -433,6 +433,8 @@ static const struct MetaTypeDescription meta_type_descriptions[] = {
   { gettext_noop ("group"), 
     gettext_noop ("name of the group or band") },
   /* 180 */
+  { gettext_noop ("original filename"),
+    gettext_noop ("name of the original file (reserved for GNUnet)") },
   { gettext_noop ("last"),
     gettext_noop ("last") }
 };
