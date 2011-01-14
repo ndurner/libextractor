@@ -415,7 +415,7 @@ extract_video (const unsigned char *data,
   AVCodec *codec = NULL;
   AVFrame *frame = NULL;
   uint8_t *encoded_thumbnail;
-  int video_stream_index;
+  int video_stream_index = -1;
   int thumb_width;
   int thumb_height;
   int i;
@@ -495,7 +495,8 @@ RETRY_PROBE:
       break;
     }
 
-  if ( (codec_ctx == NULL) || 
+  if ( (video_stream_index == -1) ||
+       (codec_ctx == NULL) || 
        (codec == NULL) ||
        (codec_ctx->width == 0) || 
        (codec_ctx->height == 0) )
