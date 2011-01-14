@@ -496,8 +496,6 @@ RETRY_PROBE:
     }
 
   if ( (video_stream_index == -1) ||
-       (codec_ctx == NULL) || 
-       (codec == NULL) ||
        (codec_ctx->width == 0) || 
        (codec_ctx->height == 0) )
     {
