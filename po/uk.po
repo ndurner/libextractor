@@ -1,0 +1,2286 @@
+# Ukrainian translation to libextractor
+# Copyright (C) 2011 Free Software Foundation, Inc.
+# This file is distributed under the same license as the libextractor package.
+#
+# Yuri Chornoivan <yurchor@ukr.net>, 2011.
+msgid ""
+msgstr ""
+"Project-Id-Version: libextractor 0.6.2\n"
+"Report-Msgid-Bugs-To: libextractor@gnu.org\n"
+"POT-Creation-Date: 2010-06-13 13:15+0200\n"
+"PO-Revision-Date: 2011-07-22 16:22+0300\n"
+"Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
+"Language-Team: Ukrainian <translation-team-uk@lists.sourceforge.net>\n"
+"Language: uk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Lokalize 1.2\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: src/plugins/qt_extractor.c:30 src/plugins/id3_extractor.c:44
+msgid "Blues"
+msgstr "Блюз"
+
+#: src/plugins/qt_extractor.c:31 src/plugins/id3_extractor.c:45
+msgid "Classic Rock"
+msgstr "Класичний рок"
+
+#: src/plugins/qt_extractor.c:32 src/plugins/id3_extractor.c:46
+msgid "Country"
+msgstr "Кантрі"
+
+#: src/plugins/qt_extractor.c:33 src/plugins/id3_extractor.c:47
+msgid "Dance"
+msgstr "Танцювальна"
+
+#: src/plugins/qt_extractor.c:34 src/plugins/id3_extractor.c:48
+msgid "Disco"
+msgstr "Диско"
+
+#: src/plugins/qt_extractor.c:35 src/plugins/id3_extractor.c:49
+msgid "Funk"
+msgstr "Фанк"
+
+#: src/plugins/qt_extractor.c:36 src/plugins/id3_extractor.c:50
+msgid "Grunge"
+msgstr "Ґрандж"
+
+#: src/plugins/qt_extractor.c:37 src/plugins/id3_extractor.c:51
+msgid "Hip-Hop"
+msgstr "Хіп-хоп"
+
+#: src/plugins/qt_extractor.c:38 src/plugins/id3_extractor.c:52
+msgid "Jazz"
+msgstr "Джаз"
+
+#: src/plugins/qt_extractor.c:39 src/plugins/id3_extractor.c:53
+msgid "Metal"
+msgstr "Метал"
+
+#: src/plugins/qt_extractor.c:40 src/plugins/id3_extractor.c:54
+msgid "New Age"
+msgstr "Нью-ейдж"
+
+#: src/plugins/qt_extractor.c:41 src/plugins/id3_extractor.c:55
+msgid "Oldies"
+msgstr "Ретро"
+
+#: src/plugins/qt_extractor.c:42 src/plugins/id3_extractor.c:56
+msgid "Other"
+msgstr "Інша"
+
+#: src/plugins/qt_extractor.c:43 src/plugins/id3_extractor.c:57
+msgid "Pop"
+msgstr "Поп"
+
+#: src/plugins/qt_extractor.c:44 src/plugins/id3_extractor.c:58
+msgid "R&B"
+msgstr "Ритм-енд-блюз"
+
+#: src/plugins/qt_extractor.c:45 src/plugins/id3_extractor.c:59
+msgid "Rap"
+msgstr "Реп"
+
+#: src/plugins/qt_extractor.c:46 src/plugins/id3_extractor.c:60
+msgid "Reggae"
+msgstr "Регі"
+
+#: src/plugins/qt_extractor.c:47 src/plugins/id3_extractor.c:61
+msgid "Rock"
+msgstr "Рок"
+
+#: src/plugins/qt_extractor.c:48 src/plugins/id3_extractor.c:62
+msgid "Techno"
+msgstr "Техно"
+
+#: src/plugins/qt_extractor.c:49 src/plugins/id3_extractor.c:63
+msgid "Industrial"
+msgstr "Індастріал"
+
+#: src/plugins/qt_extractor.c:50 src/plugins/id3_extractor.c:64
+msgid "Alternative"
+msgstr "Альтернативна"
+
+#: src/plugins/qt_extractor.c:51 src/plugins/id3_extractor.c:65
+msgid "Ska"
+msgstr "Ска"
+
+#: src/plugins/qt_extractor.c:52 src/plugins/id3_extractor.c:66
+msgid "Death Metal"
+msgstr "Деф-метал"
+
+#: src/plugins/qt_extractor.c:53 src/plugins/id3_extractor.c:67
+msgid "Pranks"
+msgstr "Жарти-розиграші"
+
+#: src/plugins/qt_extractor.c:54 src/plugins/id3_extractor.c:68
+msgid "Soundtrack"
+msgstr "Звукова доріжка"
+
+#: src/plugins/qt_extractor.c:55 src/plugins/id3_extractor.c:69
+msgid "Euro-Techno"
+msgstr "Євротехно"
+
+#: src/plugins/qt_extractor.c:56 src/plugins/id3_extractor.c:70
+msgid "Ambient"
+msgstr "Ембієнт"
+
+#: src/plugins/qt_extractor.c:57 src/plugins/id3_extractor.c:71
+msgid "Trip-Hop"
+msgstr "Тріп-хоп"
+
+#: src/plugins/qt_extractor.c:58 src/plugins/id3_extractor.c:72
+msgid "Vocal"
+msgstr "Вокал"
+
+#: src/plugins/qt_extractor.c:59 src/plugins/id3_extractor.c:73
+msgid "Jazz+Funk"
+msgstr "Джаз+Фанк"
+
+#: src/plugins/qt_extractor.c:60 src/plugins/id3_extractor.c:74
+msgid "Fusion"
+msgstr "Ф’южн"
+
+#: src/plugins/qt_extractor.c:61 src/plugins/id3_extractor.c:75
+msgid "Trance"
+msgstr "Транс"
+
+#: src/plugins/qt_extractor.c:62 src/plugins/id3_extractor.c:76
+msgid "Classical"
+msgstr "Класика"
+
+#: src/plugins/qt_extractor.c:63 src/plugins/id3_extractor.c:77
+msgid "Instrumental"
+msgstr "Інструментальна"
+
+#: src/plugins/qt_extractor.c:64 src/plugins/id3_extractor.c:78
+msgid "Acid"
+msgstr "Ейсід"
+
+#: src/plugins/qt_extractor.c:65 src/plugins/id3_extractor.c:79
+msgid "House"
+msgstr "Хаус"
+
+#: src/plugins/qt_extractor.c:66 src/plugins/id3_extractor.c:80
+msgid "Game"
+msgstr "Гра"
+
+#: src/plugins/qt_extractor.c:67 src/plugins/id3_extractor.c:81
+msgid "Sound Clip"
+msgstr "Звуковий уривок"
+
+#: src/plugins/qt_extractor.c:68 src/plugins/id3_extractor.c:82
+msgid "Gospel"
+msgstr "Ґоспел"
+
+#: src/plugins/qt_extractor.c:69 src/plugins/id3_extractor.c:83
+msgid "Noise"
+msgstr "Шум"
+
+#: src/plugins/qt_extractor.c:70 src/plugins/id3_extractor.c:84
+msgid "Alt. Rock"
+msgstr "Альт. рок"
+
+#: src/plugins/qt_extractor.c:71 src/plugins/id3_extractor.c:85
+msgid "Bass"
+msgstr "Бейс"
+
+#: src/plugins/qt_extractor.c:72 src/plugins/id3_extractor.c:86
+msgid "Soul"
+msgstr "Душа"
+
+#: src/plugins/qt_extractor.c:73 src/plugins/id3_extractor.c:87
+msgid "Punk"
+msgstr "Панк"
+
+#: src/plugins/qt_extractor.c:74 src/plugins/id3_extractor.c:88
+msgid "Space"
+msgstr "Простір"
+
+#: src/plugins/qt_extractor.c:75 src/plugins/id3_extractor.c:89
+msgid "Meditative"
+msgstr "Медитативна"
+
+#: src/plugins/qt_extractor.c:76 src/plugins/id3_extractor.c:90
+msgid "Instrumental Pop"
+msgstr "Інструментальний поп"
+
+#: src/plugins/qt_extractor.c:77 src/plugins/id3_extractor.c:91
+msgid "Instrumental Rock"
+msgstr "Інструментальний рок"
+
+#: src/plugins/qt_extractor.c:78 src/plugins/id3_extractor.c:92
+msgid "Ethnic"
+msgstr "Етнічна"
+
+#: src/plugins/qt_extractor.c:79 src/plugins/id3_extractor.c:93
+msgid "Gothic"
+msgstr "Готична"
+
+#: src/plugins/qt_extractor.c:80 src/plugins/id3_extractor.c:94
+msgid "Darkwave"
+msgstr "Дарквейв"
+
+#: src/plugins/qt_extractor.c:81 src/plugins/id3_extractor.c:95
+msgid "Techno-Industrial"
+msgstr "Техно-індастріал"
+
+#: src/plugins/qt_extractor.c:82 src/plugins/id3_extractor.c:96
+msgid "Electronic"
+msgstr "Електронна"
+
+#: src/plugins/qt_extractor.c:83 src/plugins/id3_extractor.c:97
+msgid "Pop-Folk"
+msgstr "Поп-фолк"
+
+#: src/plugins/qt_extractor.c:84 src/plugins/id3_extractor.c:98
+msgid "Eurodance"
+msgstr "Євроденс"
+
+#: src/plugins/qt_extractor.c:85 src/plugins/id3_extractor.c:99
+msgid "Dream"
+msgstr "Дрім"
+
+#: src/plugins/qt_extractor.c:86 src/plugins/id3_extractor.c:100
+msgid "Southern Rock"
+msgstr "Південний рок"
+
+#: src/plugins/qt_extractor.c:87 src/plugins/id3_extractor.c:101
+msgid "Comedy"
+msgstr "Комедія"
+
+#: src/plugins/qt_extractor.c:88 src/plugins/id3_extractor.c:102
+msgid "Cult"
+msgstr "Культова"
+
+#: src/plugins/qt_extractor.c:89 src/plugins/id3_extractor.c:103
+msgid "Gangsta Rap"
+msgstr "Гангста-реп"
+
+#: src/plugins/qt_extractor.c:90 src/plugins/id3_extractor.c:104
+msgid "Top 40"
+msgstr "Топ-40"
+
+#: src/plugins/qt_extractor.c:91 src/plugins/id3_extractor.c:105
+msgid "Christian Rap"
+msgstr "Християнський реп"
+
+#: src/plugins/qt_extractor.c:92 src/plugins/id3_extractor.c:106
+msgid "Pop/Funk"
+msgstr "Поп/фанк"
+
+#: src/plugins/qt_extractor.c:93 src/plugins/id3_extractor.c:107
+msgid "Jungle"
+msgstr "Джангл"
+
+#: src/plugins/qt_extractor.c:94 src/plugins/id3_extractor.c:108
+msgid "Native American"
+msgstr "Індіанська"
+
+#: src/plugins/qt_extractor.c:95 src/plugins/id3_extractor.c:109
+msgid "Cabaret"
+msgstr "Кабаре"
+
+#: src/plugins/qt_extractor.c:96 src/plugins/id3_extractor.c:110
+msgid "New Wave"
+msgstr "Нью-вейв"
+
+#: src/plugins/qt_extractor.c:97 src/plugins/id3_extractor.c:111
+msgid "Psychedelic"
+msgstr "Психоделіка"
+
+#: src/plugins/qt_extractor.c:98 src/plugins/id3_extractor.c:112
+msgid "Rave"
+msgstr "Рейв"
+
+#: src/plugins/qt_extractor.c:99 src/plugins/id3_extractor.c:113
+msgid "Showtunes"
+msgstr "Шоу-мелодії"
+
+#: src/plugins/qt_extractor.c:100 src/plugins/id3_extractor.c:114
+msgid "Trailer"
+msgstr "Трейлер"
+
+#: src/plugins/qt_extractor.c:101 src/plugins/id3_extractor.c:115
+msgid "Lo-Fi"
+msgstr "Лоу-фай"
+
+#: src/plugins/qt_extractor.c:102 src/plugins/id3_extractor.c:116
+msgid "Tribal"
+msgstr "Племенна"
+
+#: src/plugins/qt_extractor.c:103 src/plugins/id3_extractor.c:117
+msgid "Acid Punk"
+msgstr "Ейсід-панк"
+
+#: src/plugins/qt_extractor.c:104 src/plugins/id3_extractor.c:118
+msgid "Acid Jazz"
+msgstr "Ейсід-джаз"
+
+#: src/plugins/qt_extractor.c:105 src/plugins/id3_extractor.c:119
+msgid "Polka"
+msgstr "Полька"
+
+#: src/plugins/qt_extractor.c:106 src/plugins/id3_extractor.c:120
+msgid "Retro"
+msgstr "Ретро"
+
+#: src/plugins/qt_extractor.c:107 src/plugins/id3_extractor.c:121
+msgid "Musical"
+msgstr "Музична"
+
+#: src/plugins/qt_extractor.c:108 src/plugins/id3_extractor.c:122
+msgid "Rock & Roll"
+msgstr "Рок-н-рол"
+
+#: src/plugins/qt_extractor.c:109 src/plugins/id3_extractor.c:123
+msgid "Hard Rock"
+msgstr "Хардрок"
+
+#: src/plugins/qt_extractor.c:110 src/plugins/id3_extractor.c:124
+msgid "Folk"
+msgstr "Фольклор"
+
+#: src/plugins/qt_extractor.c:111 src/plugins/id3_extractor.c:125
+msgid "Folk/Rock"
+msgstr "Фольклор/рок"
+
+#: src/plugins/qt_extractor.c:112 src/plugins/id3_extractor.c:126
+msgid "National Folk"
+msgstr "Народний фольклор"
+
+#: src/plugins/qt_extractor.c:113 src/plugins/id3_extractor.c:127
+msgid "Swing"
+msgstr "Свінг"
+
+#: src/plugins/qt_extractor.c:114 src/plugins/id3_extractor.c:128
+msgid "Fast-Fusion"
+msgstr "Фаст-ф’южн"
+
+#: src/plugins/qt_extractor.c:115 src/plugins/id3_extractor.c:129
+msgid "Bebob"
+msgstr "Бібоб"
+
+#: src/plugins/qt_extractor.c:116 src/plugins/id3_extractor.c:130
+msgid "Latin"
+msgstr "Латинська"
+
+#: src/plugins/qt_extractor.c:117 src/plugins/id3_extractor.c:131
+msgid "Revival"
+msgstr "Ривайвл"
+
+#: src/plugins/qt_extractor.c:118 src/plugins/id3_extractor.c:132
+msgid "Celtic"
+msgstr "Кельтська"
+
+#: src/plugins/qt_extractor.c:119 src/plugins/id3_extractor.c:133
+msgid "Bluegrass"
+msgstr "Блюграс"
+
+#: src/plugins/qt_extractor.c:120 src/plugins/id3_extractor.c:134
+msgid "Avantgarde"
+msgstr "Авангард"
+
+#: src/plugins/qt_extractor.c:121 src/plugins/id3_extractor.c:135
+msgid "Gothic Rock"
+msgstr "Готичний рок"
+
+#: src/plugins/qt_extractor.c:122 src/plugins/id3_extractor.c:136
+msgid "Progressive Rock"
+msgstr "Прогресивний рок"
+
+#: src/plugins/qt_extractor.c:123 src/plugins/id3_extractor.c:137
+msgid "Psychedelic Rock"
+msgstr "Психоделічний рок"
+
+#: src/plugins/qt_extractor.c:124 src/plugins/id3_extractor.c:138
+msgid "Symphonic Rock"
+msgstr "Симфонічний рок"
+
+#: src/plugins/qt_extractor.c:125 src/plugins/id3_extractor.c:139
+msgid "Slow Rock"
+msgstr "Повільний рок"
+
+#: src/plugins/qt_extractor.c:126 src/plugins/id3_extractor.c:140
+msgid "Big Band"
+msgstr "Біг-бенд"
+
+#: src/plugins/qt_extractor.c:127 src/plugins/id3_extractor.c:141
+msgid "Chorus"
+msgstr "Хорова"
+
+#: src/plugins/qt_extractor.c:128 src/plugins/id3_extractor.c:142
+msgid "Easy Listening"
+msgstr "Легка музика"
+
+#: src/plugins/qt_extractor.c:129 src/plugins/id3_extractor.c:143
+msgid "Acoustic"
+msgstr "Акустична"
+
+#: src/plugins/qt_extractor.c:130 src/plugins/id3_extractor.c:144
+msgid "Humour"
+msgstr "Гумор"
+
+#: src/plugins/qt_extractor.c:131 src/plugins/id3_extractor.c:145
+msgid "Speech"
+msgstr "Мова"
+
+#: src/plugins/qt_extractor.c:132 src/plugins/id3_extractor.c:146
+msgid "Chanson"
+msgstr "Шансон"
+
+#: src/plugins/qt_extractor.c:133 src/plugins/id3_extractor.c:147
+msgid "Opera"
+msgstr "Опера"
+
+#: src/plugins/qt_extractor.c:134 src/plugins/id3_extractor.c:148
+msgid "Chamber Music"
+msgstr "Камерна музика"
+
+#: src/plugins/qt_extractor.c:135 src/plugins/id3_extractor.c:149
+msgid "Sonata"
+msgstr "Соната"
+
+#: src/plugins/qt_extractor.c:136 src/plugins/id3_extractor.c:150
+msgid "Symphony"
+msgstr "Симфонія"
+
+#: src/plugins/qt_extractor.c:137 src/plugins/id3_extractor.c:151
+msgid "Booty Bass"
+msgstr "Буті-бейс"
+
+#: src/plugins/qt_extractor.c:138 src/plugins/id3_extractor.c:152
+msgid "Primus"
+msgstr "Примас"
+
+#: src/plugins/qt_extractor.c:139 src/plugins/id3_extractor.c:153
+msgid "Porn Groove"
+msgstr "Порн-рів"
+
+#: src/plugins/qt_extractor.c:140 src/plugins/id3_extractor.c:154
+msgid "Satire"
+msgstr "Сатира"
+
+#: src/plugins/qt_extractor.c:141 src/plugins/id3_extractor.c:155
+msgid "Slow Jam"
+msgstr "Повільний джем"
+
+#: src/plugins/qt_extractor.c:142 src/plugins/id3_extractor.c:156
+msgid "Club"
+msgstr "Клуб"
+
+#: src/plugins/qt_extractor.c:143 src/plugins/id3_extractor.c:157
+msgid "Tango"
+msgstr "Танго"
+
+#: src/plugins/qt_extractor.c:144 src/plugins/id3_extractor.c:158
+msgid "Samba"
+msgstr "Самба"
+
+#: src/plugins/qt_extractor.c:145 src/plugins/id3_extractor.c:159
+msgid "Folklore"
+msgstr "Фольклор"
+
+#: src/plugins/qt_extractor.c:146 src/plugins/id3_extractor.c:160
+msgid "Ballad"
+msgstr "Балада"
+
+#: src/plugins/qt_extractor.c:147 src/plugins/id3_extractor.c:161
+msgid "Power Ballad"
+msgstr "Пауер-балада"
+
+#: src/plugins/qt_extractor.c:148 src/plugins/id3_extractor.c:162
+msgid "Rhythmic Soul"
+msgstr "Ритмічний соул"
+
+#: src/plugins/qt_extractor.c:149 src/plugins/id3_extractor.c:163
+msgid "Freestyle"
+msgstr "Вільний стиль"
+
+#: src/plugins/qt_extractor.c:150 src/plugins/id3_extractor.c:164
+msgid "Duet"
+msgstr "Дует"
+
+#: src/plugins/qt_extractor.c:151 src/plugins/id3_extractor.c:165
+msgid "Punk Rock"
+msgstr "Панк-рок"
+
+#: src/plugins/qt_extractor.c:152 src/plugins/id3_extractor.c:166
+msgid "Drum Solo"
+msgstr "Соло ударних"
+
+#: src/plugins/qt_extractor.c:153 src/plugins/id3_extractor.c:167
+msgid "A Cappella"
+msgstr "А капелла"
+
+#: src/plugins/qt_extractor.c:154 src/plugins/id3_extractor.c:168
+msgid "Euro-House"
+msgstr "Єврохаус"
+
+#: src/plugins/qt_extractor.c:155 src/plugins/id3_extractor.c:169
+msgid "Dance Hall"
+msgstr "Танцмайданчик"
+
+#: src/plugins/qt_extractor.c:156 src/plugins/id3_extractor.c:170
+msgid "Goa"
+msgstr "Гоа"
+
+#: src/plugins/qt_extractor.c:157 src/plugins/id3_extractor.c:171
+msgid "Drum & Bass"
+msgstr "Драм-енд-бейс"
+
+#: src/plugins/qt_extractor.c:158 src/plugins/id3_extractor.c:172
+msgid "Club-House"
+msgstr "Клаб-хаус"
+
+#: src/plugins/qt_extractor.c:159 src/plugins/id3_extractor.c:173
+msgid "Hardcore"
+msgstr "Хардкор"
+
+#: src/plugins/qt_extractor.c:160 src/plugins/id3_extractor.c:174
+msgid "Terror"
+msgstr "Терор"
+
+#: src/plugins/qt_extractor.c:161 src/plugins/id3_extractor.c:175
+msgid "Indie"
+msgstr "Інді"
+
+#: src/plugins/qt_extractor.c:162 src/plugins/id3_extractor.c:176
+msgid "BritPop"
+msgstr "Бритпоп"
+
+#: src/plugins/qt_extractor.c:163 src/plugins/id3_extractor.c:177
+msgid "Negerpunk"
+msgstr "Негритянський панк"
+
+#: src/plugins/qt_extractor.c:164 src/plugins/id3_extractor.c:178
+msgid "Polsk Punk"
+msgstr "Польський панк"
+
+#: src/plugins/qt_extractor.c:165 src/plugins/id3_extractor.c:179
+msgid "Beat"
+msgstr "Біт"
+
+#: src/plugins/qt_extractor.c:166 src/plugins/id3_extractor.c:180
+msgid "Christian Gangsta Rap"
+msgstr "Християнський гангста-реп"
+
+#: src/plugins/qt_extractor.c:167 src/plugins/id3_extractor.c:181
+msgid "Heavy Metal"
+msgstr "Важкий метал"
+
+#: src/plugins/qt_extractor.c:168 src/plugins/id3_extractor.c:182
+msgid "Black Metal"
+msgstr "Блек-метал"
+
+#: src/plugins/qt_extractor.c:169 src/plugins/id3_extractor.c:183
+msgid "Crossover"
+msgstr "Перетин"
+
+#: src/plugins/qt_extractor.c:170 src/plugins/id3_extractor.c:184
+msgid "Contemporary Christian"
+msgstr "Сучасна християнська"
+
+#: src/plugins/qt_extractor.c:171 src/plugins/id3_extractor.c:185
+msgid "Christian Rock"
+msgstr "Християнський рок"
+
+#: src/plugins/qt_extractor.c:172 src/plugins/id3_extractor.c:186
+msgid "Merengue"
+msgstr "Меренга"
+
+#: src/plugins/qt_extractor.c:173 src/plugins/id3_extractor.c:187
+msgid "Salsa"
+msgstr "Сальса"
+
+#: src/plugins/qt_extractor.c:174 src/plugins/id3_extractor.c:188
+msgid "Thrash Metal"
+msgstr "Треш-метал"
+
+#: src/plugins/qt_extractor.c:175 src/plugins/id3_extractor.c:189
+msgid "Anime"
+msgstr "Аніме"
+
+#: src/plugins/qt_extractor.c:176 src/plugins/id3_extractor.c:190
+msgid "JPop"
+msgstr "Джей-поп"
+
+#: src/plugins/qt_extractor.c:177 src/plugins/id3_extractor.c:191
+msgid "Synthpop"
+msgstr "Синтез-поп"
+
+#: src/plugins/ole2_extractor.c:290
+msgid "No Proofing"
+msgstr "Без перевірки"
+
+#: src/plugins/ole2_extractor.c:298
+msgid "Traditional Chinese"
+msgstr "Традиційна китайська"
+
+#: src/plugins/ole2_extractor.c:300
+msgid "Simplified Chinese"
+msgstr "Спрощена китайська"
+
+#: src/plugins/ole2_extractor.c:308
+msgid "Swiss German"
+msgstr "Швейцарська німецька"
+
+#: src/plugins/ole2_extractor.c:312
+msgid "U.S. English"
+msgstr "Американська англійська"
+
+#: src/plugins/ole2_extractor.c:314
+msgid "U.K. English"
+msgstr "Британська англійська"
+
+#: src/plugins/ole2_extractor.c:316
+msgid "Australian English"
+msgstr "Австралійська англійська"
+
+#: src/plugins/ole2_extractor.c:318
+msgid "Castilian Spanish"
+msgstr "Кастильська іспанська"
+
+#: src/plugins/ole2_extractor.c:320
+msgid "Mexican Spanish"
+msgstr "Мексиканська іспанська"
+
+#: src/plugins/ole2_extractor.c:326
+msgid "Belgian French"
+msgstr "Бельгійська французька"
+
+#: src/plugins/ole2_extractor.c:328
+msgid "Canadian French"
+msgstr "Канадська французька"
+
+#: src/plugins/ole2_extractor.c:330
+msgid "Swiss French"
+msgstr "Швейцарська французька"
+
+#: src/plugins/ole2_extractor.c:340
+msgid "Swiss Italian"
+msgstr "Швейцарська італійська"
+
+#: src/plugins/ole2_extractor.c:348
+msgid "Belgian Dutch"
+msgstr "Бельгійська голландська"
+
+#: src/plugins/ole2_extractor.c:350
+msgid "Norwegian Bokmal"
+msgstr "Норвезька (бокмал)"
+
+#: src/plugins/ole2_extractor.c:360
+msgid "Rhaeto-Romanic"
+msgstr "Ретороманська"
+
+#: src/plugins/ole2_extractor.c:366
+msgid "Croato-Serbian (Latin)"
+msgstr "Хорвато-сербська (латиниця)"
+
+#: src/plugins/ole2_extractor.c:368
+msgid "Serbo-Croatian (Cyrillic)"
+msgstr "Сербо-хорватська (кирилиця)"
+
+#: src/plugins/ole2_extractor.c:396
+msgid "Farsi"
+msgstr "Фарсі"
+
+#: src/plugins/ole2_extractor.c:471
+#, c-format
+msgid "Revision #%u: Author '%s' worked on '%s'"
+msgstr "Модифікація %u: автор «%s», співробітник «%s»"
+
+#: src/plugins/wav_extractor.c:106 src/plugins/mp3_extractor.c:89
+msgid "mono"
+msgstr "моно"
+
+#: src/plugins/wav_extractor.c:106 src/plugins/mp3_extractor.c:86
+msgid "stereo"
+msgstr "стерео"
+
+#: src/plugins/man_extractor.c:161
+msgid "Commands"
+msgstr "Команди"
+
+#: src/plugins/man_extractor.c:165
+msgid "System calls"
+msgstr "Системні виклики"
+
+#: src/plugins/man_extractor.c:169
+msgid "Library calls"
+msgstr "Виклики бібліотек"
+
+#: src/plugins/man_extractor.c:173
+msgid "Special files"
+msgstr "Спеціальні файли"
+
+#: src/plugins/man_extractor.c:177
+msgid "File formats and conventions"
+msgstr "Формати файлів та правила"
+
+#: src/plugins/man_extractor.c:181
+msgid "Games"
+msgstr "Ігри"
+
+#: src/plugins/man_extractor.c:185
+msgid "Conventions and miscellaneous"
+msgstr "Угоди та інше"
+
+#: src/plugins/man_extractor.c:189
+msgid "System management commands"
+msgstr "Команди керування системою"
+
+#: src/plugins/man_extractor.c:193
+msgid "Kernel routines"
+msgstr "Процедури ядра"
+
+#: src/plugins/flac_extractor.c:192
+#, c-format
+msgid "%u Hz, %u channels"
+msgstr "%u Гц, %u каналів"
+
+#: src/plugins/applefile_extractor.c:162
+msgid "GB"
+msgstr "ГБ"
+
+#: src/plugins/applefile_extractor.c:164
+msgid "MB"
+msgstr "МБ"
+
+#: src/plugins/applefile_extractor.c:166
+msgid "KB"
+msgstr "КБ"
+
+#: src/plugins/applefile_extractor.c:168
+msgid "Bytes"
+msgstr "байтів"
+
+#: src/plugins/mp3_extractor.c:87
+msgid "joint stereo"
+msgstr "об'єднане стерео"
+
+#: src/plugins/mp3_extractor.c:88
+msgid "dual channel"
+msgstr "два канали"
+
+#: src/plugins/mp3_extractor.c:92
+msgid "MPEG-1"
+msgstr "MPEG-1"
+
+#: src/plugins/mp3_extractor.c:93
+msgid "MPEG-2"
+msgstr "MPEG-2"
+
+#: src/plugins/mp3_extractor.c:94
+msgid "MPEG-2.5"
+msgstr "MPEG-2.5"
+
+#: src/plugins/mp3_extractor.c:97
+msgid "Layer I"
+msgstr "Layer I"
+
+#: src/plugins/mp3_extractor.c:98
+msgid "Layer II"
+msgstr "Layer II"
+
+#: src/plugins/mp3_extractor.c:99
+msgid "Layer III"
+msgstr "Layer III"
+
+#: src/plugins/mp3_extractor.c:247
+msgid "VBR"
+msgstr "VBR"
+
+#: src/plugins/mp3_extractor.c:247
+msgid "CBR"
+msgstr "CBR"
+
+#: src/plugins/mp3_extractor.c:250 src/main/extractor_metatypes.c:140
+msgid "copyright"
+msgstr "захищено авторськими правами"
+
+#: src/plugins/mp3_extractor.c:250
+msgid "no copyright"
+msgstr "без захисту авторськими правами"
+
+#: src/plugins/mp3_extractor.c:251
+msgid "original"
+msgstr "оригінал"
+
+#: src/plugins/mp3_extractor.c:251
+msgid "copy"
+msgstr "копія"
+
+#: src/plugins/riff_extractor.c:114
+#, c-format
+msgid "codec: %s, %u fps, %u ms"
+msgstr "кодек: %s, %u кд/с, %u мс"
+
+#: src/plugins/jpeg_extractor.c:182
+#, c-format
+msgid "%ux%u dots per inch"
+msgstr "%ux%u точок на дюйм"
+
+#: src/plugins/jpeg_extractor.c:197
+#, c-format
+msgid "%ux%u dots per cm"
+msgstr "%ux%u точок на см"
+
+#: src/plugins/jpeg_extractor.c:212
+#, c-format
+msgid "%ux%u dots per inch?"
+msgstr "%ux%u точок на дюйм?"
+
+#: src/main/getopt.c:684
+#, c-format
+msgid "%s: option `%s' is ambiguous\n"
+msgstr "%s: параметр «%s» неоднозначний\n"
+
+#: src/main/getopt.c:709
+#, c-format
+msgid "%s: option `--%s' doesn't allow an argument\n"
+msgstr "%s: параметр «--%s» не може мати аргументу\n"
+
+#: src/main/getopt.c:715
+#, c-format
+msgid "%s: option `%c%s' doesn't allow an argument\n"
+msgstr "%s: параметр «%c%s» не може мати аргументу\n"
+
+#: src/main/getopt.c:732 src/main/getopt.c:903
+#, c-format
+msgid "%s: option `%s' requires an argument\n"
+msgstr "%s: параметру «%s» необхідний аргумент\n"
+
+#: src/main/getopt.c:761
+#, c-format
+msgid "%s: unrecognized option `--%s'\n"
+msgstr "%s: нерозпізнаний параметр «--%s»\n"
+
+#: src/main/getopt.c:765
+#, c-format
+msgid "%s: unrecognized option `%c%s'\n"
+msgstr "%s: нерозпізнаний параметр «%c%s»\n"
+
+#: src/main/getopt.c:791
+#, c-format
+msgid "%s: illegal option -- %c\n"
+msgstr "%s: неправильний параметр -- %c\n"
+
+#: src/main/getopt.c:793
+#, c-format
+msgid "%s: invalid option -- %c\n"
+msgstr "%s: некоректний параметр -- %c\n"
+
+#: src/main/getopt.c:822 src/main/getopt.c:952
+#, c-format
+msgid "%s: option requires an argument -- %c\n"
+msgstr "%s: параметру необхідний аргумент -- %c\n"
+
+#: src/main/getopt.c:870
+#, c-format
+msgid "%s: option `-W %s' is ambiguous\n"
+msgstr "%s: параметр «-W %s» неоднозначний\n"
+
+#: src/main/getopt.c:888
+#, c-format
+msgid "%s: option `-W %s' doesn't allow an argument\n"
+msgstr "%s: параметр «-W %s» не повинен мати аргументу\n"
+
+#: src/main/extractor.c:2294
+#, c-format
+msgid "Initialization of plugin mechanism failed: %s!\n"
+msgstr "Помилка під час спроби ініціалізації механізму додатків: %s!\n"
+
+#: src/main/extract.c:97
+#, c-format
+msgid ""
+"Usage: %s\n"
+"%s\n"
+"\n"
+msgstr ""
+"Використання: %s\n"
+"%s\n"
+"\n"
+
+#: src/main/extract.c:100
+#, c-format
+msgid "Arguments mandatory for long options are also mandatory for short options.\n"
+msgstr "Обов’язкові аргументи для довгих форм запису параметрів є обов’язковими і для скорочених форм.\n"
+
+#: src/main/extract.c:170
+msgid "print output in bibtex format"
+msgstr "вивести дані у форматі bibtex"
+
+#: src/main/extract.c:172
+msgid "produce grep-friendly output (all results on one line per file)"
+msgstr "виводити дані у режимі сумісності з grep (єдиний рядок для всіх результатів з файла)"
+
+#: src/main/extract.c:174
+msgid "print this help"
+msgstr "показати ці довідкові дані"
+
+#: src/main/extract.c:176
+msgid "run plugins in-process (simplifies debugging)"
+msgstr "запускати додатки у межах процесу (спрощує діагностику)"
+
+#: src/main/extract.c:178
+msgid "load an extractor plugin named LIBRARY"
+msgstr "завантажити додаток видобування з назвою LIBRARY"
+
+#: src/main/extract.c:180
+msgid "list all keyword types"
+msgstr "список всіх типів ключових слів"
+
+#: src/main/extract.c:182
+msgid "do not use the default set of extractor plugins"
+msgstr "не використовувати типовий набір додатків видобування"
+
+#: src/main/extract.c:184
+msgid "print only keywords of the given TYPE (use -L to get a list)"
+msgstr "виводити ключові слова лише вказаного типу TYPE (скористайтеся -L, щоб отримати список)"
+
+#: src/main/extract.c:186
+msgid "print the version number"
+msgstr "вивести номер версії"
+
+#: src/main/extract.c:188
+msgid "be verbose"
+msgstr "режим з докладних повідомлень"
+
+#: src/main/extract.c:190
+msgid "do not print keywords of the given TYPE"
+msgstr "не виводити ключових слів вказаного типу TYPE"
+
+#: src/main/extract.c:193
+msgid "extract [OPTIONS] [FILENAME]*"
+msgstr "extract [ПАРАМЕТРИ] [НАЗВА_ФАЙЛА]*"
+
+#: src/main/extract.c:194
+msgid "Extract metadata from files."
+msgstr "Видобути метадані з файлів."
+
+#: src/main/extract.c:235
+#, c-format
+msgid "Found by `%s' plugin:\n"
+msgstr "Знайдено додатком «%s»:\n"
+
+#: src/main/extract.c:238 src/main/extract.c:319
+#: src/main/extractor_metatypes.c:136 src/main/extractor_print.c:68
+msgid "unknown"
+msgstr "невідомий"
+
+#: src/main/extract.c:243
+#, c-format
+msgid "%s - (unknown, %u bytes)\n"
+msgstr "%s — (невідомий, %u байтів)\n"
+
+#: src/main/extract.c:267
+#, c-format
+msgid "%s - (binary, %u bytes)\n"
+msgstr "%s — (бінарний, %u байтів)\n"
+
+#: src/main/extract.c:600 src/main/extract.c:610
+#, c-format
+msgid "Illegal combination of options, cannot combine multiple styles of printing.\n"
+msgstr "Некоректне поєднання параметрів, не можна визначати декілька стилів виведення даних.\n"
+
+#: src/main/extract.c:637
+#, c-format
+msgid "You must specify an argument for the `%s' option (option ignored).\n"
+msgstr "Параметр «%s» можна використовувати лише з додатковим аргументом (параметр проігноровано).\n"
+
+#: src/main/extract.c:702
+#, c-format
+msgid "Use --help to get a list of options.\n"
+msgstr "Скористайтеся параметром --help для отримання списку можливих параметрів командного рядка.\n"
+
+#: src/main/extract.c:740
+#, c-format
+msgid "%% BiBTeX file\n"
+msgstr "%% файл BiBTeX\n"
+
+#: src/main/extract.c:747
+#, c-format
+msgid "Keywords for file %s:\n"
+msgstr "Ключові слова для файла %s:\n"
+
+#: src/main/extractor_metatypes.c:37
+msgid "reserved"
+msgstr "зарезервовано"
+
+#: src/main/extractor_metatypes.c:38
+msgid "reserved value, do not use"
+msgstr "зарезервовано, не використовувати"
+
+#: src/main/extractor_metatypes.c:39
+msgid "mimetype"
+msgstr "тип MIME"
+
+#: src/main/extractor_metatypes.c:40
+msgid "mime type"
+msgstr "тип MIME"
+
+#: src/main/extractor_metatypes.c:41
+msgid "embedded filename"
+msgstr "вбудована назва файла"
+
+#: src/main/extractor_metatypes.c:42
+msgid "filename that was embedded (not necessarily the current filename)"
+msgstr "вбудована назва файла (необов’язков поточна назва файла)"
+
+#: src/main/extractor_metatypes.c:43
+msgid "comment"
+msgstr "коментар"
+
+#: src/main/extractor_metatypes.c:44
+msgid "comment about the content"
+msgstr "коментар щодо вмісту"
+
+#: src/main/extractor_metatypes.c:45
+msgid "title"
+msgstr "назва"
+
+#: src/main/extractor_metatypes.c:46
+msgid "title of the work"
+msgstr "назва роботи"
+
+#: src/main/extractor_metatypes.c:48
+msgid "book title"
+msgstr "назва книги"
+
+#: src/main/extractor_metatypes.c:49
+msgid "title of the book containing the work"
+msgstr "назва книги, що містить роботу"
+
+#: src/main/extractor_metatypes.c:50
+msgid "book edition"
+msgstr "редакція книги"
+
+#: src/main/extractor_metatypes.c:51
+msgid "edition of the book (or book containing the work)"
+msgstr "редакція книги (або книги, яка містить роботу)"
+
+#: src/main/extractor_metatypes.c:52
+msgid "book chapter"
+msgstr "глава книги"
+
+#: src/main/extractor_metatypes.c:53
+msgid "chapter number"
+msgstr "номер глави"
+
+#: src/main/extractor_metatypes.c:54
+msgid "journal name"
+msgstr "назва журналу"
+
+#: src/main/extractor_metatypes.c:55
+msgid "journal or magazine the work was published in"
+msgstr "журнал або видання, у якому було опубліковано роботу"
+
+#: src/main/extractor_metatypes.c:56
+msgid "journal volume"
+msgstr "том журналу"
+
+#: src/main/extractor_metatypes.c:57
+msgid "volume of a journal or multi-volume book"
+msgstr "тому журналу, або багатотомного видання"
+
+#: src/main/extractor_metatypes.c:59
+msgid "journal number"
+msgstr "номер журналу"
+
+#: src/main/extractor_metatypes.c:60
+msgid "number of a journal, magazine or tech-report"
+msgstr "номер журналу або технічного звіту"
+
+#: src/main/extractor_metatypes.c:61
+msgid "page count"
+msgstr "кількість сторінок"
+
+#: src/main/extractor_metatypes.c:62
+msgid "total number of pages of the work"
+msgstr "загальна кількість сторінок у роботі"
+
+#: src/main/extractor_metatypes.c:63
+msgid "page range"
+msgstr "діапазон сторінок"
+
+#: src/main/extractor_metatypes.c:64
+msgid "page numbers of the publication in the respective journal or book"
+msgstr "номери сторінок публікації у відповідному журналі або книзі"
+
+#: src/main/extractor_metatypes.c:65
+msgid "author name"
+msgstr "ім’я автора"
+
+#: src/main/extractor_metatypes.c:66
+msgid "name of the author(s)"
+msgstr "імена авторів"
+
+#: src/main/extractor_metatypes.c:67
+msgid "author email"
+msgstr "адреса ел. пошти автора"
+
+#: src/main/extractor_metatypes.c:68
+msgid "e-mail of the author(s)"
+msgstr "адреса електронної пошти авторів"
+
+#: src/main/extractor_metatypes.c:70
+msgid "author institution"
+msgstr "установа автора"
+
+#: src/main/extractor_metatypes.c:71
+msgid "institution the author worked for"
+msgstr "установа, у якій працював автор"
+
+#: src/main/extractor_metatypes.c:72
+msgid "publisher"
+msgstr "видавець"
+
+#: src/main/extractor_metatypes.c:73
+msgid "name of the publisher"
+msgstr "назва видавництва"
+
+#: src/main/extractor_metatypes.c:74
+msgid "publisher's address"
+msgstr "адреса видавництва"
+
+#: src/main/extractor_metatypes.c:75
+msgid "Address of the publisher (often only the city)"
+msgstr "Адреса видавництва (часто лише місто)"
+
+#: src/main/extractor_metatypes.c:76
+msgid "publishing institution"
+msgstr "організація-видавець"
+
+#: src/main/extractor_metatypes.c:77
+msgid "institution that was involved in the publishing, but not necessarily the publisher"
+msgstr "установа, яка брала участь у опублікуванні, не обов’язково безпосередній видавець"
+
+#: src/main/extractor_metatypes.c:78
+msgid "publication series"
+msgstr "серія публікацій"
+
+#: src/main/extractor_metatypes.c:79
+msgid "series of books the book was published in"
+msgstr "серія, у межах якої було опубліковано книгу"
+
+#: src/main/extractor_metatypes.c:81
+msgid "publication type"
+msgstr "тип публікації"
+
+#: src/main/extractor_metatypes.c:82
+msgid "type of the tech-report"
+msgstr "тип технічного звіту"
+
+#: src/main/extractor_metatypes.c:83
+msgid "publication year"
+msgstr "рік видання"
+
+#: src/main/extractor_metatypes.c:84
+msgid "year of publication (or, if unpublished, the year of creation)"
+msgstr "рік публікації (або, якщо не опубліковано, рік створення)"
+
+#: src/main/extractor_metatypes.c:85
+msgid "publication month"
+msgstr "місяць видання"
+
+#: src/main/extractor_metatypes.c:86
+msgid "month of publication (or, if unpublished, the month of creation)"
+msgstr "місяць публікації (або, якщо не опубліковано, місяць створення)"
+
+#: src/main/extractor_metatypes.c:87
+msgid "publication day"
+msgstr "день публікації"
+
+#: src/main/extractor_metatypes.c:88
+msgid "day of publication (or, if unpublished, the day of creation), relative to the given month"
+msgstr "день публікації (або, якщо не опубліковано, день створення) у вказаному місяці"
+
+#: src/main/extractor_metatypes.c:89
+msgid "publication date"
+msgstr "дата видання"
+
+#: src/main/extractor_metatypes.c:90
+msgid "date of publication (or, if unpublished, the date of creation)"
+msgstr "дата публікації (або, якщо ще не опубліковано, дата створення)"
+
+#: src/main/extractor_metatypes.c:92
+msgid "bibtex eprint"
+msgstr "ел. відбиток bibtex"
+
+#: src/main/extractor_metatypes.c:93
+msgid "specification of an electronic publication"
+msgstr "специфікація електронної публікації"
+
+#: src/main/extractor_metatypes.c:94
+msgid "bibtex entry type"
+msgstr "тип запису bibtex"
+
+#: src/main/extractor_metatypes.c:95
+msgid "type of the publication for bibTeX bibliographies"
+msgstr "тип публікації для бібліографій bibTeX"
+
+#: src/main/extractor_metatypes.c:96
+msgid "language"
+msgstr "мова"
+
+#: src/main/extractor_metatypes.c:97
+msgid "language the work uses"
+msgstr "мова роботи"
+
+#: src/main/extractor_metatypes.c:98
+msgid "creation time"
+msgstr "час створення"
+
+#: src/main/extractor_metatypes.c:99
+msgid "time and date of creation"
+msgstr "дата і час створення"
+
+#: src/main/extractor_metatypes.c:100
+msgid "URL"
+msgstr "адреса"
+
+#: src/main/extractor_metatypes.c:101
+msgid "universal resource location (where the work is made available)"
+msgstr "універсальне розташування ресурсу (звідки відкрито доступ до роботи)"
+
+#: src/main/extractor_metatypes.c:103
+msgid "URI"
+msgstr "адреса"
+
+#: src/main/extractor_metatypes.c:104
+msgid "universal resource identifier"
+msgstr "універсальний ідентифікатор ресурсу"
+
+#: src/main/extractor_metatypes.c:105
+msgid "international standard recording code"
+msgstr "код міжнародного стандарту запису (ISRC)"
+
+#: src/main/extractor_metatypes.c:106
+msgid "ISRC number identifying the work"
+msgstr "Шифр ISRC, що ідентифікує роботу"
+
+#: src/main/extractor_metatypes.c:107
+msgid "MD4"
+msgstr "MD4"
+
+#: src/main/extractor_metatypes.c:108
+msgid "MD4 hash"
+msgstr "хеш MD4"
+
+#: src/main/extractor_metatypes.c:109
+msgid "MD5"
+msgstr "MD5"
+
+#: src/main/extractor_metatypes.c:110
+msgid "MD5 hash"
+msgstr "хеш MD5"
+
+#: src/main/extractor_metatypes.c:111
+msgid "SHA-0"
+msgstr "SHA-0"
+
+#: src/main/extractor_metatypes.c:112
+msgid "SHA-0 hash"
+msgstr "хеш SHA-0"
+
+#: src/main/extractor_metatypes.c:114
+msgid "SHA-1"
+msgstr "SHA-1"
+
+#: src/main/extractor_metatypes.c:115
+msgid "SHA-1 hash"
+msgstr "хеш SHA-1"
+
+#: src/main/extractor_metatypes.c:116
+msgid "RipeMD160"
+msgstr "RipeMD160"
+
+#: src/main/extractor_metatypes.c:117
+msgid "RipeMD150 hash"
+msgstr "хеш RipeMD150"
+
+#: src/main/extractor_metatypes.c:118 src/main/extractor_metatypes.c:119
+msgid "GPS latitude ref"
+msgstr "широта за GPS"
+
+#: src/main/extractor_metatypes.c:120 src/main/extractor_metatypes.c:121
+msgid "GPS latitude"
+msgstr "широта за GPS"
+
+#: src/main/extractor_metatypes.c:122 src/main/extractor_metatypes.c:123
+msgid "GPS longitude ref"
+msgstr "довгота за GPS"
+
+#: src/main/extractor_metatypes.c:125 src/main/extractor_metatypes.c:126
+msgid "GPS longitude"
+msgstr "довгота за GPS"
+
+#: src/main/extractor_metatypes.c:127
+msgid "city"
+msgstr "місто"
+
+#: src/main/extractor_metatypes.c:128
+msgid "name of the city where the document originated"
+msgstr "назва міста, з якого походить документ"
+
+#: src/main/extractor_metatypes.c:129
+msgid "sublocation"
+msgstr "точне розташування"
+
+#: src/main/extractor_metatypes.c:130
+msgid "more specific location of the geographic origin"
+msgstr "точніші дані щодо географічного розташування походження"
+
+#: src/main/extractor_metatypes.c:131
+msgid "country"
+msgstr "країна"
+
+#: src/main/extractor_metatypes.c:132
+msgid "name of the country where the document originated"
+msgstr "назва країни, з якої походить документ"
+
+#: src/main/extractor_metatypes.c:133
+msgid "country code"
+msgstr "код країни"
+
+#: src/main/extractor_metatypes.c:134
+msgid "ISO 2-letter country code for the country of origin"
+msgstr "Дволітерний код країни походження за ISO"
+
+#: src/main/extractor_metatypes.c:137
+msgid "specifics are not known"
+msgstr "специфіка не відома"
+
+#: src/main/extractor_metatypes.c:138 src/main/extractor_metatypes.c:139
+msgid "description"
+msgstr "опис"
+
+#: src/main/extractor_metatypes.c:141
+msgid "Name of the entity holding the copyright"
+msgstr "Назва або ім’я власника авторських прав"
+
+#: src/main/extractor_metatypes.c:142
+msgid "rights"
+msgstr "права"
+
+#: src/main/extractor_metatypes.c:143
+msgid "information about rights"
+msgstr "дані щодо авторських прав"
+
+#: src/main/extractor_metatypes.c:144 src/main/extractor_metatypes.c:145
+msgid "keywords"
+msgstr "ключові слова"
+
+#: src/main/extractor_metatypes.c:147 src/main/extractor_metatypes.c:148
+msgid "abstract"
+msgstr "анотація"
+
+#: src/main/extractor_metatypes.c:149 src/main/extractor_metatypes.c:150
+msgid "summary"
+msgstr "резюме"
+
+#: src/main/extractor_metatypes.c:151
+msgid "subject"
+msgstr "тема"
+
+#: src/main/extractor_metatypes.c:152
+msgid "subject matter"
+msgstr "вміст"
+
+#: src/main/extractor_metatypes.c:153 src/main/extractor_metatypes.c:186
+msgid "creator"
+msgstr "створювач"
+
+#: src/main/extractor_metatypes.c:154
+msgid "name of the person who created the document"
+msgstr "ім’я особи, яка створила документ"
+
+#: src/main/extractor_metatypes.c:155
+msgid "format"
+msgstr "формат"
+
+#: src/main/extractor_metatypes.c:156
+msgid "name of the document format"
+msgstr "назва формату документа"
+
+#: src/main/extractor_metatypes.c:158
+msgid "format version"
+msgstr "версія формату"
+
+#: src/main/extractor_metatypes.c:159
+msgid "version of the document format"
+msgstr "версія формату документа"
+
+#: src/main/extractor_metatypes.c:160
+msgid "created by software"
+msgstr "створено програмою"
+
+#: src/main/extractor_metatypes.c:161
+msgid "name of the software that created the document"
+msgstr "назва програмного забезпечення, яким було створено документ"
+
+#: src/main/extractor_metatypes.c:162
+msgid "unknown date"
+msgstr "невідома дата"
+
+#: src/main/extractor_metatypes.c:163
+msgid "ambiguous date (could specify creation time, modification time or access time)"
+msgstr "неоднозначні дані (можуть відповідати часу створення, часу внесення змін або часу доступу)"
+
+#: src/main/extractor_metatypes.c:164
+msgid "creation date"
+msgstr "дата створення"
+
+#: src/main/extractor_metatypes.c:165
+msgid "date the document was created"
+msgstr "дата створення документа"
+
+#: src/main/extractor_metatypes.c:166
+msgid "modification date"
+msgstr "дата внесення змін"
+
+#: src/main/extractor_metatypes.c:167
+msgid "date the document was modified"
+msgstr "дата, коли документ було змінено"
+
+#: src/main/extractor_metatypes.c:169
+msgid "last printed"
+msgstr "востаннє надруковано"
+
+#: src/main/extractor_metatypes.c:170
+msgid "date the document was last printed"
+msgstr "дата, коли документ було востаннє надруковано"
+
+#: src/main/extractor_metatypes.c:171
+msgid "last saved by"
+msgstr "востаннє збережено"
+
+#: src/main/extractor_metatypes.c:172
+msgid "name of the user who saved the document last"
+msgstr "ім’я користувача, який останнім зберіг документ"
+
+#: src/main/extractor_metatypes.c:173
+msgid "total editing time"
+msgstr "загальний час редагування"
+
+#: src/main/extractor_metatypes.c:174
+msgid "time spent editing the document"
+msgstr "час, проведений за редагуванням документа"
+
+#: src/main/extractor_metatypes.c:175
+msgid "editing cycles"
+msgstr "цикли редагування"
+
+#: src/main/extractor_metatypes.c:176
+msgid "number of editing cycles"
+msgstr "кількість циклів редагування"
+
+#: src/main/extractor_metatypes.c:177
+msgid "modified by software"
+msgstr "змінено програмою"
+
+#: src/main/extractor_metatypes.c:178
+msgid "name of software making modifications"
+msgstr "назва програмного забезпечення для внесення змін"
+
+#: src/main/extractor_metatypes.c:180
+msgid "revision history"
+msgstr "журнал змін"
+
+#: src/main/extractor_metatypes.c:181
+msgid "information about the revision history"
+msgstr "дані щодо журналу змін"
+
+#: src/main/extractor_metatypes.c:182
+msgid "embedded file size"
+msgstr "розмір вбудованого файла"
+
+#: src/main/extractor_metatypes.c:183
+msgid "size of the contents of the container as embedded in the file"
+msgstr "розмір даних контейнера, вбудованого до файла"
+
+#: src/main/extractor_metatypes.c:184
+msgid "file type"
+msgstr "тип файла"
+
+#: src/main/extractor_metatypes.c:185
+msgid "standard Macintosh Finder file type information"
+msgstr "стандартні дані щодо типу файла для Finder Macintosh"
+
+#: src/main/extractor_metatypes.c:187
+msgid "standard Macintosh Finder file creator information"
+msgstr "стандартні дані щодо створювача файла для Finder Macintosh"
+
+#: src/main/extractor_metatypes.c:188
+msgid "package name"
+msgstr "назва пакунка"
+
+#: src/main/extractor_metatypes.c:189
+msgid "unique identifier for the package"
+msgstr "унікальний ідентифікатор пакунка"
+
+#: src/main/extractor_metatypes.c:191
+msgid "package version"
+msgstr "версія пакунка"
+
+#: src/main/extractor_metatypes.c:192
+msgid "version of the software and its package"
+msgstr "версія програмного забезпечення у пакунку"
+
+#: src/main/extractor_metatypes.c:193
+msgid "section"
+msgstr "розділ"
+
+#: src/main/extractor_metatypes.c:194
+msgid "category the software package belongs to"
+msgstr "категорія, до якої належить пакунок з програмним забезпеченням"
+
+#: src/main/extractor_metatypes.c:195
+msgid "upload priority"
+msgstr "пріоритет вивантаження"
+
+#: src/main/extractor_metatypes.c:196
+msgid "priority for promoting the release to production"
+msgstr "пріоритет переведення цього випуску до основного сховища"
+
+#: src/main/extractor_metatypes.c:197
+msgid "dependencies"
+msgstr "залежності"
+
+#: src/main/extractor_metatypes.c:198
+msgid "packages this package depends upon"
+msgstr "пакунки, від яких залежить встановлення цього пакунка"
+
+#: src/main/extractor_metatypes.c:199
+msgid "conflicting packages"
+msgstr "конфліктуючі пакунки"
+
+#: src/main/extractor_metatypes.c:200
+msgid "packages that cannot be installed with this package"
+msgstr "пакунки, які не може бути встановлено разом з цим пакунком"
+
+#: src/main/extractor_metatypes.c:202
+msgid "replaced packages"
+msgstr "замінені пакунки"
+
+#: src/main/extractor_metatypes.c:203
+msgid "packages made obsolete by this package"
+msgstr "пакунки, які застарівають після встановлення цього пакунка"
+
+#: src/main/extractor_metatypes.c:204
+msgid "provides"
+msgstr "вміст"
+
+#: src/main/extractor_metatypes.c:205
+msgid "functionality provided by this package"
+msgstr "функціональні можливості, які надаються вмістом пакунка"
+
+#: src/main/extractor_metatypes.c:206
+msgid "recommendations"
+msgstr "рекомендації"
+
+#: src/main/extractor_metatypes.c:207
+msgid "packages recommended for installation in conjunction with this package"
+msgstr "пакунки, які рекомендується встановити разом з цим пакунком"
+
+#: src/main/extractor_metatypes.c:208
+msgid "suggestions"
+msgstr "пропозиції"
+
+#: src/main/extractor_metatypes.c:209
+msgid "packages suggested for installation in conjunction with this package"
+msgstr "пакунки, які пропонується встановити разом з цим пакунком"
+
+#: src/main/extractor_metatypes.c:210
+msgid "maintainer"
+msgstr "супровідник"
+
+#: src/main/extractor_metatypes.c:211
+msgid "name of the maintainer"
+msgstr "ім’я супровідника"
+
+#: src/main/extractor_metatypes.c:213
+msgid "installed size"
+msgstr "об'єм встановленого"
+
+#: src/main/extractor_metatypes.c:214
+msgid "space consumption after installation"
+msgstr "об’єм на диску після встановлення"
+
+#: src/main/extractor_metatypes.c:215 src/main/extractor_metatypes.c:295
+msgid "source"
+msgstr "джерело"
+
+#: src/main/extractor_metatypes.c:216
+msgid "original source code"
+msgstr "початковий код"
+
+#: src/main/extractor_metatypes.c:217
+msgid "is essential"
+msgstr "є необхідним"
+
+#: src/main/extractor_metatypes.c:218
+msgid "package is marked as essential"
+msgstr "пакунок позначено як необхідний"
+
+#: src/main/extractor_metatypes.c:219
+msgid "target architecture"
+msgstr "архітектура призначення"
+
+#: src/main/extractor_metatypes.c:220
+msgid "hardware architecture the contents can be used for"
+msgstr "апаратна архітектура, для якої можна використовувати дані"
+
+#: src/main/extractor_metatypes.c:221
+msgid "pre-dependency"
+msgstr "попередня залежність"
+
+#: src/main/extractor_metatypes.c:222
+msgid "dependency that must be satisfied before installation"
+msgstr "залежність, яку слід задовольнити перед встановленням"
+
+#: src/main/extractor_metatypes.c:224
+msgid "license"
+msgstr "ліцензія"
+
+#: src/main/extractor_metatypes.c:225
+msgid "applicable copyright license"
+msgstr "назва ліцензії, яка захищає авторські права"
+
+#: src/main/extractor_metatypes.c:226
+msgid "distribution"
+msgstr "дистрибутив"
+
+#: src/main/extractor_metatypes.c:227
+msgid "distribution the package is a part of"
+msgstr "дистрибутив, частиною якого є пакунок"
+
+#: src/main/extractor_metatypes.c:228
+msgid "build host"
+msgstr "вузол збирання"
+
+#: src/main/extractor_metatypes.c:229
+msgid "machine the package was build on"
+msgstr "комп’ютер, на якому було зібрано пакунок"
+
+#: src/main/extractor_metatypes.c:230
+msgid "vendor"
+msgstr "виробник"
+
+#: src/main/extractor_metatypes.c:231
+msgid "name of the software vendor"
+msgstr "назва виробника програмного забезпечення"
+
+#: src/main/extractor_metatypes.c:232
+msgid "target operating system"
+msgstr "операційна система призначення"
+
+#: src/main/extractor_metatypes.c:233
+msgid "operating system for which this package was made"
+msgstr "операційна система, для якої було створено пакунок"
+
+#: src/main/extractor_metatypes.c:235
+msgid "software version"
+msgstr "версія програмного забезпечення"
+
+#: src/main/extractor_metatypes.c:236
+msgid "version of the software contained in the file"
+msgstr "версія програмного забезпечення, яке міститься у файлі"
+
+#: src/main/extractor_metatypes.c:237
+msgid "target platform"
+msgstr "платформа призначення"
+
+#: src/main/extractor_metatypes.c:238
+msgid "name of the architecture, operating system and distribution this package is for"
+msgstr "назва архітектури, операційної системи та дистрибутива, для яких призначено цей пакунок"
+
+#: src/main/extractor_metatypes.c:239
+msgid "resource type"
+msgstr "тип ресурсу"
+
+#: src/main/extractor_metatypes.c:240
+msgid "categorization of the nature of the resource that is more specific than the file format"
+msgstr "категорія, до якої належить ресурс, специфічніша за формат файла"
+
+#: src/main/extractor_metatypes.c:241
+msgid "library search path"
+msgstr "шлях пошуку бібліотек"
+
+#: src/main/extractor_metatypes.c:242
+msgid "path in the file system to be considered when looking for required libraries"
+msgstr "шлях у файловій системі, за яким слід шукати потрібні бібліотеки"
+
+#: src/main/extractor_metatypes.c:243
+msgid "library dependency"
+msgstr "залежність від бібліотеки"
+
+#: src/main/extractor_metatypes.c:244
+msgid "name of a library that this file depends on"
+msgstr "назва бібліотеки, від якої залежить цей файл"
+
+#: src/main/extractor_metatypes.c:246 src/main/extractor_metatypes.c:247
+msgid "camera make"
+msgstr "виробник фотоапарата"
+
+#: src/main/extractor_metatypes.c:248 src/main/extractor_metatypes.c:249
+msgid "camera model"
+msgstr "модель фотоапарата"
+
+#: src/main/extractor_metatypes.c:250 src/main/extractor_metatypes.c:251
+msgid "exposure"
+msgstr "експозиція"
+
+#: src/main/extractor_metatypes.c:252 src/main/extractor_metatypes.c:253
+msgid "aperture"
+msgstr "апертура"
+
+#: src/main/extractor_metatypes.c:254 src/main/extractor_metatypes.c:255
+msgid "exposure bias"
+msgstr "ухил експозиції"
+
+#: src/main/extractor_metatypes.c:257 src/main/extractor_metatypes.c:258
+msgid "flash"
+msgstr "спалах"
+
+#: src/main/extractor_metatypes.c:259 src/main/extractor_metatypes.c:260
+msgid "flash bias"
+msgstr "ухил спалаху"
+
+#: src/main/extractor_metatypes.c:261 src/main/extractor_metatypes.c:262
+msgid "focal length"
+msgstr "фокальна відстань"
+
+#: src/main/extractor_metatypes.c:263 src/main/extractor_metatypes.c:264
+msgid "focal length 35mm"
+msgstr "фокальна відстань для 35 мм плівки"
+
+#: src/main/extractor_metatypes.c:265 src/main/extractor_metatypes.c:266
+msgid "iso speed"
+msgstr "світлочутливість ISO"
+
+#: src/main/extractor_metatypes.c:268 src/main/extractor_metatypes.c:269
+msgid "exposure mode"
+msgstr "режим експозиції"
+
+#: src/main/extractor_metatypes.c:270 src/main/extractor_metatypes.c:271
+msgid "metering mode"
+msgstr "режим вимірювання"
+
+#: src/main/extractor_metatypes.c:272 src/main/extractor_metatypes.c:273
+msgid "macro mode"
+msgstr "макрорежим"
+
+#: src/main/extractor_metatypes.c:274 src/main/extractor_metatypes.c:275
+msgid "image quality"
+msgstr "якість зображень"
+
+#: src/main/extractor_metatypes.c:276 src/main/extractor_metatypes.c:277
+msgid "white balance"
+msgstr "баланс білого"
+
+#: src/main/extractor_metatypes.c:279 src/main/extractor_metatypes.c:280
+msgid "orientation"
+msgstr "орієнтація"
+
+#: src/main/extractor_metatypes.c:281 src/main/extractor_metatypes.c:282
+msgid "magnification"
+msgstr "збільшення"
+
+#: src/main/extractor_metatypes.c:283
+msgid "image dimensions"
+msgstr "виміри зображення"
+
+#: src/main/extractor_metatypes.c:284
+msgid "size of the image in pixels (width times height)"
+msgstr "розмір зображення у пікселях (ширина на висоту)"
+
+#: src/main/extractor_metatypes.c:285 src/main/extractor_metatypes.c:286
+msgid "produced by software"
+msgstr "створено програмою"
+
+#: src/main/extractor_metatypes.c:290
+msgid "thumbnail"
+msgstr "мініатюра"
+
+#: src/main/extractor_metatypes.c:291
+msgid "smaller version of the image for previewing"
+msgstr "менша версія зображення для попереднього перегляду"
+
+#: src/main/extractor_metatypes.c:293
+msgid "image resolution"
+msgstr "роздільна здатність"
+
+#: src/main/extractor_metatypes.c:294
+msgid "resolution in dots per inch"
+msgstr "роздільна здатність у точках на дюйм"
+
+#: src/main/extractor_metatypes.c:296
+msgid "Originating entity"
+msgstr "Запис походження"
+
+#: src/main/extractor_metatypes.c:297
+msgid "character set"
+msgstr "набір символів"
+
+#: src/main/extractor_metatypes.c:298
+msgid "character encoding used"
+msgstr "використане кодування символів"
+
+#: src/main/extractor_metatypes.c:299
+msgid "line count"
+msgstr "кількість рядків"
+
+#: src/main/extractor_metatypes.c:300
+msgid "number of lines"
+msgstr "кількість рядків"
+
+#: src/main/extractor_metatypes.c:301
+msgid "paragraph count"
+msgstr "кількість абзаців"
+
+#: src/main/extractor_metatypes.c:302
+msgid "number o paragraphs"
+msgstr "кількість абзаців"
+
+#: src/main/extractor_metatypes.c:304
+msgid "word count"
+msgstr "кількість слів"
+
+#: src/main/extractor_metatypes.c:305
+msgid "number of words"
+msgstr "кількість слів"
+
+#: src/main/extractor_metatypes.c:306
+msgid "character count"
+msgstr "кількість символів"
+
+#: src/main/extractor_metatypes.c:307
+msgid "number of characters"
+msgstr "кількість символів"
+
+#: src/main/extractor_metatypes.c:308 src/main/extractor_metatypes.c:309
+msgid "page orientation"
+msgstr "орієнтація сторінки"
+
+#: src/main/extractor_metatypes.c:310 src/main/extractor_metatypes.c:311
+msgid "paper size"
+msgstr "розмір паперу"
+
+#: src/main/extractor_metatypes.c:312
+msgid "template"
+msgstr "шаблон"
+
+#: src/main/extractor_metatypes.c:313
+msgid "template the document uses or is based on"
+msgstr "шаблон, який використано у документі або на якому засновано документ"
+
+#: src/main/extractor_metatypes.c:315 src/main/extractor_metatypes.c:316
+msgid "company"
+msgstr "компанія"
+
+#: src/main/extractor_metatypes.c:317 src/main/extractor_metatypes.c:318
+msgid "manager"
+msgstr "керівник"
+
+#: src/main/extractor_metatypes.c:319 src/main/extractor_metatypes.c:320
+msgid "revision number"
+msgstr "номер редакції"
+
+#: src/main/extractor_metatypes.c:321
+msgid "duration"
+msgstr "тривалість"
+
+#: src/main/extractor_metatypes.c:322
+msgid "play time for the medium"
+msgstr "час відтворення носія"
+
+#: src/main/extractor_metatypes.c:323
+msgid "album"
+msgstr "альбом"
+
+#: src/main/extractor_metatypes.c:324
+msgid "name of the album"
+msgstr "назва альбому"
+
+#: src/main/extractor_metatypes.c:326
+msgid "artist"
+msgstr "виконавець"
+
+#: src/main/extractor_metatypes.c:327
+msgid "name of the artist or band"
+msgstr "ім’я виконавця або назва групи"
+
+#: src/main/extractor_metatypes.c:328 src/main/extractor_metatypes.c:329
+msgid "genre"
+msgstr "жанр"
+
+#: src/main/extractor_metatypes.c:330
+msgid "track number"
+msgstr "номер композиції"
+
+#: src/main/extractor_metatypes.c:331
+msgid "original number of the track on the distribution medium"
+msgstr "початковий номер композиції на носії поширення"
+
+#: src/main/extractor_metatypes.c:332
+msgid "disk number"
+msgstr "номер диска"
+
+#: src/main/extractor_metatypes.c:333
+msgid "number of the disk in a multi-disk (or volume) distribution"
+msgstr "номер диска у багатодисковій збірці"
+
+#: src/main/extractor_metatypes.c:334
+msgid "performer"
+msgstr "виконавець"
+
+#: src/main/extractor_metatypes.c:335
+msgid "The artist(s) who performed the work (conductor, orchestra, soloists, actor, etc.)"
+msgstr "Виконавець твору (диригент, оркестр, солісти тощо)"
+
+#: src/main/extractor_metatypes.c:337
+msgid "contact"
+msgstr "контакт"
+
+#: src/main/extractor_metatypes.c:338
+msgid "Contact information for the creator or distributor"
+msgstr "Дані щодо зв’язку з автором або розповсюджувачем"
+
+#: src/main/extractor_metatypes.c:339
+msgid "song version"
+msgstr "версія пісні"
+
+#: src/main/extractor_metatypes.c:340
+msgid "name of the version of the song (i.e. remix information)"
+msgstr "назва версії пісні (тобто дані щодо реміксу)"
+
+#: src/main/extractor_metatypes.c:341
+msgid "picture"
+msgstr "зображення"
+
+#: src/main/extractor_metatypes.c:342
+msgid "associated misc. picture"
+msgstr "якесь пов’язане зображення"
+
+#: src/main/extractor_metatypes.c:343
+msgid "cover picture"
+msgstr "обкладинка"
+
+#: src/main/extractor_metatypes.c:344
+msgid "picture of the cover of the distribution medium"
+msgstr "зображення з обкладинки носія"
+
+#: src/main/extractor_metatypes.c:345
+msgid "contributor picture"
+msgstr "знімок учасника"
+
+#: src/main/extractor_metatypes.c:346
+msgid "picture of one of the contributors"
+msgstr "знімок одного з учасників"
+
+#: src/main/extractor_metatypes.c:348
+msgid "event picture"
+msgstr "знімок події"
+
+#: src/main/extractor_metatypes.c:349
+msgid "picture of an associated event"
+msgstr "знімок з пов’язаної події"
+
+#: src/main/extractor_metatypes.c:350
+msgid "logo"
+msgstr "логотип"
+
+#: src/main/extractor_metatypes.c:351
+msgid "logo of an associated organization"
+msgstr "логотип пов’язаної організації"
+
+#: src/main/extractor_metatypes.c:352
+msgid "broadcast television system"
+msgstr "система телевізійного мовлення"
+
+#: src/main/extractor_metatypes.c:353
+msgid "name of the television system for which the data is coded"
+msgstr "назва системи телевізійного мовлення, у якій закодовано дані"
+
+#: src/main/extractor_metatypes.c:354
+msgid "source device"
+msgstr "пристрій-джерело"
+
+#: src/main/extractor_metatypes.c:355
+msgid "device used to create the object"
+msgstr "пристрій, використаний для створення об’єкта"
+
+#: src/main/extractor_metatypes.c:356
+msgid "disclaimer"
+msgstr "юридичне попередження"
+
+#: src/main/extractor_metatypes.c:357
+msgid "legal disclaimer"
+msgstr "попередження щодо авторських прав"
+
+#: src/main/extractor_metatypes.c:359
+msgid "warning"
+msgstr "попередження"
+
+#: src/main/extractor_metatypes.c:360
+msgid "warning about the nature of the content"
+msgstr "попередження щодо вмісту"
+
+#: src/main/extractor_metatypes.c:361
+msgid "page order"
+msgstr "порядок сторінок"
+
+#: src/main/extractor_metatypes.c:362
+msgid "order of the pages"
+msgstr "порядок сторінок"
+
+#: src/main/extractor_metatypes.c:363
+msgid "writer"
+msgstr "автор тексту"
+
+#: src/main/extractor_metatypes.c:364
+msgid "contributing writer"
+msgstr "автор тексту або сценарію"
+
+#: src/main/extractor_metatypes.c:365 src/main/extractor_metatypes.c:366
+msgid "product version"
+msgstr "версія продукту"
+
+#: src/main/extractor_metatypes.c:367
+msgid "contributor"
+msgstr "учасник створення"
+
+#: src/main/extractor_metatypes.c:368
+msgid "name of a contributor"
+msgstr "ім’я учасника створення"
+
+#: src/main/extractor_metatypes.c:370
+msgid "movie director"
+msgstr "режисер"
+
+#: src/main/extractor_metatypes.c:371
+msgid "name of the director"
+msgstr "ім’я режисера"
+
+#: src/main/extractor_metatypes.c:372
+msgid "network"
+msgstr "мережа"
+
+#: src/main/extractor_metatypes.c:373
+msgid "name of the broadcasting network or station"
+msgstr "назва мережі мовлення або станції"
+
+#: src/main/extractor_metatypes.c:374
+msgid "show"
+msgstr "програма"
+
+#: src/main/extractor_metatypes.c:375
+msgid "name of the show"
+msgstr "назва програми"
+
+#: src/main/extractor_metatypes.c:376
+msgid "chapter name"
+msgstr "назва частини"
+
+#: src/main/extractor_metatypes.c:377
+msgid "name of the chapter"
+msgstr "назва частини"
+
+#: src/main/extractor_metatypes.c:378
+msgid "song count"
+msgstr "кількість пісень"
+
+#: src/main/extractor_metatypes.c:379
+msgid "number of songs"
+msgstr "кількість пісень"
+
+#: src/main/extractor_metatypes.c:381
+msgid "starting song"
+msgstr "початкова пісня"
+
+#: src/main/extractor_metatypes.c:382
+msgid "number of the first song to play"
+msgstr "номер першої пісні для відтворення"
+
+#: src/main/extractor_metatypes.c:383
+msgid "play counter"
+msgstr "лічильник відтворення"
+
+#: src/main/extractor_metatypes.c:384
+msgid "number of times the media has been played"
+msgstr "кількість відтворень даних"
+
+#: src/main/extractor_metatypes.c:385
+msgid "conductor"
+msgstr "диригент"
+
+#: src/main/extractor_metatypes.c:386
+msgid "name of the conductor"
+msgstr "ім’я диригента"
+
+#: src/main/extractor_metatypes.c:387
+msgid "interpretation"
+msgstr "інтерпретація"
+
+#: src/main/extractor_metatypes.c:388
+msgid "information about the people behind interpretations of an existing piece"
+msgstr "дані щодо творців інтерпретації твору"
+
+#: src/main/extractor_metatypes.c:389
+msgid "composer"
+msgstr "композитор"
+
+#: src/main/extractor_metatypes.c:390
+msgid "name of the composer"
+msgstr "ім’я композитора"
+
+#: src/main/extractor_metatypes.c:392 src/main/extractor_metatypes.c:393
+msgid "beats per minute"
+msgstr "тактів за хвилину"
+
+#: src/main/extractor_metatypes.c:394
+msgid "encoded by"
+msgstr "автор кодування"
+
+#: src/main/extractor_metatypes.c:395
+msgid "name of person or organization that encoded the file"
+msgstr "ім’я особи або назва установи, якою було закодовано файл"
+
+#: src/main/extractor_metatypes.c:396
+msgid "original title"
+msgstr "початкова назва"
+
+#: src/main/extractor_metatypes.c:397
+msgid "title of the original work"
+msgstr "назва початкової роботи"
+
+#: src/main/extractor_metatypes.c:398
+msgid "original artist"
+msgstr "оригінальний виконавець"
+
+#: src/main/extractor_metatypes.c:399
+msgid "name of the original artist"
+msgstr "ім’я або назва першого виконавця"
+
+#: src/main/extractor_metatypes.c:400
+msgid "original writer"
+msgstr "оригінальний автор тексту"
+
+#: src/main/extractor_metatypes.c:401
+msgid "name of the original lyricist or writer"
+msgstr "ім’я автора початкового тексту"
+
+#: src/main/extractor_metatypes.c:403
+msgid "original release year"
+msgstr "рік випуску оригіналу"
+
+#: src/main/extractor_metatypes.c:404
+msgid "year of the original release"
+msgstr "рік, коли було випущено оригінал"
+
+#: src/main/extractor_metatypes.c:405
+msgid "original performer"
+msgstr "оригінальний виконавець"
+
+#: src/main/extractor_metatypes.c:406
+msgid "name of the original performer"
+msgstr "ім’я або назва виконавця оригіналу"
+
+#: src/main/extractor_metatypes.c:407
+msgid "lyrics"
+msgstr "текст"
+
+#: src/main/extractor_metatypes.c:408
+msgid "lyrics of the song or text description of vocal activities"
+msgstr "текст пісні або текстовий опис вокалу"
+
+#: src/main/extractor_metatypes.c:409
+msgid "popularity"
+msgstr "популярність"
+
+#: src/main/extractor_metatypes.c:410
+msgid "information about the file's popularity"
+msgstr "дані щодо популярності файла"
+
+#: src/main/extractor_metatypes.c:411
+msgid "licensee"
+msgstr "ліцензіат"
+
+#: src/main/extractor_metatypes.c:412
+msgid "name of the owner or licensee of the file"
+msgstr "ім’я або назва власника або ліцензіата файла"
+
+#: src/main/extractor_metatypes.c:414
+msgid "musician credit list"
+msgstr "список подяк музикантам"
+
+#: src/main/extractor_metatypes.c:415
+msgid "names of contributing musicians"
+msgstr "імена музикантів-виконавців"
+
+#: src/main/extractor_metatypes.c:416
+msgid "mood"
+msgstr "настрій"
+
+#: src/main/extractor_metatypes.c:417
+msgid "keywords reflecting the mood of the piece"
+msgstr "ключові слова, які відповідають настрою твору"
+
+#: src/main/extractor_metatypes.c:418
+msgid "subtitle"
+msgstr "підзаголовок"
+
+#: src/main/extractor_metatypes.c:419
+msgid "subtitle of this part"
+msgstr "підзаголовок частини"
+
+#: src/main/extractor_metatypes.c:420
+msgid "display type"
+msgstr "тип показу"
+
+#: src/main/extractor_metatypes.c:421
+msgid "what rendering method should be used to display this item"
+msgstr "спосіб показу, який має бути використано для перегляду"
+
+#: src/main/extractor_metatypes.c:422
+msgid "full data"
+msgstr "дані повністю"
+
+#: src/main/extractor_metatypes.c:423
+msgid "entry that contains the full, original binary data (not really meta data)"
+msgstr "запис, що містить повні початкові двійкові дані (а не метадані)"
+
+#: src/main/extractor_metatypes.c:425
+msgid "rating"
+msgstr "оцінка"
+
+#: src/main/extractor_metatypes.c:426
+msgid "rating of the content"
+msgstr "оцінка вмісту"
+
+#: src/main/extractor_metatypes.c:427 src/main/extractor_metatypes.c:428
+msgid "organization"
+msgstr "організація"
+
+#: src/main/extractor_metatypes.c:429 src/main/extractor_metatypes.c:430
+msgid "ripper"
+msgstr "засіб видобування"
+
+#: src/main/extractor_metatypes.c:431 src/main/extractor_metatypes.c:432
+msgid "producer"
+msgstr "виробник"
+
+#: src/main/extractor_metatypes.c:433
+msgid "group"
+msgstr "група"
+
+#: src/main/extractor_metatypes.c:434
+msgid "name of the group or band"
+msgstr "назва групи"
+
+#: src/main/extractor_metatypes.c:436 src/main/extractor_metatypes.c:437
+msgid "last"
+msgstr "тривалість"
