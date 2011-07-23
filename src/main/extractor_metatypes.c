@@ -299,7 +299,7 @@ static const struct MetaTypeDescription meta_type_descriptions[] = {
   { gettext_noop ("line count"),
     gettext_noop ("number of lines") }, 
   { gettext_noop ("paragraph count"),
-    gettext_noop ("number o paragraphs") }, 
+    gettext_noop ("number of paragraphs") }, 
   /* 120 */
   { gettext_noop ("word count"),
     gettext_noop ("number of words") }, 
