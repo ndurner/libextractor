@@ -94,6 +94,7 @@ plugin_LTLIBRARIES = \
   libextractor_jpeg.la \
   libextractor_man.la \
   libextractor_mime.la \
+  libextractor_mkv.la \
   libextractor_mp3.la \
   $(mpeg) \
   libextractor_nsf.la \
@@ -238,6 +239,11 @@ libextractor_man_la_LIBADD = \
 libextractor_mime_la_SOURCES = \
   mime_extractor.c 
 libextractor_mime_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+
+libextractor_mkv_la_SOURCES = \
+  mkv_extractor.c 
+libextractor_mkv_la_LDFLAGS = \
   $(PLUGINFLAGS)
 
 libextractor_mp3_la_SOURCES = \
