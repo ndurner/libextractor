@@ -95,7 +95,7 @@ mingw*)
      AC_CHECK_LIB(intl, gettext)
      AC_CHECK_LIB(ws2_32, _head_libws2_32_a,,[AC_MSG_ERROR([libextractor requires Winsock2])])
      AC_CHECK_LIB(plibc, plibc_init,,[AC_MSG_ERROR([libextractor requires PlibC])])
-     LDFLAGS="$LDFLAGS -no-undefined -Wl,--export-all-symbols"
+     LDFLAGS="$LDFLAGS -Wl,-no-undefined -Wl,--export-all-symbols"
 		 LIBSOLD=$LIBS
      AM_CONDITIONAL(HAVE_GNU_LD, true)
      AM_CONDITIONAL(SOMEBSD, false)
