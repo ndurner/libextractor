@@ -1,3 +1,6 @@
+Mon Nov 28 17:15:59 CET 2011
+	Improved winsock2 detection. -LRN
+
 Mon Nov 28 12:17:42 CET 2011
 	Fixing compiler warnings, cleaning up ASF plugin.  Finishing
 	Matroska plugin. -CG

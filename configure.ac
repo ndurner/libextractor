@@ -93,7 +93,13 @@ mingw*)
      AC_DEFINE_UNQUOTED(MINGW,1,[This is a MinGW system])
      AC_DEFINE_UNQUOTED(WINDOWS,1,[This is a Windows system])
      AC_CHECK_LIB(intl, gettext)
-     AC_CHECK_LIB(ws2_32, _head_libws2_32_a,,[AC_MSG_ERROR([libextractor requires Winsock2])])
+     mingw32_ws2=yes
+     mingw64_ws2=yes
+     AC_CHECK_LIB(ws2_32, _head_libws2_32_a,,mingw32_ws2=no)
+     AC_CHECK_LIB(ws2_32, __imp_socket,,mingw64_ws2=no)
+     if test "x$mingw32_ws2" = "xno" -a "x$mingw64_ws2" = "xno"; then
+       AC_MSG_ERROR([libextractor requires Winsock2])
+     fi
      AC_CHECK_LIB(plibc, plibc_init,,[AC_MSG_ERROR([libextractor requires PlibC])])
      LDFLAGS="$LDFLAGS -Wl,-no-undefined -Wl,--export-all-symbols"
 		 LIBSOLD=$LIBS
