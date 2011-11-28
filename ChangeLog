@@ -1,3 +1,6 @@
+Mon Nov 28 17:16:16 CET 2011
+	Reduce false-positives in MP3 extractor file format detection. -LRN
+
 Mon Nov 28 17:15:59 CET 2011
 	Improved winsock2 detection. -LRN
 

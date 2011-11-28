@@ -207,6 +207,21 @@ EXTRACTOR_mp3_extract (const unsigned char *data,
       frame_size =
         144 * bitrate / (sample_rate ? sample_rate : 1) +
         ((header >> MPA_PADDING_SHIFT) & 0x1);
+      if (frame_size <= 0)
+	{
+	  /* Technically, bitrate can be 0. However, but this particular
+	   * extractor is incapable of correctly processing 0-bitrate files
+	   * anyway. And bitrate == 0 might also mean that this is just a
+	   * random binary sequence, which is far more likely to be true.
+	   *
+	   * amatus suggests to use a different algorithm and parse significant
+	   * part of the file, then count the number of correct mpeg frames.
+	   * If the the percentage of correct frames is below a threshold,
+	   * then this is not an mpeg file at all.
+	   */
+	  frames -= 1;
+	  break;
+	}
       avg_bps += bitrate / 1000;
 
       pos += frame_size - 4;
@@ -221,7 +236,7 @@ EXTRACTOR_mp3_extract (const unsigned char *data,
     }
   while ((header & MPA_SYNC_MASK) == MPA_SYNC_MASK);
 
-  if (!frames)
+  if (frames < 2)
     return 0;                /*no valid frames */
   ADDR ("audio/mpeg", EXTRACTOR_METATYPE_MIMETYPE);
   avg_bps = avg_bps / frames;
