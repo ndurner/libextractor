@@ -27,7 +27,9 @@ MODIFICATIONS.
 #include "platform.h"
 #include "pack.h"
 
+#if !(defined(_WIN32) && defined(cbNDRContext))
 typedef unsigned char byte;
+#endif
 typedef unsigned short half;
 typedef unsigned int word;
 typedef signed char sbyte;
