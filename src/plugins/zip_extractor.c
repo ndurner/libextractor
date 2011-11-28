@@ -91,9 +91,14 @@ EXTRACTOR_zip_extract (const unsigned char *data,
   char *filecomment;
   const unsigned char *pos;
   unsigned int offset, stop;
-  unsigned int name_length, extra_length, comment_length;
+  unsigned int name_length;
+  unsigned int extra_length;
+  unsigned int comment_length;
   unsigned int filecomment_length;
-  unsigned int entry_total, entry_count;
+  unsigned int entry_count;
+#if DEBUG_EXTRACT_ZIP 
+  unsigned int entry_total;
+#endif
 
   /* I think the smallest zipfile you can have is about 120 bytes */ 
   if ((NULL == data) || (size < 100))
@@ -192,8 +197,8 @@ EXTRACTOR_zip_extract (const unsigned char *data,
     fprintf (stderr,
 	     "WARNING: May not be able to find all the files in this" 
 	     " ZIP archive (no multi-volume support right now).\n");  
+ entry_total = pos[10] + (pos[11] << 8);
 #endif
-  entry_total = pos[10] + (pos[11] << 8);
   entry_count = 0;
   
     /* jump to start of central directory, ASSUMING that the starting disk that it's on is disk 0 */ 

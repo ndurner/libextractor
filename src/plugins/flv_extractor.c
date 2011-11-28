@@ -316,13 +316,12 @@ static int parse_amf(const unsigned char **data,
     {
       char *key;
       unsigned char type;
-      long max_index;
-
+      
       if (*len < 4) {
         ret = -1;
         break;
       }
-      max_index = readInt32(&ptr);
+      /* max_index */ readInt32(&ptr);
       *len -= 4;
       ret = readASString(&ptr, len, &key);
       if (ret == -1)

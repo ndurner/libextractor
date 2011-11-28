@@ -472,14 +472,9 @@ EXTRACTOR_tar_extract (const char *data,
 		  if ((0 < keylength) && (NULL != valptr)
 		      && (keyptr != valptr))
 		    {
-		      unsigned int difflength = 0;
-		      
 		      while ((valptr < data + pos + (size_t) fsize)
 			     && (' ' == *valptr))
 			valptr += 1;
-		      
-		      difflength = (valptr - keyptr);
-		      
 		      if (0 == memcmp (valptr, "path=", 5))
 			{
 			  nameptr = valptr + 5;

@@ -7,10 +7,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor-0.5.20a\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2010-06-13 13:15+0200\n"
+"POT-Creation-Date: 2011-11-28 12:53+0100\n"
 "PO-Revision-Date: 2009-03-08 16:59+0100\n"
 "Last-Translator: Erwin Poeze <erwin.poeze@gmail.com>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
+"Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -790,28 +791,28 @@ msgstr ""
 msgid "Layer III"
 msgstr ""
 
-#: src/plugins/mp3_extractor.c:247
+#: src/plugins/mp3_extractor.c:245
 msgid "VBR"
 msgstr ""
 
-#: src/plugins/mp3_extractor.c:247
+#: src/plugins/mp3_extractor.c:245
 msgid "CBR"
 msgstr ""
 
-#: src/plugins/mp3_extractor.c:250 src/main/extractor_metatypes.c:140
+#: src/plugins/mp3_extractor.c:248 src/main/extractor_metatypes.c:140
 msgid "copyright"
 msgstr "copyright"
 
-#: src/plugins/mp3_extractor.c:250
+#: src/plugins/mp3_extractor.c:248
 #, fuzzy
 msgid "no copyright"
 msgstr "copyright"
 
-#: src/plugins/mp3_extractor.c:251
+#: src/plugins/mp3_extractor.c:249
 msgid "original"
 msgstr ""
 
-#: src/plugins/mp3_extractor.c:251
+#: src/plugins/mp3_extractor.c:249
 #, fuzzy
 msgid "copy"
 msgstr "firma"
@@ -891,12 +892,12 @@ msgstr "%s: optie '-W %s' is niet eenduidig\n"
 msgid "%s: option `-W %s' doesn't allow an argument\n"
 msgstr "%s: optie '-W %s' staat geen argument toe\n"
 
-#: src/main/extractor.c:2294
+#: src/main/extractor.c:2372
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "Initialisatie van plugin-mechanisme is mislukt: %s\n"
 
-#: src/main/extract.c:97
+#: src/main/extract.c:98
 #, c-format
 msgid ""
 "Usage: %s\n"
@@ -907,7 +908,7 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: src/main/extract.c:100
+#: src/main/extract.c:101
 #, c-format
 msgid ""
 "Arguments mandatory for long options are also mandatory for short options.\n"
@@ -915,103 +916,103 @@ msgstr ""
 "Argumenten die verplicht zijn voor lange opties zijn dat ook voor korte "
 "opties.\n"
 
-#: src/main/extract.c:170
+#: src/main/extract.c:171
 msgid "print output in bibtex format"
 msgstr "uitvoer in bibtex-indeling produceren"
 
-#: src/main/extract.c:172
+#: src/main/extract.c:173
 msgid "produce grep-friendly output (all results on one line per file)"
 msgstr ""
 "uitvoer produceren die makkelijk te greppen is (alle resultaten op één regel "
 "per bestand)"
 
-#: src/main/extract.c:174
+#: src/main/extract.c:175
 msgid "print this help"
 msgstr "deze hulptekst tonen"
 
-#: src/main/extract.c:176
+#: src/main/extract.c:177
 msgid "run plugins in-process (simplifies debugging)"
 msgstr ""
 
-#: src/main/extract.c:178
+#: src/main/extract.c:179
 msgid "load an extractor plugin named LIBRARY"
 msgstr "deze extractor-plugin laden"
 
-#: src/main/extract.c:180
+#: src/main/extract.c:181
 msgid "list all keyword types"
 msgstr "alle sleutelwoordtypes opsommen"
 
-#: src/main/extract.c:182
+#: src/main/extract.c:183
 msgid "do not use the default set of extractor plugins"
 msgstr "de standaardset extractor-plugins niet gebruiken"
 
-#: src/main/extract.c:184
+#: src/main/extract.c:185
 msgid "print only keywords of the given TYPE (use -L to get a list)"
 msgstr ""
 "alleen sleutelwoorden van dit type tonen (gebruik '-L' voor een overzicht)"
 
-#: src/main/extract.c:186
+#: src/main/extract.c:187
 msgid "print the version number"
 msgstr "programmaversie tonen"
 
-#: src/main/extract.c:188
+#: src/main/extract.c:189
 msgid "be verbose"
 msgstr "gedetailleerde uivoer produceren"
 
-#: src/main/extract.c:190
+#: src/main/extract.c:191
 msgid "do not print keywords of the given TYPE"
 msgstr "sleutelwoorden van dit type niet tonen"
 
-#: src/main/extract.c:193
+#: src/main/extract.c:194
 msgid "extract [OPTIONS] [FILENAME]*"
 msgstr "extract [OPTIES] [BESTANDSNAAM]*"
 
-#: src/main/extract.c:194
+#: src/main/extract.c:195
 msgid "Extract metadata from files."
 msgstr "Metadata uit bestanden lezen."
 
-#: src/main/extract.c:235
+#: src/main/extract.c:236
 #, fuzzy, c-format
 msgid "Found by `%s' plugin:\n"
 msgstr "Laden van plugin '%s' is mislukt: %s\n"
 
-#: src/main/extract.c:238 src/main/extract.c:319
+#: src/main/extract.c:239 src/main/extract.c:320
 #: src/main/extractor_metatypes.c:136 src/main/extractor_print.c:68
 msgid "unknown"
 msgstr "onbekend"
 
-#: src/main/extract.c:243
+#: src/main/extract.c:244
 #, c-format
 msgid "%s - (unknown, %u bytes)\n"
 msgstr ""
 
-#: src/main/extract.c:267
+#: src/main/extract.c:268
 #, fuzzy, c-format
 msgid "%s - (binary, %u bytes)\n"
 msgstr "%s - (binair)\n"
 
-#: src/main/extract.c:600 src/main/extract.c:610
+#: src/main/extract.c:601 src/main/extract.c:611
 #, c-format
 msgid ""
 "Illegal combination of options, cannot combine multiple styles of printing.\n"
 msgstr ""
 
-#: src/main/extract.c:637
+#: src/main/extract.c:638
 #, c-format
 msgid "You must specify an argument for the `%s' option (option ignored).\n"
 msgstr "Optie '%s' vereist een argument -- optie is genegeerd.\n"
 
-#: src/main/extract.c:702
+#: src/main/extract.c:703
 #, c-format
 msgid "Use --help to get a list of options.\n"
 msgstr "Gebruik '--help' voor een lijst met mogelijke opties.\n"
 
-#: src/main/extract.c:740
+#: src/main/extract.c:741
 #, c-format
 msgid "%% BiBTeX file\n"
 msgstr "%% BiBTeX-bestand\n"
 
-#: src/main/extract.c:747
+#: src/main/extract.c:748
 #, c-format
 msgid "Keywords for file %s:\n"
 msgstr "Trefwoorden voor bestand %s:\n"
@@ -1922,8 +1923,9 @@ msgid "paragraph count"
 msgstr "aantal alinea's"
 
 #: src/main/extractor_metatypes.c:302
-msgid "number o paragraphs"
-msgstr ""
+#, fuzzy
+msgid "number of paragraphs"
+msgstr "bewerkingscycli"
 
 #: src/main/extractor_metatypes.c:304
 msgid "word count"
@@ -2402,7 +2404,17 @@ msgstr "groep"
 msgid "name of the group or band"
 msgstr "uitgever"
 
-#: src/main/extractor_metatypes.c:436 src/main/extractor_metatypes.c:437
+#: src/main/extractor_metatypes.c:436
+#, fuzzy
+msgid "original filename"
+msgstr "naam"
+
+#: src/main/extractor_metatypes.c:437
+#, fuzzy
+msgid "name of the original file (reserved for GNUnet)"
+msgstr "uitgever"
+
+#: src/main/extractor_metatypes.c:438 src/main/extractor_metatypes.c:439
 #, fuzzy
 msgid "last"
 msgstr "flits"

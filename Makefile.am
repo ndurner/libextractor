@@ -1,6 +1,6 @@
 SUBDIRS  = libltdl m4 po src doc . 
 EXTRA_DIST = config.rpath \
-  ABOUT-NLS mkinstalldirs install-sh   
+  ABOUT-NLS install-sh   
 
 pkgconfigdatadir = $(libdir)/pkgconfig
 pkgconfigdata_DATA = libextractor.pc

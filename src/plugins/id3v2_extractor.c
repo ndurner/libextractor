@@ -125,7 +125,6 @@ EXTRACTOR_id3v2_extract (const unsigned char *data,
 			 void *proc_cls,
 			 const char *options)
 {
-  int unsync;
   unsigned int tsize;
   unsigned int pos;
   unsigned int off;
@@ -137,7 +136,7 @@ EXTRACTOR_id3v2_extract (const unsigned char *data,
       (data[1] != 0x44) ||
       (data[2] != 0x33) || (data[3] != 0x02) || (data[4] != 0x00))
     return 0;
-  unsync = (data[5] & 0x80) > 0;
+  /* unsync: (data[5] & 0x80) > 0;  */
   tsize = (((data[6] & 0x7F) << 21) |
            ((data[7] & 0x7F) << 14) |
            ((data[8] & 0x7F) << 07) | ((data[9] & 0x7F) << 00));

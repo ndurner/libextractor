@@ -7,10 +7,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor-0.6.0\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2010-01-13 15:36+0100\n"
+"POT-Creation-Date: 2011-11-28 12:53+0100\n"
 "PO-Revision-Date: 2010-09-30 23:41+0200\n"
 "Last-Translator: Sergio Zanchetta <primes2h@ubuntu.com>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
+"Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -683,7 +684,7 @@ msgstr ""
 msgid "Farsi"
 msgstr "Farsi"
 
-#: src/plugins/ole2_extractor.c:462
+#: src/plugins/ole2_extractor.c:471
 #, c-format
 msgid "Revision #%u: Author '%s' worked on '%s'"
 msgstr ""
@@ -696,43 +697,43 @@ msgstr "mono"
 msgid "stereo"
 msgstr "stereo"
 
-#: src/plugins/man_extractor.c:156
+#: src/plugins/man_extractor.c:161
 msgid "Commands"
 msgstr ""
 
-#: src/plugins/man_extractor.c:160
+#: src/plugins/man_extractor.c:165
 msgid "System calls"
 msgstr ""
 
-#: src/plugins/man_extractor.c:164
+#: src/plugins/man_extractor.c:169
 msgid "Library calls"
 msgstr ""
 
-#: src/plugins/man_extractor.c:168
+#: src/plugins/man_extractor.c:173
 msgid "Special files"
 msgstr ""
 
-#: src/plugins/man_extractor.c:172
+#: src/plugins/man_extractor.c:177
 msgid "File formats and conventions"
 msgstr ""
 
-#: src/plugins/man_extractor.c:176
+#: src/plugins/man_extractor.c:181
 msgid "Games"
 msgstr "Giochi"
 
-#: src/plugins/man_extractor.c:180
+#: src/plugins/man_extractor.c:185
 msgid "Conventions and miscellaneous"
 msgstr ""
 
-#: src/plugins/man_extractor.c:184
+#: src/plugins/man_extractor.c:189
 msgid "System management commands"
 msgstr ""
 
-#: src/plugins/man_extractor.c:188
+#: src/plugins/man_extractor.c:193
 msgid "Kernel routines"
 msgstr "Routine del kernel"
 
-#: src/plugins/flac_extractor.c:187
+#: src/plugins/flac_extractor.c:192
 #, c-format
 msgid "%u Hz, %u channels"
 msgstr ""
@@ -785,27 +786,27 @@ msgstr "Layer II"
 msgid "Layer III"
 msgstr "Layer III"
 
-#: src/plugins/mp3_extractor.c:248
+#: src/plugins/mp3_extractor.c:245
 msgid "VBR"
 msgstr "VBR"
 
-#: src/plugins/mp3_extractor.c:248
+#: src/plugins/mp3_extractor.c:245
 msgid "CBR"
 msgstr "CBR"
 
-#: src/plugins/mp3_extractor.c:251 src/main/extractor_metatypes.c:140
+#: src/plugins/mp3_extractor.c:248 src/main/extractor_metatypes.c:140
 msgid "copyright"
 msgstr "copyright"
 
-#: src/plugins/mp3_extractor.c:251
+#: src/plugins/mp3_extractor.c:248
 msgid "no copyright"
 msgstr "nessun copyright"
 
-#: src/plugins/mp3_extractor.c:252
+#: src/plugins/mp3_extractor.c:249
 msgid "original"
 msgstr "originale"
 
-#: src/plugins/mp3_extractor.c:252
+#: src/plugins/mp3_extractor.c:249
 msgid "copy"
 msgstr "copia"
 
@@ -814,17 +815,17 @@ msgstr "copia"
 msgid "codec: %s, %u fps, %u ms"
 msgstr "codec: %s, %u fps, %u ms"
 
-#: src/plugins/jpeg_extractor.c:180
+#: src/plugins/jpeg_extractor.c:182
 #, c-format
 msgid "%ux%u dots per inch"
 msgstr "%ux%u punti per pollice"
 
-#: src/plugins/jpeg_extractor.c:195
+#: src/plugins/jpeg_extractor.c:197
 #, c-format
 msgid "%ux%u dots per cm"
 msgstr "%ux%u punti per cm"
 
-#: src/plugins/jpeg_extractor.c:210
+#: src/plugins/jpeg_extractor.c:212
 #, c-format
 msgid "%ux%u dots per inch?"
 msgstr "%ux%u punti per pollice?"
@@ -884,12 +885,12 @@ msgstr "%s: l'opzione \"-W %s\" è ambigua\n"
 msgid "%s: option `-W %s' doesn't allow an argument\n"
 msgstr "%s: l'opzione \"-W %s\" non ammette un argomento\n"
 
-#: src/main/extractor.c:2145
+#: src/main/extractor.c:2372
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr ""
 
-#: src/main/extract.c:97
+#: src/main/extract.c:98
 #, c-format
 msgid ""
 "Usage: %s\n"
@@ -900,99 +901,108 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: src/main/extract.c:100
+#: src/main/extract.c:101
 #, c-format
-msgid "Arguments mandatory for long options are also mandatory for short options.\n"
+msgid ""
+"Arguments mandatory for long options are also mandatory for short options.\n"
 msgstr ""
 
-#: src/main/extract.c:174
+#: src/main/extract.c:171
 msgid "print output in bibtex format"
 msgstr ""
 
-#: src/main/extract.c:176
+#: src/main/extract.c:173
 msgid "produce grep-friendly output (all results on one line per file)"
 msgstr ""
 
-#: src/main/extract.c:178
+#: src/main/extract.c:175
 msgid "print this help"
 msgstr ""
 
-#: src/main/extract.c:180
+#: src/main/extract.c:177
 msgid "run plugins in-process (simplifies debugging)"
 msgstr ""
 
-#: src/main/extract.c:182
+#: src/main/extract.c:179
 msgid "load an extractor plugin named LIBRARY"
 msgstr ""
 
-#: src/main/extract.c:184
+#: src/main/extract.c:181
 msgid "list all keyword types"
 msgstr ""
 
-#: src/main/extract.c:186
+#: src/main/extract.c:183
 msgid "do not use the default set of extractor plugins"
 msgstr ""
 
-#: src/main/extract.c:188
+#: src/main/extract.c:185
 msgid "print only keywords of the given TYPE (use -L to get a list)"
 msgstr ""
 
-#: src/main/extract.c:190
+#: src/main/extract.c:187
 msgid "print the version number"
 msgstr ""
 
-#: src/main/extract.c:192
+#: src/main/extract.c:189
 msgid "be verbose"
 msgstr ""
 
-#: src/main/extract.c:194
+#: src/main/extract.c:191
 msgid "do not print keywords of the given TYPE"
 msgstr ""
 
-#: src/main/extract.c:197
+#: src/main/extract.c:194
 msgid "extract [OPTIONS] [FILENAME]*"
 msgstr ""
 
-#: src/main/extract.c:198
+#: src/main/extract.c:195
 msgid "Extract metadata from files."
 msgstr ""
 
-#: src/main/extract.c:238
+#: src/main/extract.c:236
 #, c-format
 msgid "Found by `%s' plugin:\n"
 msgstr ""
 
-#: src/main/extract.c:245
+#: src/main/extract.c:239 src/main/extract.c:320
+#: src/main/extractor_metatypes.c:136 src/main/extractor_print.c:68
+msgid "unknown"
+msgstr ""
+
+#: src/main/extract.c:244
 #, c-format
 msgid "%s - (unknown, %u bytes)\n"
 msgstr ""
 
-#: src/main/extract.c:266
+#: src/main/extract.c:268
 #, c-format
 msgid "%s - (binary, %u bytes)\n"
 msgstr "%s - (binario, %u bite)\n"
 
-#: src/main/extract.c:603 src/main/extract.c:613
+#: src/main/extract.c:601 src/main/extract.c:611
 #, c-format
-msgid "Illegal combination of options, cannot combine multiple styles of printing.\n"
+msgid ""
+"Illegal combination of options, cannot combine multiple styles of printing.\n"
 msgstr ""
 
-#: src/main/extract.c:640
+#: src/main/extract.c:638
 #, c-format
 msgid "You must specify an argument for the `%s' option (option ignored).\n"
-msgstr "Deve essere specificato un argomento per l'opzione \"%s\" (opzione ignorata).\n"
+msgstr ""
+"Deve essere specificato un argomento per l'opzione \"%s\" (opzione "
+"ignorata).\n"
 
-#: src/main/extract.c:705
+#: src/main/extract.c:703
 #, c-format
 msgid "Use --help to get a list of options.\n"
 msgstr "Usare --help per ottenere un elenco di opzioni.\n"
 
-#: src/main/extract.c:737
+#: src/main/extract.c:741
 #, c-format
 msgid "%% BiBTeX file\n"
 msgstr "%% file BiBTeX\n"
 
-#: src/main/extract.c:744
+#: src/main/extract.c:748
 #, c-format
 msgid "Keywords for file %s:\n"
 msgstr ""
@@ -1146,7 +1156,9 @@ msgid "publishing institution"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:77
-msgid "institution that was involved in the publishing, but not necessarily the publisher"
+msgid ""
+"institution that was involved in the publishing, but not necessarily the "
+"publisher"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:78
@@ -1186,8 +1198,12 @@ msgid "publication day"
 msgstr "giorno di pubblicazione"
 
 #: src/main/extractor_metatypes.c:88
-msgid "day of publication (or, if unpublished, the day of creation), relative to the given month"
-msgstr "giorno di pubblicazione (o, se non pubblicato, il giorno di creazione), relativo al mese dato"
+msgid ""
+"day of publication (or, if unpublished, the day of creation), relative to "
+"the given month"
+msgstr ""
+"giorno di pubblicazione (o, se non pubblicato, il giorno di creazione), "
+"relativo al mese dato"
 
 #: src/main/extractor_metatypes.c:89
 msgid "publication date"
@@ -1341,10 +1357,6 @@ msgstr ""
 msgid "ISO 2-letter country code for the country of origin"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:136
-msgid "unknown"
-msgstr ""
-
 #: src/main/extractor_metatypes.c:137
 msgid "specifics are not known"
 msgstr ""
@@ -1422,7 +1434,9 @@ msgid "unknown date"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:163
-msgid "ambiguous date (could specify creation time, modification time or access time)"
+msgid ""
+"ambiguous date (could specify creation time, modification time or access "
+"time)"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:164
@@ -1690,7 +1704,9 @@ msgid "target platform"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:238
-msgid "name of the architecture, operating system and distribution this package is for"
+msgid ""
+"name of the architecture, operating system and distribution this package is "
+"for"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:239
@@ -1698,7 +1714,9 @@ msgid "resource type"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:240
-msgid "categorization of the nature of the resource that is more specific than the file format"
+msgid ""
+"categorization of the nature of the resource that is more specific than the "
+"file format"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:241
@@ -1706,7 +1724,8 @@ msgid "library search path"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:242
-msgid "path in the file system to be considered when looking for required libraries"
+msgid ""
+"path in the file system to be considered when looking for required libraries"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:243
@@ -1838,7 +1857,7 @@ msgid "paragraph count"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:302
-msgid "number o paragraphs"
+msgid "number of paragraphs"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:304
@@ -1934,7 +1953,9 @@ msgid "performer"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:335
-msgid "The artist(s) who performed the work (conductor, orchestra, soloists, actor, etc.)"
+msgid ""
+"The artist(s) who performed the work (conductor, orchestra, soloists, actor, "
+"etc.)"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:337
@@ -2122,7 +2143,8 @@ msgid "interpretation"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:388
-msgid "information about the people behind interpretations of an existing piece"
+msgid ""
+"information about the people behind interpretations of an existing piece"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:389
@@ -2246,7 +2268,8 @@ msgid "full data"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:423
-msgid "entry that contains the full, original binary data (not really meta data)"
+msgid ""
+"entry that contains the full, original binary data (not really meta data)"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:425
@@ -2277,6 +2300,15 @@ msgstr ""
 msgid "name of the group or band"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:436 src/main/extractor_metatypes.c:437
+#: src/main/extractor_metatypes.c:436
+#, fuzzy
+msgid "original filename"
+msgstr "originale"
+
+#: src/main/extractor_metatypes.c:437
+msgid "name of the original file (reserved for GNUnet)"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:438 src/main/extractor_metatypes.c:439
 msgid "last"
 msgstr ""

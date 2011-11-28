@@ -308,7 +308,6 @@ get_path_from_PATH() {
   char * buf;
   char * ret;
   const char * p;
-  size_t size;
 
   p = getenv("PATH");
   if (p == NULL)
@@ -322,7 +321,6 @@ get_path_from_PATH() {
       free (path);
       return NULL;
     }
-  size = strlen(path);
   pos = path;
 
   while (NULL != (end = strchr(pos, ':'))) {

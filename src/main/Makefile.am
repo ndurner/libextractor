@@ -30,7 +30,7 @@ libextractor_la_LIBADD = \
 
 
 EXTRA_DIST = \
-  iconv.c
+  iconv.c fuzz_default.sh fuzz_thumbnail.sh
 
 libextractor_la_CPPFLAGS = -DPLUGINDIR=\"@RPLUGINDIR@\" -DPLUGININSTDIR=\"${plugindir}\" $(AM_CPPFLAGS)
 

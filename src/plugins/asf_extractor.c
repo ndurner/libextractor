@@ -1,6 +1,6 @@
 /*
      This file is part of libextractor.
-     (C) 2002, 2003 Vidyut Samanta and Christian Grothoff
+     (C) 2002, 2003, 2011 Vidyut Samanta and Christian Grothoff
 
      libextractor is free software; you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published
@@ -53,28 +53,20 @@
 
 #include "platform.h"
 #include "extractor.h"
+#include "convert.h"
+#include <stdint.h>
 
-#define CODEC_TYPE_AUDIO       0
-#define CODEC_TYPE_VIDEO       1
-#define CODEC_TYPE_CONTROL     2
-#define MAX_NUM_STREAMS       23
-
-#define DEFRAG_BUFSIZE    65536
-#define DEMUX_START 1
 #define DEMUX_FINISHED 0
+#define DEMUX_START 1
 
 
 /*
  * define asf GUIDs (list from avifile)
  */
 #define GUID_ERROR                              0
-
-    /* base ASF objects */
 #define GUID_ASF_HEADER                         1
 #define GUID_ASF_DATA                           2
 #define GUID_ASF_SIMPLE_INDEX                   3
-
-    /* header ASF objects */
 #define GUID_ASF_FILE_PROPERTIES                4
 #define GUID_ASF_STREAM_PROPERTIES              5
 #define GUID_ASF_STREAM_BITRATE_PROPERTIES      6
@@ -88,33 +80,16 @@
 #define GUID_ASF_EXTENDED_CONTENT_DESCRIPTION  14
 #define GUID_ASF_ERROR_CORRECTION              15
 #define GUID_ASF_PADDING                       16
-
-    /* stream properties object stream type */
 #define GUID_ASF_AUDIO_MEDIA                   17
 #define GUID_ASF_VIDEO_MEDIA                   18
 #define GUID_ASF_COMMAND_MEDIA                 19
-
-    /* stream properties object error correction type */
 #define GUID_ASF_NO_ERROR_CORRECTION           20
 #define GUID_ASF_AUDIO_SPREAD                  21
-
-    /* mutual exclusion object exlusion type */
 #define GUID_ASF_MUTEX_BITRATE                 22
 #define GUID_ASF_MUTEX_UKNOWN                  23
-
-    /* header extension */
 #define GUID_ASF_RESERVED_1                    24
-
-    /* script command */
 #define GUID_ASF_RESERVED_SCRIPT_COMMNAND      25
-
-    /* marker object */
 #define GUID_ASF_RESERVED_MARKER               26
-
-    /* various */
-/*
-#define GUID_ASF_HEAD2                         27
-*/
 #define GUID_ASF_AUDIO_CONCEAL_NONE            27
 #define GUID_ASF_CODEC_COMMENT1_HEADER         28
 #define GUID_ASF_2_0_HEADER                    29
@@ -122,27 +97,14 @@
 #define GUID_END                               30
 
 
-/* asf stream types */
-#define ASF_STREAM_TYPE_UNKNOWN  0
-#define ASF_STREAM_TYPE_AUDIO    1
-#define ASF_STREAM_TYPE_VIDEO    2
-#define ASF_STREAM_TYPE_CONTROL  3
-
-#define ASF_MAX_NUM_STREAMS     23
-
-
-typedef unsigned long long ext_uint64_t;
-typedef unsigned int ext_uint32_t;
-typedef unsigned short ext_uint16_t;
-typedef unsigned char ext_uint8_t;
-
 typedef struct
 {
-  ext_uint32_t v1;
-  ext_uint16_t v2;
-  ext_uint16_t v3;
-  ext_uint8_t v4[8];
+  uint32_t v1;
+  uint16_t v2;
+  uint16_t v3;
+  uint8_t v4[8];
 } LE_GUID;
+
 
 static const struct
 {
@@ -342,92 +304,29 @@ static const struct
       {
 0x90, 0x34, 0x00, 0xa0, 0xc9, 0x03, 0x49, 0xbe}}},};
 
-typedef struct
-{
-  int num;
-  int seq;
 
-  int frag_offset;
-  int64_t timestamp;
-  int ts_per_kbyte;
-  int defrag;
-
-  ext_uint32_t buf_type;
-  int stream_id;
-
-  ext_uint8_t *buffer;
-} asf_stream_t;
-
-typedef struct demux_asf_s
+struct demux_asf_s
 {
   /* pointer to the stream data */
   const char *input;
   /* current position in stream */
   size_t inputPos;
+
   size_t inputLen;
 
-  int keyframe_found;
-
-  int seqno;
-  ext_uint32_t packet_size;
-  ext_uint8_t packet_flags;
-  ext_uint32_t data_size;
-
-  ext_uint32_t bitrates[MAX_NUM_STREAMS];
-  int num_streams;
-  int num_audio_streams;
-  int num_video_streams;
-  int audio_stream;
-  int video_stream;
-  int audio_stream_id;
-  int video_stream_id;
-  int control_stream_id;
-
-  ext_uint16_t wavex[1024];
-  int wavex_size;
-
-  char title[512];
-  char author[512];
-  char copyright[512];
-  char comment[512];
-
-  ext_uint32_t length, rate;
-
-  /* packet filling */
-  int packet_size_left;
-
-  /* frame rate calculations, discontinuity detection */
-
-  int64_t last_pts[2];
-  int32_t frame_duration;
-  int send_newpts;
-  int64_t last_frame_pts;
-
-  /* only for reading */
-  ext_uint32_t packet_padsize;
-  int nb_frames;
-  ext_uint8_t frame_flag;
-  ext_uint8_t segtype;
-  int frame;
+  uint32_t length;
 
   int status;
 
-  /* byte reordering from audio streams */
-  int reorder_h;
-  int reorder_w;
-  int reorder_b;
-
-  off_t header_size;
-  int buf_flag_seek;
-
-  /* first packet position */
-  int64_t first_packet_pos;
-
-  int reference_mode;
-} demux_asf_t;
+  char *title;
+  char *author;
+  char *copyright;
+  char *comment;
+  char *rating;
+};
 
 static int
-readBuf (demux_asf_t * this, void *buf, int len)
+readBuf (struct demux_asf_s * this, void *buf, int len)
 {
   int min;
 
@@ -439,10 +338,10 @@ readBuf (demux_asf_t * this, void *buf, int len)
   return min;
 }
 
-static ext_uint8_t
-get_byte (demux_asf_t * this)
+static uint8_t
+get_byte (struct demux_asf_s * this)
 {
-  ext_uint8_t buf;
+  uint8_t buf;
   int i;
 
   i = readBuf (this, &buf, 1);
@@ -451,10 +350,10 @@ get_byte (demux_asf_t * this)
   return buf;
 }
 
-static ext_uint16_t
-get_le16 (demux_asf_t * this)
+static uint16_t
+get_le16 (struct demux_asf_s * this)
 {
-  ext_uint8_t buf[2];
+  uint8_t buf[2];
   int i;
 
   i = readBuf (this, buf, 2);
@@ -463,10 +362,10 @@ get_le16 (demux_asf_t * this)
   return buf[0] | (buf[1] << 8);
 }
 
-static ext_uint32_t
-get_le32 (demux_asf_t * this)
+static uint32_t
+get_le32 (struct demux_asf_s * this)
 {
-  ext_uint8_t buf[4];
+  uint8_t buf[4];
   int i;
 
   i = readBuf (this, buf, 4);
@@ -475,26 +374,26 @@ get_le32 (demux_asf_t * this)
   return buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24);
 }
 
-static ext_uint64_t
-get_le64 (demux_asf_t * this)
+static uint64_t
+get_le64 (struct demux_asf_s * this)
 {
-  ext_uint8_t buf[8];
+  uint8_t buf[8];
   int i;
 
   i = readBuf (this, buf, 8);
   if (i != 8)
     this->status = DEMUX_FINISHED;
-  return (ext_uint64_t) buf[0]
-    | ((ext_uint64_t) buf[1] << 8)
-    | ((ext_uint64_t) buf[2] << 16)
-    | ((ext_uint64_t) buf[3] << 24)
-    | ((ext_uint64_t) buf[4] << 32)
-    | ((ext_uint64_t) buf[5] << 40)
-    | ((ext_uint64_t) buf[6] << 48) | ((ext_uint64_t) buf[7] << 54);
+  return (uint64_t) buf[0]
+    | ((uint64_t) buf[1] << 8)
+    | ((uint64_t) buf[2] << 16)
+    | ((uint64_t) buf[3] << 24)
+    | ((uint64_t) buf[4] << 32)
+    | ((uint64_t) buf[5] << 40)
+    | ((uint64_t) buf[6] << 48) | ((uint64_t) buf[7] << 54);
 }
 
 static int
-get_guid (demux_asf_t * this)
+get_guid (struct demux_asf_s * this)
 {
   int i;
   LE_GUID g;
@@ -513,193 +412,72 @@ get_guid (demux_asf_t * this)
   return GUID_ERROR;
 }
 
-static void
-get_str16_nolen (demux_asf_t * this, int len, char *buf, int buf_size)
-{
-
-  int c;
-  char *q;
-
-  q = buf;
-  while (len > 0)
-    {
-      c = get_le16 (this);
-      if ((q - buf) < buf_size - 1)
-        *q++ = c;
-      len -= 2;
-    }
-  *q = '\0';
-}
 
 static int
-asf_read_header (demux_asf_t * this)
+asf_read_header (struct demux_asf_s * this)
 {
   int guid;
-  ext_uint64_t gsize;
+  uint64_t gsize;
+  uint16_t len1, len2, len3, len4, len5;
 
   guid = get_guid (this);
   if (guid != GUID_ASF_HEADER)
     return 0;
-  get_le64 (this);
-  get_le32 (this);
-  get_byte (this);
-  get_byte (this);
-
+  get_le64 (this); /* object size */
+  get_le32 (this); /* number of header objects */
+  get_byte (this); /* reserved 1 */
+  get_byte (this); /* reserved 2 */		    
   while (this->status != DEMUX_FINISHED)
     {
-      guid = get_guid (this);
-      gsize = get_le64 (this);
-
+      guid = get_guid (this); /* object ID */
+      gsize = get_le64 (this); /* object size */
       if (gsize < 24)
         goto fail;
-
       switch (guid)
         {
         case GUID_ASF_FILE_PROPERTIES:
-          {
-            ext_uint64_t start_time, end_time;
-
-            guid = get_guid (this);
-            get_le64 (this);    /* file size */
-            get_le64 (this);    /* file time */
-            get_le64 (this);    /* nb_packets */
-
-            end_time = get_le64 (this);
-
-            this->length = get_le64 (this) / 10000;
-            if (this->length)
-              this->rate = this->inputLen / (this->length / 1000);
-            else
-              this->rate = 0;
-
-
-            start_time = get_le32 (this);       /* start timestamp in 1/1000 s */
-
-            get_le32 (this);    /* unknown */
-            get_le32 (this);    /* min size */
-            this->packet_size = get_le32 (this);        /* max size */
-            get_le32 (this);    /* max bitrate */
-            get_le32 (this);
-          }
+	  guid = get_guid (this); /* file ID */
+	  get_le64 (this);    /* file size */
+	  get_le64 (this);    /* creation date */
+	  get_le64 (this);    /* nb_packets */
+	  this->length = get_le64 (this); /* play duration in 100 ns units */
+	  get_le64 (this); /* send duration */
+	  get_le64 (this); /* preroll */
+	  get_le32 (this);    /* flags */
+	  get_le32 (this);    /* min size */
+	  get_le32 (this);        /* max size */
+	  get_le32 (this);    /* max bitrate */          
           break;
-
-        case (GUID_ASF_STREAM_PROPERTIES):
-          {
-            int type;
-            ext_uint32_t total_size, stream_data_size;
-            ext_uint16_t stream_id;
-            ext_uint64_t pos1, pos2;
-            pos1 = this->inputPos;
-
-            guid = get_guid (this);
-            switch (guid)
-              {
-              case GUID_ASF_AUDIO_MEDIA:
-                type = CODEC_TYPE_AUDIO;
-                break;
-
-              case GUID_ASF_VIDEO_MEDIA:
-                type = CODEC_TYPE_VIDEO;
-                break;
-
-              case GUID_ASF_COMMAND_MEDIA:
-                type = CODEC_TYPE_CONTROL;
-                break;
-
-              default:
-                goto fail;
-              }
-
-            guid = get_guid (this);
-            get_le64 (this);
-            total_size = get_le32 (this);
-            if (total_size > sizeof (this->wavex))
-              goto fail;
-            stream_data_size = get_le32 (this);
-            stream_id = get_le16 (this);        /* stream id */
-            get_le32 (this);
-
-            if (type == CODEC_TYPE_AUDIO)
-              {
-                ext_uint8_t buffer[6];
-
-                readBuf (this, (ext_uint8_t *) this->wavex, total_size);
-                if (guid == GUID_ASF_AUDIO_SPREAD)
-                  {
-                    readBuf (this, buffer, 6);
-                    this->reorder_h = buffer[0];
-                    this->reorder_w = (buffer[2] << 8) | buffer[1];
-                    this->reorder_b = (buffer[4] << 8) | buffer[3];
-                    this->reorder_w /= this->reorder_b;
-                  }
-                else
-                  {
-                    this->reorder_b = this->reorder_h = this->reorder_w = 1;
-                  }
-
-                this->wavex_size = total_size;  /* 18 + this->wavex[8]; */
-                this->num_audio_streams++;
-              }
-            else if (type == CODEC_TYPE_VIDEO)
-              {
-
-                ext_uint16_t i;
-
-                get_le32 (this);        /* width */
-                get_le32 (this);        /* height */
-                get_byte (this);
-
-                i = get_le16 (this);    /* size */
-                this->inputPos += i;
-                this->num_video_streams++;
-              }
-            else if (type == CODEC_TYPE_CONTROL)
-              {
-                this->control_stream_id = stream_id;
-              }
-
-            this->num_streams++;
-            pos2 = this->inputPos;
-            this->inputPos += gsize - (pos2 - pos1 + 24);
-          }
-          break;
-
         case GUID_ASF_DATA:
           goto headers_ok;
           break;
         case GUID_ASF_CONTENT_DESCRIPTION:
-          {
-            ext_uint16_t len1, len2, len3, len4, len5;
-
-            len1 = get_le16 (this);
-            len2 = get_le16 (this);
-            len3 = get_le16 (this);
-            len4 = get_le16 (this);
-            len5 = get_le16 (this);
-            get_str16_nolen (this, len1, this->title, sizeof (this->title));
-            get_str16_nolen (this, len2, this->author, sizeof (this->author));
-            get_str16_nolen (this, len3, this->copyright,
-                             sizeof (this->copyright));
-            get_str16_nolen (this, len4, this->comment,
-                             sizeof (this->comment));
-            this->inputPos += len5;
-          }
+	  len1 = get_le16 (this);
+	  len2 = get_le16 (this);
+	  len3 = get_le16 (this);
+	  len4 = get_le16 (this);
+	  len5 = get_le16 (this);
+	  this->title = EXTRACTOR_common_convert_to_utf8 (&this->input[this->inputPos],
+							  len1,
+							  "UTF-16");
+	  this->inputPos += len1;
+	  this->author = EXTRACTOR_common_convert_to_utf8 (&this->input[this->inputPos],
+							   len2,
+							   "UTF-16");
+	  this->inputPos += len2;
+	  this->copyright = EXTRACTOR_common_convert_to_utf8 (&this->input[this->inputPos],
+							      len3,
+							      "UTF-16");
+	  this->inputPos += len3;
+	  this->comment = EXTRACTOR_common_convert_to_utf8 (&this->input[this->inputPos],
+							    len4,
+							    "UTF-16");
+	  this->inputPos += len4;
+	  this->rating = EXTRACTOR_common_convert_to_utf8 (&this->input[this->inputPos],
+							   len5,
+							   "UTF-16");
+	  this->inputPos += len5;
           break;
-
-        case GUID_ASF_STREAM_BITRATE_PROPERTIES:
-          {
-            ext_uint16_t streams, stream_id;
-            ext_uint16_t i;
-
-            streams = get_le16 (this);
-            for (i = 0; i < streams; i++)
-              {
-                stream_id = get_le16 (this);
-                this->bitrates[stream_id] = get_le32 (this);
-              }
-          }
-          break;
-
         default:
           this->inputPos += gsize - 24;
         }
@@ -707,10 +485,7 @@ asf_read_header (demux_asf_t * this)
 
 headers_ok:
   this->inputPos += sizeof (LE_GUID) + 10;
-  this->packet_size_left = 0;
-  this->first_packet_pos = this->inputPos;
   return 1;
-
 fail:
   return 0;
 }
@@ -734,57 +509,79 @@ EXTRACTOR_asf_extract (const char *data,
 		       void *proc_cls,
 		       const char *options)
 {
-  demux_asf_t this;
+  struct demux_asf_s this;
   size_t slen;
+  char duration_str[30];
+  int ret;
 
-  memset (&this, 0, sizeof (demux_asf_t));
+  memset (&this, 0, sizeof (struct demux_asf_s));
   this.input = data;
   this.inputLen = size;
   this.status = DEMUX_START;
-  if (0 == asf_read_header (&this))
-    return 0;    
-  
-  if ( ( (0 < (slen = strlen(this.title))) &&
+  ret = 0;
+  if (1 == asf_read_header (&this))
+  {
+    snprintf (duration_str, 
+	      sizeof (duration_str),
+	      "%llu ms", (unsigned long long) (this.length / 10000LL));
+    if ( ( (this.title != NULL) &&
+	   (0 < (slen = strlen(this.title))) &&
+	   (0 != proc (proc_cls, 
+		       "asf",
+		       EXTRACTOR_METATYPE_TITLE,
+		       EXTRACTOR_METAFORMAT_C_STRING,
+		       "text/plain",
+		       this.title,
+		       slen + 1)) ) ||
+	 ( (this.author != NULL) &&
+	   (0 < (slen = strlen(this.author))) &&
+	   (0 != proc (proc_cls, 
+		       "asf",
+		       EXTRACTOR_METATYPE_AUTHOR_NAME,
+		       EXTRACTOR_METAFORMAT_C_STRING,
+		       "text/plain",
+		       this.author,
+		       slen + 1)) ) ||
+	 ( (this.comment != NULL)  &&
+	   (0 < (slen = strlen(this.comment))) &&
+	   (0 != proc (proc_cls, 
+		       "asf",
+		       EXTRACTOR_METATYPE_COMMENT,
+		       EXTRACTOR_METAFORMAT_C_STRING,
+		       "text/plain",
+		       this.comment,
+		       slen + 1)) ) ||
+	 ( (this.copyright != NULL) &&
+	   (0 < (slen = strlen(this.copyright))) &&
+	   (0 != proc (proc_cls, 
+		       "asf",
+		       EXTRACTOR_METATYPE_COPYRIGHT,
+		       EXTRACTOR_METAFORMAT_C_STRING,
+		       "text/plain",
+		       this.copyright,
+		       slen + 1)) ) ||
 	 (0 != proc (proc_cls, 
 		     "asf",
-		     EXTRACTOR_METATYPE_TITLE,
+		     EXTRACTOR_METATYPE_MIMETYPE,
 		     EXTRACTOR_METAFORMAT_C_STRING,
 		     "text/plain",
-		     this.title,
-		     slen + 1)) ) ||
-       ( (0 < (slen = strlen(this.author))) &&
+		     "video/x-ms-asf",
+		     strlen("video/x-ms-asf") + 1)) ||
 	 (0 != proc (proc_cls, 
 		     "asf",
-		     EXTRACTOR_METATYPE_AUTHOR_NAME,
+		     EXTRACTOR_METATYPE_DURATION,
 		     EXTRACTOR_METAFORMAT_C_STRING,
 		     "text/plain",
-		     this.author,
-		     slen + 1)) ) ||
-       ( (0 < (slen = strlen(this.comment))) &&
-	 (0 != proc (proc_cls, 
-		     "asf",
-		     EXTRACTOR_METATYPE_COMMENT,
-		     EXTRACTOR_METAFORMAT_C_STRING,
-		     "text/plain",
-		     this.comment,
-		     slen + 1)) ) ||
-       ( (0 < (slen = strlen(this.copyright))) &&
-	 (0 != proc (proc_cls, 
-		     "asf",
-		     EXTRACTOR_METATYPE_COPYRIGHT,
-		     EXTRACTOR_METAFORMAT_C_STRING,
-		     "text/plain",
-		     this.copyright,
-		     slen + 1)) ) ||
-       (0 != proc (proc_cls, 
-		   "asf",
-		   EXTRACTOR_METATYPE_MIMETYPE,
-		   EXTRACTOR_METAFORMAT_C_STRING,
-		   "text/plain",
-		   "video/x-ms-asf",
-		   strlen("video/x-ms-asf") + 1)) )       
-    return 1;	
-  return 0;
+		     duration_str,
+		     strlen(duration_str) + 1)) ) 
+      ret = 1;	
+  }
+  free (this.title);
+  free (this.author);
+  free (this.copyright);
+  free (this.comment);
+  free (this.rating);
+  return ret;
 }
 
 /*  end of asf_extractor.c */

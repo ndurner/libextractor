@@ -138,11 +138,9 @@ EXTRACTOR_id3v24_extract (const unsigned char *data,
   int unsync;
   int extendedHdr;
   int experimental;
-  int footer;
   uint32_t tsize;
   uint32_t pos;
   uint32_t ehdrSize;
-  uint32_t padding;
   uint32_t csize;
   int i;
   uint16_t flags;
@@ -162,14 +160,13 @@ EXTRACTOR_id3v24_extract (const unsigned char *data,
   experimental = (data[5] & 0x20) > 0;
   if (experimental)
     return 0;
-  footer = (data[5] & 0x10) > 0;
+  /* footer = (data[5] & 0x10) > 0; */
   tsize = (((data[6] & 0x7F) << 21) |
            ((data[7] & 0x7F) << 14) |
            ((data[8] & 0x7F) << 7) | ((data[9] & 0x7F) << 0));
   if (tsize + 10 > size)
     return 0;
   pos = 10;
-  padding = 0;
   if (extendedHdr)
     {
       ehdrSize = (((data[10] & 0x7F) << 21) |

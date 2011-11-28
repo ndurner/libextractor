@@ -48,7 +48,7 @@
 /**
  * FIXME: document
  */
-enum
+enum MKV_TrackType
 {
   MKV_Track_video = 1,
   MKV_Track_audio = 2,
@@ -135,12 +135,11 @@ VINTparse (const unsigned char *buffer, size_t start, size_t end,
 
 
 /**
- * FIXME: 'unsigned int' or 'uint32_t' for ID? 
  * FIXME: document arguments, return value...
  */
-static int
+static unsigned int
 elementRead (const unsigned char *buffer, size_t start, size_t end,
-             unsigned int *id, int64_t * size)
+             uint32_t *id, int64_t * size)
 {
   int64_t tempID;
   int64_t tempsize;
@@ -155,7 +154,7 @@ elementRead (const unsigned char *buffer, size_t start, size_t end,
   size_offset = VINTparse (buffer, start + id_offset, end, &tempsize, 1);
   if (!size_offset)
     return 0;
-  *id = (unsigned int) tempID;           /*id must be <4 and must fit in uint */
+  *id = (uint32_t) tempID;
   *size = tempsize;
   return id_offset + size_offset;
 }
@@ -173,15 +172,14 @@ getInt (const unsigned char *buffer, size_t start, size_t size)
 
   result = 0;
   for (c = 1; c <= size; c++)
-    result += buffer[start + c - 1] << (8 * (size - c));  
+    result += ((uint64_t)buffer[start + c - 1]) << (8 * (size - c));  
   return result;
 }
 
 static float
-getFloat (const char *buffer, size_t start, size_t size)
+getFloat (const unsigned char *buffer, size_t start, size_t size)
 {
-  float result;
-  char tmp[4];
+  unsigned char tmp[4];
 
   if (size != sizeof (float))
     return 0.0;
@@ -193,7 +191,7 @@ getFloat (const char *buffer, size_t start, size_t size)
     tmp[3] = buffer[start];
     return *((float *) (tmp));
   }
-  return result;
+  return 0.0;
 }
 
 static const unsigned int MKV_Parse_list[] = { 
@@ -216,27 +214,27 @@ EXTRACTOR_mkv_extract (const unsigned char *data, size_t size,
                        const char *options)
 {
   int ret;
-  char buffer[128];
-  char temp[128];
-  size_t p;                        /*pointer in buffer */
-  int c, c2;                    /*counter in some loops */
-  unsigned int eID;             /*element ID */
-  int64_t eSize;                  /*Size of element content */
-  int offs;
+  char buffer[256];
+  size_t p;
+  int c;
+  uint32_t eID;
+  int64_t eSize; /* signed? */
+  unsigned int offs;
   int64_t timescale = 1000000;
   float duration = -1.0;
-  int64_t DefaultDuration = 0;
-  int TrackType = 0;
-  int pvt_look_flag = 0;
-  int curr_c = -1;
-  int a_c = -1;
-  int v_c = -1;
-  int t_c = -1;
-  int value_width = 0;
-  int value_height = 0;
-  int value = 0;
+  enum MKV_TrackType trackType;
+  int have_audio = 0;
+  int have_video = 0;
+  unsigned int value_width = 0;
+  unsigned int value_height = 0;
+  int64_t value;
   size_t size1;
   const unsigned char *start;
+  int is_mkv = 0;
+  unsigned int fps = 0;
+  unsigned int bit_depth = 0;
+  const unsigned char *codec = NULL;
+  int codec_strlen = 0;
 
   if (size > 32 * 1024)
     size1 = 32 * 1024;
@@ -255,125 +253,65 @@ EXTRACTOR_mkv_extract (const unsigned char *data, size_t size,
     p += offs;
     if (!offs || p >= size)
       break;
+    if (MKVID_EBML == eID)
+    {
+      ADD ("video/mkv", EXTRACTOR_METATYPE_MIMETYPE);
+      is_mkv = 1;
+      continue;
+    }
+    if (! is_mkv)
+      return 0;
     for (c = 0; c < sizeof (MKV_Parse_list) / sizeof (*MKV_Parse_list); c++)
-      if (MKV_Parse_list[c] == eID)
-      {
-        break;
-      }
+      if (MKV_Parse_list[c] == eID)      
+        break;      
     if (c < sizeof (MKV_Parse_list) / sizeof (*MKV_Parse_list))
       continue;
-    if (p + eSize > size)
-      break;                    /*TODO - add (if requied) suckup from file to data */
-    if (eSize == 4 || eSize == 8 || eSize == 1 || eSize == 2)
-      value = (int) getInt (data, p, eSize);
 
+    if (p + eSize > size)
+      break;
+
+    if ( (eSize == 4) || (eSize == 8) || (eSize == 1) || (eSize == 2))
+      value = getInt (data, p, eSize);
+    
     switch (eID)
     {
     case MKVID_TrackType:      /*detect a stream type (video/audio/text) */
-      TrackType = value;
-      pvt_look_flag = 0;
-      switch (TrackType)
+      trackType = (enum MKV_TrackType) value;
+      switch (trackType)
       {
       case MKV_Track_video:
-        v_c++;
-        if (v_c > MAX_STREAMS)
-          v_c = MAX_STREAMS;
-	if (duration != -1.0)
-	{
-	  /* FIXME: duration might still be -1 here, defer until
-	     end of function & check if duration is != -1 */
-	  snprintf (buffer,
-		    sizeof(buffer),
-		    "%u s (video)",
-		    (int) (duration / 1e+9 * (float) timescale));
-	  ADD (buffer, EXTRACTOR_METATYPE_DURATION);
-	}
-        curr_c = v_c;
+        have_video = 1;
         break;
       case MKV_Track_audio:
-        a_c++;
-        if (a_c > MAX_STREAMS)
-          a_c = MAX_STREAMS;
-	if (duration != -1.0)
-	{
-	  /* FIXME: duration might still be -1 here, defer until
-	     end of function & check if duration is != -1 */
-	  snprintf (buffer,
-		    sizeof (buffer),
-		    "%u s (audio)",
-		    (unsigned int) (duration / 1e+9 * (float) timescale));
-	  ADD (buffer, EXTRACTOR_METATYPE_DURATION);
-	}
-        curr_c = a_c;
+        have_audio = 1;
         break;
+      case MKV_Track_subtitle:
+        break;       
       case MKV_Track_subtitle_orig:
-        t_c++;
-        TrackType = MKV_Track_subtitle; /*for normal use in lang array */
-        if (t_c > MAX_STREAMS)
-          t_c = MAX_STREAMS;
-        curr_c = t_c;
-        break;
+        break;       
       }
       break;
-    case MKVID_DefaultDuration:        /*fps detection */
-      if (TrackType == MKV_Track_video && v_c >= 0)
-      {
-        DefaultDuration = value;
-        if (DefaultDuration > 100)
-        {
-	  /* FIXME: integrate with codec name/id into 'METATYPE_FORMAT' */
-          snprintf (buffer, 
-		    sizeof (buffer),
-		    "fps: %u", 1000000000 / DefaultDuration);
-          ADD (buffer, EXTRACTOR_METATYPE_UNKNOWN);
-        }
-      }
+    case MKVID_DefaultDuration:
+      fps = (unsigned int) (1000000000 / value);
       break;
-    case MKVID_Language:       /*stream language */
-      if (curr_c >= 0 && TrackType < 4 && eSize < MAX_STRING_SIZE)
-	  {
-	          /* FIXME: why first temp, then buffer? */
-		  snprintf (buffer, 
-			    sizeof (buffer),
-			    "%.*s",
-			    (int) eSize,
-			    data + p);
-		  ADD (buffer, EXTRACTOR_METATYPE_LANGUAGE);
-	  }
+    case MKVID_Language:
+      snprintf (buffer, 
+		sizeof (buffer),
+		"%.*s",
+		(int) eSize,
+		data + p);
+      ADD (buffer, EXTRACTOR_METATYPE_LANGUAGE);
       break;
-    case MKVID_CodecName:      /*passtrough */
-    case MKVID_CodecID:        /*codec detection (if V_MS/VFW/FOURCC - set a fourcc code, else fill a vcodecs value) */
-      if (curr_c >= 0 && TrackType < 4 && eSize < MAX_STRING_SIZE)
-      {
-	if (!strncmp (data + p, "V_MS/VFW/FOURCC", eSize))
-          pvt_look_flag = 1;
-        snprintf (buffer,
-		  sizeof (buffer),
-		  "codec: %.*s", 
-		  (int) eSize,
-		  data + p);
-        ADD (buffer, 
-	     EXTRACTOR_METATYPE_FORMAT);
-      }
+    case MKVID_CodecName:
+    case MKVID_CodecID:
+      codec = data + p;
+      codec_strlen = eSize;
       break;
     case MKVID_CodecPrivate:
-      if (pvt_look_flag && v_c >= 0 && eSize >= 24)
-      {                         /*CodecPrivate contains a BITMAPINFOHEADER structure due CodecID==V_MS/VFW/FOURCC */
-        pvt_look_flag = 0;
-		//TODO
-		/*
-		video[v_c][V_cc]=(buffer[p+16]<<24)+(buffer[p+17]<<16)+(buffer[p+18]<<8)+buffer[p+19];
-        if (codec[v_c][MKV_Track_video])
-        {
-          free (codec[v_c][MKV_Track_video]);
-          codec[v_c][MKV_Track_video] = NULL;
-        }
-		*/
-      }
       break;
     case MKVID_PixelWidth:     /*pasthough *//*bug with aspect differ from 1:1 */
     case MKVID_DisplayWidth:
-	  value_width = value;
+      value_width = value;
       break;
     case MKVID_PixelHeight:    /*pasthough */
     case MKVID_DisplayHeight:
@@ -381,60 +319,88 @@ EXTRACTOR_mkv_extract (const unsigned char *data, size_t size,
       break;
     case MKVID_TimeCodeScale:
       timescale = getInt (data, p, eSize);
-      snprintf (buffer, 
-		sizeof (buffer),
-		"TimeScale: %u", timescale);
-      ADD (buffer, EXTRACTOR_METATYPE_UNKNOWN);
       break;
     case MKVID_Duration:
       duration = getFloat (data, p, eSize);
-      snprintf (buffer, 
-		sizeof (buffer),
-		"%f ms", duration);
-      ADD (buffer, EXTRACTOR_METATYPE_DURATION);
       break;
     case MKVID_Channels:
-      snprintf (buffer,
-		sizeof (buffer),
-		"channels: %u", value);
-      ADD (buffer, EXTRACTOR_METATYPE_UNKNOWN);
+      /* num_channels = (unsigned int) value; */
       break;
     case MKVID_BitDepth:
-      snprintf (buffer,
-		sizeof (buffer),
-		"BitDepth: %u", value);
-      ADD (buffer, EXTRACTOR_METATYPE_UNKNOWN);
+      bit_depth = (unsigned int) value;
       break;
-    case MKVID_OutputSamplingFrequency:        /*pasthough */
+    case MKVID_OutputSamplingFrequency:
     case MKVID_SamplingFrequency:
-      /* FIXME: the resulting value seems wrong... Unit? */
-      snprintf (buffer,
-		sizeof (buffer),
-		"Sampling Frequency: %u", value);
-      ADD (buffer, EXTRACTOR_METATYPE_UNKNOWN);
-      break;
+      /* FIXME: what unit has 'value'? */
       break;
     case MKVID_Title:
       if (eSize > MAX_STRING_SIZE)
         break;
-      strncpy(temp,data+p,eSize);
-      temp[eSize] = '\0';
-      ADD (temp, EXTRACTOR_METATYPE_TITLE);
+      snprintf (buffer,
+		sizeof (buffer),
+		"%.*s", 
+		(int) eSize,
+		(const char*) data + p);
+      ADD (buffer, EXTRACTOR_METATYPE_TITLE);
       break;
-/*TODO			case MKVID_Tags:*/
+    default:
+      break;
     }
     p += eSize;                 /*skip unknown or uninteresting */
   }
   while (1);
+
+  snprintf (buffer,
+	    sizeof (buffer),
+	    "%u s (%s%s%s)",
+	    (unsigned int) (duration / 1e+9 * (float) timescale),
+	    (have_audio ? "audio" : ""),
+	    ((have_audio && have_video) ? "/" : ""),
+	    (have_video ? "video" : ""));
+  if ( (have_audio || have_video) && (duration >= 0.0) )
+    ADD (buffer, EXTRACTOR_METATYPE_DURATION);
   if ( (value_width != 0) && (value_height != 0) )    
+  {
     snprintf (buffer,
 	      sizeof(buffer),
 	      "%ux%u", 
 	      value_width, value_height);
-  ADD (buffer, EXTRACTOR_METATYPE_IMAGE_DIMENSIONS);
-  
+    ADD (buffer, EXTRACTOR_METATYPE_IMAGE_DIMENSIONS);
+  }
+
+  if (NULL != codec)
+  {
+    if ( (fps != 0) && (bit_depth != 0) )
+      snprintf (buffer,
+		sizeof (buffer),
+		"%.*s (%u fps, %u bit)", 
+		codec_strlen,
+		codec,
+		fps,
+		bit_depth);
+    else if (fps != 0)
+      snprintf (buffer,
+		sizeof (buffer),
+		"%.*s (%u fps)", 
+		codec_strlen,
+		codec,
+		fps);
+    else if (bit_depth != 0)
+      snprintf (buffer,
+		sizeof (buffer),
+		"%.*s (%u bit)", 
+		codec_strlen,
+		codec,
+		bit_depth);
+    else
+      snprintf (buffer,
+		sizeof (buffer),
+		"%.*s",
+		codec_strlen,
+		codec);  
+    ADD (buffer, 
+	 EXTRACTOR_METATYPE_FORMAT);    
+  }
 EXIT:
-
   return ret;
-
 }

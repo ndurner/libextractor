@@ -1,3 +1,8 @@
+Mon Nov 28 12:17:42 CET 2011
+	Fixing compiler warnings, cleaning up ASF plugin.  Finishing
+	Matroska plugin. -CG
+	Releasing libextractor 0.6.3.
+
 Fri Jul 22 21:46:32 CEST 2011
 	Added Ukrainian translation. -CG
 
@@ -10,10 +15,10 @@ Sun Jun 13 13:15:43 CEST 2010
 Sat Jun 12 22:32:32 CEST 2010
 	Fixing various bugs, including some that can cause crashes given
 	malformed inputs. -CG
-	
+
 Sat Jun 12 16:23:14 CEST 2010
 	Only pass 'unsigned char's to 'isspace' and similar functions. -CG
-	
+
 Sun Mar 14 00:09:45 CET 2010
 	Releasing libextractor 0.6.1.
 
@@ -46,7 +51,7 @@ Sun Feb 15 16:57:46 MST 2009
 
 Sun Nov  2 20:19:02 MST 2008
 	Releasing libextractor 0.5.21.
-	
+
 Tue Aug 12 04:40:49 EEST 2008
 	Added an S3M (Scream Tracker 3 Module) plugin.
 
@@ -238,7 +243,7 @@ Fri Mar 24 21:43:43 PST 2006
 	Started re-implementation of PDF support from scratch
 	(incomplete but working).  Improvements to the build
 	system.
-	
+
 Thu Mar  9 17:46:39 PST 2006
         Added support for wordleaker (additional meta-data for
         OLE2 streams).  Releasing libextractor 0.5.11.
@@ -279,7 +284,7 @@ Sun Dec  4 23:36:00 PST 2005
 
 Sat Nov 12 10:50:46 PST 2005
 	Releasing libextractor 0.5.7.
-	
+
 Wed Nov  9 12:51:52 PST 2005
 	Fix in LE unload code (potential double-free, maybe BSD-specific).
 
@@ -325,7 +330,7 @@ Fri Sep 16 16:41:04 PDT 2005
 
 Thu Sep 15 21:55:19 PDT 2005
 	Fixing compiler warnings given by gcc 4.0.
-	
+
 Thu Sep 15 00:56:51 PDT 2005
 	Fixed incorrectly handled integer overflow in png extractor.
 
@@ -376,7 +381,7 @@ Sat Aug 20 21:27:17 PDT 2005
 
 Thu Aug 18 21:18:28 PDT 2005
 	Made quotations match GNU standards.
-	
+
 Sat Aug 13 18:41:02 PDT 2005
         Fixed problems with ole2 extractor.  Also removed
 	requirement for static version of glib (!).
@@ -406,7 +411,7 @@ Mon Jul  4 18:10:14 CEST 2005
 	by default due to bugs).  Moved Python and Java
 	bindings into separate packages.
 	Releasing libextractor 0.5.1.
-	
+
 Wed Jun 29 15:37:51 CEST 2005
 	Finally found out how to disable building static libs.
 	This should cut down compile time and installed size
@@ -416,7 +421,7 @@ Wed Jun 29 15:37:51 CEST 2005
 Sat Jun 18 14:56:38 EST 2005
 	Fixed a score of compiler warnings and some minor bugs,
 	none of which should have been observable.
-	
+
 Sat May 21 13:42:46 EST 2005
 	Releasing libextractor 0.5.0.
 
@@ -438,7 +443,7 @@ Thu Feb 24 00:32:44 EST 2005
 
 Wed Feb 23 22:42:08 EST 2005
 	Comment tag was not extracted from ID3 tags.  Fixed.
-	
+
 Sun Feb 20 16:36:17 EST 2005
 	Fixed similar problem in REAL extractor.  Added support
 	for new Helix/Real format to REAL extractor.
@@ -510,12 +515,12 @@ Sat Oct 23 13:21:23 EST 2004
 
 Fri Oct 22 22:22:28 EST 2004
 	Fixing memory leak after extensive valgrinding.
-	
+
 Fri Oct 22 19:18:38 EST 2004
 	id3v2.3 and id3v2.4 work.  Some bugfixes.
 
 Sun Oct 17 18:12:11 EST 2004
-	tar and tar.gz work.  Releasing libextractor 0.3.9.	
+	tar and tar.gz work.  Releasing libextractor 0.3.9.
 
 Sun Oct 17 17:42:16 EST 2004
 	deb works.
@@ -559,17 +564,17 @@ Tue Sep 14 21:25:22 EST 2004
 	to run 720 times on the same 5 MB file passing that file as an
 	argument; the remaining time is pretty much doing 720x mmap and
 	related system calls).
-	
+
 Fri Sep 10 22:00:09 EST 2004
 	Added support for RipeMD-160.
-	
+
 Fri Sep 10 19:49:39 EST 2004
 	Added support for SHA-1 and MD5.  Releasing libextractor 0.3.6.
-	
+
 Fri Sep 10 10:35:27 EST 2004
 	Added support for OpenOffice documents (meta.xml in
 	zip-file).
-	
+
 Mon Aug 30 23:16:17 IST 2004
 	Added support for OLE2 (WinWord, Excel, PowerPoint).
 	Fixed various bugs (Segfault in elf, leaks in zip and RPM,
@@ -588,20 +593,20 @@ Wed Jun 23 13:37:02 IST 2004
 
 Sun Jun  6 18:42:28 IST 2004
 	Fixed segfault in qtextractor.
-	
+
 Mon May 31 18:19:07 EST 2004
-	Fixed more minor bugs.  Releasing libextractor 0.3.2.	
-	
+	Fixed more minor bugs.  Releasing libextractor 0.3.2.
+
 Mon May 31 17:14:55 EST 2004
 	Removed comment extraction from RIFF extractor (format
 	detection is not good enough to avoid garbage for non-RIFF
 	files).  Also fixed rare seg-fault in PDF-extractor (xpdf
 	author notified).
-	
+
 Mon May 24 13:40:27 EST 2004
 	Changed build system to avoid having an extra library
 	(libextractor_util is gone).
-	
+
 Wed Apr 28 19:28:39 EST 2004
 	Releasing libextractor 0.3.1.
 
@@ -617,7 +622,7 @@ Mon Apr 12 01:30:20 EST 2004
 	methods that are sufficient to build a Java class to
 	access libextractor.  The API is still incomplete but
 	already basically functional.  Releasing 0.3.0
-	
+
 Sat Apr 10 01:34:04 EST 2004
 	Added RIFF/AVI extractor based on AVInfo.
 	Fixed memory-leak and potential segfault in zipextractor.
@@ -625,10 +630,10 @@ Sat Apr 10 01:34:04 EST 2004
 Sat Apr 10 00:30:19 EST 2004
 	Added MPEG (video) extractor based on AVInfo.  Improved
 	output of mp3 extractor.
-	
+
 Fri Apr  9 22:58:51 EST 2004
 	Improved library initialization (and destruction) code.
-	
+
 Thu Apr  8 22:25:19 EST 2004
 	Revisited type signatures adding const where applicable.
 	Improved formatting of --help for extract.  Added some
@@ -667,7 +672,7 @@ Sun Jun 15 18:05:24 EST 2003
 Sat Apr 19 04:11:14 EST 2003
 	Fixed missing delete operation in PDF extractor for
 	non-PDF files (caused memory leak and file-handle leak).
-	
+
 Thu Apr 10 23:54:17 EST 2003
 	Fixed segmentation violation in png extractor.
 
@@ -709,7 +714,7 @@ Tue Jan  7 18:31:38 EST 2003
 
 Tue Dec 31 15:26:00 EST 2002
 	Added pdf extractor based on xpdf code.
-	
+
 Tue Dec 17 20:36:13 CET 2002
 	Added MIME-extractor.
 
@@ -743,14 +748,14 @@ Sun Jun  2 22:49:17 EST 2002
 	Added support for JPEG and HTML. HTML does not
 	support concurrent use, though (inherent problem
 	with libhtmlparse). Released v0.0.2.
-	
+
 Sat May 25 16:56:59 EST 2002
         Added building of a description from artist,
         title and album, fixed bugs.
 
 Tue May 21 22:24:07 EST 2002
 	Added removing of duplicates, splitting keywords,
-	extraction of keywords from filenames.	
+	extraction of keywords from filenames.
 
 Sat May 18 16:33:28 EST 2002
 	more convenience methods ('configuration', default

@@ -131,6 +131,7 @@ libextractor_applefile_la_LIBADD = \
 libextractor_asf_la_SOURCES = \
   asf_extractor.c 
 libextractor_asf_la_LDFLAGS = \
+  $(top_builddir)/src/common/libextractor_common.la \
   $(PLUGINFLAGS)
 
 libextractor_deb_la_SOURCES = \

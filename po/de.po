@@ -8,10 +8,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.5.14\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2010-06-13 13:15+0200\n"
+"POT-Creation-Date: 2011-11-28 12:53+0100\n"
 "PO-Revision-Date: 2007-03-23 23:16+0100\n"
 "Last-Translator: Nils Durner <durner@gnunet.org>\n"
 "Language-Team: German <translation-team-de@lists.sourceforge.net>\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -790,28 +791,28 @@ msgstr ""
 msgid "Layer III"
 msgstr ""
 
-#: src/plugins/mp3_extractor.c:247
+#: src/plugins/mp3_extractor.c:245
 msgid "VBR"
 msgstr ""
 
-#: src/plugins/mp3_extractor.c:247
+#: src/plugins/mp3_extractor.c:245
 msgid "CBR"
 msgstr ""
 
-#: src/plugins/mp3_extractor.c:250 src/main/extractor_metatypes.c:140
+#: src/plugins/mp3_extractor.c:248 src/main/extractor_metatypes.c:140
 msgid "copyright"
 msgstr "Copyright"
 
-#: src/plugins/mp3_extractor.c:250
+#: src/plugins/mp3_extractor.c:248
 #, fuzzy
 msgid "no copyright"
 msgstr "Copyright"
 
-#: src/plugins/mp3_extractor.c:251
+#: src/plugins/mp3_extractor.c:249
 msgid "original"
 msgstr ""
 
-#: src/plugins/mp3_extractor.c:251
+#: src/plugins/mp3_extractor.c:249
 #, fuzzy
 msgid "copy"
 msgstr "Unternehmen"
@@ -891,12 +892,12 @@ msgstr "%s: Option »-W %s« ist mehrdeutig\n"
 msgid "%s: option `-W %s' doesn't allow an argument\n"
 msgstr "%s: Option »-W %s« erwartet kein Argument\n"
 
-#: src/main/extractor.c:2294
+#: src/main/extractor.c:2372
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "Initialisierung des Plugin-Mechanismus' ist fehlgeschlagen: %s.\n"
 
-#: src/main/extract.c:97
+#: src/main/extract.c:98
 #, c-format
 msgid ""
 "Usage: %s\n"
@@ -907,7 +908,7 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: src/main/extract.c:100
+#: src/main/extract.c:101
 #, c-format
 msgid ""
 "Arguments mandatory for long options are also mandatory for short options.\n"
@@ -915,104 +916,105 @@ msgstr ""
 "Argumente, die für lange Optionen notwendig sind, sind ebenfalls für die\n"
 "Optionen in Kurzform notwendig.\n"
 
-#: src/main/extract.c:170
+#: src/main/extract.c:171
 msgid "print output in bibtex format"
 msgstr "Ausgabe im BibTeX format"
 
-#: src/main/extract.c:172
+#: src/main/extract.c:173
 msgid "produce grep-friendly output (all results on one line per file)"
 msgstr ""
 "grep-freundliche Ausgabe erzeugen (alle Ergebnisse als eine Zeile pro Datei)"
 
-#: src/main/extract.c:174
+#: src/main/extract.c:175
 msgid "print this help"
 msgstr "diese Hilfe anzeigen"
 
-#: src/main/extract.c:176
+#: src/main/extract.c:177
 msgid "run plugins in-process (simplifies debugging)"
 msgstr ""
 
-#: src/main/extract.c:178
+#: src/main/extract.c:179
 msgid "load an extractor plugin named LIBRARY"
 msgstr "extractor-Erweiterung mit der Bezeichnung LIBRARY laden"
 
-#: src/main/extract.c:180
+#: src/main/extract.c:181
 msgid "list all keyword types"
 msgstr "alle Arten Schlüsselwörter auflisten"
 
-#: src/main/extract.c:182
+#: src/main/extract.c:183
 msgid "do not use the default set of extractor plugins"
 msgstr "Standardsatz der extractor-Erweiterungen nicht verwenden"
 
-#: src/main/extract.c:184
+#: src/main/extract.c:185
 msgid "print only keywords of the given TYPE (use -L to get a list)"
 msgstr ""
 "nur Schlüsselwörter einer bestimmten ART ausgeben (mit -L die Liste anzeigen "
 "lassen)"
 
-#: src/main/extract.c:186
+#: src/main/extract.c:187
 msgid "print the version number"
 msgstr "die Versionsnummer anzeigen"
 
-#: src/main/extract.c:188
+#: src/main/extract.c:189
 msgid "be verbose"
 msgstr "viele Informationen ausgeben"
 
-#: src/main/extract.c:190
+#: src/main/extract.c:191
 msgid "do not print keywords of the given TYPE"
 msgstr "Schlüsselwörter einer bestimmten ART nicht ausgeben"
 
-#: src/main/extract.c:193
+#: src/main/extract.c:194
 msgid "extract [OPTIONS] [FILENAME]*"
 msgstr "extract [OPTIONEN] [DATEINAME]*"
 
-#: src/main/extract.c:194
+#: src/main/extract.c:195
 msgid "Extract metadata from files."
 msgstr "Metadaten aus den Dateien extrahieren."
 
-#: src/main/extract.c:235
+#: src/main/extract.c:236
 #, fuzzy, c-format
 msgid "Found by `%s' plugin:\n"
 msgstr "Laden des »%s«-Plugins ist fehlgeschlagen: %s\n"
 
-#: src/main/extract.c:238 src/main/extract.c:319
+#: src/main/extract.c:239 src/main/extract.c:320
 #: src/main/extractor_metatypes.c:136 src/main/extractor_print.c:68
 msgid "unknown"
 msgstr "unbekannt"
 
-#: src/main/extract.c:243
+#: src/main/extract.c:244
 #, c-format
 msgid "%s - (unknown, %u bytes)\n"
 msgstr ""
 
-#: src/main/extract.c:267
+#: src/main/extract.c:268
 #, fuzzy, c-format
 msgid "%s - (binary, %u bytes)\n"
 msgstr "%s - (binär)\n"
 
-#: src/main/extract.c:600 src/main/extract.c:610
+#: src/main/extract.c:601 src/main/extract.c:611
 #, c-format
 msgid ""
 "Illegal combination of options, cannot combine multiple styles of printing.\n"
 msgstr ""
 
-#: src/main/extract.c:637
+#: src/main/extract.c:638
 #, c-format
 msgid "You must specify an argument for the `%s' option (option ignored).\n"
 msgstr ""
-"Sie müssen ein Argument für die Option »%s« angeben (Option wird ignoriert).\n"
+"Sie müssen ein Argument für die Option »%s« angeben (Option wird "
+"ignoriert).\n"
 
-#: src/main/extract.c:702
+#: src/main/extract.c:703
 #, c-format
 msgid "Use --help to get a list of options.\n"
 msgstr "Verwenden Sie --help, um eine Liste aller Optionen zu sehen.\n"
 
-#: src/main/extract.c:740
+#: src/main/extract.c:741
 #, c-format
 msgid "%% BiBTeX file\n"
 msgstr "%% BibTeX Datei\n"
 
-#: src/main/extract.c:747
+#: src/main/extract.c:748
 #, c-format
 msgid "Keywords for file %s:\n"
 msgstr "Schlüsserwörter für die Datei %s:\n"
@@ -1923,8 +1925,9 @@ msgid "paragraph count"
 msgstr "Absatzanzahl"
 
 #: src/main/extractor_metatypes.c:302
-msgid "number o paragraphs"
-msgstr ""
+#, fuzzy
+msgid "number of paragraphs"
+msgstr "Änderungszyklen"
 
 #: src/main/extractor_metatypes.c:304
 msgid "word count"
@@ -2403,7 +2406,17 @@ msgstr "Gruppe"
 msgid "name of the group or band"
 msgstr "Herausgeber"
 
-#: src/main/extractor_metatypes.c:436 src/main/extractor_metatypes.c:437
+#: src/main/extractor_metatypes.c:436
+#, fuzzy
+msgid "original filename"
+msgstr "vollständiger Name"
+
+#: src/main/extractor_metatypes.c:437
+#, fuzzy
+msgid "name of the original file (reserved for GNUnet)"
+msgstr "Herausgeber"
+
+#: src/main/extractor_metatypes.c:438 src/main/extractor_metatypes.c:439
 #, fuzzy
 msgid "last"
 msgstr "Blitz"

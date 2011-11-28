@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.6.2\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2010-06-13 13:15+0200\n"
+"POT-Creation-Date: 2011-11-28 12:53+0100\n"
 "PO-Revision-Date: 2011-07-22 16:22+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <translation-team-uk@lists.sourceforge.net>\n"
@@ -16,7 +16,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Lokalize 1.2\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: src/plugins/qt_extractor.c:30 src/plugins/id3_extractor.c:44
 msgid "Blues"
@@ -788,27 +789,27 @@ msgstr "Layer II"
 msgid "Layer III"
 msgstr "Layer III"
 
-#: src/plugins/mp3_extractor.c:247
+#: src/plugins/mp3_extractor.c:245
 msgid "VBR"
 msgstr "VBR"
 
-#: src/plugins/mp3_extractor.c:247
+#: src/plugins/mp3_extractor.c:245
 msgid "CBR"
 msgstr "CBR"
 
-#: src/plugins/mp3_extractor.c:250 src/main/extractor_metatypes.c:140
+#: src/plugins/mp3_extractor.c:248 src/main/extractor_metatypes.c:140
 msgid "copyright"
 msgstr "захищено авторськими правами"
 
-#: src/plugins/mp3_extractor.c:250
+#: src/plugins/mp3_extractor.c:248
 msgid "no copyright"
 msgstr "без захисту авторськими правами"
 
-#: src/plugins/mp3_extractor.c:251
+#: src/plugins/mp3_extractor.c:249
 msgid "original"
 msgstr "оригінал"
 
-#: src/plugins/mp3_extractor.c:251
+#: src/plugins/mp3_extractor.c:249
 msgid "copy"
 msgstr "копія"
 
@@ -887,12 +888,12 @@ msgstr "%s: параметр «-W %s» неоднозначний\n"
 msgid "%s: option `-W %s' doesn't allow an argument\n"
 msgstr "%s: параметр «-W %s» не повинен мати аргументу\n"
 
-#: src/main/extractor.c:2294
+#: src/main/extractor.c:2372
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "Помилка під час спроби ініціалізації механізму додатків: %s!\n"
 
-#: src/main/extract.c:97
+#: src/main/extract.c:98
 #, c-format
 msgid ""
 "Usage: %s\n"
@@ -903,104 +904,118 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: src/main/extract.c:100
+#: src/main/extract.c:101
 #, c-format
-msgid "Arguments mandatory for long options are also mandatory for short options.\n"
-msgstr "Обов’язкові аргументи для довгих форм запису параметрів є обов’язковими і для скорочених форм.\n"
+msgid ""
+"Arguments mandatory for long options are also mandatory for short options.\n"
+msgstr ""
+"Обов’язкові аргументи для довгих форм запису параметрів є обов’язковими і "
+"для скорочених форм.\n"
 
-#: src/main/extract.c:170
+#: src/main/extract.c:171
 msgid "print output in bibtex format"
 msgstr "вивести дані у форматі bibtex"
 
-#: src/main/extract.c:172
+#: src/main/extract.c:173
 msgid "produce grep-friendly output (all results on one line per file)"
-msgstr "виводити дані у режимі сумісності з grep (єдиний рядок для всіх результатів з файла)"
+msgstr ""
+"виводити дані у режимі сумісності з grep (єдиний рядок для всіх результатів "
+"з файла)"
 
-#: src/main/extract.c:174
+#: src/main/extract.c:175
 msgid "print this help"
 msgstr "показати ці довідкові дані"
 
-#: src/main/extract.c:176
+#: src/main/extract.c:177
 msgid "run plugins in-process (simplifies debugging)"
 msgstr "запускати додатки у межах процесу (спрощує діагностику)"
 
-#: src/main/extract.c:178
+#: src/main/extract.c:179
 msgid "load an extractor plugin named LIBRARY"
 msgstr "завантажити додаток видобування з назвою LIBRARY"
 
-#: src/main/extract.c:180
+#: src/main/extract.c:181
 msgid "list all keyword types"
 msgstr "список всіх типів ключових слів"
 
-#: src/main/extract.c:182
+#: src/main/extract.c:183
 msgid "do not use the default set of extractor plugins"
 msgstr "не використовувати типовий набір додатків видобування"
 
-#: src/main/extract.c:184
+#: src/main/extract.c:185
 msgid "print only keywords of the given TYPE (use -L to get a list)"
-msgstr "виводити ключові слова лише вказаного типу TYPE (скористайтеся -L, щоб отримати список)"
+msgstr ""
+"виводити ключові слова лише вказаного типу TYPE (скористайтеся -L, щоб "
+"отримати список)"
 
-#: src/main/extract.c:186
+#: src/main/extract.c:187
 msgid "print the version number"
 msgstr "вивести номер версії"
 
-#: src/main/extract.c:188
+#: src/main/extract.c:189
 msgid "be verbose"
 msgstr "режим з докладних повідомлень"
 
-#: src/main/extract.c:190
+#: src/main/extract.c:191
 msgid "do not print keywords of the given TYPE"
 msgstr "не виводити ключових слів вказаного типу TYPE"
 
-#: src/main/extract.c:193
+#: src/main/extract.c:194
 msgid "extract [OPTIONS] [FILENAME]*"
 msgstr "extract [ПАРАМЕТРИ] [НАЗВА_ФАЙЛА]*"
 
-#: src/main/extract.c:194
+#: src/main/extract.c:195
 msgid "Extract metadata from files."
 msgstr "Видобути метадані з файлів."
 
-#: src/main/extract.c:235
+#: src/main/extract.c:236
 #, c-format
 msgid "Found by `%s' plugin:\n"
 msgstr "Знайдено додатком «%s»:\n"
 
-#: src/main/extract.c:238 src/main/extract.c:319
+#: src/main/extract.c:239 src/main/extract.c:320
 #: src/main/extractor_metatypes.c:136 src/main/extractor_print.c:68
 msgid "unknown"
 msgstr "невідомий"
 
-#: src/main/extract.c:243
+#: src/main/extract.c:244
 #, c-format
 msgid "%s - (unknown, %u bytes)\n"
 msgstr "%s — (невідомий, %u байтів)\n"
 
-#: src/main/extract.c:267
+#: src/main/extract.c:268
 #, c-format
 msgid "%s - (binary, %u bytes)\n"
 msgstr "%s — (бінарний, %u байтів)\n"
 
-#: src/main/extract.c:600 src/main/extract.c:610
+#: src/main/extract.c:601 src/main/extract.c:611
 #, c-format
-msgid "Illegal combination of options, cannot combine multiple styles of printing.\n"
-msgstr "Некоректне поєднання параметрів, не можна визначати декілька стилів виведення даних.\n"
+msgid ""
+"Illegal combination of options, cannot combine multiple styles of printing.\n"
+msgstr ""
+"Некоректне поєднання параметрів, не можна визначати декілька стилів "
+"виведення даних.\n"
 
-#: src/main/extract.c:637
+#: src/main/extract.c:638
 #, c-format
 msgid "You must specify an argument for the `%s' option (option ignored).\n"
-msgstr "Параметр «%s» можна використовувати лише з додатковим аргументом (параметр проігноровано).\n"
+msgstr ""
+"Параметр «%s» можна використовувати лише з додатковим аргументом (параметр "
+"проігноровано).\n"
 
-#: src/main/extract.c:702
+#: src/main/extract.c:703
 #, c-format
 msgid "Use --help to get a list of options.\n"
-msgstr "Скористайтеся параметром --help для отримання списку можливих параметрів командного рядка.\n"
+msgstr ""
+"Скористайтеся параметром --help для отримання списку можливих параметрів "
+"командного рядка.\n"
 
-#: src/main/extract.c:740
+#: src/main/extract.c:741
 #, c-format
 msgid "%% BiBTeX file\n"
 msgstr "%% файл BiBTeX\n"
 
-#: src/main/extract.c:747
+#: src/main/extract.c:748
 #, c-format
 msgid "Keywords for file %s:\n"
 msgstr "Ключові слова для файла %s:\n"
@@ -1154,8 +1169,12 @@ msgid "publishing institution"
 msgstr "організація-видавець"
 
 #: src/main/extractor_metatypes.c:77
-msgid "institution that was involved in the publishing, but not necessarily the publisher"
-msgstr "установа, яка брала участь у опублікуванні, не обов’язково безпосередній видавець"
+msgid ""
+"institution that was involved in the publishing, but not necessarily the "
+"publisher"
+msgstr ""
+"установа, яка брала участь у опублікуванні, не обов’язково безпосередній "
+"видавець"
 
 #: src/main/extractor_metatypes.c:78
 msgid "publication series"
@@ -1194,8 +1213,12 @@ msgid "publication day"
 msgstr "день публікації"
 
 #: src/main/extractor_metatypes.c:88
-msgid "day of publication (or, if unpublished, the day of creation), relative to the given month"
-msgstr "день публікації (або, якщо не опубліковано, день створення) у вказаному місяці"
+msgid ""
+"day of publication (or, if unpublished, the day of creation), relative to "
+"the given month"
+msgstr ""
+"день публікації (або, якщо не опубліковано, день створення) у вказаному "
+"місяці"
 
 #: src/main/extractor_metatypes.c:89
 msgid "publication date"
@@ -1426,8 +1449,12 @@ msgid "unknown date"
 msgstr "невідома дата"
 
 #: src/main/extractor_metatypes.c:163
-msgid "ambiguous date (could specify creation time, modification time or access time)"
-msgstr "неоднозначні дані (можуть відповідати часу створення, часу внесення змін або часу доступу)"
+msgid ""
+"ambiguous date (could specify creation time, modification time or access "
+"time)"
+msgstr ""
+"неоднозначні дані (можуть відповідати часу створення, часу внесення змін або "
+"часу доступу)"
 
 #: src/main/extractor_metatypes.c:164
 msgid "creation date"
@@ -1694,15 +1721,21 @@ msgid "target platform"
 msgstr "платформа призначення"
 
 #: src/main/extractor_metatypes.c:238
-msgid "name of the architecture, operating system and distribution this package is for"
-msgstr "назва архітектури, операційної системи та дистрибутива, для яких призначено цей пакунок"
+msgid ""
+"name of the architecture, operating system and distribution this package is "
+"for"
+msgstr ""
+"назва архітектури, операційної системи та дистрибутива, для яких призначено "
+"цей пакунок"
 
 #: src/main/extractor_metatypes.c:239
 msgid "resource type"
 msgstr "тип ресурсу"
 
 #: src/main/extractor_metatypes.c:240
-msgid "categorization of the nature of the resource that is more specific than the file format"
+msgid ""
+"categorization of the nature of the resource that is more specific than the "
+"file format"
 msgstr "категорія, до якої належить ресурс, специфічніша за формат файла"
 
 #: src/main/extractor_metatypes.c:241
@@ -1710,7 +1743,8 @@ msgid "library search path"
 msgstr "шлях пошуку бібліотек"
 
 #: src/main/extractor_metatypes.c:242
-msgid "path in the file system to be considered when looking for required libraries"
+msgid ""
+"path in the file system to be considered when looking for required libraries"
 msgstr "шлях у файловій системі, за яким слід шукати потрібні бібліотеки"
 
 #: src/main/extractor_metatypes.c:243
@@ -1842,7 +1876,8 @@ msgid "paragraph count"
 msgstr "кількість абзаців"
 
 #: src/main/extractor_metatypes.c:302
-msgid "number o paragraphs"
+#, fuzzy
+msgid "number of paragraphs"
 msgstr "кількість абзаців"
 
 #: src/main/extractor_metatypes.c:304
@@ -1938,7 +1973,9 @@ msgid "performer"
 msgstr "виконавець"
 
 #: src/main/extractor_metatypes.c:335
-msgid "The artist(s) who performed the work (conductor, orchestra, soloists, actor, etc.)"
+msgid ""
+"The artist(s) who performed the work (conductor, orchestra, soloists, actor, "
+"etc.)"
 msgstr "Виконавець твору (диригент, оркестр, солісти тощо)"
 
 #: src/main/extractor_metatypes.c:337
@@ -2126,7 +2163,8 @@ msgid "interpretation"
 msgstr "інтерпретація"
 
 #: src/main/extractor_metatypes.c:388
-msgid "information about the people behind interpretations of an existing piece"
+msgid ""
+"information about the people behind interpretations of an existing piece"
 msgstr "дані щодо творців інтерпретації твору"
 
 #: src/main/extractor_metatypes.c:389
@@ -2250,7 +2288,8 @@ msgid "full data"
 msgstr "дані повністю"
 
 #: src/main/extractor_metatypes.c:423
-msgid "entry that contains the full, original binary data (not really meta data)"
+msgid ""
+"entry that contains the full, original binary data (not really meta data)"
 msgstr "запис, що містить повні початкові двійкові дані (а не метадані)"
 
 #: src/main/extractor_metatypes.c:425
@@ -2281,6 +2320,16 @@ msgstr "група"
 msgid "name of the group or band"
 msgstr "назва групи"
 
-#: src/main/extractor_metatypes.c:436 src/main/extractor_metatypes.c:437
+#: src/main/extractor_metatypes.c:436
+#, fuzzy
+msgid "original filename"
+msgstr "початкова назва"
+
+#: src/main/extractor_metatypes.c:437
+#, fuzzy
+msgid "name of the original file (reserved for GNUnet)"
+msgstr "ім’я або назва виконавця оригіналу"
+
+#: src/main/extractor_metatypes.c:438 src/main/extractor_metatypes.c:439
 msgid "last"
 msgstr "тривалість"
