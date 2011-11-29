@@ -449,11 +449,11 @@ get_installation_paths (PathProcessor pp,
       d = strdup (p);
       if (d == NULL)
 	return;
-      prefix = strtok (d, ":");
+      prefix = strtok (d, PATH_SEPARATOR_STR);
       while (NULL != prefix)
 	{
 	  pp (pp_cls, prefix);
-	  prefix = strtok (NULL, ":");
+	  prefix = strtok (NULL, PATH_SEPARATOR_STR);
 	}
       free (d);
       return;
@@ -982,8 +982,8 @@ stop_process (struct EXTRACTOR_PluginList *plugin)
   TerminateProcess (plugin->hProcess, 0);
   CloseHandle (plugin->hProcess);
   plugin->hProcess = INVALID_HANDLE_VALUE;
-  CloseHandle (plugin->cpipe_out);
-  CloseHandle (plugin->cpipe_in);
+  close (plugin->cpipe_out);
+  fclose (plugin->cpipe_in);
 #endif
   plugin->cpipe_out = -1;
   plugin->cpipe_in = NULL;
@@ -1186,6 +1186,7 @@ process_requests (struct EXTRACTOR_PluginList *plugin,
   int do_break;
 #ifdef WINDOWS
   HANDLE map;
+  MEMORY_BASIC_INFORMATION mi;
 #endif
 
   if (plugin == NULL)
@@ -1262,8 +1263,22 @@ process_requests (struct EXTRACTOR_PluginList *plugin,
 	   (NULL != (ptr = mmap (NULL, size, PROT_READ, MAP_SHARED, shmid, 0))) &&
 	   (ptr != (void*) -1) )
 #else
-      map = OpenFileMapping (PAGE_READONLY, FALSE, fn);
+      /* Despite the obvious, this must be READWRITE, not READONLY */
+      map = OpenFileMapping (PAGE_READWRITE, FALSE, fn);
       ptr = MapViewOfFile (map, FILE_MAP_READ, 0, 0, 0);
+      if (ptr != NULL)
+      {
+        size = VirtualQuery (ptr, &mi, sizeof (mi));
+        if (size == 0)
+        {
+          UnmapViewOfFile (ptr);
+          ptr = NULL;
+        }
+        else
+        {
+          size = mi.RegionSize;
+        }
+      }
       if (ptr != NULL)
 #endif
 	{
@@ -1382,19 +1397,31 @@ read_plugin_data (int fd)
 
 
 void CALLBACK 
-RundllEntryPoint(HWND hwnd, 
-		 HINSTANCE hinst, 
-		 LPSTR lpszCmdLine, 
-		 int nCmdShow)
+RundllEntryPoint (HWND hwnd, 
+		  HINSTANCE hinst, 
+		  LPSTR lpszCmdLine, 
+		  int nCmdShow)
 {
-  int in;
-  int out;
+  intptr_t in_h;
+  intptr_t out_h;
+  int in, out;
 
-  sscanf(lpszCmdLine, "%u %u", &in, &out);
+  sscanf(lpszCmdLine, "%lu %lu", &in_h, &out_h);
+  in = _open_osfhandle (in_h, _O_RDONLY);
+  out = _open_osfhandle (out_h, 0);
   setmode (in, _O_BINARY);
   setmode (out, _O_BINARY);
   process_requests (read_plugin_data (in),
 		    in, out);
+}
+
+void CALLBACK 
+RundllEntryPointA (HWND hwnd, 
+		  HINSTANCE hinst, 
+		  LPSTR lpszCmdLine, 
+		  int nCmdShow)
+{
+  return RundllEntryPoint(hwnd, hinst, lpszCmdLine, nCmdShow);
 }
 #endif
 
@@ -1405,58 +1432,28 @@ RundllEntryPoint(HWND hwnd,
 static void
 start_process (struct EXTRACTOR_PluginList *plugin)
 {
+#if !WINDOWS
   int p1[2];
   int p2[2];
   pid_t pid;
   int status;
-#ifdef WINDOWS
-  HANDLE process;
-#endif
 
-#ifndef WINDOWS
   plugin->cpid = -1;
   if (0 != pipe (p1))
-#else
-    plugin->hProcess = NULL;
-    if (0 != _pipe (p1, 0, _O_BINARY))
-#endif
     {
       plugin->flags = EXTRACTOR_OPTION_DISABLED;
       return;
     }
-#ifndef WINDOWS
   if (0 != pipe (p2))
-#else
-    if (0 != _pipe (p2, 0, _O_BINARY))
-#endif
     {
       close (p1[0]);
       close (p1[1]);
       plugin->flags = EXTRACTOR_OPTION_DISABLED;
       return;
     }
-#ifndef WINDOWS
   pid = fork ();
   plugin->cpid = pid;
   if (pid == -1)
-#else
-  STARTUPINFO startup;
-  PROCESS_INFORMATION proc;
-  char cmd[100];
-  char arg1[10], arg2[10];
-
-  memset (&startup, 0, sizeof (STARTUPINFO));
-  write_plugin_data (p1[1], plugin);
-
-  sprintf(cmd, "libextractor-3.dll,RundllEntryPoint@16 %u %u", p1[0], p1[1]);
-  if (CreateProcess("rundll32.exe", "libextractor-3.dll,RundllEntryPoint@16", NULL, NULL, TRUE, 0, NULL, NULL,
-      &startup, &proc))
-  {
-    plugin->hProcess = proc.hProcess;
-    CloseHandle (proc.hThread);
-  }
-  else
-#endif
     {
       close (p1[0]);
       close (p1[1]);
@@ -1465,7 +1462,6 @@ start_process (struct EXTRACTOR_PluginList *plugin)
       plugin->flags = EXTRACTOR_OPTION_DISABLED;
       return;
     }
-#ifndef WINDOWS
   if (pid == 0)
     {
       close (p1[1]);
@@ -1473,32 +1469,116 @@ start_process (struct EXTRACTOR_PluginList *plugin)
       process_requests (plugin, p1[0], p2[1]);
       _exit (0);
     }
-#endif
   close (p1[0]);
   close (p2[1]);
   plugin->cpipe_in = fdopen (p1[1], "w");
   if (plugin->cpipe_in == NULL)
     {
       perror ("fdopen");
-#ifndef WINDOWS
       (void) kill (plugin->cpid, SIGKILL);
       waitpid (plugin->cpid, &status, 0);
-#else
-      TerminateProcess (plugin->hProcess, 0);
-      WaitForSingleObject (process, INFINITE);
-      CloseHandle (plugin->hProcess);
-#endif
       close (p1[1]);
       close (p2[0]);
-#ifndef WINDOWS
       plugin->cpid = -1;
-#else
-      plugin->hProcess = INVALID_HANDLE_VALUE;
-#endif
       plugin->flags = EXTRACTOR_OPTION_DISABLED;
       return;
     }
   plugin->cpipe_out = p2[0];
+#else
+  int p1[2];
+  int p2[2];
+  STARTUPINFO startup;
+  PROCESS_INFORMATION proc;
+  char cmd[MAX_PATH + 1];
+  char arg1[10], arg2[10];
+  HANDLE p10_os = INVALID_HANDLE_VALUE, p21_os = INVALID_HANDLE_VALUE;
+  HANDLE p10_os_inh = INVALID_HANDLE_VALUE, p21_os_inh = INVALID_HANDLE_VALUE;
+
+  plugin->hProcess = NULL;
+  if (0 != _pipe (p1, 0, _O_BINARY))
+    {
+      plugin->flags = EXTRACTOR_OPTION_DISABLED;
+      return;
+    }
+  if (0 != _pipe (p2, 0, _O_BINARY))
+    {
+      close (p1[0]);
+      close (p1[1]);
+      plugin->flags = EXTRACTOR_OPTION_DISABLED;
+      return;
+    }
+
+  memset (&startup, 0, sizeof (STARTUPINFO));
+
+  p10_os = (HANDLE) _get_osfhandle (p1[0]);
+  p21_os = (HANDLE) _get_osfhandle (p2[1]);
+
+  if (p10_os == INVALID_HANDLE_VALUE || p21_os == INVALID_HANDLE_VALUE)
+  {
+    close (p1[0]);
+    close (p1[1]);
+    close (p2[0]);
+    close (p2[1]);
+    plugin->flags = EXTRACTOR_OPTION_DISABLED;
+    return;
+  }
+
+  if (!DuplicateHandle (GetCurrentProcess (), p10_os, GetCurrentProcess (),
+      &p10_os_inh, 0, TRUE, DUPLICATE_SAME_ACCESS)
+      || !DuplicateHandle (GetCurrentProcess (), p21_os, GetCurrentProcess (),
+      &p21_os_inh, 0, TRUE, DUPLICATE_SAME_ACCESS))
+  {
+    if (p10_os_inh != INVALID_HANDLE_VALUE)
+      CloseHandle (p10_os_inh);
+    if (p21_os_inh != INVALID_HANDLE_VALUE)
+      CloseHandle (p21_os_inh);
+    close (p1[0]);
+    close (p1[1]);
+    close (p2[0]);
+    close (p2[1]);
+    plugin->flags = EXTRACTOR_OPTION_DISABLED;
+    return;
+  }
+
+  snprintf(cmd, MAX_PATH + 1, "rundll32.exe libextractor-3.dll,RundllEntryPoint@16 %lu %lu", p10_os_inh, p21_os_inh);
+  cmd[MAX_PATH] = '\0';
+  if (CreateProcessA (NULL, cmd, NULL, NULL, TRUE, 0, NULL, NULL,
+      &startup, &proc))
+  {
+    plugin->hProcess = proc.hProcess;
+    CloseHandle (proc.hThread);
+  }
+  else
+    {
+      close (p1[0]);
+      close (p1[1]);
+      close (p2[0]);
+      close (p2[1]);
+      plugin->flags = EXTRACTOR_OPTION_DISABLED;
+      return;
+    }
+  close (p1[0]);
+  close (p2[1]);
+  CloseHandle (p10_os_inh);
+  CloseHandle (p21_os_inh);
+
+  write_plugin_data (p1[1], plugin);
+
+  plugin->cpipe_in = fdopen (p1[1], "w");
+  if (plugin->cpipe_in == NULL)
+    {
+      perror ("fdopen");
+      TerminateProcess (plugin->hProcess, 0);
+      WaitForSingleObject (plugin->hProcess, INFINITE);
+      CloseHandle (plugin->hProcess);
+      close (p1[1]);
+      close (p2[0]);
+      plugin->hProcess = INVALID_HANDLE_VALUE;
+      plugin->flags = EXTRACTOR_OPTION_DISABLED;
+      return;
+    }
+  plugin->cpipe_out = p2[0];
+#endif
 }
 
 
@@ -1650,7 +1730,6 @@ make_shm (int is_tail,
 #ifndef WINDOWS
 	  int *shmid,
 #else
-	  HANDLE *mappedFile,
 	  HANDLE *map,
 #endif	  
 	  char *fn,
@@ -1658,10 +1737,10 @@ make_shm (int is_tail,
 	  size_t size)
 {
   const char *tpath;
-
 #ifdef WINDOWS
-  tpath = "%TEMP%\\";
+  tpath = "Local\\";
 #elif SOMEBSD
+  const char *tpath;
   /* this works on FreeBSD, not sure about others... */
   tpath = getenv ("TMPDIR");
   if (tpath == NULL)
@@ -1692,16 +1771,11 @@ make_shm (int is_tail,
     }
   return 0;
 #else
-  *mappedFile = CreateFile (fn, 
-			   GENERIC_READ | GENERIC_WRITE,
-			   FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, CREATE_ALWAYS,
-			   FILE_FLAG_DELETE_ON_CLOSE, NULL);
-  *map = CreateFileMapping (*mappedFile, NULL, PAGE_READWRITE, 1, 0, NULL);
-  ptr = MapViewOfFile (*map, FILE_MAP_READ, 0, 0, 0);
-  if (ptr == NULL)
+  *map = CreateFileMapping (INVALID_HANDLE_VALUE, NULL, PAGE_READWRITE, 0, size, fn);
+  *ptr = MapViewOfFile (*map, FILE_MAP_WRITE, 0, 0, size);
+  if (*ptr == NULL)
     {
       CloseHandle (*map);
-      CloseHandle (*mappedFile);
       return 1;
     }
   return 0;
@@ -1742,9 +1816,7 @@ extract (struct EXTRACTOR_PluginList *plugins,
   int tshmid;
 #else
   HANDLE map;
-  HANDLE mappedFile;
   HANDLE tmap;
-  HANDLE tmappedFile;
 #endif
 
   want_shm = 0;
@@ -1790,7 +1862,6 @@ extract (struct EXTRACTOR_PluginList *plugins,
 #ifndef WINDOWS
 			 &shmid,
 #else
-			 &mappedFile,
 			 &map,
 #endif
 			 fn, sizeof(fn), size))
@@ -1802,7 +1873,6 @@ extract (struct EXTRACTOR_PluginList *plugins,
 #ifndef WINDOWS
 			       &tshmid,
 #else
-			       &tmappedFile,
 			       &tmap,
 #endif
 			       tfn, sizeof(tfn), tsize)) )
@@ -1924,12 +1994,10 @@ extract (struct EXTRACTOR_PluginList *plugins,
 #else
       UnmapViewOfFile (ptr);
       CloseHandle (map);
-      CloseHandle (mappedFile);
       if (tptr != NULL)
 	{
 	  UnmapViewOfFile (tptr);
 	  CloseHandle (tmap);
-	  CloseHandle (tmappedFile);
 	}
 #endif
     }
