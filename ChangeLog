@@ -1,3 +1,7 @@
+Tue Nov 29 12:55:40 CET 2011
+	Improved IPC code on W32 to use APIs correctly and make it work
+	on NT 6.1. -LRN
+
 Mon Nov 28 17:16:16 CET 2011
 	Reduce false-positives in MP3 extractor file format detection. -LRN
 
