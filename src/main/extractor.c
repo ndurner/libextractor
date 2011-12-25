@@ -1174,8 +1174,10 @@ process_requests (struct EXTRACTOR_PluginList *plugin,
 {
   char hfn[256];
   char tfn[256];
+  char sze[256];
   size_t hfn_len;
   size_t tfn_len;
+  size_t sze_len;
   char *fn;
   FILE *fin;
   void *ptr;
@@ -1256,6 +1258,15 @@ process_requests (struct EXTRACTOR_PluginList *plugin,
 	{
 	  fn = hfn;	
 	}
+      if (NULL == fgets (sze, sizeof(sze), fin))
+	break;
+      if ('s' != sze[0])
+	break;
+      sze_len = strlen (sze);
+      sze[--sze_len] = '\0'; /* kill newline */
+      size = strtol (&sze[1], NULL, 10);
+      if (size == LONG_MIN || size == LONG_MAX || size == 0)
+        break;
       do_break = 0;
 #ifndef WINDOWS
       if ( (-1 != (shmid = shm_open (fn, O_RDONLY, 0))) &&
@@ -1268,15 +1279,10 @@ process_requests (struct EXTRACTOR_PluginList *plugin,
       ptr = MapViewOfFile (map, FILE_MAP_READ, 0, 0, 0);
       if (ptr != NULL)
       {
-        size = VirtualQuery (ptr, &mi, sizeof (mi));
-        if (size == 0)
+        if (0 == VirtualQuery (ptr, &mi, sizeof (mi)) || mi.RegionSize < size)
         {
           UnmapViewOfFile (ptr);
           ptr = NULL;
-        }
-        else
-        {
-          size = mi.RegionSize;
         }
       }
       if (ptr != NULL)
@@ -1495,12 +1501,12 @@ start_process (struct EXTRACTOR_PluginList *plugin)
   HANDLE p10_os_inh = INVALID_HANDLE_VALUE, p21_os_inh = INVALID_HANDLE_VALUE;
 
   plugin->hProcess = NULL;
-  if (0 != _pipe (p1, 0, _O_BINARY))
+  if (0 != _pipe (p1, 0, _O_BINARY | _O_NOINHERIT))
     {
       plugin->flags = EXTRACTOR_OPTION_DISABLED;
       return;
     }
-  if (0 != _pipe (p2, 0, _O_BINARY))
+  if (0 != _pipe (p2, 0, _O_BINARY | _O_NOINHERIT))
     {
       close (p1[0]);
       close (p1[1]);
@@ -1587,6 +1593,7 @@ start_process (struct EXTRACTOR_PluginList *plugin)
  * actual code of the plugin out-of-process.
  *
  * @param plugin which plugin to call
+ * @param size size of the file mapped by shmfn or tshmfn
  * @param shmfn file name of the shared memory segment
  * @param tshmfn file name of the shared memory segment for the end of the data
  * @param proc function to call on the meta data
@@ -1595,6 +1602,7 @@ start_process (struct EXTRACTOR_PluginList *plugin)
  */
 static int
 extract_oop (struct EXTRACTOR_PluginList *plugin,
+             size_t size,
 	     const char *shmfn,
 	     const char *tshmfn,
 	     EXTRACTOR_MetaDataProcessor proc,
@@ -1627,6 +1635,20 @@ extract_oop (struct EXTRACTOR_PluginList *plugin,
   if (0 >= fprintf (plugin->cpipe_in, 
 		    "!%s\n",
 		    (tshmfn != NULL) ? tshmfn : ""))
+    {
+      stop_process (plugin);
+#ifndef WINDOWS
+      plugin->cpid = -1;
+#else
+      plugin->hProcess = INVALID_HANDLE_VALUE;
+#endif
+      if (plugin->flags != EXTRACTOR_OPTION_DEFAULT_POLICY)
+	plugin->flags = EXTRACTOR_OPTION_DISABLED;
+      return 0;
+    }
+  if (0 >= fprintf (plugin->cpipe_in, 
+		    "s%lu\n",
+		    size))
     {
       stop_process (plugin);
 #ifndef WINDOWS
@@ -1898,7 +1920,7 @@ extract (struct EXTRACTOR_PluginList *plugins,
       switch (flags)
 	{
 	case EXTRACTOR_OPTION_DEFAULT_POLICY:
-	  if (0 != extract_oop (ppos, fn, 
+	  if (0 != extract_oop (ppos, (tptr != NULL) ? tsize : size, fn, 
 				(tptr != NULL) ? tfn : NULL,
 				proc, proc_cls))
 	    {
@@ -1912,7 +1934,7 @@ extract (struct EXTRACTOR_PluginList *plugins,
 #endif
 	    {
 	      start_process (ppos);
-	      if (0 != extract_oop (ppos, fn, 
+	      if (0 != extract_oop (ppos, (tptr != NULL) ? tsize : size, fn, 
 				    (tptr != NULL) ? tfn : NULL,
 				    proc, proc_cls))
 		{
@@ -1922,7 +1944,7 @@ extract (struct EXTRACTOR_PluginList *plugins,
 	    }
 	  break;
 	case EXTRACTOR_OPTION_OUT_OF_PROCESS_NO_RESTART:
-	  if (0 != extract_oop (ppos, fn,
+	  if (0 != extract_oop (ppos, (tptr != NULL) ? tsize : size, fn, 
 				(tptr != NULL) ? tfn : NULL,
 				proc, proc_cls))
 	    {
