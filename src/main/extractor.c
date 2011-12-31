@@ -184,7 +184,7 @@ get_path_from_proc_exe() {
 	   sizeof (fn),
 	   "/proc/%u/maps",
 	   getpid());
-  f = fopen(fn, "r");
+  f = FOPEN(fn, "r");
   if (f != NULL) {
     while (NULL != fgets(line, 1024, f)) {
       if ( (1 == sscanf(line,
@@ -514,10 +514,10 @@ find_plugin_in_path (void *cls,
 
   if (sc->path != NULL)
     return;
-  dir = opendir (path);
+  dir = OPENDIR (path);
   if (NULL == dir)
     return;
-  while (NULL != (ent = readdir (dir)))
+  while (NULL != (ent = READDIR (dir)))
     {
       if (ent->d_name[0] == '.')
 	continue;
@@ -531,7 +531,7 @@ find_plugin_in_path (void *cls,
       sym = strdup (sym_name);
       if (sym == NULL)
 	{
-	  closedir (dir);
+	  CLOSEDIR (dir);
 	  return;
 	}
       dot = strstr (sym, ".");
@@ -552,7 +552,7 @@ find_plugin_in_path (void *cls,
 	     sc->short_name,
 	     path);
 #endif
-  closedir (dir);
+  CLOSEDIR (dir);
 }
 
 
@@ -766,6 +766,10 @@ get_symbol_with_prefix(void *lib_handle,
 static int
 plugin_load (struct EXTRACTOR_PluginList *plugin)
 {
+#if WINDOWS
+  wchar_t wlibname[4097];
+  char llibname[4097];
+#endif
   lt_dladvise advise;
 
   if (plugin->libname == NULL)
@@ -783,8 +787,29 @@ plugin_load (struct EXTRACTOR_PluginList *plugin)
   lt_dladvise_init (&advise);
   lt_dladvise_ext (&advise);
   lt_dladvise_local (&advise);
+#if WINDOWS
+  wlibname[0] = L'\0';
+  llibname[0] = '\0';
+  if (MultiByteToWideChar (CP_UTF8, 0, plugin->libname, -1, wlibname, 4097) <= 0
+      || WideCharToMultiByte (CP_ACP, 0, wlibname, -1, llibname, 4097, NULL, NULL) < 0)
+  {
+#if DEBUG
+      fprintf (stderr,
+	       "Loading `%s' plugin failed: %s\n",
+	       plugin->short_libname,
+	       "can't convert plugin name to local encoding");
+      free (plugin->libname);
+      plugin->libname = NULL;
+      plugin->flags = EXTRACTOR_OPTION_DISABLED;
+      return -1;
+#endif
+  }
+  plugin->libraryHandle = lt_dlopenadvise (llibname,
+				       advise);
+#else
   plugin->libraryHandle = lt_dlopenadvise (plugin->libname, 
 				       advise);
+#endif
   lt_dladvise_destroy(&advise);
   if (plugin->libraryHandle == NULL)
     {
@@ -2333,7 +2358,7 @@ static int file_open(const char *filename, int oflag, ...)
   /* Set binary mode */
   mode |= O_BINARY;
 #endif
-  return open(fn, oflag, mode);
+  return OPEN(fn, oflag, mode);
 }
 
 
