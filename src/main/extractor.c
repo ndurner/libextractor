@@ -1721,7 +1721,7 @@ extract_oop (struct EXTRACTOR_PluginList *plugin,
       mimetype[hdr.mime_len] = '\0';
       if ( (proc != NULL) &&
 	   (0 != proc (proc_cls, 
-		       plugin->libname,
+		       plugin->short_libname,
 		       hdr.type,
 		       hdr.format,
 		       mimetype,
