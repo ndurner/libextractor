@@ -221,7 +221,15 @@ EXTRACTOR_id3v24_extract (const unsigned char *data,
 		      break;
 		    case 0x01:
 		      word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[pos + 11],
-							       csize - 1, "UCS-2");
+							       csize - 1, "UTF-16");
+		      break;
+		    case 0x02:
+		      word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[pos + 11],
+							       csize - 1, "UTF-16BE");
+		      break;
+		    case 0x03:
+		      word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[pos + 11],
+							       csize - 1, "UTF-8");
 		      break;
 		    default:
 		      /* bad encoding byte,
@@ -256,7 +264,15 @@ EXTRACTOR_id3v24_extract (const unsigned char *data,
 		      break;
 		    case 0x01:
 		      word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[pos + off],
-							       csize - off, "UCS-2");
+							       csize - off, "UTF-16");
+		      break;
+		    case 0x02:
+		      word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[pos + off],
+							       csize - off, "UTF-16BE");
+		      break;
+		    case 0x03:
+		      word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[pos + off],
+							       csize - off, "UTF-8");
 		      break;
 		    default:
 		      /* bad encoding byte,
@@ -278,7 +294,15 @@ EXTRACTOR_id3v24_extract (const unsigned char *data,
 		      break;
 		    case 0x01:
 		      word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[pos + 16],
-							       csize - 6, "UCS-2");
+							       csize - 6, "UTF-16");
+		      break;
+		    case 0x02:
+		      word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[pos + 16],
+							       csize - 6, "UTF-16BE");
+		      break;
+		    case 0x03:
+		      word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[pos + 16],
+							       csize - 6, "UTF-8");
 		      break;
 		    default:
 		      /* bad encoding byte,
@@ -300,7 +324,15 @@ EXTRACTOR_id3v24_extract (const unsigned char *data,
 		      break;
 		    case 0x01:
 		      word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[pos + 14],
-							       csize - 4, "UCS-2");
+							       csize - 4, "UTF-16");
+		      break;
+		    case 0x02:
+		      word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[pos + 14],
+							       csize - 4, "UTF-16BE");
+		      break;
+		    case 0x03:
+		      word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[pos + 14],
+							       csize - 4, "UTF-8");
 		      break;
 		    default:
 		      /* bad encoding byte,
