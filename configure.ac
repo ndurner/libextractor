@@ -14,6 +14,7 @@ AC_SUBST(LIB_VERSION_AGE)
 
 # Checks for programs.
 AC_CANONICAL_HOST
+AC_CANONICAL_TARGET
 AC_USE_SYSTEM_EXTENSIONS
 AC_PROG_AWK
 AC_PROG_CC
@@ -33,7 +34,7 @@ AC_SUBST(LTDLINCL)
 AC_SUBST(LIBLTDL)
 AC_SUBST(MKDIR_P)
 
-case "$host_os" in
+case "$target_os" in
 linux*)
      AC_DEFINE(LINUX,1,[This is a Linux system])
      AC_DEFINE_UNQUOTED(LINUX,1,[This is a LINUX system])
@@ -100,7 +101,43 @@ mingw*)
      if test "x$mingw32_ws2" = "xno" -a "x$mingw64_ws2" = "xno"; then
        AC_MSG_ERROR([libextractor requires Winsock2])
      fi
-     AC_CHECK_LIB(plibc, plibc_init,,[AC_MSG_ERROR([libextractor requires PlibC])])
+
+    AC_MSG_CHECKING(for PlibC)
+    plibc=0
+    AC_ARG_WITH(plibc,
+       [  --with-plibc=PFX    Base of PliBC installation],
+       [AC_MSG_RESULT([$with_plibc])
+        case $with_plibc in
+          no)
+            ;;
+          yes)
+            AC_CHECK_HEADERS([plibc.h],
+              AC_CHECK_LIB([plibc], [plibc_init],
+                plibc=1))
+            ;;
+          *)
+            LDFLAGS="-L$with_plibc/lib $LDFLAGS"
+            CPPFLAGS="-I$with_plibc/include $CPPFLAGS"
+            AC_CHECK_HEADERS([plibc.h],
+              AC_CHECK_LIB([plibc], [plibc_init],
+                EXT_LIB_PATH="-L$with_plibc/lib $EXT_LIB_PATH"
+                plibc=1))
+            ;;
+        esac
+       ],
+       [AC_MSG_RESULT([--with-plibc not specified])
+        LDFLAGS="-L/usr/lib $LDFLAGS"
+        CPPFLAGS="-I/usr/include $CPPFLAGS"    
+        AC_CHECK_HEADERS([plibc.h],
+              AC_CHECK_LIB([plibc], [plibc_init],
+                EXT_LIB_PATH="-L$with_plibc/lib $EXT_LIB_PATH"
+                plibc=1))])
+
+     if test $plibc -ne 1;
+     then
+        AC_MSG_ERROR([libextractor requires PlibC])
+     fi
+
      LDFLAGS="$LDFLAGS -Wl,-no-undefined -Wl,--export-all-symbols"
 		 LIBSOLD=$LIBS
      AM_CONDITIONAL(HAVE_GNU_LD, true)
