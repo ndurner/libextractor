@@ -1096,8 +1096,7 @@ write_all (int fd,
 
 
 static int
-read_all (
-    int fd,
+read_all (int fd,
 	  void *buf,
 	  size_t size)
 {
@@ -1688,6 +1687,9 @@ extract_oop (struct EXTRACTOR_PluginList *plugin,
   fflush (plugin->cpipe_in);
   while (1)
     {
+      fprintf (stderr, "Reading header from PID %u (plugin %s)\n",
+	       plugin->cpid,
+	       plugin->short_libname);
       if (0 != read_all (plugin->cpipe_out,
 			 &hdr,
 			 sizeof(hdr)))

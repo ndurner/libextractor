@@ -1,3 +1,7 @@
+Sun Jan 29 17:27:08 CET 2012
+	Documented recently discovered issues with pthreads and 
+	out-of-process plugin executions in the manual. -CG
+
 Tue Nov 29 12:55:40 CET 2011
 	Improved IPC code on W32 to use APIs correctly and make it work
 	on NT 6.1. -LRN
