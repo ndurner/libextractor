@@ -1687,9 +1687,6 @@ extract_oop (struct EXTRACTOR_PluginList *plugin,
   fflush (plugin->cpipe_in);
   while (1)
     {
-      fprintf (stderr, "Reading header from PID %u (plugin %s)\n",
-	       plugin->cpid,
-	       plugin->short_libname);
       if (0 != read_all (plugin->cpipe_out,
 			 &hdr,
 			 sizeof(hdr)))
