@@ -88,7 +88,7 @@ void __attribute__ ((constructor)) ffmpeg_lib_init (void)
  */
 static size_t create_thumbnail(
   int src_width, int src_height, int src_stride[],
-  enum PixelFormat src_pixfmt, uint8_t *src_data[],
+  enum PixelFormat src_pixfmt, const uint8_t * const src_data[],
   int dst_width, int dst_height,
   uint8_t **output_data, size_t output_max_size)
 {
@@ -376,7 +376,8 @@ extract_image (enum CodecID image_codec_id,
                                   &thumb_width, &thumb_height);
 
   err = create_thumbnail (codec_ctx->width, codec_ctx->height,
-                          frame->linesize, codec_ctx->pix_fmt, frame->data,
+                          frame->linesize, codec_ctx->pix_fmt, 
+			  (const uint8_t * const*) frame->data,
                           thumb_width, thumb_height,
                           &encoded_thumbnail, MAX_THUMB_BYTES);
 
@@ -580,7 +581,8 @@ RETRY_PROBE:
                                   &thumb_width, &thumb_height);
 
   err = create_thumbnail (codec_ctx->width, codec_ctx->height,
-                          frame->linesize, codec_ctx->pix_fmt, frame->data,
+                          frame->linesize, codec_ctx->pix_fmt,
+			  (const uint8_t* const *) frame->data,
                           thumb_width, thumb_height,
                           &encoded_thumbnail, MAX_THUMB_BYTES);
 
