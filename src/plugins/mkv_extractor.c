@@ -292,7 +292,10 @@ EXTRACTOR_mkv_extract (const unsigned char *data, size_t size,
       }
       break;
     case MKVID_DefaultDuration:
-      fps = (unsigned int) (1000000000 / value);
+      if (value > 0)
+        fps = (unsigned int) (1000000000 / value);
+      else
+        fps = 0;
       break;
     case MKVID_Language:
       snprintf (buffer, 
