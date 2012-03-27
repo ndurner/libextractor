@@ -208,8 +208,8 @@ calculate_frame_statistics_and_maybe_report_it (struct EXTRACTOR_PluginList *plu
   int length;
   char format[512];
 
-  if (((double) state->number_of_valid_frames / (double) state->number_of_frames) < 0.5 ||
-      state->number_of_valid_frames < 2)
+  if (((double) state->number_of_valid_frames / (double) state->number_of_frames) < 0.8 ||
+      state->number_of_valid_frames <= 2)
     /* Unlikely to be an mp3 file */
     return 0;
   ADDR ("audio/mpeg", EXTRACTOR_METATYPE_MIMETYPE);
@@ -297,7 +297,7 @@ EXTRACTOR_mp3_extract_method (struct EXTRACTOR_PluginList *plugin,
       if (offset + sizeof (state->header) >= size)
       {
         /* Alternative: (frames_found_in_this_round < (size / LARGEST_FRAME_SIZE / 2)) is to generous */
-        if ((file_position == 0 && ((double) state->number_of_valid_frames / (double) state->number_of_frames) < 0.5) ||
+        if ((file_position == 0 && (state->number_of_valid_frames > 2) && ((double) state->number_of_valid_frames / (double) state->number_of_frames) < 0.8) ||
             file_position + offset + sizeof (state->header) >= file_size)
         {
           calculate_frame_statistics_and_maybe_report_it (plugin, state, proc, proc_cls);
@@ -384,7 +384,7 @@ EXTRACTOR_mp3_extract_method (struct EXTRACTOR_PluginList *plugin,
         frame_size = (12 * bitrate / sample_rate + ((state->header >> MPA_PADDING_SHIFT) & 0x1)) * 4;
       else
         frame_size = 144 * bitrate / sample_rate + ((state->header >> MPA_PADDING_SHIFT) & 0x1);
-      if (frame_size <= 0)
+      if (frame_size < 8)
       {
         /*error in header */
         state->state = MP3_LOOKING_FOR_FRAME;
