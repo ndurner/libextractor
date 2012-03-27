@@ -101,6 +101,8 @@ mingw*)
      if test "x$mingw32_ws2" = "xno" -a "x$mingw64_ws2" = "xno"; then
        AC_MSG_ERROR([libextractor requires Winsock2])
      fi
+     # Sufficiently new Windows XP
+     CFLAGS="-D__MSVCRT_VERSION__=0x0601 $CFLAGS"
 
     AC_MSG_CHECKING(for PlibC)
     plibc=0
@@ -136,6 +138,8 @@ mingw*)
      if test $plibc -ne 1;
      then
         AC_MSG_ERROR([libextractor requires PlibC])
+     else
+        LIBS="$LIBS -lplibc"
      fi
 
      LDFLAGS="$LDFLAGS -Wl,-no-undefined -Wl,--export-all-symbols"
@@ -336,7 +340,7 @@ AC_FUNC_STAT
 AC_FUNC_ERROR_AT_LINE
 AC_SEARCH_LIBS(dlopen, dl)
 AC_SEARCH_LIBS(shm_open, rt)
-AC_CHECK_FUNCS([mkstemp strndup munmap strcasecmp strdup strncasecmp memmove memset strtoul floor getcwd pow setenv sqrt strchr strcspn strrchr strnlen strndup ftruncate shm_open shm_unlink])
+AC_CHECK_FUNCS([mkstemp strndup munmap strcasecmp strdup strncasecmp memmove memset strtoul floor getcwd pow setenv sqrt strchr strcspn strrchr strnlen strndup ftruncate shm_open shm_unlink lseek64])
 LE_LIB_LIBS=$LIBS
 LIBS=$LIBSOLD
 

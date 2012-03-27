@@ -29,6 +29,8 @@
 #include <unistd.h>
 #include <stdlib.h>
 
+#include "extractor_plugins.h"
+
 typedef struct
 {
   char *title;
@@ -199,6 +201,46 @@ static const char *const genre_names[] = {
 #define OK         0
 #define INVALID_ID3 1
 
+struct id3_state
+{
+  int state;
+  id3tag info;
+};
+
+enum ID3State
+{
+  ID3_INVALID = -1,
+  ID3_SEEKING_TO_TAIL = 0,
+  ID3_READING_TAIL = 1
+};
+
+void
+EXTRACTOR_id3_init_state_method (struct EXTRACTOR_PluginList *plugin)
+{
+  struct id3_state *state;
+  state = plugin->state = malloc (sizeof (struct id3_state));
+  if (state == NULL)
+    return;
+  memset (state, 0, sizeof (struct id3_state));
+  state->state = ID3_SEEKING_TO_TAIL;
+}
+
+void
+EXTRACTOR_id3_discard_state_method (struct EXTRACTOR_PluginList *plugin)
+{
+  struct id3_state *state = plugin->state;
+  if (state != NULL)
+  {
+    if (state->info.title != NULL) free (state->info.title);
+    if (state->info.year != NULL) free (state->info.year);
+    if (state->info.album != NULL) free (state->info.album);
+    if (state->info.artist != NULL) free (state->info.artist);
+    if (state->info.comment != NULL) free (state->info.comment);
+    free (state);
+  }
+  plugin->state = NULL;
+}
+
 static void
 trim (char *k)
 {
@@ -209,14 +251,14 @@ trim (char *k)
 }
 
 static int
-get_id3 (const char *data, size_t size, id3tag * id3)
+get_id3 (const char *data, int64_t offset, int64_t size, id3tag *id3)
 {
   const char *pos;
 
   if (size < 128)
     return INVALID_ID3;
 
-  pos = &data[size - 128];
+  pos = &data[offset];
   if (0 != strncmp ("TAG", pos, 3))
     return INVALID_ID3;
   pos += 3;
@@ -253,49 +295,82 @@ get_id3 (const char *data, size_t size, id3tag * id3)
 }
 
 
-#define ADD(s,t) do { if ( (s != NULL) && (strlen(s) > 0) && (0 != (ret = proc (proc_cls, "id3", t, EXTRACTOR_METAFORMAT_UTF8, "text/plain", s, strlen(s)+1)))) goto FINISH; } while (0)
+#define ADD(s,t) do { if ( (s != NULL) && (strlen(s) > 0) && (0 != proc (proc_cls, "id3", t, EXTRACTOR_METAFORMAT_UTF8, "text/plain", s, strlen(s)+1))) return 1; } while (0)
 
 
-const char *
-EXTRACTOR_id3_options ()
+int
+EXTRACTOR_id3_extract_method (struct EXTRACTOR_PluginList *plugin,
+    EXTRACTOR_MetaDataProcessor proc, void *proc_cls)
 {
-  return "want-tail";
-}
-
-
-int 
-EXTRACTOR_id3_extract (const char *data,
-		       size_t size,
-		       EXTRACTOR_MetaDataProcessor proc,
-		       void *proc_cls,
-		       const char *options)
-{
-  id3tag info;
+  int64_t file_position;
+  int64_t file_size;
+  int64_t offset = 0;
+  int64_t size;
+  struct id3_state *state;
+  char *data;
+  
   char track[16];
-  int ret;
 
-  ret = 0;
-  if (OK != get_id3 (data, size, &info))
-    return 0;
-  ADD (info.title, EXTRACTOR_METATYPE_TITLE);
-  ADD (info.artist, EXTRACTOR_METATYPE_ARTIST);
-  ADD (info.album, EXTRACTOR_METATYPE_ALBUM);
-  ADD (info.year, EXTRACTOR_METATYPE_PUBLICATION_YEAR);
-  ADD (info.genre, EXTRACTOR_METATYPE_GENRE);
-  ADD (info.comment, EXTRACTOR_METATYPE_COMMENT);
-  if (info.track_number != 0)
+  if (plugin == NULL || plugin->state == NULL)
+    return 1;
+
+  state = plugin->state;
+  file_position = plugin->position;
+  file_size = plugin->fsize;
+  size = plugin->map_size;
+  data = (char *) plugin->shm_ptr;
+
+  if (plugin->seek_request < 0)
+    return 1;
+  if (file_position - plugin->seek_request > 0)
+  {
+    plugin->seek_request = -1;
+    return 1;
+  }
+  if (plugin->seek_request - file_position < size)
+    offset = plugin->seek_request - file_position;
+
+  while (1)
+  {
+    switch (state->state)
     {
-      snprintf(track, 
-	       sizeof(track), "%u", info.track_number);
-      ADD (track, EXTRACTOR_METATYPE_TRACK_NUMBER);
+    case ID3_INVALID:
+      plugin->seek_request = -1;
+      return 1;
+    case ID3_SEEKING_TO_TAIL:
+      offset = file_size - 128 - file_position;
+      if (offset > size)
+      {
+        state->state = ID3_READING_TAIL;
+        plugin->seek_request = file_position + offset;
+        return 0;
+      }
+      else if (offset < 0)
+      {
+        state->state = ID3_INVALID;
+        break;
+      }
+      state->state = ID3_READING_TAIL;
+       break;
+    case ID3_READING_TAIL:
+      if (OK != get_id3 (data, offset, size - offset, &state->info))
+        return 1;
+      ADD (state->info.title, EXTRACTOR_METATYPE_TITLE);
+      ADD (state->info.artist, EXTRACTOR_METATYPE_ARTIST);
+      ADD (state->info.album, EXTRACTOR_METATYPE_ALBUM);
+      ADD (state->info.year, EXTRACTOR_METATYPE_PUBLICATION_YEAR);
+      ADD (state->info.genre, EXTRACTOR_METATYPE_GENRE);
+      ADD (state->info.comment, EXTRACTOR_METATYPE_COMMENT);
+      if (state->info.track_number != 0)
+      {
+        snprintf(track, 
+            sizeof(track), "%u", state->info.track_number);
+        ADD (track, EXTRACTOR_METATYPE_TRACK_NUMBER);
+      }
+      state->state = ID3_INVALID;
     }
-FINISH:
-  if (info.title != NULL) free (info.title);
-  if (info.year != NULL) free (info.year);
-  if (info.album != NULL) free (info.album);
-  if (info.artist != NULL) free (info.artist);
-  if (info.comment != NULL) free (info.comment);
-  return ret; 
+  }
+  return 1;
 }
 
 /* end of id3_extractor.c */

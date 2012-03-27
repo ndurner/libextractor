@@ -64,7 +64,9 @@ struct EXTRACTOR_PluginList
   /**
    * Pointer to the function used for meta data extraction.
    */
-  EXTRACTOR_ExtractMethod extractMethod;
+  EXTRACTOR_extract_method extract_method;
+  EXTRACTOR_init_state_method init_state_method;
+  EXTRACTOR_discard_state_method discard_state_method;
 
   /**
    * Options for the plugin.
@@ -84,26 +86,72 @@ struct EXTRACTOR_PluginList
   enum EXTRACTOR_Options flags;
 
   /**
-   * Process ID of the child process for this plugin. 0 for 
-   * none.
+   * Process ID of the child process for this plugin. 0 for none.
    */
-#ifndef WINDOWS
+#if !WINDOWS
   int cpid;
 #else
   HANDLE hProcess;
 #endif
 
   /**
-   * Pipe used to send information about shared memory segments to
-   * the child process.  NULL if not initialized.
+   * Pipe used to communicate information to the plugin child process.
+   * NULL if not initialized.
    */
+#if !WINDOWS
   FILE *cpipe_in;
+#else
+  HANDLE cpipe_in;
+#endif
+
+  /**
+   * A position this plugin wants us to seek to. -1 if it's finished.
+   * Starts at 0;
+   */
+  int64_t seek_request;
+
+#if !WINDOWS
+  int shm_id;
+#else
+  HANDLE map_handle;
+#endif
+
+  void *state;
+
+  int64_t fsize;
+
+  int64_t position;
+
+  unsigned char *shm_ptr;
+
+  size_t map_size;
 
   /**
    * Pipe used to read information about extracted meta data from
-   * the child process.  -1 if not initialized.
+   * the plugin child process.  -1 if not initialized.
    */
+#if !WINDOWS
   int cpipe_out;
+#else
+  HANDLE cpipe_out;
+#endif
+
+#if WINDOWS
+  /**
+   * A structure for overlapped reads on W32.
+   */
+  OVERLAPPED ov_read;
+
+  /**
+   * A structure for overlapped writes on W32.
+   */
+  OVERLAPPED ov_write;
+
+  /**
+   * A write buffer for overlapped writes on W32
+   */
+  unsigned char *ov_write_buffer;
+#endif
 };
 
 /**

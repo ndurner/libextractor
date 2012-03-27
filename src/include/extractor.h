@@ -392,12 +392,6 @@ typedef int (*EXTRACTOR_MetaDataProcessor)(void *cls,
  * @param options options for this plugin; can be NULL
  * @return 0 if all calls to proc returned 0, otherwise 1
  */
-typedef int (*EXTRACTOR_ExtractMethod)(const char *data,
-				       size_t datasize,
-				       EXTRACTOR_MetaDataProcessor proc,
-				       void *proc_cls,
-				       const char *options);
-
 
 /**
  * Linked list of extractor plugins.  An application builds this list
@@ -406,6 +400,13 @@ typedef int (*EXTRACTOR_ExtractMethod)(const char *data,
  * see EXTRACTOR_plugin_remove).
  */
 struct EXTRACTOR_PluginList;
+
+typedef int (*EXTRACTOR_extract_method) (struct EXTRACTOR_PluginList *plugin,
+  EXTRACTOR_MetaDataProcessor proc, void *proc_cls);
+
+typedef void (*EXTRACTOR_discard_state_method) (struct EXTRACTOR_PluginList *plugin);
+typedef void (*EXTRACTOR_init_state_method) (struct EXTRACTOR_PluginList *plugin);
+
 
 
 /**

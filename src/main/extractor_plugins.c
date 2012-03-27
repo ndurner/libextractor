@@ -204,15 +204,24 @@ plugin_load (struct EXTRACTOR_PluginList *plugin)
       plugin->flags = EXTRACTOR_OPTION_DISABLED;
       return -1;
     }
-  plugin->extractMethod = get_symbol_with_prefix (plugin->libraryHandle,
-						  "_EXTRACTOR_%s_extract",
+  plugin->extract_method = get_symbol_with_prefix (plugin->libraryHandle,
+						  "_EXTRACTOR_%s_extract_method",
 						  plugin->libname,
 						  &plugin->specials);
-  if (plugin->extractMethod == NULL) 
+  plugin->init_state_method = get_symbol_with_prefix (plugin->libraryHandle,
+						  "_EXTRACTOR_%s_init_state_method",
+						  plugin->libname,
+						  &plugin->specials);
+  plugin->discard_state_method = get_symbol_with_prefix (plugin->libraryHandle,
+						  "_EXTRACTOR_%s_discard_state_method",
+						  plugin->libname,
+						  &plugin->specials);
+  if (plugin->extract_method == NULL || plugin->init_state_method == NULL ||
+      plugin->discard_state_method == NULL) 
     {
 #if DEBUG
       fprintf (stderr,
-	       "Resolving `extract' method of plugin `%s' failed: %s\n",
+	       "Resolving `extract', 'init_state' or 'discard_state' method(s) of plugin `%s' failed: %s\n",
 	       plugin->short_libname,
 	       lt_dlerror ());
 #endif
@@ -243,7 +252,14 @@ EXTRACTOR_plugin_add (struct EXTRACTOR_PluginList * prev,
 		      enum EXTRACTOR_Options flags)
 {
   struct EXTRACTOR_PluginList *result;
+  struct EXTRACTOR_PluginList *i;
   char *libname;
+
+  for (i = prev; i != NULL; i = i->next)
+  {
+    if (strcmp (i->short_libname, library) == 0)
+      return prev;
+  }
 
   libname = find_plugin (library);
   if (libname == NULL)
