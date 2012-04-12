@@ -580,8 +580,8 @@ AC_CACHE_CHECK([whether -export-symbols-regex works],
  ])
 if test "x$gn_cv_export_symbols_regex_works" = "xyes"
 then
- LE_LIB_LDFLAGS="$LE_LIB_LDFLAGS -export-symbols-regex \"EXTRACTOR_@<:@a-zA-Z0-9_@:>@*\""
- LE_PLUGIN_LDFLAGS="$LE_PLUGIN_LDFLAGS -export-symbols-regex \"EXTRACTOR_@<:@a-zA-Z0-9_@:>@*_.......\""
+ LE_LIB_LDFLAGS="$LE_LIB_LDFLAGS -export-symbols-regex \"(EXTRACTOR|pl)_@<:@a-zA-Z0-9_@:>@*\""
+ LE_PLUGIN_LDFLAGS="$LE_PLUGIN_LDFLAGS -export-symbols-regex \"(EXTRACTOR|pl)_@<:@a-zA-Z0-9_@:>@*_.......\""
 fi
 AC_SUBST(LE_LIB_LDFLAGS)
 AC_SUBST(LE_PLUGIN_LDFLAGS)
