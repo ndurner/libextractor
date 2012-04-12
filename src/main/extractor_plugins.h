@@ -101,6 +101,10 @@ struct EXTRACTOR_PluginList
 #else
   HANDLE cpipe_in;
 #endif
+
+  /**
+   * Pipe used by plugin to read from its parent.
+   */
   int pipe_in;
 
   /**
@@ -110,36 +114,71 @@ struct EXTRACTOR_PluginList
   int64_t seek_request;
 
 #if !WINDOWS
+  /**
+   * ID of the shm object
+   */
   int shm_id;
 #else
+  /**
+   * Handle of the shm object
+   */
   HANDLE map_handle;
 #endif
 
-  void *state;
+  /**
+   * Used to pass cfs pointer to in-process plugin in OPMODE_DECOMPRESS
+   */
+  void *pass_cfs;
 
+  /**
+   * Uncompressed stream size. Initially -1, until file is fully decompressed
+   * (for sources that are not compressed it is set from the start).
+   */
   int64_t fsize;
 
+  /**
+   * Absolute position within the stream
+   */
   int64_t fpos;
 
+  /**
+   * Pointer to the shared memory segment
+   */
   unsigned char *shm_ptr;
 
+  /**
+   * Number of bytes in the segment
+   */
   int64_t map_size;
 
+  /**
+   * Position within the segment
+   */
   int64_t shm_pos;
 
+#if !WINDOWS
   /**
    * Pipe used to read information about extracted meta data from
    * the plugin child process.  -1 if not initialized.
    */
-#if !WINDOWS
   int cpipe_out;
 #else
+  /**
+   * Pipe used to read information about extracted meta data from
+   * the plugin child process.  -1 if not initialized.
+   */
   HANDLE cpipe_out;
 #endif
 
 #if !WINDOWS
+  /**
+   * Page size. Mmap offset is a multiple of this number.
+   */
   long allocation_granularity;
 #else
+  /**
+   * Page size. Mmap offset is a multiple of this number.
+   */
   DWORD allocation_granularity;
 #endif
 
@@ -160,7 +199,15 @@ struct EXTRACTOR_PluginList
   unsigned char *ov_write_buffer;
 #endif
 
+  /**
+   * Mode of operation. One of the OPMODE_* constants
+   */
   uint8_t operation_mode;
+
+  /**
+   * 1 if plugin is currently in a recursive process_requests() call,
+   * 0 otherwise
+   */
   int waiting_for_update;
 };
 
