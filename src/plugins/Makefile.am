@@ -14,6 +14,7 @@ SUBDIRS = .
 plugin_LTLIBRARIES = \
   libextractor_id3.la \
   libextractor_id3v2.la \
+  libextractor_ebml.la \
   libextractor_mp3.la
 
 libextractor_mp3_la_SOURCES = \
@@ -22,11 +23,13 @@ libextractor_mp3_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_mp3_la_LIBADD = \
   $(top_builddir)/src/common/libextractor_common.la \
+  $(top_builddir)/src/main/libextractor.la \
   $(LE_LIBINTL)
 
 libextractor_ebml_la_SOURCES = \
   ebml_extractor.c 
 libextractor_ebml_la_LDFLAGS = \
+  $(top_builddir)/src/main/libextractor.la \
   $(PLUGINFLAGS)
 
 libextractor_id3_la_SOURCES = \
@@ -35,6 +38,7 @@ libextractor_id3_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_id3_la_LIBADD = \
   $(top_builddir)/src/common/libextractor_common.la \
+  $(top_builddir)/src/main/libextractor.la \
   $(LE_LIBINTL)
 
 libextractor_id3v2_la_SOURCES = \
@@ -42,6 +46,7 @@ libextractor_id3v2_la_SOURCES = \
 libextractor_id3v2_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_id3v2_la_LIBADD = \
+  $(top_builddir)/src/main/libextractor.la \
   $(top_builddir)/src/common/libextractor_common.la
 
 EXTRA_DIST = template_extractor.c 

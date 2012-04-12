@@ -215,30 +215,30 @@ enum ID3v2State
   ID3V2_READING_FRAME
 };
 
-void
-EXTRACTOR_id3v2_init_state_method (struct EXTRACTOR_PluginList *plugin)
+struct id3v2_state *
+EXTRACTOR_id3v2_init_state_method ()
 {
   struct id3v2_state *state;
-  state = plugin->state = malloc (sizeof (struct id3v2_state));
+  state = malloc (sizeof (struct id3v2_state));
   if (state == NULL)
-    return;
+    return NULL;
   memset (state, 0, sizeof (struct id3v2_state));
   state->state = ID3V2_READING_HEADER;
   state->ti = -1;
   state->mime = NULL;
+  return state;
 }
 
-void
-EXTRACTOR_id3v2_discard_state_method (struct EXTRACTOR_PluginList *plugin)
+static int
+EXTRACTOR_id3v2_discard_state_method (struct id3v2_state *state)
 {
-  struct id3v2_state *state = plugin->state;
   if (state != NULL)
   {
     if (state->mime != NULL)
       free (state->mime);
     free (state);
   }
-  plugin->state = NULL;
+  return 1;
 }
 
 static int
@@ -266,24 +266,12 @@ EXTRACTOR_id3v2_extract_method (struct EXTRACTOR_PluginList *plugin,
   enum EXTRACTOR_MetaType type;
   unsigned char picture_type;
 
-  if (plugin == NULL || plugin->state == NULL)
+  if (plugin == NULL)
     return 1;
 
-  state = plugin->state;
-  file_position = plugin->position;
-  file_size = plugin->fsize;
-  size = plugin->map_size;
-  data = plugin->shm_ptr;
-
-  if (plugin->seek_request < 0)
+  state = EXTRACTOR_id3v2_init_state_method ();
+  if (state == NULL)
     return 1;
-  if (file_position - plugin->seek_request > 0)
-  {
-    plugin->seek_request = -1;
-    return 1;
-  }
-  if (plugin->seek_request - file_position < size)
-    offset = plugin->seek_request - file_position;
 
   while (1)
   {
@@ -291,7 +279,7 @@ EXTRACTOR_id3v2_extract_method (struct EXTRACTOR_PluginList *plugin,
     {
     case ID3V2_INVALID:
       plugin->seek_request = -1;
-      return 1;
+      return EXTRACTOR_id3v2_discard_state_method (state);
     case ID3V2_READING_HEADER:
       /* TODO: support id3v24 tags at the end of file. Here's a quote from id3 faq:
        * Q: Where is an ID3v2 tag located in an MP3 file?
@@ -303,7 +291,8 @@ EXTRACTOR_id3v2_extract_method (struct EXTRACTOR_PluginList *plugin,
        *    in the actual MPEG stream, on an MPEG frame boundry. Almost nobody does
        *    this.
        * Parsing of such tags will not be completely correct, because we can't
-       * seek backwards. We will have to seek to file_size - chunk_size instead
+       * seek backwards. (OK, now we CAN seek backwards, but we still need to mind the
+       * chunk size). We will have to seek to file_size - chunk_size instead
        * (by the way, chunk size is theoretically unknown, LE is free to use any chunk
        * size, even though plugins often make assumptions about chunk size being large
        * enough to make one atomic read without seeking, if offset == 0) and search
@@ -326,7 +315,12 @@ EXTRACTOR_id3v2_extract_method (struct EXTRACTOR_PluginList *plugin,
        * flag is not set, id3v2 parser must discard id3v1 data).
        * At the moment id3v1 and id3v2 are parsed separately, and update flag is ignored.
        */
-      if (file_position != 0 || size < 10 || (data[0] != 0x49) || (data[1] != 0x44) || (data[2] != 0x33) || ((data[3] != 0x02) && (data[3] != 0x03) && (data[3] != 0x04))/* || (data[4] != 0x00) minor verisons are backward-compatible*/)
+      if (10 != pl_read (plugin, &data, 10))
+      {
+        state->state = ID3V2_INVALID;
+        break;
+      }
+      if ((data[0] != 0x49) || (data[1] != 0x44) || (data[2] != 0x33) || ((data[3] != 0x02) && (data[3] != 0x03) && (data[3] != 0x04))/* || (data[4] != 0x00) minor verisons are backward-compatible*/)
       {
         state->state = ID3V2_INVALID;
         break;
@@ -353,12 +347,6 @@ EXTRACTOR_id3v2_extract_method (struct EXTRACTOR_PluginList *plugin,
         }
       }
       state->tsize = (((data[6] & 0x7F) << 21) | ((data[7] & 0x7F) << 14) | ((data[8] & 0x7F) << 07) | ((data[9] & 0x7F) << 00));
-      if (state->tsize + 10 > file_size)
-      {
-        state->state = ID3V2_INVALID;
-        break;
-      }
-      offset = 10;
       if (state->ver == 0x03 && state->extended_header)
         state->state = ID3V23_READING_EXTENDED_HEADER;
       else if (state->ver == 0x04 && state->extended_header)
@@ -367,28 +355,17 @@ EXTRACTOR_id3v2_extract_method (struct EXTRACTOR_PluginList *plugin,
         state->state = ID3V2_READING_FRAME_HEADER;
       break;
     case ID3V23_READING_EXTENDED_HEADER:
-      if (offset + 9 >= size)
-      { 
-        if (offset == 0)
-        {
-          state->state = ID3V2_INVALID;
-          break;
-        }
-        plugin->seek_request = file_position + offset;
-        return 0;
+      if (10 != pl_read (plugin, &data, 10))
+      {
+        state->state = ID3V2_INVALID;
+        break;
       }
       if (state->ver == 0x03 && state->extended_header)
       {
         uint32_t padding, extended_header_size;
-        extended_header_size = (((data[offset]) << 24) | ((data[offset + 1]) << 16) | ((data[offset + 2]) << 8) | ((data[offset + 3]) << 0));
-        padding = (((data[offset + 6]) << 24) | ((data[offset + 7]) << 16) | ((data[offset + 8]) << 8) | ((data[offset + 9]) << 0));
-        if (data[offset + 4] == 0 && data[offset + 5] == 0)
-          /* Skip the CRC32 byte after extended header */
-          offset += 1;
-        offset += 4 + extended_header_size;
-        if (padding < state->tsize)
-          state->tsize -= padding;
-        else
+        extended_header_size = (((data[0]) << 24) | ((data[1]) << 16) | ((data[2]) << 8) | ((data[3]) << 0));
+        padding = (((data[6]) << 24) | ((data[7]) << 16) | ((data[8]) << 8) | ((data[9]) << 0));
+        if (extended_header_size - 6 != pl_read (plugin, &data, extended_header_size - 6))
         {
           state->state = ID3V2_INVALID;
           break;
@@ -396,73 +373,75 @@ EXTRACTOR_id3v2_extract_method (struct EXTRACTOR_PluginList *plugin,
       }
       break;
     case ID3V24_READING_EXTENDED_HEADER:
-      if (offset + 6 >= size)
-      { 
-        if (offset == 0)
-        {
-          state->state = ID3V2_INVALID;
-          break;
-        }
-        plugin->seek_request = file_position + offset;
-        return 0;
-      }
-      if ( (state->ver == 0x04) && (state->extended_header))
-      {
-	uint32_t extended_header_size;
-
-        extended_header_size = (((data[offset]) << 24) | 
-				((data[offset + 1]) << 16) | 
-				((data[offset + 2]) << 8) | 
-				((data[offset + 3]) << 0));
-        offset += 4 + extended_header_size;
-      }
-      break;
-    case ID3V2_READING_FRAME_HEADER:
-      if (file_position + offset > state->tsize ||
-          ((state->ver == 0x02) && file_position + offset + 6 >= state->tsize) ||
-          (((state->ver == 0x03) || (state->ver == 0x04))&& file_position + offset + 10 >= state->tsize))
+      if (4 != pl_read (plugin, &data, 4))
       {
         state->state = ID3V2_INVALID;
         break;
       }
-      if (((state->ver == 0x02) && (offset + 6 >= size)) ||
-          (((state->ver == 0x03) || (state->ver == 0x04)) && (offset + 10 >= size)))
+      if ((state->ver == 0x04) && (state->extended_header))
       {
-        plugin->seek_request = file_position + offset;
-        return 0;
-      }
-      if (state->ver == 0x02)
-      {
-        memcpy (state->id, &data[offset], 3);
-        state->csize = (data[offset + 3] << 16) + (data[offset + 4] << 8) + data[offset + 5];
-        if ((file_position + offset + 6 + state->csize > file_size) || (state->csize > file_size) || (state->csize == 0))
+	uint32_t extended_header_size;
+
+        extended_header_size = (((data[0]) << 24) | 
+				((data[1]) << 16) | 
+				((data[2]) << 8) | 
+				((data[3]) << 0));
+        if (extended_header_size != pl_read (plugin, &data, extended_header_size))
         {
           state->state = ID3V2_INVALID;
           break;
         }
-        offset += 6;
+      }
+      break;
+    case ID3V2_READING_FRAME_HEADER:
+      if (state->ver == 0x02)
+      {
+        if (6 != pl_read (plugin, &data, 6))
+        {
+          state->state = ID3V2_INVALID;
+          break;
+        }
+      }
+      else if ((state->ver == 0x03) || (state->ver == 0x04))
+      {
+        if (10 != pl_read (plugin, &data, 10))
+        {
+          state->state = ID3V2_INVALID;
+          break;
+        }
+      }
+      if (state->ver == 0x02)
+      {
+        memcpy (state->id, &data[0], 3);
+        state->csize = (data[3] << 16) + (data[4] << 8) + data[5];
+        if (state->csize == 0)
+        {
+          state->state = ID3V2_INVALID;
+          break;
+        }
         state->frame_flags = 0;
       }
       else if ((state->ver == 0x03) || (state->ver == 0x04))
       {
-        memcpy (state->id, &data[offset], 4);
+        memcpy (state->id, &data[0], 4);
         if (state->ver == 0x03)
-          state->csize = (data[offset + 4] << 24) + (data[offset + 5] << 16) + (data[offset + 6] << 8) + data[offset + 7];
+          state->csize = (data[4] << 24) + (data[5] << 16) + (data[6] << 8) + data[7];
         else if (state->ver == 0x04)
-          state->csize = ((data[offset + 4] & 0x7F) << 21) | ((data[offset + 5] & 0x7F) << 14) | ((data[offset + 6] & 0x7F) << 07) | ((data[offset + 7] & 0x7F) << 00);
-        if ((file_position + offset + 10 + state->csize > file_size) || (state->csize > file_size) || (state->csize == 0))
+          state->csize = ((data[4] & 0x7F) << 21) | ((data[5] & 0x7F) << 14) | ((data[6] & 0x7F) << 07) | ((data[7] & 0x7F) << 00);
+        if (state->csize == 0)
         {
           state->state = ID3V2_INVALID;
           break;
         }
-        state->frame_flags = (data[offset + 8] << 8) + data[offset + 9];
+        state->frame_flags = (data[8] << 8) + data[9];
         if (state->ver == 0x03)
         {
           if (((state->frame_flags & 0x80) > 0) /* compressed, not yet supported */ ||
               ((state->frame_flags & 0x40) > 0) /* encrypted, not supported */)
           {
             /* Skip to next frame header */
-            offset += 10 + state->csize;
+            if (state->csize != pl_read (plugin, &data, state->csize))
+              state->state = ID3V2_INVALID;
             break;
           }
         }
@@ -473,70 +452,77 @@ EXTRACTOR_id3v2_extract_method (struct EXTRACTOR_PluginList *plugin,
               ((state->frame_flags & 0x02) > 0) /* unsynchronization, not supported */)
           {
             /* Skip to next frame header */
-            offset += 10 + state->csize;
+            if (state->csize != pl_read (plugin, &data, state->csize))
+              state->state = ID3V2_INVALID;
             break;
           }
           if ((state->frame_flags & 0x01) > 0)
           {
             /* Skip data length indicator */
             state->csize -= 4;
-            offset += 4;
+            if (4 != pl_read (plugin, &data, 4))
+            {
+              state->state = ID3V2_INVALID;
+              break;
+            }
           }
         }
-        offset += 10;
       }
 
       state->ti = find_type ((const char *) state->id, (state->ver == 0x02) ? 3 : (((state->ver == 0x03) || (state->ver == 0x04)) ? 4 : 0));
       if (state->ti == -1)
       {
-        offset += state->csize;
+        if (state->csize != pl_read (plugin, &data, state->csize))
+          state->state = ID3V2_INVALID;
         break;
       }
       state->state = ID3V2_READING_FRAME;
       break;
     case ID3V2_READING_FRAME:
-      if (offset == 0 && state->csize > size)
+      if (0 > (offset = pl_get_pos (plugin)))
       {
-        /* frame size is larger than the size of one data chunk we get at a time */
-        offset += state->csize;
-        state->state = ID3V2_READING_FRAME_HEADER;
+        state->state = ID3V2_INVALID;
         break;
-      }
-      if (offset + state->csize > size)
-      {
-        plugin->seek_request = file_position + offset;
-        return 0;
       }
       word = NULL;
       if (((state->ver == 0x03) && ((state->frame_flags & 0x20) > 0)) ||
           ((state->ver == 0x04) && ((state->frame_flags & 0x40) > 0)))
       {
         /* "group" identifier, skip a byte */
-        offset++;
+        if (1 != pl_read (plugin, &data, 1))
+        {
+          state->state = ID3V2_INVALID;
+          break;
+        }
         state->csize--;
+      }
+      if (state->csize != pl_read (plugin, &data, state->csize))
+      {
+        state->state = ID3V2_INVALID;
+        break;
       }
       switch (tmap[state->ti].fmt)
       {
       case T:
-        if (data[offset] == 0x00)
-          word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[offset + 1],
+        if (data[0] == 0x00)
+          word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[1],
               state->csize - 1, "ISO-8859-1");
-        else if (data[offset] == 0x01)
-          word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[offset + 1],
+        else if (data[0] == 0x01)
+          word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[1],
               state->csize - 1, "UCS-2");
-        else if ((state->ver == 0x04) && (data[offset] == 0x02))
-          word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[offset + 1],
+        else if ((state->ver == 0x04) && (data[0] == 0x02))
+          word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[1],
               state->csize - 1, "UTF-16BE");
-        else if ((state->ver == 0x04) && (data[offset] == 0x03))
-          word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[offset + 1],
+        else if ((state->ver == 0x04) && (data[0] == 0x03))
+          word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[1],
               state->csize - 1, "UTF-8");
         else
           /* bad encoding byte, try to convert from iso-8859-1 */
-          word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[offset + 1],
+          word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[1],
               state->csize - 1, "ISO-8859-1");
         break;
       case U:
-        word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[offset],
+        word = EXTRACTOR_common_convert_to_utf8 ((const char *) data,
             state->csize, "ISO-8859-1");
         break;
       case UL:
@@ -548,30 +534,30 @@ EXTRACTOR_id3v2_extract_method (struct EXTRACTOR_PluginList *plugin,
         }
         /* find end of description */
         off = 4;
-        while ((off < size) && (off < offset + state->csize) && (data[offset + off] != '\0'))
+        while ((off < size) && (off < state->csize) && (data[off] != '\0'))
           off++;
-        if ((off >= state->csize) || (data[offset + off] != '\0'))
+        if ((off >= state->csize) || (data[off] != '\0'))
         {
           /* malformed */
           state->state = ID3V2_INVALID;
           break;
         }
         off++;
-        if (data[offset] == 0x00)
-          word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[offset + off],
+        if (data[0] == 0x00)
+          word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[off],
               state->csize - off, "ISO-8859-1");
-        else if (data[offset] == 0x01)
-          word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[offset + off],
+        else if (data[0] == 0x01)
+          word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[off],
               state->csize - off, "UCS-2");
-        else if ((state->ver == 0x04) && (data[offset] == 0x02))
-          word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[offset + off],
+        else if ((state->ver == 0x04) && (data[0] == 0x02))
+          word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[off],
               state->csize - off, "UTF-16BE");
-        else if ((state->ver == 0x04) && (data[offset] == 0x03))
-          word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[offset + off],
+        else if ((state->ver == 0x04) && (data[0] == 0x03))
+          word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[off],
               state->csize - off, "UTF-8");
         else
           /* bad encoding byte, try to convert from iso-8859-1 */
-          word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[offset + off],
+          word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[off],
               state->csize - off, "ISO-8859-1");
         break;
       case SL:
@@ -581,21 +567,21 @@ EXTRACTOR_id3v2_extract_method (struct EXTRACTOR_PluginList *plugin,
           state->state = ID3V2_INVALID;
           break;
         }
-        if (data[offset] == 0x00)
-          word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[offset + 6],
+        if (data[0] == 0x00)
+          word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[6],
               state->csize - 6, "ISO-8859-1");
-        else if (data[offset] == 0x01)
-          word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[offset + 6],
+        else if (data[0] == 0x01)
+          word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[6],
               state->csize - 6, "UCS-2");
-        else if ((state->ver == 0x04) && (data[offset] == 0x02))
-          word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[offset + 6],
+        else if ((state->ver == 0x04) && (data[0] == 0x02))
+          word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[6],
               state->csize - 6, "UTF-16BE");
-        else if ((state->ver == 0x04) && (data[offset] == 0x03))
-          word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[offset + 6],
+        else if ((state->ver == 0x04) && (data[0] == 0x03))
+          word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[6],
               state->csize - 6, "UTF-8");
         else
           /* bad encoding byte, try to convert from iso-8859-1 */
-          word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[offset + 6],
+          word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[6],
               state->csize - 6, "ISO-8859-1");
         break;
       case L:
@@ -607,9 +593,9 @@ EXTRACTOR_id3v2_extract_method (struct EXTRACTOR_PluginList *plugin,
         }
         /* find end of description */
         off = 4;
-        while ((off < size) && (off < offset + state->csize) && (data[offset + off] != '\0'))
+        while ((off < size) && (off < state->csize) && (data[off] != '\0'))
           off++;
-        if ((off >= state->csize) || (data[offset + off] != '\0'))
+        if ((off >= state->csize) || (data[off] != '\0'))
         {
           /* malformed */
           state->state = ID3V2_INVALID;
@@ -617,21 +603,21 @@ EXTRACTOR_id3v2_extract_method (struct EXTRACTOR_PluginList *plugin,
         }
         off++;
 
-        if (data[offset] == 0x00)
-          word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[offset + off],
+        if (data[0] == 0x00)
+          word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[off],
               state->csize - off, "ISO-8859-1");
-        else if (data[offset] == 0x01)
-          word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[offset + off],
+        else if (data[0] == 0x01)
+          word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[off],
               state->csize - off, "UCS-2");
-        else if ((state->ver == 0x04) && (data[offset] == 0x02))
-          word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[offset + off],
+        else if ((state->ver == 0x04) && (data[0] == 0x02))
+          word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[off],
               state->csize - off, "UTF-1offBE");
-        else if ((state->ver == 0x04) && (data[offset] == 0x03))
-          word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[offset + off],
+        else if ((state->ver == 0x04) && (data[0] == 0x03))
+          word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[off],
               state->csize - off, "UTF-8");
         else
           /* bad encoding byte, try to convert from iso-8859-1 */
-          word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[offset + off],
+          word = EXTRACTOR_common_convert_to_utf8 ((const char *) &data[off],
               state->csize - off, "ISO-8859-1");
         break;
       case I:
@@ -650,38 +636,38 @@ EXTRACTOR_id3v2_extract_method (struct EXTRACTOR_PluginList *plugin,
         if (state->ver == 0x02)
         {
           off = 5;
-          picture_type = data[offset + 5];
+          picture_type = data[4];
         }
         else if ((state->ver == 0x03) || (state->ver == 0x04))
         {
           off = 1;
-          while ((off < size) && (off < offset + state->csize) && (data[offset + off] != '\0') )
+          while ((off < state->csize) && (data[off] != '\0'))
             off++;
-          if ((off >= state->csize) || (data[offset + off] != '\0'))
+          if ((off >= state->csize) || (data[off] != '\0'))
           {
             /* malformed */
             state->state = ID3V2_INVALID;
             break;
           }
           state->mime = malloc (off);
-          memcpy (state->mime, &data[offset + 1], off - 1);
+          memcpy (state->mime, &data[1], off - 1);
           state->mime[off - 1] = '\0';
           off += 1;
-          picture_type = data[offset];
+          picture_type = data[off];
           off += 1;
-        }
-        /* find end of description */
-        while ((off < size) && (off < offset + state->csize) && (data[offset + off] != '\0'))
+          /* find end of mime type*/
+          while ((off < state->csize) && (data[off] != '\0'))
+            off++;
+          if ((off >= state->csize) || (data[off] != '\0'))
+          {
+            free (state->mime);
+            state->mime = NULL;
+            /* malformed */
+            state->state = ID3V2_INVALID;
+            break;
+          }
           off++;
-        if ((off >= state->csize) || (data[offset + off] != '\0'))
-        {
-          free (state->mime);
-          state->mime = NULL;
-          /* malformed */
-          state->state = ID3V2_INVALID;
-          break;
         }
-        off++;
         switch (picture_type)
         {
         case 0x03:
@@ -711,9 +697,9 @@ EXTRACTOR_id3v2_extract_method (struct EXTRACTOR_PluginList *plugin,
         }
         if (state->ver == 0x02)
         {
-          if (0 == strncasecmp ("PNG", (const char *) &data[offset + 1], 3))
+          if (0 == strncasecmp ("PNG", (const char *) &data[1], 3))
             state->mime = strdup ("image/png");
-          else if (0 == strncasecmp ("JPG", (const char *) &data[offset + 1], 3))
+          else if (0 == strncasecmp ("JPG", (const char *) &data[1], 3))
             state->mime = strdup ("image/jpeg");
           else
             state->mime = NULL;
@@ -734,7 +720,7 @@ EXTRACTOR_id3v2_extract_method (struct EXTRACTOR_PluginList *plugin,
         }
         else
         {
-          if (0 != proc (proc_cls, "id3v2", type, EXTRACTOR_METAFORMAT_BINARY, state->mime, (const char*) &data[offset + off], state->csize - off))
+          if (0 != proc (proc_cls, "id3v2", type, EXTRACTOR_METAFORMAT_BINARY, state->mime, (const char*) &data[off], state->csize - off))
           {
             if (state->mime != NULL)
               free (state->mime);
@@ -760,7 +746,6 @@ EXTRACTOR_id3v2_extract_method (struct EXTRACTOR_PluginList *plugin,
       }
       if (word != NULL)
         free (word);
-      offset = offset + state->csize;
       state->state = ID3V2_READING_FRAME_HEADER;
     break;
     }

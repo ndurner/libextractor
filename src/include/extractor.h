@@ -404,9 +404,6 @@ struct EXTRACTOR_PluginList;
 typedef int (*EXTRACTOR_extract_method) (struct EXTRACTOR_PluginList *plugin,
   EXTRACTOR_MetaDataProcessor proc, void *proc_cls);
 
-typedef void (*EXTRACTOR_discard_state_method) (struct EXTRACTOR_PluginList *plugin);
-typedef void (*EXTRACTOR_init_state_method) (struct EXTRACTOR_PluginList *plugin);
-
 
 
 /**

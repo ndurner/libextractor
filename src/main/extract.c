@@ -43,6 +43,11 @@ static int verbose;
  */
 static int in_process;
 
+/**
+ * Read file contents into memory, then feed them to extractor.
+ */
+static int from_memory;
+
 
 static void
 catcher (int sig)
@@ -175,6 +180,8 @@ printHelp ()
       gettext_noop("print this help") },
     { 'i', "in-process", NULL,
       gettext_noop("run plugins in-process (simplifies debugging)") },
+    { 'm', "from-memory", NULL,
+      gettext_noop("read data from file into memory and extract from memory") },
     { 'l', "library", "LIBRARY",
       gettext_noop("load an extractor plugin named LIBRARY") },
     { 'L', "list", NULL,
@@ -573,6 +580,7 @@ main (int argc, char *argv[])
 	{"grep-friendly", 0, 0, 'g'},
 	{"help", 0, 0, 'h'},
 	{"in-process", 0, 0, 'i'},
+        {"from-memory", 0, 0, 'm'},
 	{"list", 0, 0, 'L'},
 	{"library", 1, 0, 'l'},
 	{"nodefault", 0, 0, 'n'},
@@ -585,7 +593,7 @@ main (int argc, char *argv[])
       option_index = 0;
       c = getopt_long (argc,
 		       argv, 
-		       "abghil:Lnp:vVx:",
+		       "abghiml:Lnp:vVx:",
 		       long_options,
 		       &option_index);
 
@@ -619,6 +627,9 @@ main (int argc, char *argv[])
 	case 'i':
 	  in_process = 1;
 	  break;
+        case 'm':
+          from_memory = 1;
+          break;
 	case 'l':
 	  libraries = optarg;
 	  break;
@@ -749,11 +760,58 @@ main (int argc, char *argv[])
 	       argv[i]);
     else
       start_bibtex ();
-    EXTRACTOR_extract (plugins,
-		       argv[i],
-		       NULL, 0,
-		       processor,
-		       NULL);    
+    if (!from_memory)
+      EXTRACTOR_extract (plugins,
+		         argv[i],
+		         NULL, 0,
+		         processor,
+		         NULL);
+    else
+    {
+      int f = open (argv[i], _O_RDONLY | _O_BINARY);
+      if (f != -1)
+      {
+        int64_t k = 0;
+#if WINDOWS
+        k = _lseeki64 (f, 0, SEEK_END);
+#elif HAVE_LSEEK64
+        k = lseek64 (f, 0, SEEK_END);
+#else
+        k = (int64_t) lseek (f, 0, SEEK_END);
+#endif
+        if (k > 0)
+        {
+          int64_t j;
+          int rd;
+          unsigned char *data = malloc (k);
+          close (f);
+          f = open (argv[i], _O_RDONLY | _O_BINARY);
+          for (j = 0; j < k; j += rd)
+          {
+            void *ptr = (void *) &data[j];
+            int to_read = 64*1024;
+            if (to_read > k - j)
+              to_read = k - j;
+            rd = read (f, ptr, to_read);
+            if (rd < 0)
+            {
+              fprintf (stderr, "Failed to read file `%s': %d %s\n", argv[i], errno, strerror (errno));
+              break;
+            }
+            if (rd == 0)
+              break;
+          }
+          if (j > 0)
+            EXTRACTOR_extract (plugins,
+		               NULL,
+		               data, j,
+		               processor,
+		               NULL);
+          free (data);
+        }
+        close (f);
+      }
+    }
     if (0 != errno) {
       if (verbose > 0) {
 	fprintf(stderr,

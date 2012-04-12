@@ -169,13 +169,13 @@ enum MP3State
   MP3_READING_FRAME = 1,
 };
 
-void
-EXTRACTOR_mp3_init_state_method (struct EXTRACTOR_PluginList *plugin)
+static struct mp3_state *
+EXTRACTOR_mp3_init_state_method ()
 {
   struct mp3_state *state;
-  state = plugin->state = malloc (sizeof (struct mp3_state));
+  state = malloc (sizeof (struct mp3_state));
   if (state == NULL)
-    return;
+    return NULL;
   state->header = 0;
   state->sample_rate = 0;
   state->number_of_frames = 0;
@@ -189,16 +189,17 @@ EXTRACTOR_mp3_init_state_method (struct EXTRACTOR_PluginList *plugin)
   state->avg_bps = 0;
   state->bitrate = 0;
   state->state = 0;
+  return state;
 }
 
-void
-EXTRACTOR_mp3_discard_state_method (struct EXTRACTOR_PluginList *plugin)
+static int
+EXTRACTOR_mp3_discard_state_method (struct mp3_state *state)
 {
-  if (plugin->state != NULL)
+  if (state != NULL)
   {
-    free (plugin->state);
+    free (state);
   }
-  plugin->state = NULL;
+  return 1;
 }
 
 static int
@@ -247,14 +248,13 @@ EXTRACTOR_mp3_extract_method (struct EXTRACTOR_PluginList *plugin,
                        EXTRACTOR_MetaDataProcessor proc,
 		       void *proc_cls)
 {
-  int64_t file_position;
-  int64_t file_size;
-  size_t offset = 0;
-  size_t size;
+  int64_t offset = 0;
+  int64_t round_offset;
+  int64_t read_result;
+  int64_t i;
   unsigned char *data;
   struct mp3_state *state;
 
-  size_t frames_found_in_this_round = 0;
   int start_anew = 0;
 
   char mpeg_ver = 0;
@@ -267,24 +267,12 @@ EXTRACTOR_mp3_extract_method (struct EXTRACTOR_PluginList *plugin,
   int ch = 0;
   int frame_size;
 
-  if (plugin == NULL || plugin->state == NULL)
+  if (plugin == NULL)
     return 1;
 
-  state = plugin->state;
-  file_position = plugin->position;
-  file_size = plugin->fsize;
-  size = plugin->map_size;
-  data = plugin->shm_ptr;
-
-  if (plugin->seek_request < 0)
+  state = EXTRACTOR_mp3_init_state_method ();
+  if (state == NULL)
     return 1;
-  if (file_position - plugin->seek_request > 0)
-  {
-    plugin->seek_request = -1;
-    return 1;
-  }
-  if (plugin->seek_request - file_position < size)
-    offset = plugin->seek_request - file_position;
 
   while (1)
   {
@@ -292,22 +280,40 @@ EXTRACTOR_mp3_extract_method (struct EXTRACTOR_PluginList *plugin,
     {
     case MP3_LOOKING_FOR_FRAME:
       /* Look for a frame header */
-      while (offset + sizeof (state->header) < size && (((*((uint32_t *) &data[offset])) & MPA_SYNC_MASK_MEM) != MPA_SYNC_MASK_MEM))
-        offset += 1;
-      if (offset + sizeof (state->header) >= size)
+      round_offset = offset = pl_get_pos (plugin);
+      while (1)
       {
-        /* Alternative: (frames_found_in_this_round < (size / LARGEST_FRAME_SIZE / 2)) is to generous */
-        if ((file_position == 0 && (state->number_of_valid_frames > 2) && ((double) state->number_of_valid_frames / (double) state->number_of_frames) < 0.8) ||
-            file_position + offset + sizeof (state->header) >= file_size)
+        pl_seek (plugin, offset, SEEK_SET);
+        read_result = pl_read (plugin, &data, 1024*1024);
+        if (read_result < 4)
         {
           calculate_frame_statistics_and_maybe_report_it (plugin, state, proc, proc_cls);
-          return 1;
+          return EXTRACTOR_mp3_discard_state_method (state);
         }
-        plugin->seek_request = file_position + offset;
-        return 0;
+        for (i = 0; i + 3 < read_result; i++)
+          if (((*((uint32_t *) &data[i])) & MPA_SYNC_MASK_MEM) == MPA_SYNC_MASK_MEM)
+            break;
+        if (i + 3 >= 1024*1024)
+          offset += read_result - 3;
+        else
+          break;
+        if (offset > round_offset + 31*1024*1024)
+        {
+          if (((state->number_of_valid_frames > 2) && ((double) state->number_of_valid_frames / (double) state->number_of_frames) < 0.8))
+          {
+            calculate_frame_statistics_and_maybe_report_it (plugin, state, proc, proc_cls);
+          }
+          return EXTRACTOR_mp3_discard_state_method (state);
+        }
       }
-      state->header = (data[offset] << 24) | (data[offset + 1] << 16) |
-               (data[offset + 2] << 8) | data[offset + 3];
+      pl_seek (plugin, offset + i, SEEK_SET);
+      if (4 != pl_read (plugin, &data, 4))
+      {
+        calculate_frame_statistics_and_maybe_report_it (plugin, state, proc, proc_cls);
+        return EXTRACTOR_mp3_discard_state_method (state);
+      }
+      state->header = (data[0] << 24) | (data[1] << 16) |
+               (data[2] << 8) | data[3];
       if ((state->header & MPA_SYNC_MASK) == MPA_SYNC_MASK)
       {
         state->state = MP3_READING_FRAME;
@@ -402,11 +408,10 @@ EXTRACTOR_mp3_extract_method (struct EXTRACTOR_PluginList *plugin,
       state->original_flag = original_flag;
       state->bitrate = bitrate;
 
-      frames_found_in_this_round += 1;
       state->number_of_valid_frames += 1;
       if (state->avg_bps / state->number_of_valid_frames != bitrate / 1000)
         state->vbr_flag = 1;
-      offset += frame_size;
+      pl_seek (plugin, frame_size - 4, SEEK_CUR);
       state->state = MP3_LOOKING_FOR_FRAME;
       break;
     }

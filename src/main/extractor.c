@@ -74,6 +74,10 @@
 #define MESSAGE_META 0x05
 #define MESSAGE_DISCARD_STATE 0x06
 
+#define OPMODE_MEMORY 1
+#define OPMODE_DECOMPRESS 2
+#define OPMODE_FILE 3
+
 /**
  * Header used for our IPC replies.  A header
  * with all fields being zero is used to indicate
@@ -89,21 +93,34 @@ struct IpcHeader
 
 #if !WINDOWS
 int
-plugin_open_shm (struct EXTRACTOR_PluginList *plugin, char *shm_name)
+plugin_open_shm (struct EXTRACTOR_PluginList *plugin, const char *shm_name)
 {
   if (plugin->shm_id != -1)
     close (plugin->shm_id);
   plugin->shm_id = shm_open (shm_name, O_RDONLY, 0);
   return plugin->shm_id;
 }
+int
+plugin_open_file (struct EXTRACTOR_PluginList *plugin, const char *shm_name)
+{
+  if (plugin->shm_id != -1)
+    close (plugin->shm_id);
+  plugin->shm_id = open (shm_name, O_RDONLY, 0);
+  return plugin->shm_id;
+}
 #else
 HANDLE
-plugin_open_shm (struct EXTRACTOR_PluginList *plugin, char *shm_name)
+plugin_open_shm (struct EXTRACTOR_PluginList *plugin, const char *shm_name)
 {
   if (plugin->map_handle != 0)
     CloseHandle (plugin->map_handle);
   plugin->map_handle = OpenFileMapping (FILE_MAP_READ, FALSE, shm_name);
   return plugin->map_handle;
+}
+HANDLE
+plugin_open_file (struct EXTRACTOR_PluginList *plugin, const char *shm_name)
+{
+  return plugin_open_shm (plugin, shm_name);
 }
 #endif
 
@@ -177,24 +194,62 @@ transmit_reply (void *cls,
   return 0;
 }
 
-/**
- * 'main' function of the child process.  Reads shm-filenames from
- * 'in' (line-by-line) and writes meta data blocks to 'out'.  The meta
- * data stream is terminated by an empty entry.
- *
- * @param plugin extractor plugin to use
- * @param in stream to read from
- * @param out stream to write to
- */
-static void
-process_requests (struct EXTRACTOR_PluginList *plugin, int in, int out)
+/* init the read/seek wrappers */
+static int
+init_state_method (struct EXTRACTOR_PluginList *plugin, uint8_t operation_mode, int64_t fsize, const char *shm_name)
 {
-  int read_result1, read_result2, read_result3;
+  plugin->seek_request = 0;
+#if !WINDOWS
+  if (plugin->shm_ptr != NULL)
+    munmap (plugin->shm_ptr, plugin->map_size);
+  plugin->shm_ptr = NULL;
+  if (operation_mode == OPMODE_FILE)
+  {
+    if (-1 == plugin_open_file (plugin, shm_name))
+      return 1;
+  }
+  else if (-1 == plugin_open_shm (plugin, shm_name))
+    return 1;
+#else
+  if (plugin->shm_ptr != NULL)
+    UnmapViewOfFile (plugin->shm_ptr);
+  plugin->shm_ptr = NULL;
+  if (INVALID_HANDLE_VALUE == plugin_open_shm (plugin, shm_name))
+    return 1;
+#endif
+  plugin->fsize = fsize;
+  plugin->shm_pos = 0;
+  plugin->fpos = 0;
+  return 0;
+}
+
+static void
+discard_state_method (struct EXTRACTOR_PluginList *plugin)
+{
+#if !WINDOWS
+  if (plugin->shm_ptr != NULL && plugin->map_size > 0)
+    munmap (plugin->shm_ptr, plugin->map_size);
+  if (plugin->shm_id != -1)
+    close (plugin->shm_id);
+  plugin->shm_id = -1;
+#else
+  if (plugin->shm_ptr != NULL)
+    UnmapViewOfFile (plugin->shm_ptr);
+  if (plugin->map_handle != 0)
+    CloseHandle (plugin->map_handle);
+  plugin->map_handle = 0;
+#endif
+  plugin->map_size = 0;
+  plugin->shm_ptr = NULL;
+}
+
+static int
+process_requests (struct EXTRACTOR_PluginList *plugin)
+{
+  int in, out;
+  int read_result1, read_result2, read_result3, read_result4;
   unsigned char code;
-  int64_t fsize = -1;
-  int64_t position = 0;
   void *shm_ptr = NULL;
-  size_t shm_size = 0;
   char *shm_name = NULL;
   size_t shm_name_len;
 
@@ -207,6 +262,207 @@ process_requests (struct EXTRACTOR_PluginList *plugin, int in, int out)
   MEMORY_BASIC_INFORMATION mi;
 #endif
 
+  in = plugin->pipe_in;
+  out = plugin->cpipe_out;
+
+  if (plugin->waiting_for_update == 1)
+  {
+    unsigned char seek_byte = MESSAGE_SEEK;
+    if (write (out, &seek_byte, 1) != 1)
+      return -1;
+    if (write (out, &plugin->seek_request, sizeof (int64_t)) != sizeof (int64_t))
+      return -1;
+  }
+
+  memset (&hdr, 0, sizeof (hdr));
+  do_break = 0;
+  while (!do_break)
+  {
+    read_result1 = read (in, &code, 1);
+    if (read_result1 <= 0)
+      break;
+    switch (code)
+    {
+    case MESSAGE_INIT_STATE:
+      read_result2 = read (in, &plugin->operation_mode, sizeof (uint8_t));
+      read_result3 = read (in, &plugin->fsize, sizeof (int64_t));
+      read_result4 = read (in, &shm_name_len, sizeof (size_t));
+      if ((read_result2 < sizeof (uint8_t)) ||
+          (read_result3 < sizeof (int64_t)) ||
+          (read_result4 < sizeof (size_t)))
+      {
+        do_break = 1;
+        break;
+      }
+      if (plugin->operation_mode != OPMODE_MEMORY &&
+          plugin->operation_mode != OPMODE_DECOMPRESS &&
+          plugin->operation_mode != OPMODE_FILE)
+      {
+        do_break = 1;
+        break;
+      }
+      if ((plugin->operation_mode == OPMODE_MEMORY ||
+          plugin->operation_mode == OPMODE_DECOMPRESS) &&
+          shm_name_len > MAX_SHM_NAME)
+      {
+        do_break = 1;
+        break;
+      }
+      if (plugin->operation_mode != OPMODE_DECOMPRESS && plugin->fsize <= 0)
+      {
+        do_break = 1;
+        break;
+      }
+      if (shm_name != NULL)
+        free (shm_name);
+      shm_name = malloc (shm_name_len);
+      if (shm_name == NULL)
+      {
+        do_break = 1;
+        break;
+      }
+      read_result2 = read (in, shm_name, shm_name_len);
+      if (read_result2 < shm_name_len)
+      {
+        do_break = 1;
+        break;
+      }
+      shm_name[shm_name_len - 1] = '\0';
+      do_break = init_state_method (plugin, plugin->operation_mode, plugin->fsize, shm_name);
+      if (!do_break && (plugin->operation_mode == OPMODE_MEMORY ||
+          plugin->operation_mode == OPMODE_FILE))
+      {
+        extract_reply = plugin->extract_method (plugin, transmit_reply, &out);
+        unsigned char done_byte = MESSAGE_DONE;
+        if (write (out, &done_byte, 1) != 1)
+        {
+          do_break = 1;
+          break;
+        }
+        if ((plugin->specials != NULL) &&
+            (NULL != strstr (plugin->specials, "force-kill")))
+        {
+          /* we're required to die after each file since this
+             plugin only supports a single file at a time */
+#if !WINDOWS
+          fsync (out);
+#else
+          _commit (out);
+#endif
+          _exit (0);
+        }
+      }
+      break;
+    case MESSAGE_DISCARD_STATE:
+      discard_state_method (plugin);
+      break;
+    case MESSAGE_UPDATED_SHM:
+      if (plugin->operation_mode == OPMODE_DECOMPRESS)
+      {
+        read_result2 = read (in, &plugin->fpos, sizeof (int64_t));
+        read_result3 = read (in, &plugin->map_size, sizeof (size_t));
+        read_result4 = read (in, &plugin->fsize, sizeof (int64_t));
+        if ((read_result2 < sizeof (int64_t)) || (read_result3 < sizeof (size_t)) ||
+            plugin->fpos < 0 || (plugin->operation_mode != OPMODE_DECOMPRESS && (plugin->fsize <= 0 || plugin->fpos >= plugin->fsize)))
+        {
+          do_break = 1;
+          break;
+        }
+        /* FIXME: also check mapped region size (lseek for *nix, VirtualQuery for W32) */
+#if !WINDOWS
+        if ((-1 == plugin->shm_id) ||
+            (NULL == (plugin->shm_ptr = mmap (NULL, plugin->map_size, PROT_READ, MAP_SHARED, plugin->shm_id, 0))) ||
+            (plugin->shm_ptr == (void *) -1))
+        {
+          do_break = 1;
+          break;
+        }
+#else
+        if ((plugin->map_handle == 0) ||
+           (NULL == (plugin->shm_ptr = MapViewOfFile (plugin->map_handle, FILE_MAP_READ, 0, 0, 0))))
+        {
+          do_break = 1;
+          break;
+        }
+#endif
+        if (plugin->waiting_for_update == 1)
+        {
+          do_break = 1;
+          plugin->waiting_for_update = 2;
+          break;
+        }
+        extract_reply = plugin->extract_method (plugin, transmit_reply, &out);
+#if !WINDOWS
+        if ((plugin->shm_ptr != NULL) &&
+            (plugin->shm_ptr != (void*) -1) )
+          munmap (plugin->shm_ptr, plugin->map_size);
+#else
+        if (plugin->shm_ptr != NULL)
+          UnmapViewOfFile (plugin->shm_ptr);
+#endif
+        plugin->shm_ptr = NULL;
+        if (extract_reply == 1)
+        {
+          unsigned char done_byte = MESSAGE_DONE;
+          if (write (out, &done_byte, 1) != 1)
+          {
+            do_break = 1;
+            break;
+          }
+          if ((plugin->specials != NULL) &&
+              (NULL != strstr (plugin->specials, "force-kill")))
+          {
+            /* we're required to die after each file since this
+               plugin only supports a single file at a time */
+#if !WINDOWS
+            fsync (out);
+#else
+            _commit (out);
+#endif
+            _exit (0);
+          }
+        }
+        else
+        {
+          unsigned char seek_byte = MESSAGE_SEEK;
+          if (write (out, &seek_byte, 1) != 1)
+          {
+            do_break = 1;
+            break;
+          }
+          if (write (out, &plugin->seek_request, sizeof (int64_t)) != sizeof (int64_t))
+          {
+            do_break = 1;
+            break;
+          }
+        }
+      }
+      else
+      {
+        int64_t t;
+        size_t t2;
+        read_result2 = read (in, &t, sizeof (int64_t));
+        read_result3 = read (in, &t2, sizeof (size_t));
+        read_result4 = read (in, &t, sizeof (int64_t));
+      }
+      break;
+    }
+  }
+  return 0;
+}
+
+/**
+ * 'main' function of the child process.  Reads shm-filenames from
+ * 'in' (line-by-line) and writes meta data blocks to 'out'.  The meta
+ * data stream is terminated by an empty entry.
+ *
+ * @param plugin extractor plugin to use
+ * @param in stream to read from
+ * @param out stream to write to
+ */
+static void
+plugin_main (struct EXTRACTOR_PluginList *plugin, int in, int out)
+{
   if (plugin == NULL)
   {
     close (in);
@@ -229,160 +485,10 @@ process_requests (struct EXTRACTOR_PluginList *plugin, int in, int out)
       (NULL != strstr (plugin->specials, "close-stdout")))
     close (1);
 
-  memset (&hdr, 0, sizeof (hdr));
-  do_break = 0;
-  while (!do_break)
-  {
-    read_result1 = read (in, &code, 1);
-    if (read_result1 <= 0)
-      break;
-    switch (code)
-    {
-    case MESSAGE_INIT_STATE:
-      read_result2 = read (in, &fsize, sizeof (int64_t));
-      read_result3 = read (in, &shm_name_len, sizeof (size_t));
-      if ((read_result2 < sizeof (int64_t)) || (read_result3 < sizeof (size_t)) ||
-          shm_name_len > MAX_SHM_NAME || fsize <= 0)
-      {
-        do_break = 1;
-        break;
-      }
-      if (shm_name != NULL)
-        free (shm_name);
-      shm_name = malloc (shm_name_len);
-      if (shm_name == NULL)
-      {
-        do_break = 1;
-        break;
-      }
-      read_result2 = read (in, shm_name, shm_name_len);
-      if (read_result2 < shm_name_len)
-      {
-        do_break = 1;
-        break;
-      }
-      shm_name[shm_name_len - 1] = '\0';
-#if !WINDOWS
-      if (shm_ptr != NULL)
-        munmap (shm_ptr, shm_size);
-      if (-1 == plugin_open_shm (plugin, shm_name))
-      {
-        do_break = 1;
-        break;
-      }
-#else
-      if (shm_ptr != NULL)
-        UnmapViewOfFile (shm_ptr);
-      if (INVALID_HANDLE_VALUE == plugin_open_shm (plugin, shm_name))
-      {
-        do_break = 1;
-        break;
-      }
-#endif
-      plugin->fsize = fsize;
-      plugin->init_state_method (plugin);
-      break;
-    case MESSAGE_DISCARD_STATE:
-      plugin->discard_state_method (plugin);
-#if !WINDOWS
-      if (shm_ptr != NULL && shm_size > 0)
-        munmap (shm_ptr, shm_size);
-      if (plugin->shm_id != -1)
-        close (plugin->shm_id);
-      plugin->shm_id = -1;
-      shm_size = 0;
-#else
-      if (shm_ptr != NULL)
-        UnmapViewOfFile (shm_ptr);
-      if (plugin->map_handle != 0)
-        CloseHandle (plugin->map_handle);
-      plugin->map_handle = 0;
-#endif
-      shm_ptr = NULL;
-      break;
-    case MESSAGE_UPDATED_SHM:
-      read_result2 = read (in, &position, sizeof (int64_t));
-      read_result3 = read (in, &shm_size, sizeof (size_t));
-      if ((read_result2 < sizeof (int64_t)) || (read_result3 < sizeof (size_t)) ||
-          position < 0 || fsize <= 0 || position >= fsize)
-      {
-        do_break = 1;
-        break;
-      }
-      /* FIXME: also check mapped region size (lseek for *nix, VirtualQuery for W32) */
-#if !WINDOWS
-      if ((-1 == plugin->shm_id) ||
-          (NULL == (shm_ptr = mmap (NULL, shm_size, PROT_READ, MAP_SHARED, plugin->shm_id, 0))) ||
-          (shm_ptr == (void *) -1))
-      {
-        do_break = 1;
-        break;
-      }
-#else
-      if ((plugin->map_handle == 0) ||
-         (NULL == (shm_ptr = MapViewOfFile (plugin->map_handle, FILE_MAP_READ, 0, 0, 0))))
-      {
-        do_break = 1;
-        break;
-      }
-#endif
-      plugin->position = position;
-      plugin->shm_ptr = shm_ptr;
-      plugin->map_size = shm_size;
-      /* Now, ideally a plugin would do reads and seeks on a virtual "plugin" object
-       * completely transparently, and the underlying code would return bytes from
-       * the memory map, or would block and wait for a seek to happen.
-       * That, however, requires somewhat different architecture, and even more wrapping
-       * and hand-helding. It's easier to make plugins aware of the fact that they work
-       * with discrete in-memory buffers with expensive seeking, not continuous files.
-       */
-      extract_reply = plugin->extract_method (plugin, transmit_reply, &out);
-#if !WINDOWS
-      if ((shm_ptr != NULL) &&
-          (shm_ptr != (void*) -1) )
-        munmap (shm_ptr, shm_size);
-#else
-      if (shm_ptr != NULL)
-        UnmapViewOfFile (shm_ptr);
-#endif
-      if (extract_reply == 1)
-      {
-        unsigned char done_byte = MESSAGE_DONE;
-        if (write (out, &done_byte, 1) != 1)
-        {
-          do_break = 1;
-          break;
-        }
-        if ((plugin->specials != NULL) &&
-            (NULL != strstr (plugin->specials, "force-kill")))
-        {
-          /* we're required to die after each file since this
-             plugin only supports a single file at a time */
-#if !WINDOWS
-          fsync (out);
-#else
-          _commit (out);
-#endif
-          _exit (0);
-        }
-      }
-      else
-      {
-        unsigned char seek_byte = MESSAGE_SEEK;
-        if (write (out, &seek_byte, 1) != 1)
-        {
-          do_break = 1;
-          break;
-        }
-        if (write (out, &plugin->seek_request, sizeof (int64_t)) != sizeof (int64_t))
-        {
-          do_break = 1;
-          break;
-        }
-      }
-      break;
-    }
-  }
+  plugin->pipe_in = in;
+  plugin->cpipe_out = out;
+  process_requests (plugin);
+
   close (in);
   close (out);
 }
@@ -446,7 +552,7 @@ start_process (struct EXTRACTOR_PluginList *plugin)
   {
     close (p1[1]);
     close (p2[0]);
-    process_requests (plugin, p1[0], p2[1]);
+    plugin_main (plugin, p1[0], p2[1]);
     _exit (0);
   }
   close (p1[0]);
@@ -806,6 +912,15 @@ read_plugin_data (int fd)
     read (fd, ret->plugin_options, i);
     ret->plugin_options[i - 1] = '\0';
   }
+#if WINDOWS
+  {
+    SYSTEM_INFO si;
+    GetSystemInfo (&si);
+    ret->allocation_granularity = si.dwAllocationGranularity;
+  }
+#else
+  ret->allocation_granularity = sysconf (_SC_PAGE_SIZE);
+#endif
   return ret;
 }
 
@@ -1045,392 +1160,6 @@ static int file_open(const char *filename, int oflag, ...)
   return OPEN(fn, oflag, mode);
 }
 
-#ifndef O_LARGEFILE
-#define O_LARGEFILE 0
-#endif
-
-#if HAVE_ZLIB
-#define MIN_ZLIB_HEADER 12
-#endif
-#if HAVE_LIBBZ2
-#define MIN_BZ2_HEADER 4
-#endif
-#if !defined (MIN_COMPRESSED_HEADER) && HAVE_ZLIB
-#define MIN_COMPRESSED_HEADER MIN_ZLIB_HEADER
-#endif
-#if !defined (MIN_COMPRESSED_HEADER) && HAVE_LIBBZ2
-#define MIN_COMPRESSED_HEADER MIN_BZ2_HEADER
-#endif
-#if !defined (MIN_COMPRESSED_HEADER)
-#define MIN_COMPRESSED_HEADER -1
-#endif
-
-#define COMPRESSED_DATA_PROBE_SIZE 3
-
-/**
- * Try to decompress compressed data
- *
- * @param data data to decompress, or NULL (if fd is not -1)
- * @param fd file to read data from, or -1 (if data is not NULL)
- * @param fsize size of data (if data is not NULL) or size of fd file (if fd is not -1)
- * @param compression_type type of compression, as returned by get_compression_type ()
- * @param buffer a pointer to a buffer pointer, buffer pointer is NEVER a NULL and already has some data (usually - COMPRESSED_DATA_PROBE_SIZE bytes) in it.
- * @param buffer_size a pointer to buffer size
- * @param proc callback for metadata
- * @param proc_cls cls for proc
- * @return 0 on success, anything else on error
- */
-static int
-try_to_decompress (const unsigned char *data, int fd, int64_t fsize, int compression_type, void **buffer, size_t *buffer_size, EXTRACTOR_MetaDataProcessor proc, void *proc_cls)
-{
-  unsigned char *new_buffer;
-  ssize_t read_result;
-
-  unsigned char *buf;
-  unsigned char *rbuf;
-  size_t dsize;
-#if HAVE_ZLIB
-  z_stream strm;
-  int ret;
-  size_t pos;
-#endif
-#if HAVE_LIBBZ2
-  bz_stream bstrm;
-  int bret;
-  size_t bpos;
-#endif
-
-  if (fd != -1)
-  {
-    if (fsize > *buffer_size)
-    {
-      /* Read the rest of the file. Can't de-compress it partially anyway */
-      /* Memory mapping is not useful here, because memory mapping ALSO takes up
-       * memory (even more than a buffer, since it might be aligned), and
-       * because we need to read every byte anyway (lazy on-demand reads into
-       * memory provided by memory mapping won't help).
-       */
-      new_buffer = realloc (*buffer, fsize);
-      if (new_buffer == NULL)
-      {
-        free (*buffer);
-        return -1;
-      }
-      read_result = READ (fd, &new_buffer[*buffer_size], fsize - *buffer_size);
-      if (read_result != fsize - *buffer_size)
-      {
-        free (*buffer);
-        return -1;
-      }
-      *buffer = new_buffer;
-      *buffer_size = fsize;
-    }
-    data = (const unsigned char *) new_buffer;
-  }
-
-#if HAVE_ZLIB
-  if (compression_type == 1) 
-  {
-    /* Process gzip header */
-    unsigned int gzip_header_length = 10;
-
-    if (data[3] & 0x4) /* FEXTRA  set */
-      gzip_header_length += 2 + (unsigned) (data[10] & 0xff) +
-        (((unsigned) (data[11] & 0xff)) * 256);
-
-    if (data[3] & 0x8) /* FNAME set */
-    {
-      const unsigned char *cptr = data + gzip_header_length;
-
-      /* stored file name is here */
-      while ((cptr - data) < fsize)
-      {
-        if ('\0' == *cptr)
-        break;
-        cptr++;
-      }
-
-      if (0 != proc (proc_cls, "<zlib>", EXTRACTOR_METATYPE_FILENAME,
-          EXTRACTOR_METAFORMAT_C_STRING, "text/plain",
-          (const char *) (data + gzip_header_length),
-          cptr - (data + gzip_header_length)))
-        return 0; /* done */
-
-      gzip_header_length = (cptr - data) + 1;
-    }
-
-    if (data[3] & 0x16) /* FCOMMENT set */
-    {
-      const unsigned char * cptr = data + gzip_header_length;
-
-      /* stored comment is here */
-      while (cptr < data + fsize)
-      {
-        if ('\0' == *cptr)
-          break;
-        cptr ++;
-      }  
-
-      if (0 != proc (proc_cls, "<zlib>", EXTRACTOR_METATYPE_COMMENT,
-          EXTRACTOR_METAFORMAT_C_STRING, "text/plain",
-          (const char *) (data + gzip_header_length),
-          cptr - (data + gzip_header_length)))
-        return 0; /* done */
-
-      gzip_header_length = (cptr - data) + 1;
-    }
-
-    if (data[3] & 0x2) /* FCHRC set */
-      gzip_header_length += 2;
-
-    memset (&strm, 0, sizeof (z_stream));
-
-#ifdef ZLIB_VERNUM
-    gzip_header_length = 0;
-#endif
-
-    if (fsize > gzip_header_length)
-    {
-      strm.next_in = (Bytef *) data + gzip_header_length;
-      strm.avail_in = fsize - gzip_header_length;
-    }
-    else
-    {
-      strm.next_in = (Bytef *) data;
-      strm.avail_in = 0;
-    }
-    strm.total_in = 0;
-    strm.zalloc = NULL;
-    strm.zfree = NULL;
-    strm.opaque = NULL;
-
-    /*
-     * note: maybe plain inflateInit(&strm) is adequate,
-     * it looks more backward-compatible also ;
-     *
-     * ZLIB_VERNUM isn't defined by zlib version 1.1.4 ;
-     * there might be a better check.
-     */
-    if (Z_OK == inflateInit2 (&strm,
-#ifdef ZLIB_VERNUM
-        15 + 32
-#else
-        -MAX_WBITS
-#endif
-        ))
-    {
-      pos = 0;
-      dsize = 2 * fsize;
-      if ( (dsize > MAX_DECOMPRESS) ||
-	   (dsize < fsize) )
-        dsize = MAX_DECOMPRESS;
-      buf = malloc (dsize);
-
-      if (buf != NULL)
-      {
-        strm.next_out = (Bytef *) buf;
-        strm.avail_out = dsize;
-
-        do
-        {
-          ret = inflate (&strm, Z_SYNC_FLUSH);
-          if (ret == Z_OK)
-          {
-            if (dsize == MAX_DECOMPRESS)
-              break;
-
-            pos += strm.total_out;
-            strm.total_out = 0;
-            dsize *= 2;
-
-            if (dsize > MAX_DECOMPRESS)
-              dsize = MAX_DECOMPRESS;
-
-            rbuf = realloc (buf, dsize);
-            if (rbuf == NULL)
-            {
-              free (buf);
-              buf = NULL;
-              break;
-            }
-
-            buf = rbuf;
-            strm.next_out = (Bytef *) &buf[pos];
-            strm.avail_out = dsize - pos;
-          }
-          else if (ret != Z_STREAM_END) 
-          {
-            /* error */
-            free (buf);
-            buf = NULL;
-          }
-        } while ((buf != NULL) && (ret != Z_STREAM_END));
-
-        dsize = pos + strm.total_out;
-        if ((dsize == 0) && (buf != NULL))
-        {
-          free (buf);
-          buf = NULL;
-        }
-      }
-
-      inflateEnd (&strm);
-
-      if (fd != -1)
-        if (*buffer != NULL)
-          free (*buffer);
-
-      if (buf == NULL)
-      {
-        return -1;
-      }
-      else
-      {
-        *buffer = buf;
-        *buffer_size = dsize;
-        return 0;
-      }
-    }
-  }
-#endif
-  
-#if HAVE_LIBBZ2
-  if (compression_type == 2) 
-  {
-    memset(&bstrm, 0, sizeof (bz_stream));
-    bstrm.next_in = (char *) data;
-    bstrm.avail_in = fsize;
-    bstrm.total_in_lo32 = 0;
-    bstrm.total_in_hi32 = 0;
-    bstrm.bzalloc = NULL;
-    bstrm.bzfree = NULL;
-    bstrm.opaque = NULL;
-    if (BZ_OK == BZ2_bzDecompressInit(&bstrm, 0,0)) 
-    {
-      bpos = 0;
-      dsize = 2 * fsize;
-      if ( (dsize > MAX_DECOMPRESS) || (dsize < fsize) )
-        dsize = MAX_DECOMPRESS;
-      buf = malloc (dsize);
-
-      if (buf != NULL) 
-      {
-        bstrm.next_out = (char *) buf;
-        bstrm.avail_out = dsize;
-
-        do
-        {
-          bret = BZ2_bzDecompress (&bstrm);
-          if (bret == Z_OK) 
-          {
-            if (dsize == MAX_DECOMPRESS)
-              break;
-            bpos += bstrm.total_out_lo32;
-            bstrm.total_out_lo32 = 0;
-
-            dsize *= 2;
-            if (dsize > MAX_DECOMPRESS)
-              dsize = MAX_DECOMPRESS;
-
-            rbuf = realloc(buf, dsize);
-            if (rbuf == NULL)
-            {
-              free (buf);
-              buf = NULL;
-              break;
-            }
-
-            buf = rbuf;
-            bstrm.next_out = (char*) &buf[bpos];
-            bstrm.avail_out = dsize - bpos;
-          } 
-          else if (bret != BZ_STREAM_END) 
-          {
-            /* error */
-            free (buf);
-            buf = NULL;
-          }
-        } while ((buf != NULL) && (bret != BZ_STREAM_END));
-
-        dsize = bpos + bstrm.total_out_lo32;
-        if ((dsize == 0) && (buf != NULL))
-        {
-          free (buf);
-          buf = NULL;
-        }
-      }
-
-      BZ2_bzDecompressEnd (&bstrm);
-
-      if (fd != -1)
-        if (*buffer != NULL)
-          free (*buffer);
-
-      if (buf == NULL)
-      {
-        return -1;
-      }
-      else
-      {
-        *buffer = buf;
-	*buffer_size = dsize;
-        return 0;
-      }
-    }
-  }
-#endif
-  return -1;
-}
-
-/**
- * Detect if we have compressed data on our hands.
- *
- * @param data pointer to a data buffer or NULL (in case fd is not -1)
- * @param fd a file to read data from, or -1 (if data is not NULL)
- * @param fsize size of data (if data is not NULL) or of file (if fd is not -1)
- * @param buffer will receive a pointer to the data that this function read
- * @param buffer_size will receive size of the buffer
- * @return -1 to indicate an error, 0 to indicate uncompressed data, or a type (> 0) of compression
- */
-static int
-get_compression_type (const unsigned char *data, int fd, int64_t fsize, void **buffer, size_t *buffer_size)
-{
-  void *read_data = NULL;
-  size_t read_data_size = 0;
-  ssize_t read_result;
-
-  if ((MIN_COMPRESSED_HEADER < 0) || (fsize < MIN_COMPRESSED_HEADER))
-  {
-    *buffer = NULL;
-    return 0;
-  }
-  if (data == NULL)
-  {
-    read_data_size = COMPRESSED_DATA_PROBE_SIZE;
-    read_data = malloc (read_data_size);
-    if (read_data == NULL)
-      return -1;
-    read_result = READ (fd, read_data, read_data_size);
-    if (read_result != read_data_size)
-    {
-      free (read_data);
-      return -1;
-    }
-    *buffer = read_data;
-    *buffer_size = read_data_size;
-    data = (const void *) read_data;
-  }
-#if HAVE_ZLIB
-  if ((fsize >= MIN_ZLIB_HEADER) && (data[0] == 0x1f) && (data[1] == 0x8b) && (data[2] == 0x08))
-    return 1;
-#endif
-#if HAVE_LIBBZ2
-  if ((fsize >= MIN_BZ2_HEADER) && (data[0] == 'B') && (data[1] == 'Z') && (data[2] == 'h')) 
-    return 2;
-#endif
-  return 0;
-}
-
 #if WINDOWS
 
 /**
@@ -1459,10 +1188,41 @@ make_shm_w32 (void **ptr, HANDLE *map, char *fn, size_t fn_size, size_t size)
   return 0;
 }
 
+/**
+ * Setup a shared memory segment.
+ *
+ * @param ptr set to the location of the map segment
+ * @param map where to store the map handle
+ * @param fn name of the mapping
+ * @param fn_size size available in fn
+ * @param size number of bytes to allocated for the mapping
+ * @return 0 on success
+ */
+static int
+make_file_backed_shm_w32 (HANDLE *map, HANDLE file, char *fn, size_t fn_size)
+{
+  const char *tpath = "Local\\";
+  snprintf (fn, fn_size, "%slibextractor-shm-%u-%u", tpath, getpid(),
+      (unsigned int) RANDOM());
+  *map = CreateFileMapping (file, NULL, PAGE_READONLY, 0, 0, fn);
+  if (*map == NULL)
+  {
+    DWORD err = GetLastError ();
+    return 1;
+  }
+  return 0;
+}
+
 static void
 destroy_shm_w32 (void *ptr, HANDLE map)
 {
   UnmapViewOfFile (ptr);
+  CloseHandle (map);
+}
+
+static void
+destroy_file_backed_shm_w32 (HANDLE map)
+{
   CloseHandle (map);
 }
 
@@ -1519,16 +1279,657 @@ destroy_shm_posix (void *ptr, int shm_id, size_t size, char *shm_name)
 }
 #endif
 
+#ifndef O_LARGEFILE
+#define O_LARGEFILE 0
+#endif
+
+struct BufferedFileDataSource
+{
+  int fd;
+  const unsigned char *data;
+
+  int64_t fsize;
+  int64_t fpos;
+
+  unsigned char *buffer;
+  int64_t buffer_pos;
+  int64_t buffer_bytes;
+  int64_t buffer_size;
+};
+
+struct BufferedFileDataSource *
+bfds_new (const unsigned char *data, int fd, int64_t fsize);
+
+void
+bfds_delete (struct BufferedFileDataSource *bfds);
+
+int
+bfds_pick_next_buffer_at (struct BufferedFileDataSource *bfds, int64_t pos);
+
+int64_t
+bfds_seek (struct BufferedFileDataSource *bfds, int64_t pos, int whence);
+
+int64_t
+bfds_read (struct BufferedFileDataSource *bfds, unsigned char **buf_ptr, int64_t count);
+
+struct BufferedFileDataSource *
+bfds_new (const unsigned char *data, int fd, int64_t fsize)
+{
+  struct BufferedFileDataSource *result;
+  result = malloc (sizeof (struct BufferedFileDataSource));
+  if (result == NULL)
+    return NULL;
+  memset (result, 0, sizeof (struct BufferedFileDataSource));
+  result->data = data;
+  result->fsize = fsize;
+  result->fd = fd;
+  result->buffer_size = fsize;
+  if (result->data == NULL)
+  {
+    if (result->buffer_size > MAX_READ)
+      result->buffer_size = MAX_READ;
+    result->buffer = malloc (result->buffer_size);
+    if (result->buffer == NULL)
+    {
+      free (result);
+      return NULL;
+    }
+  }
+  bfds_pick_next_buffer_at (result, 0);
+  return result;
+}
+
+void
+bfds_delete (struct BufferedFileDataSource *bfds)
+{
+  if (bfds->buffer)
+    free (bfds->buffer);
+  free (bfds);
+}
+
+int
+bfds_pick_next_buffer_at (struct BufferedFileDataSource *bfds, int64_t pos)
+{
+  int64_t position, rd;
+  if (bfds->data != NULL)
+  {
+    bfds->buffer_bytes = bfds->fsize;
+    return 0;
+  }
+#if WINDOWS
+  position = _lseeki64 (bfds->fd, pos, SEEK_SET);
+#elif HAVE_LSEEK64
+  position = lseek64 (bfds->fd, pos, SEEK_SET);
+#else
+  position = (int64_t) lseek (bfds->fd, pos, SEEK_SET);
+#endif
+  if (position < 0)
+    return -1;
+  bfds->fpos = position;
+  rd = read (bfds->fd, bfds->buffer, bfds->buffer_size);
+  if (rd < 0)
+    return -1;
+  bfds->buffer_bytes = rd;
+  return 0;
+}
+
+int64_t
+bfds_seek (struct BufferedFileDataSource *bfds, int64_t pos, int whence)
+{
+  switch (whence)
+  {
+  case SEEK_CUR:
+    if (bfds->data == NULL)
+    {
+      if (0 != bfds_pick_next_buffer_at (bfds, bfds->fpos + bfds->buffer_pos + pos))
+        return -1;
+      bfds->buffer_pos = 0;
+      return bfds->fpos;
+    }
+    bfds->buffer_pos += pos; 
+    return bfds->buffer_pos;
+    break;
+  case SEEK_SET:
+    if (pos < 0)
+      return -1;
+    if (bfds->data == NULL)
+    {
+      if (0 != bfds_pick_next_buffer_at (bfds, pos))
+        return -1;
+      bfds->buffer_pos = 0;
+      return bfds->fpos;
+    }
+    bfds->buffer_pos = pos; 
+    return bfds->buffer_pos;
+    break;
+  case SEEK_END:
+    if (bfds->data == NULL)
+    {
+      if (0 != bfds_pick_next_buffer_at (bfds, bfds->fsize + pos))
+        return -1;
+      bfds->buffer_pos = 0;
+      return bfds->fpos;
+    }
+    bfds->buffer_pos = bfds->fsize + pos; 
+    return bfds->buffer_pos;
+    break;
+  }
+  return -1;
+}
+
+int64_t
+bfds_read (struct BufferedFileDataSource *bfds, unsigned char **buf_ptr, int64_t count)
+{
+  if (count > MAX_READ)
+    return -1;
+  if (count > bfds->buffer_bytes - bfds->buffer_pos)
+  {
+    if (bfds->fpos + bfds->buffer_pos != bfds_seek (bfds, bfds->fpos + bfds->buffer_pos, SEEK_SET))
+      return -1;
+    if (bfds->data == NULL)
+    {
+      *buf_ptr = &bfds->buffer[bfds->buffer_pos];
+      bfds->buffer_pos += count < bfds->buffer_bytes ? count : bfds->buffer_bytes;
+      return (count < bfds->buffer_bytes ? count : bfds->buffer_bytes);
+    }
+    else
+    {
+      int64_t ret = count < (bfds->buffer_bytes - bfds->buffer_pos) ? count : (bfds->buffer_bytes - bfds->buffer_pos);
+      *buf_ptr = &bfds->data[bfds->buffer_pos];
+      bfds->buffer_pos += ret;
+      return ret;
+    }
+  }
+  else
+  {
+    if (bfds->data == NULL)
+      *buf_ptr = &bfds->buffer[bfds->buffer_pos];
+    else
+      *buf_ptr = &bfds->data[bfds->buffer_pos];
+    bfds->buffer_pos += count;
+    return count;
+  }
+}
+
+#if HAVE_ZLIB
+#define MIN_ZLIB_HEADER 12
+#endif
+#if HAVE_LIBBZ2
+#define MIN_BZ2_HEADER 4
+#endif
+#if !defined (MIN_COMPRESSED_HEADER) && HAVE_ZLIB
+#define MIN_COMPRESSED_HEADER MIN_ZLIB_HEADER
+#endif
+#if !defined (MIN_COMPRESSED_HEADER) && HAVE_LIBBZ2
+#define MIN_COMPRESSED_HEADER MIN_BZ2_HEADER
+#endif
+#if !defined (MIN_COMPRESSED_HEADER)
+#define MIN_COMPRESSED_HEADER -1
+#endif
+
+#define COMPRESSED_DATA_PROBE_SIZE 3
+
+enum ExtractorCompressionType
+{
+  COMP_TYPE_UNDEFINED = -1,
+  COMP_TYPE_INVALID = 0,
+  COMP_TYPE_ZLIB = 1,
+  COMP_TYPE_BZ2 = 2
+};
+
+struct CompressedFileSource
+{
+  enum ExtractorCompressionType compression_type;
+  struct BufferedFileDataSource *bfds;
+  int64_t fsize;
+  int64_t fpos;
+
+  int64_t uncompressed_size;
+
+  unsigned char *buffer;
+  int64_t buffer_bytes;
+  int64_t buffer_len;
+
+#if WINDOWS
+  HANDLE shm;
+#else
+  int shm;
+#endif
+  char shm_name[MAX_SHM_NAME + 1];
+  void *shm_ptr;
+  int64_t shm_pos;
+  size_t shm_buf_pos;
+  int64_t shm_size;
+  size_t shm_buf_size;
+
+#if HAVE_ZLIB
+  z_stream strm;
+  int ret;
+  size_t pos;
+  int gzip_header_length;
+#endif
+#if HAVE_LIBBZ2
+  bz_stream bstrm;
+  int bret;
+  size_t bpos;
+#endif
+};
+
+int
+cfs_delete (struct CompressedFileSource *cfs)
+{
+#if WINDOWS
+  destroy_shm_w32 (cfs->shm_ptr, cfs->shm);
+#else
+  destroy_shm_posix (cfs->shm_ptr, cfs->shm, cfs->shm_size, cfs->shm_name);
+#endif
+  free (cfs);
+}
+
+int
+cfs_reset_stream_zlib (struct CompressedFileSource *cfs)
+{
+  if (cfs->gzip_header_length != bfds_seek (cfs->bfds, cfs->gzip_header_length, SEEK_SET))
+    return 0;
+  cfs->strm.next_in = NULL;
+  cfs->strm.avail_in = 0;
+  cfs->strm.total_in = 0;
+  cfs->strm.zalloc = NULL;
+  cfs->strm.zfree = NULL;
+  cfs->strm.opaque = NULL;
+
+  /*
+   * note: maybe plain inflateInit(&strm) is adequate,
+   * it looks more backward-compatible also ;
+   *
+   * ZLIB_VERNUM isn't defined by zlib version 1.1.4 ;
+   * there might be a better check.
+   */
+  if (Z_OK != inflateInit2 (&cfs->strm,
+#ifdef ZLIB_VERNUM
+      15 + 32
+#else
+      -MAX_WBITS
+#endif
+      ))
+  {
+    return -1;
+  }
+
+  cfs->fpos = cfs->gzip_header_length;
+  cfs->shm_pos = 0;
+  cfs->shm_buf_pos = 0;
+  cfs->shm_buf_size = 0;
+
+#if HAVE_ZLIB
+  z_stream strm;
+  cfs->ret = 0;
+  cfs->pos = 0;
+#endif
+  return 1;
+}
+
+static int
+cfs_reset_stream_bz2 (struct CompressedFileSource *cfs)
+{
+  return -1;
+}
+
+int
+cfs_reset_stream (struct CompressedFileSource *cfs)
+{
+  switch (cfs->compression_type)
+  {
+  case COMP_TYPE_ZLIB:
+    return cfs_reset_stream_zlib (cfs);
+  case COMP_TYPE_BZ2:
+    return cfs_reset_stream_bz2 (cfs);
+  default:
+    return -1;
+  }
+}
+
+
+static int
+cfs_init_decompressor_zlib (struct CompressedFileSource *cfs, EXTRACTOR_MetaDataProcessor proc, void *proc_cls)
+{
+  /* Process gzip header */
+  unsigned int gzip_header_length = 10;
+  unsigned char *pdata;
+  unsigned char data[12];
+  
+  if (12 > bfds_read (cfs->bfds, &pdata, 12))
+    return -1;
+  memcpy (data, pdata, 12);
+  
+  if (data[3] & 0x4) /* FEXTRA  set */
+    gzip_header_length += 2 + (unsigned) (data[10] & 0xff) +
+      (((unsigned) (data[11] & 0xff)) * 256);
+
+  if (data[3] & 0x8) /* FNAME set */
+  {
+    int64_t fp = cfs->fpos;
+    int64_t buf_bytes;
+    int len;
+    unsigned char *buf, *cptr;
+    if (gzip_header_length > bfds_seek (cfs->bfds, gzip_header_length, SEEK_SET))
+      return -1;
+    buf_bytes = bfds_read (cfs->bfds, &buf, 1024);
+    if (buf_bytes <= 0)
+      return -1;
+    cptr = buf;
+
+    len = 0;
+    /* stored file name is here */
+    while (len < buf_bytes)
+    {
+      if ('\0' == *cptr)
+      break;
+      cptr++;
+      len++;
+    }
+
+    if (0 != proc (proc_cls, "<zlib>", EXTRACTOR_METATYPE_FILENAME,
+        EXTRACTOR_METAFORMAT_C_STRING, "text/plain",
+        (const char *) buf,
+        len))
+      return 0; /* done */
+
+    /* FIXME: check for correctness */
+    //gzip_header_length = (cptr - data) + 1;
+    gzip_header_length += len + 1;
+  }
+
+  if (data[3] & 0x16) /* FCOMMENT set */
+  {
+    int64_t fp = cfs->fpos;
+    int64_t buf_bytes;
+    int len;
+    unsigned char *buf, *cptr;
+    if (gzip_header_length > bfds_seek (cfs->bfds, gzip_header_length, SEEK_SET))
+      return -1;
+    buf_bytes = bfds_read (cfs->bfds, &buf, 1024);
+    if (buf_bytes <= 0)
+      return -1;
+    cptr = buf;
+
+    len = 0;
+    /* stored file name is here */
+    while (len < buf_bytes)
+    {
+      if ('\0' == *cptr)
+      break;
+      cptr++;
+      len++;
+    }
+
+    if (0 != proc (proc_cls, "<zlib>", EXTRACTOR_METATYPE_COMMENT,
+        EXTRACTOR_METAFORMAT_C_STRING, "text/plain",
+        (const char *) buf,
+        len))
+      return 0; /* done */
+
+    /* FIXME: check for correctness */
+    //gzip_header_length = (cptr - data) + 1;
+    gzip_header_length += len + 1;
+  }
+
+  if (data[3] & 0x2) /* FCHRC set */
+    gzip_header_length += 2;
+
+  memset (&cfs->strm, 0, sizeof (z_stream));
+
+#ifdef ZLIB_VERNUM
+  gzip_header_length = 0;
+#endif
+
+  cfs->gzip_header_length = gzip_header_length;
+  return cfs_reset_stream_zlib (cfs);
+}
+
+int
+cfs_deinit_decompressor_zlib (struct CompressedFileSource *cfs)
+{
+  inflateEnd (&cfs->strm);
+}
+
+static int
+cfs_init_decompressor_bz2 (struct CompressedFileSource *cfs, EXTRACTOR_MetaDataProcessor proc, void *proc_cls)
+{
+  return -1;
+}
+
+static int
+cfs_deinit_decompressor_bz2 (struct CompressedFileSource *cfs)
+{
+  return -1;
+}
+
+static int
+cfs_init_decompressor (struct CompressedFileSource *cfs, EXTRACTOR_MetaDataProcessor proc, void *proc_cls)
+{
+  switch (cfs->compression_type)
+  {
+  case COMP_TYPE_ZLIB:
+    return cfs_init_decompressor_zlib (cfs, proc, proc_cls);
+  case COMP_TYPE_BZ2:
+    return cfs_init_decompressor_bz2 (cfs, proc, proc_cls);
+  default:
+    return -1;
+  }
+}
+
+static int
+cfs_deinit_decompressor (struct CompressedFileSource *cfs)
+{
+  switch (cfs->compression_type)
+  {
+  case COMP_TYPE_ZLIB:
+    return cfs_deinit_decompressor_zlib (cfs);
+  case COMP_TYPE_BZ2:
+    return cfs_deinit_decompressor_bz2 (cfs);
+  default:
+    return -1;
+  }
+}
+
+struct CompressedFileSource *
+cfs_new (struct BufferedFileDataSource *bfds, int64_t fsize, enum ExtractorCompressionType compression_type, EXTRACTOR_MetaDataProcessor proc, void *proc_cls)
+{
+  int shm_result;
+  size_t map_size;
+  struct CompressedFileSource *cfs;
+  cfs = malloc (sizeof (struct CompressedFileSource));
+  if (cfs == NULL)
+    return NULL;
+  memset (cfs, 0, sizeof (struct CompressedFileSource));
+  cfs->compression_type = compression_type;
+  cfs->bfds = bfds;
+  cfs->fsize = fsize;
+  cfs->uncompressed_size = -1;
+  cfs->shm_size = MAX_READ;
+#if !WINDOWS
+  shm_result = make_shm_posix ((void **) &cfs->shm_ptr, &cfs->shm, cfs->shm_name, MAX_SHM_NAME, cfs->shm_size);
+#else
+  shm_result = make_shm_w32 ((void **) &cfs->shm_ptr, &cfs->shm, cfs->shm_name, MAX_SHM_NAME, cfs->shm_size);
+#endif
+  if (shm_result != 0)
+  {
+    cfs_delete (cfs);
+    return NULL;
+  }
+  return cfs;
+}
+
+#define COM_CHUNK_SIZE (10*1024)
+
+int
+cfs_read_zlib (struct CompressedFileSource *cfs, int64_t preserve)
+{
+  int ret;
+  int64_t rc = preserve;
+  int64_t total = cfs->strm.total_out;
+  if (preserve > 0)
+    memmove (cfs->shm_ptr, &((unsigned char *)cfs->shm_ptr)[0], preserve);
+
+  while (rc < cfs->shm_size && ret != Z_STREAM_END)
+  {
+    if (cfs->strm.avail_in == 0)
+    {
+      int64_t count = bfds_read (cfs->bfds, &cfs->strm.next_in, COM_CHUNK_SIZE);
+      if (count <= 0)
+        return 0;
+      cfs->strm.avail_in = (uInt) count;
+    }
+    cfs->strm.next_out = &((unsigned char *)cfs->shm_ptr)[rc];
+    cfs->strm.avail_out = cfs->shm_size - rc;
+    ret = inflate (&cfs->strm, Z_SYNC_FLUSH);
+    if (ret != Z_OK && ret != Z_STREAM_END)
+      return 0;
+    rc = cfs->strm.total_out - total;
+  }
+  if (ret == Z_STREAM_END)
+    cfs->uncompressed_size = cfs->strm.total_out;
+  cfs->shm_pos = preserve;
+  cfs->shm_buf_size = rc + preserve;
+  return 1;
+}
+
+int
+cfs_read_bz2 (struct CompressedFileSource *cfs, int64_t preserve)
+{
+  return -1;
+}
+
+int64_t
+cfs_read (struct CompressedFileSource *cfs, int64_t preserve)
+{
+  switch (cfs->compression_type)
+  {
+  case COMP_TYPE_ZLIB:
+    return cfs_read_zlib (cfs, preserve);
+  case COMP_TYPE_BZ2:
+    return cfs_read_bz2 (cfs, preserve);
+  default:
+    return -1;
+  }
+}
+
+int64_t
+cfs_seek_zlib (struct CompressedFileSource *cfs, int64_t position)
+{
+  int64_t ret;
+  if (position > cfs->strm.total_out - cfs->shm_buf_size && position < cfs->strm.total_out)
+  {
+    ret = cfs_read (cfs, cfs->strm.total_out - position);
+    if (ret < 0)
+      return ret;
+    return position;
+  }
+  while (position >= cfs->strm.total_out)
+  {
+    if (0 > (ret = cfs_read (cfs, 0)))
+      return ret;
+    if (ret == 0)
+      return position;
+  }
+  if (position < cfs->strm.total_out && position > cfs->strm.total_out - cfs->shm_buf_size)
+    return cfs->strm.total_out - cfs->shm_buf_size;
+  return -1;
+}
+
+int64_t
+cfs_seek_bz2 (struct CompressedFileSource *cfs, int64_t position)
+{
+  return -1;
+}
+
+int64_t
+cfs_seek (struct CompressedFileSource *cfs, int64_t position)
+{
+  switch (cfs->compression_type)
+  {
+  case COMP_TYPE_ZLIB:
+    return cfs_seek_zlib (cfs, position);
+  case COMP_TYPE_BZ2:
+    return cfs_seek_bz2 (cfs, position);
+  default:
+    return -1;
+  }
+}
+
+/**
+ * Detect if we have compressed data on our hands.
+ *
+ * @param data pointer to a data buffer or NULL (in case fd is not -1)
+ * @param fd a file to read data from, or -1 (if data is not NULL)
+ * @param fsize size of data (if data is not NULL) or of file (if fd is not -1)
+ * @return -1 to indicate an error, 0 to indicate uncompressed data, or a type (> 0) of compression
+ */
+static enum ExtractorCompressionType
+get_compression_type (const unsigned char *data, int fd, int64_t fsize)
+{
+  void *read_data = NULL;
+  size_t read_data_size = 0;
+  ssize_t read_result;
+  enum ExtractorCompressionType result = COMP_TYPE_INVALID;
+
+  if ((MIN_COMPRESSED_HEADER < 0) || (fsize < MIN_COMPRESSED_HEADER))
+  {
+    return COMP_TYPE_INVALID;
+  }
+  if (data == NULL)
+  {
+    int64_t position;
+    read_data_size = COMPRESSED_DATA_PROBE_SIZE;
+    read_data = malloc (read_data_size);
+    if (read_data == NULL)
+      return -1;
+#if WINDOWS
+    position = _lseeki64 (fd, 0, SEEK_CUR);
+#elif HAVE_LSEEK64
+    position = lseek64 (fd, 0, SEEK_CUR);
+#else
+    position = (int64_t) lseek (fd, 0, SEEK_CUR);
+#endif
+    read_result = READ (fd, read_data, read_data_size);
+#if WINDOWS
+    position = _lseeki64 (fd, position, SEEK_SET);
+#elif HAVE_LSEEK64
+    position = lseek64 (fd, position, SEEK_SET);
+#else
+    position = lseek (fd, (off_t) position, SEEK_SET);
+#endif
+    if (read_result != read_data_size)
+    {
+      free (read_data);
+      return COMP_TYPE_UNDEFINED;
+    }
+    data = (const void *) read_data;
+  }
+#if HAVE_ZLIB
+  if ((fsize >= MIN_ZLIB_HEADER) && (data[0] == 0x1f) && (data[1] == 0x8b) && (data[2] == 0x08))
+    result = COMP_TYPE_ZLIB;
+#endif
+#if HAVE_LIBBZ2
+  if ((fsize >= MIN_BZ2_HEADER) && (data[0] == 'B') && (data[1] == 'Z') && (data[2] == 'h')) 
+    result = COMP_TYPE_BZ2;
+#endif
+  if (read_data != NULL)
+    free (read_data);
+  return result;
+}
 
 static void
-init_plugin_state (struct EXTRACTOR_PluginList *plugin, char *shm_name, int64_t fsize)
+init_plugin_state (struct EXTRACTOR_PluginList *plugin, uint8_t operation_mode, int fd, const char *shm_name, int64_t fsize)
 {
   int write_result;
   int init_state_size;
   unsigned char *init_state;
   int t;
   size_t shm_name_len = strlen (shm_name) + 1;
-  init_state_size = 1 + sizeof (size_t) + shm_name_len + sizeof (int64_t);
+  init_state_size = 1 + sizeof (size_t) + shm_name_len + sizeof (uint8_t) + sizeof (int64_t);
+  plugin->operation_mode = operation_mode;
   switch (plugin->flags)
   {
   case EXTRACTOR_OPTION_DEFAULT_POLICY:
@@ -1542,6 +1943,8 @@ init_plugin_state (struct EXTRACTOR_PluginList *plugin, char *shm_name, int64_t 
     t = 0;
     init_state[t] = MESSAGE_INIT_STATE;
     t += 1;
+    memcpy (&init_state[t], &operation_mode, sizeof (uint8_t));
+    t += sizeof (uint8_t);
     memcpy (&init_state[t], &fsize, sizeof (int64_t));
     t += sizeof (int64_t);
     memcpy (&init_state[t], &shm_name_len, sizeof (size_t));
@@ -1558,10 +1961,7 @@ init_plugin_state (struct EXTRACTOR_PluginList *plugin, char *shm_name, int64_t 
     plugin->seek_request = 0;
     break;
   case EXTRACTOR_OPTION_IN_PROCESS:
-    plugin_open_shm (plugin, shm_name);
-    plugin->fsize = fsize;
-    plugin->init_state_method (plugin);
-    plugin->seek_request = 0;
+    init_state_method (plugin, operation_mode, fsize, shm_name);
     return;
     break;
   case EXTRACTOR_OPTION_DISABLED:
@@ -1593,7 +1993,7 @@ discard_plugin_state (struct EXTRACTOR_PluginList *plugin)
     }
     break;
   case EXTRACTOR_OPTION_IN_PROCESS:
-    plugin->discard_state_method (plugin);
+    discard_state_method (plugin);
     return;
     break;
   case EXTRACTOR_OPTION_DISABLED:
@@ -1603,10 +2003,234 @@ discard_plugin_state (struct EXTRACTOR_PluginList *plugin)
 }
 
 static int
-give_shm_to_plugin (struct EXTRACTOR_PluginList *plugin, int64_t position, size_t map_size)
+pl_pick_next_buffer_at (struct EXTRACTOR_PluginList *plugin, int64_t pos, uint8_t want_start)
+{
+  if (plugin->operation_mode == OPMODE_MEMORY)
+  {
+    int64_t old_pos;
+    int64_t gran_fix;
+#if !WINDOWS
+    if (plugin->shm_ptr != NULL)
+      munmap (plugin->shm_ptr, plugin->map_size);
+#else
+    if (plugin->shm_ptr != NULL)
+      UnmapViewOfFile (plugin->shm_ptr);
+#endif
+    plugin->shm_ptr = NULL;
+    old_pos = plugin->fpos + plugin->shm_pos;
+    if (pos < 0)
+      pos = 0;
+    if (pos > plugin->fsize)
+      pos = plugin->fsize - 1;
+    plugin->fpos = pos;
+    plugin->map_size = MAX_READ;
+    plugin->shm_pos = old_pos - plugin->fpos;
+    if (want_start)
+      gran_fix = -1 * (plugin->fpos % plugin->allocation_granularity);
+    else
+    {
+      gran_fix = plugin->fpos % plugin->allocation_granularity;
+      if (gran_fix > 0)
+        gran_fix = plugin->allocation_granularity - gran_fix;
+    }
+    if (plugin->fpos + gran_fix + plugin->map_size > plugin->fsize)
+      plugin->map_size = plugin->fsize - plugin->fpos - gran_fix;
+    plugin->fpos += gran_fix;
+#if !WINDOWS
+    if ((-1 == plugin->shm_id) ||
+        (NULL == (plugin->shm_ptr = mmap (NULL, plugin->map_size, PROT_READ, MAP_SHARED, plugin->shm_id, plugin->fpos))) ||
+        (plugin->shm_ptr == (void *) -1))
+    {
+      return -1;
+    }
+#else
+    LARGE_INTEGER off;
+    off.QuadPart = plugin->fpos;
+    if ((plugin->map_handle == 0) ||
+       (NULL == (plugin->shm_ptr = MapViewOfFile (plugin->map_handle, FILE_MAP_READ, off.HighPart, off.LowPart, plugin->map_size))))
+    {
+      DWORD err = GetLastError ();
+      return -1;
+    }
+#endif
+    plugin->shm_pos -= gran_fix;
+    return 0;
+  }
+  if (plugin->operation_mode == OPMODE_FILE)
+  {
+    int64_t old_pos;
+    int64_t gran_fix;
+#if !WINDOWS
+    if (plugin->shm_ptr != NULL)
+      munmap (plugin->shm_ptr, plugin->map_size);
+#else
+    if (plugin->shm_ptr != NULL)
+      UnmapViewOfFile (plugin->shm_ptr);
+#endif
+    plugin->shm_ptr = NULL;
+    old_pos = plugin->fpos + plugin->shm_pos;
+    if (pos < 0)
+      pos = 0;
+    if (pos > plugin->fsize)
+      pos = plugin->fsize - 1;
+    plugin->fpos = pos;
+    plugin->map_size = MAX_READ;
+    plugin->shm_pos = old_pos - plugin->fpos;
+    if (want_start)
+      gran_fix = -1 * (plugin->fpos % plugin->allocation_granularity);
+    else
+    {
+      gran_fix = plugin->fpos % plugin->allocation_granularity;
+      if (gran_fix > 0)
+        gran_fix = plugin->allocation_granularity - gran_fix;
+    }
+    if (plugin->fpos + gran_fix + plugin->map_size > plugin->fsize)
+      plugin->map_size = plugin->fsize - plugin->fpos - gran_fix;
+    plugin->fpos += gran_fix;
+#if !WINDOWS
+    if ((-1 == plugin->shm_id) ||
+        (NULL == (plugin->shm_ptr = mmap (NULL, plugin->map_size, PROT_READ, MAP_SHARED, plugin->shm_id, plugin->fpos))) ||
+        (plugin->shm_ptr == (void *) -1))
+    {
+      return -1;
+    }
+#else
+    LARGE_INTEGER off;
+    off.QuadPart = plugin->fpos;
+    if ((plugin->map_handle == 0) ||
+       (NULL == (plugin->shm_ptr = MapViewOfFile (plugin->map_handle, FILE_MAP_READ, off.HighPart, off.LowPart, plugin->map_size))))
+    {
+      DWORD err = GetLastError ();
+      return -1;
+    }
+#endif
+    plugin->shm_pos -= gran_fix;
+    return 0;
+  }
+  if (plugin->operation_mode == OPMODE_DECOMPRESS)
+  {
+    if (plugin->pipe_in != 0)
+    {
+      int64_t old_pos;
+      old_pos = plugin->fpos + plugin->shm_pos;
+      plugin->seek_request = pos;
+      while (plugin->fpos != pos)
+      {
+        plugin->waiting_for_update = 1;
+        if (process_requests (plugin) < 0)
+          return -1;
+        plugin->waiting_for_update = 0;
+      }
+      plugin->shm_pos = old_pos - plugin->fpos;
+    }
+    else
+    {
+      if (pos < plugin->fpos)
+      {
+        if (1 != cfs_reset_stream (plugin->state))
+          return -1;
+      }
+      while (plugin->fpos < pos && plugin->fpos >= 0)
+        plugin->fpos = cfs_seek (plugin->state, pos);
+      plugin->fsize = ((struct CompressedFileSource *)plugin->state)->uncompressed_size;
+      plugin->shm_pos = pos - plugin->fpos;
+    }
+    return 0;
+  }
+}
+
+int64_t
+pl_seek (struct EXTRACTOR_PluginList *plugin, int64_t pos, int whence)
+{
+  switch (whence)
+  {
+  case SEEK_CUR:
+    if (plugin->shm_pos + pos < plugin->map_size && plugin->shm_pos + pos >= 0)
+    {
+      plugin->shm_pos += pos;
+      return plugin->fpos + plugin->shm_pos;
+    }
+    if (0 != pl_pick_next_buffer_at (plugin, plugin->fpos + plugin->shm_pos + pos, 1))
+      return -1;
+    plugin->shm_pos += pos;
+    return plugin->fpos + plugin->shm_pos;
+    break;
+  case SEEK_SET:
+    if (pos < 0)
+      return -1;
+    if (pos >= plugin->fpos && pos < plugin->fpos + plugin->map_size)
+    {
+      plugin->shm_pos = pos - plugin->fpos;
+      return pos;
+    }
+    if (0 != pl_pick_next_buffer_at (plugin, pos, 1))
+      return -1;
+    if (pos >= plugin->fpos && pos < plugin->fpos + plugin->map_size)
+    {
+      plugin->shm_pos = pos - plugin->fpos;
+      return pos;
+    }
+    return -1;
+    break;
+  case SEEK_END:
+    while (plugin->fsize == -1)
+    {
+      pl_pick_next_buffer_at (plugin, plugin->fpos + plugin->map_size + pos, 0);
+    }
+    if (plugin->fsize + pos - 1 >= plugin->fpos && plugin->fsize + pos - 1 <= plugin->fpos + plugin->map_size)
+    {
+      plugin->shm_pos = plugin->fsize + pos - plugin->fpos;
+      return plugin->fpos + plugin->shm_pos - 1;
+    }
+    if (0 != pl_pick_next_buffer_at (plugin, plugin->fsize - MAX_READ, 0))
+      return -1;
+    plugin->shm_pos = plugin->fsize + pos - plugin->fpos;
+    return plugin->fsize + pos - 1;
+    break;
+  }
+  return -1;
+}
+
+int64_t
+pl_get_fsize (struct EXTRACTOR_PluginList *plugin)
+{
+  return plugin->fsize;
+}
+
+int64_t
+pl_get_pos (struct EXTRACTOR_PluginList *plugin)
+{
+  return plugin->fpos + plugin->shm_pos;
+}
+
+int64_t
+pl_read (struct EXTRACTOR_PluginList *plugin, unsigned char **data, size_t count)
+{
+  if (count > MAX_READ)
+    return -1;
+  if (count > plugin->map_size - plugin->shm_pos)
+  {
+    int64_t actual_count;
+    if (plugin->fpos + plugin->shm_pos != pl_seek (plugin, plugin->fpos + plugin->shm_pos, SEEK_SET))
+      return -1;
+    *data = &plugin->shm_ptr[plugin->shm_pos];
+    actual_count = (count < plugin->map_size - plugin->shm_pos ? count : plugin->map_size - plugin->shm_pos);
+    plugin->shm_pos += actual_count;
+    return actual_count;
+  }
+  else
+  {
+    *data = &plugin->shm_ptr[plugin->shm_pos];
+    plugin->shm_pos += count;
+    return count;
+  }
+}
+
+static int
+give_shm_to_plugin (struct EXTRACTOR_PluginList *plugin, int64_t position, size_t map_size, int64_t fsize, uint8_t operation_mode)
 {
   int write_result;
-  int updated_shm_size = 1 + sizeof (int64_t) + sizeof (size_t);
+  int updated_shm_size = 1 + sizeof (int64_t) + sizeof (size_t) + sizeof (int64_t);
   unsigned char updated_shm[updated_shm_size];
   int t = 0;
   updated_shm[t] = MESSAGE_UPDATED_SHM;
@@ -1615,22 +2239,31 @@ give_shm_to_plugin (struct EXTRACTOR_PluginList *plugin, int64_t position, size_
   t += sizeof (int64_t);
   memcpy (&updated_shm[t], &map_size, sizeof (size_t));
   t += sizeof (size_t);
+  memcpy (&updated_shm[t], &fsize, sizeof (int64_t));
+  t += sizeof (int64_t);
   switch (plugin->flags)
   {
   case EXTRACTOR_OPTION_DEFAULT_POLICY:
   case EXTRACTOR_OPTION_OUT_OF_PROCESS_NO_RESTART:
-    if (plugin->seek_request < 0)
-      return 0;
-    write_result = plugin_write (plugin, updated_shm, updated_shm_size);
-    if (write_result < updated_shm_size)
+    if (operation_mode == OPMODE_DECOMPRESS)
     {
-      stop_process (plugin);
-      return 0;
+      if (plugin->seek_request < 0)
+        return 0;
+      write_result = plugin_write (plugin, updated_shm, updated_shm_size);
+      if (write_result < updated_shm_size)
+      {
+        stop_process (plugin);
+        return 0;
+      }
     }
     return 1;
   case EXTRACTOR_OPTION_IN_PROCESS:
-    plugin->position = position;
-    plugin->map_size = map_size;
+    if (operation_mode == OPMODE_DECOMPRESS)
+    {
+      plugin->fpos = position;
+      plugin->map_size = map_size;
+      plugin->fsize = fsize;
+    }
     return 0;
   case EXTRACTOR_OPTION_DISABLED:
     return 0;
@@ -1640,7 +2273,7 @@ give_shm_to_plugin (struct EXTRACTOR_PluginList *plugin, int64_t position, size_
 }
 
 static void
-ask_in_process_plugin (struct EXTRACTOR_PluginList *plugin, int64_t position, void *shm_ptr, EXTRACTOR_MetaDataProcessor proc, void *proc_cls)
+ask_in_process_plugin (struct EXTRACTOR_PluginList *plugin, void *shm_ptr, EXTRACTOR_MetaDataProcessor proc, void *proc_cls)
 {
   int extract_reply;
   switch (plugin->flags)
@@ -1931,9 +2564,10 @@ wait_for_reply (struct EXTRACTOR_PluginList *plugins, EXTRACTOR_MetaDataProcesso
 #endif
 
 static int64_t
-seek_to_new_position (struct EXTRACTOR_PluginList *plugins, int fd, int64_t fsize, int64_t current_position)
+seek_to_new_position (struct EXTRACTOR_PluginList *plugins, struct CompressedFileSource *cfs, int64_t current_position, int64_t map_size)
 {
-  int64_t min_pos = fsize;
+  int64_t min_pos = current_position + map_size;
+  int64_t min_plugin_pos = 0x7FFFFFFFFFFFFFF;
   struct EXTRACTOR_PluginList *ppos;
   for (ppos = plugins; NULL != ppos; ppos = ppos->next)
   {
@@ -1942,26 +2576,24 @@ seek_to_new_position (struct EXTRACTOR_PluginList *plugins, int fd, int64_t fsiz
     case EXTRACTOR_OPTION_DEFAULT_POLICY:
     case EXTRACTOR_OPTION_OUT_OF_PROCESS_NO_RESTART:
     case EXTRACTOR_OPTION_IN_PROCESS:
-    if (ppos->seek_request > 0 && ppos->seek_request >= current_position &&
-        ppos->seek_request <= min_pos)
-      min_pos = ppos->seek_request;
+      if (ppos->seek_request >= 0 && ppos->seek_request <= min_pos)
+        min_pos = ppos->seek_request;
+      if (ppos->seek_request >= 0 && ppos->seek_request <= min_plugin_pos)
+        min_plugin_pos = ppos->seek_request;
       break;
     case EXTRACTOR_OPTION_DISABLED:
       break;
     }
   }
-  if (min_pos >= fsize)
+  if (min_plugin_pos == 0x7FFFFFFFFFFFFFF)
     return -1;
-#if WINDOWS
-  _lseeki64 (fd, min_pos, SEEK_SET);
-#elif !HAVE_SEEK64
-  lseek64 (fd, min_pos, SEEK_SET);
-#else
-  if (min_pos >= INT_MAX)
-    return -1;
-  lseek (fd, (ssize_t) min_pos, SEEK_SET);
-#endif
-  return min_pos;
+  if (min_pos < current_position - map_size)
+  {
+    if (1 != cfs_reset_stream (cfs))
+      return -1;
+    return 0;
+  }
+  return cfs_seek (cfs, min_pos);
 }
 
 static void
@@ -1992,8 +2624,10 @@ load_in_process_plugin (struct EXTRACTOR_PluginList *plugin)
  * @param proc_cls cls argument to proc
  */
 static void
-do_extract (struct EXTRACTOR_PluginList *plugins, const char *data, int fd, int64_t fsize, void *buffer, size_t buffer_size, EXTRACTOR_MetaDataProcessor proc, void *proc_cls)
+do_extract (struct EXTRACTOR_PluginList *plugins, const char *data, int fd, const char *filename, struct CompressedFileSource *cfs, int64_t fsize, EXTRACTOR_MetaDataProcessor proc, void *proc_cls)
 {
+  int operation_mode;
+  int plugin_count = 0;
   int shm_result;
   unsigned char *shm_ptr;
 #if !WINDOWS
@@ -2006,26 +2640,56 @@ do_extract (struct EXTRACTOR_PluginList *plugins, const char *data, int fd, int6
   struct EXTRACTOR_PluginList *ppos;
 
   int64_t position = 0;
+  int64_t preserve = 0;
   size_t map_size;
   ssize_t read_result;
   int kill_plugins = 0;
 
-  map_size = (fd == -1) ? fsize : MAX_READ;
-
-  /* Make a shared memory object. Even if we're running in-process. Simpler that way */
-#if !WINDOWS
-  shm_result = make_shm_posix ((void **) &shm_ptr, &shm_id, shm_name, MAX_SHM_NAME,
-      map_size);
-#else  
-  shm_result = make_shm_w32 ((void **) &shm_ptr, &map_handle, shm_name, MAX_SHM_NAME,
-      map_size);
-#endif
-  if (shm_result != 0)
+  if (cfs != NULL)
+    operation_mode = OPMODE_DECOMPRESS;
+  else if (data != NULL)
+    operation_mode = OPMODE_MEMORY;
+  else if (fd != -1)
+    operation_mode = OPMODE_FILE;
+  else
     return;
 
-  /* This three-loops-instead-of-one construction is intended to increase parallelism */
+  map_size = (fd == -1) ? fsize : MAX_READ;
+
+  /* Make a shared memory object. Even if we're running in-process. Simpler that way.
+   * This is only for reading-from-memory case. For reading-from-file we will use
+   * the file itself; for uncompressing-on-the-fly the decompressor will make its own
+   * shared memory object and uncompress into it directly.
+   */
+  if (operation_mode == OPMODE_MEMORY)
+  {
+    operation_mode = OPMODE_MEMORY;
+#if !WINDOWS
+    shm_result = make_shm_posix ((void **) &shm_ptr, &shm_id, shm_name, MAX_SHM_NAME,
+        fsize);
+#else  
+    shm_result = make_shm_w32 ((void **) &shm_ptr, &map_handle, shm_name, MAX_SHM_NAME,
+        fsize);
+#endif
+    if (shm_result != 0)
+      return;
+    memcpy (shm_ptr, data, fsize);
+  }
+  else if (operation_mode == OPMODE_FILE)
+  {
+#if WINDOWS
+    shm_result = make_file_backed_shm_w32 (&map_handle, (HANDLE) _get_osfhandle (fd), shm_name, MAX_SHM_NAME);
+    if (shm_result != 0)
+      return;
+#endif
+  }
+
+  /* This four-loops-instead-of-one construction is intended to increase parallelism */
   for (ppos = plugins; NULL != ppos; ppos = ppos->next)
+  {
     start_process (ppos);
+    plugin_count += 1;
+  }
 
   for (ppos = plugins; NULL != ppos; ppos = ppos->next)
     load_in_process_plugin (ppos);
@@ -2033,29 +2697,33 @@ do_extract (struct EXTRACTOR_PluginList *plugins, const char *data, int fd, int6
   for (ppos = plugins; NULL != ppos; ppos = ppos->next)
     write_plugin_data (ppos);
 
-  for (ppos = plugins; NULL != ppos; ppos = ppos->next)
-    init_plugin_state (ppos, shm_name, fsize);
+  if (operation_mode == OPMODE_DECOMPRESS)
+  {
+    for (ppos = plugins; NULL != ppos; ppos = ppos->next)
+      init_plugin_state (ppos, operation_mode, -1, cfs->shm_name, -1);
+  }
+  else if (operation_mode == OPMODE_FILE)
+  {
+    for (ppos = plugins; NULL != ppos; ppos = ppos->next)
+#if !WINDOWS
+      init_plugin_state (ppos, operation_mode, fd, filename, fsize);
+#else
+      init_plugin_state (ppos, operation_mode, fd, shm_name, fsize);
+#endif
+  }
+  else
+  {
+    for (ppos = plugins; NULL != ppos; ppos = ppos->next)
+      init_plugin_state (ppos, operation_mode, -1, shm_name, fsize);
+  }
 
-  while (1)
+  if (operation_mode == OPMODE_FILE || operation_mode == OPMODE_MEMORY)
   {
     int plugins_not_ready = 0;
-    if (fd != -1)
-    {
-      /* fill the share buffer with data from the file */
-      if (buffer_size > 0)
-        memcpy (shm_ptr, buffer, buffer_size);
-      read_result = READ (fd, &shm_ptr[buffer_size], MAX_READ - buffer_size);
-      if (read_result <= 0)
-        break;
-      else
-        map_size = read_result + buffer_size;
-      if (buffer_size > 0)
-         buffer_size = 0;
-    }
     for (ppos = plugins; NULL != ppos; ppos = ppos->next)
-      plugins_not_ready += give_shm_to_plugin (ppos, position, map_size);
+      plugins_not_ready += give_shm_to_plugin (ppos, position, map_size, fsize, operation_mode);
     for (ppos = plugins; NULL != ppos; ppos = ppos->next)
-      ask_in_process_plugin (ppos, position, shm_ptr, proc, proc_cls);
+      ask_in_process_plugin (ppos, shm_ptr, proc, proc_cls);
     while (plugins_not_ready > 0 && !kill_plugins)
     {
       int ready = wait_for_reply (plugins, proc, proc_cls);
@@ -2063,17 +2731,40 @@ do_extract (struct EXTRACTOR_PluginList *plugins, const char *data, int fd, int6
         kill_plugins = 1;
       plugins_not_ready -= ready;
     }
-    if (kill_plugins)
-      break;
-    if (fd != -1)
+  }
+  else
+  {
+    read_result = cfs_read (cfs, preserve);
+    if (read_result > 0)
+    while (1)
     {
-      position += map_size;
-      position = seek_to_new_position (plugins, fd, fsize, position);
-      if (position < 0)
+      int plugins_not_ready = 0;
+
+      map_size = cfs->shm_buf_size;
+      for (ppos = plugins; NULL != ppos; ppos = ppos->next)
+        plugins_not_ready += give_shm_to_plugin (ppos, position, map_size, cfs->uncompressed_size, operation_mode);
+      /* Can't block in in-process plugins, unless we ONLY have one plugin */
+      if (plugin_count == 1)
+        for (ppos = plugins; NULL != ppos; ppos = ppos->next)
+        {
+          /* Pass this way. we'll need it to call cfs functions later on */
+          /* This is a special case */
+          ppos->state = cfs;
+          ask_in_process_plugin (ppos, cfs->shm_ptr, proc, proc_cls);
+        }
+      while (plugins_not_ready > 0 && !kill_plugins)
+      {
+        int ready = wait_for_reply (plugins, proc, proc_cls);
+        if (ready <= 0)
+          kill_plugins = 1;
+        plugins_not_ready -= ready;
+      }
+      if (kill_plugins)
+        break;
+      position = seek_to_new_position (plugins, cfs, position, map_size);
+      if (position < 0 || position == cfs->uncompressed_size)
         break;
     }
-    else
-      break;
   }
 
   if (kill_plugins)
@@ -2082,11 +2773,20 @@ do_extract (struct EXTRACTOR_PluginList *plugins, const char *data, int fd, int6
   for (ppos = plugins; NULL != ppos; ppos = ppos->next)
     discard_plugin_state (ppos);
 
+  if (operation_mode == OPMODE_MEMORY)
+  {
 #if WINDOWS
-  destroy_shm_w32 (shm_ptr, map_handle);
+    destroy_shm_w32 (shm_ptr, map_handle);
 #else
-  destroy_shm_posix (shm_ptr, shm_id, (fd == -1) ? fsize : MAX_READ, shm_name);
+    destroy_shm_posix (shm_ptr, shm_id, (fd == -1) ? fsize : MAX_READ, shm_name);
 #endif
+  }
+  else if (operation_mode == OPMODE_FILE)
+  {
+#if WINDOWS
+    destroy_file_backed_shm_w32 (map_handle);
+#endif
+  }
 }
 
 
@@ -2115,11 +2815,11 @@ EXTRACTOR_extract (struct EXTRACTOR_PluginList *plugins,
   int fd = -1;
   struct stat64 fstatbuf;
   int64_t fsize = 0;
-  int memory_only = 1;
-  int compression_type = -1;
+  enum ExtractorCompressionType compression_type = -1;
   void *buffer = NULL;
   size_t buffer_size;
   int decompression_result;
+  struct CompressedFileSource *cfs = NULL;
 
   /* If data is not given, then we need to read it from the file. Try opening it */
   if ((data == NULL) &&
@@ -2136,9 +2836,6 @@ EXTRACTOR_extract (struct EXTRACTOR_PluginList *plugins,
        close(fd);
        return;
     }
-    /* File is too big -> can't read it into memory */
-    if (fsize > MAX_READ)
-      memory_only = 0;
   }
 
   /* Data is not given, and we've failed to open the file with data -> exit */
@@ -2149,11 +2846,8 @@ EXTRACTOR_extract (struct EXTRACTOR_PluginList *plugins,
     fsize = size;
 
   errno = 0;
-  /* Peek at first few bytes of the file (or of the data), and see if it's compressed.
-   * If data is NULL, buffer is allocated by the function and holds the first few bytes
-   * of the file, buffer_size is set too.
-   */
-  compression_type = get_compression_type (data, fd, fsize, &buffer, &buffer_size);
+  /* Peek at first few bytes of the file (or of the data), and see if it's compressed. */
+  compression_type = get_compression_type (data, fd, fsize);
   if (compression_type < 0)
   {
     /* errno is set by get_compression_type () */
@@ -2161,62 +2855,53 @@ EXTRACTOR_extract (struct EXTRACTOR_PluginList *plugins,
       close (fd);
     return;
   }
+
+  struct BufferedFileDataSource *bfds;
+  bfds = bfds_new (data, fd, fsize);
+  if (bfds == NULL)
+    return;
+
   if (compression_type > 0)
   {
-    /* Don't assume that MAX_DECOMPRESS < MAX_READ */
-    if ((fsize > MAX_DECOMPRESS) || (fsize > MAX_READ))
-    {
-      /* File or data is to big to be decompressed in-memory (the only kind of decompression we do) */
-      errno = EFBIG;
-      if (fd != -1)
-        close (fd);
-      if (buffer != NULL)
-        free (buffer);
-      return;
-    }
-    /* Decompress data (or file contents + what we've read so far. Either way it writes a new
-     * pointer to buffer, sets buffer_size, and frees the old buffer (if it wasn't NULL).
-     * In case of failure it cleans up the buffer after itself.
+    int icr = 0;
+    /* Set up a decompressor.
      * Will also report compression-related metadata to the caller.
      */
-    decompression_result = try_to_decompress (data, fd, fsize, compression_type, &buffer, &buffer_size, proc, proc_cls);
-    if (decompression_result != 0)
+    cfs = cfs_new (bfds, fsize, compression_type, proc, proc_cls);
+    if (cfs == NULL)
     {
-      /* Buffer is taken care of already */
-      close (fd);
+      if (fd != -1)
+        close (fd);
       errno = EILSEQ;
       return;
     }
-    else
+    icr = cfs_init_decompressor (cfs, proc, proc_cls);
+    if (icr < 0)
     {
-      close (fd);
-      fd = -1;
+      if (fd != -1)
+        close (fd);
+      errno = EILSEQ;
+      return;
+    }
+    else if (icr == 0)
+    {
+      if (fd != -1)
+        close (fd);
+      errno = 0;
+      return;
     }
   }
-
-  /* Now we either have a non-NULL data of fsize bytes
-   * OR a valid fd to read from and a small buffer of buffer_size bytes
-   * OR an invalid fd and a big buffer of buffer_size bytes
-   * Simplify this situation a bit:
-   */
-  if ((data == NULL) && (fd == -1) && (buffer_size > 0))
-  {
-    data = (const void *) buffer;
-    fsize = buffer_size;
-  }
-
-  /* Now we either have a non-NULL data of fsize bytes
-   * OR a valid fd to read from and a small buffer of buffer_size bytes
-   * and we might need to free the buffer later in either case
-   */
 
   /* do_extract () might set errno itself, but from our point of view everything is OK */
   errno = 0;
 
-  do_extract (plugins, data, fd, fsize, buffer, buffer_size, proc, proc_cls);
-
-  if (buffer != NULL)
-    free (buffer);
+  do_extract (plugins, data, fd, filename, cfs, fsize, proc, proc_cls);
+  if (cfs != NULL)
+  {
+    cfs_deinit_decompressor (cfs);
+    cfs_delete (cfs);
+  }
+  bfds_delete (bfds);
   if (-1 != fd)
     close(fd);
 }
@@ -2238,7 +2923,7 @@ RundllEntryPoint (HWND hwnd,
   out = _open_osfhandle (out_h, 0);
   setmode (in, _O_BINARY);
   setmode (out, _O_BINARY);
-  process_requests (read_plugin_data (in),
+  plugin_main (read_plugin_data (in),
 		    in, out);
 }
 

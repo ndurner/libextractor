@@ -65,8 +65,6 @@ struct EXTRACTOR_PluginList
    * Pointer to the function used for meta data extraction.
    */
   EXTRACTOR_extract_method extract_method;
-  EXTRACTOR_init_state_method init_state_method;
-  EXTRACTOR_discard_state_method discard_state_method;
 
   /**
    * Options for the plugin.
@@ -103,6 +101,7 @@ struct EXTRACTOR_PluginList
 #else
   HANDLE cpipe_in;
 #endif
+  int pipe_in;
 
   /**
    * A position this plugin wants us to seek to. -1 if it's finished.
@@ -120,11 +119,13 @@ struct EXTRACTOR_PluginList
 
   int64_t fsize;
 
-  int64_t position;
+  int64_t fpos;
 
   unsigned char *shm_ptr;
 
-  size_t map_size;
+  int64_t map_size;
+
+  int64_t shm_pos;
 
   /**
    * Pipe used to read information about extracted meta data from
@@ -134,6 +135,12 @@ struct EXTRACTOR_PluginList
   int cpipe_out;
 #else
   HANDLE cpipe_out;
+#endif
+
+#if !WINDOWS
+  long allocation_granularity;
+#else
+  DWORD allocation_granularity;
 #endif
 
 #if WINDOWS
@@ -152,6 +159,9 @@ struct EXTRACTOR_PluginList
    */
   unsigned char *ov_write_buffer;
 #endif
+
+  uint8_t operation_mode;
+  int waiting_for_update;
 };
 
 /**
@@ -162,5 +172,17 @@ struct EXTRACTOR_PluginList
  */
 int
 plugin_load (struct EXTRACTOR_PluginList *plugin);
+
+int64_t
+pl_read (struct EXTRACTOR_PluginList *plugin, unsigned char **data, size_t count);
+
+int64_t
+pl_seek (struct EXTRACTOR_PluginList *plugin, int64_t pos, int whence);
+
+int64_t
+pl_get_fsize (struct EXTRACTOR_PluginList *plugin);
+
+int64_t
+pl_get_pos (struct EXTRACTOR_PluginList *plugin);
 
 #endif /* EXTRACTOR_PLUGINS_H */

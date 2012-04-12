@@ -208,20 +208,11 @@ plugin_load (struct EXTRACTOR_PluginList *plugin)
 						  "_EXTRACTOR_%s_extract_method",
 						  plugin->libname,
 						  &plugin->specials);
-  plugin->init_state_method = get_symbol_with_prefix (plugin->libraryHandle,
-						  "_EXTRACTOR_%s_init_state_method",
-						  plugin->libname,
-						  &plugin->specials);
-  plugin->discard_state_method = get_symbol_with_prefix (plugin->libraryHandle,
-						  "_EXTRACTOR_%s_discard_state_method",
-						  plugin->libname,
-						  &plugin->specials);
-  if (plugin->extract_method == NULL || plugin->init_state_method == NULL ||
-      plugin->discard_state_method == NULL) 
+  if (plugin->extract_method == NULL) 
     {
 #if DEBUG
       fprintf (stderr,
-	       "Resolving `extract', 'init_state' or 'discard_state' method(s) of plugin `%s' failed: %s\n",
+	       "Resolving `extract' method of plugin `%s' failed: %s\n",
 	       plugin->short_libname,
 	       lt_dlerror ());
 #endif
@@ -285,6 +276,20 @@ EXTRACTOR_plugin_add (struct EXTRACTOR_PluginList * prev,
     result->plugin_options = strdup (options);
   else
     result->plugin_options = NULL;
+  /* This is kinda weird, but it allows us to not to call GetSystemInfo()
+   * or sysconf() every time we need allocation granularity - just once
+   * for each plugin.
+   * The only alternative is to keep it in a global variable...
+   */
+#if WINDOWS
+  {
+    SYSTEM_INFO si;
+    GetSystemInfo (&si);
+    result->allocation_granularity = si.dwAllocationGranularity;
+  }
+#else
+  result->allocation_granularity = sysconf (_SC_PAGE_SIZE);
+#endif
   return result;
 }
 
