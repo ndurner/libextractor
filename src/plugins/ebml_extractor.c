@@ -1765,7 +1765,7 @@ EXTRACTOR_ebml_extract_method (struct EXTRACTOR_PluginList *plugin, EXTRACTOR_Me
       state->next_state = EBML_READING_MATROSKA_SEGMENT_CONTENTS;
       clean_ebml_state_matroska_segment (state);
       ebml_stack_push_new (state, pl_get_pos (plugin), eID, eSize, read_result, EBML_FINISHED_READING_MATROSKA_SEGMENT_CONTENTS, EBML_READING_MATROSKA_SEGMENT, EBML_READ_ELEMENT, EBML_READING_MATROSKA_SEGMENT);
-      state->segment_contents_start = pl_get_pos (plugin) - read_result;
+      state->segment_contents_start = pl_get_pos (plugin);
       break;
     case EBML_READING_MATROSKA_SEGMENT_CONTENTS:
       if (!check_result (plugin, read_result, state))
