@@ -1088,7 +1088,7 @@ report_state (struct ebml_state *state, EXTRACTOR_MetaDataProcessor proc, void *
 #if WINDOWS
       millenium_start_stamp = _mktime64 (&millenium_start);
 #else
-      millenium_start_stamp = (__time64_t) mktime (&millenium_start);
+      millenium_start_stamp = (time_t) mktime (&millenium_start);
 #endif
       if (millenium_start_stamp == -1)
         printf ("Failed to convert time: %d\n", errno);

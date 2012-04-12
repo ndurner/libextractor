@@ -768,7 +768,11 @@ main (int argc, char *argv[])
 		         NULL);
     else
     {
-      int f = open (argv[i], _O_RDONLY | _O_BINARY);
+      int f = open (argv[i], O_RDONLY
+#if WINDOWS
+                                       | O_BINARY
+#endif
+                    );
       if (f != -1)
       {
         int64_t k = 0;
@@ -785,7 +789,11 @@ main (int argc, char *argv[])
           int rd;
           unsigned char *data = malloc (k);
           close (f);
-          f = open (argv[i], _O_RDONLY | _O_BINARY);
+          f = open (argv[i], O_RDONLY
+#if WINDOWS
+                                       | O_BINARY
+#endif
+                   );
           for (j = 0; j < k; j += rd)
           {
             void *ptr = (void *) &data[j];
