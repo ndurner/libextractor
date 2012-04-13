@@ -38,36 +38,7 @@
 
 #include "extractor_plugins.h"
 
-#if WINDOWS
-#include <sys/param.h>          /* #define BYTE_ORDER */
-#endif
-#ifndef __BYTE_ORDER
-#ifdef _BYTE_ORDER
-#define __BYTE_ORDER _BYTE_ORDER
-#else
-#ifdef BYTE_ORDER
-#define __BYTE_ORDER BYTE_ORDER
-#endif
-#endif
-#endif
-#ifndef __BIG_ENDIAN
-#ifdef _BIG_ENDIAN
-#define __BIG_ENDIAN _BIG_ENDIAN
-#else
-#ifdef BIG_ENDIAN
-#define __BIG_ENDIAN BIG_ENDIAN
-#endif
-#endif
-#endif
-#ifndef __LITTLE_ENDIAN
-#ifdef _LITTLE_ENDIAN
-#define __LITTLE_ENDIAN _LITTLE_ENDIAN
-#else
-#ifdef LITTLE_ENDIAN
-#define __LITTLE_ENDIAN LITTLE_ENDIAN
-#endif
-#endif
-#endif
+#include "le_architecture.h"
 
 #define LARGEST_FRAME_SIZE 8065
 

@@ -15,6 +15,7 @@ plugin_LTLIBRARIES = \
   libextractor_id3.la \
   libextractor_id3v2.la \
   libextractor_ebml.la \
+  libextractor_s3m.la \
   libextractor_mp3.la
 
 libextractor_mp3_la_SOURCES = \
@@ -46,6 +47,14 @@ libextractor_id3v2_la_SOURCES = \
 libextractor_id3v2_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_id3v2_la_LIBADD = \
+  $(top_builddir)/src/main/libextractor.la \
+  $(top_builddir)/src/common/libextractor_common.la
+
+libextractor_s3m_la_SOURCES = \
+  s3m_extractor.c
+libextractor_s3m_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+libextractor_s3m_la_LIBADD = \
   $(top_builddir)/src/main/libextractor.la \
   $(top_builddir)/src/common/libextractor_common.la
 
