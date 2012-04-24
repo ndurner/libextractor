@@ -264,7 +264,7 @@ EXTRACTOR_id3_extract_method (struct EXTRACTOR_PluginList *plugin,
 {
   id3tag info;
   int64_t fsize;
-  char *data;
+  unsigned char *data;
   char track[16];
 
   if (plugin == NULL)
@@ -280,7 +280,7 @@ EXTRACTOR_id3_extract_method (struct EXTRACTOR_PluginList *plugin,
 
   memset (&info, 0, sizeof (info));
 
-  if (OK != get_id3 (data, 0, 128, &info))
+  if (OK != get_id3 ((const char *) data, 0, 128, &info))
     return 1;
   ADD (info.title, EXTRACTOR_METATYPE_TITLE);
   ADD (info.artist, EXTRACTOR_METATYPE_ARTIST);
