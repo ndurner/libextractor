@@ -2538,15 +2538,17 @@ pl_seek (struct EXTRACTOR_PluginList *plugin, int64_t pos, int whence)
     {
       pl_pick_next_buffer_at (plugin, plugin->fpos + plugin->map_size + pos, 0);
     }
-    if (plugin->fsize + pos - 1 >= plugin->fpos && plugin->fsize + pos - 1 <= plugin->fpos + plugin->map_size)
+    if (plugin->fsize + pos - 1 < plugin->fpos || plugin->fsize + pos - 1 > plugin->fpos + plugin->map_size)
     {
-      plugin->shm_pos = plugin->fsize + pos - plugin->fpos;
-      return plugin->fpos + plugin->shm_pos - 1;
+      if (0 != pl_pick_next_buffer_at (plugin, plugin->fsize - MAX_READ, 0))
+        return -1;
     }
-    if (0 != pl_pick_next_buffer_at (plugin, plugin->fsize - MAX_READ, 0))
-      return -1;
     plugin->shm_pos = plugin->fsize + pos - plugin->fpos;
-    return plugin->fsize + pos - 1;
+    if (plugin->shm_pos < 0)
+      plugin->shm_pos = 0;
+    else if (plugin->shm_pos >= plugin->map_size)
+      plugin->shm_pos = plugin->map_size - 1;
+    return plugin->fpos + plugin->shm_pos - 1;
     break;
   }
   return -1;
