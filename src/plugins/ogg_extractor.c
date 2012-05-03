@@ -20,6 +20,7 @@
 
 #include "platform.h"
 #include "extractor.h"
+#include "extractor_plugins.h"
 
 #define DEBUG_EXTRACT_OGG 0
 #define OGG_HEADER 0x4f676753
@@ -40,27 +41,21 @@ get_comment (vorbis_comment * vc, char *label)
 }
 
 static size_t
-readError (void *ptr, size_t size, size_t nmemb, void *datasource)
+readOgg (void *ptr, size_t size, size_t nmemb, void *datasource)
 {
-  return -1;
-}
+  struct EXTRACTOR_PluginList *plugin = datasource;
+  int64_t ret;
+  unsigned char *read_data;
 
-static int
-seekError (void *datasource, int64_t offset, int whence)
-{
-  return -1;
-}
-
-static int
-closeOk (void *datasource)
-{
-  return 0;
-}
-
-static long
-tellError (void *datasource)
-{
-  return -1;
+  ret = pl_read (plugin, &read_data, size*nmemb);
+  if (ret <= 0)
+  {
+    if (ret < 0)
+      errno = EIO;
+    return 0;
+  }
+  memcpy (ptr, read_data, ret);
+  return ret;
 }
 
 #define ADD(t,s) do { if (0 != (ret = proc (proc_cls, "ogg", t, EXTRACTOR_METAFORMAT_UTF8, "text/plain", s, strlen(s)+1))) goto FINISH; } while (0)
@@ -68,38 +63,39 @@ tellError (void *datasource)
 #define ADDG(t,d) do { m = get_comment (comments, d); if (m != NULL) ADD(t,m); } while (0)
 
 /* mimetype = application/ogg */
-int 
-EXTRACTOR_ogg_extract (const char *data,
-		       size_t size,
-		       EXTRACTOR_MetaDataProcessor proc,
-		       void *proc_cls,
-		       const char *options)
+int
+EXTRACTOR_ogg_extract_method (struct EXTRACTOR_PluginList *plugin,
+    EXTRACTOR_MetaDataProcessor proc, void *proc_cls)
 {
   OggVorbis_File vf;
   vorbis_comment *comments;
   ov_callbacks callbacks;
   int ret;
+  int64_t fsize;
   const char *m;
 
-  if (size < 2 * sizeof (int))
-    return 0;
-  if (OGG_HEADER != ntohl (*(int *) data))
-    return 0;
-  callbacks.read_func = &readError;
-  callbacks.seek_func = &seekError;
-  callbacks.close_func = &closeOk;
-  callbacks.tell_func = &tellError;
-  if (0 != ov_open_callbacks (NULL, &vf, (char*) data, size, callbacks))
-    {
-      ov_clear (&vf);
-      return 0;
-    }
+  fsize = pl_get_fsize (plugin);
+  if (fsize > 0 && fsize < 2 * sizeof (int))
+    return 1;
+  if (fsize == 0)
+    return 1;
+
+  /* TODO: rewrite pl_seek() to be STDIO-compatible (SEEK_END) and enable seeking. */
+  callbacks.read_func = &readOgg;
+  callbacks.seek_func = NULL;
+  callbacks.close_func = NULL;
+  callbacks.tell_func = NULL;
+  if (0 != ov_open_callbacks (plugin, &vf, NULL, 0, callbacks))
+  {
+    ov_clear (&vf);
+    return 1;
+  }
   comments = ov_comment (&vf, -1);
   if (NULL == comments)
-    {
-      ov_clear (&vf);
-      return 0;
-    }
+  {
+    ov_clear (&vf);
+    return 1;
+  }
   ret = 0;
   ADD (EXTRACTOR_METATYPE_MIMETYPE, "application/ogg");
   if ((comments->vendor != NULL) && (strlen (comments->vendor) > 0))
@@ -121,7 +117,7 @@ EXTRACTOR_ogg_extract (const char *data,
   ADDG (EXTRACTOR_METATYPE_COPYRIGHT, "copyright");
   ADDG (EXTRACTOR_METATYPE_LICENSE, "license");
   ADDG (EXTRACTOR_METATYPE_SONG_VERSION, "version");
- FINISH:
+FINISH:
   ov_clear (&vf);
-  return ret;
+  return 1;
 }

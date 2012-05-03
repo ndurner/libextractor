@@ -16,6 +16,7 @@ plugin_LTLIBRARIES = \
   libextractor_id3v2.la \
   libextractor_ebml.la \
   libextractor_s3m.la \
+  libextractor_ogg.la \
   libextractor_mp3.la
 
 libextractor_mp3_la_SOURCES = \
@@ -57,5 +58,14 @@ libextractor_s3m_la_LDFLAGS = \
 libextractor_s3m_la_LIBADD = \
   $(top_builddir)/src/main/libextractor.la \
   $(top_builddir)/src/common/libextractor_common.la
+
+libextractor_ogg_la_SOURCES = \
+  ogg_extractor.c
+libextractor_ogg_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+libextractor_ogg_la_LIBADD = \
+  $(top_builddir)/src/main/libextractor.la \
+  $(top_builddir)/src/common/libextractor_common.la \
+  -lvorbisfile -lvorbis $(vorbisflag) -logg
 
 EXTRA_DIST = template_extractor.c 
