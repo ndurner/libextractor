@@ -85,17 +85,21 @@ static struct
 
 
 static int
-processtEXt (const char *data,
+processtEXt (struct EXTRACTOR_PluginList *plugin,
              unsigned int length,
 	     EXTRACTOR_MetaDataProcessor proc,
 	     void *proc_cls)
 {
+  unsigned char *data;
   char *keyword;
   unsigned int off;
   int i;
   int ret;
 
-  data += 4;
+  if (length != pl_read (plugin, &data, length))
+    return 1;
+
+  //data += 4;
   off = stnlen (data, length) + 1;
   if (off >= length)
     return 0;                /* failed to find '\0' */
@@ -115,16 +119,17 @@ processtEXt (const char *data,
       i++;
     }
   ADDF (EXTRACTOR_METATYPE_KEYWORDS, keyword);
- FINISH:
+FINISH:
   return ret;
 }
 
 static int
-processiTXt (const char *data,
+processiTXt (struct EXTRACTOR_PluginList *plugin,
              unsigned int length, 
 	     EXTRACTOR_MetaDataProcessor proc,
 	     void *proc_cls)
 {
+  unsigned char *data;
   unsigned int pos;
   char *keyword;
   const char *language;
@@ -137,8 +142,11 @@ processiTXt (const char *data,
   int ret;
   int zret;
 
+  if (length != pl_read (plugin, &data, length))
+    return 1;
+
   pos = stnlen (data, length) + 1;
-  if (pos + 3 >= length)
+  if (pos >= length)
     return 0;
   compressed = data[pos++];
   if (compressed && (data[pos++] != 0))
@@ -148,8 +156,7 @@ processiTXt (const char *data,
   if (stnlen (language, length - pos) > 0)
     {
       lan = stndup (language, length - pos);
-      ADDF (EXTRACTOR_METATYPE_LANGUAGE,
-	    lan);
+      ADDF (EXTRACTOR_METATYPE_LANGUAGE, lan);
     }
   pos += stnlen (language, length - pos) + 1;
   if (pos + 1 >= length)
@@ -158,8 +165,7 @@ processiTXt (const char *data,
   if (stnlen (translated, length - pos) > 0)
     {
       lan = stndup (translated, length - pos);
-      ADDF (EXTRACTOR_METATYPE_KEYWORDS,
-	    lan);
+      ADDF (EXTRACTOR_METATYPE_KEYWORDS, lan);
     }
   pos += stnlen (translated, length - pos) + 1;
   if (pos >= length)
@@ -214,38 +220,44 @@ processiTXt (const char *data,
       i++;
     }
   ADDF (EXTRACTOR_METATYPE_COMMENT, keyword);
- FINISH:
+FINISH:
   return ret;
 }
 
 
 static int
-processIHDR (const char *data,
+processIHDR (struct EXTRACTOR_PluginList *plugin,
              unsigned int length, 
 	     EXTRACTOR_MetaDataProcessor proc,
 	     void *proc_cls)
 {
+  unsigned char *data;
   char tmp[128];
   int ret;
 
   if (length < 12)
     return 0;
+
+  if (length != pl_read (plugin, &data, length))
+    return 1;
+
   ret = 0;
   snprintf (tmp,
             sizeof(tmp),
             "%ux%u",
-            htonl (getIntAt (&data[4])), htonl (getIntAt (&data[8])));
+            htonl (getIntAt (data)), htonl (getIntAt (&data[4])));
   ADD (EXTRACTOR_METATYPE_IMAGE_DIMENSIONS, tmp);
- FINISH:
+FINISH:
   return ret;
 }
 
 static int
-processzTXt (const char *data,
+processzTXt (struct EXTRACTOR_PluginList *plugin,
              unsigned int length,
 	     EXTRACTOR_MetaDataProcessor proc,
 	     void *proc_cls)
 {
+  unsigned char *data;
   char *keyword;
   unsigned int off;
   int i;
@@ -254,7 +266,10 @@ processzTXt (const char *data,
   int zret;
   int ret;
 
-  data += 4;
+  if (length != pl_read (plugin, &data, length))
+    return 1;
+
+  //data += 4;
   off = stnlen (data, length) + 1;
   if (off >= length)
     return 0;                /* failed to find '\0' */
@@ -303,16 +318,17 @@ processzTXt (const char *data,
       i++;
     }
   ADDF (EXTRACTOR_METATYPE_COMMENT, keyword);
- FINISH:
+FINISH:
   return ret;
 }
 
 static int
-processtIME (const char *data,
+processtIME (struct EXTRACTOR_PluginList *plugin,
              unsigned int length,
 	     EXTRACTOR_MetaDataProcessor proc,
 	     void *proc_cls)
 {
+  unsigned char *data;
   unsigned short y;
   unsigned int year;
   unsigned int mo;
@@ -325,8 +341,12 @@ processtIME (const char *data,
 
   if (length != 7)
     return 0;
+
+  if (length != pl_read (plugin, &data, length))
+    return 1;
+
   ret = 0;
-  memcpy (&y, &data[4], sizeof (unsigned short));
+  memcpy (&y, data, sizeof (unsigned short));
   year = ntohs (y);
   mo = (unsigned char) data[6];
   day = (unsigned char) data[7];
@@ -337,7 +357,7 @@ processtIME (const char *data,
 	    sizeof(val),
 	    "%04u-%02u-%02u %02d:%02d:%02d", year, mo, day, h, m, s);
   ADD (EXTRACTOR_METATYPE_MODIFICATION_DATE, val);
- FINISH:
+FINISH:
   return ret;
 }
 
@@ -345,47 +365,55 @@ processtIME (const char *data,
 
 
 
-int 
-EXTRACTOR_png_extract (const char *data,
-		       size_t size,
-		       EXTRACTOR_MetaDataProcessor proc,
-		       void *proc_cls,
-		       const char *options)
+int
+EXTRACTOR_png_extract_method (struct EXTRACTOR_PluginList *plugin,
+    EXTRACTOR_MetaDataProcessor proc, void *proc_cls)
 {
-  const char *pos;
-  const char *end;
+  unsigned char *data;
   unsigned int length;
+  int64_t pos;
   int ret;
 
-  if (size < strlen (PNG_HEADER))
-    return 0;
-  if (0 != strncmp (data, PNG_HEADER, strlen (PNG_HEADER)))
-    return 0;
-  end = &data[size];
-  pos = &data[strlen (PNG_HEADER)];
+  if (plugin == NULL)
+    return 1;
+
+  ret = strlen (PNG_HEADER);
+
+  if (ret != pl_read (plugin, &data, ret))
+    return 1;
+  
+  if (0 != strncmp (data, PNG_HEADER, ret))
+    return 1;
+
   ADD (EXTRACTOR_METATYPE_MIMETYPE, "image/png");
   ret = 0;
   while (ret == 0)
     {
-      if (pos + 12 >= end)
+      if (4 != pl_read (plugin, &data, 4))
         break;
-      length = htonl (getIntAt (pos));
-      pos += 4;
+      length = htonl (getIntAt (data));
       /* printf("Length: %u, pos %u\n", length, pos - data); */
-      if ((pos + 4 + length + 4 > end) || (pos + 4 + length + 4 < pos + 8))
+      if (4 != pl_read (plugin, &data, 4))
         break;
-      if (0 == strncmp (pos, "IHDR", 4))
-        ret = processIHDR (pos, length, proc, proc_cls);
-      if (0 == strncmp (pos, "iTXt", 4))
-        ret = processiTXt (pos, length, proc, proc_cls);
-      if (0 == strncmp (pos, "tEXt", 4))
-        ret = processtEXt (pos, length, proc, proc_cls);
-      if (0 == strncmp (pos, "zTXt", 4))
-        ret = processzTXt (pos, length, proc, proc_cls);
-      if (0 == strncmp (pos, "tIME", 4))
-        ret = processtIME (pos, length, proc, proc_cls);
-      pos += 4 + length + 4;    /* Chunk type, data, crc */
+      pos = pl_get_pos (plugin);
+      if (pos <= 0)
+        break;
+      pos += length + 4; /* Chunk type, data, crc */
+      if (0 == strncmp (data, "IHDR", 4))
+        ret = processIHDR (plugin, length, proc, proc_cls);
+      if (0 == strncmp (data, "iTXt", 4))
+        ret = processiTXt (plugin, length, proc, proc_cls);
+      if (0 == strncmp (data, "tEXt", 4))
+        ret = processtEXt (plugin, length, proc, proc_cls);
+      if (0 == strncmp (data, "zTXt", 4))
+        ret = processzTXt (plugin, length, proc, proc_cls);
+      if (0 == strncmp (data, "tIME", 4))
+        ret = processtIME (plugin, length, proc, proc_cls);
+      if (ret != 0)
+        break;
+      if (pos != pl_seek (plugin, pos, SEEK_SET))
+        break;
     }
- FINISH:
-  return ret;
+FINISH:
+  return 1;
 }

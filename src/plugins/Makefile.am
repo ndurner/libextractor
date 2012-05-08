@@ -17,6 +17,7 @@ plugin_LTLIBRARIES = \
   libextractor_ebml.la \
   libextractor_s3m.la \
   libextractor_ogg.la \
+  libextractor_png.la \
   libextractor_mp3.la
 
 libextractor_mp3_la_SOURCES = \
@@ -67,5 +68,13 @@ libextractor_ogg_la_LIBADD = \
   $(top_builddir)/src/main/libextractor.la \
   $(top_builddir)/src/common/libextractor_common.la \
   -lvorbisfile -lvorbis $(vorbisflag) -logg
+
+libextractor_png_la_SOURCES = \
+  png_extractor.c
+libextractor_png_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+libextractor_png_la_LIBADD = \
+  $(top_builddir)/src/main/libextractor.la \
+  $(top_builddir)/src/common/libextractor_common.la
 
 EXTRA_DIST = template_extractor.c 
