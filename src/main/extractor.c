@@ -2679,6 +2679,8 @@ ask_in_process_plugin (struct EXTRACTOR_PluginList *plugin, void *shm_ptr, EXTRA
     {
       plugin->shm_ptr = shm_ptr;
       extract_reply = plugin->extract_method (plugin, proc, proc_cls);
+      /* Don't leak errno from the extract method */
+      errno = 0;
       if (extract_reply == 1)
         plugin->seek_request = -1;
     }
