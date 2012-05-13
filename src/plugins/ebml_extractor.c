@@ -1003,10 +1003,12 @@ report_state (struct ebml_state *state, EXTRACTOR_MetaDataProcessor proc, void *
   if (state->valid_ebml && !state->reported_ebml)
   {
     state->reported_ebml = 1;
-    snprintf (format, MAX_STRING_SIZE, "%llu", state->ebml_version);
+    snprintf (format, MAX_STRING_SIZE, "%llu", (unsigned long long) state->ebml_version);
     format[MAX_STRING_SIZE] = '\0';
     ADD_EBML(format, EXTRACTOR_METATYPE_FORMAT_VERSION);
-    snprintf (format, MAX_STRING_SIZE, "%s %llu (EBML %llu)", state->doctype, state->doctype_version, state->ebml_version);
+    snprintf (format, MAX_STRING_SIZE, "%s %llu (EBML %llu)", state->doctype, 
+              (unsigned long long) state->doctype_version,
+              (unsigned long long) state->ebml_version);
     format[MAX_STRING_SIZE] = '\0';
     ADD_EBML (format, EXTRACTOR_METATYPE_RESOURCE_TYPE);
   }
@@ -1026,7 +1028,7 @@ report_state (struct ebml_state *state, EXTRACTOR_MetaDataProcessor proc, void *
     if (state->matroska_info_duration != -1.0)
     {
       uint64_t seconds = (uint64_t) ((state->matroska_info_duration * (float) state->matroska_info_timecode_scale) / 1e+9);
-      snprintf (format, MAX_STRING_SIZE, "%llus", seconds);
+      snprintf (format, MAX_STRING_SIZE, "%llus", (unsigned long long) seconds);
       format[MAX_STRING_SIZE] = '\0';
       ADD_MATROSKA(format, EXTRACTOR_METATYPE_DURATION);
     }
@@ -1159,7 +1161,9 @@ report_state (struct ebml_state *state, EXTRACTOR_MetaDataProcessor proc, void *
        * done either way (stretching horizontally or squishing vertically),
        * so let's stick to hard cold pixel counts.
        */
-      snprintf (format, MAX_STRING_SIZE, "%llux%llu", state->matroska_track_video_pixel_width, state->matroska_track_video_pixel_height);
+      snprintf (format, MAX_STRING_SIZE, "%llux%llu", 
+                (unsigned long long) state->matroska_track_video_pixel_width,
+                (unsigned long long) state->matroska_track_video_pixel_height);
       format[MAX_STRING_SIZE] = '\0';
       ADD_MATROSKA (format, EXTRACTOR_METATYPE_IMAGE_DIMENSIONS);
     }
@@ -1176,13 +1180,14 @@ report_state (struct ebml_state *state, EXTRACTOR_MetaDataProcessor proc, void *
       hz_part[MAX_STRING_SIZE] = '\0';
 
       if (state->matroska_track_audio_bit_depth > 0)
-        snprintf (bit_part, MAX_STRING_SIZE, "%llu-bit ", state->matroska_track_audio_bit_depth);
+        snprintf (bit_part, MAX_STRING_SIZE, "%llu-bit ", (unsigned long long) state->matroska_track_audio_bit_depth);
       else
         bit_part[0] = '\0';
       bit_part[MAX_STRING_SIZE] = '\0';
 
       snprintf (format, MAX_STRING_SIZE, "%s track %s(%s, %llu-channel %sat %s) [%s]",
-          track_type_string, name_part, codec_part, state->matroska_track_audio_channels,
+          track_type_string, name_part, codec_part, 
+          (unsigned long long) state->matroska_track_audio_channels,
           bit_part, hz_part, state->matroska_track_language);
     }
     else

@@ -11,12 +11,16 @@ PLUGINFLAGS = $(makesymbolic) $(LE_PLUGIN_LDFLAGS)
 
 SUBDIRS = . 
 
+if HAVE_VORBISFILE
+ PLUGIN_OGG=libextractor_ogg.la
+endif
+
 plugin_LTLIBRARIES = \
   libextractor_id3.la \
   libextractor_id3v2.la \
   libextractor_ebml.la \
   libextractor_s3m.la \
-  libextractor_ogg.la \
+  $(PLUGIN_OGG) \
   libextractor_png.la \
   libextractor_mp3.la
 
