@@ -366,7 +366,6 @@ process_requests (struct EXTRACTOR_PluginList *plugin)
   int in, out;
   int read_result1, read_result2, read_result3, read_result4;
   unsigned char code;
-  void *shm_ptr = NULL;
   char *shm_name = NULL;
   size_t shm_name_len;
 
@@ -1658,7 +1657,7 @@ bfds_read (struct BufferedFileDataSource *bfds, unsigned char **buf_ptr, int64_t
     else
     {
       int64_t ret = count < (bfds->buffer_bytes - bfds->buffer_pos) ? count : (bfds->buffer_bytes - bfds->buffer_pos);
-      *buf_ptr = &bfds->data[bfds->buffer_pos];
+      *buf_ptr = (unsigned char*) &bfds->data[bfds->buffer_pos];
       bfds->buffer_pos += ret;
       return ret;
     }
@@ -1668,7 +1667,7 @@ bfds_read (struct BufferedFileDataSource *bfds, unsigned char **buf_ptr, int64_t
     if (bfds->data == NULL)
       *buf_ptr = &bfds->buffer[bfds->buffer_pos];
     else
-      *buf_ptr = &bfds->data[bfds->buffer_pos];
+      *buf_ptr = (unsigned char*) &bfds->data[bfds->buffer_pos];
     bfds->buffer_pos += count;
     return count;
   }
@@ -1784,7 +1783,7 @@ struct CompressedFileSource
 #endif
 };
 
-int
+void
 cfs_delete (struct CompressedFileSource *cfs)
 {
 #if WINDOWS
@@ -1829,11 +1828,9 @@ cfs_reset_stream_zlib (struct CompressedFileSource *cfs)
   cfs->shm_pos = 0;
   cfs->shm_buf_size = 0;
 
-#if HAVE_ZLIB
-  z_stream strm;
-#endif
   return 1;
 }
+
 
 static int
 cfs_reset_stream_bz2 (struct CompressedFileSource *cfs)
@@ -1882,7 +1879,6 @@ cfs_init_decompressor_zlib (struct CompressedFileSource *cfs, EXTRACTOR_MetaData
 
   if (data[3] & 0x8) /* FNAME set */
   {
-    int64_t fp = cfs->fpos;
     int64_t buf_bytes;
     int len;
     unsigned char *buf, *cptr;
@@ -1916,7 +1912,6 @@ cfs_init_decompressor_zlib (struct CompressedFileSource *cfs, EXTRACTOR_MetaData
 
   if (data[3] & 0x16) /* FCOMMENT set */
   {
-    int64_t fp = cfs->fpos;
     int64_t buf_bytes;
     int len;
     unsigned char *buf, *cptr;
@@ -2037,7 +2032,6 @@ struct CompressedFileSource *
 cfs_new (struct BufferedFileDataSource *bfds, int64_t fsize, enum ExtractorCompressionType compression_type, EXTRACTOR_MetaDataProcessor proc, void *proc_cls)
 {
   int shm_result;
-  size_t map_size;
   struct CompressedFileSource *cfs;
   cfs = malloc (sizeof (struct CompressedFileSource));
   if (cfs == NULL)
@@ -2488,6 +2482,7 @@ pl_pick_next_buffer_at (struct EXTRACTOR_PluginList *plugin, int64_t pos, uint8_
     }
     return 0;
   }
+  return -1;
 }
 
 /**
@@ -3273,9 +3268,6 @@ EXTRACTOR_extract (struct EXTRACTOR_PluginList *plugins,
   struct stat64 fstatbuf;
   int64_t fsize = 0;
   enum ExtractorCompressionType compression_type = -1;
-  void *buffer = NULL;
-  size_t buffer_size;
-  int decompression_result;
   struct CompressedFileSource *cfs = NULL;
 
   /* If data is not given, then we need to read it from the file. Try opening it */

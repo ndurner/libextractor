@@ -255,8 +255,6 @@ int
 EXTRACTOR_id3v2_extract_method (struct EXTRACTOR_PluginList *plugin,
     EXTRACTOR_MetaDataProcessor proc, void *proc_cls)
 {
-  int64_t file_position;
-  int64_t file_size;
   int64_t offset = 0;
   int64_t size;
   struct id3v2_state *state;
