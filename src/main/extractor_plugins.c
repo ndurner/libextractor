@@ -71,14 +71,14 @@ get_symbol_with_prefix(void *lib_handle,
   const char *(*opt_fun)(void);
 
   if (NULL != options) *options = NULL;
-  sym_name = strstr (prefix, "_");
+  sym_name = strrchr (prefix, '_');
   if (sym_name == NULL)
     return NULL;
   sym_name++;
   sym = strdup (sym_name);
   if (sym == NULL)
     return NULL;
-  dot = strstr (sym, ".");
+  dot = strchr (sym, '.');
   if (dot != NULL)
     *dot = '\0';
   name = malloc(strlen(sym) + strlen(template) + 1);

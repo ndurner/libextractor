@@ -407,7 +407,7 @@ find_plugin_in_path (void *cls,
       if ( (NULL != (la = strstr (ent->d_name, ".la"))) &&
 	   (la[3] == '\0') )
 	continue; /* only load '.so' and '.dll' */
-      sym_name = strstr (ent->d_name, "_");
+      sym_name = strrchr (ent->d_name, '_');
       if (sym_name == NULL)
 	continue;	
       sym_name++;
@@ -417,7 +417,7 @@ find_plugin_in_path (void *cls,
 	  CLOSEDIR (dir);
 	  return;
 	}
-      dot = strstr (sym, ".");
+      dot = strchr (sym, '.');
       if (dot != NULL)
 	*dot = '\0';
       if (0 == strcmp (sym, sc->short_name))
@@ -439,7 +439,6 @@ find_plugin_in_path (void *cls,
 }
 
 
-
 /**
  * Given a short name of a library (i.e. "mime"), find
  * the full path of the respective plugin.
@@ -455,9 +454,6 @@ find_plugin (const char *short_name)
 			  &sc);
   return sc.path;
 }
-
-
-
 
 
 /**
@@ -491,7 +487,7 @@ load_plugins_from_dir (void *cls,
 	     (la[2] == '\0')) )
 	continue; /* only load '.so' and '.dll' */
 
-      sym_name = strstr (ent->d_name, "_");
+      sym_name = strrchr (ent->d_name, '_');
       if (sym_name == NULL)
 	continue;
       sym_name++;
@@ -501,7 +497,7 @@ load_plugins_from_dir (void *cls,
 	  closedir (dir);
 	  return;
 	}
-      dot = strstr (sym, ".");
+      dot = strchr (sym, '.');
       if (dot != NULL)
 	*dot = '\0';
 #if DEBUG > 1
