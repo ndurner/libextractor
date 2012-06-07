@@ -256,7 +256,6 @@ EXTRACTOR_id3v2_extract_method (struct EXTRACTOR_PluginList *plugin,
     EXTRACTOR_MetaDataProcessor proc, void *proc_cls)
 {
   int64_t offset = 0;
-  int64_t size;
   struct id3v2_state *state;
   unsigned char *data;
   char *word = NULL;
@@ -360,9 +359,9 @@ EXTRACTOR_id3v2_extract_method (struct EXTRACTOR_PluginList *plugin,
       }
       if (state->ver == 0x03 && state->extended_header)
       {
-        uint32_t padding, extended_header_size;
+        uint32_t extended_header_size;
         extended_header_size = (((data[0]) << 24) | ((data[1]) << 16) | ((data[2]) << 8) | ((data[3]) << 0));
-        padding = (((data[6]) << 24) | ((data[7]) << 16) | ((data[8]) << 8) | ((data[9]) << 0));
+        // padding = (((data[6]) << 24) | ((data[7]) << 16) | ((data[8]) << 8) | ((data[9]) << 0));
         if (extended_header_size - 6 != pl_read (plugin, &data, extended_header_size - 6))
         {
           state->state = ID3V2_INVALID;
@@ -532,7 +531,7 @@ EXTRACTOR_id3v2_extract_method (struct EXTRACTOR_PluginList *plugin,
         }
         /* find end of description */
         off = 4;
-        while ((off < size) && (off < state->csize) && (data[off] != '\0'))
+        while ((off < state->csize) && (data[off] != '\0'))
           off++;
         if ((off >= state->csize) || (data[off] != '\0'))
         {
@@ -591,7 +590,7 @@ EXTRACTOR_id3v2_extract_method (struct EXTRACTOR_PluginList *plugin,
         }
         /* find end of description */
         off = 4;
-        while ((off < size) && (off < state->csize) && (data[off] != '\0'))
+        while ((off < state->csize) && (data[off] != '\0'))
           off++;
         if ((off >= state->csize) || (data[off] != '\0'))
         {

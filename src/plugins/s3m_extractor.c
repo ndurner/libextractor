@@ -63,7 +63,6 @@ int
 EXTRACTOR_s3m_extract_method (struct EXTRACTOR_PluginList *plugin,
     EXTRACTOR_MetaDataProcessor proc, void *proc_cls)
 {
-  int64_t offset;
   unsigned char *data;
   struct S3MHeader header;
   char song_name_NT[29];

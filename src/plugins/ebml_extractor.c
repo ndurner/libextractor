@@ -355,7 +355,6 @@ VINTparse (struct EXTRACTOR_PluginList *plugin,
   unsigned int c;
   uint64_t result_u;
   int64_t result_s;
-  unsigned char tempc;
   uint64_t temp;
   unsigned char *data;
   unsigned char first_byte;
@@ -499,7 +498,6 @@ elementRead (struct EXTRACTOR_PluginList *plugin,
   int64_t tempsize;
   ssize_t id_offset;
   ssize_t size_offset;
-  unsigned char *data;
 
   tempID = 0;
 
@@ -526,9 +524,7 @@ idRead (struct EXTRACTOR_PluginList *plugin,
         uint64_t length, uint32_t *id)
 {
   int64_t tempID;
-  int64_t tempsize;
   ssize_t id_offset;
-  ssize_t size_offset;
 
   tempID = 0;
 
@@ -945,7 +941,7 @@ EXTRACTOR_ebml_init_state_method ()
   struct ebml_state *state;
   state = malloc (sizeof (struct ebml_state));
   if (state == NULL)
-    return;
+    return NULL;
   memset (state, 0, sizeof (struct ebml_state));
 
   state->next_state = EBML_BAD_STATE;
@@ -959,7 +955,7 @@ EXTRACTOR_ebml_init_state_method ()
 static void
 report_simpletag (struct ebml_state *state, EXTRACTOR_MetaDataProcessor proc, void *proc_cls)
 {
-  struct matroska_simpletag *el, *next, *parent;
+  struct matroska_simpletag *el, *next;
   char format[MAX_STRING_SIZE + 1];
   for (el = state->tag_tree; el != NULL; el = next)
   {
@@ -1124,9 +1120,9 @@ report_state (struct ebml_state *state, EXTRACTOR_MetaDataProcessor proc, void *
     char hz_part[MAX_STRING_SIZE + 1];
     struct MatroskaTrackType *tt;
     const char *track_type_string = NULL;
-    char *codec_name = NULL;
     char use_video = 0;
     char use_audio = 0;
+
     state->reported_matroska_track = 1;
     for (tt = track_types; tt->code > 0; tt++)
     {
@@ -1144,7 +1140,7 @@ report_state (struct ebml_state *state, EXTRACTOR_MetaDataProcessor proc, void *
       track_type_string = "unknown";
 
     if (state->matroska_track_name == NULL)
-      snprintf (name_part, MAX_STRING_SIZE, "");
+      snprintf (name_part, MAX_STRING_SIZE, "%s", "");
     else
       snprintf (name_part, MAX_STRING_SIZE, "`%s' ", state->matroska_track_name);
     name_part[MAX_STRING_SIZE] = '\0';
@@ -1229,12 +1225,6 @@ ebml_stack_pop (struct ebml_state *state)
   return result;
 }
 
-static void
-ebml_stack_push (struct ebml_state *state, struct ebml_element *element)
-{
-  element->parent = state->stack_top;
-  state->stack_top = element;
-}
 
 static void
 ebml_stack_push_new (struct ebml_state *state, uint64_t position, uint32_t id, uint64_t size, uint64_t header_size, int finish_state, int prev_state, int bail_state, int bail_next_state)
@@ -1398,7 +1388,6 @@ sort_seeks (struct ebml_state *state)
 int
 EXTRACTOR_ebml_extract_method (struct EXTRACTOR_PluginList *plugin, EXTRACTOR_MetaDataProcessor proc, void *proc_cls)
 {
-  int64_t i;
   uint64_t offset = 0;
   ssize_t read_result;
   unsigned char *data;
@@ -1408,13 +1397,11 @@ EXTRACTOR_ebml_extract_method (struct EXTRACTOR_PluginList *plugin, EXTRACTOR_Me
   uint32_t eID;
   uint64_t eSize;
   int do_break;
-  int r;
 
   uint64_t uint_value;
   int64_t sint_value;
   char string_value[MAX_STRING_SIZE + 1];
   long double float_value;
-  int64_t date_value;
   uint32_t id_value;
 
   if (plugin == NULL)
@@ -1456,7 +1443,7 @@ EXTRACTOR_ebml_extract_method (struct EXTRACTOR_PluginList *plugin, EXTRACTOR_Me
       state->state = EBML_READING_HEADER;
       break;
     case EBML_READING_HEADER:
-      if (0 > (read_result = elementRead (plugin, &eID, &eSize)))
+      if (0 > (read_result = elementRead (plugin, &eID, (int64_t*) &eSize)))
         return EXTRACTOR_ebml_discard_state_method (state);
       if (EBMLID_EBML != eID)
       {
@@ -1503,7 +1490,7 @@ EXTRACTOR_ebml_extract_method (struct EXTRACTOR_PluginList *plugin, EXTRACTOR_Me
       {
         enum EBMLState next_state = state->next_state;
         state->state = EBML_BAD_STATE;
-        read_result = elementRead (plugin, &eID, &eSize);
+        read_result = elementRead (plugin, &eID, (int64_t*) &eSize);
         if (read_result >= 0)
           state->state = next_state;
       }
@@ -2226,7 +2213,7 @@ EXTRACTOR_ebml_extract_method (struct EXTRACTOR_PluginList *plugin, EXTRACTOR_Me
         break;
       case MatroskaID_Info_DateUTC:
         state->matroska_info_date_utc_is_set = 1;
-        state->matroska_info_date_utc = date_value;
+        state->matroska_info_date_utc = 0; // FIXME: date_value;
         break;
       }
       rise_up_after_value (plugin, state, EBML_READING_MATROSKA_INFO_CONTENTS);

@@ -23,6 +23,9 @@
 #include <zlib.h>
 #include "convert.h"
 
+#include "extractor_plugins.h"
+
+
 static char *
 stndup (const char *str, size_t n)
 {
@@ -100,17 +103,17 @@ processtEXt (struct EXTRACTOR_PluginList *plugin,
     return 1;
 
   //data += 4;
-  off = stnlen (data, length) + 1;
+  off = stnlen ((char*) data, length) + 1;
   if (off >= length)
     return 0;                /* failed to find '\0' */
-  keyword = EXTRACTOR_common_convert_to_utf8 (&data[off], length - off, "ISO-8859-1");
+  keyword = EXTRACTOR_common_convert_to_utf8 ( (char*) &data[off], length - off, "ISO-8859-1");
   if (keyword == NULL)
     return 0;
   i = 0;
   ret = 0;
   while (tagmap[i].name != NULL)
     {
-      if (0 == strcmp (tagmap[i].name, data))
+      if (0 == strcmp (tagmap[i].name, (char*) data))
 	{
 	  ADDF (tagmap[i].type, keyword);
 	  return 0;
@@ -145,13 +148,13 @@ processiTXt (struct EXTRACTOR_PluginList *plugin,
   if (length != pl_read (plugin, &data, length))
     return 1;
 
-  pos = stnlen (data, length) + 1;
+  pos = stnlen ( (char*) data, length) + 1;
   if (pos >= length)
     return 0;
   compressed = data[pos++];
   if (compressed && (data[pos++] != 0))
     return 0;                /* bad compression method */
-  language = &data[pos];
+  language = (char*) &data[pos];
   ret = 0;
   if (stnlen (language, length - pos) > 0)
     {
@@ -161,7 +164,7 @@ processiTXt (struct EXTRACTOR_PluginList *plugin,
   pos += stnlen (language, length - pos) + 1;
   if (pos + 1 >= length)
     return 0;
-  translated = &data[pos];      /* already in utf-8! */
+  translated = (char*) &data[pos];      /* already in utf-8! */
   if (stnlen (translated, length - pos) > 0)
     {
       lan = stndup (translated, length - pos);
@@ -207,12 +210,12 @@ processiTXt (struct EXTRACTOR_PluginList *plugin,
     }
   else
     {
-      keyword = stndup (&data[pos], length - pos);
+      keyword = stndup ((char*) &data[pos], length - pos);
     }
   i = 0;
   while (tagmap[i].name != NULL)
     {
-      if (0 == strcmp (tagmap[i].name, data))
+      if (0 == strcmp (tagmap[i].name, (char*) data))
 	{
 	  ADDF (tagmap[i].type, keyword /* already in utf8 */);
 	  return 0;
@@ -270,7 +273,7 @@ processzTXt (struct EXTRACTOR_PluginList *plugin,
     return 1;
 
   //data += 4;
-  off = stnlen (data, length) + 1;
+  off = stnlen ( (char*) data, length) + 1;
   if (off >= length)
     return 0;                /* failed to find '\0' */
   if (data[off] != 0)
@@ -310,7 +313,7 @@ processzTXt (struct EXTRACTOR_PluginList *plugin,
   i = 0;
   while (tagmap[i].name != NULL)
     {
-      if (0 == strcmp (tagmap[i].name, data))
+      if (0 == strcmp (tagmap[i].name, (char*)  data))
 	{
 	  ADDF (tagmap[i].type, keyword);
 	  return 0;
@@ -382,7 +385,7 @@ EXTRACTOR_png_extract_method (struct EXTRACTOR_PluginList *plugin,
   if (ret != pl_read (plugin, &data, ret))
     return 1;
   
-  if (0 != strncmp (data, PNG_HEADER, ret))
+  if (0 != strncmp ((char*) data, PNG_HEADER, ret))
     return 1;
 
   ADD (EXTRACTOR_METATYPE_MIMETYPE, "image/png");
@@ -399,15 +402,15 @@ EXTRACTOR_png_extract_method (struct EXTRACTOR_PluginList *plugin,
       if (pos <= 0)
         break;
       pos += length + 4; /* Chunk type, data, crc */
-      if (0 == strncmp (data, "IHDR", 4))
+      if (0 == strncmp ((char*) data, "IHDR", 4))
         ret = processIHDR (plugin, length, proc, proc_cls);
-      if (0 == strncmp (data, "iTXt", 4))
+      if (0 == strncmp ((char*) data, "iTXt", 4))
         ret = processiTXt (plugin, length, proc, proc_cls);
-      if (0 == strncmp (data, "tEXt", 4))
+      if (0 == strncmp ((char*)data, "tEXt", 4))
         ret = processtEXt (plugin, length, proc, proc_cls);
-      if (0 == strncmp (data, "zTXt", 4))
+      if (0 == strncmp ((char*) data, "zTXt", 4))
         ret = processzTXt (plugin, length, proc, proc_cls);
-      if (0 == strncmp (data, "tIME", 4))
+      if (0 == strncmp ((char*) data, "tIME", 4))
         ret = processtIME (plugin, length, proc, proc_cls);
       if (ret != 0)
         break;
