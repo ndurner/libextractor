@@ -2213,7 +2213,7 @@ EXTRACTOR_ebml_extract_method (struct EXTRACTOR_PluginList *plugin, EXTRACTOR_Me
         break;
       case MatroskaID_Info_DateUTC:
         state->matroska_info_date_utc_is_set = 1;
-        state->matroska_info_date_utc = 0; // FIXME: date_value;
+        state->matroska_info_date_utc = sint_value;
         break;
       }
       rise_up_after_value (plugin, state, EBML_READING_MATROSKA_INFO_CONTENTS);
