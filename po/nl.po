@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor-0.5.20a\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2011-11-28 12:53+0100\n"
+"POT-Creation-Date: 2012-06-25 20:26+0200\n"
 "PO-Revision-Date: 2009-03-08 16:59+0100\n"
 "Last-Translator: Erwin Poeze <erwin.poeze@gmail.com>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
@@ -18,886 +18,7 @@ msgstr ""
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/plugins/qt_extractor.c:30 src/plugins/id3_extractor.c:44
-msgid "Blues"
-msgstr "Blues"
-
-#: src/plugins/qt_extractor.c:31 src/plugins/id3_extractor.c:45
-msgid "Classic Rock"
-msgstr "Classic rock"
-
-#: src/plugins/qt_extractor.c:32 src/plugins/id3_extractor.c:46
-#, fuzzy
-msgid "Country"
-msgstr "Country"
-
-#: src/plugins/qt_extractor.c:33 src/plugins/id3_extractor.c:47
-msgid "Dance"
-msgstr "Dance"
-
-#: src/plugins/qt_extractor.c:34 src/plugins/id3_extractor.c:48
-msgid "Disco"
-msgstr "Disco"
-
-#: src/plugins/qt_extractor.c:35 src/plugins/id3_extractor.c:49
-msgid "Funk"
-msgstr "Funk"
-
-#: src/plugins/qt_extractor.c:36 src/plugins/id3_extractor.c:50
-msgid "Grunge"
-msgstr "Grunge"
-
-#: src/plugins/qt_extractor.c:37 src/plugins/id3_extractor.c:51
-msgid "Hip-Hop"
-msgstr "Hiphop"
-
-#: src/plugins/qt_extractor.c:38 src/plugins/id3_extractor.c:52
-msgid "Jazz"
-msgstr "Jazz"
-
-#: src/plugins/qt_extractor.c:39 src/plugins/id3_extractor.c:53
-msgid "Metal"
-msgstr "Metal"
-
-#: src/plugins/qt_extractor.c:40 src/plugins/id3_extractor.c:54
-msgid "New Age"
-msgstr "New age"
-
-#: src/plugins/qt_extractor.c:41 src/plugins/id3_extractor.c:55
-msgid "Oldies"
-msgstr "Gouwe ouwe"
-
-#: src/plugins/qt_extractor.c:42 src/plugins/id3_extractor.c:56
-msgid "Other"
-msgstr "Overige"
-
-#: src/plugins/qt_extractor.c:43 src/plugins/id3_extractor.c:57
-msgid "Pop"
-msgstr "Pop"
-
-#: src/plugins/qt_extractor.c:44 src/plugins/id3_extractor.c:58
-msgid "R&B"
-msgstr "R&B"
-
-#: src/plugins/qt_extractor.c:45 src/plugins/id3_extractor.c:59
-msgid "Rap"
-msgstr "Rap"
-
-#: src/plugins/qt_extractor.c:46 src/plugins/id3_extractor.c:60
-msgid "Reggae"
-msgstr "Reggae"
-
-#: src/plugins/qt_extractor.c:47 src/plugins/id3_extractor.c:61
-msgid "Rock"
-msgstr "Rock"
-
-#: src/plugins/qt_extractor.c:48 src/plugins/id3_extractor.c:62
-msgid "Techno"
-msgstr "Techno"
-
-#: src/plugins/qt_extractor.c:49 src/plugins/id3_extractor.c:63
-msgid "Industrial"
-msgstr "Industrial"
-
-#: src/plugins/qt_extractor.c:50 src/plugins/id3_extractor.c:64
-msgid "Alternative"
-msgstr "Alternatief"
-
-#: src/plugins/qt_extractor.c:51 src/plugins/id3_extractor.c:65
-msgid "Ska"
-msgstr "Ska"
-
-#: src/plugins/qt_extractor.c:52 src/plugins/id3_extractor.c:66
-msgid "Death Metal"
-msgstr "Death metal"
-
-#: src/plugins/qt_extractor.c:53 src/plugins/id3_extractor.c:67
-msgid "Pranks"
-msgstr "Pranks"
-
-#: src/plugins/qt_extractor.c:54 src/plugins/id3_extractor.c:68
-msgid "Soundtrack"
-msgstr "Soundtrack"
-
-#: src/plugins/qt_extractor.c:55 src/plugins/id3_extractor.c:69
-msgid "Euro-Techno"
-msgstr "Eurotechno"
-
-#: src/plugins/qt_extractor.c:56 src/plugins/id3_extractor.c:70
-msgid "Ambient"
-msgstr "Ambient"
-
-#: src/plugins/qt_extractor.c:57 src/plugins/id3_extractor.c:71
-msgid "Trip-Hop"
-msgstr "Triphop"
-
-#: src/plugins/qt_extractor.c:58 src/plugins/id3_extractor.c:72
-msgid "Vocal"
-msgstr "Vocaal"
-
-#: src/plugins/qt_extractor.c:59 src/plugins/id3_extractor.c:73
-msgid "Jazz+Funk"
-msgstr "Jazz+Funk"
-
-#: src/plugins/qt_extractor.c:60 src/plugins/id3_extractor.c:74
-msgid "Fusion"
-msgstr "Fusion"
-
-#: src/plugins/qt_extractor.c:61 src/plugins/id3_extractor.c:75
-msgid "Trance"
-msgstr "Trance"
-
-#: src/plugins/qt_extractor.c:62 src/plugins/id3_extractor.c:76
-msgid "Classical"
-msgstr "Klassiek"
-
-#: src/plugins/qt_extractor.c:63 src/plugins/id3_extractor.c:77
-msgid "Instrumental"
-msgstr "Instrumenteel"
-
-#: src/plugins/qt_extractor.c:64 src/plugins/id3_extractor.c:78
-msgid "Acid"
-msgstr "Acid house"
-
-#: src/plugins/qt_extractor.c:65 src/plugins/id3_extractor.c:79
-msgid "House"
-msgstr "House"
-
-#: src/plugins/qt_extractor.c:66 src/plugins/id3_extractor.c:80
-msgid "Game"
-msgstr "Spel"
-
-#: src/plugins/qt_extractor.c:67 src/plugins/id3_extractor.c:81
-msgid "Sound Clip"
-msgstr "Soundclip"
-
-#: src/plugins/qt_extractor.c:68 src/plugins/id3_extractor.c:82
-msgid "Gospel"
-msgstr "Gospel"
-
-#: src/plugins/qt_extractor.c:69 src/plugins/id3_extractor.c:83
-msgid "Noise"
-msgstr "Noise"
-
-#: src/plugins/qt_extractor.c:70 src/plugins/id3_extractor.c:84
-msgid "Alt. Rock"
-msgstr "Alternatieve rock"
-
-#: src/plugins/qt_extractor.c:71 src/plugins/id3_extractor.c:85
-msgid "Bass"
-msgstr "Bass"
-
-#: src/plugins/qt_extractor.c:72 src/plugins/id3_extractor.c:86
-msgid "Soul"
-msgstr "Soul"
-
-#: src/plugins/qt_extractor.c:73 src/plugins/id3_extractor.c:87
-msgid "Punk"
-msgstr "Punk"
-
-#: src/plugins/qt_extractor.c:74 src/plugins/id3_extractor.c:88
-msgid "Space"
-msgstr "Ruimte"
-
-#: src/plugins/qt_extractor.c:75 src/plugins/id3_extractor.c:89
-msgid "Meditative"
-msgstr "New-age"
-
-#: src/plugins/qt_extractor.c:76 src/plugins/id3_extractor.c:90
-msgid "Instrumental Pop"
-msgstr "Instrumentele pop"
-
-#: src/plugins/qt_extractor.c:77 src/plugins/id3_extractor.c:91
-msgid "Instrumental Rock"
-msgstr "Instrumentele rock"
-
-#: src/plugins/qt_extractor.c:78 src/plugins/id3_extractor.c:92
-msgid "Ethnic"
-msgstr "Etnisch"
-
-#: src/plugins/qt_extractor.c:79 src/plugins/id3_extractor.c:93
-msgid "Gothic"
-msgstr "Gothic"
-
-#: src/plugins/qt_extractor.c:80 src/plugins/id3_extractor.c:94
-msgid "Darkwave"
-msgstr "Darkwave"
-
-#: src/plugins/qt_extractor.c:81 src/plugins/id3_extractor.c:95
-msgid "Techno-Industrial"
-msgstr "Techno-Industrial"
-
-#: src/plugins/qt_extractor.c:82 src/plugins/id3_extractor.c:96
-msgid "Electronic"
-msgstr "Elektronisch"
-
-#: src/plugins/qt_extractor.c:83 src/plugins/id3_extractor.c:97
-msgid "Pop-Folk"
-msgstr "Pop-folk"
-
-#: src/plugins/qt_extractor.c:84 src/plugins/id3_extractor.c:98
-msgid "Eurodance"
-msgstr "Eurodance"
-
-#: src/plugins/qt_extractor.c:85 src/plugins/id3_extractor.c:99
-msgid "Dream"
-msgstr "Dreampop"
-
-#: src/plugins/qt_extractor.c:86 src/plugins/id3_extractor.c:100
-msgid "Southern Rock"
-msgstr "Southern rock"
-
-#: src/plugins/qt_extractor.c:87 src/plugins/id3_extractor.c:101
-msgid "Comedy"
-msgstr "Komedie"
-
-#: src/plugins/qt_extractor.c:88 src/plugins/id3_extractor.c:102
-msgid "Cult"
-msgstr "Cult"
-
-#: src/plugins/qt_extractor.c:89 src/plugins/id3_extractor.c:103
-msgid "Gangsta Rap"
-msgstr "Gangsta rap"
-
-#: src/plugins/qt_extractor.c:90 src/plugins/id3_extractor.c:104
-msgid "Top 40"
-msgstr "Top 40"
-
-#: src/plugins/qt_extractor.c:91 src/plugins/id3_extractor.c:105
-msgid "Christian Rap"
-msgstr "Christelijke rap"
-
-#: src/plugins/qt_extractor.c:92 src/plugins/id3_extractor.c:106
-msgid "Pop/Funk"
-msgstr "Pop/funk"
-
-#: src/plugins/qt_extractor.c:93 src/plugins/id3_extractor.c:107
-msgid "Jungle"
-msgstr "Jungle"
-
-#: src/plugins/qt_extractor.c:94 src/plugins/id3_extractor.c:108
-msgid "Native American"
-msgstr "Indiaans"
-
-#: src/plugins/qt_extractor.c:95 src/plugins/id3_extractor.c:109
-msgid "Cabaret"
-msgstr "Cabaret"
-
-#: src/plugins/qt_extractor.c:96 src/plugins/id3_extractor.c:110
-msgid "New Wave"
-msgstr "New wave"
-
-#: src/plugins/qt_extractor.c:97 src/plugins/id3_extractor.c:111
-msgid "Psychedelic"
-msgstr "Psychedelisch"
-
-#: src/plugins/qt_extractor.c:98 src/plugins/id3_extractor.c:112
-msgid "Rave"
-msgstr "Rave"
-
-#: src/plugins/qt_extractor.c:99 src/plugins/id3_extractor.c:113
-msgid "Showtunes"
-msgstr "Showtunes"
-
-#: src/plugins/qt_extractor.c:100 src/plugins/id3_extractor.c:114
-msgid "Trailer"
-msgstr "Trailer"
-
-#: src/plugins/qt_extractor.c:101 src/plugins/id3_extractor.c:115
-msgid "Lo-Fi"
-msgstr "Lo-Fi"
-
-#: src/plugins/qt_extractor.c:102 src/plugins/id3_extractor.c:116
-msgid "Tribal"
-msgstr "Tribal"
-
-#: src/plugins/qt_extractor.c:103 src/plugins/id3_extractor.c:117
-msgid "Acid Punk"
-msgstr "Acid punk"
-
-#: src/plugins/qt_extractor.c:104 src/plugins/id3_extractor.c:118
-msgid "Acid Jazz"
-msgstr "Acid jazz"
-
-#: src/plugins/qt_extractor.c:105 src/plugins/id3_extractor.c:119
-msgid "Polka"
-msgstr "Polka"
-
-#: src/plugins/qt_extractor.c:106 src/plugins/id3_extractor.c:120
-msgid "Retro"
-msgstr "Retro"
-
-#: src/plugins/qt_extractor.c:107 src/plugins/id3_extractor.c:121
-msgid "Musical"
-msgstr "Musical"
-
-#: src/plugins/qt_extractor.c:108 src/plugins/id3_extractor.c:122
-msgid "Rock & Roll"
-msgstr "Rock-'n-roll"
-
-#: src/plugins/qt_extractor.c:109 src/plugins/id3_extractor.c:123
-msgid "Hard Rock"
-msgstr "Hardrock"
-
-#: src/plugins/qt_extractor.c:110 src/plugins/id3_extractor.c:124
-msgid "Folk"
-msgstr "Folk"
-
-#: src/plugins/qt_extractor.c:111 src/plugins/id3_extractor.c:125
-msgid "Folk/Rock"
-msgstr "Folk/rock"
-
-#: src/plugins/qt_extractor.c:112 src/plugins/id3_extractor.c:126
-msgid "National Folk"
-msgstr "Nationale folk"
-
-#: src/plugins/qt_extractor.c:113 src/plugins/id3_extractor.c:127
-msgid "Swing"
-msgstr "Swing"
-
-#: src/plugins/qt_extractor.c:114 src/plugins/id3_extractor.c:128
-msgid "Fast-Fusion"
-msgstr "Fast-Fusion"
-
-#: src/plugins/qt_extractor.c:115 src/plugins/id3_extractor.c:129
-msgid "Bebob"
-msgstr "Bop"
-
-#: src/plugins/qt_extractor.c:116 src/plugins/id3_extractor.c:130
-#, fuzzy
-msgid "Latin"
-msgstr "Latin"
-
-#: src/plugins/qt_extractor.c:117 src/plugins/id3_extractor.c:131
-msgid "Revival"
-msgstr "Revival"
-
-#: src/plugins/qt_extractor.c:118 src/plugins/id3_extractor.c:132
-msgid "Celtic"
-msgstr "Keltisch"
-
-#: src/plugins/qt_extractor.c:119 src/plugins/id3_extractor.c:133
-msgid "Bluegrass"
-msgstr "Bluegrass"
-
-#: src/plugins/qt_extractor.c:120 src/plugins/id3_extractor.c:134
-msgid "Avantgarde"
-msgstr "Avant-garde"
-
-#: src/plugins/qt_extractor.c:121 src/plugins/id3_extractor.c:135
-msgid "Gothic Rock"
-msgstr "Gothic rock"
-
-#: src/plugins/qt_extractor.c:122 src/plugins/id3_extractor.c:136
-msgid "Progressive Rock"
-msgstr "Progressieve rock"
-
-#: src/plugins/qt_extractor.c:123 src/plugins/id3_extractor.c:137
-msgid "Psychedelic Rock"
-msgstr "Psychedelische rock"
-
-#: src/plugins/qt_extractor.c:124 src/plugins/id3_extractor.c:138
-msgid "Symphonic Rock"
-msgstr "Symfonische rock"
-
-#: src/plugins/qt_extractor.c:125 src/plugins/id3_extractor.c:139
-msgid "Slow Rock"
-msgstr "Langzame rock"
-
-#: src/plugins/qt_extractor.c:126 src/plugins/id3_extractor.c:140
-msgid "Big Band"
-msgstr "Bigband"
-
-#: src/plugins/qt_extractor.c:127 src/plugins/id3_extractor.c:141
-msgid "Chorus"
-msgstr "Koor"
-
-#: src/plugins/qt_extractor.c:128 src/plugins/id3_extractor.c:142
-msgid "Easy Listening"
-msgstr "Easy listening"
-
-#: src/plugins/qt_extractor.c:129 src/plugins/id3_extractor.c:143
-msgid "Acoustic"
-msgstr "Akoestisch"
-
-#: src/plugins/qt_extractor.c:130 src/plugins/id3_extractor.c:144
-msgid "Humour"
-msgstr "Humor"
-
-#: src/plugins/qt_extractor.c:131 src/plugins/id3_extractor.c:145
-msgid "Speech"
-msgstr "Spraak"
-
-#: src/plugins/qt_extractor.c:132 src/plugins/id3_extractor.c:146
-msgid "Chanson"
-msgstr "Chanson"
-
-#: src/plugins/qt_extractor.c:133 src/plugins/id3_extractor.c:147
-msgid "Opera"
-msgstr "Opera"
-
-#: src/plugins/qt_extractor.c:134 src/plugins/id3_extractor.c:148
-msgid "Chamber Music"
-msgstr "Kamermuziek"
-
-#: src/plugins/qt_extractor.c:135 src/plugins/id3_extractor.c:149
-msgid "Sonata"
-msgstr "Sonata"
-
-#: src/plugins/qt_extractor.c:136 src/plugins/id3_extractor.c:150
-msgid "Symphony"
-msgstr "Symfonie"
-
-#: src/plugins/qt_extractor.c:137 src/plugins/id3_extractor.c:151
-msgid "Booty Bass"
-msgstr "Booty Bass"
-
-#: src/plugins/qt_extractor.c:138 src/plugins/id3_extractor.c:152
-msgid "Primus"
-msgstr "Primus"
-
-#: src/plugins/qt_extractor.c:139 src/plugins/id3_extractor.c:153
-msgid "Porn Groove"
-msgstr "Porn Groove"
-
-#: src/plugins/qt_extractor.c:140 src/plugins/id3_extractor.c:154
-msgid "Satire"
-msgstr "Satire"
-
-#: src/plugins/qt_extractor.c:141 src/plugins/id3_extractor.c:155
-msgid "Slow Jam"
-msgstr "Slow Jam"
-
-#: src/plugins/qt_extractor.c:142 src/plugins/id3_extractor.c:156
-msgid "Club"
-msgstr "Club"
-
-#: src/plugins/qt_extractor.c:143 src/plugins/id3_extractor.c:157
-msgid "Tango"
-msgstr "Tango"
-
-#: src/plugins/qt_extractor.c:144 src/plugins/id3_extractor.c:158
-msgid "Samba"
-msgstr "Samba"
-
-#: src/plugins/qt_extractor.c:145 src/plugins/id3_extractor.c:159
-msgid "Folklore"
-msgstr "Folklore"
-
-#: src/plugins/qt_extractor.c:146 src/plugins/id3_extractor.c:160
-msgid "Ballad"
-msgstr "Ballad"
-
-#: src/plugins/qt_extractor.c:147 src/plugins/id3_extractor.c:161
-msgid "Power Ballad"
-msgstr "Power ballad"
-
-#: src/plugins/qt_extractor.c:148 src/plugins/id3_extractor.c:162
-msgid "Rhythmic Soul"
-msgstr "Ritmische soul"
-
-#: src/plugins/qt_extractor.c:149 src/plugins/id3_extractor.c:163
-msgid "Freestyle"
-msgstr "Freestyle"
-
-#: src/plugins/qt_extractor.c:150 src/plugins/id3_extractor.c:164
-msgid "Duet"
-msgstr "Duet"
-
-#: src/plugins/qt_extractor.c:151 src/plugins/id3_extractor.c:165
-msgid "Punk Rock"
-msgstr "Punkrock"
-
-#: src/plugins/qt_extractor.c:152 src/plugins/id3_extractor.c:166
-msgid "Drum Solo"
-msgstr "Drumsolo"
-
-#: src/plugins/qt_extractor.c:153 src/plugins/id3_extractor.c:167
-msgid "A Cappella"
-msgstr "A capella"
-
-#: src/plugins/qt_extractor.c:154 src/plugins/id3_extractor.c:168
-msgid "Euro-House"
-msgstr "Eurohouse"
-
-#: src/plugins/qt_extractor.c:155 src/plugins/id3_extractor.c:169
-msgid "Dance Hall"
-msgstr "Dancehall"
-
-#: src/plugins/qt_extractor.c:156 src/plugins/id3_extractor.c:170
-msgid "Goa"
-msgstr "Goa"
-
-#: src/plugins/qt_extractor.c:157 src/plugins/id3_extractor.c:171
-msgid "Drum & Bass"
-msgstr "Drum & Bass"
-
-#: src/plugins/qt_extractor.c:158 src/plugins/id3_extractor.c:172
-msgid "Club-House"
-msgstr "Clubhouse"
-
-#: src/plugins/qt_extractor.c:159 src/plugins/id3_extractor.c:173
-msgid "Hardcore"
-msgstr "Hardcore"
-
-#: src/plugins/qt_extractor.c:160 src/plugins/id3_extractor.c:174
-msgid "Terror"
-msgstr "Terrorcore"
-
-#: src/plugins/qt_extractor.c:161 src/plugins/id3_extractor.c:175
-msgid "Indie"
-msgstr "Indie"
-
-#: src/plugins/qt_extractor.c:162 src/plugins/id3_extractor.c:176
-msgid "BritPop"
-msgstr "Britpop"
-
-#: src/plugins/qt_extractor.c:163 src/plugins/id3_extractor.c:177
-msgid "Negerpunk"
-msgstr "Negerpunk"
-
-#: src/plugins/qt_extractor.c:164 src/plugins/id3_extractor.c:178
-msgid "Polsk Punk"
-msgstr "Poolse punk"
-
-#: src/plugins/qt_extractor.c:165 src/plugins/id3_extractor.c:179
-msgid "Beat"
-msgstr "Beat"
-
-#: src/plugins/qt_extractor.c:166 src/plugins/id3_extractor.c:180
-msgid "Christian Gangsta Rap"
-msgstr "Christelijke gangsta rap"
-
-#: src/plugins/qt_extractor.c:167 src/plugins/id3_extractor.c:181
-msgid "Heavy Metal"
-msgstr "Heavy metal"
-
-#: src/plugins/qt_extractor.c:168 src/plugins/id3_extractor.c:182
-msgid "Black Metal"
-msgstr "Black metal"
-
-#: src/plugins/qt_extractor.c:169 src/plugins/id3_extractor.c:183
-msgid "Crossover"
-msgstr "Cross-over"
-
-#: src/plugins/qt_extractor.c:170 src/plugins/id3_extractor.c:184
-msgid "Contemporary Christian"
-msgstr "Modern christelijk"
-
-#: src/plugins/qt_extractor.c:171 src/plugins/id3_extractor.c:185
-msgid "Christian Rock"
-msgstr "Christelijke rock"
-
-#: src/plugins/qt_extractor.c:172 src/plugins/id3_extractor.c:186
-msgid "Merengue"
-msgstr "Merengue"
-
-#: src/plugins/qt_extractor.c:173 src/plugins/id3_extractor.c:187
-msgid "Salsa"
-msgstr "Salsa"
-
-#: src/plugins/qt_extractor.c:174 src/plugins/id3_extractor.c:188
-msgid "Thrash Metal"
-msgstr "Thrash metal"
-
-#: src/plugins/qt_extractor.c:175 src/plugins/id3_extractor.c:189
-msgid "Anime"
-msgstr "Anime"
-
-#: src/plugins/qt_extractor.c:176 src/plugins/id3_extractor.c:190
-msgid "JPop"
-msgstr "J-pop"
-
-#: src/plugins/qt_extractor.c:177 src/plugins/id3_extractor.c:191
-msgid "Synthpop"
-msgstr "Synthipop"
-
-#: src/plugins/ole2_extractor.c:290
-msgid "No Proofing"
-msgstr "geen controle"
-
-#: src/plugins/ole2_extractor.c:298
-msgid "Traditional Chinese"
-msgstr "Traditioneel Chinees"
-
-#: src/plugins/ole2_extractor.c:300
-msgid "Simplified Chinese"
-msgstr "Vereenvoudigd Chinees"
-
-#: src/plugins/ole2_extractor.c:308
-msgid "Swiss German"
-msgstr "Zwitserduits"
-
-#: src/plugins/ole2_extractor.c:312
-msgid "U.S. English"
-msgstr "Amerikaans Engels"
-
-#: src/plugins/ole2_extractor.c:314
-msgid "U.K. English"
-msgstr "Brits Engels"
-
-#: src/plugins/ole2_extractor.c:316
-msgid "Australian English"
-msgstr "Australisch Engels"
-
-#: src/plugins/ole2_extractor.c:318
-msgid "Castilian Spanish"
-msgstr "Castilliaans Spaans"
-
-#: src/plugins/ole2_extractor.c:320
-msgid "Mexican Spanish"
-msgstr "Mexicaans Spaans"
-
-#: src/plugins/ole2_extractor.c:326
-msgid "Belgian French"
-msgstr "Waals"
-
-#: src/plugins/ole2_extractor.c:328
-msgid "Canadian French"
-msgstr "Canadees Frans"
-
-#: src/plugins/ole2_extractor.c:330
-msgid "Swiss French"
-msgstr "Zwitsers Frans"
-
-#: src/plugins/ole2_extractor.c:340
-msgid "Swiss Italian"
-msgstr "Zwitsers Italiaans"
-
-#: src/plugins/ole2_extractor.c:348
-msgid "Belgian Dutch"
-msgstr "Vlaams"
-
-#: src/plugins/ole2_extractor.c:350
-msgid "Norwegian Bokmal"
-msgstr "Noors Bokmål"
-
-#: src/plugins/ole2_extractor.c:360
-msgid "Rhaeto-Romanic"
-msgstr "Reto-Romaans"
-
-#: src/plugins/ole2_extractor.c:366
-msgid "Croato-Serbian (Latin)"
-msgstr "Servo-Kroatisch (latijns schrift)"
-
-#: src/plugins/ole2_extractor.c:368
-msgid "Serbo-Croatian (Cyrillic)"
-msgstr "Servo-Kroatisch (cyrillisch schrift)"
-
-#: src/plugins/ole2_extractor.c:396
-msgid "Farsi"
-msgstr "Perzisch"
-
-#: src/plugins/ole2_extractor.c:471
-#, c-format
-msgid "Revision #%u: Author '%s' worked on '%s'"
-msgstr "Revisie #%u: Auteur '%s' werkte aan '%s'"
-
-#: src/plugins/wav_extractor.c:106 src/plugins/mp3_extractor.c:89
-msgid "mono"
-msgstr "mono"
-
-#: src/plugins/wav_extractor.c:106 src/plugins/mp3_extractor.c:86
-msgid "stereo"
-msgstr "stereo"
-
-#: src/plugins/man_extractor.c:161
-msgid "Commands"
-msgstr "Commando's"
-
-#: src/plugins/man_extractor.c:165
-msgid "System calls"
-msgstr "Systeemaanroepen"
-
-#: src/plugins/man_extractor.c:169
-msgid "Library calls"
-msgstr "Bibliotheekaanroepen"
-
-#: src/plugins/man_extractor.c:173
-msgid "Special files"
-msgstr "Speciale bestanden"
-
-#: src/plugins/man_extractor.c:177
-msgid "File formats and conventions"
-msgstr "Bestandsindelingen en -conventies"
-
-#: src/plugins/man_extractor.c:181
-msgid "Games"
-msgstr "Spellen"
-
-#: src/plugins/man_extractor.c:185
-msgid "Conventions and miscellaneous"
-msgstr "Conventies en overigen"
-
-#: src/plugins/man_extractor.c:189
-msgid "System management commands"
-msgstr "Systeembeheercommando's"
-
-#: src/plugins/man_extractor.c:193
-msgid "Kernel routines"
-msgstr "Kernelroutines"
-
-#: src/plugins/flac_extractor.c:192
-#, c-format
-msgid "%u Hz, %u channels"
-msgstr ""
-
-#: src/plugins/applefile_extractor.c:162
-msgid "GB"
-msgstr "GB"
-
-#: src/plugins/applefile_extractor.c:164
-msgid "MB"
-msgstr "MB"
-
-#: src/plugins/applefile_extractor.c:166
-msgid "KB"
-msgstr "KB"
-
-#: src/plugins/applefile_extractor.c:168
-msgid "Bytes"
-msgstr "bytes"
-
-#: src/plugins/mp3_extractor.c:87
-#, fuzzy
-msgid "joint stereo"
-msgstr "stereo"
-
-#: src/plugins/mp3_extractor.c:88
-msgid "dual channel"
-msgstr ""
-
-#: src/plugins/mp3_extractor.c:92
-msgid "MPEG-1"
-msgstr ""
-
-#: src/plugins/mp3_extractor.c:93
-msgid "MPEG-2"
-msgstr ""
-
-#: src/plugins/mp3_extractor.c:94
-msgid "MPEG-2.5"
-msgstr ""
-
-#: src/plugins/mp3_extractor.c:97
-msgid "Layer I"
-msgstr ""
-
-#: src/plugins/mp3_extractor.c:98
-msgid "Layer II"
-msgstr ""
-
-#: src/plugins/mp3_extractor.c:99
-msgid "Layer III"
-msgstr ""
-
-#: src/plugins/mp3_extractor.c:245
-msgid "VBR"
-msgstr ""
-
-#: src/plugins/mp3_extractor.c:245
-msgid "CBR"
-msgstr ""
-
-#: src/plugins/mp3_extractor.c:248 src/main/extractor_metatypes.c:140
-msgid "copyright"
-msgstr "copyright"
-
-#: src/plugins/mp3_extractor.c:248
-#, fuzzy
-msgid "no copyright"
-msgstr "copyright"
-
-#: src/plugins/mp3_extractor.c:249
-msgid "original"
-msgstr ""
-
-#: src/plugins/mp3_extractor.c:249
-#, fuzzy
-msgid "copy"
-msgstr "firma"
-
-#: src/plugins/riff_extractor.c:114
-#, c-format
-msgid "codec: %s, %u fps, %u ms"
-msgstr "codec: %s, %u fps, %u ms"
-
-#: src/plugins/jpeg_extractor.c:182
-#, fuzzy, c-format
-msgid "%ux%u dots per inch"
-msgstr "%ux%u dots per inch?"
-
-#: src/plugins/jpeg_extractor.c:197
-#, c-format
-msgid "%ux%u dots per cm"
-msgstr "%ux%u dots per cm"
-
-#: src/plugins/jpeg_extractor.c:212
-#, c-format
-msgid "%ux%u dots per inch?"
-msgstr "%ux%u dots per inch?"
-
-#: src/main/getopt.c:684
-#, c-format
-msgid "%s: option `%s' is ambiguous\n"
-msgstr "%s: optie '%s' is niet eenduidig\n"
-
-#: src/main/getopt.c:709
-#, c-format
-msgid "%s: option `--%s' doesn't allow an argument\n"
-msgstr "%s: optie '--%s' staat geen argument toe\n"
-
-#: src/main/getopt.c:715
-#, c-format
-msgid "%s: option `%c%s' doesn't allow an argument\n"
-msgstr "%s: optie '%c%s' staat geen argument toe\n"
-
-#: src/main/getopt.c:732 src/main/getopt.c:903
-#, c-format
-msgid "%s: option `%s' requires an argument\n"
-msgstr "%s: optie '%s' vereist een argument\n"
-
-#: src/main/getopt.c:761
-#, c-format
-msgid "%s: unrecognized option `--%s'\n"
-msgstr "%s: onbekende optie '--%s'\n"
-
-#: src/main/getopt.c:765
-#, c-format
-msgid "%s: unrecognized option `%c%s'\n"
-msgstr "%s: onbekende optie '%c%s'\n"
-
-#: src/main/getopt.c:791
-#, c-format
-msgid "%s: illegal option -- %c\n"
-msgstr "%s: ongeldige optie -- %c\n"
-
-#: src/main/getopt.c:793
-#, c-format
-msgid "%s: invalid option -- %c\n"
-msgstr "%s: ongeldige optie -- %c\n"
-
-#: src/main/getopt.c:822 src/main/getopt.c:952
-#, c-format
-msgid "%s: option requires an argument -- %c\n"
-msgstr "%s: optie vereist een argument -- %c\n"
-
-#: src/main/getopt.c:870
-#, c-format
-msgid "%s: option `-W %s' is ambiguous\n"
-msgstr "%s: optie '-W %s' is niet eenduidig\n"
-
-#: src/main/getopt.c:888
-#, c-format
-msgid "%s: option `-W %s' doesn't allow an argument\n"
-msgstr "%s: optie '-W %s' staat geen argument toe\n"
-
-#: src/main/extractor.c:2372
-#, c-format
-msgid "Initialization of plugin mechanism failed: %s!\n"
-msgstr "Initialisatie van plugin-mechanisme is mislukt: %s\n"
-
-#: src/main/extract.c:98
+#: src/main/extract.c:103
 #, c-format
 msgid ""
 "Usage: %s\n"
@@ -908,7 +29,7 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: src/main/extract.c:101
+#: src/main/extract.c:106
 #, c-format
 msgid ""
 "Arguments mandatory for long options are also mandatory for short options.\n"
@@ -916,106 +37,115 @@ msgstr ""
 "Argumenten die verplicht zijn voor lange opties zijn dat ook voor korte "
 "opties.\n"
 
-#: src/main/extract.c:171
+#: src/main/extract.c:176
 msgid "print output in bibtex format"
 msgstr "uitvoer in bibtex-indeling produceren"
 
-#: src/main/extract.c:173
+#: src/main/extract.c:178
 msgid "produce grep-friendly output (all results on one line per file)"
 msgstr ""
 "uitvoer produceren die makkelijk te greppen is (alle resultaten op één regel "
 "per bestand)"
 
-#: src/main/extract.c:175
+#: src/main/extract.c:180
 msgid "print this help"
 msgstr "deze hulptekst tonen"
 
-#: src/main/extract.c:177
+#: src/main/extract.c:182
 msgid "run plugins in-process (simplifies debugging)"
 msgstr ""
 
-#: src/main/extract.c:179
+#: src/main/extract.c:184
+msgid "read data from file into memory and extract from memory"
+msgstr ""
+
+#: src/main/extract.c:186
 msgid "load an extractor plugin named LIBRARY"
 msgstr "deze extractor-plugin laden"
 
-#: src/main/extract.c:181
+#: src/main/extract.c:188
 msgid "list all keyword types"
 msgstr "alle sleutelwoordtypes opsommen"
 
-#: src/main/extract.c:183
+#: src/main/extract.c:190
 msgid "do not use the default set of extractor plugins"
 msgstr "de standaardset extractor-plugins niet gebruiken"
 
-#: src/main/extract.c:185
+#: src/main/extract.c:192
 msgid "print only keywords of the given TYPE (use -L to get a list)"
 msgstr ""
 "alleen sleutelwoorden van dit type tonen (gebruik '-L' voor een overzicht)"
 
-#: src/main/extract.c:187
+#: src/main/extract.c:194
 msgid "print the version number"
 msgstr "programmaversie tonen"
 
-#: src/main/extract.c:189
+#: src/main/extract.c:196
 msgid "be verbose"
 msgstr "gedetailleerde uivoer produceren"
 
-#: src/main/extract.c:191
+#: src/main/extract.c:198
 msgid "do not print keywords of the given TYPE"
 msgstr "sleutelwoorden van dit type niet tonen"
 
-#: src/main/extract.c:194
+#: src/main/extract.c:201
 msgid "extract [OPTIONS] [FILENAME]*"
 msgstr "extract [OPTIES] [BESTANDSNAAM]*"
 
-#: src/main/extract.c:195
+#: src/main/extract.c:202
 msgid "Extract metadata from files."
 msgstr "Metadata uit bestanden lezen."
 
-#: src/main/extract.c:236
+#: src/main/extract.c:243
 #, fuzzy, c-format
 msgid "Found by `%s' plugin:\n"
 msgstr "Laden van plugin '%s' is mislukt: %s\n"
 
-#: src/main/extract.c:239 src/main/extract.c:320
+#: src/main/extract.c:246 src/main/extract.c:327
 #: src/main/extractor_metatypes.c:136 src/main/extractor_print.c:68
 msgid "unknown"
 msgstr "onbekend"
 
-#: src/main/extract.c:244
+#: src/main/extract.c:251
 #, c-format
 msgid "%s - (unknown, %u bytes)\n"
 msgstr ""
 
-#: src/main/extract.c:268
+#: src/main/extract.c:275
 #, fuzzy, c-format
 msgid "%s - (binary, %u bytes)\n"
 msgstr "%s - (binair)\n"
 
-#: src/main/extract.c:601 src/main/extract.c:611
+#: src/main/extract.c:609 src/main/extract.c:619
 #, c-format
 msgid ""
 "Illegal combination of options, cannot combine multiple styles of printing.\n"
 msgstr ""
 
-#: src/main/extract.c:638
+#: src/main/extract.c:649
 #, c-format
 msgid "You must specify an argument for the `%s' option (option ignored).\n"
 msgstr "Optie '%s' vereist een argument -- optie is genegeerd.\n"
 
-#: src/main/extract.c:703
+#: src/main/extract.c:714
 #, c-format
 msgid "Use --help to get a list of options.\n"
 msgstr "Gebruik '--help' voor een lijst met mogelijke opties.\n"
 
-#: src/main/extract.c:741
+#: src/main/extract.c:752
 #, c-format
 msgid "%% BiBTeX file\n"
 msgstr "%% BiBTeX-bestand\n"
 
-#: src/main/extract.c:748
+#: src/main/extract.c:759
 #, c-format
 msgid "Keywords for file %s:\n"
 msgstr "Trefwoorden voor bestand %s:\n"
+
+#: src/main/extractor.c:3403
+#, c-format
+msgid "Initialization of plugin mechanism failed: %s!\n"
+msgstr "Initialisatie van plugin-mechanisme is mislukt: %s\n"
 
 #: src/main/extractor_metatypes.c:37
 msgid "reserved"
@@ -1400,6 +530,10 @@ msgstr ""
 #: src/main/extractor_metatypes.c:138 src/main/extractor_metatypes.c:139
 msgid "description"
 msgstr "omschrijving"
+
+#: src/main/extractor_metatypes.c:140 src/plugins/mp3_extractor.c:206
+msgid "copyright"
+msgstr "copyright"
 
 #: src/main/extractor_metatypes.c:141
 msgid "Name of the entity holding the copyright"
@@ -2418,6 +1552,876 @@ msgstr "uitgever"
 #, fuzzy
 msgid "last"
 msgstr "flits"
+
+#: src/main/getopt.c:684
+#, c-format
+msgid "%s: option `%s' is ambiguous\n"
+msgstr "%s: optie '%s' is niet eenduidig\n"
+
+#: src/main/getopt.c:709
+#, c-format
+msgid "%s: option `--%s' doesn't allow an argument\n"
+msgstr "%s: optie '--%s' staat geen argument toe\n"
+
+#: src/main/getopt.c:715
+#, c-format
+msgid "%s: option `%c%s' doesn't allow an argument\n"
+msgstr "%s: optie '%c%s' staat geen argument toe\n"
+
+#: src/main/getopt.c:732 src/main/getopt.c:903
+#, c-format
+msgid "%s: option `%s' requires an argument\n"
+msgstr "%s: optie '%s' vereist een argument\n"
+
+#: src/main/getopt.c:761
+#, c-format
+msgid "%s: unrecognized option `--%s'\n"
+msgstr "%s: onbekende optie '--%s'\n"
+
+#: src/main/getopt.c:765
+#, c-format
+msgid "%s: unrecognized option `%c%s'\n"
+msgstr "%s: onbekende optie '%c%s'\n"
+
+#: src/main/getopt.c:791
+#, c-format
+msgid "%s: illegal option -- %c\n"
+msgstr "%s: ongeldige optie -- %c\n"
+
+#: src/main/getopt.c:793
+#, c-format
+msgid "%s: invalid option -- %c\n"
+msgstr "%s: ongeldige optie -- %c\n"
+
+#: src/main/getopt.c:822 src/main/getopt.c:952
+#, c-format
+msgid "%s: option requires an argument -- %c\n"
+msgstr "%s: optie vereist een argument -- %c\n"
+
+#: src/main/getopt.c:870
+#, c-format
+msgid "%s: option `-W %s' is ambiguous\n"
+msgstr "%s: optie '-W %s' is niet eenduidig\n"
+
+#: src/main/getopt.c:888
+#, c-format
+msgid "%s: option `-W %s' doesn't allow an argument\n"
+msgstr "%s: optie '-W %s' staat geen argument toe\n"
+
+#: src/plugins/applefile_extractor.c:162
+msgid "GB"
+msgstr "GB"
+
+#: src/plugins/applefile_extractor.c:164
+msgid "MB"
+msgstr "MB"
+
+#: src/plugins/applefile_extractor.c:166
+msgid "KB"
+msgstr "KB"
+
+#: src/plugins/applefile_extractor.c:168
+msgid "Bytes"
+msgstr "bytes"
+
+#: src/plugins/flac_extractor.c:192
+#, c-format
+msgid "%u Hz, %u channels"
+msgstr ""
+
+#: src/plugins/id3_extractor.c:46 src/plugins/qt_extractor.c:30
+msgid "Blues"
+msgstr "Blues"
+
+#: src/plugins/id3_extractor.c:47 src/plugins/qt_extractor.c:31
+msgid "Classic Rock"
+msgstr "Classic rock"
+
+#: src/plugins/id3_extractor.c:48 src/plugins/qt_extractor.c:32
+#, fuzzy
+msgid "Country"
+msgstr "Country"
+
+#: src/plugins/id3_extractor.c:49 src/plugins/qt_extractor.c:33
+msgid "Dance"
+msgstr "Dance"
+
+#: src/plugins/id3_extractor.c:50 src/plugins/qt_extractor.c:34
+msgid "Disco"
+msgstr "Disco"
+
+#: src/plugins/id3_extractor.c:51 src/plugins/qt_extractor.c:35
+msgid "Funk"
+msgstr "Funk"
+
+#: src/plugins/id3_extractor.c:52 src/plugins/qt_extractor.c:36
+msgid "Grunge"
+msgstr "Grunge"
+
+#: src/plugins/id3_extractor.c:53 src/plugins/qt_extractor.c:37
+msgid "Hip-Hop"
+msgstr "Hiphop"
+
+#: src/plugins/id3_extractor.c:54 src/plugins/qt_extractor.c:38
+msgid "Jazz"
+msgstr "Jazz"
+
+#: src/plugins/id3_extractor.c:55 src/plugins/qt_extractor.c:39
+msgid "Metal"
+msgstr "Metal"
+
+#: src/plugins/id3_extractor.c:56 src/plugins/qt_extractor.c:40
+msgid "New Age"
+msgstr "New age"
+
+#: src/plugins/id3_extractor.c:57 src/plugins/qt_extractor.c:41
+msgid "Oldies"
+msgstr "Gouwe ouwe"
+
+#: src/plugins/id3_extractor.c:58 src/plugins/qt_extractor.c:42
+msgid "Other"
+msgstr "Overige"
+
+#: src/plugins/id3_extractor.c:59 src/plugins/qt_extractor.c:43
+msgid "Pop"
+msgstr "Pop"
+
+#: src/plugins/id3_extractor.c:60 src/plugins/qt_extractor.c:44
+msgid "R&B"
+msgstr "R&B"
+
+#: src/plugins/id3_extractor.c:61 src/plugins/qt_extractor.c:45
+msgid "Rap"
+msgstr "Rap"
+
+#: src/plugins/id3_extractor.c:62 src/plugins/qt_extractor.c:46
+msgid "Reggae"
+msgstr "Reggae"
+
+#: src/plugins/id3_extractor.c:63 src/plugins/qt_extractor.c:47
+msgid "Rock"
+msgstr "Rock"
+
+#: src/plugins/id3_extractor.c:64 src/plugins/qt_extractor.c:48
+msgid "Techno"
+msgstr "Techno"
+
+#: src/plugins/id3_extractor.c:65 src/plugins/qt_extractor.c:49
+msgid "Industrial"
+msgstr "Industrial"
+
+#: src/plugins/id3_extractor.c:66 src/plugins/qt_extractor.c:50
+msgid "Alternative"
+msgstr "Alternatief"
+
+#: src/plugins/id3_extractor.c:67 src/plugins/qt_extractor.c:51
+msgid "Ska"
+msgstr "Ska"
+
+#: src/plugins/id3_extractor.c:68 src/plugins/qt_extractor.c:52
+msgid "Death Metal"
+msgstr "Death metal"
+
+#: src/plugins/id3_extractor.c:69 src/plugins/qt_extractor.c:53
+msgid "Pranks"
+msgstr "Pranks"
+
+#: src/plugins/id3_extractor.c:70 src/plugins/qt_extractor.c:54
+msgid "Soundtrack"
+msgstr "Soundtrack"
+
+#: src/plugins/id3_extractor.c:71 src/plugins/qt_extractor.c:55
+msgid "Euro-Techno"
+msgstr "Eurotechno"
+
+#: src/plugins/id3_extractor.c:72 src/plugins/qt_extractor.c:56
+msgid "Ambient"
+msgstr "Ambient"
+
+#: src/plugins/id3_extractor.c:73 src/plugins/qt_extractor.c:57
+msgid "Trip-Hop"
+msgstr "Triphop"
+
+#: src/plugins/id3_extractor.c:74 src/plugins/qt_extractor.c:58
+msgid "Vocal"
+msgstr "Vocaal"
+
+#: src/plugins/id3_extractor.c:75 src/plugins/qt_extractor.c:59
+msgid "Jazz+Funk"
+msgstr "Jazz+Funk"
+
+#: src/plugins/id3_extractor.c:76 src/plugins/qt_extractor.c:60
+msgid "Fusion"
+msgstr "Fusion"
+
+#: src/plugins/id3_extractor.c:77 src/plugins/qt_extractor.c:61
+msgid "Trance"
+msgstr "Trance"
+
+#: src/plugins/id3_extractor.c:78 src/plugins/qt_extractor.c:62
+msgid "Classical"
+msgstr "Klassiek"
+
+#: src/plugins/id3_extractor.c:79 src/plugins/qt_extractor.c:63
+msgid "Instrumental"
+msgstr "Instrumenteel"
+
+#: src/plugins/id3_extractor.c:80 src/plugins/qt_extractor.c:64
+msgid "Acid"
+msgstr "Acid house"
+
+#: src/plugins/id3_extractor.c:81 src/plugins/qt_extractor.c:65
+msgid "House"
+msgstr "House"
+
+#: src/plugins/id3_extractor.c:82 src/plugins/qt_extractor.c:66
+msgid "Game"
+msgstr "Spel"
+
+#: src/plugins/id3_extractor.c:83 src/plugins/qt_extractor.c:67
+msgid "Sound Clip"
+msgstr "Soundclip"
+
+#: src/plugins/id3_extractor.c:84 src/plugins/qt_extractor.c:68
+msgid "Gospel"
+msgstr "Gospel"
+
+#: src/plugins/id3_extractor.c:85 src/plugins/qt_extractor.c:69
+msgid "Noise"
+msgstr "Noise"
+
+#: src/plugins/id3_extractor.c:86 src/plugins/qt_extractor.c:70
+msgid "Alt. Rock"
+msgstr "Alternatieve rock"
+
+#: src/plugins/id3_extractor.c:87 src/plugins/qt_extractor.c:71
+msgid "Bass"
+msgstr "Bass"
+
+#: src/plugins/id3_extractor.c:88 src/plugins/qt_extractor.c:72
+msgid "Soul"
+msgstr "Soul"
+
+#: src/plugins/id3_extractor.c:89 src/plugins/qt_extractor.c:73
+msgid "Punk"
+msgstr "Punk"
+
+#: src/plugins/id3_extractor.c:90 src/plugins/qt_extractor.c:74
+msgid "Space"
+msgstr "Ruimte"
+
+#: src/plugins/id3_extractor.c:91 src/plugins/qt_extractor.c:75
+msgid "Meditative"
+msgstr "New-age"
+
+#: src/plugins/id3_extractor.c:92 src/plugins/qt_extractor.c:76
+msgid "Instrumental Pop"
+msgstr "Instrumentele pop"
+
+#: src/plugins/id3_extractor.c:93 src/plugins/qt_extractor.c:77
+msgid "Instrumental Rock"
+msgstr "Instrumentele rock"
+
+#: src/plugins/id3_extractor.c:94 src/plugins/qt_extractor.c:78
+msgid "Ethnic"
+msgstr "Etnisch"
+
+#: src/plugins/id3_extractor.c:95 src/plugins/qt_extractor.c:79
+msgid "Gothic"
+msgstr "Gothic"
+
+#: src/plugins/id3_extractor.c:96 src/plugins/qt_extractor.c:80
+msgid "Darkwave"
+msgstr "Darkwave"
+
+#: src/plugins/id3_extractor.c:97 src/plugins/qt_extractor.c:81
+msgid "Techno-Industrial"
+msgstr "Techno-Industrial"
+
+#: src/plugins/id3_extractor.c:98 src/plugins/qt_extractor.c:82
+msgid "Electronic"
+msgstr "Elektronisch"
+
+#: src/plugins/id3_extractor.c:99 src/plugins/qt_extractor.c:83
+msgid "Pop-Folk"
+msgstr "Pop-folk"
+
+#: src/plugins/id3_extractor.c:100 src/plugins/qt_extractor.c:84
+msgid "Eurodance"
+msgstr "Eurodance"
+
+#: src/plugins/id3_extractor.c:101 src/plugins/qt_extractor.c:85
+msgid "Dream"
+msgstr "Dreampop"
+
+#: src/plugins/id3_extractor.c:102 src/plugins/qt_extractor.c:86
+msgid "Southern Rock"
+msgstr "Southern rock"
+
+#: src/plugins/id3_extractor.c:103 src/plugins/qt_extractor.c:87
+msgid "Comedy"
+msgstr "Komedie"
+
+#: src/plugins/id3_extractor.c:104 src/plugins/qt_extractor.c:88
+msgid "Cult"
+msgstr "Cult"
+
+#: src/plugins/id3_extractor.c:105 src/plugins/qt_extractor.c:89
+msgid "Gangsta Rap"
+msgstr "Gangsta rap"
+
+#: src/plugins/id3_extractor.c:106 src/plugins/qt_extractor.c:90
+msgid "Top 40"
+msgstr "Top 40"
+
+#: src/plugins/id3_extractor.c:107 src/plugins/qt_extractor.c:91
+msgid "Christian Rap"
+msgstr "Christelijke rap"
+
+#: src/plugins/id3_extractor.c:108 src/plugins/qt_extractor.c:92
+msgid "Pop/Funk"
+msgstr "Pop/funk"
+
+#: src/plugins/id3_extractor.c:109 src/plugins/qt_extractor.c:93
+msgid "Jungle"
+msgstr "Jungle"
+
+#: src/plugins/id3_extractor.c:110 src/plugins/qt_extractor.c:94
+msgid "Native American"
+msgstr "Indiaans"
+
+#: src/plugins/id3_extractor.c:111 src/plugins/qt_extractor.c:95
+msgid "Cabaret"
+msgstr "Cabaret"
+
+#: src/plugins/id3_extractor.c:112 src/plugins/qt_extractor.c:96
+msgid "New Wave"
+msgstr "New wave"
+
+#: src/plugins/id3_extractor.c:113 src/plugins/qt_extractor.c:97
+msgid "Psychedelic"
+msgstr "Psychedelisch"
+
+#: src/plugins/id3_extractor.c:114 src/plugins/qt_extractor.c:98
+msgid "Rave"
+msgstr "Rave"
+
+#: src/plugins/id3_extractor.c:115 src/plugins/qt_extractor.c:99
+msgid "Showtunes"
+msgstr "Showtunes"
+
+#: src/plugins/id3_extractor.c:116 src/plugins/qt_extractor.c:100
+msgid "Trailer"
+msgstr "Trailer"
+
+#: src/plugins/id3_extractor.c:117 src/plugins/qt_extractor.c:101
+msgid "Lo-Fi"
+msgstr "Lo-Fi"
+
+#: src/plugins/id3_extractor.c:118 src/plugins/qt_extractor.c:102
+msgid "Tribal"
+msgstr "Tribal"
+
+#: src/plugins/id3_extractor.c:119 src/plugins/qt_extractor.c:103
+msgid "Acid Punk"
+msgstr "Acid punk"
+
+#: src/plugins/id3_extractor.c:120 src/plugins/qt_extractor.c:104
+msgid "Acid Jazz"
+msgstr "Acid jazz"
+
+#: src/plugins/id3_extractor.c:121 src/plugins/qt_extractor.c:105
+msgid "Polka"
+msgstr "Polka"
+
+#: src/plugins/id3_extractor.c:122 src/plugins/qt_extractor.c:106
+msgid "Retro"
+msgstr "Retro"
+
+#: src/plugins/id3_extractor.c:123 src/plugins/qt_extractor.c:107
+msgid "Musical"
+msgstr "Musical"
+
+#: src/plugins/id3_extractor.c:124 src/plugins/qt_extractor.c:108
+msgid "Rock & Roll"
+msgstr "Rock-'n-roll"
+
+#: src/plugins/id3_extractor.c:125 src/plugins/qt_extractor.c:109
+msgid "Hard Rock"
+msgstr "Hardrock"
+
+#: src/plugins/id3_extractor.c:126 src/plugins/qt_extractor.c:110
+msgid "Folk"
+msgstr "Folk"
+
+#: src/plugins/id3_extractor.c:127 src/plugins/qt_extractor.c:111
+msgid "Folk/Rock"
+msgstr "Folk/rock"
+
+#: src/plugins/id3_extractor.c:128 src/plugins/qt_extractor.c:112
+msgid "National Folk"
+msgstr "Nationale folk"
+
+#: src/plugins/id3_extractor.c:129 src/plugins/qt_extractor.c:113
+msgid "Swing"
+msgstr "Swing"
+
+#: src/plugins/id3_extractor.c:130 src/plugins/qt_extractor.c:114
+msgid "Fast-Fusion"
+msgstr "Fast-Fusion"
+
+#: src/plugins/id3_extractor.c:131 src/plugins/qt_extractor.c:115
+msgid "Bebob"
+msgstr "Bop"
+
+#: src/plugins/id3_extractor.c:132 src/plugins/qt_extractor.c:116
+#, fuzzy
+msgid "Latin"
+msgstr "Latin"
+
+#: src/plugins/id3_extractor.c:133 src/plugins/qt_extractor.c:117
+msgid "Revival"
+msgstr "Revival"
+
+#: src/plugins/id3_extractor.c:134 src/plugins/qt_extractor.c:118
+msgid "Celtic"
+msgstr "Keltisch"
+
+#: src/plugins/id3_extractor.c:135 src/plugins/qt_extractor.c:119
+msgid "Bluegrass"
+msgstr "Bluegrass"
+
+#: src/plugins/id3_extractor.c:136 src/plugins/qt_extractor.c:120
+msgid "Avantgarde"
+msgstr "Avant-garde"
+
+#: src/plugins/id3_extractor.c:137 src/plugins/qt_extractor.c:121
+msgid "Gothic Rock"
+msgstr "Gothic rock"
+
+#: src/plugins/id3_extractor.c:138 src/plugins/qt_extractor.c:122
+msgid "Progressive Rock"
+msgstr "Progressieve rock"
+
+#: src/plugins/id3_extractor.c:139 src/plugins/qt_extractor.c:123
+msgid "Psychedelic Rock"
+msgstr "Psychedelische rock"
+
+#: src/plugins/id3_extractor.c:140 src/plugins/qt_extractor.c:124
+msgid "Symphonic Rock"
+msgstr "Symfonische rock"
+
+#: src/plugins/id3_extractor.c:141 src/plugins/qt_extractor.c:125
+msgid "Slow Rock"
+msgstr "Langzame rock"
+
+#: src/plugins/id3_extractor.c:142 src/plugins/qt_extractor.c:126
+msgid "Big Band"
+msgstr "Bigband"
+
+#: src/plugins/id3_extractor.c:143 src/plugins/qt_extractor.c:127
+msgid "Chorus"
+msgstr "Koor"
+
+#: src/plugins/id3_extractor.c:144 src/plugins/qt_extractor.c:128
+msgid "Easy Listening"
+msgstr "Easy listening"
+
+#: src/plugins/id3_extractor.c:145 src/plugins/qt_extractor.c:129
+msgid "Acoustic"
+msgstr "Akoestisch"
+
+#: src/plugins/id3_extractor.c:146 src/plugins/qt_extractor.c:130
+msgid "Humour"
+msgstr "Humor"
+
+#: src/plugins/id3_extractor.c:147 src/plugins/qt_extractor.c:131
+msgid "Speech"
+msgstr "Spraak"
+
+#: src/plugins/id3_extractor.c:148 src/plugins/qt_extractor.c:132
+msgid "Chanson"
+msgstr "Chanson"
+
+#: src/plugins/id3_extractor.c:149 src/plugins/qt_extractor.c:133
+msgid "Opera"
+msgstr "Opera"
+
+#: src/plugins/id3_extractor.c:150 src/plugins/qt_extractor.c:134
+msgid "Chamber Music"
+msgstr "Kamermuziek"
+
+#: src/plugins/id3_extractor.c:151 src/plugins/qt_extractor.c:135
+msgid "Sonata"
+msgstr "Sonata"
+
+#: src/plugins/id3_extractor.c:152 src/plugins/qt_extractor.c:136
+msgid "Symphony"
+msgstr "Symfonie"
+
+#: src/plugins/id3_extractor.c:153 src/plugins/qt_extractor.c:137
+msgid "Booty Bass"
+msgstr "Booty Bass"
+
+#: src/plugins/id3_extractor.c:154 src/plugins/qt_extractor.c:138
+msgid "Primus"
+msgstr "Primus"
+
+#: src/plugins/id3_extractor.c:155 src/plugins/qt_extractor.c:139
+msgid "Porn Groove"
+msgstr "Porn Groove"
+
+#: src/plugins/id3_extractor.c:156 src/plugins/qt_extractor.c:140
+msgid "Satire"
+msgstr "Satire"
+
+#: src/plugins/id3_extractor.c:157 src/plugins/qt_extractor.c:141
+msgid "Slow Jam"
+msgstr "Slow Jam"
+
+#: src/plugins/id3_extractor.c:158 src/plugins/qt_extractor.c:142
+msgid "Club"
+msgstr "Club"
+
+#: src/plugins/id3_extractor.c:159 src/plugins/qt_extractor.c:143
+msgid "Tango"
+msgstr "Tango"
+
+#: src/plugins/id3_extractor.c:160 src/plugins/qt_extractor.c:144
+msgid "Samba"
+msgstr "Samba"
+
+#: src/plugins/id3_extractor.c:161 src/plugins/qt_extractor.c:145
+msgid "Folklore"
+msgstr "Folklore"
+
+#: src/plugins/id3_extractor.c:162 src/plugins/qt_extractor.c:146
+msgid "Ballad"
+msgstr "Ballad"
+
+#: src/plugins/id3_extractor.c:163 src/plugins/qt_extractor.c:147
+msgid "Power Ballad"
+msgstr "Power ballad"
+
+#: src/plugins/id3_extractor.c:164 src/plugins/qt_extractor.c:148
+msgid "Rhythmic Soul"
+msgstr "Ritmische soul"
+
+#: src/plugins/id3_extractor.c:165 src/plugins/qt_extractor.c:149
+msgid "Freestyle"
+msgstr "Freestyle"
+
+#: src/plugins/id3_extractor.c:166 src/plugins/qt_extractor.c:150
+msgid "Duet"
+msgstr "Duet"
+
+#: src/plugins/id3_extractor.c:167 src/plugins/qt_extractor.c:151
+msgid "Punk Rock"
+msgstr "Punkrock"
+
+#: src/plugins/id3_extractor.c:168 src/plugins/qt_extractor.c:152
+msgid "Drum Solo"
+msgstr "Drumsolo"
+
+#: src/plugins/id3_extractor.c:169 src/plugins/qt_extractor.c:153
+msgid "A Cappella"
+msgstr "A capella"
+
+#: src/plugins/id3_extractor.c:170 src/plugins/qt_extractor.c:154
+msgid "Euro-House"
+msgstr "Eurohouse"
+
+#: src/plugins/id3_extractor.c:171 src/plugins/qt_extractor.c:155
+msgid "Dance Hall"
+msgstr "Dancehall"
+
+#: src/plugins/id3_extractor.c:172 src/plugins/qt_extractor.c:156
+msgid "Goa"
+msgstr "Goa"
+
+#: src/plugins/id3_extractor.c:173 src/plugins/qt_extractor.c:157
+msgid "Drum & Bass"
+msgstr "Drum & Bass"
+
+#: src/plugins/id3_extractor.c:174 src/plugins/qt_extractor.c:158
+msgid "Club-House"
+msgstr "Clubhouse"
+
+#: src/plugins/id3_extractor.c:175 src/plugins/qt_extractor.c:159
+msgid "Hardcore"
+msgstr "Hardcore"
+
+#: src/plugins/id3_extractor.c:176 src/plugins/qt_extractor.c:160
+msgid "Terror"
+msgstr "Terrorcore"
+
+#: src/plugins/id3_extractor.c:177 src/plugins/qt_extractor.c:161
+msgid "Indie"
+msgstr "Indie"
+
+#: src/plugins/id3_extractor.c:178 src/plugins/qt_extractor.c:162
+msgid "BritPop"
+msgstr "Britpop"
+
+#: src/plugins/id3_extractor.c:179 src/plugins/qt_extractor.c:163
+msgid "Negerpunk"
+msgstr "Negerpunk"
+
+#: src/plugins/id3_extractor.c:180 src/plugins/qt_extractor.c:164
+msgid "Polsk Punk"
+msgstr "Poolse punk"
+
+#: src/plugins/id3_extractor.c:181 src/plugins/qt_extractor.c:165
+msgid "Beat"
+msgstr "Beat"
+
+#: src/plugins/id3_extractor.c:182 src/plugins/qt_extractor.c:166
+msgid "Christian Gangsta Rap"
+msgstr "Christelijke gangsta rap"
+
+#: src/plugins/id3_extractor.c:183 src/plugins/qt_extractor.c:167
+msgid "Heavy Metal"
+msgstr "Heavy metal"
+
+#: src/plugins/id3_extractor.c:184 src/plugins/qt_extractor.c:168
+msgid "Black Metal"
+msgstr "Black metal"
+
+#: src/plugins/id3_extractor.c:185 src/plugins/qt_extractor.c:169
+msgid "Crossover"
+msgstr "Cross-over"
+
+#: src/plugins/id3_extractor.c:186 src/plugins/qt_extractor.c:170
+msgid "Contemporary Christian"
+msgstr "Modern christelijk"
+
+#: src/plugins/id3_extractor.c:187 src/plugins/qt_extractor.c:171
+msgid "Christian Rock"
+msgstr "Christelijke rock"
+
+#: src/plugins/id3_extractor.c:188 src/plugins/qt_extractor.c:172
+msgid "Merengue"
+msgstr "Merengue"
+
+#: src/plugins/id3_extractor.c:189 src/plugins/qt_extractor.c:173
+msgid "Salsa"
+msgstr "Salsa"
+
+#: src/plugins/id3_extractor.c:190 src/plugins/qt_extractor.c:174
+msgid "Thrash Metal"
+msgstr "Thrash metal"
+
+#: src/plugins/id3_extractor.c:191 src/plugins/qt_extractor.c:175
+msgid "Anime"
+msgstr "Anime"
+
+#: src/plugins/id3_extractor.c:192 src/plugins/qt_extractor.c:176
+msgid "JPop"
+msgstr "J-pop"
+
+#: src/plugins/id3_extractor.c:193 src/plugins/qt_extractor.c:177
+msgid "Synthpop"
+msgstr "Synthipop"
+
+#: src/plugins/jpeg_extractor.c:182
+#, fuzzy, c-format
+msgid "%ux%u dots per inch"
+msgstr "%ux%u dots per inch?"
+
+#: src/plugins/jpeg_extractor.c:197
+#, c-format
+msgid "%ux%u dots per cm"
+msgstr "%ux%u dots per cm"
+
+#: src/plugins/jpeg_extractor.c:212
+#, c-format
+msgid "%ux%u dots per inch?"
+msgstr "%ux%u dots per inch?"
+
+#: src/plugins/man_extractor.c:161
+msgid "Commands"
+msgstr "Commando's"
+
+#: src/plugins/man_extractor.c:165
+msgid "System calls"
+msgstr "Systeemaanroepen"
+
+#: src/plugins/man_extractor.c:169
+msgid "Library calls"
+msgstr "Bibliotheekaanroepen"
+
+#: src/plugins/man_extractor.c:173
+msgid "Special files"
+msgstr "Speciale bestanden"
+
+#: src/plugins/man_extractor.c:177
+msgid "File formats and conventions"
+msgstr "Bestandsindelingen en -conventies"
+
+#: src/plugins/man_extractor.c:181
+msgid "Games"
+msgstr "Spellen"
+
+#: src/plugins/man_extractor.c:185
+msgid "Conventions and miscellaneous"
+msgstr "Conventies en overigen"
+
+#: src/plugins/man_extractor.c:189
+msgid "System management commands"
+msgstr "Systeembeheercommando's"
+
+#: src/plugins/man_extractor.c:193
+msgid "Kernel routines"
+msgstr "Kernelroutines"
+
+#: src/plugins/mp3_extractor.c:95 src/plugins/wav_extractor.c:106
+msgid "stereo"
+msgstr "stereo"
+
+#: src/plugins/mp3_extractor.c:96
+#, fuzzy
+msgid "joint stereo"
+msgstr "stereo"
+
+#: src/plugins/mp3_extractor.c:97
+msgid "dual channel"
+msgstr ""
+
+#: src/plugins/mp3_extractor.c:98 src/plugins/wav_extractor.c:106
+msgid "mono"
+msgstr "mono"
+
+#: src/plugins/mp3_extractor.c:101
+msgid "MPEG-1"
+msgstr ""
+
+#: src/plugins/mp3_extractor.c:102
+msgid "MPEG-2"
+msgstr ""
+
+#: src/plugins/mp3_extractor.c:103
+msgid "MPEG-2.5"
+msgstr ""
+
+#: src/plugins/mp3_extractor.c:106
+msgid "Layer I"
+msgstr ""
+
+#: src/plugins/mp3_extractor.c:107
+msgid "Layer II"
+msgstr ""
+
+#: src/plugins/mp3_extractor.c:108
+msgid "Layer III"
+msgstr ""
+
+#: src/plugins/mp3_extractor.c:203
+msgid "VBR"
+msgstr ""
+
+#: src/plugins/mp3_extractor.c:203
+msgid "CBR"
+msgstr ""
+
+#: src/plugins/mp3_extractor.c:206
+#, fuzzy
+msgid "no copyright"
+msgstr "copyright"
+
+#: src/plugins/mp3_extractor.c:207
+msgid "original"
+msgstr ""
+
+#: src/plugins/mp3_extractor.c:207
+#, fuzzy
+msgid "copy"
+msgstr "firma"
+
+#: src/plugins/ole2_extractor.c:290
+msgid "No Proofing"
+msgstr "geen controle"
+
+#: src/plugins/ole2_extractor.c:298
+msgid "Traditional Chinese"
+msgstr "Traditioneel Chinees"
+
+#: src/plugins/ole2_extractor.c:300
+msgid "Simplified Chinese"
+msgstr "Vereenvoudigd Chinees"
+
+#: src/plugins/ole2_extractor.c:308
+msgid "Swiss German"
+msgstr "Zwitserduits"
+
+#: src/plugins/ole2_extractor.c:312
+msgid "U.S. English"
+msgstr "Amerikaans Engels"
+
+#: src/plugins/ole2_extractor.c:314
+msgid "U.K. English"
+msgstr "Brits Engels"
+
+#: src/plugins/ole2_extractor.c:316
+msgid "Australian English"
+msgstr "Australisch Engels"
+
+#: src/plugins/ole2_extractor.c:318
+msgid "Castilian Spanish"
+msgstr "Castilliaans Spaans"
+
+#: src/plugins/ole2_extractor.c:320
+msgid "Mexican Spanish"
+msgstr "Mexicaans Spaans"
+
+#: src/plugins/ole2_extractor.c:326
+msgid "Belgian French"
+msgstr "Waals"
+
+#: src/plugins/ole2_extractor.c:328
+msgid "Canadian French"
+msgstr "Canadees Frans"
+
+#: src/plugins/ole2_extractor.c:330
+msgid "Swiss French"
+msgstr "Zwitsers Frans"
+
+#: src/plugins/ole2_extractor.c:340
+msgid "Swiss Italian"
+msgstr "Zwitsers Italiaans"
+
+#: src/plugins/ole2_extractor.c:348
+msgid "Belgian Dutch"
+msgstr "Vlaams"
+
+#: src/plugins/ole2_extractor.c:350
+msgid "Norwegian Bokmal"
+msgstr "Noors Bokmål"
+
+#: src/plugins/ole2_extractor.c:360
+msgid "Rhaeto-Romanic"
+msgstr "Reto-Romaans"
+
+#: src/plugins/ole2_extractor.c:366
+msgid "Croato-Serbian (Latin)"
+msgstr "Servo-Kroatisch (latijns schrift)"
+
+#: src/plugins/ole2_extractor.c:368
+msgid "Serbo-Croatian (Cyrillic)"
+msgstr "Servo-Kroatisch (cyrillisch schrift)"
+
+#: src/plugins/ole2_extractor.c:396
+msgid "Farsi"
+msgstr "Perzisch"
+
+#: src/plugins/ole2_extractor.c:471
+#, c-format
+msgid "Revision #%u: Author '%s' worked on '%s'"
+msgstr "Revisie #%u: Auteur '%s' werkte aan '%s'"
+
+#: src/plugins/riff_extractor.c:114
+#, c-format
+msgid "codec: %s, %u fps, %u ms"
+msgstr "codec: %s, %u fps, %u ms"
 
 #~ msgid "compute hash using the given ALGORITHM (currently sha1 or md5)"
 #~ msgstr "met dit algoritme ('sha1' of 'md5') de hashwaarde berekenen"

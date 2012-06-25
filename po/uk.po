@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.6.2\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2011-11-28 12:53+0100\n"
+"POT-Creation-Date: 2012-06-25 20:26+0200\n"
 "PO-Revision-Date: 2011-07-22 16:22+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <translation-team-uk@lists.sourceforge.net>\n"
@@ -19,881 +19,7 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: src/plugins/qt_extractor.c:30 src/plugins/id3_extractor.c:44
-msgid "Blues"
-msgstr "Блюз"
-
-#: src/plugins/qt_extractor.c:31 src/plugins/id3_extractor.c:45
-msgid "Classic Rock"
-msgstr "Класичний рок"
-
-#: src/plugins/qt_extractor.c:32 src/plugins/id3_extractor.c:46
-msgid "Country"
-msgstr "Кантрі"
-
-#: src/plugins/qt_extractor.c:33 src/plugins/id3_extractor.c:47
-msgid "Dance"
-msgstr "Танцювальна"
-
-#: src/plugins/qt_extractor.c:34 src/plugins/id3_extractor.c:48
-msgid "Disco"
-msgstr "Диско"
-
-#: src/plugins/qt_extractor.c:35 src/plugins/id3_extractor.c:49
-msgid "Funk"
-msgstr "Фанк"
-
-#: src/plugins/qt_extractor.c:36 src/plugins/id3_extractor.c:50
-msgid "Grunge"
-msgstr "Ґрандж"
-
-#: src/plugins/qt_extractor.c:37 src/plugins/id3_extractor.c:51
-msgid "Hip-Hop"
-msgstr "Хіп-хоп"
-
-#: src/plugins/qt_extractor.c:38 src/plugins/id3_extractor.c:52
-msgid "Jazz"
-msgstr "Джаз"
-
-#: src/plugins/qt_extractor.c:39 src/plugins/id3_extractor.c:53
-msgid "Metal"
-msgstr "Метал"
-
-#: src/plugins/qt_extractor.c:40 src/plugins/id3_extractor.c:54
-msgid "New Age"
-msgstr "Нью-ейдж"
-
-#: src/plugins/qt_extractor.c:41 src/plugins/id3_extractor.c:55
-msgid "Oldies"
-msgstr "Ретро"
-
-#: src/plugins/qt_extractor.c:42 src/plugins/id3_extractor.c:56
-msgid "Other"
-msgstr "Інша"
-
-#: src/plugins/qt_extractor.c:43 src/plugins/id3_extractor.c:57
-msgid "Pop"
-msgstr "Поп"
-
-#: src/plugins/qt_extractor.c:44 src/plugins/id3_extractor.c:58
-msgid "R&B"
-msgstr "Ритм-енд-блюз"
-
-#: src/plugins/qt_extractor.c:45 src/plugins/id3_extractor.c:59
-msgid "Rap"
-msgstr "Реп"
-
-#: src/plugins/qt_extractor.c:46 src/plugins/id3_extractor.c:60
-msgid "Reggae"
-msgstr "Регі"
-
-#: src/plugins/qt_extractor.c:47 src/plugins/id3_extractor.c:61
-msgid "Rock"
-msgstr "Рок"
-
-#: src/plugins/qt_extractor.c:48 src/plugins/id3_extractor.c:62
-msgid "Techno"
-msgstr "Техно"
-
-#: src/plugins/qt_extractor.c:49 src/plugins/id3_extractor.c:63
-msgid "Industrial"
-msgstr "Індастріал"
-
-#: src/plugins/qt_extractor.c:50 src/plugins/id3_extractor.c:64
-msgid "Alternative"
-msgstr "Альтернативна"
-
-#: src/plugins/qt_extractor.c:51 src/plugins/id3_extractor.c:65
-msgid "Ska"
-msgstr "Ска"
-
-#: src/plugins/qt_extractor.c:52 src/plugins/id3_extractor.c:66
-msgid "Death Metal"
-msgstr "Деф-метал"
-
-#: src/plugins/qt_extractor.c:53 src/plugins/id3_extractor.c:67
-msgid "Pranks"
-msgstr "Жарти-розиграші"
-
-#: src/plugins/qt_extractor.c:54 src/plugins/id3_extractor.c:68
-msgid "Soundtrack"
-msgstr "Звукова доріжка"
-
-#: src/plugins/qt_extractor.c:55 src/plugins/id3_extractor.c:69
-msgid "Euro-Techno"
-msgstr "Євротехно"
-
-#: src/plugins/qt_extractor.c:56 src/plugins/id3_extractor.c:70
-msgid "Ambient"
-msgstr "Ембієнт"
-
-#: src/plugins/qt_extractor.c:57 src/plugins/id3_extractor.c:71
-msgid "Trip-Hop"
-msgstr "Тріп-хоп"
-
-#: src/plugins/qt_extractor.c:58 src/plugins/id3_extractor.c:72
-msgid "Vocal"
-msgstr "Вокал"
-
-#: src/plugins/qt_extractor.c:59 src/plugins/id3_extractor.c:73
-msgid "Jazz+Funk"
-msgstr "Джаз+Фанк"
-
-#: src/plugins/qt_extractor.c:60 src/plugins/id3_extractor.c:74
-msgid "Fusion"
-msgstr "Ф’южн"
-
-#: src/plugins/qt_extractor.c:61 src/plugins/id3_extractor.c:75
-msgid "Trance"
-msgstr "Транс"
-
-#: src/plugins/qt_extractor.c:62 src/plugins/id3_extractor.c:76
-msgid "Classical"
-msgstr "Класика"
-
-#: src/plugins/qt_extractor.c:63 src/plugins/id3_extractor.c:77
-msgid "Instrumental"
-msgstr "Інструментальна"
-
-#: src/plugins/qt_extractor.c:64 src/plugins/id3_extractor.c:78
-msgid "Acid"
-msgstr "Ейсід"
-
-#: src/plugins/qt_extractor.c:65 src/plugins/id3_extractor.c:79
-msgid "House"
-msgstr "Хаус"
-
-#: src/plugins/qt_extractor.c:66 src/plugins/id3_extractor.c:80
-msgid "Game"
-msgstr "Гра"
-
-#: src/plugins/qt_extractor.c:67 src/plugins/id3_extractor.c:81
-msgid "Sound Clip"
-msgstr "Звуковий уривок"
-
-#: src/plugins/qt_extractor.c:68 src/plugins/id3_extractor.c:82
-msgid "Gospel"
-msgstr "Ґоспел"
-
-#: src/plugins/qt_extractor.c:69 src/plugins/id3_extractor.c:83
-msgid "Noise"
-msgstr "Шум"
-
-#: src/plugins/qt_extractor.c:70 src/plugins/id3_extractor.c:84
-msgid "Alt. Rock"
-msgstr "Альт. рок"
-
-#: src/plugins/qt_extractor.c:71 src/plugins/id3_extractor.c:85
-msgid "Bass"
-msgstr "Бейс"
-
-#: src/plugins/qt_extractor.c:72 src/plugins/id3_extractor.c:86
-msgid "Soul"
-msgstr "Душа"
-
-#: src/plugins/qt_extractor.c:73 src/plugins/id3_extractor.c:87
-msgid "Punk"
-msgstr "Панк"
-
-#: src/plugins/qt_extractor.c:74 src/plugins/id3_extractor.c:88
-msgid "Space"
-msgstr "Простір"
-
-#: src/plugins/qt_extractor.c:75 src/plugins/id3_extractor.c:89
-msgid "Meditative"
-msgstr "Медитативна"
-
-#: src/plugins/qt_extractor.c:76 src/plugins/id3_extractor.c:90
-msgid "Instrumental Pop"
-msgstr "Інструментальний поп"
-
-#: src/plugins/qt_extractor.c:77 src/plugins/id3_extractor.c:91
-msgid "Instrumental Rock"
-msgstr "Інструментальний рок"
-
-#: src/plugins/qt_extractor.c:78 src/plugins/id3_extractor.c:92
-msgid "Ethnic"
-msgstr "Етнічна"
-
-#: src/plugins/qt_extractor.c:79 src/plugins/id3_extractor.c:93
-msgid "Gothic"
-msgstr "Готична"
-
-#: src/plugins/qt_extractor.c:80 src/plugins/id3_extractor.c:94
-msgid "Darkwave"
-msgstr "Дарквейв"
-
-#: src/plugins/qt_extractor.c:81 src/plugins/id3_extractor.c:95
-msgid "Techno-Industrial"
-msgstr "Техно-індастріал"
-
-#: src/plugins/qt_extractor.c:82 src/plugins/id3_extractor.c:96
-msgid "Electronic"
-msgstr "Електронна"
-
-#: src/plugins/qt_extractor.c:83 src/plugins/id3_extractor.c:97
-msgid "Pop-Folk"
-msgstr "Поп-фолк"
-
-#: src/plugins/qt_extractor.c:84 src/plugins/id3_extractor.c:98
-msgid "Eurodance"
-msgstr "Євроденс"
-
-#: src/plugins/qt_extractor.c:85 src/plugins/id3_extractor.c:99
-msgid "Dream"
-msgstr "Дрім"
-
-#: src/plugins/qt_extractor.c:86 src/plugins/id3_extractor.c:100
-msgid "Southern Rock"
-msgstr "Південний рок"
-
-#: src/plugins/qt_extractor.c:87 src/plugins/id3_extractor.c:101
-msgid "Comedy"
-msgstr "Комедія"
-
-#: src/plugins/qt_extractor.c:88 src/plugins/id3_extractor.c:102
-msgid "Cult"
-msgstr "Культова"
-
-#: src/plugins/qt_extractor.c:89 src/plugins/id3_extractor.c:103
-msgid "Gangsta Rap"
-msgstr "Гангста-реп"
-
-#: src/plugins/qt_extractor.c:90 src/plugins/id3_extractor.c:104
-msgid "Top 40"
-msgstr "Топ-40"
-
-#: src/plugins/qt_extractor.c:91 src/plugins/id3_extractor.c:105
-msgid "Christian Rap"
-msgstr "Християнський реп"
-
-#: src/plugins/qt_extractor.c:92 src/plugins/id3_extractor.c:106
-msgid "Pop/Funk"
-msgstr "Поп/фанк"
-
-#: src/plugins/qt_extractor.c:93 src/plugins/id3_extractor.c:107
-msgid "Jungle"
-msgstr "Джангл"
-
-#: src/plugins/qt_extractor.c:94 src/plugins/id3_extractor.c:108
-msgid "Native American"
-msgstr "Індіанська"
-
-#: src/plugins/qt_extractor.c:95 src/plugins/id3_extractor.c:109
-msgid "Cabaret"
-msgstr "Кабаре"
-
-#: src/plugins/qt_extractor.c:96 src/plugins/id3_extractor.c:110
-msgid "New Wave"
-msgstr "Нью-вейв"
-
-#: src/plugins/qt_extractor.c:97 src/plugins/id3_extractor.c:111
-msgid "Psychedelic"
-msgstr "Психоделіка"
-
-#: src/plugins/qt_extractor.c:98 src/plugins/id3_extractor.c:112
-msgid "Rave"
-msgstr "Рейв"
-
-#: src/plugins/qt_extractor.c:99 src/plugins/id3_extractor.c:113
-msgid "Showtunes"
-msgstr "Шоу-мелодії"
-
-#: src/plugins/qt_extractor.c:100 src/plugins/id3_extractor.c:114
-msgid "Trailer"
-msgstr "Трейлер"
-
-#: src/plugins/qt_extractor.c:101 src/plugins/id3_extractor.c:115
-msgid "Lo-Fi"
-msgstr "Лоу-фай"
-
-#: src/plugins/qt_extractor.c:102 src/plugins/id3_extractor.c:116
-msgid "Tribal"
-msgstr "Племенна"
-
-#: src/plugins/qt_extractor.c:103 src/plugins/id3_extractor.c:117
-msgid "Acid Punk"
-msgstr "Ейсід-панк"
-
-#: src/plugins/qt_extractor.c:104 src/plugins/id3_extractor.c:118
-msgid "Acid Jazz"
-msgstr "Ейсід-джаз"
-
-#: src/plugins/qt_extractor.c:105 src/plugins/id3_extractor.c:119
-msgid "Polka"
-msgstr "Полька"
-
-#: src/plugins/qt_extractor.c:106 src/plugins/id3_extractor.c:120
-msgid "Retro"
-msgstr "Ретро"
-
-#: src/plugins/qt_extractor.c:107 src/plugins/id3_extractor.c:121
-msgid "Musical"
-msgstr "Музична"
-
-#: src/plugins/qt_extractor.c:108 src/plugins/id3_extractor.c:122
-msgid "Rock & Roll"
-msgstr "Рок-н-рол"
-
-#: src/plugins/qt_extractor.c:109 src/plugins/id3_extractor.c:123
-msgid "Hard Rock"
-msgstr "Хардрок"
-
-#: src/plugins/qt_extractor.c:110 src/plugins/id3_extractor.c:124
-msgid "Folk"
-msgstr "Фольклор"
-
-#: src/plugins/qt_extractor.c:111 src/plugins/id3_extractor.c:125
-msgid "Folk/Rock"
-msgstr "Фольклор/рок"
-
-#: src/plugins/qt_extractor.c:112 src/plugins/id3_extractor.c:126
-msgid "National Folk"
-msgstr "Народний фольклор"
-
-#: src/plugins/qt_extractor.c:113 src/plugins/id3_extractor.c:127
-msgid "Swing"
-msgstr "Свінг"
-
-#: src/plugins/qt_extractor.c:114 src/plugins/id3_extractor.c:128
-msgid "Fast-Fusion"
-msgstr "Фаст-ф’южн"
-
-#: src/plugins/qt_extractor.c:115 src/plugins/id3_extractor.c:129
-msgid "Bebob"
-msgstr "Бібоб"
-
-#: src/plugins/qt_extractor.c:116 src/plugins/id3_extractor.c:130
-msgid "Latin"
-msgstr "Латинська"
-
-#: src/plugins/qt_extractor.c:117 src/plugins/id3_extractor.c:131
-msgid "Revival"
-msgstr "Ривайвл"
-
-#: src/plugins/qt_extractor.c:118 src/plugins/id3_extractor.c:132
-msgid "Celtic"
-msgstr "Кельтська"
-
-#: src/plugins/qt_extractor.c:119 src/plugins/id3_extractor.c:133
-msgid "Bluegrass"
-msgstr "Блюграс"
-
-#: src/plugins/qt_extractor.c:120 src/plugins/id3_extractor.c:134
-msgid "Avantgarde"
-msgstr "Авангард"
-
-#: src/plugins/qt_extractor.c:121 src/plugins/id3_extractor.c:135
-msgid "Gothic Rock"
-msgstr "Готичний рок"
-
-#: src/plugins/qt_extractor.c:122 src/plugins/id3_extractor.c:136
-msgid "Progressive Rock"
-msgstr "Прогресивний рок"
-
-#: src/plugins/qt_extractor.c:123 src/plugins/id3_extractor.c:137
-msgid "Psychedelic Rock"
-msgstr "Психоделічний рок"
-
-#: src/plugins/qt_extractor.c:124 src/plugins/id3_extractor.c:138
-msgid "Symphonic Rock"
-msgstr "Симфонічний рок"
-
-#: src/plugins/qt_extractor.c:125 src/plugins/id3_extractor.c:139
-msgid "Slow Rock"
-msgstr "Повільний рок"
-
-#: src/plugins/qt_extractor.c:126 src/plugins/id3_extractor.c:140
-msgid "Big Band"
-msgstr "Біг-бенд"
-
-#: src/plugins/qt_extractor.c:127 src/plugins/id3_extractor.c:141
-msgid "Chorus"
-msgstr "Хорова"
-
-#: src/plugins/qt_extractor.c:128 src/plugins/id3_extractor.c:142
-msgid "Easy Listening"
-msgstr "Легка музика"
-
-#: src/plugins/qt_extractor.c:129 src/plugins/id3_extractor.c:143
-msgid "Acoustic"
-msgstr "Акустична"
-
-#: src/plugins/qt_extractor.c:130 src/plugins/id3_extractor.c:144
-msgid "Humour"
-msgstr "Гумор"
-
-#: src/plugins/qt_extractor.c:131 src/plugins/id3_extractor.c:145
-msgid "Speech"
-msgstr "Мова"
-
-#: src/plugins/qt_extractor.c:132 src/plugins/id3_extractor.c:146
-msgid "Chanson"
-msgstr "Шансон"
-
-#: src/plugins/qt_extractor.c:133 src/plugins/id3_extractor.c:147
-msgid "Opera"
-msgstr "Опера"
-
-#: src/plugins/qt_extractor.c:134 src/plugins/id3_extractor.c:148
-msgid "Chamber Music"
-msgstr "Камерна музика"
-
-#: src/plugins/qt_extractor.c:135 src/plugins/id3_extractor.c:149
-msgid "Sonata"
-msgstr "Соната"
-
-#: src/plugins/qt_extractor.c:136 src/plugins/id3_extractor.c:150
-msgid "Symphony"
-msgstr "Симфонія"
-
-#: src/plugins/qt_extractor.c:137 src/plugins/id3_extractor.c:151
-msgid "Booty Bass"
-msgstr "Буті-бейс"
-
-#: src/plugins/qt_extractor.c:138 src/plugins/id3_extractor.c:152
-msgid "Primus"
-msgstr "Примас"
-
-#: src/plugins/qt_extractor.c:139 src/plugins/id3_extractor.c:153
-msgid "Porn Groove"
-msgstr "Порн-рів"
-
-#: src/plugins/qt_extractor.c:140 src/plugins/id3_extractor.c:154
-msgid "Satire"
-msgstr "Сатира"
-
-#: src/plugins/qt_extractor.c:141 src/plugins/id3_extractor.c:155
-msgid "Slow Jam"
-msgstr "Повільний джем"
-
-#: src/plugins/qt_extractor.c:142 src/plugins/id3_extractor.c:156
-msgid "Club"
-msgstr "Клуб"
-
-#: src/plugins/qt_extractor.c:143 src/plugins/id3_extractor.c:157
-msgid "Tango"
-msgstr "Танго"
-
-#: src/plugins/qt_extractor.c:144 src/plugins/id3_extractor.c:158
-msgid "Samba"
-msgstr "Самба"
-
-#: src/plugins/qt_extractor.c:145 src/plugins/id3_extractor.c:159
-msgid "Folklore"
-msgstr "Фольклор"
-
-#: src/plugins/qt_extractor.c:146 src/plugins/id3_extractor.c:160
-msgid "Ballad"
-msgstr "Балада"
-
-#: src/plugins/qt_extractor.c:147 src/plugins/id3_extractor.c:161
-msgid "Power Ballad"
-msgstr "Пауер-балада"
-
-#: src/plugins/qt_extractor.c:148 src/plugins/id3_extractor.c:162
-msgid "Rhythmic Soul"
-msgstr "Ритмічний соул"
-
-#: src/plugins/qt_extractor.c:149 src/plugins/id3_extractor.c:163
-msgid "Freestyle"
-msgstr "Вільний стиль"
-
-#: src/plugins/qt_extractor.c:150 src/plugins/id3_extractor.c:164
-msgid "Duet"
-msgstr "Дует"
-
-#: src/plugins/qt_extractor.c:151 src/plugins/id3_extractor.c:165
-msgid "Punk Rock"
-msgstr "Панк-рок"
-
-#: src/plugins/qt_extractor.c:152 src/plugins/id3_extractor.c:166
-msgid "Drum Solo"
-msgstr "Соло ударних"
-
-#: src/plugins/qt_extractor.c:153 src/plugins/id3_extractor.c:167
-msgid "A Cappella"
-msgstr "А капелла"
-
-#: src/plugins/qt_extractor.c:154 src/plugins/id3_extractor.c:168
-msgid "Euro-House"
-msgstr "Єврохаус"
-
-#: src/plugins/qt_extractor.c:155 src/plugins/id3_extractor.c:169
-msgid "Dance Hall"
-msgstr "Танцмайданчик"
-
-#: src/plugins/qt_extractor.c:156 src/plugins/id3_extractor.c:170
-msgid "Goa"
-msgstr "Гоа"
-
-#: src/plugins/qt_extractor.c:157 src/plugins/id3_extractor.c:171
-msgid "Drum & Bass"
-msgstr "Драм-енд-бейс"
-
-#: src/plugins/qt_extractor.c:158 src/plugins/id3_extractor.c:172
-msgid "Club-House"
-msgstr "Клаб-хаус"
-
-#: src/plugins/qt_extractor.c:159 src/plugins/id3_extractor.c:173
-msgid "Hardcore"
-msgstr "Хардкор"
-
-#: src/plugins/qt_extractor.c:160 src/plugins/id3_extractor.c:174
-msgid "Terror"
-msgstr "Терор"
-
-#: src/plugins/qt_extractor.c:161 src/plugins/id3_extractor.c:175
-msgid "Indie"
-msgstr "Інді"
-
-#: src/plugins/qt_extractor.c:162 src/plugins/id3_extractor.c:176
-msgid "BritPop"
-msgstr "Бритпоп"
-
-#: src/plugins/qt_extractor.c:163 src/plugins/id3_extractor.c:177
-msgid "Negerpunk"
-msgstr "Негритянський панк"
-
-#: src/plugins/qt_extractor.c:164 src/plugins/id3_extractor.c:178
-msgid "Polsk Punk"
-msgstr "Польський панк"
-
-#: src/plugins/qt_extractor.c:165 src/plugins/id3_extractor.c:179
-msgid "Beat"
-msgstr "Біт"
-
-#: src/plugins/qt_extractor.c:166 src/plugins/id3_extractor.c:180
-msgid "Christian Gangsta Rap"
-msgstr "Християнський гангста-реп"
-
-#: src/plugins/qt_extractor.c:167 src/plugins/id3_extractor.c:181
-msgid "Heavy Metal"
-msgstr "Важкий метал"
-
-#: src/plugins/qt_extractor.c:168 src/plugins/id3_extractor.c:182
-msgid "Black Metal"
-msgstr "Блек-метал"
-
-#: src/plugins/qt_extractor.c:169 src/plugins/id3_extractor.c:183
-msgid "Crossover"
-msgstr "Перетин"
-
-#: src/plugins/qt_extractor.c:170 src/plugins/id3_extractor.c:184
-msgid "Contemporary Christian"
-msgstr "Сучасна християнська"
-
-#: src/plugins/qt_extractor.c:171 src/plugins/id3_extractor.c:185
-msgid "Christian Rock"
-msgstr "Християнський рок"
-
-#: src/plugins/qt_extractor.c:172 src/plugins/id3_extractor.c:186
-msgid "Merengue"
-msgstr "Меренга"
-
-#: src/plugins/qt_extractor.c:173 src/plugins/id3_extractor.c:187
-msgid "Salsa"
-msgstr "Сальса"
-
-#: src/plugins/qt_extractor.c:174 src/plugins/id3_extractor.c:188
-msgid "Thrash Metal"
-msgstr "Треш-метал"
-
-#: src/plugins/qt_extractor.c:175 src/plugins/id3_extractor.c:189
-msgid "Anime"
-msgstr "Аніме"
-
-#: src/plugins/qt_extractor.c:176 src/plugins/id3_extractor.c:190
-msgid "JPop"
-msgstr "Джей-поп"
-
-#: src/plugins/qt_extractor.c:177 src/plugins/id3_extractor.c:191
-msgid "Synthpop"
-msgstr "Синтез-поп"
-
-#: src/plugins/ole2_extractor.c:290
-msgid "No Proofing"
-msgstr "Без перевірки"
-
-#: src/plugins/ole2_extractor.c:298
-msgid "Traditional Chinese"
-msgstr "Традиційна китайська"
-
-#: src/plugins/ole2_extractor.c:300
-msgid "Simplified Chinese"
-msgstr "Спрощена китайська"
-
-#: src/plugins/ole2_extractor.c:308
-msgid "Swiss German"
-msgstr "Швейцарська німецька"
-
-#: src/plugins/ole2_extractor.c:312
-msgid "U.S. English"
-msgstr "Американська англійська"
-
-#: src/plugins/ole2_extractor.c:314
-msgid "U.K. English"
-msgstr "Британська англійська"
-
-#: src/plugins/ole2_extractor.c:316
-msgid "Australian English"
-msgstr "Австралійська англійська"
-
-#: src/plugins/ole2_extractor.c:318
-msgid "Castilian Spanish"
-msgstr "Кастильська іспанська"
-
-#: src/plugins/ole2_extractor.c:320
-msgid "Mexican Spanish"
-msgstr "Мексиканська іспанська"
-
-#: src/plugins/ole2_extractor.c:326
-msgid "Belgian French"
-msgstr "Бельгійська французька"
-
-#: src/plugins/ole2_extractor.c:328
-msgid "Canadian French"
-msgstr "Канадська французька"
-
-#: src/plugins/ole2_extractor.c:330
-msgid "Swiss French"
-msgstr "Швейцарська французька"
-
-#: src/plugins/ole2_extractor.c:340
-msgid "Swiss Italian"
-msgstr "Швейцарська італійська"
-
-#: src/plugins/ole2_extractor.c:348
-msgid "Belgian Dutch"
-msgstr "Бельгійська голландська"
-
-#: src/plugins/ole2_extractor.c:350
-msgid "Norwegian Bokmal"
-msgstr "Норвезька (бокмал)"
-
-#: src/plugins/ole2_extractor.c:360
-msgid "Rhaeto-Romanic"
-msgstr "Ретороманська"
-
-#: src/plugins/ole2_extractor.c:366
-msgid "Croato-Serbian (Latin)"
-msgstr "Хорвато-сербська (латиниця)"
-
-#: src/plugins/ole2_extractor.c:368
-msgid "Serbo-Croatian (Cyrillic)"
-msgstr "Сербо-хорватська (кирилиця)"
-
-#: src/plugins/ole2_extractor.c:396
-msgid "Farsi"
-msgstr "Фарсі"
-
-#: src/plugins/ole2_extractor.c:471
-#, c-format
-msgid "Revision #%u: Author '%s' worked on '%s'"
-msgstr "Модифікація %u: автор «%s», співробітник «%s»"
-
-#: src/plugins/wav_extractor.c:106 src/plugins/mp3_extractor.c:89
-msgid "mono"
-msgstr "моно"
-
-#: src/plugins/wav_extractor.c:106 src/plugins/mp3_extractor.c:86
-msgid "stereo"
-msgstr "стерео"
-
-#: src/plugins/man_extractor.c:161
-msgid "Commands"
-msgstr "Команди"
-
-#: src/plugins/man_extractor.c:165
-msgid "System calls"
-msgstr "Системні виклики"
-
-#: src/plugins/man_extractor.c:169
-msgid "Library calls"
-msgstr "Виклики бібліотек"
-
-#: src/plugins/man_extractor.c:173
-msgid "Special files"
-msgstr "Спеціальні файли"
-
-#: src/plugins/man_extractor.c:177
-msgid "File formats and conventions"
-msgstr "Формати файлів та правила"
-
-#: src/plugins/man_extractor.c:181
-msgid "Games"
-msgstr "Ігри"
-
-#: src/plugins/man_extractor.c:185
-msgid "Conventions and miscellaneous"
-msgstr "Угоди та інше"
-
-#: src/plugins/man_extractor.c:189
-msgid "System management commands"
-msgstr "Команди керування системою"
-
-#: src/plugins/man_extractor.c:193
-msgid "Kernel routines"
-msgstr "Процедури ядра"
-
-#: src/plugins/flac_extractor.c:192
-#, c-format
-msgid "%u Hz, %u channels"
-msgstr "%u Гц, %u каналів"
-
-#: src/plugins/applefile_extractor.c:162
-msgid "GB"
-msgstr "ГБ"
-
-#: src/plugins/applefile_extractor.c:164
-msgid "MB"
-msgstr "МБ"
-
-#: src/plugins/applefile_extractor.c:166
-msgid "KB"
-msgstr "КБ"
-
-#: src/plugins/applefile_extractor.c:168
-msgid "Bytes"
-msgstr "байтів"
-
-#: src/plugins/mp3_extractor.c:87
-msgid "joint stereo"
-msgstr "об'єднане стерео"
-
-#: src/plugins/mp3_extractor.c:88
-msgid "dual channel"
-msgstr "два канали"
-
-#: src/plugins/mp3_extractor.c:92
-msgid "MPEG-1"
-msgstr "MPEG-1"
-
-#: src/plugins/mp3_extractor.c:93
-msgid "MPEG-2"
-msgstr "MPEG-2"
-
-#: src/plugins/mp3_extractor.c:94
-msgid "MPEG-2.5"
-msgstr "MPEG-2.5"
-
-#: src/plugins/mp3_extractor.c:97
-msgid "Layer I"
-msgstr "Layer I"
-
-#: src/plugins/mp3_extractor.c:98
-msgid "Layer II"
-msgstr "Layer II"
-
-#: src/plugins/mp3_extractor.c:99
-msgid "Layer III"
-msgstr "Layer III"
-
-#: src/plugins/mp3_extractor.c:245
-msgid "VBR"
-msgstr "VBR"
-
-#: src/plugins/mp3_extractor.c:245
-msgid "CBR"
-msgstr "CBR"
-
-#: src/plugins/mp3_extractor.c:248 src/main/extractor_metatypes.c:140
-msgid "copyright"
-msgstr "захищено авторськими правами"
-
-#: src/plugins/mp3_extractor.c:248
-msgid "no copyright"
-msgstr "без захисту авторськими правами"
-
-#: src/plugins/mp3_extractor.c:249
-msgid "original"
-msgstr "оригінал"
-
-#: src/plugins/mp3_extractor.c:249
-msgid "copy"
-msgstr "копія"
-
-#: src/plugins/riff_extractor.c:114
-#, c-format
-msgid "codec: %s, %u fps, %u ms"
-msgstr "кодек: %s, %u кд/с, %u мс"
-
-#: src/plugins/jpeg_extractor.c:182
-#, c-format
-msgid "%ux%u dots per inch"
-msgstr "%ux%u точок на дюйм"
-
-#: src/plugins/jpeg_extractor.c:197
-#, c-format
-msgid "%ux%u dots per cm"
-msgstr "%ux%u точок на см"
-
-#: src/plugins/jpeg_extractor.c:212
-#, c-format
-msgid "%ux%u dots per inch?"
-msgstr "%ux%u точок на дюйм?"
-
-#: src/main/getopt.c:684
-#, c-format
-msgid "%s: option `%s' is ambiguous\n"
-msgstr "%s: параметр «%s» неоднозначний\n"
-
-#: src/main/getopt.c:709
-#, c-format
-msgid "%s: option `--%s' doesn't allow an argument\n"
-msgstr "%s: параметр «--%s» не може мати аргументу\n"
-
-#: src/main/getopt.c:715
-#, c-format
-msgid "%s: option `%c%s' doesn't allow an argument\n"
-msgstr "%s: параметр «%c%s» не може мати аргументу\n"
-
-#: src/main/getopt.c:732 src/main/getopt.c:903
-#, c-format
-msgid "%s: option `%s' requires an argument\n"
-msgstr "%s: параметру «%s» необхідний аргумент\n"
-
-#: src/main/getopt.c:761
-#, c-format
-msgid "%s: unrecognized option `--%s'\n"
-msgstr "%s: нерозпізнаний параметр «--%s»\n"
-
-#: src/main/getopt.c:765
-#, c-format
-msgid "%s: unrecognized option `%c%s'\n"
-msgstr "%s: нерозпізнаний параметр «%c%s»\n"
-
-#: src/main/getopt.c:791
-#, c-format
-msgid "%s: illegal option -- %c\n"
-msgstr "%s: неправильний параметр -- %c\n"
-
-#: src/main/getopt.c:793
-#, c-format
-msgid "%s: invalid option -- %c\n"
-msgstr "%s: некоректний параметр -- %c\n"
-
-#: src/main/getopt.c:822 src/main/getopt.c:952
-#, c-format
-msgid "%s: option requires an argument -- %c\n"
-msgstr "%s: параметру необхідний аргумент -- %c\n"
-
-#: src/main/getopt.c:870
-#, c-format
-msgid "%s: option `-W %s' is ambiguous\n"
-msgstr "%s: параметр «-W %s» неоднозначний\n"
-
-#: src/main/getopt.c:888
-#, c-format
-msgid "%s: option `-W %s' doesn't allow an argument\n"
-msgstr "%s: параметр «-W %s» не повинен мати аргументу\n"
-
-#: src/main/extractor.c:2372
-#, c-format
-msgid "Initialization of plugin mechanism failed: %s!\n"
-msgstr "Помилка під час спроби ініціалізації механізму додатків: %s!\n"
-
-#: src/main/extract.c:98
+#: src/main/extract.c:103
 #, c-format
 msgid ""
 "Usage: %s\n"
@@ -904,7 +30,7 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: src/main/extract.c:101
+#: src/main/extract.c:106
 #, c-format
 msgid ""
 "Arguments mandatory for long options are also mandatory for short options.\n"
@@ -912,83 +38,87 @@ msgstr ""
 "Обов’язкові аргументи для довгих форм запису параметрів є обов’язковими і "
 "для скорочених форм.\n"
 
-#: src/main/extract.c:171
+#: src/main/extract.c:176
 msgid "print output in bibtex format"
 msgstr "вивести дані у форматі bibtex"
 
-#: src/main/extract.c:173
+#: src/main/extract.c:178
 msgid "produce grep-friendly output (all results on one line per file)"
 msgstr ""
 "виводити дані у режимі сумісності з grep (єдиний рядок для всіх результатів "
 "з файла)"
 
-#: src/main/extract.c:175
+#: src/main/extract.c:180
 msgid "print this help"
 msgstr "показати ці довідкові дані"
 
-#: src/main/extract.c:177
+#: src/main/extract.c:182
 msgid "run plugins in-process (simplifies debugging)"
 msgstr "запускати додатки у межах процесу (спрощує діагностику)"
 
-#: src/main/extract.c:179
+#: src/main/extract.c:184
+msgid "read data from file into memory and extract from memory"
+msgstr ""
+
+#: src/main/extract.c:186
 msgid "load an extractor plugin named LIBRARY"
 msgstr "завантажити додаток видобування з назвою LIBRARY"
 
-#: src/main/extract.c:181
+#: src/main/extract.c:188
 msgid "list all keyword types"
 msgstr "список всіх типів ключових слів"
 
-#: src/main/extract.c:183
+#: src/main/extract.c:190
 msgid "do not use the default set of extractor plugins"
 msgstr "не використовувати типовий набір додатків видобування"
 
-#: src/main/extract.c:185
+#: src/main/extract.c:192
 msgid "print only keywords of the given TYPE (use -L to get a list)"
 msgstr ""
 "виводити ключові слова лише вказаного типу TYPE (скористайтеся -L, щоб "
 "отримати список)"
 
-#: src/main/extract.c:187
+#: src/main/extract.c:194
 msgid "print the version number"
 msgstr "вивести номер версії"
 
-#: src/main/extract.c:189
+#: src/main/extract.c:196
 msgid "be verbose"
 msgstr "режим з докладних повідомлень"
 
-#: src/main/extract.c:191
+#: src/main/extract.c:198
 msgid "do not print keywords of the given TYPE"
 msgstr "не виводити ключових слів вказаного типу TYPE"
 
-#: src/main/extract.c:194
+#: src/main/extract.c:201
 msgid "extract [OPTIONS] [FILENAME]*"
 msgstr "extract [ПАРАМЕТРИ] [НАЗВА_ФАЙЛА]*"
 
-#: src/main/extract.c:195
+#: src/main/extract.c:202
 msgid "Extract metadata from files."
 msgstr "Видобути метадані з файлів."
 
-#: src/main/extract.c:236
+#: src/main/extract.c:243
 #, c-format
 msgid "Found by `%s' plugin:\n"
 msgstr "Знайдено додатком «%s»:\n"
 
-#: src/main/extract.c:239 src/main/extract.c:320
+#: src/main/extract.c:246 src/main/extract.c:327
 #: src/main/extractor_metatypes.c:136 src/main/extractor_print.c:68
 msgid "unknown"
 msgstr "невідомий"
 
-#: src/main/extract.c:244
+#: src/main/extract.c:251
 #, c-format
 msgid "%s - (unknown, %u bytes)\n"
 msgstr "%s — (невідомий, %u байтів)\n"
 
-#: src/main/extract.c:268
+#: src/main/extract.c:275
 #, c-format
 msgid "%s - (binary, %u bytes)\n"
 msgstr "%s — (бінарний, %u байтів)\n"
 
-#: src/main/extract.c:601 src/main/extract.c:611
+#: src/main/extract.c:609 src/main/extract.c:619
 #, c-format
 msgid ""
 "Illegal combination of options, cannot combine multiple styles of printing.\n"
@@ -996,29 +126,34 @@ msgstr ""
 "Некоректне поєднання параметрів, не можна визначати декілька стилів "
 "виведення даних.\n"
 
-#: src/main/extract.c:638
+#: src/main/extract.c:649
 #, c-format
 msgid "You must specify an argument for the `%s' option (option ignored).\n"
 msgstr ""
 "Параметр «%s» можна використовувати лише з додатковим аргументом (параметр "
 "проігноровано).\n"
 
-#: src/main/extract.c:703
+#: src/main/extract.c:714
 #, c-format
 msgid "Use --help to get a list of options.\n"
 msgstr ""
 "Скористайтеся параметром --help для отримання списку можливих параметрів "
 "командного рядка.\n"
 
-#: src/main/extract.c:741
+#: src/main/extract.c:752
 #, c-format
 msgid "%% BiBTeX file\n"
 msgstr "%% файл BiBTeX\n"
 
-#: src/main/extract.c:748
+#: src/main/extract.c:759
 #, c-format
 msgid "Keywords for file %s:\n"
 msgstr "Ключові слова для файла %s:\n"
+
+#: src/main/extractor.c:3403
+#, c-format
+msgid "Initialization of plugin mechanism failed: %s!\n"
+msgstr "Помилка під час спроби ініціалізації механізму додатків: %s!\n"
 
 #: src/main/extractor_metatypes.c:37
 msgid "reserved"
@@ -1379,6 +514,10 @@ msgstr "специфіка не відома"
 #: src/main/extractor_metatypes.c:138 src/main/extractor_metatypes.c:139
 msgid "description"
 msgstr "опис"
+
+#: src/main/extractor_metatypes.c:140 src/plugins/mp3_extractor.c:206
+msgid "copyright"
+msgstr "захищено авторськими правами"
 
 #: src/main/extractor_metatypes.c:141
 msgid "Name of the entity holding the copyright"
@@ -2333,3 +1472,868 @@ msgstr "ім’я або назва виконавця оригіналу"
 #: src/main/extractor_metatypes.c:438 src/main/extractor_metatypes.c:439
 msgid "last"
 msgstr "тривалість"
+
+#: src/main/getopt.c:684
+#, c-format
+msgid "%s: option `%s' is ambiguous\n"
+msgstr "%s: параметр «%s» неоднозначний\n"
+
+#: src/main/getopt.c:709
+#, c-format
+msgid "%s: option `--%s' doesn't allow an argument\n"
+msgstr "%s: параметр «--%s» не може мати аргументу\n"
+
+#: src/main/getopt.c:715
+#, c-format
+msgid "%s: option `%c%s' doesn't allow an argument\n"
+msgstr "%s: параметр «%c%s» не може мати аргументу\n"
+
+#: src/main/getopt.c:732 src/main/getopt.c:903
+#, c-format
+msgid "%s: option `%s' requires an argument\n"
+msgstr "%s: параметру «%s» необхідний аргумент\n"
+
+#: src/main/getopt.c:761
+#, c-format
+msgid "%s: unrecognized option `--%s'\n"
+msgstr "%s: нерозпізнаний параметр «--%s»\n"
+
+#: src/main/getopt.c:765
+#, c-format
+msgid "%s: unrecognized option `%c%s'\n"
+msgstr "%s: нерозпізнаний параметр «%c%s»\n"
+
+#: src/main/getopt.c:791
+#, c-format
+msgid "%s: illegal option -- %c\n"
+msgstr "%s: неправильний параметр -- %c\n"
+
+#: src/main/getopt.c:793
+#, c-format
+msgid "%s: invalid option -- %c\n"
+msgstr "%s: некоректний параметр -- %c\n"
+
+#: src/main/getopt.c:822 src/main/getopt.c:952
+#, c-format
+msgid "%s: option requires an argument -- %c\n"
+msgstr "%s: параметру необхідний аргумент -- %c\n"
+
+#: src/main/getopt.c:870
+#, c-format
+msgid "%s: option `-W %s' is ambiguous\n"
+msgstr "%s: параметр «-W %s» неоднозначний\n"
+
+#: src/main/getopt.c:888
+#, c-format
+msgid "%s: option `-W %s' doesn't allow an argument\n"
+msgstr "%s: параметр «-W %s» не повинен мати аргументу\n"
+
+#: src/plugins/applefile_extractor.c:162
+msgid "GB"
+msgstr "ГБ"
+
+#: src/plugins/applefile_extractor.c:164
+msgid "MB"
+msgstr "МБ"
+
+#: src/plugins/applefile_extractor.c:166
+msgid "KB"
+msgstr "КБ"
+
+#: src/plugins/applefile_extractor.c:168
+msgid "Bytes"
+msgstr "байтів"
+
+#: src/plugins/flac_extractor.c:192
+#, c-format
+msgid "%u Hz, %u channels"
+msgstr "%u Гц, %u каналів"
+
+#: src/plugins/id3_extractor.c:46 src/plugins/qt_extractor.c:30
+msgid "Blues"
+msgstr "Блюз"
+
+#: src/plugins/id3_extractor.c:47 src/plugins/qt_extractor.c:31
+msgid "Classic Rock"
+msgstr "Класичний рок"
+
+#: src/plugins/id3_extractor.c:48 src/plugins/qt_extractor.c:32
+msgid "Country"
+msgstr "Кантрі"
+
+#: src/plugins/id3_extractor.c:49 src/plugins/qt_extractor.c:33
+msgid "Dance"
+msgstr "Танцювальна"
+
+#: src/plugins/id3_extractor.c:50 src/plugins/qt_extractor.c:34
+msgid "Disco"
+msgstr "Диско"
+
+#: src/plugins/id3_extractor.c:51 src/plugins/qt_extractor.c:35
+msgid "Funk"
+msgstr "Фанк"
+
+#: src/plugins/id3_extractor.c:52 src/plugins/qt_extractor.c:36
+msgid "Grunge"
+msgstr "Ґрандж"
+
+#: src/plugins/id3_extractor.c:53 src/plugins/qt_extractor.c:37
+msgid "Hip-Hop"
+msgstr "Хіп-хоп"
+
+#: src/plugins/id3_extractor.c:54 src/plugins/qt_extractor.c:38
+msgid "Jazz"
+msgstr "Джаз"
+
+#: src/plugins/id3_extractor.c:55 src/plugins/qt_extractor.c:39
+msgid "Metal"
+msgstr "Метал"
+
+#: src/plugins/id3_extractor.c:56 src/plugins/qt_extractor.c:40
+msgid "New Age"
+msgstr "Нью-ейдж"
+
+#: src/plugins/id3_extractor.c:57 src/plugins/qt_extractor.c:41
+msgid "Oldies"
+msgstr "Ретро"
+
+#: src/plugins/id3_extractor.c:58 src/plugins/qt_extractor.c:42
+msgid "Other"
+msgstr "Інша"
+
+#: src/plugins/id3_extractor.c:59 src/plugins/qt_extractor.c:43
+msgid "Pop"
+msgstr "Поп"
+
+#: src/plugins/id3_extractor.c:60 src/plugins/qt_extractor.c:44
+msgid "R&B"
+msgstr "Ритм-енд-блюз"
+
+#: src/plugins/id3_extractor.c:61 src/plugins/qt_extractor.c:45
+msgid "Rap"
+msgstr "Реп"
+
+#: src/plugins/id3_extractor.c:62 src/plugins/qt_extractor.c:46
+msgid "Reggae"
+msgstr "Регі"
+
+#: src/plugins/id3_extractor.c:63 src/plugins/qt_extractor.c:47
+msgid "Rock"
+msgstr "Рок"
+
+#: src/plugins/id3_extractor.c:64 src/plugins/qt_extractor.c:48
+msgid "Techno"
+msgstr "Техно"
+
+#: src/plugins/id3_extractor.c:65 src/plugins/qt_extractor.c:49
+msgid "Industrial"
+msgstr "Індастріал"
+
+#: src/plugins/id3_extractor.c:66 src/plugins/qt_extractor.c:50
+msgid "Alternative"
+msgstr "Альтернативна"
+
+#: src/plugins/id3_extractor.c:67 src/plugins/qt_extractor.c:51
+msgid "Ska"
+msgstr "Ска"
+
+#: src/plugins/id3_extractor.c:68 src/plugins/qt_extractor.c:52
+msgid "Death Metal"
+msgstr "Деф-метал"
+
+#: src/plugins/id3_extractor.c:69 src/plugins/qt_extractor.c:53
+msgid "Pranks"
+msgstr "Жарти-розиграші"
+
+#: src/plugins/id3_extractor.c:70 src/plugins/qt_extractor.c:54
+msgid "Soundtrack"
+msgstr "Звукова доріжка"
+
+#: src/plugins/id3_extractor.c:71 src/plugins/qt_extractor.c:55
+msgid "Euro-Techno"
+msgstr "Євротехно"
+
+#: src/plugins/id3_extractor.c:72 src/plugins/qt_extractor.c:56
+msgid "Ambient"
+msgstr "Ембієнт"
+
+#: src/plugins/id3_extractor.c:73 src/plugins/qt_extractor.c:57
+msgid "Trip-Hop"
+msgstr "Тріп-хоп"
+
+#: src/plugins/id3_extractor.c:74 src/plugins/qt_extractor.c:58
+msgid "Vocal"
+msgstr "Вокал"
+
+#: src/plugins/id3_extractor.c:75 src/plugins/qt_extractor.c:59
+msgid "Jazz+Funk"
+msgstr "Джаз+Фанк"
+
+#: src/plugins/id3_extractor.c:76 src/plugins/qt_extractor.c:60
+msgid "Fusion"
+msgstr "Ф’южн"
+
+#: src/plugins/id3_extractor.c:77 src/plugins/qt_extractor.c:61
+msgid "Trance"
+msgstr "Транс"
+
+#: src/plugins/id3_extractor.c:78 src/plugins/qt_extractor.c:62
+msgid "Classical"
+msgstr "Класика"
+
+#: src/plugins/id3_extractor.c:79 src/plugins/qt_extractor.c:63
+msgid "Instrumental"
+msgstr "Інструментальна"
+
+#: src/plugins/id3_extractor.c:80 src/plugins/qt_extractor.c:64
+msgid "Acid"
+msgstr "Ейсід"
+
+#: src/plugins/id3_extractor.c:81 src/plugins/qt_extractor.c:65
+msgid "House"
+msgstr "Хаус"
+
+#: src/plugins/id3_extractor.c:82 src/plugins/qt_extractor.c:66
+msgid "Game"
+msgstr "Гра"
+
+#: src/plugins/id3_extractor.c:83 src/plugins/qt_extractor.c:67
+msgid "Sound Clip"
+msgstr "Звуковий уривок"
+
+#: src/plugins/id3_extractor.c:84 src/plugins/qt_extractor.c:68
+msgid "Gospel"
+msgstr "Ґоспел"
+
+#: src/plugins/id3_extractor.c:85 src/plugins/qt_extractor.c:69
+msgid "Noise"
+msgstr "Шум"
+
+#: src/plugins/id3_extractor.c:86 src/plugins/qt_extractor.c:70
+msgid "Alt. Rock"
+msgstr "Альт. рок"
+
+#: src/plugins/id3_extractor.c:87 src/plugins/qt_extractor.c:71
+msgid "Bass"
+msgstr "Бейс"
+
+#: src/plugins/id3_extractor.c:88 src/plugins/qt_extractor.c:72
+msgid "Soul"
+msgstr "Душа"
+
+#: src/plugins/id3_extractor.c:89 src/plugins/qt_extractor.c:73
+msgid "Punk"
+msgstr "Панк"
+
+#: src/plugins/id3_extractor.c:90 src/plugins/qt_extractor.c:74
+msgid "Space"
+msgstr "Простір"
+
+#: src/plugins/id3_extractor.c:91 src/plugins/qt_extractor.c:75
+msgid "Meditative"
+msgstr "Медитативна"
+
+#: src/plugins/id3_extractor.c:92 src/plugins/qt_extractor.c:76
+msgid "Instrumental Pop"
+msgstr "Інструментальний поп"
+
+#: src/plugins/id3_extractor.c:93 src/plugins/qt_extractor.c:77
+msgid "Instrumental Rock"
+msgstr "Інструментальний рок"
+
+#: src/plugins/id3_extractor.c:94 src/plugins/qt_extractor.c:78
+msgid "Ethnic"
+msgstr "Етнічна"
+
+#: src/plugins/id3_extractor.c:95 src/plugins/qt_extractor.c:79
+msgid "Gothic"
+msgstr "Готична"
+
+#: src/plugins/id3_extractor.c:96 src/plugins/qt_extractor.c:80
+msgid "Darkwave"
+msgstr "Дарквейв"
+
+#: src/plugins/id3_extractor.c:97 src/plugins/qt_extractor.c:81
+msgid "Techno-Industrial"
+msgstr "Техно-індастріал"
+
+#: src/plugins/id3_extractor.c:98 src/plugins/qt_extractor.c:82
+msgid "Electronic"
+msgstr "Електронна"
+
+#: src/plugins/id3_extractor.c:99 src/plugins/qt_extractor.c:83
+msgid "Pop-Folk"
+msgstr "Поп-фолк"
+
+#: src/plugins/id3_extractor.c:100 src/plugins/qt_extractor.c:84
+msgid "Eurodance"
+msgstr "Євроденс"
+
+#: src/plugins/id3_extractor.c:101 src/plugins/qt_extractor.c:85
+msgid "Dream"
+msgstr "Дрім"
+
+#: src/plugins/id3_extractor.c:102 src/plugins/qt_extractor.c:86
+msgid "Southern Rock"
+msgstr "Південний рок"
+
+#: src/plugins/id3_extractor.c:103 src/plugins/qt_extractor.c:87
+msgid "Comedy"
+msgstr "Комедія"
+
+#: src/plugins/id3_extractor.c:104 src/plugins/qt_extractor.c:88
+msgid "Cult"
+msgstr "Культова"
+
+#: src/plugins/id3_extractor.c:105 src/plugins/qt_extractor.c:89
+msgid "Gangsta Rap"
+msgstr "Гангста-реп"
+
+#: src/plugins/id3_extractor.c:106 src/plugins/qt_extractor.c:90
+msgid "Top 40"
+msgstr "Топ-40"
+
+#: src/plugins/id3_extractor.c:107 src/plugins/qt_extractor.c:91
+msgid "Christian Rap"
+msgstr "Християнський реп"
+
+#: src/plugins/id3_extractor.c:108 src/plugins/qt_extractor.c:92
+msgid "Pop/Funk"
+msgstr "Поп/фанк"
+
+#: src/plugins/id3_extractor.c:109 src/plugins/qt_extractor.c:93
+msgid "Jungle"
+msgstr "Джангл"
+
+#: src/plugins/id3_extractor.c:110 src/plugins/qt_extractor.c:94
+msgid "Native American"
+msgstr "Індіанська"
+
+#: src/plugins/id3_extractor.c:111 src/plugins/qt_extractor.c:95
+msgid "Cabaret"
+msgstr "Кабаре"
+
+#: src/plugins/id3_extractor.c:112 src/plugins/qt_extractor.c:96
+msgid "New Wave"
+msgstr "Нью-вейв"
+
+#: src/plugins/id3_extractor.c:113 src/plugins/qt_extractor.c:97
+msgid "Psychedelic"
+msgstr "Психоделіка"
+
+#: src/plugins/id3_extractor.c:114 src/plugins/qt_extractor.c:98
+msgid "Rave"
+msgstr "Рейв"
+
+#: src/plugins/id3_extractor.c:115 src/plugins/qt_extractor.c:99
+msgid "Showtunes"
+msgstr "Шоу-мелодії"
+
+#: src/plugins/id3_extractor.c:116 src/plugins/qt_extractor.c:100
+msgid "Trailer"
+msgstr "Трейлер"
+
+#: src/plugins/id3_extractor.c:117 src/plugins/qt_extractor.c:101
+msgid "Lo-Fi"
+msgstr "Лоу-фай"
+
+#: src/plugins/id3_extractor.c:118 src/plugins/qt_extractor.c:102
+msgid "Tribal"
+msgstr "Племенна"
+
+#: src/plugins/id3_extractor.c:119 src/plugins/qt_extractor.c:103
+msgid "Acid Punk"
+msgstr "Ейсід-панк"
+
+#: src/plugins/id3_extractor.c:120 src/plugins/qt_extractor.c:104
+msgid "Acid Jazz"
+msgstr "Ейсід-джаз"
+
+#: src/plugins/id3_extractor.c:121 src/plugins/qt_extractor.c:105
+msgid "Polka"
+msgstr "Полька"
+
+#: src/plugins/id3_extractor.c:122 src/plugins/qt_extractor.c:106
+msgid "Retro"
+msgstr "Ретро"
+
+#: src/plugins/id3_extractor.c:123 src/plugins/qt_extractor.c:107
+msgid "Musical"
+msgstr "Музична"
+
+#: src/plugins/id3_extractor.c:124 src/plugins/qt_extractor.c:108
+msgid "Rock & Roll"
+msgstr "Рок-н-рол"
+
+#: src/plugins/id3_extractor.c:125 src/plugins/qt_extractor.c:109
+msgid "Hard Rock"
+msgstr "Хардрок"
+
+#: src/plugins/id3_extractor.c:126 src/plugins/qt_extractor.c:110
+msgid "Folk"
+msgstr "Фольклор"
+
+#: src/plugins/id3_extractor.c:127 src/plugins/qt_extractor.c:111
+msgid "Folk/Rock"
+msgstr "Фольклор/рок"
+
+#: src/plugins/id3_extractor.c:128 src/plugins/qt_extractor.c:112
+msgid "National Folk"
+msgstr "Народний фольклор"
+
+#: src/plugins/id3_extractor.c:129 src/plugins/qt_extractor.c:113
+msgid "Swing"
+msgstr "Свінг"
+
+#: src/plugins/id3_extractor.c:130 src/plugins/qt_extractor.c:114
+msgid "Fast-Fusion"
+msgstr "Фаст-ф’южн"
+
+#: src/plugins/id3_extractor.c:131 src/plugins/qt_extractor.c:115
+msgid "Bebob"
+msgstr "Бібоб"
+
+#: src/plugins/id3_extractor.c:132 src/plugins/qt_extractor.c:116
+msgid "Latin"
+msgstr "Латинська"
+
+#: src/plugins/id3_extractor.c:133 src/plugins/qt_extractor.c:117
+msgid "Revival"
+msgstr "Ривайвл"
+
+#: src/plugins/id3_extractor.c:134 src/plugins/qt_extractor.c:118
+msgid "Celtic"
+msgstr "Кельтська"
+
+#: src/plugins/id3_extractor.c:135 src/plugins/qt_extractor.c:119
+msgid "Bluegrass"
+msgstr "Блюграс"
+
+#: src/plugins/id3_extractor.c:136 src/plugins/qt_extractor.c:120
+msgid "Avantgarde"
+msgstr "Авангард"
+
+#: src/plugins/id3_extractor.c:137 src/plugins/qt_extractor.c:121
+msgid "Gothic Rock"
+msgstr "Готичний рок"
+
+#: src/plugins/id3_extractor.c:138 src/plugins/qt_extractor.c:122
+msgid "Progressive Rock"
+msgstr "Прогресивний рок"
+
+#: src/plugins/id3_extractor.c:139 src/plugins/qt_extractor.c:123
+msgid "Psychedelic Rock"
+msgstr "Психоделічний рок"
+
+#: src/plugins/id3_extractor.c:140 src/plugins/qt_extractor.c:124
+msgid "Symphonic Rock"
+msgstr "Симфонічний рок"
+
+#: src/plugins/id3_extractor.c:141 src/plugins/qt_extractor.c:125
+msgid "Slow Rock"
+msgstr "Повільний рок"
+
+#: src/plugins/id3_extractor.c:142 src/plugins/qt_extractor.c:126
+msgid "Big Band"
+msgstr "Біг-бенд"
+
+#: src/plugins/id3_extractor.c:143 src/plugins/qt_extractor.c:127
+msgid "Chorus"
+msgstr "Хорова"
+
+#: src/plugins/id3_extractor.c:144 src/plugins/qt_extractor.c:128
+msgid "Easy Listening"
+msgstr "Легка музика"
+
+#: src/plugins/id3_extractor.c:145 src/plugins/qt_extractor.c:129
+msgid "Acoustic"
+msgstr "Акустична"
+
+#: src/plugins/id3_extractor.c:146 src/plugins/qt_extractor.c:130
+msgid "Humour"
+msgstr "Гумор"
+
+#: src/plugins/id3_extractor.c:147 src/plugins/qt_extractor.c:131
+msgid "Speech"
+msgstr "Мова"
+
+#: src/plugins/id3_extractor.c:148 src/plugins/qt_extractor.c:132
+msgid "Chanson"
+msgstr "Шансон"
+
+#: src/plugins/id3_extractor.c:149 src/plugins/qt_extractor.c:133
+msgid "Opera"
+msgstr "Опера"
+
+#: src/plugins/id3_extractor.c:150 src/plugins/qt_extractor.c:134
+msgid "Chamber Music"
+msgstr "Камерна музика"
+
+#: src/plugins/id3_extractor.c:151 src/plugins/qt_extractor.c:135
+msgid "Sonata"
+msgstr "Соната"
+
+#: src/plugins/id3_extractor.c:152 src/plugins/qt_extractor.c:136
+msgid "Symphony"
+msgstr "Симфонія"
+
+#: src/plugins/id3_extractor.c:153 src/plugins/qt_extractor.c:137
+msgid "Booty Bass"
+msgstr "Буті-бейс"
+
+#: src/plugins/id3_extractor.c:154 src/plugins/qt_extractor.c:138
+msgid "Primus"
+msgstr "Примас"
+
+#: src/plugins/id3_extractor.c:155 src/plugins/qt_extractor.c:139
+msgid "Porn Groove"
+msgstr "Порн-рів"
+
+#: src/plugins/id3_extractor.c:156 src/plugins/qt_extractor.c:140
+msgid "Satire"
+msgstr "Сатира"
+
+#: src/plugins/id3_extractor.c:157 src/plugins/qt_extractor.c:141
+msgid "Slow Jam"
+msgstr "Повільний джем"
+
+#: src/plugins/id3_extractor.c:158 src/plugins/qt_extractor.c:142
+msgid "Club"
+msgstr "Клуб"
+
+#: src/plugins/id3_extractor.c:159 src/plugins/qt_extractor.c:143
+msgid "Tango"
+msgstr "Танго"
+
+#: src/plugins/id3_extractor.c:160 src/plugins/qt_extractor.c:144
+msgid "Samba"
+msgstr "Самба"
+
+#: src/plugins/id3_extractor.c:161 src/plugins/qt_extractor.c:145
+msgid "Folklore"
+msgstr "Фольклор"
+
+#: src/plugins/id3_extractor.c:162 src/plugins/qt_extractor.c:146
+msgid "Ballad"
+msgstr "Балада"
+
+#: src/plugins/id3_extractor.c:163 src/plugins/qt_extractor.c:147
+msgid "Power Ballad"
+msgstr "Пауер-балада"
+
+#: src/plugins/id3_extractor.c:164 src/plugins/qt_extractor.c:148
+msgid "Rhythmic Soul"
+msgstr "Ритмічний соул"
+
+#: src/plugins/id3_extractor.c:165 src/plugins/qt_extractor.c:149
+msgid "Freestyle"
+msgstr "Вільний стиль"
+
+#: src/plugins/id3_extractor.c:166 src/plugins/qt_extractor.c:150
+msgid "Duet"
+msgstr "Дует"
+
+#: src/plugins/id3_extractor.c:167 src/plugins/qt_extractor.c:151
+msgid "Punk Rock"
+msgstr "Панк-рок"
+
+#: src/plugins/id3_extractor.c:168 src/plugins/qt_extractor.c:152
+msgid "Drum Solo"
+msgstr "Соло ударних"
+
+#: src/plugins/id3_extractor.c:169 src/plugins/qt_extractor.c:153
+msgid "A Cappella"
+msgstr "А капелла"
+
+#: src/plugins/id3_extractor.c:170 src/plugins/qt_extractor.c:154
+msgid "Euro-House"
+msgstr "Єврохаус"
+
+#: src/plugins/id3_extractor.c:171 src/plugins/qt_extractor.c:155
+msgid "Dance Hall"
+msgstr "Танцмайданчик"
+
+#: src/plugins/id3_extractor.c:172 src/plugins/qt_extractor.c:156
+msgid "Goa"
+msgstr "Гоа"
+
+#: src/plugins/id3_extractor.c:173 src/plugins/qt_extractor.c:157
+msgid "Drum & Bass"
+msgstr "Драм-енд-бейс"
+
+#: src/plugins/id3_extractor.c:174 src/plugins/qt_extractor.c:158
+msgid "Club-House"
+msgstr "Клаб-хаус"
+
+#: src/plugins/id3_extractor.c:175 src/plugins/qt_extractor.c:159
+msgid "Hardcore"
+msgstr "Хардкор"
+
+#: src/plugins/id3_extractor.c:176 src/plugins/qt_extractor.c:160
+msgid "Terror"
+msgstr "Терор"
+
+#: src/plugins/id3_extractor.c:177 src/plugins/qt_extractor.c:161
+msgid "Indie"
+msgstr "Інді"
+
+#: src/plugins/id3_extractor.c:178 src/plugins/qt_extractor.c:162
+msgid "BritPop"
+msgstr "Бритпоп"
+
+#: src/plugins/id3_extractor.c:179 src/plugins/qt_extractor.c:163
+msgid "Negerpunk"
+msgstr "Негритянський панк"
+
+#: src/plugins/id3_extractor.c:180 src/plugins/qt_extractor.c:164
+msgid "Polsk Punk"
+msgstr "Польський панк"
+
+#: src/plugins/id3_extractor.c:181 src/plugins/qt_extractor.c:165
+msgid "Beat"
+msgstr "Біт"
+
+#: src/plugins/id3_extractor.c:182 src/plugins/qt_extractor.c:166
+msgid "Christian Gangsta Rap"
+msgstr "Християнський гангста-реп"
+
+#: src/plugins/id3_extractor.c:183 src/plugins/qt_extractor.c:167
+msgid "Heavy Metal"
+msgstr "Важкий метал"
+
+#: src/plugins/id3_extractor.c:184 src/plugins/qt_extractor.c:168
+msgid "Black Metal"
+msgstr "Блек-метал"
+
+#: src/plugins/id3_extractor.c:185 src/plugins/qt_extractor.c:169
+msgid "Crossover"
+msgstr "Перетин"
+
+#: src/plugins/id3_extractor.c:186 src/plugins/qt_extractor.c:170
+msgid "Contemporary Christian"
+msgstr "Сучасна християнська"
+
+#: src/plugins/id3_extractor.c:187 src/plugins/qt_extractor.c:171
+msgid "Christian Rock"
+msgstr "Християнський рок"
+
+#: src/plugins/id3_extractor.c:188 src/plugins/qt_extractor.c:172
+msgid "Merengue"
+msgstr "Меренга"
+
+#: src/plugins/id3_extractor.c:189 src/plugins/qt_extractor.c:173
+msgid "Salsa"
+msgstr "Сальса"
+
+#: src/plugins/id3_extractor.c:190 src/plugins/qt_extractor.c:174
+msgid "Thrash Metal"
+msgstr "Треш-метал"
+
+#: src/plugins/id3_extractor.c:191 src/plugins/qt_extractor.c:175
+msgid "Anime"
+msgstr "Аніме"
+
+#: src/plugins/id3_extractor.c:192 src/plugins/qt_extractor.c:176
+msgid "JPop"
+msgstr "Джей-поп"
+
+#: src/plugins/id3_extractor.c:193 src/plugins/qt_extractor.c:177
+msgid "Synthpop"
+msgstr "Синтез-поп"
+
+#: src/plugins/jpeg_extractor.c:182
+#, c-format
+msgid "%ux%u dots per inch"
+msgstr "%ux%u точок на дюйм"
+
+#: src/plugins/jpeg_extractor.c:197
+#, c-format
+msgid "%ux%u dots per cm"
+msgstr "%ux%u точок на см"
+
+#: src/plugins/jpeg_extractor.c:212
+#, c-format
+msgid "%ux%u dots per inch?"
+msgstr "%ux%u точок на дюйм?"
+
+#: src/plugins/man_extractor.c:161
+msgid "Commands"
+msgstr "Команди"
+
+#: src/plugins/man_extractor.c:165
+msgid "System calls"
+msgstr "Системні виклики"
+
+#: src/plugins/man_extractor.c:169
+msgid "Library calls"
+msgstr "Виклики бібліотек"
+
+#: src/plugins/man_extractor.c:173
+msgid "Special files"
+msgstr "Спеціальні файли"
+
+#: src/plugins/man_extractor.c:177
+msgid "File formats and conventions"
+msgstr "Формати файлів та правила"
+
+#: src/plugins/man_extractor.c:181
+msgid "Games"
+msgstr "Ігри"
+
+#: src/plugins/man_extractor.c:185
+msgid "Conventions and miscellaneous"
+msgstr "Угоди та інше"
+
+#: src/plugins/man_extractor.c:189
+msgid "System management commands"
+msgstr "Команди керування системою"
+
+#: src/plugins/man_extractor.c:193
+msgid "Kernel routines"
+msgstr "Процедури ядра"
+
+#: src/plugins/mp3_extractor.c:95 src/plugins/wav_extractor.c:106
+msgid "stereo"
+msgstr "стерео"
+
+#: src/plugins/mp3_extractor.c:96
+msgid "joint stereo"
+msgstr "об'єднане стерео"
+
+#: src/plugins/mp3_extractor.c:97
+msgid "dual channel"
+msgstr "два канали"
+
+#: src/plugins/mp3_extractor.c:98 src/plugins/wav_extractor.c:106
+msgid "mono"
+msgstr "моно"
+
+#: src/plugins/mp3_extractor.c:101
+msgid "MPEG-1"
+msgstr "MPEG-1"
+
+#: src/plugins/mp3_extractor.c:102
+msgid "MPEG-2"
+msgstr "MPEG-2"
+
+#: src/plugins/mp3_extractor.c:103
+msgid "MPEG-2.5"
+msgstr "MPEG-2.5"
+
+#: src/plugins/mp3_extractor.c:106
+msgid "Layer I"
+msgstr "Layer I"
+
+#: src/plugins/mp3_extractor.c:107
+msgid "Layer II"
+msgstr "Layer II"
+
+#: src/plugins/mp3_extractor.c:108
+msgid "Layer III"
+msgstr "Layer III"
+
+#: src/plugins/mp3_extractor.c:203
+msgid "VBR"
+msgstr "VBR"
+
+#: src/plugins/mp3_extractor.c:203
+msgid "CBR"
+msgstr "CBR"
+
+#: src/plugins/mp3_extractor.c:206
+msgid "no copyright"
+msgstr "без захисту авторськими правами"
+
+#: src/plugins/mp3_extractor.c:207
+msgid "original"
+msgstr "оригінал"
+
+#: src/plugins/mp3_extractor.c:207
+msgid "copy"
+msgstr "копія"
+
+#: src/plugins/ole2_extractor.c:290
+msgid "No Proofing"
+msgstr "Без перевірки"
+
+#: src/plugins/ole2_extractor.c:298
+msgid "Traditional Chinese"
+msgstr "Традиційна китайська"
+
+#: src/plugins/ole2_extractor.c:300
+msgid "Simplified Chinese"
+msgstr "Спрощена китайська"
+
+#: src/plugins/ole2_extractor.c:308
+msgid "Swiss German"
+msgstr "Швейцарська німецька"
+
+#: src/plugins/ole2_extractor.c:312
+msgid "U.S. English"
+msgstr "Американська англійська"
+
+#: src/plugins/ole2_extractor.c:314
+msgid "U.K. English"
+msgstr "Британська англійська"
+
+#: src/plugins/ole2_extractor.c:316
+msgid "Australian English"
+msgstr "Австралійська англійська"
+
+#: src/plugins/ole2_extractor.c:318
+msgid "Castilian Spanish"
+msgstr "Кастильська іспанська"
+
+#: src/plugins/ole2_extractor.c:320
+msgid "Mexican Spanish"
+msgstr "Мексиканська іспанська"
+
+#: src/plugins/ole2_extractor.c:326
+msgid "Belgian French"
+msgstr "Бельгійська французька"
+
+#: src/plugins/ole2_extractor.c:328
+msgid "Canadian French"
+msgstr "Канадська французька"
+
+#: src/plugins/ole2_extractor.c:330
+msgid "Swiss French"
+msgstr "Швейцарська французька"
+
+#: src/plugins/ole2_extractor.c:340
+msgid "Swiss Italian"
+msgstr "Швейцарська італійська"
+
+#: src/plugins/ole2_extractor.c:348
+msgid "Belgian Dutch"
+msgstr "Бельгійська голландська"
+
+#: src/plugins/ole2_extractor.c:350
+msgid "Norwegian Bokmal"
+msgstr "Норвезька (бокмал)"
+
+#: src/plugins/ole2_extractor.c:360
+msgid "Rhaeto-Romanic"
+msgstr "Ретороманська"
+
+#: src/plugins/ole2_extractor.c:366
+msgid "Croato-Serbian (Latin)"
+msgstr "Хорвато-сербська (латиниця)"
+
+#: src/plugins/ole2_extractor.c:368
+msgid "Serbo-Croatian (Cyrillic)"
+msgstr "Сербо-хорватська (кирилиця)"
+
+#: src/plugins/ole2_extractor.c:396
+msgid "Farsi"
+msgstr "Фарсі"
+
+#: src/plugins/ole2_extractor.c:471
+#, c-format
+msgid "Revision #%u: Author '%s' worked on '%s'"
+msgstr "Модифікація %u: автор «%s», співробітник «%s»"
+
+#: src/plugins/riff_extractor.c:114
+#, c-format
+msgid "codec: %s, %u fps, %u ms"
+msgstr "кодек: %s, %u кд/с, %u мс"
