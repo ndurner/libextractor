@@ -1,6 +1,6 @@
 /*
      This file is part of libextractor.
-     (C) 2002, 2003, 2004, 2005, 2006, 2009 Vidyut Samanta and Christian Grothoff
+     (C) 2002, 2003, 2004, 2005, 2006, 2009, 2012 Vidyut Samanta and Christian Grothoff
 
      libextractor is free software; you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published
@@ -21,10 +21,19 @@
 #include "platform.h"
 #include "extractor.h"
 
+/**
+ * Description for meta data categories in LE.
+ */
 struct MetaTypeDescription
 {
+  /**
+   * Short (typically 1-word) description.
+   */
   const char *short_description;
-
+  
+  /**
+   * More detailed description.
+   */
   const char *long_description;
 };
 
@@ -454,9 +463,9 @@ static const struct MetaTypeDescription meta_type_descriptions[] = {
  *         translate using 'dgettext ("libextractor", rval)'
  */
 const char *
-EXTRACTOR_metatype_to_string(enum EXTRACTOR_MetaType type)
+EXTRACTOR_metatype_to_string (enum EXTRACTOR_MetaType type)
 {
-  if ((type < 0) || (type >= HIGHEST_METATYPE_NUMBER))
+  if ( (type < 0) || (type >= HIGHEST_METATYPE_NUMBER) )
     return NULL;
   return meta_type_descriptions[type].short_description;
 }
@@ -471,9 +480,9 @@ EXTRACTOR_metatype_to_string(enum EXTRACTOR_MetaType type)
  *         translate using 'dgettext ("libextractor", rval)'
  */
 const char *
-EXTRACTOR_metatype_to_description(enum EXTRACTOR_MetaType type)
+EXTRACTOR_metatype_to_description (enum EXTRACTOR_MetaType type)
 {
-  if ((type < 0) || (type >= HIGHEST_METATYPE_NUMBER))
+  if ( (type < 0) || (type >= HIGHEST_METATYPE_NUMBER) )
     return NULL;
   return meta_type_descriptions[type].long_description;
 }

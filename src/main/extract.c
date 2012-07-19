@@ -1,6 +1,6 @@
 /*
      This file is part of libextractor.
-     (C) 2002, 2003, 2004, 2005, 2006, 2009 Vidyut Samanta and Christian Grothoff
+     (C) 2002, 2003, 2004, 2005, 2006, 2009, 2012 Vidyut Samanta and Christian Grothoff
 
      libextractor is free software; you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published
@@ -17,11 +17,9 @@
      Free Software Foundation, Inc., 59 Temple Place - Suite 330,
      Boston, MA 02111-1307, USA.
 */
-
 #include "platform.h"
 #include "extractor.h"
 #include "getopt.h"
-
 #include <signal.h>
 
 #define YES 1
@@ -31,7 +29,7 @@
 /**
  * Which keyword types should we print?
  */
-static int * print;
+static int *print;
 
 /**
  * How verbose are we supposed to be?
@@ -48,12 +46,6 @@ static int in_process;
  */
 static int from_memory;
 
-
-static void
-catcher (int sig)
-{
-}
-
 #ifndef WINDOWS
 /**
  * Install a signal handler to ignore SIGPIPE.
@@ -65,7 +57,7 @@ ignore_sigpipe ()
   struct sigaction sig;
 
   memset (&sig, 0, sizeof (struct sigaction));
-  sig.sa_handler = &catcher;
+  sig.sa_handler = SIG_IGN;
   sigemptyset (&sig.sa_mask);
 #ifdef SA_INTERRUPT
   sig.sa_flags = SA_INTERRUPT;  /* SunOS */
@@ -79,128 +71,171 @@ ignore_sigpipe ()
 #endif
 
 
-
-typedef struct {
+/**
+ * Information about command-line options.
+ */
+struct Help 
+{
+  /**
+   * Single-character option name, '\0' for none.
+   */ 
   char shortArg;
-  char * longArg;
-  char * mandatoryArg;
-  char * description;
-} Help;
+  
+  /**
+   * Long name of the option.
+   */ 
+  const char * longArg;
 
+  /**
+   * Name of the mandatory argument, NULL for no argument.
+   */
+  const char * mandatoryArg;
+
+  /**
+   * Help text for the option.
+   */
+  const char * description;
+};
+
+
+/**
+ * Indentation for descriptions.
+ */
 #define BORDER 29
 
-static void formatHelp(const char * general,
-		       const char * description,
-		       const Help * opt) {
-  int slen;
-  int i;
-  int j;
-  int ml;
-  int p;
+/**
+ * Display help text (--help).
+ *
+ * @param general binary name
+ * @param description program description
+ * @param opt program options (NULL-terminated array)
+ */
+static void 
+formatHelp (const char *general,
+	    const char *description,
+	    const struct Help *opt) 
+{
+  size_t slen;
+  unsigned int i;
+  ssize_t j;
+  size_t ml;
+  size_t p;
   char scp[80];
-  const char * trans;
+  const char *trans;
 	
-  printf(_("Usage: %s\n%s\n\n"),
-	 gettext(general),
-	 gettext(description));
-  printf(_("Arguments mandatory for long options are also mandatory for short options.\n"));
+  printf (_("Usage: %s\n%s\n\n"),
+	  gettext(general),
+	  gettext(description));
+  printf (_("Arguments mandatory for long options are also mandatory for short options.\n"));
   slen = 0;
   i = 0;
-  while (opt[i].description != NULL) {
-    if (opt[i].shortArg == 0)
-      printf("      ");
-    else
-      printf("  -%c, ",
-	     opt[i].shortArg);
-    printf("--%s",
-	   opt[i].longArg);
-    slen = 8 + strlen(opt[i].longArg);
-    if (opt[i].mandatoryArg != NULL) {
-      printf("=%s",
-	     opt[i].mandatoryArg);
-      slen += 1+strlen(opt[i].mandatoryArg);
-    }
-    if (slen > BORDER) {
-      printf("\n%*s", BORDER, "");
-      slen = BORDER;
-    }
-    if (slen < BORDER) {
-      printf("%*s", BORDER-slen, "");
-      slen = BORDER;
-    }
-    trans = gettext(opt[i].description);
-    ml = strlen(trans);
-    p = 0;
-  OUTER:
-    while (ml - p > 78 - slen) {
-      for (j=p+78-slen;j>p;j--) {
-	if (isspace( (unsigned char) trans[j])) {
-	  memcpy(scp,
-		 &trans[p],
-		 j-p);
-	  scp[j-p] = '\0';
-	  printf("%s\n%*s",
-		 scp,
-		 BORDER+2,
-		 "");
-	  p = j+1;
-	  slen = BORDER+2;
-	  goto OUTER;
+  while (NULL != opt[i].description) 
+    {
+      if (0 == opt[i].shortArg)
+	printf ("      ");
+      else
+	printf ("  -%c, ",
+		opt[i].shortArg);
+      printf ("--%s",
+	      opt[i].longArg);
+      slen = 8 + strlen(opt[i].longArg);
+      if (NULL != opt[i].mandatoryArg) 
+	{
+	  printf ("=%s",
+		  opt[i].mandatoryArg);
+	  slen += 1+strlen(opt[i].mandatoryArg);
 	}
-      }
-      /* could not find space to break line */
-      memcpy(scp,
-	     &trans[p],
-	     78 - slen);
-      scp[78 - slen] = '\0';
-      printf("%s\n%*s",
-	     scp,
-	     BORDER+2,
-	     "");	
-      slen = BORDER+2;
-      p = p + 78 - slen;
+      if (slen > BORDER) 
+	{
+	  printf ("\n%*s", BORDER, "");
+	  slen = BORDER;
+	}
+      if (slen < BORDER) 
+	{
+	  printf ("%*s", (int) (BORDER - slen), "");
+	  slen = BORDER;
+	}
+      trans = gettext(opt[i].description);
+      ml = strlen(trans);
+      p = 0;
+    OUTER:
+      while (ml - p > 78 - slen) 
+	{
+	  for (j=p+78-slen;j>p;j--)
+	    {
+	      if (isspace( (unsigned char) trans[j]))
+		{
+		  memcpy(scp,
+			 &trans[p],
+			 j-p);
+		  scp[j-p] = '\0';
+		  printf ("%s\n%*s",
+			  scp,
+			  BORDER + 2,
+			  "");
+		  p = j+1;
+		  slen = BORDER + 2;
+		  goto OUTER;
+		}
+	    }
+	  /* could not find space to break line */
+	  memcpy (scp,
+		  &trans[p],
+		  78 - slen);
+	  scp[78 - slen] = '\0';
+	  printf ("%s\n%*s",
+		  scp,
+		  BORDER+2,
+		  "");	
+	  slen = BORDER+2;
+	  p = p + 78 - slen;
+	}
+      /* print rest */
+      if (p < ml)
+	printf("%s\n",
+	       &trans[p]);
+      i++;
     }
-    /* print rest */
-    if (p < ml)
-      printf("%s\n",
-	     &trans[p]);
-    i++;
-  }
 }
 
+
+/**
+ * Run --help.
+ */
 static void
 printHelp ()
 {
-  static Help help[] = {
-    { 'b', "bibtex", NULL,
-      gettext_noop("print output in bibtex format") },
-    { 'g', "grep-friendly", NULL,
-      gettext_noop("produce grep-friendly output (all results on one line per file)") },
-    { 'h', "help", NULL,
-      gettext_noop("print this help") },
-    { 'i', "in-process", NULL,
-      gettext_noop("run plugins in-process (simplifies debugging)") },
-    { 'm', "from-memory", NULL,
-      gettext_noop("read data from file into memory and extract from memory") },
-    { 'l', "library", "LIBRARY",
-      gettext_noop("load an extractor plugin named LIBRARY") },
-    { 'L', "list", NULL,
-      gettext_noop("list all keyword types") },
-    { 'n', "nodefault", NULL,
-      gettext_noop("do not use the default set of extractor plugins") },
-    { 'p', "print", "TYPE",
-      gettext_noop("print only keywords of the given TYPE (use -L to get a list)") },
-    { 'v', "version", NULL,
-      gettext_noop("print the version number") },
-    { 'V', "verbose", NULL,
-      gettext_noop("be verbose") },
-    { 'x', "exclude", "TYPE",
-      gettext_noop("do not print keywords of the given TYPE") },
-    { 0, NULL, NULL, NULL },
-  };
-  formatHelp(_("extract [OPTIONS] [FILENAME]*"),
-	     _("Extract metadata from files."),
-	     help);
+  static struct Help help[] = 
+    {
+      { 'b', "bibtex", NULL,
+	gettext_noop("print output in bibtex format") },
+      { 'g', "grep-friendly", NULL,
+	gettext_noop("produce grep-friendly output (all results on one line per file)") },
+      { 'h', "help", NULL,
+	gettext_noop("print this help") },
+      { 'i', "in-process", NULL,
+	gettext_noop("run plugins in-process (simplifies debugging)") },
+      { 'm', "from-memory", NULL,
+	gettext_noop("read data from file into memory and extract from memory") },
+      { 'l', "library", "LIBRARY",
+	gettext_noop("load an extractor plugin named LIBRARY") },
+      { 'L', "list", NULL,
+	gettext_noop("list all keyword types") },
+      { 'n', "nodefault", NULL,
+	gettext_noop("do not use the default set of extractor plugins") },
+      { 'p', "print", "TYPE",
+	gettext_noop("print only keywords of the given TYPE (use -L to get a list)") },
+      { 'v', "version", NULL,
+	gettext_noop("print the version number") },
+      { 'V', "verbose", NULL,
+	gettext_noop("be verbose") },
+      { 'x', "exclude", "TYPE",
+	gettext_noop("do not print keywords of the given TYPE") },
+      { 0, NULL, NULL, NULL },
+    };
+  formatHelp (_("extract [OPTIONS] [FILENAME]*"),
+	      _("Extract metadata from files."),
+	      help);
 
 }
 
@@ -231,19 +266,19 @@ print_selected_keywords (void *cls,
 			 const char *data,
 			 size_t data_len)
 { 
-  char * keyword;
+  char *keyword;
   iconv_t cd;
   const char *stype;
   const char *mt;
 
-  if (print[type] != YES)
+  if (YES != print[type])
     return 0;
   if (verbose > 3)
     fprintf (stdout,
 	     _("Found by `%s' plugin:\n"),
 	     plugin_name);
-  mt = EXTRACTOR_metatype_to_string(type);
-  stype = (mt == NULL) ? _("unknown") : gettext(mt);
+  mt = EXTRACTOR_metatype_to_string (type);
+  stype = (NULL == mt) ? _("unknown") : gettext(mt);
   switch (format)
     {
     case EXTRACTOR_METAFORMAT_UNKNOWN:
@@ -253,22 +288,22 @@ print_selected_keywords (void *cls,
 	       (unsigned int) data_len);
       break;
     case EXTRACTOR_METAFORMAT_UTF8:
-      cd = iconv_open(nl_langinfo(CODESET), "UTF-8");
-      if (cd != (iconv_t) -1)
-	keyword = iconv_helper(cd,
-			       data);
+      cd = iconv_open (nl_langinfo(CODESET), "UTF-8");
+      if (((iconv_t) -1) != cd)
+	keyword = iconv_helper (cd,
+				data);
       else
-	keyword = strdup(data);
-      if (keyword != NULL)
+	keyword = strdup (data);
+      if (NULL != keyword)
 	{
 	  fprintf (stdout,
 		   "%s - %s\n",
 		   stype,
 		   keyword);
-	  free(keyword);
+	  free (keyword);
 	}
-      if (cd != (iconv_t) -1)
-	iconv_close(cd);
+      if (((iconv_t) -1) != cd)
+	iconv_close (cd);
       break;
     case EXTRACTOR_METAFORMAT_BINARY:
       fprintf (stdout,
@@ -282,13 +317,11 @@ print_selected_keywords (void *cls,
 	       stype,
 	       data);
       break;
-
     default:
       break;
     }
   return 0;
 }
-
 
 
 /**
@@ -316,14 +349,14 @@ print_selected_keywords_grep_friendly (void *cls,
 				       const char *data,
 				       size_t data_len)
 { 
-  char * keyword;
+  char *keyword;
   iconv_t cd;
   const char *mt;
 
-  if (print[type] != YES)
+  if (YES != print[type])
     return 0;
-  mt = EXTRACTOR_metatype_to_string(type);
-  if (mt == NULL)
+  mt = EXTRACTOR_metatype_to_string (type);
+  if (NULL == mt)
     mt = gettext_noop ("unknown");
   switch (format)
     {
@@ -334,21 +367,21 @@ print_selected_keywords_grep_friendly (void *cls,
 	fprintf (stdout,
 		 "%s: ",
 		 gettext(mt));
-      cd = iconv_open(nl_langinfo(CODESET), "UTF-8");
-      if (cd != (iconv_t) -1)
-	keyword = iconv_helper(cd,
-			       data);
+      cd = iconv_open (nl_langinfo(CODESET), "UTF-8");
+      if (((iconv_t) -1) != cd)
+	keyword = iconv_helper (cd,
+				data);
       else
-	keyword = strdup(data);
-      if (keyword != NULL)
+	keyword = strdup (data);
+      if (NULL != keyword)
 	{
 	  fprintf (stdout,
 		   "`%s' ",
 		   keyword);
-	  free(keyword);
+	  free (keyword);
 	}
-      if (cd != (iconv_t) -1)
-	iconv_close(cd);
+      if (((iconv_t) -1) != cd)
+	iconv_close (cd);
       break;
     case EXTRACTOR_METAFORMAT_BINARY:
       break;
@@ -373,8 +406,19 @@ print_selected_keywords_grep_friendly (void *cls,
  */
 struct BibTexMap
 {
+  /**
+   * Name in bibTeX
+   */
   const char *bibTexName;
+
+  /**
+   * Meta type for the value.
+   */
   enum EXTRACTOR_MetaType le_type;
+
+  /**
+   * The value itself.
+   */
   char *value;
 };
 
@@ -419,16 +463,14 @@ static struct BibTexMap btm[] =
  * Clean up the bibtex processor in preparation for the next round.
  */
 static void 
-start_bibtex ()
+cleanup_bibtex ()
 {
-  int i;
+  unsigned int i;
   
-  i = 0;
-  while (btm[i].bibTexName != NULL)
+  for (i = 0; NULL != btm[i].bibTexName; i++)
     {
       free (btm[i].value);
       btm[i].value = NULL;
-      i++;
     }
   free (entry_type);
   entry_type = NULL;
@@ -460,43 +502,45 @@ print_bibtex (void *cls,
 	      const char *data,
 	      size_t data_len)
 {
-  int i;
+  unsigned int i;
 
-  if (print[type] != YES)
+  if (YES != print[type])
     return 0;
-  if (format != EXTRACTOR_METAFORMAT_UTF8)
+  if (EXTRACTOR_METAFORMAT_UTF8 != format)
     return 0;
-  if (type == EXTRACTOR_METATYPE_BIBTEX_ENTRY_TYPE)
+  if (EXTRACTOR_METATYPE_BIBTEX_ENTRY_TYPE == type)
     {
       entry_type = strdup (data);
       return 0;
     }
-  i = 0;
-  while (btm[i].bibTexName != NULL)
-    {
-      if ( (btm[i].value == NULL) &&
-	   (btm[i].le_type == type) )
-	btm[i].value = strdup (data);
-      i++;
-    }  
+  for (i = 0; NULL != btm[i].bibTexName; i++)
+    if ( (NULL == btm[i].value) &&
+	 (btm[i].le_type == type) )
+      btm[i].value = strdup (data);
   return 0;
 }
 
 
+/**
+ * Print the computed bibTeX entry.
+ *
+ * @param fn file for which the entry was created.
+ */
 static void
 finish_bibtex (const char *fn)
 {
-  int i;
+  unsigned int i;
+  ssize_t n;
   const char *et;
   char temp[20];
 
-  if (entry_type != NULL)
+  if (NULL != entry_type)
     et = entry_type;
   else
     et = "misc";
-  if ( (btm[0].value == NULL) ||
-       (btm[1].value == NULL) ||
-       (btm[2].value == NULL) )          
+  if ( (NULL == btm[0].value) ||
+       (NULL == btm[1].value) ||
+       (NULL == btm[2].value) )          
     fprintf (stdout,
 	     "@%s %s { ",
 	     et,
@@ -509,45 +553,42 @@ finish_bibtex (const char *fn)
 		btm[2].value,
 		btm[1].value,
 		btm[0].value);
-      
-      for (i=strlen(temp)-1;i>=0;i-- )
-	if (! isalnum( (unsigned char) temp[i]) ) 
-	  temp[i] = '_';
+      for (n=strlen (temp)-1;n>=0;n-- )
+	if (! isalnum ( (unsigned char) temp[n]) ) 
+	  temp[n] = '_';
 	else 
-	  temp[i] = tolower( (unsigned char) temp[i]);
+	  temp[n] = tolower ( (unsigned char) temp[n]);
       fprintf (stdout,
 	       "@%s %s { ",
 	       et,
 	       temp);
     }
-
-	     
-  i = 0;
-  while (btm[i].bibTexName != NULL)
-    {
-      if (btm[i].value != NULL) 
-	fprintf (stdout,
-		 "\t%s = {%s},\n",
-		 btm[i].bibTexName,
-		 btm[i].value);
-      i++;
-    }  
-  fprintf(stdout, "}\n\n");
+  for (i=0; NULL != btm[i].bibTexName; i++)
+    if (NULL != btm[i].value) 
+      fprintf (stdout,
+	       "\t%s = {%s},\n",
+	       btm[i].bibTexName,
+	       btm[i].value);
+  fprintf (stdout, "}\n\n");
 }
 
 
 /**
  * Main function for the 'extract' tool.  Invoke with a list of
  * filenames to extract keywords from.
+ *
+ * @param argc number of arguments in argv
+ * @param argv command line options and filename to run on
+ * @return 0 on success
  */
 int
 main (int argc, char *argv[])
 {
-  int i;
+  unsigned int i;
   struct EXTRACTOR_PluginList *plugins;
   int option_index;
   int c;
-  char * libraries = NULL;
+  char *libraries = NULL;
   int nodefault = NO;
   int defaultAll = YES;
   int bibtex = NO;
@@ -562,8 +603,7 @@ main (int argc, char *argv[])
 #ifndef WINDOWS
   ignore_sigpipe ();
 #endif
-  print = malloc (sizeof (int) * EXTRACTOR_metatype_get_max ());
-  if (print == NULL)
+  if (NULL == (print = malloc (sizeof (int) * EXTRACTOR_metatype_get_max ())))
     {
       fprintf (stderr, 
 	       "malloc failed: %s\n",
@@ -603,7 +643,7 @@ main (int argc, char *argv[])
 	{
 	case 'b':
 	  bibtex = YES;
-	  if (processor != NULL)
+	  if (NULL != processor)
 	    {
 	      fprintf (stderr,
 		       _("Illegal combination of options, cannot combine multiple styles of printing.\n"));
@@ -613,7 +653,7 @@ main (int argc, char *argv[])
 	  break;
 	case 'g':
 	  grepfriendly = YES;
-	  if (processor != NULL)
+	  if (NULL != processor)
 	    {
 	      fprintf (stderr,
 		       _("Illegal combination of options, cannot combine multiple styles of printing.\n"));
@@ -622,13 +662,13 @@ main (int argc, char *argv[])
 	  processor = &print_selected_keywords_grep_friendly;
 	  break;
 	case 'h':
-	  printHelp();
+	  printHelp ();
 	  return 0;
 	case 'i':
-	  in_process = 1;
+	  in_process = YES;
 	  break;
         case 'm':
-          from_memory = 1;
+          from_memory = YES;
           break;
 	case 'l':
 	  libraries = optarg;
@@ -643,14 +683,14 @@ main (int argc, char *argv[])
 	  nodefault = YES;
 	  break;
 	case 'p':
-	  if (optarg == NULL) 
+	  if (NULL == optarg) 
 	    {
 	      fprintf(stderr,
 		      _("You must specify an argument for the `%s' option (option ignored).\n"),
 		      "-p");
 	      break;
 	    }
-	  if (defaultAll == YES)
+	  if (YES == defaultAll)
 	    {
 	      defaultAll = NO;
 	      i = 0;
@@ -731,116 +771,88 @@ main (int argc, char *argv[])
     }
 
   /* build list of libraries */
-  if (nodefault == NO)
+  if (NO == nodefault)
     plugins = EXTRACTOR_plugin_add_defaults (in_process
 					     ? EXTRACTOR_OPTION_IN_PROCESS
 					     : EXTRACTOR_OPTION_DEFAULT_POLICY);
   else
     plugins = NULL;
-  if (libraries != NULL)
+  if (NULL != libraries)
     plugins = EXTRACTOR_plugin_add_config (plugins, 
 					   libraries,
 					   in_process
 					   ? EXTRACTOR_OPTION_IN_PROCESS
 					   : EXTRACTOR_OPTION_DEFAULT_POLICY);
-  if (processor == NULL)
+  if (NULL == processor)
     processor = &print_selected_keywords;
 
   /* extract keywords */
-  if (bibtex == YES)
+  if (YES == bibtex)
     fprintf(stdout,
 	    _("%% BiBTeX file\n"));
-  for (i = optind; i < argc; i++) {
-    errno = 0;
-    if (grepfriendly == YES)
-      fprintf (stdout, "%s ", argv[i]);
-    else if (bibtex == NO)
-      fprintf (stdout,
-	       _("Keywords for file %s:\n"),
-	       argv[i]);
-    else
-      start_bibtex ();
-    if (!from_memory)
-      EXTRACTOR_extract (plugins,
-		         argv[i],
-		         NULL, 0,
-		         processor,
-		         NULL);
-    else
+  for (i = optind; i < argc; i++) 
     {
-      int f = open (argv[i], O_RDONLY
+      errno = 0;
+      if (YES == grepfriendly)
+	fprintf (stdout, "%s ", argv[i]);
+      else if (NO == bibtex)
+	fprintf (stdout,
+		 _("Keywords for file %s:\n"),
+		 argv[i]);
+      else
+	cleanup_bibtex ();
+      if (NO == from_memory)
+	EXTRACTOR_extract (plugins,
+			   argv[i],
+			   NULL, 0,
+			   processor,
+			   NULL);
+      else
+	{
+	  struct stat sb;
+	  unsigned char *data = NULL;
+	  int f = open (argv[i], O_RDONLY
 #if WINDOWS
-                                       | O_BINARY
+			| O_BINARY
 #endif
-                    );
-      if (f != -1)
-      {
-        int64_t k = 0;
-#if WINDOWS
-        k = _lseeki64 (f, 0, SEEK_END);
-#elif HAVE_LSEEK64
-        k = lseek64 (f, 0, SEEK_END);
-#else
-        k = (int64_t) lseek (f, 0, SEEK_END);
-#endif
-        if (k > 0)
-        {
-          int64_t j;
-          int rd;
-          unsigned char *data = malloc (k);
-          close (f);
-          f = open (argv[i], O_RDONLY
-#if WINDOWS
-                                       | O_BINARY
-#endif
-                   );
-          for (j = 0; j < k; j += rd)
-          {
-            void *ptr = (void *) &data[j];
-            int to_read = 64*1024;
-            if (to_read > k - j)
-              to_read = k - j;
-            rd = read (f, ptr, to_read);
-            if (rd < 0)
-            {
-              fprintf (stderr, "Failed to read file `%s': %d %s\n", argv[i], errno, strerror (errno));
-              break;
-            }
-            if (rd == 0)
-              break;
-          }
-          if (j > 0)
-            EXTRACTOR_extract (plugins,
-		               NULL,
-		               data, j,
-		               processor,
-		               NULL);
-          free (data);
-        }
-        close (f);
-      }
-    }
-    if (0 != errno) {
-      if (verbose > 0) {
-	fprintf(stderr,
-		"%s: %s: %s\n",
-		argv[0], argv[i], strerror(errno));
-      }
-      ret = 1;
-      if (grepfriendly == YES)
+			);
+	  if ( (-1 != f) &&
+	       (0 == fstat (f, &sb)) &&
+	       (NULL != (data = malloc ((size_t) sb.st_size))) &&
+	       (sb.st_size == read (f, data, (size_t) sb.st_size) ) )
+	    {
+	      EXTRACTOR_extract (plugins,
+				 NULL,
+				 data, sb.st_size,
+				 processor,
+				 NULL);
+	    }
+	  else
+	    {
+	      if (verbose > 0) 
+		fprintf(stderr,
+			"%s: %s: %s\n",
+			argv[0], argv[i], strerror(errno));
+	      ret = 1;
+	    }
+	  if (NULL != data)
+	    free (data);
+	  if (-1 != f)
+	    close (f);
+	}
+      if (YES == grepfriendly)
 	fprintf (stdout, "\n");
       continue;
     }
-    if (grepfriendly == YES)
-      fprintf (stdout, "\n");
-    if (bibtex)
-      finish_bibtex (argv[i]);
-    if (verbose > 0)
-      printf ("\n");
-  }
+  if (YES == grepfriendly)
+    fprintf (stdout, "\n");
+  if (bibtex)
+    finish_bibtex (argv[i]);
+  if (verbose > 0)
+    printf ("\n");
   free (print);
   EXTRACTOR_plugin_remove_all (plugins);
-  start_bibtex (); /* actually free's stuff */
+  cleanup_bibtex (); /* actually free's stuff */
   return ret;
 }
 
