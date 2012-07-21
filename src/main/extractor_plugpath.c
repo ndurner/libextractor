@@ -1,6 +1,6 @@
 /*
      This file is part of libextractor.
-     (C) 2002, 2003, 2004, 2005, 2006, 2009 Vidyut Samanta and Christian Grothoff
+     (C) 2002, 2003, 2004, 2005, 2006, 2009, 2012 Vidyut Samanta and Christian Grothoff
 
      libextractor is free software; you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published
@@ -33,25 +33,36 @@
 #include "extractor_plugpath.h"
 
 /**
- * Remove a trailing '/bin' from in (if present).
+ * Remove a trailing '/bin/' from 'in' (if present).
+ *
+ * @param in input string, modified
+ * @return NULL if 'in' is NULL, otherwise 'in' with '/bin/' removed
  */
 static char * 
-cut_bin(char * in) {
+cut_bin (char * in) 
+{
   size_t p;
 
-  if (in == NULL)
+  if (NULL == in)
     return NULL;
-  p = strlen(in);
-  if (p > 4) {
-    if ( (in[p-1] == '/') ||
-	 (in[p-1] == '\\') )
-      in[--p] = '\0';
-    if (0 == strcmp(&in[p-3],
-		    "bin")) {
-      in[p-3] = '\0';
-      p -= 3;
+  p = strlen (in);
+  if (p < 4)
+    return in;
+  if ( ('/' == in[p-1]) ||
+       ('\\' == in[p-1]) )
+    in[--p] = '\0';
+  if (0 == strcmp (&in[p-4],
+		   "/bin")) 
+    {
+      in[p-4] = '\0';
+      p -= 4;
     }
-  }
+  else if (0 == strcmp (&in[p-4],
+			"\bin")) 
+    {
+      in[p-4] = '\0';
+      p -= 4;
+    }
   return in;
 }
 
@@ -64,208 +75,269 @@ cut_bin(char * in) {
  * and the binary linking against it sits elsewhere.
  */
 static char *
-get_path_from_proc_exe() {
+get_path_from_proc_exe () 
+{
   char fn[64];
   char line[1024];
   char dir[1024];
-  char * lnk;
-  char * ret;
-  char * lestr;
+  char *lnk;
+  char *ret;
+  char *lestr;
   ssize_t size;
-  FILE * f;
+  FILE *f;
 
-  snprintf(fn,
-	   sizeof (fn),
-	   "/proc/%u/maps",
-	   getpid());
-  f = FOPEN(fn, "r");
-  if (f != NULL) {
-    while (NULL != fgets(line, 1024, f)) {
-      if ( (1 == sscanf(line,
-			"%*x-%*x %*c%*c%*c%*c %*x %*2x:%*2x %*u%*[ ]%s",
-			dir)) &&
-	   (NULL != (lestr = strstr(dir,
-				    "libextractor")) ) ) {
-	lestr[0] = '\0';
-	fclose(f);
-	return strdup(dir);
-      }
+  snprintf (fn,
+	    sizeof (fn),
+	    "/proc/%u/maps",
+	    getpid ());
+  if (NULL != (f = FOPEN (fn, "r")))
+    {
+      while (NULL != fgets (line, 1024, f)) 
+	{
+	  if ( (1 == sscanf (line,
+			     "%*x-%*x %*c%*c%*c%*c %*x %*2x:%*2x %*u%*[ ]%s",
+			     dir)) &&
+	       (NULL != (lestr = strstr (dir,
+					 "libextractor")) ) ) 
+	    {
+	      lestr[0] = '\0';
+	      fclose (f);
+	      return strdup (dir);
+	    }
+	}
+      fclose (f);
     }
-    fclose(f);
-  }
-  snprintf(fn,
-	   sizeof (fn),
-	   "/proc/%u/exe",
-	   getpid());
-  lnk = malloc(1029); /* 1024 + 5 for "lib/" catenation */
-  if (lnk == NULL)         
+  snprintf (fn,
+	    sizeof (fn),
+	    "/proc/%u/exe",
+	    getpid ());
+  if (NULL == (lnk = malloc (1029))) /* 1024 + 6 for "/lib/" catenation */
     return NULL;
-  size = readlink(fn, lnk, 1023);
-  if ( (size <= 0) || (size >= 1024) ) {
-    free(lnk);
-    return NULL;
-  }
-  lnk[size] = '\0';
-  while ( (lnk[size] != '/') &&
-	  (size > 0) )
-    size--;
-  if ( (size < 4) ||
-       (lnk[size-4] != '/') ) {
-    /* not installed in "/bin/" -- binary path probably useless */
-    free(lnk);
-    return NULL;
-  }
-  lnk[size] = '\0';
-  lnk = cut_bin(lnk);
-  ret = realloc(lnk, strlen(lnk) + 5);
-  if (ret == NULL)
+  size = readlink (fn, lnk, 1023);
+  if ( (size <= 0) || (size >= 1024) )
     {
       free (lnk);
       return NULL;
     }
-  strcat(ret, "lib/"); /* guess "lib/" as the library dir */
+  lnk[size] = '\0';
+  while ( ('/' != lnk[size]) &&
+	  (size > 0) )
+    size--;
+  if ( (size < 4) ||
+       ('/' != lnk[size-4]) )
+    {
+      /* not installed in "/bin/" -- binary path probably useless */
+      free (lnk);
+      return NULL;
+    }
+  lnk[size] = '\0';
+  lnk = cut_bin (lnk);
+  if (NULL == (ret = realloc (lnk, strlen(lnk) + 6)))
+    {
+      free (lnk);
+      return NULL;
+    }
+  strcat (ret, "/lib/"); /* guess "lib/" as the library dir */
   return ret;
 }
 #endif
+
 
 #if WINDOWS
 /**
  * Try to determine path with win32-specific function
  */
 static char * 
-get_path_from_module_filename() {
-  char * path;
-  char * ret;
-  char * idx;
+get_path_from_module_filename () 
+{
+  char *path;
+  char *ret;
+  char *idx;
 
-  path = malloc(4103); /* 4096+nil+6 for "/lib/" catenation */
-  if (path == NULL)
+  if (NULL == (path = malloc (4103))) /* 4096+nil+6 for "/lib/" catenation */
     return NULL;
-  GetModuleFileName(NULL, path, 4096);
-  idx = path + strlen(path);
+  GetModuleFileName (NULL, path, 4096);
+  idx = path + strlen (path);
   while ( (idx > path) &&
-	  (*idx != '\\') &&
-	  (*idx != '/') )
+	  ('\\' != *idx) &&
+	  ('/' != *idx) )
     idx--;
   *idx = '\0';
-  path = cut_bin(path);
-  ret = realloc(path, strlen(path) + 6);
-  if (ret == NULL)
+  path = cut_bin (path);
+  if (NULL == (ret = realloc (path, strlen(path) + 6)))
     {
       free (path);
       return NULL;
     }
-  strcat(ret, "/lib/"); /* guess "lib/" as the library dir */
+  strcat (ret, "/lib/"); /* guess "lib/" as the library dir */
   return ret;
 }
 #endif
 
+
 #if DARWIN
-static char * get_path_from_dyld_image() {
-  const char * path;
-  char * p, * s;
-  int i;
+/**
+ * Signature of the '_NSGetExecutablePath" function.
+ *
+ * @param buf where to write the path
+ * @param number of bytes available in 'buf'
+ * @return 0 on success, otherwise desired number of bytes is stored in 'bufsize'
+ */
+typedef int (*MyNSGetExecutablePathProto) (char *buf, 
+					   size_t *bufsize);
+
+
+/**
+ * Try to obtain the path of our executable using '_NSGetExecutablePath'.
+ *
+ * @return NULL on error
+ */
+static char *
+get_path_from_NSGetExecutablePath ()
+{
+  static char zero;
+  char *path;
+  size_t len;
+  MyNSGetExecutablePathProto func;
+
+  path = NULL;
+  if (NULL == (func =
+	       (MyNSGetExecutablePathProto) dlsym (RTLD_DEFAULT,
+						   "_NSGetExecutablePath")))
+    return NULL;
+  path = &zero;
+  len = 0;
+  /* get the path len, including the trailing \0 */
+  (void) func (path, &len);
+  if (0 == len)
+    return NULL;
+  path = GNUNET_malloc (len);
+  if (0 != func (path, &len))
+  {
+    GNUNET_free (path);
+    return NULL;
+  }
+  len = strlen (path);
+  while ((path[len] != '/') && (len > 0))
+    len--;
+  path[len] = '\0';
+  return path;
+}
+
+
+/**
+ * Try to obtain the path of our executable using '_dyld_image' API.
+ *
+ * @return NULL on error
+ */
+static char * 
+get_path_from_dyld_image () 
+{
+  const char *path;
+  char *s;
+  unsigned int i;
   int c;
 
-  p = NULL;
-  c = _dyld_image_count();
-  for (i = 0; i < c; i++) {
-    if (_dyld_get_image_header(i) == &_mh_dylib_header) {
-      path = _dyld_get_image_name(i);
-      if (path != NULL && strlen(path) > 0) {
-        p = strdup(path);
-	if (p == NULL)
-	  return NULL;
-        s = p + strlen(p);
-        while ( (s > p) && (*s != '/') )
-          s--;
-        s++;
-        *s = '\0';
-      }
-      break;
+  c = _dyld_image_count ();
+  for (i = 0; i < c; i++) 
+    {
+      if (_dyld_get_image_header (i) != &_mh_dylib_header)
+	continue;
+      path = _dyld_get_image_name (i);
+      if ( (NULL == path) || (0 == strlen (path)) )
+	continue;
+      if (NULL == (p = strdup (path)))
+	return NULL;
+      s = p + strlen (p);
+      while ( (s > p) && ('/' != *s) )
+	s--;
+      s++;
+      *s = '\0';
+      return p;
     }
-  }
-  return p;
+  return NULL;
 }
 #endif
 
+
 /**
- * This may also fail -- for example, if extract
- * is not also installed.
+ * Return the actual path to a file found in the current
+ * PATH environment variable.
+ *
+ * @return path to binary, NULL if not found
  */
 static char *
 get_path_from_PATH() {
   struct stat sbuf;
-  char * path;
-  char * pos;
-  char * end;
-  char * buf;
-  char * ret;
-  const char * p;
+  char *path;
+  char *pos;
+  char *end;
+  char *buf;
+  char *ret;
+  const char *p;
 
-  p = getenv("PATH");
-  if (p == NULL)
+  if (NULL == (p = getenv ("PATH")))
     return NULL;
-  path = strdup(p); /* because we write on it */
-  if (path == NULL)
+  if (NULL == (path = strdup (p))) /* because we write on it */
     return NULL;
-  buf = malloc(strlen(path) + 20);
-  if (buf == NULL)
+  if (NULL == (buf = malloc (strlen(path) + 20)))
     {
       free (path);
       return NULL;
     }
   pos = path;
-
-  while (NULL != (end = strchr(pos, ':'))) {
-    *end = '\0';
-    sprintf(buf, "%s/%s", pos, "extract");
-    if (0 == stat(buf, &sbuf)) {
-      pos = strdup(pos);
-      free(buf);
-      free(path);
-      if (pos == NULL)
+  while (NULL != (end = strchr(pos, ':'))) 
+    {
+      *end = '\0';
+      sprintf(buf, "%s/%s", pos, "extract");
+      if (0 == stat(buf, &sbuf)) 
+	{
+	  pos = strdup(pos);
+	  free (buf);
+	  free (path);
+	  if (NULL == pos)
+	    return NULL;
+	  pos = cut_bin (pos);
+	  if (NULL == (ret = realloc (pos, strlen(pos) + 5)))
+	    {
+	      free (pos);
+	      return NULL;
+	    }
+	  strcat (ret, "lib/");
+	  return ret;
+	}
+      pos = end + 1;
+    }
+  sprintf(buf, "%s/%s", pos, "extract");
+  if (0 == stat (buf, &sbuf)) 
+    {
+      pos = strdup (pos);
+      free (buf);
+      free (path);
+      if (NULL == pos)
 	return NULL;
-      pos = cut_bin(pos);
-      ret = realloc(pos, strlen(pos) + 5);
-      if (ret == NULL)
+      pos = cut_bin (pos);
+      ret = realloc (pos, strlen(pos) + 5);
+      if (NULL == ret)
 	{
 	  free (pos);
 	  return NULL;
 	}
-      strcat(ret, "lib/");
+      strcat (ret, "lib/");
       return ret;
     }
-    pos = end + 1;
-  }
-  sprintf(buf, "%s/%s", pos, "extract");
-  if (0 == stat(buf, &sbuf)) {
-    pos = strdup(pos);
-    free(buf);
-    free(path);
-    if (pos == NULL)
-      return NULL;
-    pos = cut_bin(pos);
-    ret = realloc(pos, strlen(pos) + 5);
-    if (ret == NULL)
-      {
-	free (pos);
-	return NULL;
-      }
-    strcat(ret, "lib/");
-    return ret;
-  }
   free(buf);
   free(path);
   return NULL;
 }
+
 
 /**
  * Create a filename by appending 'fname' to 'path'.
  *
  * @param path the base path 
  * @param fname the filename to append
- * @return '$path/$fname'
+ * @return '$path/$fname', NULL on error
  */
 static char *
 append_to_dir (const char *path,
@@ -274,16 +346,15 @@ append_to_dir (const char *path,
   char *ret;
   size_t slen;
 
-  slen = strlen (path);
-  if (slen == 0)
+  if (0 == (slen = strlen (path)))
     return NULL;
-  if (fname[0] == DIR_SEPARATOR)
+  if (DIR_SEPARATOR == fname[0])
     fname++;
   ret = malloc (slen + strlen(fname) + 2);
-  if (ret == NULL)
+  if (NULL == ret)
     return NULL;
 #ifdef MINGW
-  if (path[slen-1] == '\\')
+  if ('\\' == path[slen-1])
     sprintf (ret,
 	     "%s%s",
 	     path, 
@@ -294,16 +365,16 @@ append_to_dir (const char *path,
 	     path, 
 	     fname);
 #else
-  if (path[slen-1] == '/')
+  if ('/' == path[slen-1])
     sprintf (ret,
-	   "%s%s",
-	   path, 
-	   fname);
+	     "%s%s",
+	     path, 
+	     fname);
   else
     sprintf (ret,
-	   "%s/%s",
-	   path, 
-	   fname);
+	     "%s/%s",
+	     path, 
+	     fname);
 #endif
   return ret;
 }
@@ -317,49 +388,47 @@ append_to_dir (const char *path,
  * @param pp_cls cls argument for pp.
  */
 void
-get_installation_paths (PathProcessor pp,
-			void *pp_cls)
+EXTRACTOR_get_installation_paths_ (EXTRACTOR_PathProcessor pp,
+				   void *pp_cls)
 {
   const char *p;
-  char * path;
-  char * prefix;
-  char * d;
+  char *path;
+  char *prefix;
+  char *d;
 
   prefix = NULL;
-  p = getenv("LIBEXTRACTOR_PREFIX");
-  if (p != NULL)
+  if (NULL != (p = getenv ("LIBEXTRACTOR_PREFIX")))
     {
-      d = strdup (p);
-      if (d == NULL)
+      if (NULL == (d = strdup (p)))
 	return;
-      prefix = strtok (d, PATH_SEPARATOR_STR);
-      while (NULL != prefix)
-	{
-	  pp (pp_cls, prefix);
-	  prefix = strtok (NULL, PATH_SEPARATOR_STR);
-	}
+      for (prefix = strtok (d, PATH_SEPARATOR_STR);
+	   NULL != prefix;
+	   prefix = strtok (NULL, PATH_SEPARATOR_STR))
+	pp (pp_cls, prefix);
       free (d);
       return;
     }
 #if LINUX
-  if (prefix == NULL)
-    prefix = get_path_from_proc_exe();
+  if (NULL == prefix)
+    prefix = get_path_from_proc_exe ();
 #endif
 #if WINDOWS
-  if (prefix == NULL)
-    prefix = get_path_from_module_filename();
+  if (NULL == prefix)
+    prefix = get_path_from_module_filename ();
 #endif
 #if DARWIN
-  if (prefix == NULL)
-    prefix = get_path_from_dyld_image();
+  if (NULL == prefix)
+    prefix = get_path_from_NSGetExecutablePath ();
+  if (NULL == prefix)
+    prefix = get_path_from_dyld_image ();
 #endif
-  if (prefix == NULL)
-    prefix = get_path_from_PATH();
+  if (NULL == prefix)
+    prefix = get_path_from_PATH ();
   pp (pp_cls, PLUGININSTDIR);
-  if (prefix == NULL)
+  if (NULL == prefix)
     return;
   path = append_to_dir (prefix, PLUGINDIR);
-  if (path != NULL)
+  if (NULL != path)
     {
       if (0 != strcmp (path,
 		       PLUGININSTDIR))
@@ -370,9 +439,19 @@ get_installation_paths (PathProcessor pp,
 }
 
 
+/**
+ * Closure for 'find_plugin_in_path'.
+ */
 struct SearchContext
 {
+  /**
+   * Name of the plugin we are looking for.
+   */
   const char *short_name;
+  
+  /**
+   * Location for storing the path to the plugin upon success.
+   */ 
   char *path;
 };
 
@@ -395,30 +474,28 @@ find_plugin_in_path (void *cls,
   char *sym;
   char *dot;
 
-  if (sc->path != NULL)
+  if (NULL != sc->path)
     return;
-  dir = OPENDIR (path);
-  if (NULL == dir)
+  if (NULL == (dir = OPENDIR (path)))
     return;
   while (NULL != (ent = READDIR (dir)))
     {
-      if (ent->d_name[0] == '.')
+      if ('.' == ent->d_name[0])
 	continue;
       if ( (NULL != (la = strstr (ent->d_name, ".la"))) &&
-	   (la[3] == '\0') )
+	   ('\0' == la[3]) )
 	continue; /* only load '.so' and '.dll' */
-      sym_name = strrchr (ent->d_name, '_');
-      if (sym_name == NULL)
+      if (NULL == (sym_name = strrchr (ent->d_name, '_')))
 	continue;	
       sym_name++;
       sym = strdup (sym_name);
-      if (sym == NULL)
+      if (NULL == sym)
 	{
 	  CLOSEDIR (dir);
 	  return;
 	}
       dot = strchr (sym, '.');
-      if (dot != NULL)
+      if (NULL != dot)
 	*dot = '\0';
       if (0 == strcmp (sym, sc->short_name))
 	{
@@ -428,13 +505,6 @@ find_plugin_in_path (void *cls,
 	}
       free (sym);
     }
-#if DEBUG
-  if (sc->path == NULL)
-    fprintf (stderr,
-	     "Failed to find plugin `%s' in `%s'\n",
-	     sc->short_name,
-	     path);
-#endif
   CLOSEDIR (dir);
 }
 
@@ -444,7 +514,7 @@ find_plugin_in_path (void *cls,
  * the full path of the respective plugin.
  */
 char *
-find_plugin (const char *short_name)
+EXTRACTOR_find_plugin_ (const char *short_name)
 {
   struct SearchContext sc;
   
@@ -456,13 +526,30 @@ find_plugin (const char *short_name)
 }
 
 
+/** 
+ * Closure for 'load_plugins_from_dir'.
+ */
+struct DefaultLoaderContext
+{
+  /**
+   * Accumulated result list.
+   */ 
+  struct EXTRACTOR_PluginList *res;
+
+  /**
+   * Flags to use for all plugins.
+   */
+  enum EXTRACTOR_Options flags;
+};
+
+
 /**
  * Load all plugins from the given directory.
  * 
  * @param cls pointer to the "struct EXTRACTOR_PluginList*" to extend
  * @param path path to a directory with plugins
  */
-void
+static void
 load_plugins_from_dir (void *cls,
 		       const char *path)
 {
@@ -514,3 +601,32 @@ load_plugins_from_dir (void *cls,
   closedir (dir);
 }
 
+
+/**
+ * Load the default set of plugins. The default can be changed
+ * by setting the LIBEXTRACTOR_LIBRARIES environment variable.
+ * If it is set to "env", then this function will return
+ * EXTRACTOR_plugin_add_config (NULL, env, flags).  Otherwise,
+ * it will load all of the installed plugins and return them.
+ *
+ * @param flags options for all of the plugins loaded
+ * @return the default set of plugins, NULL if no plugins were found
+ */
+struct EXTRACTOR_PluginList * 
+EXTRACTOR_plugin_add_defaults (enum EXTRACTOR_Options flags)
+{
+  struct DefaultLoaderContext dlc;
+  char *env;
+
+  env = getenv ("LIBEXTRACTOR_LIBRARIES");
+  if (NULL != env)
+    return EXTRACTOR_plugin_add_config (NULL, env, flags);
+  dlc.res = NULL;
+  dlc.flags = flags;
+  get_installation_paths (&load_plugins_from_dir,
+			  &dlc);
+  return dlc.res;
+}
+
+
+/* end of extractor_plugpath.c */

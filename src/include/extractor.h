@@ -1,6 +1,6 @@
 /*
      This file is part of libextractor.
-     (C) 2002, 2003, 2004, 2005, 2006, 2009 Vidyut Samanta and Christian Grothoff
+     (C) 2002, 2003, 2004, 2005, 2006, 2009, 2012 Vidyut Samanta and Christian Grothoff
 
      libextractor is free software; you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published
@@ -32,7 +32,7 @@ extern "C" {
  * 0.2.6-1 => 0x00020601
  * 4.5.2-0 => 0x04050200
  */
-#define EXTRACTOR_VERSION 0x00060301
+#define EXTRACTOR_VERSION 0x00060900
 
 #include <stdio.h>
 
@@ -331,7 +331,7 @@ enum EXTRACTOR_MetaType
  *         translate using 'dgettext ("libextractor", rval)'
  */
 const char *
-EXTRACTOR_metatype_to_string(enum EXTRACTOR_MetaType type);
+EXTRACTOR_metatype_to_string (enum EXTRACTOR_MetaType type);
 
 
 /**
@@ -343,7 +343,7 @@ EXTRACTOR_metatype_to_string(enum EXTRACTOR_MetaType type);
  *         translate using 'dgettext ("libextractor", rval)'
  */
 const char *
-EXTRACTOR_metatype_to_description(enum EXTRACTOR_MetaType type);
+EXTRACTOR_metatype_to_description (enum EXTRACTOR_MetaType type);
 
 
 /**
@@ -372,26 +372,84 @@ EXTRACTOR_metatype_get_max (void);
  * @param data_len number of bytes in data
  * @return 0 to continue extracting, 1 to abort
  */ 
-typedef int (*EXTRACTOR_MetaDataProcessor)(void *cls,
-					   const char *plugin_name,
-					   enum EXTRACTOR_MetaType type,
-					   enum EXTRACTOR_MetaFormat format,
-					   const char *data_mime_type,
-					   const char *data,
-					   size_t data_len);
+typedef int (*EXTRACTOR_MetaDataProcessor) (void *cls,
+					    const char *plugin_name,
+					    enum EXTRACTOR_MetaType type,
+					    enum EXTRACTOR_MetaFormat format,
+					    const char *data_mime_type,
+					    const char *data,
+					    size_t data_len);
 
-					   
+
+/**
+ * Context provided for plugins that perform meta data extraction.
+ */
+struct EXTRACTOR_ExtractContext
+{
+
+  /**
+   * Closure argument to pass to all callbacks.
+   */
+  void *cls;
+
+  /**
+   * Configuration string for the plugin.
+   */
+  const char *config;
+  
+  /**
+   * Obtain a pointer to up to 'size' bytes of data from the file to process.
+   *
+   * @param cls the 'cls' member of this struct
+   * @param data pointer to set to the file data, set to NULL on error
+   * @param size maximum number of bytes requested
+   * @return number of bytes now available in data (can be smaller than 'size'),
+   *         -1 on error
+   */
+  ssize_t (*read) (void *cls,
+		   unsigned char **data,
+		   size_t size);
+
+  
+  /**
+   * Seek in the file.  Use 'SEEK_CUR' for whence and 'pos' of 0 to
+   * obtain the current position in the file.
+   * 
+   * @param cls the 'cls' member of this struct
+   * @param pos position to seek (see 'man lseek')
+   * @param whence how to see (absolute to start, relative, absolute to end)
+   * @return new absolute position, UINT64_MAX on error (i.e. desired position
+   *         does not exist)
+   */ 
+  uint64_t (*seek) (void *cls,
+		    int64_t pos,
+		    int whence);
+
+
+  /**
+   * Determine the overall size of the file.
+   * 
+   * @param cls the 'cls' member of this struct
+   * @return overall file size, UINT64_MAX on error (i.e. IPC failure)
+   */ 
+  uint64_t (*get_size) (void *cls);
+
+  /**
+   * Function to call on extracted data.
+   */
+  EXTRACTOR_MetaDataProcessor proc;
+
+};
+
+
 /**
  * Signature of the extract method that each plugin
  * must provide.
  *
- * @param data data to process
- * @param datasize number of bytes available in data
- * @param proc function to call for meta data found
- * @param proc_cls cls argument to proc
- * @param options options for this plugin; can be NULL
- * @return 0 if all calls to proc returned 0, otherwise 1
+ * @param ec extraction context provided to the plugin
  */
+typedef void (*EXTRACTOR_extract_method) (struct EXTRACTOR_ExtractContext *ec);
+
 
 /**
  * Linked list of extractor plugins.  An application builds this list
@@ -400,10 +458,6 @@ typedef int (*EXTRACTOR_MetaDataProcessor)(void *cls,
  * see EXTRACTOR_plugin_remove).
  */
 struct EXTRACTOR_PluginList;
-
-typedef int (*EXTRACTOR_extract_method) (struct EXTRACTOR_PluginList *plugin,
-  EXTRACTOR_MetaDataProcessor proc, void *proc_cls);
-
 
 
 /**
@@ -428,7 +482,7 @@ typedef int (*EXTRACTOR_extract_method) (struct EXTRACTOR_PluginList *plugin,
  * @return the default set of plugins, NULL if no plugins were found
  */
 struct EXTRACTOR_PluginList * 
-EXTRACTOR_plugin_add_defaults(enum EXTRACTOR_Options flags);
+EXTRACTOR_plugin_add_defaults (enum EXTRACTOR_Options flags);
 
 
 /**
@@ -442,9 +496,10 @@ EXTRACTOR_plugin_add_defaults(enum EXTRACTOR_Options flags);
  */
 struct EXTRACTOR_PluginList *
 EXTRACTOR_plugin_add (struct EXTRACTOR_PluginList * prev,
-		      const char * library,
+		      const char *library,
 		      const char *options,
 		      enum EXTRACTOR_Options flags);
+
 
 /**
  * Load multiple libraries as specified by the user.
@@ -462,7 +517,7 @@ EXTRACTOR_plugin_add (struct EXTRACTOR_PluginList * prev,
  *         or if config was empty (or NULL).
  */
 struct EXTRACTOR_PluginList *
-EXTRACTOR_plugin_add_config (struct EXTRACTOR_PluginList * prev,
+EXTRACTOR_plugin_add_config (struct EXTRACTOR_PluginList *prev,
 			     const char *config,
 			     enum EXTRACTOR_Options flags);
 
@@ -475,8 +530,8 @@ EXTRACTOR_plugin_add_config (struct EXTRACTOR_PluginList * prev,
  * @return the reduced list, unchanged if the plugin was not loaded
  */
 struct EXTRACTOR_PluginList *
-EXTRACTOR_plugin_remove(struct EXTRACTOR_PluginList * prev,
-			const char * library);
+EXTRACTOR_plugin_remove (struct EXTRACTOR_PluginList *prev,
+			 const char *library);
 
 
 /**
@@ -485,7 +540,7 @@ EXTRACTOR_plugin_remove(struct EXTRACTOR_PluginList * prev,
  * @param plugin the list of plugins
  */
 void 
-EXTRACTOR_plugin_remove_all(struct EXTRACTOR_PluginList *plugins);
+EXTRACTOR_plugin_remove_all (struct EXTRACTOR_PluginList *plugins);
 
 
 /**
@@ -500,12 +555,12 @@ EXTRACTOR_plugin_remove_all(struct EXTRACTOR_PluginList *plugins);
  * @param proc_cls cls argument to proc
  */
 void
-EXTRACTOR_extract(struct EXTRACTOR_PluginList *plugins,
-		  const char *filename,
-		  const void *data,
-		  size_t size,
-		  EXTRACTOR_MetaDataProcessor proc,
-		  void *proc_cls);
+EXTRACTOR_extract (struct EXTRACTOR_PluginList *plugins,
+		   const char *filename,
+		   const void *data,
+		   size_t size,
+		   EXTRACTOR_MetaDataProcessor proc,
+		   void *proc_cls);
 
 
 /**
@@ -525,13 +580,13 @@ EXTRACTOR_extract(struct EXTRACTOR_PluginList *plugins,
  * @return non-zero if printing failed, otherwise 0.
  */
 int 
-EXTRACTOR_meta_data_print(void * handle,
-			  const char *plugin_name,
-			  enum EXTRACTOR_MetaType type,
-			  enum EXTRACTOR_MetaFormat format,
-			  const char *data_mime_type,
-			  const char *data,
-			  size_t data_len);
+EXTRACTOR_meta_data_print (void * handle,
+			   const char *plugin_name,
+			   enum EXTRACTOR_MetaType type,
+			   enum EXTRACTOR_MetaFormat format,
+			   const char *data_mime_type,
+			   const char *data,
+			   size_t data_len);
 
 
 #if 0 /* keep Emacsens' auto-indent happy */

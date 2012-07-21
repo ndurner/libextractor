@@ -1,6 +1,6 @@
 /*
      This file is part of libextractor.
-     (C) 2002, 2003, 2004, 2005, 2006, 2009 Vidyut Samanta and Christian Grothoff
+     (C) 2002, 2003, 2004, 2005, 2006, 2009, 2012 Vidyut Samanta and Christian Grothoff
 
      libextractor is free software; you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published
@@ -18,14 +18,12 @@
      Boston, MA 02111-1307, USA.
  */
 
-#if !defined (EXTRACTOR_PLUGINS_H)
+#ifndef EXTRACTOR_PLUGINS_H
 #define EXTRACTOR_PLUGINS_H
 
 #include "platform.h"
 #include "plibc.h"
 #include "extractor.h"
-//#include <dirent.h>
-//#include <sys/types.h>
 #ifndef WINDOWS
 #include <sys/wait.h>
 #include <sys/shm.h>
@@ -57,7 +55,7 @@ struct EXTRACTOR_PluginList
   char *libname;
 
   /**
-   * Name of the library (i.e., 'libextractor_foo.so')
+   * Short name of the plugin (i.e., 'foo')
    */
   char *short_libname;
   
@@ -69,7 +67,7 @@ struct EXTRACTOR_PluginList
   /**
    * Options for the plugin.
    */
-  char * plugin_options;
+  char *plugin_options;
 
   /**
    * Special options for the plugin
@@ -211,6 +209,7 @@ struct EXTRACTOR_PluginList
   int waiting_for_update;
 };
 
+
 /**
  * Load a plugin.
  *
@@ -218,18 +217,6 @@ struct EXTRACTOR_PluginList
  * @return 0 on success, -1 on error
  */
 int
-plugin_load (struct EXTRACTOR_PluginList *plugin);
-
-int64_t
-pl_read (struct EXTRACTOR_PluginList *plugin, unsigned char **data, size_t count);
-
-int64_t
-pl_seek (struct EXTRACTOR_PluginList *plugin, int64_t pos, int whence);
-
-int64_t
-pl_get_fsize (struct EXTRACTOR_PluginList *plugin);
-
-int64_t
-pl_get_pos (struct EXTRACTOR_PluginList *plugin);
+EXTRACTOR_plugin_load_ (struct EXTRACTOR_PluginList *plugin);
 
 #endif /* EXTRACTOR_PLUGINS_H */

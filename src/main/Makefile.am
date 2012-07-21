@@ -28,6 +28,11 @@ libextractor_la_LDFLAGS = \
 libextractor_la_LIBADD = \
   $(LIBLTDL) $(zlib) $(bz2lib) $(LTLIBICONV)
 
+if WINDOWS
+EXTRACTOR_IPC=extractor_ipc_w32.c
+else
+EXTRACTOR_IPC=extractor_ipc_gnu.c
+endif
 
 EXTRA_DIST = \
   iconv.c fuzz_default.sh fuzz_thumbnail.sh
@@ -36,16 +41,15 @@ libextractor_la_CPPFLAGS = -DPLUGINDIR=\"@RPLUGINDIR@\" -DPLUGININSTDIR=\"${plug
 
 libextractor_la_SOURCES = \
   extractor.c \
-  extractor_plugpath.c \
-  extractor_plugins.c \
+  $(EXTRACTOR_IPC) extractor_ipc.h \
+  extractor_plugpath.c extractor_plugpath.h \
+  extractor_plugins.c extractor_plugins.h \
   extractor_metatypes.c \
   extractor_print.c 
 
 extract_SOURCES = \
   extract.c \
-  getopt.c \
-  getopt.h \
-  getopt1.c 
+  getopt.c getopt.h getopt1.c 
 
 
 LDADD = \

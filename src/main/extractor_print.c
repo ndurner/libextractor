@@ -40,44 +40,43 @@
  * @return non-zero if printing failed, otherwise 0.
  */
 int 
-EXTRACTOR_meta_data_print(void * handle,
-			  const char *plugin_name,
-			  enum EXTRACTOR_MetaType type,
-			  enum EXTRACTOR_MetaFormat format,
-			  const char *data_mime_type,
-			  const char *data,
-			  size_t data_len)
+EXTRACTOR_meta_data_print (void *handle,
+			   const char *plugin_name,
+			   enum EXTRACTOR_MetaType type,
+			   enum EXTRACTOR_MetaFormat format,
+			   const char *data_mime_type,
+			   const char *data,
+			   size_t data_len)
 {
   iconv_t cd;
   char * buf;
   int ret;
   const char *mt;
 
-  if (format != EXTRACTOR_METAFORMAT_UTF8)
+  if (EXTRACTOR_METAFORMAT_UTF8 != format)
     return 0;
-  cd = iconv_open(nl_langinfo(CODESET),
-		  "UTF-8");
-  if (cd == (iconv_t) -1)
+  cd = iconv_open (nl_langinfo(CODESET),
+		   "UTF-8");
+  if (((iconv_t) -1) == cd)
     return 1;
   buf = iconv_helper(cd, data);
-  if (buf != NULL)
-    {
-      mt = EXTRACTOR_metatype_to_string (type);
-      ret = fprintf(handle,
-		    "%s - %s\n",
-		    (mt == NULL) ? _("unknown") : dgettext ("libextractor",
-							    mt),
-		    buf);
-      free(buf);
-    }
-  else
+  if (NULL == buf)
     {
       ret = -1;
     }
+  else
+    {
+      mt = EXTRACTOR_metatype_to_string (type);
+      ret = fprintf (handle,
+		     "%s - %s\n",
+		     (NULL == mt) 
+		     ? dgettext ("libextractor", gettext_noop ("unknown"))
+		     : dgettext ("libextractor", mt),
+		     buf);
+      free(buf);
+    }
   iconv_close(cd);
-  if (ret < 0)
-    return 1;
-  return 0;
+  return (ret < 0) ? 1 : 0;
 }
 
 /* end of extractor_print.c */
