@@ -797,7 +797,7 @@ EXTRACTOR_ltdl_init ()
       return;
     }
 #if WINDOWS
-  plibc_init ("GNU", PACKAGE);
+  plibc_init_utf8 ("GNU", PACKAGE, 1);
 #endif
 }
 
