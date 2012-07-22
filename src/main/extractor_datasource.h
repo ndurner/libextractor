@@ -17,6 +17,11 @@
      Free Software Foundation, Inc., 59 Temple Place - Suite 330,
      Boston, MA 02111-1307, USA.
  */
+/**
+ * @file main/extractor_datasource.h
+ * @brief random access and possibly decompression of data from buffer in memory or file on disk
+ * @author Christian Grothoff
+ */
 #ifndef EXTRACTOR_DATASOURCE_H
 #define EXTRACTOR_DATASOURCE_H
 

@@ -42,6 +42,7 @@ linux*)
      AC_DEFINE_UNQUOTED(LINUX,1,[This is a LINUX system])
      AM_CONDITIONAL(HAVE_GNU_LD, true)    
      AM_CONDITIONAL(SOMEBSD, false)
+     AM_CONDITIONAL(WINDOWS, false)
      XTRA_CPPLIBS=-lstdc++
      LIBEXT=.so
      ;;
@@ -50,6 +51,7 @@ freebsd*)
      AC_CHECK_LIB(c_r, pthread_create)
      AM_CONDITIONAL(HAVE_GNU_LD, true)
      AM_CONDITIONAL(SOMEBSD, true)
+     AM_CONDITIONAL(WINDOWS, false)
      XTRA_CPPLIBS=-lstdc++
      LIBEXT=.so
      ;;
@@ -58,6 +60,7 @@ openbsd*)
      AC_CHECK_LIB(c_r, pthread_create)
      AM_CONDITIONAL(HAVE_GNU_LD, true)
      AM_CONDITIONAL(SOMEBSD, true)
+     AM_CONDITIONAL(WINDOWS, false)
      XTRA_CPPLIBS=-lstdc++
      LIBEXT=.so
      ;;
@@ -66,6 +69,7 @@ netbsd*)
      AC_CHECK_LIB(c_r, pthread_create)
      AM_CONDITIONAL(HAVE_GNU_LD, true)
      AM_CONDITIONAL(SOMEBSD, true)
+     AM_CONDITIONAL(WINDOWS, false)
      XTRA_CPPLIBS=-lstdc++
      LIBEXT=.so
      ;;
@@ -75,6 +79,7 @@ netbsd*)
      XTRA_CPPLIBS=-lstdc++
      AM_CONDITIONAL(HAVE_GNU_LD, false)
      AM_CONDITIONAL(SOMEBSD, false)
+     AM_CONDITIONAL(WINDOWS, false)
      CFLAGS="-D_POSIX_PTHREAD_SEMANTICS $CFLAGS"
      LIBEXT=.so
      ;;
@@ -82,6 +87,7 @@ darwin*)
      AC_DEFINE_UNQUOTED(DARWIN,1,[This is a Darwin system])
      AM_CONDITIONAL(HAVE_GNU_LD, false)
      AM_CONDITIONAL(SOMEBSD, false)
+     AM_CONDITIONAL(WINDOWS, false)
      CFLAGS="-fno-common $CFLAGS"
      LIBEXT=.so
      ;;
@@ -90,6 +96,7 @@ cygwin*)
      LDFLAGS="$LDFLAGS -no-undefined"
      AM_CONDITIONAL(SOMEBSD, false)
      AM_CONDITIONAL(HAVE_GNU_LD, false)
+     AM_CONDITIONAL(WINDOWS, false)
      LIBEXT=.dll
      ;;
 mingw*)
@@ -148,6 +155,7 @@ mingw*)
 		 LIBSOLD=$LIBS
      AM_CONDITIONAL(HAVE_GNU_LD, true)
      AM_CONDITIONAL(SOMEBSD, false)
+     AM_CONDITIONAL(WINDOWS, true)
      LIBEXT=.dll
      ;;
 *)
@@ -156,6 +164,7 @@ mingw*)
      AC_MSG_RESULT(otheros)
      AM_CONDITIONAL(HAVE_GNU_LD, false)
      AM_CONDITIONAL(SOMEBSD, false)
+     AM_CONDITIONAL(WINDOWS, false)
      LIBEXT=.so
      ;;
 esac

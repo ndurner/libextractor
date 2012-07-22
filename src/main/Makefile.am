@@ -41,9 +41,10 @@ libextractor_la_CPPFLAGS = -DPLUGINDIR=\"@RPLUGINDIR@\" -DPLUGININSTDIR=\"${plug
 
 libextractor_la_SOURCES = \
   extractor.c \
-  $(EXTRACTOR_IPC) extractor_ipc.h \
+  $(EXTRACTOR_IPC) extractor_ipc.c extractor_ipc.h \
   extractor_plugpath.c extractor_plugpath.h \
   extractor_plugins.c extractor_plugins.h \
+  extractor_plugin_main.c extractor_plugin_main.h \
   extractor_metatypes.c \
   extractor_print.c 
 

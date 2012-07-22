@@ -17,8 +17,14 @@
      Free Software Foundation, Inc., 59 Temple Place - Suite 330,
      Boston, MA 02111-1307, USA.
  */
+/**
+ * @file main/extractor_datasource.c
+ * @brief random access and possibly decompression of data from buffer in memory or file on disk
+ * @author Christian Grothoff
+ */
 
 #include "platform.h"
+#include "extractor_datasource.h"
 
 #if HAVE_LIBBZ2
 #include <bzlib.h>
@@ -219,13 +225,7 @@ bfds_pick_next_buffer_at (struct BufferedFileDataSource *bfds,
       bfds->buffer_pos = pos;
       return 0;
     }
-#if WINDOWS
-  position = _lseeki64 (bfds->fd, pos, SEEK_SET);
-#elif HAVE_LSEEK64
-  position = lseek64 (bfds->fd, pos, SEEK_SET);
-#else
-  position = (int64_t) lseek (bfds->fd, pos, SEEK_SET);
-#endif
+  position = (int64_t) LSEEK (bfds->fd, pos, SEEK_SET);
   if (position < 0)
     return -1;
   bfds->fpos = position;

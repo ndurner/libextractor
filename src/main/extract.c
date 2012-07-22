@@ -17,6 +17,11 @@
      Free Software Foundation, Inc., 59 Temple Place - Suite 330,
      Boston, MA 02111-1307, USA.
 */
+/**
+ * @file main/extract.c
+ * @brief command-line tool to run GNU libextractor
+ * @author Christian Grothoff
+ */
 #include "platform.h"
 #include "extractor.h"
 #include "getopt.h"

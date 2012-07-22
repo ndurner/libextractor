@@ -20,10 +20,8 @@
 
 
 /**
- * Definition of an IPC communication channel with
- * some plugin.
  */
-struct EXTRACTOR_Channel
+struct EXTRACTOR_SharedMemory
 {
 
   /**
@@ -59,6 +57,57 @@ struct EXTRACTOR_Channel
 
 };
 
+
+/**
+ * Definition of an IPC communication channel with
+ * some plugin.
+ */
+struct EXTRACTOR_Channel
+{
+
+  /**
+   * Process ID of the child process for this plugin. 0 for none.
+   */
+  HANDLE hProcess;
+
+  /**
+   * Pipe used to communicate information to the plugin child process.
+   * NULL if not initialized.
+   */
+  HANDLE cpipe_in;
+
+  /**
+   * Handle of the shm object
+   */
+  HANDLE map_handle;
+
+  /**
+   * Pipe used to read information about extracted meta data from
+   * the plugin child process.  -1 if not initialized.
+   */
+  HANDLE cpipe_out;
+
+  /**
+   * Page size. Mmap offset is a multiple of this number.
+   */
+  DWORD allocation_granularity;
+
+  /**
+   * A structure for overlapped reads on W32.
+   */
+  OVERLAPPED ov_read;
+
+  /**
+   * A structure for overlapped writes on W32.
+   */
+  OVERLAPPED ov_write;
+
+  /**
+   * A write buffer for overlapped writes on W32
+   */
+  unsigned char *ov_write_buffer;
+
+};
 
 
 /**
@@ -437,71 +486,6 @@ write_plugin_data (struct EXTRACTOR_PluginList *plugin)
 
 
 /**
- * Reads plugin data from the LE server process.
- * Also initializes allocation granularity (duh...).
- *
- * @param fd the pipe to read from
- *
- * @return newly allocated plugin context
- */ 
-static struct EXTRACTOR_PluginList *
-read_plugin_data (int fd)
-{
-  struct EXTRACTOR_PluginList *ret;
-  size_t i;
-
-  ret = malloc (sizeof (struct EXTRACTOR_PluginList));
-  if (ret == NULL)
-    return NULL;
-  read (fd, &i, sizeof (size_t));
-  ret->libname = malloc (i);
-  if (ret->libname == NULL)
-  {
-    free (ret);
-    return NULL;
-  }
-  read (fd, ret->libname, i);
-  ret->libname[i - 1] = '\0';
-
-  read (fd, &i, sizeof (size_t));
-  ret->short_libname = malloc (i);
-  if (ret->short_libname == NULL)
-  {
-    free (ret->libname);
-    free (ret);
-    return NULL;
-  }
-  read (fd, ret->short_libname, i);
-  ret->short_libname[i - 1] = '\0';
-
-  read (fd, &i, sizeof (size_t));
-  if (i == 0)
-  {
-    ret->plugin_options = NULL;
-  }
-  else
-  {
-    ret->plugin_options = malloc (i);
-    if (ret->plugin_options == NULL)
-    {
-      free (ret->short_libname);
-      free (ret->libname);
-      free (ret);
-      return NULL;
-    }
-    read (fd, ret->plugin_options, i);
-    ret->plugin_options[i - 1] = '\0';
-  }
-  {
-    SYSTEM_INFO si;
-    GetSystemInfo (&si);
-    ret->allocation_granularity = si.dwAllocationGranularity;
-  }
-  return ret;
-}
-
-
-/**
  * Start the process for the given plugin.
  */ 
 static void
@@ -513,7 +497,8 @@ start_process (struct EXTRACTOR_PluginList *plugin)
   PROCESS_INFORMATION proc;
   char cmd[MAX_PATH + 1];
   char arg1[10], arg2[10];
-  HANDLE p10_os_inh = INVALID_HANDLE_VALUE, p21_os_inh = INVALID_HANDLE_VALUE;
+  HANDLE p10_os_inh = INVALID_HANDLE_VALUE;
+  HANDLE p21_os_inh = INVALID_HANDLE_VALUE;
   SECURITY_ATTRIBUTES sa;
 
   switch (plugin->flags)
@@ -610,6 +595,35 @@ start_process (struct EXTRACTOR_PluginList *plugin)
 
   plugin->ov_write.hEvent = CreateEvent (NULL, TRUE, TRUE, NULL);
   plugin->ov_read.hEvent = CreateEvent (NULL, TRUE, TRUE, NULL);
+}
+
+
+/**
+ * Receive 'size' bytes from channel, store them in 'buf'
+ *
+ * @param plugin plugin context
+ * @param buf buffer to fill
+ * @param size number of bytes to read
+ * @return number of bytes read, 0 on EOS, < 0 on error
+ */
+static int
+plugin_read (struct EXTRACTOR_PluginList *plugin, 
+	     void *buf, 
+	     size_t size)
+{
+  char *rb = buf;
+  ssize_t read_result;
+  size_t read_count = 0;
+
+  while (read_count < size)
+  {
+    read_result = read (plugin->cpipe_out, 
+			&rb[read_count], size - read_count);
+    if (read_result <= 0)
+      return read_result;
+    read_count += read_result;
+  }
+  return read_count;
 }
 
 
@@ -729,38 +743,6 @@ destroy_file_backed_shm_w32 (HANDLE map)
 
 
 #define plugin_write(plug, buf, size) write_all (fileno (plug->cpipe_in), buf, size)
-
-
-void CALLBACK 
-RundllEntryPoint (HWND hwnd, 
-		  HINSTANCE hinst, 
-		  LPSTR lpszCmdLine, 
-		  int nCmdShow)
-{
-  intptr_t in_h;
-  intptr_t out_h;
-  int in;
-  int out;
-
-  sscanf (lpszCmdLine, "%lu %lu", &in_h, &out_h);
-  in = _open_osfhandle (in_h, _O_RDONLY);
-  out = _open_osfhandle (out_h, 0);
-  setmode (in, _O_BINARY);
-  setmode (out, _O_BINARY);
-  plugin_main (read_plugin_data (in),
-	       in, out);
-}
-
-
-void CALLBACK 
-RundllEntryPointA (HWND hwnd, 
-		   HINSTANCE hinst, 
-		   LPSTR lpszCmdLine, 
-		   int nCmdShow)
-{
-  return RundllEntryPoint (hwnd, hinst, lpszCmdLine, nCmdShow);
-}
-
 
 
 /**

@@ -1,0 +1,5 @@
+* extractor_plugin_main (a lot)
+* extractor_ipc.c (a bit)
+* extractor.c (a lot)
+* extractor_ipc_w32.c (a lot)
+* test, test, test (a lot)
