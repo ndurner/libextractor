@@ -46,8 +46,8 @@ EXTRACTOR_IPC_process_reply_ (struct EXTRACTOR_PluginList *plugin,
 {
   const char *cdata = data;
   unsigned char code;
-  int64_t seek_position;
-  struct IpcHeader hdr;
+  struct SeekRequestMessage seek;
+  struct MetaMessage meta;
   const char *mime_type;
   const char *value;
 
@@ -60,49 +60,51 @@ EXTRACTOR_IPC_process_reply_ (struct EXTRACTOR_PluginList *plugin,
 	  plugin->seek_request = -1;
 	  plugin->round_finished = 1;
 	  return 1;
-	case MESSAGE_SEEK: /* Seek */
-	  if (size < 1 + sizeof (int64_t))
+	case MESSAGE_SEEK: /* Seek */	  
+	  if (size < sizeof (struct SeekRequestMessage))
 	    {
 	      plugin->seek_request = -1;
 	      return 0;
 	    }
-	  memcpy (&seek_position, &cdata[1], sizeof (int64_t));
-	  plugin->seek_request = seek_position;
-	  return 1 + sizeof (int64_t);
+	  memcpy (&seek, cdata, sizeof (seek));
+	  plugin->seek_request = seek.file_offset;
+	  return sizeof (struct SeekRequestMessage);
 	case MESSAGE_META: /* Meta */
-	  if (size < 1 + sizeof (hdr) )
+	  if (size < sizeof (struct MetaMessage))
 	    {
 	      plugin->seek_request = -1;
 	      return 0;
 	    }
-	  memcpy (&hdr, &cdata[1], sizeof (hdr));
+	  memcpy (&meta, cdata, sizeof (meta));
 	  /* check hdr for sanity */
-	  if (hdr.data_len > MAX_META_DATA)
+	  if (meta.value_size > MAX_META_DATA)        
 	    return -1; /* not allowing more than MAX_META_DATA meta data */
-	  if (size < 1 + sizeof (hdr) + hdr.mime_len + hdr.data_len)
+	  if (size < sizeof (meta) + meta.mime_length + meta.value_size)
 	    {
 	      plugin->seek_request = -1;
 	      return 0;
 	    }
-	  if (0 == hdr.mime_len)
+	  if (0 == meta.mime_length)
 	    {
 	      mime_type = NULL;
 	    }
 	  else
 	    {
-	      mime_type = &cdata[1 + sizeof (hdr)];
-	      if ('\0' != mime_type[hdr.mime_len-1])
+	      mime_type = &cdata[sizeof (struct MetaMessage)];
+	      if ('\0' != mime_type[meta.mime_length - 1])
 		return -1;		
 	    }
-	  if (0 == hdr.data_len)
+	  if (0 == meta.value_size)
 	    value = NULL;
 	  else
-	    value = &cdata[1 + sizeof (hdr) + hdr.mime_len];
+	    value = &cdata[sizeof (struct MetaMessage) + meta.mime_length];
 	  proc (proc_cls, 
 		plugin, 
-		&hdr,
+		(enum EXTRACTOR_MetaType) meta.meta_type,
+		(enum EXTRACTOR_MetaFormat) meta.meta_format,
+		meta.value_size,
 		mime_type, value);
-	  return 1 + sizeof (hdr) + hdr.mime_len + hdr.data_len;
+	  return sizeof (struct MetaMessage) + meta.mime_length + meta.value_size;
 	default:
 	  return -1;
 	}

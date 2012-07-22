@@ -89,7 +89,7 @@ get_symbol_with_prefix (void *lib_handle,
 		   lt_dlerror());
 	}
       if (NULL != first_error)
-	free(first_error);
+	free (first_error);
 #endif
     }
 
@@ -158,11 +158,11 @@ EXTRACTOR_plugin_load_ (struct EXTRACTOR_PluginList *plugin)
 	       "Loading `%s' plugin failed: %s\n",
 	       plugin->short_libname,
 	       "can't convert plugin name to local encoding");
+#endif
       free (plugin->libname);
       plugin->libname = NULL;
       plugin->flags = EXTRACTOR_OPTION_DISABLED;
       return -1;
-#endif
   }
   plugin->libraryHandle = lt_dlopenadvise (llibname,
 					   advise);
@@ -249,20 +249,6 @@ EXTRACTOR_plugin_add (struct EXTRACTOR_PluginList *prev,
     result->plugin_options = strdup (options);
   else
     result->plugin_options = NULL;
-  /* This is kinda weird, but it allows us to not to call GetSystemInfo()
-   * or sysconf() every time we need allocation granularity - just once
-   * for each plugin.
-   * The only alternative is to keep it in a global variable...
-   */
-#if WINDOWS
-  {
-    SYSTEM_INFO si;
-    GetSystemInfo (&si);
-    result->allocation_granularity = si.dwAllocationGranularity;
-  }
-#else
-  result->allocation_granularity = sysconf (_SC_PAGE_SIZE);
-#endif
   return result;
 }
 

@@ -27,6 +27,7 @@
 #include "plibc.h"
 #include "extractor.h"
 #include "extractor_datasource.h"
+#include "extractor_ipc.h"
 #include "extractor_plugin_main.h"
 #include <dirent.h>
 #include <sys/types.h>
@@ -493,6 +494,36 @@ process_requests (struct EXTRACTOR_PluginList *plugin,
 }
 
 
+#ifndef WINDOWS
+/**
+ * Open '/dev/null' and make the result the given
+ * file descriptor.
+ *
+ * @param target_fd desired FD to point to /dev/null
+ * @param flags open flags (O_RDONLY, O_WRONLY)
+ */
+static void
+open_dev_null (int target_fd,
+	       int flags)
+{
+  int fd;
+
+  fd = open ("/dev/null", flags);
+  if (-1 == fd)
+    return; /* good luck */
+  if (fd == target_fd)
+    return; /* already done */
+  if (-1 == dup2 (fd, target_fd))
+  {
+    (void) close (fd);
+    return; /* good luck */
+  }
+  /* close original result from 'open' */
+  (void) close (fd);
+}
+#endif
+
+
 /**
  * 'main' function of the child process. Loads the plugin,
  * sets up its in and out pipes, then runs the request serving function.
@@ -508,16 +539,27 @@ EXTRACTOR_plugin_main_ (struct EXTRACTOR_PluginList *plugin,
   if (0 != EXTRACTOR_plugin_load_ (plugin))
     {
 #if DEBUG
-      fprintf (stderr, "Plugin `%s' failed to load!\n", plugin->short_libname);
+      fprintf (stderr, "Plugin `%s' failed to load!\n", 
+	       plugin->short_libname);
 #endif
       return;
     }  
   if ( (NULL != plugin->specials) &&
        (NULL != strstr (plugin->specials, "close-stderr")))
-    close (2);
+    {
+      (void) close (2);
+#ifndef WINDOWS
+      open_dev_null (2, O_WRONLY);
+#endif
+    }
   if ( (NULL != plugin->specials) &&
        (NULL != strstr (plugin->specials, "close-stdout")))
-    close (1);
+    {
+      (void) close (1);
+#ifndef WINDOWS
+      open_dev_null (1, O_WRONLY);
+#endif
+    }
   process_requests (plugin, in, out);
 }
 

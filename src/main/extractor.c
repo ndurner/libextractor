@@ -44,30 +44,6 @@
 
 
 /**
- * Client provided a memory buffer, analyze it. Creates a shm, copies
- * buffer contents into it. Does not support seeking (all data comes
- * in one [big] chunk.
- */
-#define OPMODE_MEMORY 1
-
-/**
- * Client provided a memory buffer or a file, which contains compressed data.
- * Creates a shm of limited size and repeatedly fills it with uncompressed
- * data. Never skips data (has to uncompress every byte, discards unwanted bytes),
- * can't efficiently seek backwards. Uses MESSAGE_UPDATED_SHM and MESSAGE_SEEK.
- */
-#define OPMODE_DECOMPRESS 2
-
-/**
- * Client provided a filename. Creates a file-backed shm (on W32) or just
- * communicates the file name to each plugin, and plugin opens its own file
- * descriptor of the file (POSIX). Each plugin maps different parts of the
- * file into its memory independently.
- */
-#define OPMODE_FILE 3
-
-
-/**
  * Writes 'size' bytes from 'buf' to 'fd', returns only when
  * writing is not possible, or when all 'size' bytes were written
  * (never does partial writes).

@@ -225,6 +225,8 @@ EXTRACTOR_IPC_channel_create_ (struct EXTRACTOR_PluginList *plugin,
   int p1[2];
   int p2[2];
   pid_t pid;
+  struct InitMessage *init;
+  size_t slen;
 
   if (NULL == (channel = malloc (sizeof (struct EXTRACTOR_Channel))))
     return NULL;
@@ -264,6 +266,25 @@ EXTRACTOR_IPC_channel_create_ (struct EXTRACTOR_PluginList *plugin,
   channel->cpipe_in = p1[1];
   channel->cpipe_out = p2[0];
   channel->cpid = pid;
+  slen = strlen (shm->shm_name) + 1;
+  if (NULL == (init = malloc (sizeof (struct InitMessage) + slen)))
+    {
+      EXTRACTOR_IPC_channel_destroy_ (channel);
+      return NULL;
+    }  
+  init->opcode = MESSAGE_INIT_STATE;
+  init->reserved = 0;
+  init->shm_name_length = slen;
+  init->shm_map_size = shm->shm_size;
+  memcpy (&init[1], shm->shm_name, slen);
+  if (sizeof (init) !=
+      EXTRACTOR_IPC_channel_send_ (channel,
+				   init,
+				   sizeof (init) + slen) )
+    {
+      EXTRACTOR_IPC_channel_destroy_ (channel);
+      return NULL;
+    }
   return channel;
 }
 

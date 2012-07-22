@@ -34,8 +34,8 @@
 
 /**
  * Linked list of extractor plugins.  An application builds this list
- * by telling libextractor to load various keyword-extraction
- * plugins. Libraries can also be unloaded (removed from this list,
+ * by telling libextractor to load various meta data extraction
+ * plugins.  Plugins can also be unloaded (removed from this list,
  * see EXTRACTOR_plugin_remove).
  */
 struct EXTRACTOR_PluginList
@@ -83,44 +83,22 @@ struct EXTRACTOR_PluginList
   struct EXTRACTOR_Channel *channel;
 
   /**
+   * A position this plugin wants us to seek to. -1 if it's finished.
+   * Starts at 0.
+   */
+  int64_t seek_request;
+
+  /**
    * Flags to control how the plugin is executed.
    */
   enum EXTRACTOR_Options flags;
-
-#if WINDOWS
-  /**
-   * Page size. Mmap offset is a multiple of this number.
-   */
-  DWORD allocation_granularity;
-#else
-  /**
-   * Page size. Mmap offset is a multiple of this number.
-   */
-  long allocation_granularity;
-#endif
-
-  /**
-   * A position this plugin wants us to seek to. -1 if it's finished.
-   * Starts at 0;
-   */
-  int64_t seek_request;
 
   /**
    * Is this plugin finished extracting for this round?
    * 0: no, 1: yes
    */
   int round_finished;
-  
-  /**
-   * Mode of operation. One of the OPMODE_* constants
-   */
-  uint8_t operation_mode;
 
-  /**
-   * 1 if plugin is currently in a recursive process_requests() call,
-   * 0 otherwise
-   */
-  int waiting_for_update;
 };
 
 

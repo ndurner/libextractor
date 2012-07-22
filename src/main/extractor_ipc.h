@@ -41,20 +41,120 @@
 #define MAX_SHM_NAME 255
 
 /**
- * Sent from LE to a plugin to initialize it (open shm,
- * reset position counters etc).
+ * Sent from LE to a plugin to initialize it (opens shm).
  */
-#define MESSAGE_INIT_STATE 0x01
+#define MESSAGE_INIT_STATE 0x00
+
+/**
+ * IPC message send to plugin to initialize SHM.
+ */
+struct InitMessage
+{
+  /**
+   * Set to MESSAGE_INIT_STATE.
+   */
+  unsigned char opcode;
+
+  /**
+   * Always zero.
+   */
+  unsigned char reserved;
+
+  /**
+   * Name of the shared-memory name.
+   */
+  uint32_t shm_name_length;
+
+  /**
+   * Maximum size of the shm map.
+   */
+  uint32_t shm_map_size;
+
+  /* followed by name of the SHM */
+};
+
+
+/**
+ * Sent from LE to a plugin to tell it extracting
+ * can now start.  The SHM will point to offset 0
+ * of the file.
+ */
+#define MESSAGE_EXTRACT_START 0x01
+
+/**
+ * IPC message send to plugin to start extracting.
+ */
+struct StartMessage
+{
+  /**
+   * Set to MESSAGE_EXTRACT_START.
+   */
+  unsigned char opcode;
+
+  /**
+   * Always zero.
+   */
+  unsigned char reserved;
+
+  /**
+   * Always zero.
+   */
+  uint16_t reserved2;
+
+  /**
+   * Number of bytes ready in SHM.
+   */
+  uint32_t shm_ready_bytes;
+
+  /**
+   * Overall size of the file.
+   */
+  uint64_t file_size;
+
+};
 
 /**
  * Sent from LE to a plugin to tell it that shm contents
- * were updated. Only used for OPMODE_COMPRESS.
+ * were updated. 
  */
 #define MESSAGE_UPDATED_SHM 0x02
 
 /**
+ * IPC message send to plugin to notify it about a change in the SHM.
+ */
+struct UpdateMessage
+{
+  /**
+   * Set to MESSAGE_UPDATED_SHM.
+   */
+  unsigned char opcode;
+
+  /**
+   * Always zero.
+   */
+  unsigned char reserved;
+
+  /**
+   * Always zero.
+   */
+  uint16_t reserved2;
+
+  /**
+   * Number of bytes ready in SHM.
+   */
+  uint32_t shm_ready_bytes;
+
+  /**
+   * Overall size of the file.
+   */
+  uint64_t file_size;
+
+};
+
+/**
  * Sent from plugin to LE to tell LE that plugin is done
  * analyzing current file and will send no more data.
+ * No message format as this is only one byte.
  */
 #define MESSAGE_DONE 0x03
 
@@ -65,13 +165,88 @@
 #define MESSAGE_SEEK 0x04
 
 /**
+ * IPC message send to plugin to start extracting.
+ */
+struct SeekRequestMessage
+{
+  /**
+   * Set to MESSAGE_SEEK.
+   */
+  unsigned char opcode;
+
+  /**
+   * Always zero.
+   */
+  unsigned char reserved;
+
+  /**
+   * Always zero.
+   */
+  uint16_t reserved2;
+
+  /**
+   * Number of bytes requested for SHM.
+   */
+  uint32_t requested_bytes;
+
+  /**
+   * Requested offset.
+   */
+  uint64_t file_offset;
+
+};
+
+/**
  * Sent from plugin to LE to tell LE about metadata discovered.
  */
 #define MESSAGE_META 0x05
 
 /**
- * Sent from LE to plugin to make plugin discard its state (unmap
- * and close shm).
+ * Plugin to parent: metadata discovered
+ */
+struct MetaMessage
+{
+  /**
+   * Set to MESSAGE_META.
+   */
+  unsigned char opcode;
+
+  /**
+   * Always zero.
+   */
+  unsigned char reserved;
+
+  /**
+   * An 'enum EXTRACTOR_MetaFormat' in 16 bits.
+   */
+  uint16_t meta_format;
+
+  /**
+   * An 'enum EXTRACTOR_MetaType' in 16 bits.
+   */
+  uint16_t meta_type;
+
+  /**
+   * Length of the mime type string.
+   */
+  uint16_t mime_length;
+
+  /**
+   * Size of the value.
+   */
+  uint32_t value_size;
+
+  /* followed by mime_length bytes of 0-terminated 
+     mime-type (unless mime_length is 0) */
+  
+  /* followed by value_size bytes of value */
+
+};
+
+/**
+ * Sent from LE to plugin to make plugin discard its state
+ * (extraction aborted by application).  Only one byte.
+ * Plugin should get ready for next 'StartMessage' after this.
  */
 #define MESSAGE_DISCARD_STATE 0x06
 
@@ -86,36 +261,6 @@ struct EXTRACTOR_Channel;
  * Definition of a shared memory area.
  */
 struct EXTRACTOR_SharedMemory;
-
-
-/**
- * Header used for our IPC replies.  A header
- * with all fields being zero is used to indicate
- * the end of the stream.
- */
-struct IpcHeader
-{
-  /**
-   * Type of the meta data.
-   */
-  enum EXTRACTOR_MetaType meta_type;
-
-  /**
-   * Format of the meta data.
-   */
-  enum EXTRACTOR_MetaFormat meta_format;
-
-  /**
-   * Number of bytes of meta data (value)
-   */
-  size_t data_len;
-  
-  /**
-   * Length of the mime type string describing the meta data value's mime type,
-   * including 0-terminator, 0 for mime type of "NULL".
-   */
-  size_t mime_len;
-};
 
 
 /**
@@ -196,16 +341,21 @@ EXTRACTOR_IPC_channel_send_ (struct EXTRACTOR_Channel *channel,
  * Handler for a message from one of the plugins.
  *
  * @param cls closure
- * @param short_libname library name of the channel sending the message
- * @param msg header of the message from the plugin
+ * @param plugin plugin of the channel sending the message
+ * @param meta_type type of the meta data
+ * @param meta_format format of the meta data
+ * @param value_len number of bytes in 'value'
  * @param value 'data' send from the plugin
  * @param mime mime string send from the plugin
  */
 typedef void (*EXTRACTOR_ChannelMessageProcessor) (void *cls,
 						   struct EXTRACTOR_PluginList *plugin,
-						   const struct IpcHeader *msg,
+						   enum EXTRACTOR_MetaType meta_type,
+						   enum EXTRACTOR_MetaFormat meta_format,
+						   size_t value_len,
 						   const void *value,
 						   const char *mime);
+
 
 /**
  * Process a reply from channel (seek request, metadata and done message)
