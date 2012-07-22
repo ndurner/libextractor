@@ -35,6 +35,10 @@
  */
 #define MAX_META_DATA 32 * 1024 * 1024
 
+/**
+ * Maximum length of a shared memory object name
+ */
+#define MAX_SHM_NAME 255
 
 /**
  * Sent from LE to a plugin to initialize it (open shm,

@@ -18,6 +18,12 @@
      Boston, MA 02111-1307, USA.
  */
 
+#include "platform.h"
+#include "plibc.h"
+#include "extractor.h"
+#include "extractor_datasource.h"
+#include "extractor_plugin_main.h"
+#include "extractor_ipc.h"
 
 /**
  */

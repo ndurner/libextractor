@@ -36,12 +36,6 @@
 
 
 /**
- * Maximum length of a shared memory object name
- */
-#define MAX_SHM_NAME 255
-
-
-/**
  * A shared memory resource (often shared with several
  * other processes).
  */
