@@ -31,6 +31,7 @@
 #include <signal.h>
 #include <ltdl.h>
 
+
 /**
  * Linked list of extractor plugins.  An application builds this list
  * by telling libextractor to load various keyword-extraction
@@ -77,9 +78,26 @@ struct EXTRACTOR_PluginList
   const char *specials;
 
   /**
+   * Channel to communicate with out-of-process plugin.
+   */
+  struct EXTRACTOR_Channel *channel;
+
+  /**
    * Flags to control how the plugin is executed.
    */
   enum EXTRACTOR_Options flags;
+
+#if WINDOWS
+  /**
+   * Page size. Mmap offset is a multiple of this number.
+   */
+  DWORD allocation_granularity;
+#else
+  /**
+   * Page size. Mmap offset is a multiple of this number.
+   */
+  long allocation_granularity;
+#endif
 
   /**
    * A position this plugin wants us to seek to. -1 if it's finished.
@@ -87,6 +105,12 @@ struct EXTRACTOR_PluginList
    */
   int64_t seek_request;
 
+  /**
+   * Is this plugin finished extracting for this round?
+   * 0: no, 1: yes
+   */
+  int round_finished;
+  
   /**
    * Mode of operation. One of the OPMODE_* constants
    */

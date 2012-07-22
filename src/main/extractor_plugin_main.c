@@ -27,6 +27,7 @@
 #include "plibc.h"
 #include "extractor.h"
 #include "extractor_datasource.h"
+#include "extractor_plugin_main.h"
 #include <dirent.h>
 #include <sys/types.h>
 #include <sys/wait.h>

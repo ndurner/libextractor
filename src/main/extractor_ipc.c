@@ -23,11 +23,14 @@
  * @author Christian Grothoff
  */
 #include "platform.h"
+#include "extractor_ipc.h"
+#include "extractor_plugins.h"
 
 
 /**
  * Process a reply from channel (seek request, metadata and done message)
  *
+ * @param plugin plugin this communication is about
  * @param buf buffer with data from IPC channel
  * @param size number of bytes in buffer
  * @param proc metadata callback
@@ -35,98 +38,71 @@
  * @return number of bytes processed, -1 on error
  */
 ssize_t
-EXTRACTOR_IPC_process_reply_ (const void *data,
+EXTRACTOR_IPC_process_reply_ (struct EXTRACTOR_PluginList *plugin,
+			      const void *data,
 			      size_t size,
 			      EXTRACTOR_ChannelMessageProcessor proc,
 			      void *proc_cls)
 {
-  int read_result;
+  const char *cdata = data;
   unsigned char code;
   int64_t seek_position;
   struct IpcHeader hdr;
-  char *mime_type;
-  char *data;
-  int must_read = 1;
+  const char *mime_type;
+  const char *value;
 
-  while (must_read)
+  while (size > 0)
     {
-      read_result = plugin_read (plugin, &code, 1);
-      if (read_result < 1)
-	return -1;
+      code = (unsigned char) cdata[0];
       switch (code)
 	{
 	case MESSAGE_DONE: /* Done */
 	  plugin->seek_request = -1;
-	  must_read = 0;
-	  break;
+	  plugin->round_finished = 1;
+	  return 1;
 	case MESSAGE_SEEK: /* Seek */
-	  read_result = plugin_read (plugin, 
-				     &seek_position, sizeof (int64_t));
-	  if (read_result < sizeof (int64_t))
-	    return -1;
+	  if (size < 1 + sizeof (int64_t))
+	    {
+	      plugin->seek_request = -1;
+	      return 0;
+	    }
+	  memcpy (&seek_position, &cdata[1], sizeof (int64_t));
 	  plugin->seek_request = seek_position;
-	  must_read = 0;
-	  break;
+	  return 1 + sizeof (int64_t);
 	case MESSAGE_META: /* Meta */
-	  read_result = plugin_read (plugin, 
-				     &hdr, sizeof (hdr));
-	  if (read_result < sizeof (hdr)) 
-	    return -1;
-	  /* FIXME: check hdr for sanity */
+	  if (size < 1 + sizeof (hdr) )
+	    {
+	      plugin->seek_request = -1;
+	      return 0;
+	    }
+	  memcpy (&hdr, &cdata[1], sizeof (hdr));
+	  /* check hdr for sanity */
 	  if (hdr.data_len > MAX_META_DATA)
 	    return -1; /* not allowing more than MAX_META_DATA meta data */
+	  if (size < 1 + sizeof (hdr) + hdr.mime_len + hdr.data_len)
+	    {
+	      plugin->seek_request = -1;
+	      return 0;
+	    }
 	  if (0 == hdr.mime_len)
 	    {
 	      mime_type = NULL;
 	    }
 	  else
 	    {
-	      if (NULL == (mime_type = malloc (hdr.mime_len)))
-		return -1;
-	      read_result = plugin_read (plugin, 
-					 mime_type, 
-					 hdr.mime_len);
-	      if ( (read_result < hdr.mime_len) ||
-		   ('\0' != mime_type[hdr.mime_len-1]) )
-		{
-		  if (NULL != mime_type)
-		    free (mime_type);
-		  return -1;
-		}
+	      mime_type = &cdata[1 + sizeof (hdr)];
+	      if ('\0' != mime_type[hdr.mime_len-1])
+		return -1;		
 	    }
 	  if (0 == hdr.data_len)
-	    {
-	      data = NULL;
-	    }
+	    value = NULL;
 	  else
-	    {
-	      if (NULL == (data = malloc (hdr.data_len)))
-		{
-		  if (NULL != mime_type)
-		    free (mime_type);
-		  return -1;
-		}
-	      read_result = plugin_read (plugin, 
-					 data, hdr.data_len);
-	      if (read_result < hdr.data_len)
-		{
-		  if (NULL != mime_type)
-		    free (mime_type);
-		  free (data);
-		  return -1;
-		}
-	    }
-	  read_result = proc (proc_cls, 
-			      plugin->short_libname, 
-			      hdr.meta_type, hdr.meta_format,
-			      mime_type, data, hdr.data_len);
-	  if (NULL != mime_type)
-	    free (mime_type);
-	  if (NULL != data)
-	    free (data);
-	  if (0 != read_result)
-	    return 1;
-	  break;
+	    value = &cdata[1 + sizeof (hdr) + hdr.mime_len];
+	  proc (proc_cls, 
+		plugin, 
+		&hdr,
+		mime_type, value);
+	  return 1 + sizeof (hdr) + hdr.mime_len + hdr.data_len;
 	default:
 	  return -1;
 	}

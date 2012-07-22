@@ -25,6 +25,53 @@
 #ifndef EXTRACTOR_IPC_H
 #define EXTRACTOR_IPC_H
 
+#include "extractor_datasource.h"
+
+
+/**
+ * How long do we allow an individual meta data object to be?
+ * Used to guard against (broken) plugns causing us to use
+ * excessive amounts of memory.
+ */
+#define MAX_META_DATA 32 * 1024 * 1024
+
+
+/**
+ * Sent from LE to a plugin to initialize it (open shm,
+ * reset position counters etc).
+ */
+#define MESSAGE_INIT_STATE 0x01
+
+/**
+ * Sent from LE to a plugin to tell it that shm contents
+ * were updated. Only used for OPMODE_COMPRESS.
+ */
+#define MESSAGE_UPDATED_SHM 0x02
+
+/**
+ * Sent from plugin to LE to tell LE that plugin is done
+ * analyzing current file and will send no more data.
+ */
+#define MESSAGE_DONE 0x03
+
+/**
+ * Sent from plugin to LE to tell LE that plugin needs
+ * to read a different part of the source file.
+ */
+#define MESSAGE_SEEK 0x04
+
+/**
+ * Sent from plugin to LE to tell LE about metadata discovered.
+ */
+#define MESSAGE_META 0x05
+
+/**
+ * Sent from LE to plugin to make plugin discard its state (unmap
+ * and close shm).
+ */
+#define MESSAGE_DISCARD_STATE 0x06
+
+
 /**
  * Definition of an IPC communication channel with
  * some plugin.
@@ -107,12 +154,12 @@ EXTRACTOR_IPC_shared_memory_set_ (struct EXTRACTOR_SharedMemory *shm,
  * Create a channel to communicate with a process wrapping
  * the plugin of the given name.  Starts the process as well.
  *
- * @param short_libname name of the plugin
+ * @param plugin the plugin
  * @param shm memory to share with the process
  * @return NULL on error, otherwise IPC channel
  */ 
 struct EXTRACTOR_Channel *
-EXTRACTOR_IPC_channel_create_ (const char *short_libname,
+EXTRACTOR_IPC_channel_create_ (struct EXTRACTOR_PluginList *plugin,
 			       struct EXTRACTOR_SharedMemory *shm);
 
 
@@ -151,7 +198,7 @@ EXTRACTOR_IPC_channel_send_ (struct EXTRACTOR_Channel *channel,
  * @param mime mime string send from the plugin
  */
 typedef void (*EXTRACTOR_ChannelMessageProcessor) (void *cls,
-						   const char *short_libname,
+						   struct EXTRACTOR_PluginList *plugin,
 						   const struct IpcHeader *msg,
 						   const void *value,
 						   const char *mime);
@@ -159,6 +206,7 @@ typedef void (*EXTRACTOR_ChannelMessageProcessor) (void *cls,
 /**
  * Process a reply from channel (seek request, metadata and done message)
  *
+ * @param plugin plugin this communication is about
  * @param buf buffer with data from IPC channel
  * @param size number of bytes in buffer
  * @param proc metadata callback
@@ -166,7 +214,8 @@ typedef void (*EXTRACTOR_ChannelMessageProcessor) (void *cls,
  * @return number of bytes processed, -1 on error
  */
 ssize_t
-EXTRACTOR_IPC_process_reply_ (const void *data,
+EXTRACTOR_IPC_process_reply_ (struct EXTRACTOR_PluginList *plugin,
+			      const void *data,
 			      size_t size,
 			      EXTRACTOR_ChannelMessageProcessor proc,
 			      void *proc_cls);

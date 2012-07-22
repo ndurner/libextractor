@@ -24,6 +24,7 @@
  */
 #include "extractor_plugins.h"
 #include "extractor_plugpath.h"
+#include "extractor_ipc.h"
 
 
 /**
@@ -227,7 +228,7 @@ EXTRACTOR_plugin_add (struct EXTRACTOR_PluginList *prev,
   for (pos = prev; NULL != pos; pos = pos->next)
     if (0 == strcmp (pos->short_libname, library))
       return prev; /* no change, library already loaded */
-  if (NULL == (libname = find_plugin (library)))
+  if (NULL == (libname = EXTRACTOR_find_plugin_ (library)))
     {
       fprintf (stderr,
 	       "Could not load `%s'\n",
@@ -391,8 +392,8 @@ EXTRACTOR_plugin_remove (struct EXTRACTOR_PluginList * prev,
     first = pos->next;
   else
     prev->next = pos->next;
-  /* found */
-  stop_process (pos);
+  if (NULL != pos->channel)
+    EXTRACTOR_IPC_channel_destroy_ (pos->channel);
   free (pos->short_libname);
   free (pos->libname);
   free (pos->plugin_options);

@@ -26,6 +26,7 @@
 #include "plibc.h"
 #include "extractor.h"
 #include "extractor_datasource.h"
+#include "extractor_plugin_main.h"
 #include "extractor_ipc.h"
 #include <dirent.h>
 #include <sys/types.h>
@@ -33,12 +34,12 @@
 #include <sys/shm.h>
 #include <signal.h>
 
+
 /**
- * Size of the channel buffer; determines largest IPC message that
- * is going to be allowed.  FIXME: we might want to grow this
- * buffer dynamically instead...
+ * Maximum length of a shared memory object name
  */
-#define CHANNEL_BUFFER_SIZE (1024 * 256)
+#define MAX_SHM_NAME 255
+
 
 /**
  * A shared memory resource (often shared with several
@@ -64,7 +65,7 @@ struct EXTRACTOR_SharedMemory
   /**
    * POSIX id of the shm into which data is uncompressed
    */ 
-  int shm;
+  int shm_id;
 
   /**
    * Name of the shm
@@ -83,8 +84,10 @@ struct EXTRACTOR_Channel
 
   /**
    * Buffer for reading data from the plugin.
+   * FIXME: we might want to grow this
+   * buffer dynamically instead of always using 32 MB!
    */
-  char data[CHANNEL_BUFFER_SIZE];
+  char data[MAX_META_DATA];
 
   /**
    * Memory segment shared with this process.
@@ -92,9 +95,9 @@ struct EXTRACTOR_Channel
   struct EXTRACTOR_SharedMemory *shm;
 
   /**
-   * Name of the plugin to use for this channel.
+   * The plugin this channel is to communicate with.
    */
-  const char *short_libname;
+  struct EXTRACTOR_PluginList *plugin;
 
   /**
    * Pipe used to communicate information to the plugin child process.
@@ -179,8 +182,8 @@ EXTRACTOR_IPC_shared_memory_create_ (size_t size)
 void
 EXTRACTOR_IPC_shared_memory_destroy_ (struct EXTRACTOR_SharedMemory *shm)
 {
-  munmap (shm->shm_ptr, shm->map_size);
-  (void) close (plugin->shm_id);
+  munmap (shm->shm_ptr, shm->shm_size);
+  (void) close (shm->shm_id);
   (void) shm_unlink (shm->shm_name);
   free (shm);
 }
@@ -204,8 +207,8 @@ EXTRACTOR_IPC_shared_memory_set_ (struct EXTRACTOR_SharedMemory *shm,
   if (-1 ==
       EXTRACTOR_datasource_seek_ (ds, off, SEEK_SET))
     return -1;
-  if (size > shm->map_size)
-    size = shm->map_size;
+  if (size > shm->shm_size)
+    size = shm->shm_size;
   return EXTRACTOR_datasource_read_ (ds,
 				     shm->shm_ptr,
 				     size);
@@ -216,24 +219,23 @@ EXTRACTOR_IPC_shared_memory_set_ (struct EXTRACTOR_SharedMemory *shm,
  * Create a channel to communicate with a process wrapping
  * the plugin of the given name.  Starts the process as well.
  *
- * @param short_libname name of the plugin
+ * @param plugin the plugin
  * @param shm memory to share with the process
  * @return NULL on error, otherwise IPC channel
  */ 
 struct EXTRACTOR_Channel *
-EXTRACTOR_IPC_channel_create_ (const char *short_libname,
+EXTRACTOR_IPC_channel_create_ (struct EXTRACTOR_PluginList *plugin,
 			       struct EXTRACTOR_SharedMemory *shm)
 {
   struct EXTRACTOR_Channel *channel;
   int p1[2];
   int p2[2];
   pid_t pid;
-  int status;
 
   if (NULL == (channel = malloc (sizeof (struct EXTRACTOR_Channel))))
     return NULL;
   channel->shm = shm;
-  channel->short_libname = short_libname;
+  channel->plugin = plugin;
   if (0 != pipe (p1))
     {
       free (channel);
@@ -244,7 +246,7 @@ EXTRACTOR_IPC_channel_create_ (const char *short_libname,
       (void) close (p1[0]);
       (void) close (p1[1]);
       free (channel);
-      return;
+      return NULL;
     }
   pid = fork ();
   if (pid == -1)
@@ -260,7 +262,7 @@ EXTRACTOR_IPC_channel_create_ (const char *short_libname,
     {
       (void) close (p1[1]);
       (void) close (p2[0]);
-      EXTRACTOR_plugin_main_ (short_libname, p1[0], p2[1]);
+      EXTRACTOR_plugin_main_ (plugin, p1[0], p2[1]);
       _exit (0);
     }
   (void) close (p1[0]);
@@ -376,12 +378,13 @@ EXTRACTOR_IPC_channel_recv_ (struct EXTRACTOR_Channel **channels,
 	continue;
       if ( (-1 == (iret = read (channel->cpipe_out,
 				&channel->data[channel->size],
-				CHANNEL_BUFFER_SIZE - channel->size)) ) ||
-	   (ret = EXTRACTOR_IPC_process_reply_ (channel->data, 
+				MAX_META_DATA - channel->size)) ) ||
+	   (ret = EXTRACTOR_IPC_process_reply_ (channel->plugin,
+						channel->data, 
 						channel->size + iret, 
 						proc, proc_cls)) )
 	{
-	  EXTRACTOR_IPC_channel_destroy (channel);
+	  EXTRACTOR_IPC_channel_destroy_ (channel);
 	  channels[i] = NULL;
 	}
       else

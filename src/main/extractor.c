@@ -31,23 +31,10 @@
 #include "extractor_plugpath.h"
 #include "extractor_plugins.h"
 
-
-/**
- * How long do we allow an individual meta data object to be?
- * Used to guard against (broken) plugns causing us to use
- * excessive amounts of memory.
- */
-#define MAX_META_DATA 32 * 1024 * 1024
-
 /**
  * Maximum length of a Mime-Type string.
  */
 #define MAX_MIME_LEN 256
-
-/**
- * Maximum length of a shared memory object name
- */
-#define MAX_SHM_NAME 255
 
 /**
  * Set to 1 to get failure info,
@@ -55,40 +42,6 @@
  */ 
 #define DEBUG 1
 
-/**
- * Sent from LE to a plugin to initialize it (open shm,
- * reset position counters etc).
- */
-#define MESSAGE_INIT_STATE 0x01
-
-/**
- * Sent from LE to a plugin to tell it that shm contents
- * were updated. Only used for OPMODE_COMPRESS.
- */
-#define MESSAGE_UPDATED_SHM 0x02
-
-/**
- * Sent from plugin to LE to tell LE that plugin is done
- * analyzing current file and will send no more data.
- */
-#define MESSAGE_DONE 0x03
-
-/**
- * Sent from plugin to LE to tell LE that plugin needs
- * to read a different part of the source file.
- */
-#define MESSAGE_SEEK 0x04
-
-/**
- * Sent from plugin to LE to tell LE about metadata discovered.
- */
-#define MESSAGE_META 0x05
-
-/**
- * Sent from LE to plugin to make plugin discard its state (unmap
- * and close shm).
- */
-#define MESSAGE_DISCARD_STATE 0x06
 
 /**
  * Client provided a memory buffer, analyze it. Creates a shm, copies

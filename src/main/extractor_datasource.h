@@ -25,6 +25,8 @@
 #ifndef EXTRACTOR_DATASOURCE_H
 #define EXTRACTOR_DATASOURCE_H
 
+#include "extractor.h"
+
 /**
  * Handle to a datasource we can use for the plugins.
  */ 

@@ -28,14 +28,21 @@
 #include "extractor.h"
 #include <dirent.h>
 #include <sys/types.h>
-#ifndef WINDOWS
-#include <sys/wait.h>
-#include <sys/shm.h>
-#endif
 #include <signal.h>
 #include <ltdl.h>
 
 #include "extractor_plugpath.h"
+
+
+/**
+ * Function to call on paths.
+ * 
+ * @param cls closure
+ * @param path a directory path
+ */
+typedef void (*EXTRACTOR_PathProcessor) (void *cls,
+					 const char *path);
+
 
 /**
  * Remove a trailing '/bin/' from 'in' (if present).
@@ -392,9 +399,9 @@ append_to_dir (const char *path,
  * @param pp function to call for each path
  * @param pp_cls cls argument for pp.
  */
-void
-EXTRACTOR_get_installation_paths_ (EXTRACTOR_PathProcessor pp,
-				   void *pp_cls)
+static void
+get_installation_paths (EXTRACTOR_PathProcessor pp,
+			void *pp_cls)
 {
   const char *p;
   char *path;
