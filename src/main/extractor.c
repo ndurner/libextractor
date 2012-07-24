@@ -25,55 +25,13 @@
 #include <sys/types.h>
 #include <signal.h>
 #include <ltdl.h>
-
 #include "extractor_datasource.h"
 #include "extractor_ipc.h"
 #include "extractor_plugpath.h"
 #include "extractor_plugins.h"
 
-/**
- * Maximum length of a Mime-Type string.
- */
-#define MAX_MIME_LEN 256
 
-/**
- * Set to 1 to get failure info,
- * 2 for actual debug info.
- */ 
-#define DEBUG 1
-
-
-/**
- * Writes 'size' bytes from 'buf' to 'fd', returns only when
- * writing is not possible, or when all 'size' bytes were written
- * (never does partial writes).
- *
- * @param fd fd to write into
- * @param buf buffer to read from
- * @param size number of bytes to write
- * @return number of bytes written (that is 'size'), or -1 on error
- */ 
-ssize_t
-EXTRACTOR_write_all_ (int fd,
-		      const void *buf,
-		      size_t size)
-{
-  const char *data = buf;
-  size_t off = 0;
-  ssize_t ret;
-  
-  while (off < size)
-    {
-      ret = write (fd, &data[off], size - off);
-      if (ret <= 0)
-	return -1;
-      off += ret;
-    }
-  return size;
-}
-
-
-
+#if 0
 /**
  * Open a file
  */
@@ -528,6 +486,9 @@ load_in_process_plugin (struct EXTRACTOR_PluginList *plugin)
       break;
     }
 }
+#endif
+
+
 
 
 /**
