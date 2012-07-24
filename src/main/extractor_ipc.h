@@ -145,6 +145,11 @@ struct UpdateMessage
   uint32_t shm_ready_bytes;
 
   /**
+   * Offset of the shm in the overall file.
+   */
+  uint64_t shm_off;
+
+  /**
    * Overall size of the file.
    */
   uint64_t file_size;

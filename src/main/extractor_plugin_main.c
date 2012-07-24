@@ -26,6 +26,7 @@
 #include "platform.h"
 #include "plibc.h"
 #include "extractor.h"
+#include "extractor_common.h"
 #include "extractor_datasource.h"
 #include "extractor_plugins.h"
 #include "extractor_ipc.h"
@@ -94,7 +95,6 @@ struct ProcessingContext
 };
 
 
-
 /**
  * Moves current absolute buffer position to @pos in @whence mode.
  * Will move logical position withouth shifting the buffer, if possible.
@@ -111,55 +111,62 @@ plugin_env_seek (void *cls,
 		 int whence)
 {
   struct ProcessingContext *pc = cls;
+  struct SeekRequestMessage srm;
+  struct UpdateMessage um;
+  uint64_t npos;
 
   switch (whence)
-  {
-  case SEEK_CUR:
-    if (plugin->shm_pos + pos < plugin->map_size && plugin->shm_pos + pos >= 0)
     {
-      plugin->shm_pos += pos;
-      return plugin->fpos + plugin->shm_pos;
+    case SEEK_CUR:
+      if ( (pos < 0) && (pc->read_position < - pos) )
+	return -1;
+      if ( (pos > 0) && 
+	   ( (pc->read_position + pos < pc->read_position) ||
+	     (pc->read_position + pos > pc->file_size) ) )
+	return -1;
+      npos = (uint64_t) (pc->read_position + pos);
+      break;
+    case SEEK_END:
+      if (pos > 0)
+	return -1;
+      pos = (int64_t) (pc->file_size + pos);
+      /* fall-through! */
+    case SEEK_SET:
+      if ( (pos < 0) || (pc->file_size < pos) )
+	return -1;
+      npos = (uint64_t) pos;
+      break;
+    default:
+      return -1;
     }
-    if (0 != pl_pick_next_buffer_at (plugin, plugin->fpos + plugin->shm_pos + pos, 1))
-      return -1;
-    plugin->shm_pos += pos;
-    return plugin->fpos + plugin->shm_pos;
-    break;
-  case SEEK_SET:
-    if (pos < 0)
-      return -1;
-    if (pos >= plugin->fpos && pos < plugin->fpos + plugin->map_size)
+  if ( (pc->shm_off <= npos) &&
+       (pc->shm_off + pc->shm_ready_bytes > npos) )
     {
-      plugin->shm_pos = pos - plugin->fpos;
-      return pos;
+      pc->read_position = npos;
+      return (int64_t) npos;
     }
-    if (0 != pl_pick_next_buffer_at (plugin, pos, 1))
-      return -1;
-    if (pos >= plugin->fpos && pos < plugin->fpos + plugin->map_size)
-    {
-      plugin->shm_pos = pos - plugin->fpos;
-      return pos;
-    }
+  /* need to seek */
+  srm.opcode = MESSAGE_SEEK;
+  srm.reserved = 0;
+  srm.reserved2 = 0;
+  srm.requested_bytes = pc->shm_map_size;
+  if (srm.requested_bytes > pc->file_size - npos)
+    srm.requested_bytes = pc->file_size - npos;
+  srm.file_offset = npos;
+  if (-1 == EXTRACTOR_write_all_ (pc->out, &srm, sizeof (srm)))
     return -1;
-    break;
-  case SEEK_END:
-    while (plugin->fsize == -1)
+  if (-1 == EXTRACTOR_read_all_ (pc->in, &um, sizeof (um)))
+    return -1;
+  pc->shm_off = um.shm_off;
+  pc->shm_ready_bytes = um.shm_ready_bytes;
+  if ( (pc->shm_off <= npos) &&
+       (pc->shm_off + pc->shm_ready_bytes > npos) )
     {
-      pl_pick_next_buffer_at (plugin, plugin->fpos + plugin->map_size + pos, 0);
+      pc->read_position = npos;
+      return (int64_t) npos;
     }
-    if (plugin->fsize + pos - 1 < plugin->fpos || plugin->fsize + pos - 1 > plugin->fpos + plugin->map_size)
-    {
-      if (0 != pl_pick_next_buffer_at (plugin, plugin->fsize - MAX_READ, 0))
-        return -1;
-    }
-    plugin->shm_pos = plugin->fsize + pos - plugin->fpos;
-    if (plugin->shm_pos < 0)
-      plugin->shm_pos = 0;
-    else if (plugin->shm_pos >= plugin->map_size)
-      plugin->shm_pos = plugin->map_size - 1;
-    return plugin->fpos + plugin->shm_pos - 1;
-    break;
-  }
+  /* oops, serious missunderstanding, we asked to seek
+     and then were notified about a different position!? */
   return -1;
 }
 
@@ -181,6 +188,7 @@ plugin_env_read (void *cls,
 {
   struct ProcessingContext *pc = cls;
   
+  // FIXME!
   *data = NULL;
   if (count > MAX_READ)
     return -1;
@@ -203,6 +211,12 @@ plugin_env_read (void *cls,
 }
 
 
+/**
+ * Provide the overall file size to plugins.
+ *
+ * @param cls the 'struct ProcessingContext'
+ * @return overall file size of the current file
+ */
 static uint64_t
 plugin_env_get_size (void *cls)
 {
@@ -254,17 +268,17 @@ plugin_env_send_proc (void *cls,
   hdr.data_len = data_len;
   hdr.mime_len = mime_len;
   if ( (sizeof (meta_byte) != 
-	write_all (*cpipe_out,
-		   &meta_byte, sizeof (meta_byte))) ||
+	EXTRACTOR_write_all_ (*cpipe_out,
+			      &meta_byte, sizeof (meta_byte))) ||
        (sizeof (hdr) != 
-	write_all (*cpipe_out, 
-		   &hdr, sizeof (hdr))) ||
+	EXTRACTOR_write_all_ (*cpipe_out, 
+			      &hdr, sizeof (hdr))) ||
        (mime_len !=
-	write_all (*cpipe_out, 
-		   data_mime_type, mime_len)) ||
+	EXTRACTOR_write_all_ (*cpipe_out, 
+			      data_mime_type, mime_len)) ||
        (data_len !=
-	write_all (*cpipe_out, 
-		   data, data_len)) )
+	EXTRACTOR_write_all_ (*cpipe_out, 
+			      data, data_len)) )
     return 1;
   return 0;
 }
@@ -284,9 +298,9 @@ handle_init_message (struct ProcessingContext *pc)
   if (NULL != pc->shm)
     return -1;
   if (sizeof (struct InitMessage) - 1
-      != read (pc->in,
-	       &init.reserved,
-	       sizeof (struct InitMessage) - 1))
+      != EXTRACTOR_read_all_ (pc->in,
+		   &init.reserved,
+		   sizeof (struct InitMessage) - 1))
     return -1;
   if (init.shm_name_length > MAX_SHM_NAME)
     return -1;
@@ -294,9 +308,9 @@ handle_init_message (struct ProcessingContext *pc)
     char shm_name[init.shm_name_length + 1];
 
     if (init.shm_name_length 
-	!= read (pc->in,
-		 shm_name,
-		 init.shm_name_length))
+	!= EXTRACTOR_read_all_ (pc->in,
+		     shm_name,
+		     init.shm_name_length))
       return -1;
     shm_name[init.shm_name_length] = '\0';
 
@@ -333,11 +347,12 @@ handle_start_message (struct ProcessingContext *pc)
 {
   struct StartMessage start;
   struct EXTRACTOR_ExtractContext ec;
+  char done;
 
   if (sizeof (struct StartMessage) - 1
-      != read (pc->in,
-	       &start.reserved,
-	       sizeof (struct StartMessage) - 1))
+      != EXTRACTOR_read_all_ (pc->in,
+		   &start.reserved,
+		   sizeof (struct StartMessage) - 1))
     return -1;
   pc->shm_ready_bytes = start.shm_ready_bytes;
   pc->file_size = start.shm_file_size;
@@ -350,6 +365,22 @@ handle_start_message (struct ProcessingContext *pc)
   ec.get_size = &plugin_env_get_size;
   ec.proc = &plugin_env_send_proc;
   pc->plugin->extract_method (&ec);
+  done = MESSAGE_DONE;
+  if (-1 == send_to_master (pc, &done, sizeof (done)))
+    return -1;
+  if ( (NULL != pc->plugin->specials) &&
+       (NULL != strstr (pc->plugin->specials, "force-kill")) )
+    {
+      /* we're required to die after each file since this
+	 plugin only supports a single file at a time */
+#if !WINDOWS
+      fsync (pc->out);
+#else
+      _commit (pc->out);
+#endif
+      _exit (0);
+    }
+  return 0;
 }
 
 
@@ -366,7 +397,7 @@ process_requests (struct ProcessingContext *pc)
     {
       unsigned char code;
   
-      if (1 != read (pc->in, &code, 1))
+      if (1 != EXTRACTOR_read_all_ (pc->in, &code, 1))
 	break;
       switch (code)
 	{
@@ -389,99 +420,6 @@ process_requests (struct ProcessingContext *pc)
 	}
     }
 }
-
-#if 0
-    case MESSAGE_UPDATED_SHM:
-      if (plugin->operation_mode == OPMODE_DECOMPRESS)
-      {
-        read_result2 = read (in, &plugin->fpos, sizeof (int64_t));
-        read_result3 = read (in, &plugin->map_size, sizeof (size_t));
-        read_result4 = read (in, &plugin->fsize, sizeof (int64_t));
-        if ((read_result2 < sizeof (int64_t)) || (read_result3 < sizeof (size_t)) ||
-            plugin->fpos < 0 || (plugin->operation_mode != OPMODE_DECOMPRESS && (plugin->fsize <= 0 || plugin->fpos >= plugin->fsize)))
-        {
-          do_break = 1;
-          break;
-        }
-        /* FIXME: also check mapped region size (lseek for *nix, VirtualQuery for W32) */
-        /* Re-map the shm */
-#if !WINDOWS
-        if ((-1 == plugin->shm_id) ||
-            (NULL == (plugin->shm_ptr = mmap (NULL, plugin->map_size, PROT_READ, MAP_SHARED, plugin->shm_id, 0))) ||
-            (plugin->shm_ptr == (void *) -1))
-        {
-          do_break = 1;
-          break;
-        }
-#else
-        if ((plugin->map_handle == 0) ||
-           (NULL == (plugin->shm_ptr = 
-        {
-          do_break = 1;
-          break;
-        }
-#endif
-        if (plugin->waiting_for_update == 1)
-        {
-          /* We were only waiting for this one message */
-          do_break = 1;
-          plugin->waiting_for_update = 2;
-          break;
-        }
-        /* Run extractor on mapped region (recursive call doesn't reach this
-         * point and breaks out earlier.
-         */
-        extract_reply = plugin->extract_method (plugin, transmit_reply, &out);
-        /* Unmap the shm */
-#if !WINDOWS
-        if ((plugin->shm_ptr != NULL) &&
-            (plugin->shm_ptr != (void*) -1) )
-          munmap (plugin->shm_ptr, plugin->map_size);
-#else
-        if (plugin->shm_ptr != NULL)
-          UnmapViewOfFile (plugin->shm_ptr);
-#endif
-        plugin->shm_ptr = NULL;
-        if (extract_reply == 1)
-        {
-          /* Tell LE that we're done */
-          unsigned char done_byte = MESSAGE_DONE;
-          if (write (out, &done_byte, 1) != 1)
-          {
-            do_break = 1;
-            break;
-          }
-          if ((plugin->specials != NULL) &&
-              (NULL != strstr (plugin->specials, "force-kill")))
-          {
-            /* we're required to die after each file since this
-               plugin only supports a single file at a time */
-#if !WINDOWS
-            fsync (out);
-#else
-            _commit (out);
-#endif
-            _exit (0);
-          }
-        }
-        else
-        {
-          /* Tell LE that we're not done, and we need to seek */
-          unsigned char seek_byte = MESSAGE_SEEK;
-          if (write (out, &seek_byte, 1) != 1)
-          {
-            do_break = 1;
-            break;
-          }
-          if (write (out, &plugin->seek_request, sizeof (int64_t)) != sizeof (int64_t))
-          {
-            do_break = 1;
-            break;
-          }
-        }
-      }
-}
-#endif
 
 
 #ifndef WINDOWS
@@ -587,28 +525,29 @@ read_plugin_data (int fd)
   SYSTEM_INFO si;
   size_t i;
 
+  // FIXME: check for errors from 'EXTRACTOR_read_all_'!
   if (NULL == (ret = malloc (sizeof (struct EXTRACTOR_PluginList))))
     return NULL;
   GetSystemInfo (&si);
   ret->allocation_granularity = si.dwAllocationGranularity;
-  read (fd, &i, sizeof (size_t));
+  EXTRACTOR_read_all_ (fd, &i, sizeof (size_t));
   if (NULL == (ret->libname = malloc (i)))
     {
       free (ret);
       return NULL;
     }
-  read (fd, ret->libname, i);
+  EXTRACTOR_read_all_ (fd, ret->libname, i);
   ret->libname[i - 1] = '\0';
-  read (fd, &i, sizeof (size_t));
+  EXTRACTOR_read_all_ (fd, &i, sizeof (size_t));
   if (NULL == (ret->short_libname = malloc (i)))
     {
       free (ret->libname);
       free (ret);
       return NULL;
     }
-  read (fd, ret->short_libname, i);
+  EXTRACTOR_read_all_ (fd, ret->short_libname, i);
   ret->short_libname[i - 1] = '\0';
-  read (fd, &i, sizeof (size_t));
+  EXTRACTOR_read_all_ (fd, &i, sizeof (size_t));
   if (0 == i)
     {
       ret->plugin_options = NULL;
@@ -621,7 +560,7 @@ read_plugin_data (int fd)
       free (ret);
       return NULL;
     }
-  read (fd, ret->plugin_options, i);
+  EXTRACTOR_read_all_ (fd, ret->plugin_options, i);
   ret->plugin_options[i - 1] = '\0';
   return ret;
 }

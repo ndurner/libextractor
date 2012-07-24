@@ -53,10 +53,10 @@
  * @param size number of bytes to write
  * @return number of bytes written (that is 'size'), or -1 on error
  */ 
-static int
-write_all (int fd,
-	   const void *buf,
-	   size_t size)
+ssize_t
+EXTRACTOR_write_all_ (int fd,
+		      const void *buf,
+		      size_t size)
 {
   const char *data = buf;
   size_t off = 0;
