@@ -418,12 +418,12 @@ struct EXTRACTOR_ExtractContext
    * @param cls the 'cls' member of this struct
    * @param pos position to seek (see 'man lseek')
    * @param whence how to see (absolute to start, relative, absolute to end)
-   * @return new absolute position, UINT64_MAX on error (i.e. desired position
+   * @return new absolute position, -1 on error (i.e. desired position
    *         does not exist)
    */ 
-  uint64_t (*seek) (void *cls,
-		    int64_t pos,
-		    int whence);
+  int64_t (*seek) (void *cls,
+		   int64_t pos,
+		   int whence);
 
 
   /**
