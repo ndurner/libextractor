@@ -380,6 +380,8 @@ EXTRACTOR_plugin_remove (struct EXTRACTOR_PluginList * prev,
     prev->next = pos->next;
   if (NULL != pos->channel)
     EXTRACTOR_IPC_channel_destroy_ (pos->channel);
+  // FIXME: need to also destroy pos->shm if this is
+  // the last user; need to add some RC to the SHM!
   free (pos->short_libname);
   free (pos->libname);
   free (pos->plugin_options);

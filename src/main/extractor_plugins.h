@@ -78,9 +78,14 @@ struct EXTRACTOR_PluginList
   const char *specials;
 
   /**
-   * Channel to communicate with out-of-process plugin.
+   * Channel to communicate with out-of-process plugin, NULL if not setup.
    */
   struct EXTRACTOR_Channel *channel;
+
+  /**
+   * Memory segment shared with the channel of this plugin, NULL for none.
+   */
+  struct EXTRACTOR_SharedMemory *shm;
 
   /**
    * A position this plugin wants us to seek to. -1 if it's finished.
