@@ -252,8 +252,15 @@ struct MetaMessage
  * Sent from LE to plugin to make plugin discard its state
  * (extraction aborted by application).  Only one byte.
  * Plugin should get ready for next 'StartMessage' after this.
+ * (sent in response to META data or SEEK requests).
  */
 #define MESSAGE_DISCARD_STATE 0x06
+
+/**
+ * Sent from LE to plugin to make plugin continue extraction.
+ * (sent in response to META data).
+ */
+#define MESSAGE_CONTINUE_EXTRACTING 0x07
 
 
 /**

@@ -114,6 +114,7 @@ plugin_env_seek (void *cls,
   struct SeekRequestMessage srm;
   struct UpdateMessage um;
   uint64_t npos;
+  unsigned char reply;
 
   switch (whence)
     {
@@ -155,7 +156,13 @@ plugin_env_seek (void *cls,
   srm.file_offset = npos;
   if (-1 == EXTRACTOR_write_all_ (pc->out, &srm, sizeof (srm)))
     return -1;
-  if (-1 == EXTRACTOR_read_all_ (pc->in, &um, sizeof (um)))
+  if (-1 ==
+      EXTRACTOR_read_all_ (pc->in,
+			   &reply, sizeof (reply)))
+    return -1;
+  if (MESSAGE_SEEK != reply)
+    return -1; /* was likely a MESSAGE_DISCARD_STATE */
+  if (-1 == EXTRACTOR_read_all_ (pc->in, &um.reserved, sizeof (um) - 1))
     return -1;
   pc->shm_off = um.shm_off;
   pc->shm_ready_bytes = um.shm_ready_bytes;
@@ -172,42 +179,34 @@ plugin_env_seek (void *cls,
 
 
 /**
- * Fills @data with a pointer to the data buffer.
- * Equivalent to read(), except you don't have to allocate and free
- * a buffer, since the data is already in memory.
- * Will move the buffer, if necessary
+ * Fills 'data' with a pointer to the data buffer.
  *
  * @param plugin plugin context
  * @param data location to store data pointer
  * @param count number of bytes to read
- * @return number of bytes (<= count) avalable in @data, -1 on error
+ * @return number of bytes (<= count) avalable in 'data', -1 on error
  */
 static ssize_t
 plugin_env_read (void *cls,
 		 unsigned char **data, size_t count)
 {
   struct ProcessingContext *pc = cls;
+  unsigned char *dp;
   
-  // FIXME!
   *data = NULL;
-  if (count > MAX_READ)
-    return -1;
-  if (count > plugin->map_size - plugin->shm_pos)
-  {
-    int64_t actual_count;
-    if (plugin->fpos + plugin->shm_pos != pl_seek (plugin, plugin->fpos + plugin->shm_pos, SEEK_SET))
-      return -1;
-    *data = &plugin->shm_ptr[plugin->shm_pos];
-    actual_count = (count < plugin->map_size - plugin->shm_pos) ? count : (plugin->map_size - plugin->shm_pos);
-    plugin->shm_pos += actual_count;
-    return actual_count;
-  }
-  else
-  {
-    *data = &plugin->shm_ptr[plugin->shm_pos];
-    plugin->shm_pos += count;
-    return count;
-  }
+  if ( (count + pc->read_position > pc->file_size) ||
+       (count + pc->read_position < pc->read_position) )
+    count = pc->file_size - pc->read_position;
+  if ( ( (pc->read_position >= pc->shm_off + pc->shm_ready_bytes) ||
+	 (pc->read_position < pc->shm_off) ) &&
+       (-1 == plugin_env_seek (pc, pc->read_position, SEEK_SET)) )
+    return -1; 
+  if (pc->read_position + count > pc->shm_off + pc->shm_ready_bytes)
+    count = pc->shm_off + pc->shm_ready_bytes - pc->read_position;
+  dp = pc->shm;
+  *data = &dp[pc->read_position - pc->shm_off];
+  pc->read_position += count;
+  return count;
 }
 
 
@@ -252,33 +251,36 @@ plugin_env_send_proc (void *cls,
 		      size_t data_len)
 {
   struct ProcessingContext *pc = cls;
-  static const unsigned char meta_byte = MESSAGE_META;
-  int cpipe_out = pc->out;
-  struct IpcHeader hdr;
+  struct MetaMessage mm;
   size_t mime_len;
+  unsigned char reply;
 
   if (NULL == data_mime_type)
     mime_len = 0;
   else
     mime_len = strlen (data_mime_type) + 1;
-  if (mime_len > MAX_MIME_LEN)
-    mime_len = MAX_MIME_LEN;
-  hdr.meta_type = type;
-  hdr.meta_format = format;
-  hdr.data_len = data_len;
-  hdr.mime_len = mime_len;
-  if ( (sizeof (meta_byte) != 
-	EXTRACTOR_write_all_ (*cpipe_out,
-			      &meta_byte, sizeof (meta_byte))) ||
-       (sizeof (hdr) != 
-	EXTRACTOR_write_all_ (*cpipe_out, 
-			      &hdr, sizeof (hdr))) ||
+  if (mime_len > UINT16_MAX)
+    mime_len = UINT16_MAX;
+  mm.opcode = MESSAGE_META;
+  mm.reserved = 0;
+  mm.meta_format = (uint16_t) format;
+  mm.mime_length = (uint16_t) mime_len;
+  mm.value_size = (uint32_t) data_len;
+  if ( (sizeof (mm) != 
+	EXTRACTOR_write_all_ (pc->out,
+			      &mm, sizeof (mm))) ||
        (mime_len !=
-	EXTRACTOR_write_all_ (*cpipe_out, 
+	EXTRACTOR_write_all_ (pc->out, 
 			      data_mime_type, mime_len)) ||
        (data_len !=
-	EXTRACTOR_write_all_ (*cpipe_out, 
+	EXTRACTOR_write_all_ (pc->out, 
 			      data, data_len)) )
+    return 1;
+  if (-1 ==
+      EXTRACTOR_read_all_ (pc->in,
+			   &reply, sizeof (reply)))
+    return 1;
+  if (MESSAGE_CONTINUE_EXTRACTING != reply)
     return 1;
   return 0;
 }
@@ -316,8 +318,8 @@ handle_init_message (struct ProcessingContext *pc)
 
     pc->shm_map_size = init.shm_map_size;
 #if WINDOWS
-    pc->shm_ptr = MapViewOfFile (pc->shm_id, FILE_MAP_READ, 0, 0, 0);
-    if (NULL == pc->shm_ptr)
+    pc->shm = MapViewOfFile (pc->shm_id, FILE_MAP_READ, 0, 0, 0);
+    if (NULL == pc->shm)
       return -1;
 #else
     pc->shm_id = open (shm_name, O_RDONLY, 0);
@@ -355,7 +357,7 @@ handle_start_message (struct ProcessingContext *pc)
 		   sizeof (struct StartMessage) - 1))
     return -1;
   pc->shm_ready_bytes = start.shm_ready_bytes;
-  pc->file_size = start.shm_file_size;
+  pc->file_size = start.file_size;
   pc->read_position = 0;
   pc->shm_off = 0;
   ec.cls = pc;
@@ -366,7 +368,7 @@ handle_start_message (struct ProcessingContext *pc)
   ec.proc = &plugin_env_send_proc;
   pc->plugin->extract_method (&ec);
   done = MESSAGE_DONE;
-  if (-1 == send_to_master (pc, &done, sizeof (done)))
+  if (-1 == EXTRACTOR_write_all_ (pc->out, &done, sizeof (done)))
     return -1;
   if ( (NULL != pc->plugin->specials) &&
        (NULL != strstr (pc->plugin->specials, "force-kill")) )
@@ -405,13 +407,13 @@ process_requests (struct ProcessingContext *pc)
 	  if (0 != handle_init_message (pc))
 	    return;
 	  break;
-	case MSG_EXTRACT_START:
+	case MESSAGE_EXTRACT_START:
 	  if (0 != handle_start_message (pc))
 	    return;
-	case MSG_UPDATED_SHM:
+	case MESSAGE_UPDATED_SHM:
 	  /* not allowed here, we're not waiting for SHM to move! */
 	  return;
-	case MSG_DISCARD_STATE:
+	case MESSAGE_DISCARD_STATE:
 	  /* odd, we're already in the start state... */
 	  continue;
 	default:
@@ -498,12 +500,12 @@ EXTRACTOR_plugin_main_ (struct EXTRACTOR_PluginList *plugin,
   pc.shm_map_size = 0;
   process_requests (&pc);
 #if WINDOWS
-  if (NULL != pc.shm_ptr)
-    UnmapViewOfFile (pc.shm_ptr);
+  if (NULL != pc.shm)
+    UnmapViewOfFile (pc.shm);
 #else
-  if ( (NULL != pc.shm_ptr) &&
-       (((void*) 1) != pc.shm_ptr) )
-    munmap (pc.shm_ptr, pc.shm_map_size);
+  if ( (NULL != pc.shm) &&
+       (((void*) 1) != pc.shm) )
+    munmap (pc.shm, pc.shm_map_size);
   if (-1 != pc.shm_id)
     (void) close (pc.shm_id);
 #endif
