@@ -43,6 +43,7 @@ libextractor_la_SOURCES = \
   extractor_metatypes.c \
   extractor_print.c \
   extractor_common.c extractor_common.h \
+  extractor_datasource.c extractor_datasource.h \
   extractor_plugpath.c extractor_plugpath.h \
   extractor_plugins.c extractor_plugins.h \
   $(EXTRACTOR_IPC) extractor_ipc.c extractor_ipc.h \

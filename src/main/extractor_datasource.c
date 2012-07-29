@@ -22,7 +22,6 @@
  * @brief random access and possibly decompression of data from buffer in memory or file on disk
  * @author Christian Grothoff
  */
-
 #include "platform.h"
 #include "extractor_datasource.h"
 
@@ -313,7 +312,7 @@ bfds_seek (struct BufferedFileDataSource *bfds,
       if (bfds->fpos + bfds->buffer_pos + pos > bfds->fsize)
 	return -1;
       if ( (NULL == bfds->buffer) ||
-	   ( (bfds->buffer_pos + pos < pos->buffer_bytes) &&
+	   ( (bfds->buffer_pos + pos < bfds->buffer_bytes) &&
 	     (bfds->buffer_pos + pos >= 0) ) )
 	{
 	  bfds->buffer_pos += pos; 
@@ -337,7 +336,7 @@ bfds_seek (struct BufferedFileDataSource *bfds,
 	return -1;
       if ( (NULL == bfds->buffer) ||
 	   ( (bfds->buffer_pos <= pos) &&
-	     (bfds->buffer_pos + pos->buffer_bytes > pos) ) )
+	     (bfds->buffer_pos + bfds->buffer_bytes > pos) ) )
 	{
 	  bfds->buffer_pos = pos; 
 	  return bfds->buffer_pos;
@@ -391,24 +390,12 @@ bfds_read (struct BufferedFileDataSource *bfds,
 	avail = count;
       if (0 == avail) 
 	abort (); /* must not happen */
-      memcpy (&cbuf[ret], &bfds->data[bfds->buffer_pos], avail);
+      memcpy (&cbuf[ret], bfds->data + bfds->buffer_pos, avail);
       bfds->buffer_pos += avail;
       count -= avail;
       ret += avail;
     }
   return ret;
-}
-
-
-/**
- * Release resources of a compressed data source.
- *
- * @param cfs compressed data source to free
- */
-static void
-cfs_delete (struct CompressedFileSource *cfs)
-{
-  free (cfs);
 }
 
 
@@ -449,8 +436,6 @@ cfs_reset_stream_zlib (struct CompressedFileSource *cfs)
       return -1;
     }
   cfs->fpos = 0;
-  cfs->shm_pos = 0;
-  cfs->shm_buf_size = 0;
   return 1;
 }
 
@@ -739,10 +724,10 @@ cfs_read_zlib (struct CompressedFileSource *cfs,
   if (cfs->fpos == cfs->uncompressed_size)
     return 0;
   rc = 0;
-  if (strm.avail_out > 0)
+  if (cfs->strm.avail_out > 0)
     {
       /* got left-over decompressed data from previous round! */
-      in = strm.avail_out;
+      in = cfs->strm.avail_out;
       if (in > size)
 	in = size;
       memcpy (&dst[rc], &cfs->result[cfs->result_pos], in);
@@ -758,9 +743,9 @@ cfs_read_zlib (struct CompressedFileSource *cfs,
 		      buf, sizeof (buf));
       if (in <= 0)
 	return -1; /* unexpected EOF */
-      cfs->strm.next_in = buf;
-      cfs->strm.avail_in = (uInt) count;
-      cfs->strm.next_out = cfs->result;
+      cfs->strm.next_in = (unsigned char *) buf;
+      cfs->strm.avail_in = (uInt) in;
+      cfs->strm.next_out = (unsigned char *) cfs->result;
       cfs->strm.avail_out = COM_CHUNK_SIZE;
       cfs->result_pos = 0;
       ret = inflate (&cfs->strm, Z_SYNC_FLUSH);
@@ -821,9 +806,9 @@ cfs_read (struct CompressedFileSource *cfs,
   switch (cfs->compression_type)
     {
     case COMP_TYPE_ZLIB:
-      return cfs_read_zlib (cfs, preserve);
+      return cfs_read_zlib (cfs, data, size);
     case COMP_TYPE_BZ2:
-      return cfs_read_bz2 (cfs, preserve);
+      return cfs_read_bz2 (cfs, data, size);
     default:
       return -1;
     }
@@ -837,27 +822,64 @@ cfs_read (struct CompressedFileSource *cfs,
  *
  * @param cfs cfs to seek on
  * @param position new starting point for the buffer
+ * @param whence one of the seek constants (SEEK_CUR, SEEK_SET, SEEK_END) 
  * @return new absolute buffer position, -1 on error or EOS
  */
 static int64_t
 cfs_seek (struct CompressedFileSource *cfs, 
-	  uint64_t position)
+	  uint64_t position,
+	  int whence)
 {
+  uint64_t nposition;
   int64_t delta;
+
+  switch (whence)
+    {
+    case SEEK_CUR:
+      if (cfs->fpos + position < 0)
+	return -1;
+      if ( (-1 != cfs->uncompressed_size) &&
+	   (cfs->fpos + position > cfs->uncompressed_size) )
+	return -1;
+      nposition = cfs->fpos + position;
+      break;
+    case SEEK_END:
+      if (-1 == cfs->uncompressed_size)
+	{
+	  /* yuck, need to first find end of file! */
+	  return -1; // FIXME: not implemented
+	}
+      if (position > 0)
+	return -1;
+      if (cfs->uncompressed_size < - position)
+	return -1;
+      nposition = cfs->uncompressed_size + position;
+      break;
+    case SEEK_SET:
+      if (position < 0)
+	return -1;
+      if ( (-1 != cfs->uncompressed_size) &&
+	   (cfs->uncompressed_size < position ) )
+	return -1;
+      nposition = (uint64_t) position;
+      break;
+    default:
+      return -1;
+    }
   
-  delta = position - cfs->fpos;
+  delta = nposition - cfs->fpos;
   if (delta < 0)
     {
-      if (result_pos >= - delta)
+      if (cfs->result_pos >= - delta)
 	{
-	  result_pos += delta;
+	  cfs->result_pos += delta;
 	  delta = 0;
 	}
       else
 	{
 	  if (-1 == cfs_reset_stream (cfs))
 	    return -1;
-	  delta = position;
+	  delta = nposition;
 	}
     }
   while (delta > 0)
@@ -896,17 +918,17 @@ get_compression_type (struct BufferedFileDataSource *bfds)
     return COMP_TYPE_UNDEFINED;
 
 #if HAVE_ZLIB
-  if ( (bdfs->fsize >= MIN_ZLIB_HEADER) && 
-       (data[0] == 0x1f) && 
-       (data[1] == 0x8b) && 
-       (data[2] == 0x08) )
+  if ( (bfds->fsize >= MIN_ZLIB_HEADER) && 
+       (read_data[0] == 0x1f) && 
+       (read_data[1] == 0x8b) && 
+       (read_data[2] == 0x08) )
     return COMP_TYPE_ZLIB;
 #endif
 #if HAVE_LIBBZ2
-  if ( (bdfs->fsize >= MIN_BZ2_HEADER) && 
-       (data[0] == 'B') && 
-       (data[1] == 'Z') && 
-       (data[2] == 'h')) 
+  if ( (bfds->fsize >= MIN_BZ2_HEADER) && 
+       (read_data[0] == 'B') && 
+       (read_data[1] == 'Z') && 
+       (read_data[2] == 'h')) 
     return COMP_TYPE_BZ2;
 #endif
   return COMP_TYPE_INVALID;
@@ -959,7 +981,7 @@ EXTRACTOR_datasource_create_from_file_ (const char *filename,
   if (-1 == (fd = open (filename, O_RDONLY | O_LARGEFILE)))
     return NULL;
   if ( (0 != fstat (fd, &sb)) ||
-       (S_ISDIR (fstatbuf.st_mode)) )       
+       (S_ISDIR (sb.st_mode)) )       
     {
       (void) close (fd);
       return NULL;
@@ -982,7 +1004,7 @@ EXTRACTOR_datasource_create_from_file_ (const char *filename,
       return NULL;
     }
   ds->bfds = bfds;
-  ds->fd;
+  ds->fd = fd;
   ct = get_compression_type (bfds);
   if ( (COMP_TYPE_ZLIB == ct) ||
        (COMP_TYPE_BZ2 == ct) )
@@ -1026,11 +1048,11 @@ EXTRACTOR_datasource_create_from_buffer_ (const char *buf,
       return NULL;
     }
   ds->bfds = bfds;
-  ds->fd;
+  ds->fd = -1;
   ct = get_compression_type (bfds);
   if ( (COMP_TYPE_ZLIB == ct) ||
        (COMP_TYPE_BZ2 == ct) )
-    ds->cfs = cfs_new (bfds, fsize, ct, proc, proc_cls);
+    ds->cfs = cfs_new (bfds, size, ct, proc, proc_cls);
   if (NULL == ds->cfs)
     {
       bfds_delete (bfds);
@@ -1076,7 +1098,7 @@ EXTRACTOR_datasource_read_ (void *cls,
 
   if (NULL != ds->cfs)
     return cfs_read (ds->cfs, data, size);
-  return bdfs_read (ds->bdfs, data, size);
+  return bfds_read (ds->bfds, data, size);
 }
 
 
@@ -1099,7 +1121,7 @@ EXTRACTOR_datasource_seek_ (void *cls,
 
   if (NULL != ds->cfs)
     return cfs_seek (ds->cfs, pos, whence);
-  return bdfs_seek (ds->bdfs, pos, whence);
+  return bfds_seek (ds->bfds, pos, whence);
 }
 
 
@@ -1115,8 +1137,8 @@ EXTRACTOR_datasource_get_size_ (void *cls)
   struct EXTRACTOR_Datasource *ds = cls;
 
   if (NULL != ds->cfs)
-    return cfs_seek (ds->cfs, pos, whence);
-  return bdfs_seek (ds->bdfs, pos, whence);
+    return ds->cfs->uncompressed_size;
+  return ds->bfds->fsize;
 }
 
 

@@ -125,7 +125,7 @@ process_plugin_reply (void *cls,
 		      const void *value,
 		      const char *mime)
 {
-  struct PluginReplyProcessor *prp = cls;
+  // struct PluginReplyProcessor *prp = cls;
 
   // FIXME...
 }
@@ -205,8 +205,10 @@ do_extract (struct EXTRACTOR_PluginList *plugins,
 	plugin_count = 0;
 	for (pos = plugins; NULL != pos; pos = pos->next)
 	  {
-	    channel = channels[plugin_count];
-	    // ... FIXME ...
+	    if (NULL != (channel = channels[plugin_count]))
+	      {
+		// ... FIXME ...
+	      }
 	    plugin_count++;
 	  }
 	// FIXME: need to terminate once all plugins are done...
