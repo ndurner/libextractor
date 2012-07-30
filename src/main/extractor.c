@@ -258,7 +258,10 @@ do_extract (struct EXTRACTOR_PluginList *plugins,
       plugin_count = 0;
       for (pos = plugins; NULL != pos; pos = pos->next)
 	{
-	  channels[plugin_count] = pos->channel;
+	  if (-1 != pos->seek_request)
+	    channels[plugin_count] = pos->channel;
+	  else
+	    channels[plugin_count] = NULL; /* not running this round, seeking! */
 	  plugin_count++;
 	}
       

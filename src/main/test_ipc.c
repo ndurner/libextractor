@@ -94,6 +94,7 @@ process_replies (void *cls,
 		      "Hello world!",
 		      strlen ("Hello world!"))) )
     {
+      fprintf (stderr, "Received 'hello world'\n");
       ret = 1;
       return 0;
     }
@@ -103,6 +104,7 @@ process_replies (void *cls,
 		      "Goodbyte!",
 		      strlen ("Goodbye!"))) )
     {
+      fprintf (stderr, "Received 'good bye'\n");
       ret = 0;
       return 1;
     }

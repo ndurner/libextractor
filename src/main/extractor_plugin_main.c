@@ -96,7 +96,7 @@ struct ProcessingContext
 
 
 /**
- * Moves current absolute buffer position to @pos in @whence mode.
+ * Moves current absolute buffer position to 'pos' in 'whence' mode.
  * Will move logical position withouth shifting the buffer, if possible.
  * Will not move beyond the end of file.
  *
