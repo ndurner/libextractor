@@ -40,13 +40,14 @@ EXTRA_DIST = \
 libextractor_la_CPPFLAGS = -DPLUGINDIR=\"@RPLUGINDIR@\" -DPLUGININSTDIR=\"${plugindir}\" $(AM_CPPFLAGS)
 
 libextractor_la_SOURCES = \
-  extractor_metatypes.c \
-  extractor_print.c \
   extractor_common.c extractor_common.h \
   extractor_datasource.c extractor_datasource.h \
+  $(EXTRACTOR_IPC) extractor_ipc.c extractor_ipc.h \
+  extractor_logging.c extractor_logging.h \
+  extractor_metatypes.c \
   extractor_plugpath.c extractor_plugpath.h \
   extractor_plugins.c extractor_plugins.h \
-  $(EXTRACTOR_IPC) extractor_ipc.c extractor_ipc.h \
+  extractor_print.c \
   extractor_plugin_main.c extractor_plugin_main.h \
   extractor.c 
 
