@@ -337,6 +337,18 @@ EXTRACTOR_IPC_shared_memory_destroy_ (struct EXTRACTOR_SharedMemory *shm);
 
 
 /**
+ * Change the reference counter for this shm instance.
+ *
+ * @param shm instance to update
+ * @param delta value to change RC by
+ * @return new RC
+ */
+unsigned int
+EXTRACTOR_IPC_shared_memory_change_rc_ (struct EXTRACTOR_SharedMemory *shm,
+					int delta);
+
+
+/**
  * Initialize shared memory area from data source.
  *
  * @param shm memory area to initialize

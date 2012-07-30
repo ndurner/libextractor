@@ -66,6 +66,11 @@ struct EXTRACTOR_SharedMemory
    */ 
   char shm_name[MAX_SHM_NAME + 1];
 
+  /**
+   * Reference counter describing how many references share this SHM.
+   */
+  unsigned int rc;
+
 };
 
 
@@ -163,7 +168,24 @@ EXTRACTOR_IPC_shared_memory_create_ (size_t size)
     return NULL;
   }
   shm->shm_size = size;
+  shm->rc = 0;
   return shm; 
+}
+
+
+/**
+ * Change the reference counter for this shm instance.
+ *
+ * @param shm instance to update
+ * @param delta value to change RC by
+ * @return new RC
+ */
+unsigned int
+EXTRACTOR_IPC_shared_memory_change_rc_ (struct EXTRACTOR_SharedMemory *shm,
+					int delta)
+{
+  shm->rc += delta;
+  return shm->rc;
 }
 
 
@@ -175,7 +197,7 @@ EXTRACTOR_IPC_shared_memory_create_ (size_t size)
  */
 void
 EXTRACTOR_IPC_shared_memory_destroy_ (struct EXTRACTOR_SharedMemory *shm)
-{
+{  
   munmap (shm->shm_ptr, shm->shm_size);
   (void) close (shm->shm_id);
   (void) shm_unlink (shm->shm_name);

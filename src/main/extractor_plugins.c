@@ -351,8 +351,8 @@ EXTRACTOR_plugin_add_config (struct EXTRACTOR_PluginList *prev,
  * @return the reduced list, unchanged if the plugin was not loaded
  */
 struct EXTRACTOR_PluginList *
-EXTRACTOR_plugin_remove (struct EXTRACTOR_PluginList * prev,
-			 const char * library)
+EXTRACTOR_plugin_remove (struct EXTRACTOR_PluginList *prev,
+			 const char *library)
 {
   struct EXTRACTOR_PluginList *pos;
   struct EXTRACTOR_PluginList *first;
@@ -381,8 +381,8 @@ EXTRACTOR_plugin_remove (struct EXTRACTOR_PluginList * prev,
     prev->next = pos->next;
   if (NULL != pos->channel)
     EXTRACTOR_IPC_channel_destroy_ (pos->channel);
-  // FIXME: need to also destroy pos->shm if this is
-  // the last user; need to add some RC to the SHM!
+  if (0 == EXTRACTOR_IPC_shared_memory_change_rc_ (pos->shm, -1))
+    EXTRACTOR_IPC_shared_memory_destroy_ (pos->shm);
   free (pos->short_libname);
   free (pos->libname);
   free (pos->plugin_options);

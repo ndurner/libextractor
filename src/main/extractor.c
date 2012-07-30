@@ -387,6 +387,7 @@ EXTRACTOR_extract (struct EXTRACTOR_PluginList *plugins,
 	 (EXTRACTOR_OPTION_IN_PROCESS == pos->flags) )
       {
 	pos->shm = shm;
+	(void) EXTRACTOR_IPC_shared_memory_change_rc_ (shm, 1);
 	pos->channel = EXTRACTOR_IPC_channel_create_ (pos,
 						      shm);
       }
