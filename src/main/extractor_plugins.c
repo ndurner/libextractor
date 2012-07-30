@@ -237,6 +237,7 @@ EXTRACTOR_plugin_add (struct EXTRACTOR_PluginList *prev,
     }
   if (NULL == (result = malloc (sizeof (struct EXTRACTOR_PluginList))))
     return prev;
+  memset (result, 0, sizeof (struct EXTRACTOR_PluginList));
   result->next = prev;
   if (NULL == (result->short_libname = strdup (library)))
     {

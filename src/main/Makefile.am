@@ -58,10 +58,6 @@ extract_SOURCES = \
 LDADD = \
  $(top_builddir)/src/main/libextractor.la  
 
-if HAVE_ZZUF
-  fuzz_tests=fuzz_default.sh fuzz_thumbnail.sh
-endif
-
 TESTS_ENVIRONMENT = testdatadir=$(top_srcdir)/test
 TESTS_ENVIRONMENT += bindir=${bindir}
 
@@ -70,7 +66,7 @@ check_PROGRAMS = \
  test_plugin_loading \
  test_plugin_load_multi
 
-TESTS = $(check_PROGRAMS) $(fuzz_tests)
+TESTS = $(check_PROGRAMS)
 
 test_trivial_SOURCES = \
  test_trivial.c 

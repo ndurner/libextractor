@@ -1,3 +1,23 @@
+/*
+     This file is part of libextractor.
+     (C) 2002, 2003, 2004, 2005, 2006, 2009 Vidyut Samanta and Christian Grothoff
+
+     libextractor is free software; you can redistribute it and/or modify
+     it under the terms of the GNU General Public License as published
+     by the Free Software Foundation; either version 3, or (at your
+     option) any later version.
+
+     libextractor is distributed in the hope that it will be useful, but
+     WITHOUT ANY WARRANTY; without even the implied warranty of
+     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+     General Public License for more details.
+
+     You should have received a copy of the GNU General Public License
+     along with libextractor; see the file COPYING.  If not, write to the
+     Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+     Boston, MA 02111-1307, USA.
+*/
+
 /**
  * @file main/test_plugin_loading.c
  * @brief testcase for dynamic loading and unloading of plugins
@@ -17,20 +37,19 @@ main (int argc, char *argv[])
   arg = EXTRACTOR_plugin_remove (arg, "mime");
   arg = EXTRACTOR_plugin_remove (arg, "zip");
   arg = EXTRACTOR_plugin_remove (arg, "png");
-  if (arg != NULL)
+  if (NULL != arg)
     {
       fprintf (stderr,
 	       "add-remove test failed!\n");
       return -1;
     }
-
   arg = EXTRACTOR_plugin_add (NULL, "mime", NULL, EXTRACTOR_OPTION_DEFAULT_POLICY);
   arg = EXTRACTOR_plugin_add (arg, "png", NULL, EXTRACTOR_OPTION_DEFAULT_POLICY);
   arg = EXTRACTOR_plugin_add (arg, "zip", NULL, EXTRACTOR_OPTION_DEFAULT_POLICY);
   arg = EXTRACTOR_plugin_remove (arg, "zip");
   arg = EXTRACTOR_plugin_remove (arg, "mime");
   arg = EXTRACTOR_plugin_remove (arg, "png");
-  if (arg != NULL)
+  if (NULL != arg)
     {
       fprintf (stderr,
 	       "add-remove test failed!\n");
@@ -38,3 +57,5 @@ main (int argc, char *argv[])
     }
   return 0;
 }
+
+/* end of test_plugin_loading.c */

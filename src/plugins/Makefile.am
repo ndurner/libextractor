@@ -82,3 +82,9 @@ libextractor_png_la_LIBADD = \
   $(top_builddir)/src/common/libextractor_common.la
 
 EXTRA_DIST = template_extractor.c 
+
+if HAVE_ZZUF
+  fuzz_tests=fuzz_default.sh fuzz_thumbnail.sh
+endif
+
+TESTS = $(fuzz_tests)
