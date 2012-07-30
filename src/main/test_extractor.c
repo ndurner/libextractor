@@ -1,0 +1,140 @@
+/*
+     This file is part of libextractor.
+     (C) 2012 Vidyut Samanta and Christian Grothoff
+
+     libextractor is free software; you can redistribute it and/or modify
+     it under the terms of the GNU General Public License as published
+     by the Free Software Foundation; either version 3, or (at your
+     option) any later version.
+
+     libextractor is distributed in the hope that it will be useful, but
+     WITHOUT ANY WARRANTY; without even the implied warranty of
+     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+     General Public License for more details.
+
+     You should have received a copy of the GNU General Public License
+     along with libextractor; see the file COPYING.  If not, write to the
+     Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+     Boston, MA 02111-1307, USA.
+ */
+/**
+ * @file main/test_extractor.c
+ * @brief plugin for testing GNU libextractor
+ * @author Christian Grothoff
+ */
+#include "platform.h"
+#include "extractor.h"
+#include <string.h>
+#include <stdio.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#include <stdlib.h>
+
+  
+
+/**
+ * Signature of the extract method that each plugin
+ * must provide.
+ *
+ * @param ec extraction context provided to the plugin
+ */
+void
+EXTRACTOR_test_extract_method (struct EXTRACTOR_ExtractContext *ec)
+{
+  unsigned char *dp;
+
+  if ( (NULL == ec->config) ||
+       (0 != strcmp (ec->config, "test")) )
+    return; /* only run in test mode */
+  if ( (4 != ec->read (ec->cls,
+		       &dp,
+		       4)) ||
+       (0 != strncmp ("test",
+		      (const char*) dp, 
+		      4) ) )
+    {
+      fprintf (stderr, "Reading at offset 0 failed\n");
+      abort (); 
+    }
+  if (1024 * 150 !=
+      ec->get_size (ec->cls))
+    {
+      fprintf (stderr, "Unexpected file size returned (expected 150k)\n");
+      abort (); 
+    }		    
+  if (1024 * 100 !=
+      ec->seek (ec->cls,
+		1024 * 100 + 4,
+		SEEK_SET))
+    {
+      fprintf (stderr, "Failure to seek (SEEK_SET)\n");
+      abort ();
+    }
+  if ( (1 != ec->read (ec->cls,
+		       &dp,
+		       1)) ||
+       ((1024 * 100 + 4) % 256 != *dp) )
+    {
+      fprintf (stderr, "Failure to read at 100k + 4\n");
+      abort ();
+    }
+  if (1024 * 50 - 3 !=
+      ec->seek (ec->cls,
+		- (1024 * 50 + 7),
+		SEEK_CUR))
+    {
+      fprintf (stderr, "Failure to seek (SEEK_SET)\n");
+      abort ();
+    }
+  if ( (1 != ec->read (ec->cls,
+		       &dp,
+		       1)) ||
+       ((1024 * 50 - 3) % 256 != *dp) )
+    {
+      fprintf (stderr, "Failure to read at 50k - 3\n");
+      abort ();
+    }
+  if (1024 * 150 - 3 !=
+      ec->seek (ec->cls,
+		- 2,
+		SEEK_END))
+    {
+      fprintf (stderr, "Failure to seek (SEEK_SET)\n");
+      abort ();
+    }
+  if ( (1 != ec->read (ec->cls,
+		       &dp,
+		       1)) ||
+       ((1024 * 150 - 2) % 256 != *dp) )
+    {
+      fprintf (stderr, "Failure to read at 150k - 2\n");
+      abort ();
+    }
+  if (0 != 
+      ec->proc (ec->cls,
+		"test",
+		EXTRACTOR_METATYPE_COMMENT,
+		EXTRACTOR_METAFORMAT_UTF8,
+		"<no mime>",
+		"Hello world!",
+		strlen ("Hello world!") + 1))
+    {
+      fprintf (stderr, "Unexpected return value from 'proc'\n");
+      abort ();
+    }
+  if (1 != 
+      ec->proc (ec->cls,
+		"test",
+		EXTRACTOR_METATYPE_COMMENT,
+		EXTRACTOR_METAFORMAT_UTF8,
+		"<no mime>",
+		"Goodbye!",
+		strlen ("Goodbye!") + 1))
+    {
+      fprintf (stderr, "Unexpected return value from 'proc'\n");
+      abort ();
+    }
+}
+
+/* end of test_extractor.c */

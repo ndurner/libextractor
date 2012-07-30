@@ -56,11 +56,22 @@ extract_SOURCES = \
   getopt.c getopt.h getopt1.c 
 
 
+
 LDADD = \
  $(top_builddir)/src/main/libextractor.la  
 
 TESTS_ENVIRONMENT = testdatadir=$(top_srcdir)/test
 TESTS_ENVIRONMENT += bindir=${bindir}
+
+noinst_LTLIBRARIES = \
+  libextractor_test.la 
+
+libextractor_test_la_SOURCES = \
+  test_extractor.c 
+libextractor_test_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+libextractor_test_la_LIBADD = \
+  $(LE_LIBINTL)
 
 check_PROGRAMS = \
  test_trivial \
