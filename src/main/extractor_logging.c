@@ -39,8 +39,8 @@ EXTRACTOR_log_ (const char *file, int line, const char *format, ...)
   va_list va;
 
   fprintf (stderr,
-	   sizeof (file_line),
-	   "EXTRACTOR %s:%d ");
+	   "EXTRACTOR %s:%d ",
+	   file, line);
   va_start (va, format); 
   vfprintf (stderr, format, va);
   va_end (va);
