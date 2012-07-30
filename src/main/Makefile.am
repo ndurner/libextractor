@@ -76,7 +76,8 @@ libextractor_test_la_LIBADD = \
 check_PROGRAMS = \
  test_trivial \
  test_plugin_loading \
- test_plugin_load_multi
+ test_plugin_load_multi \
+ test_ipc
 
 TESTS = $(check_PROGRAMS)
 
@@ -88,4 +89,7 @@ test_plugin_loading_SOURCES = \
 
 test_plugin_load_multi_SOURCES = \
  test_plugin_load_multi.c 
+
+test_ipc_SOURCES = \
+ test_ipc.c 
 

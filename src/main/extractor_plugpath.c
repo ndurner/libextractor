@@ -436,7 +436,7 @@ get_installation_paths (EXTRACTOR_PathProcessor pp,
       for (prefix = strtok (d, PATH_SEPARATOR_STR);
 	   NULL != prefix;
 	   prefix = strtok (NULL, PATH_SEPARATOR_STR))
-	pp (pp_cls, prefix);
+	pp (pp_cls, prefix);	
       free (d);
       return;
     }
