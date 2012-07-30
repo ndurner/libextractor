@@ -21,6 +21,47 @@
  * @file main/extractor_ipc.h
  * @brief IPC with plugin (OS-independent API)
  * @author Christian Grothoff
+ *
+ * @detail
+ * The IPC communication between plugins and the main library works
+ * as follows.  Each message begins with a 1-character opcode which
+ * specifies the message type.  The main library starts the plugins
+ * by forking the helper process and establishes two pipes for
+ * communication in both directions. 
+ * First, the main library send an 'INIT_STATE' message
+ * to the plugin.  The start message specifies the name (and size)
+ * of a shared memory segment which will contain parts of the the (uncompressed)
+ * data of the file that is being processed.  The same shared memory
+ * segment is used throughout the lifetime of the plugin.
+ *
+ * Then, the following messages are exchanged for each file.
+ * First, an EXTRACT_START message is sent with the specific
+ * size of the file (or -1 if unknown) and the number of bytes
+ * ready in the shared memory segment.  The plugin then answers
+ * with either:
+ * 1) MESSAGE_DONE to indicate that no further processing is 
+ *    required for this file; the IPC continues with the
+ *    EXTRACT_START message for the next file afterwards;
+ * 2) MESSAGE_SEEK to indicate that the plugin would like to
+ *    read data at a different offset; the main library can
+ *    then either
+ *    a) respond with a MESSAGE_DISCARD_STATE to
+ *       tell the plugin to abort processing (the next message will
+ *       then be another EXTRACT_START)
+ *    b) respond with a MESSAGE_UPDATED_SHM which notifies the
+ *       plugin that the shared memory segment was moved to a
+ *       different location in the overall file; the target of the
+ *       seek should now be within the new range (but does NOT have
+ *       to be at the beginning of the seek)
+ * 3) MESSAGE_META to provide extracted meta data to the main
+ *    library.  The main library can then either:
+ *    a) respond with a MESSAGE_DISCARD_STATE to
+ *       tell the plugin to abort processing (the next message will
+ *       then be another EXTRACT_START)
+ *    b) respond with a MESSAGE_CONTINUE_EXTRACTING to
+ *       tell the plugin to continue extracting meta data; in this
+ *       case, the plugin is then expected to produce another
+ *       MESSAGE_DONE, MESSAGE_SEEK or MESSAGE_META round of messages.
  */
 #ifndef EXTRACTOR_IPC_H
 #define EXTRACTOR_IPC_H
