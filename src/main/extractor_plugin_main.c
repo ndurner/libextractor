@@ -367,7 +367,7 @@ handle_init_message (struct ProcessingContext *pc)
     if (NULL == pc->shm)
       return -1;
 #else
-    pc->shm_id = open (shm_name, O_RDONLY, 0);
+    pc->shm_id = shm_open (shm_name, O_RDONLY, 0);
     if (-1 == pc->shm_id)
       {
 	LOG_STRERROR_FILE ("open", shm_name);
