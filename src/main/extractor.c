@@ -37,56 +37,6 @@
 #define DEFAULT_SHM_SIZE (16 * 1024)
 
 
-#if 0
-/**
- * Checks the seek requests that plugins made, finds the one with
- * smallest offset from the beginning of the stream, and satisfies it.
- * 
- * @param plugins to check
- * @param cfs compressed file source to seek in
- * @param current_position current stream position
- * @param map_size number of bytes currently buffered
- * @return new stream position, -1 on error
- */
-static int64_t
-seek_to_new_position (struct EXTRACTOR_PluginList *plugins, 
-		      struct CompressedFileSource *cfs, 
-		      int64_t current_position,
-		      int64_t map_size)
-{
-  int64_t min_pos = current_position + map_size;
-  int64_t min_plugin_pos = 0x7FFFFFFFFFFFFFF;
-  struct EXTRACTOR_PluginList *ppos;
-
-  for (ppos = plugins; NULL != ppos; ppos = ppos->next)
-    {
-      switch (ppos->flags)
-	{
-	case EXTRACTOR_OPTION_DEFAULT_POLICY:
-	case EXTRACTOR_OPTION_OUT_OF_PROCESS_NO_RESTART:
-	case EXTRACTOR_OPTION_IN_PROCESS:
-	  if (ppos->seek_request >= 0 && ppos->seek_request <= min_pos)
-	    min_pos = ppos->seek_request;
-	  if (ppos->seek_request >= 0 && ppos->seek_request <= min_plugin_pos)
-	    min_plugin_pos = ppos->seek_request;
-	  break;
-	case EXTRACTOR_OPTION_DISABLED:
-	  break;
-	}
-    }
-  if (min_plugin_pos == 0x7FFFFFFFFFFFFFF)
-    return -1;
-  if (min_pos < current_position - map_size)
-    {
-      if (1 != cfs_reset_stream (cfs))
-	return -1;
-      return 0;
-    }
-  return cfs_seek (cfs, min_pos);
-}
-#endif
-
-
 /**
  * Closure for 'process_plugin_reply'
  */
@@ -109,6 +59,39 @@ struct PluginReplyProcessor
 
 };
 
+
+/**
+ * Send an 'update' message to the plugin.
+ *
+ * @param plugin plugin to notify
+ * @param shm_off new offset for the SHM
+ * @param data_available number of bytes available in shm
+ * @param ds datastore backend we are using
+ */
+static void
+send_update_message (struct EXTRACTOR_PluginList *plugin,
+		     int64_t shm_off,
+		     size_t data_available,
+		     struct EXTRACTOR_Datasource *ds)
+{
+  struct UpdateMessage um;
+
+  um.opcode = MESSAGE_UPDATED_SHM;
+  um.reserved = 0;
+  um.reserved2 = 0;
+  um.shm_ready_bytes = (uint32_t) data_available;
+  um.shm_off = (uint64_t) shm_off;
+  um.file_size = EXTRACTOR_datasource_get_size_ (ds);
+  if (sizeof (um) !=
+      EXTRACTOR_IPC_channel_send_ (plugin->channel,
+				   &um,
+				   sizeof (um)) )
+    {
+      EXTRACTOR_IPC_channel_destroy_ (plugin->channel);
+      plugin->channel = NULL;
+      plugin->round_finished = 1;
+    }  
+}
 
 
 /**
@@ -329,8 +312,10 @@ do_extract (struct EXTRACTOR_PluginList *plugins,
 	       (min_seek <= pos->seek_request) &&
 	       (min_seek + data_available > pos->seek_request) )
 	    {
-
-	      /* FIXME: notify plugin about seek! */
+	      send_update_message (pos,
+				   min_seek,
+				   data_available,
+				   ds);
 	      pos->seek_request = -1;
 	    }
 	  if ( (-1 != pos->seek_request) && 
