@@ -381,7 +381,8 @@ EXTRACTOR_plugin_remove (struct EXTRACTOR_PluginList *prev,
     prev->next = pos->next;
   if (NULL != pos->channel)
     EXTRACTOR_IPC_channel_destroy_ (pos->channel);
-  if (0 == EXTRACTOR_IPC_shared_memory_change_rc_ (pos->shm, -1))
+  if ( (NULL != pos->shm) &&
+       (0 == EXTRACTOR_IPC_shared_memory_change_rc_ (pos->shm, -1)) )
     EXTRACTOR_IPC_shared_memory_destroy_ (pos->shm);
   free (pos->short_libname);
   free (pos->libname);
