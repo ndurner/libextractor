@@ -102,6 +102,11 @@ struct InitMessage
   unsigned char reserved;
 
   /**
+   * Always zero.
+   */
+  uint16_t reserved2;
+
+  /**
    * Name of the shared-memory name.
    */
   uint32_t shm_name_length;

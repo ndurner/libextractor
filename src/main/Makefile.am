@@ -2,8 +2,9 @@ SUBDIRS  = .
 
 INCLUDES = -I$(top_srcdir)/src/include $(LTDLINCL)
 
-# install plugins under:
-plugindir = $(libdir)/@RPLUGINDIR@
+# install test plugins under /tmp (we must install them somewhere,
+# with 'noinst' automake insists on building a static library...)
+tmpdir = /tmp/
 
 LIBS = \
  @LE_LIBINTL@ @LE_LIB_LIBS@
@@ -34,6 +35,12 @@ else
 EXTRACTOR_IPC=extractor_ipc_gnu.c
 endif
 
+if HAVE_GNU_LD
+ makesymbolic=-Wl,-Bsymbolic
+endif
+
+PLUGINFLAGS = $(makesymbolic) $(LE_PLUGIN_LDFLAGS)
+
 EXTRA_DIST = \
   iconv.c fuzz_default.sh fuzz_thumbnail.sh
 
@@ -63,7 +70,7 @@ LDADD = \
 TESTS_ENVIRONMENT = testdatadir=$(top_srcdir)/test
 TESTS_ENVIRONMENT += bindir=${bindir}
 
-noinst_LTLIBRARIES = \
+tmp_LTLIBRARIES = \
   libextractor_test.la 
 
 libextractor_test_la_SOURCES = \
@@ -77,7 +84,7 @@ check_PROGRAMS = \
  test_trivial \
  test_plugin_loading \
  test_plugin_load_multi \
- test_ipc
+ test_ipc 
 
 TESTS = $(check_PROGRAMS)
 

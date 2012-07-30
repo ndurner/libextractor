@@ -514,8 +514,12 @@ find_plugin_in_path (void *cls,
     {
       if ('.' == ent->d_name[0])
 	continue;
-      if ( (NULL != (la = strstr (ent->d_name, ".la"))) &&
-	   ('\0' == la[3]) )
+      if ( ( (NULL != (la = strstr (ent->d_name, ".la"))) &&
+	     ('\0' == la[3]) ) ||
+	   ( (NULL != (la = strstr (ent->d_name, ".ver"))) &&
+	     (la[4] == '\0') ) ||
+	   ( (NULL != (la = strstr (ent->d_name, ".a"))) &&
+	     (la[2] == '\0') ) )
 	continue; /* only load '.so' and '.dll' */
       if (NULL == (sym_name = strrchr (ent->d_name, '_')))
 	continue;	
@@ -601,6 +605,8 @@ load_plugins_from_dir (void *cls,
 	continue;
       if ( ( (NULL != (la = strstr (ent->d_name, ".la"))) &&
 	     (la[3] == '\0') ) ||
+	   ( (NULL != (la = strstr (ent->d_name, ".ver"))) &&
+	     (la[4] == '\0') ) ||
 	   ( (NULL != (la = strstr (ent->d_name, ".a"))) &&
 	     (la[2] == '\0')) )
 	continue; /* only load '.so' and '.dll' */
@@ -616,11 +622,8 @@ load_plugins_from_dir (void *cls,
 	}
       if (NULL != (dot = strchr (sym, '.')))
 	*dot = '\0';
-#if DEBUG > 1
-      fprintf (stderr,
-	       "Adding default plugin `%s'\n",
-	       sym);
-#endif
+      LOG ("Adding default plugin `%s'\n",
+	   sym);
       dlc->res = EXTRACTOR_plugin_add (dlc->res,
 				       sym,
 				       NULL,

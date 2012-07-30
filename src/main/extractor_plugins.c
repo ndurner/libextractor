@@ -165,8 +165,9 @@ EXTRACTOR_plugin_load_ (struct EXTRACTOR_PluginList *plugin)
   lt_dladvise_destroy (&advise);
   if (NULL == plugin->libraryHandle)
     {
-      LOG ("Loading `%s' plugin failed: %s\n",
+      LOG ("Loading `%s' plugin failed (using name `%s'): %s\n",
 	   plugin->short_libname,
+	   plugin->libname,
 	   lt_dlerror ());
       free (plugin->libname);
       plugin->libname = NULL;

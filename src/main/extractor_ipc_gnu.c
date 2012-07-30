@@ -263,6 +263,7 @@ EXTRACTOR_IPC_channel_create_ (struct EXTRACTOR_PluginList *plugin,
     }
   channel->shm = shm;
   channel->plugin = plugin;
+  channel->size = 0;
   if (0 != pipe (p1))
     {
       LOG_STRERROR ("pipe");
@@ -309,13 +310,14 @@ EXTRACTOR_IPC_channel_create_ (struct EXTRACTOR_PluginList *plugin,
     }  
   init->opcode = MESSAGE_INIT_STATE;
   init->reserved = 0;
+  init->reserved2 = 0;
   init->shm_name_length = slen;
   init->shm_map_size = shm->shm_size;
   memcpy (&init[1], shm->shm_name, slen);
-  if (sizeof (init) !=
+  if (sizeof (struct InitMessage) + slen !=
       EXTRACTOR_IPC_channel_send_ (channel,
 				   init,
-				   sizeof (init) + slen) )
+				   sizeof (struct InitMessage) + slen) )
     {
       LOG ("Failed to send INIT_STATE message to plugin\n");
       EXTRACTOR_IPC_channel_destroy_ (channel);
