@@ -32,7 +32,7 @@
 #include <ltdl.h>
 
 #include "extractor_plugpath.h"
-
+#include "extractor_logging.h"
 
 /**
  * Function to call on paths.
@@ -77,6 +77,7 @@ cut_bin (char * in)
     }
   return in;
 }
+
 
 #if LINUX
 /**
@@ -146,6 +147,7 @@ get_path_from_proc_exe ()
   lnk = cut_bin (lnk);
   if (NULL == (ret = realloc (lnk, strlen(lnk) + 6)))
     {
+      LOG_STRERROR ("realloc");
       free (lnk);
       return NULL;
     }
@@ -178,6 +180,7 @@ get_path_from_module_filename ()
   path = cut_bin (path);
   if (NULL == (ret = realloc (path, strlen(path) + 6)))
     {
+      LOG_STRERROR ("realloc");
       free (path);
       return NULL;
     }
@@ -223,7 +226,11 @@ get_path_from_NSGetExecutablePath ()
   (void) func (path, &len);
   if (0 == len)
     return NULL;
-  path = GNUNET_malloc (len);
+  if (NULL == (path = malloc (len)))
+    {
+      LOG_STRERROR ("malloc");
+      return NULL;
+    }
   if (0 != func (path, &len))
   {
     GNUNET_free (path);
@@ -259,7 +266,10 @@ get_path_from_dyld_image ()
       if ( (NULL == path) || (0 == strlen (path)) )
 	continue;
       if (NULL == (p = strdup (path)))
-	return NULL;
+	{
+	  LOG_STRERROR ("strdup");
+	  return NULL;
+	}
       s = p + strlen (p);
       while ( (s > p) && ('/' != *s) )
 	s--;
@@ -291,9 +301,13 @@ get_path_from_PATH() {
   if (NULL == (p = getenv ("PATH")))
     return NULL;
   if (NULL == (path = strdup (p))) /* because we write on it */
-    return NULL;
+    {
+      LOG_STRERROR ("strdup");
+      return NULL;
+    }
   if (NULL == (buf = malloc (strlen(path) + 20)))
     {
+      LOG_STRERROR ("malloc");
       free (path);
       return NULL;
     }
@@ -304,14 +318,17 @@ get_path_from_PATH() {
       sprintf(buf, "%s/%s", pos, "extract");
       if (0 == stat(buf, &sbuf)) 
 	{
-	  pos = strdup(pos);
 	  free (buf);
 	  free (path);
-	  if (NULL == pos)
-	    return NULL;
+	  if (NULL == (pos = strdup(pos)))
+	    {
+	      LOG_STRERROR ("strdup");
+	      return NULL;
+	    }
 	  pos = cut_bin (pos);
 	  if (NULL == (ret = realloc (pos, strlen(pos) + 5)))
 	    {
+	      LOG_STRERROR ("realloc");
 	      free (pos);
 	      return NULL;
 	    }
@@ -329,9 +346,9 @@ get_path_from_PATH() {
       if (NULL == pos)
 	return NULL;
       pos = cut_bin (pos);
-      ret = realloc (pos, strlen(pos) + 5);
-      if (NULL == ret)
+      if (NULL == (ret = realloc (pos, strlen(pos) + 5)))
 	{
+	  LOG_STRERROR ("realloc");
 	  free (pos);
 	  return NULL;
 	}
@@ -412,7 +429,10 @@ get_installation_paths (EXTRACTOR_PathProcessor pp,
   if (NULL != (p = getenv ("LIBEXTRACTOR_PREFIX")))
     {
       if (NULL == (d = strdup (p)))
-	return;
+	{
+	  LOG_STRERROR ("strdup");
+	  return;
+	}
       for (prefix = strtok (d, PATH_SEPARATOR_STR);
 	   NULL != prefix;
 	   prefix = strtok (NULL, PATH_SEPARATOR_STR))
@@ -500,9 +520,9 @@ find_plugin_in_path (void *cls,
       if (NULL == (sym_name = strrchr (ent->d_name, '_')))
 	continue;	
       sym_name++;
-      sym = strdup (sym_name);
-      if (NULL == sym)
+      if (NULL == (sym = strdup (sym_name)))
 	{
+	  LOG_STRERROR ("strdup");
 	  CLOSEDIR (dir);
 	  return;
 	}
@@ -573,8 +593,7 @@ load_plugins_from_dir (void *cls,
   char *sym;
   char *dot;
 
-  dir = opendir (path);
-  if (NULL == dir)
+  if (NULL == (dir = opendir (path)))
     return;
   while (NULL != (ent = readdir (dir)))
     {
@@ -586,18 +605,16 @@ load_plugins_from_dir (void *cls,
 	     (la[2] == '\0')) )
 	continue; /* only load '.so' and '.dll' */
 
-      sym_name = strrchr (ent->d_name, '_');
-      if (sym_name == NULL)
+      if (NULL == (sym_name = strrchr (ent->d_name, '_')))
 	continue;
       sym_name++;
-      sym = strdup (sym_name);
-      if (NULL == sym)
+      if (NULL == (sym = strdup (sym_name)))
 	{
+	  LOG_STRERROR ("strdup");
 	  closedir (dir);
 	  return;
 	}
-      dot = strchr (sym, '.');
-      if (dot != NULL)
+      if (NULL != (dot = strchr (sym, '.')))
 	*dot = '\0';
 #if DEBUG > 1
       fprintf (stderr,

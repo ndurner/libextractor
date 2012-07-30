@@ -17,7 +17,11 @@
      Free Software Foundation, Inc., 59 Temple Place - Suite 330,
      Boston, MA 02111-1307, USA.
  */
-
+/**
+ * @file main/extractor_common.h
+ * @brief commonly used functions within the library
+ * @author Christian Grothoff
+ */
 
 #ifndef EXTRACTOR_COMMON_H
 #define EXTRACTOR_COMMON_H

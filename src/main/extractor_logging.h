@@ -42,12 +42,19 @@ EXTRACTOR_log_ (const char *file, int line, const char *format, ...);
 /**
  * Log a message.
  *
- * @param fmt format string
- * @param ... arguments for fmt (printf-style)
+ * @param ... format string and arguments for fmt (printf-style)
  */
-#define LOG(fmt, ...) EXTRACTOR_log_ (__FILE__, __LINE__, fmt, __VA_ARGS__)
+#define LOG(...) EXTRACTOR_log_(__FILE__, __LINE__, __VA_ARGS__)
+
 #else
+
+/**
+ * Log a message.
+ *
+ * @param ... format string and arguments for fmt (printf-style)
+ */
 #define LOG(...)
+
 #endif
 
 

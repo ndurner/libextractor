@@ -23,6 +23,7 @@
  * @author Christian Grothoff
  */
 #include "platform.h"
+#include "extractor_logging.h"
 #include "extractor_datasource.h"
 
 #if HAVE_LIBBZ2
@@ -218,7 +219,10 @@ bfds_pick_next_buffer_at (struct BufferedFileDataSource *bfds,
   ssize_t rd;
   
   if (pos > bfds->fsize)
-    return -1; /* invalid */
+    {
+      LOG ("Invalid seek operation\n");
+      return -1; /* invalid */
+    }
   if (NULL == bfds->buffer)
     {
       bfds->buffer_pos = pos;
@@ -231,7 +235,10 @@ bfds_pick_next_buffer_at (struct BufferedFileDataSource *bfds,
   bfds->buffer_pos = 0;
   rd = read (bfds->fd, bfds->buffer, bfds->buffer_size);
   if (rd < 0)
-    return -1;
+    {
+      LOG_STRERROR ("read");
+      return -1;
+    }
   bfds->buffer_bytes = rd;
   return 0;
 }
@@ -258,13 +265,19 @@ bfds_new (const void *data,
   else
     xtra = (size_t) fsize;
   if ( (-1 == fd) && (NULL == data) )
-    return NULL;
+    {
+      LOG ("Invalid arguments\n");
+      return NULL;
+    }
   if ( (-1 != fd) && (NULL != data) )
     fd = -1; /* don't need fd */
   if (NULL != data)
     xtra = 0;
   if (NULL == (result = malloc (sizeof (struct BufferedFileDataSource) + xtra)))
-    return NULL;
+    {
+      LOG_STRERROR ("malloc");
+      return NULL;
+    }
   memset (result, 0, sizeof (struct BufferedFileDataSource));
   result->data = (NULL != data) ? data : &result[1];
   result->buffer = (NULL != data) ? NULL : &result[1];
@@ -308,9 +321,15 @@ bfds_seek (struct BufferedFileDataSource *bfds,
     {
     case SEEK_CUR:
       if (bfds->fpos + bfds->buffer_pos + pos < 0)
-	return -1;
+	{
+	  LOG ("Invalid seek operation\n");
+	  return -1;
+	}
       if (bfds->fpos + bfds->buffer_pos + pos > bfds->fsize)
-	return -1;
+	{
+	  LOG ("Invalid seek operation\n");
+	  return -1;
+	}
       if ( (NULL == bfds->buffer) ||
 	   ( (bfds->buffer_pos + pos < bfds->buffer_bytes) &&
 	     (bfds->buffer_pos + pos >= 0) ) )
@@ -320,20 +339,35 @@ bfds_seek (struct BufferedFileDataSource *bfds,
 	}
       if (0 != bfds_pick_next_buffer_at (bfds, 
 					 bfds->fpos + bfds->buffer_pos + pos))
-	return -1;
+	{
+	  LOG ("seek operation failed\n");
+	  return -1;
+	}
       return bfds->fpos;
     case SEEK_END:
       if (pos > 0)
-	return -1;
+	{
+	  LOG ("Invalid seek operation\n");
+	  return -1;
+	}
       if (bfds->fsize < - pos)
-	return -1;
+	{
+	  LOG ("Invalid seek operation\n");
+	  return -1;
+	}
       pos = bfds->fsize + pos;
       /* fall-through! */
     case SEEK_SET:
       if (pos < 0)
-	return -1;
+	{
+	  LOG ("Invalid seek operation\n");
+	  return -1;
+	}
       if (pos > bfds->fsize)
-	return -1;
+	{
+	  LOG ("Invalid seek operation\n");
+	  return -1;
+	}
       if ( (NULL == bfds->buffer) ||
 	   ( (bfds->buffer_pos <= pos) &&
 	     (bfds->buffer_pos + bfds->buffer_bytes > pos) ) )
@@ -342,7 +376,10 @@ bfds_seek (struct BufferedFileDataSource *bfds,
 	  return bfds->buffer_pos;
 	}
       if (0 != bfds_pick_next_buffer_at (bfds, pos))
-	return -1;
+	{
+	  LOG ("seek operation failed\n");
+	  return -1;
+	}
       return bfds->fpos;
     }
   return -1;
@@ -383,13 +420,13 @@ bfds_read (struct BufferedFileDataSource *bfds,
 	  bfds->fpos = old_off;
 	  bfds->buffer_bytes = 0;
 	  bfds->buffer_pos = 0;
+	  LOG ("read operation failed\n");
 	  return -1; /* getting more failed */
 	}
       avail = bfds->buffer_bytes - bfds->buffer_pos;
       if (avail > count)
 	avail = count;
-      if (0 == avail) 
-	abort (); /* must not happen */
+      ASSERT (0 != avail);
       memcpy (&cbuf[ret], bfds->data + bfds->buffer_pos, avail);
       bfds->buffer_pos += avail;
       count -= avail;
@@ -433,6 +470,7 @@ cfs_reset_stream_zlib (struct CompressedFileSource *cfs)
 #endif
       ))
     {
+      LOG ("Failed to initialize zlib decompression\n");
       return -1;
     }
   cfs->fpos = 0;
@@ -450,6 +488,7 @@ static int
 cfs_reset_stream_bz2 (struct CompressedFileSource *cfs)
 {
   /* not implemented */
+  LOG ("bz2 decompression not implemented\n");
   return -1;
 }
 
@@ -473,6 +512,7 @@ cfs_reset_stream (struct CompressedFileSource *cfs)
     case COMP_TYPE_BZ2:
       return cfs_reset_stream_bz2 (cfs);
     default:
+      LOG ("invalid compression type selected\n");
       return -1;
     }
 }
@@ -575,6 +615,7 @@ static int
 cfs_init_decompressor_bz2 (struct CompressedFileSource *cfs, 
 			   EXTRACTOR_MetaDataProcessor proc, void *proc_cls)
 {
+  LOG ("bz2 decompression not implemented\n");
   return -1;
 }
 
@@ -599,6 +640,7 @@ cfs_init_decompressor (struct CompressedFileSource *cfs,
     case COMP_TYPE_BZ2:
       return cfs_init_decompressor_bz2 (cfs, proc, proc_cls);
     default:
+      LOG ("invalid compression type selected\n");
       return -1;
     }
 }
@@ -627,6 +669,7 @@ cfs_deinit_decompressor_zlib (struct CompressedFileSource *cfs)
 static int
 cfs_deinit_decompressor_bz2 (struct CompressedFileSource *cfs)
 {
+  LOG ("bz2 decompression not implemented\n");
   return -1;
 }
 
@@ -647,6 +690,7 @@ cfs_deinit_decompressor (struct CompressedFileSource *cfs)
     case COMP_TYPE_BZ2:
       return cfs_deinit_decompressor_bz2 (cfs);
     default:
+      LOG ("invalid compression type selected\n");
       return -1;
     }
 }
@@ -684,7 +728,10 @@ cfs_new (struct BufferedFileDataSource *bfds,
   struct CompressedFileSource *cfs;
 
   if (NULL == (cfs = malloc (sizeof (struct CompressedFileSource))))
-    return NULL;
+    {
+      LOG_STRERROR ("malloc");
+      return NULL;
+    }
   memset (cfs, 0, sizeof (struct CompressedFileSource));
   cfs->compression_type = compression_type;
   cfs->bfds = bfds;
@@ -784,6 +831,7 @@ cfs_read_bz2 (struct CompressedFileSource *cfs,
 	      void *data,
 	      size_t size)
 {
+  LOG ("bz2 decompression not implemented\n");
   return -1;
 }
 
@@ -810,6 +858,7 @@ cfs_read (struct CompressedFileSource *cfs,
     case COMP_TYPE_BZ2:
       return cfs_read_bz2 (cfs, data, size);
     default:
+      LOG ("invalid compression type selected\n");
       return -1;
     }
 }
@@ -837,33 +886,53 @@ cfs_seek (struct CompressedFileSource *cfs,
     {
     case SEEK_CUR:
       if (cfs->fpos + position < 0)
-	return -1;
+	{
+	  LOG ("Invalid seek operation\n");
+	  return -1;
+	}
       if ( (-1 != cfs->uncompressed_size) &&
 	   (cfs->fpos + position > cfs->uncompressed_size) )
-	return -1;
+	{
+	  LOG ("Invalid seek operation\n");
+	  return -1;
+	}
       nposition = cfs->fpos + position;
       break;
     case SEEK_END:
       if (-1 == cfs->uncompressed_size)
 	{
 	  /* yuck, need to first find end of file! */
+	  LOG ("Seeking from end-of-file in compressed files not implemented\n");
 	  return -1; // FIXME: not implemented
 	}
       if (position > 0)
-	return -1;
+	{
+	  LOG ("Invalid seek operation\n");
+	  return -1;
+	}
       if (cfs->uncompressed_size < - position)
-	return -1;
+	{
+	  LOG ("Invalid seek operation\n");
+	  return -1;
+	}
       nposition = cfs->uncompressed_size + position;
       break;
     case SEEK_SET:
       if (position < 0)
-	return -1;
+	{
+	  LOG ("Invalid seek operation\n");
+	  return -1;
+	}
       if ( (-1 != cfs->uncompressed_size) &&
 	   (cfs->uncompressed_size < position ) )
-	return -1;
+	{
+	  LOG ("Invalid seek operation\n");
+	  return -1;
+	}
       nposition = (uint64_t) position;
       break;
     default:
+      LOG ("Invalid seek operation\n");
       return -1;
     }
   
@@ -878,7 +947,10 @@ cfs_seek (struct CompressedFileSource *cfs,
       else
 	{
 	  if (-1 == cfs_reset_stream (cfs))
-	    return -1;
+	    {
+	      LOG ("Failed to restart compressed stream for seek operation\n");
+	      return -1;
+	    }
 	  delta = nposition;
 	}
     }
@@ -891,7 +963,10 @@ cfs_seek (struct CompressedFileSource *cfs,
       max = (sizeof (buf) > delta) ? delta : sizeof (buf);
       ret = cfs_read (cfs, buf, max);
       if (-1 == ret)
-	return -1;
+	{
+	  LOG ("Failed to read decompressed stream for seek operation\n");
+	  return -1;
+	}
       delta -= ret;      
     }
   return cfs->fpos;
@@ -979,10 +1054,14 @@ EXTRACTOR_datasource_create_from_file_ (const char *filename,
   int64_t fsize;
 
   if (-1 == (fd = open (filename, O_RDONLY | O_LARGEFILE)))
-    return NULL;
+    {
+      LOG_STRERROR_FILE ("open", filename);
+      return NULL;
+    }
   if ( (0 != fstat (fd, &sb)) ||
        (S_ISDIR (sb.st_mode)) )       
     {
+      LOG_STRERROR_FILE ("fstat", filename);
       (void) close (fd);
       return NULL;
     }
@@ -1000,21 +1079,26 @@ EXTRACTOR_datasource_create_from_file_ (const char *filename,
     }
   if (NULL == (ds = malloc (sizeof (struct EXTRACTOR_Datasource))))
     {
+      LOG_STRERROR ("malloc");
       bfds_delete (bfds);
       return NULL;
     }
   ds->bfds = bfds;
   ds->fd = fd;
+  ds->cfs = NULL;
   ct = get_compression_type (bfds);
   if ( (COMP_TYPE_ZLIB == ct) ||
        (COMP_TYPE_BZ2 == ct) )
-    ds->cfs = cfs_new (bfds, fsize, ct, proc, proc_cls);
-  if (NULL == ds->cfs)
     {
-      bfds_delete (bfds);
-      free (ds);
-      (void) close (fd);
-      return NULL;
+      ds->cfs = cfs_new (bfds, fsize, ct, proc, proc_cls);
+      if (NULL == ds->cfs)
+	{
+	  LOG ("Failed to initialize decompressor\n");
+	  bfds_delete (bfds);
+	  free (ds);
+	  (void) close (fd);
+	  return NULL;
+	}
     }
   return ds;
 }
@@ -1041,9 +1125,13 @@ EXTRACTOR_datasource_create_from_buffer_ (const char *buf,
   if (0 == size)
     return NULL;
   if (NULL == (bfds = bfds_new (buf, -1, size)))
-    return NULL;
+    {
+      LOG ("Failed to initialize buffer data source\n");
+      return NULL;
+    }
   if (NULL == (ds = malloc (sizeof (struct EXTRACTOR_Datasource))))
     {
+      LOG_STRERROR ("malloc");
       bfds_delete (bfds);
       return NULL;
     }
@@ -1052,12 +1140,15 @@ EXTRACTOR_datasource_create_from_buffer_ (const char *buf,
   ct = get_compression_type (bfds);
   if ( (COMP_TYPE_ZLIB == ct) ||
        (COMP_TYPE_BZ2 == ct) )
-    ds->cfs = cfs_new (bfds, size, ct, proc, proc_cls);
-  if (NULL == ds->cfs)
     {
-      bfds_delete (bfds);
-      free (ds);
-      return NULL;
+      ds->cfs = cfs_new (bfds, size, ct, proc, proc_cls);
+      if (NULL == ds->cfs)
+	{
+	  LOG ("Failed to initialize decompressor\n");
+	  bfds_delete (bfds);
+	  free (ds);
+	  return NULL;
+	}
     }
   return ds;
 }

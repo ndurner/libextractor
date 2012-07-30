@@ -27,6 +27,7 @@
 #include <ltdl.h>
 #include "extractor_datasource.h"
 #include "extractor_ipc.h"
+#include "extractor_logging.h"
 #include "extractor_plugpath.h"
 #include "extractor_plugins.h"
 
@@ -87,6 +88,7 @@ send_update_message (struct EXTRACTOR_PluginList *plugin,
 				   &um,
 				   sizeof (um)) )
     {
+      LOG ("Failed to send UPDATED_SHM message to plugin\n");
       EXTRACTOR_IPC_channel_destroy_ (plugin->channel);
       plugin->channel = NULL;
       plugin->round_finished = 1;
@@ -110,6 +112,7 @@ send_discard_message (struct EXTRACTOR_PluginList *plugin)
 				   &disc_msg,
 				   sizeof (disc_msg)) )
     {
+      LOG ("Failed to send DISCARD_STATE message to plugin\n");
       EXTRACTOR_IPC_channel_destroy_ (plugin->channel);
       plugin->channel = NULL;
       plugin->round_finished = 1;
@@ -182,6 +185,7 @@ process_plugin_reply (void *cls,
 				   &cont_msg,
 				   sizeof (cont_msg)) )
     {
+      LOG ("Failed to send CONTINUE_EXTRACTING message to plugin\n");
       EXTRACTOR_IPC_channel_destroy_ (plugin->channel);
       plugin->channel = NULL;
       plugin->round_finished = 1;
@@ -240,6 +244,7 @@ do_extract (struct EXTRACTOR_PluginList *plugins,
 					       &start,
 					       sizeof (start)) ) )
 	{
+	  LOG ("Failed to send EXTRACT_START message to plugin\n");
 	  EXTRACTOR_IPC_channel_destroy_ (pos->channel);
 	  pos->channel = NULL;
 	}
@@ -265,6 +270,7 @@ do_extract (struct EXTRACTOR_PluginList *plugins,
 				       &prp))
 	{
 	  /* serious problem in IPC; reset *all* channels */
+	  LOG ("Failed to receive message from channels; full reset\n");
 	  abort_all_channels (plugins);
 	  break;
 	}
@@ -298,6 +304,7 @@ do_extract (struct EXTRACTOR_PluginList *plugins,
 								  min_seek,
 								  DEFAULT_SHM_SIZE)))
 	    {
+	      LOG ("Failed to seek; full reset\n");
 	      abort_all_channels (plugins);
 	      break;
 	    }
@@ -334,6 +341,7 @@ do_extract (struct EXTRACTOR_PluginList *plugins,
     {
       if (EXTRACTOR_OPTION_IN_PROCESS != pos->flags)
 	continue;
+      LOG ("In-process plugins not implemented\n");
       // FIXME: initialize read/seek context...
       // pos->extract_method (FIXME);
     }

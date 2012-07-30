@@ -23,6 +23,7 @@
  * @author Christian Grothoff
  */
 #include "platform.h"
+#include "extractor_logging.h"
 #include "extractor_ipc.h"
 #include "extractor_plugins.h"
 
@@ -78,7 +79,10 @@ EXTRACTOR_IPC_process_reply_ (struct EXTRACTOR_PluginList *plugin,
 	  memcpy (&meta, cdata, sizeof (meta));
 	  /* check hdr for sanity */
 	  if (meta.value_size > MAX_META_DATA)        
-	    return -1; /* not allowing more than MAX_META_DATA meta data */
+	    {
+	      LOG ("Meta data exceeds size limit\n");
+	      return -1; /* not allowing more than MAX_META_DATA meta data */
+	    }
 	  if (size < sizeof (meta) + meta.mime_length + meta.value_size)
 	    {
 	      plugin->seek_request = -1;
@@ -92,7 +96,10 @@ EXTRACTOR_IPC_process_reply_ (struct EXTRACTOR_PluginList *plugin,
 	    {
 	      mime_type = &cdata[sizeof (struct MetaMessage)];
 	      if ('\0' != mime_type[meta.mime_length - 1])
-		return -1;		
+		{
+		  LOG ("Mime type not 0-terminated\n");
+		  return -1;		
+		}
 	    }
 	  if (0 == meta.value_size)
 	    value = NULL;
@@ -106,6 +113,7 @@ EXTRACTOR_IPC_process_reply_ (struct EXTRACTOR_PluginList *plugin,
 		mime_type, value);
 	  return sizeof (struct MetaMessage) + meta.mime_length + meta.value_size;
 	default:
+	  LOG ("Invalid message type %d\n", (int) code);
 	  return -1;
 	}
     }

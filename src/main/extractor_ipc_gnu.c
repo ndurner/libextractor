@@ -26,6 +26,7 @@
 #include "plibc.h"
 #include "extractor.h"
 #include "extractor_datasource.h"
+#include "extractor_logging.h"
 #include "extractor_plugin_main.h"
 #include "extractor_ipc.h"
 #include <dirent.h>
@@ -136,7 +137,10 @@ EXTRACTOR_IPC_shared_memory_create_ (size_t size)
   const char *tpath;
 
   if (NULL == (shm = malloc (sizeof (struct EXTRACTOR_SharedMemory))))
-    return NULL;
+    {
+      LOG_STRERROR ("malloc");
+      return NULL;
+    }
 #if SOMEBSD
   /* this works on FreeBSD, not sure about others... */
   tpath = getenv ("TMPDIR");
@@ -153,6 +157,7 @@ EXTRACTOR_IPC_shared_memory_create_ (size_t size)
   if (-1 == (shm->shm_id = shm_open (shm->shm_name,
 				     O_RDWR | O_CREAT, S_IRUSR | S_IWUSR)))
     {
+      LOG_STRERROR_FILE ("shm_open", shm->shm_name);
       free (shm);
       return NULL;
     }
@@ -162,6 +167,7 @@ EXTRACTOR_IPC_shared_memory_create_ (size_t size)
 				      shm->shm_id, 0))) ||
        (((void*) -1) == shm->shm_ptr) )
   {
+    LOG_STRERROR ("ftruncate/mmap");
     (void) close (shm->shm_id);
     (void) shm_unlink (shm->shm_name);
     free (shm);
@@ -251,16 +257,21 @@ EXTRACTOR_IPC_channel_create_ (struct EXTRACTOR_PluginList *plugin,
   size_t slen;
 
   if (NULL == (channel = malloc (sizeof (struct EXTRACTOR_Channel))))
-    return NULL;
+    {
+      LOG_STRERROR ("malloc");
+      return NULL;
+    }
   channel->shm = shm;
   channel->plugin = plugin;
   if (0 != pipe (p1))
     {
+      LOG_STRERROR ("pipe");
       free (channel);
       return NULL;
     }
   if (0 != pipe (p2))
     {
+      LOG_STRERROR ("pipe");
       (void) close (p1[0]);
       (void) close (p1[1]);
       free (channel);
@@ -269,6 +280,7 @@ EXTRACTOR_IPC_channel_create_ (struct EXTRACTOR_PluginList *plugin,
   pid = fork ();
   if (pid == -1)
     {
+      LOG_STRERROR ("fork");
       (void) close (p1[0]);
       (void) close (p1[1]);
       (void) close (p2[0]);
@@ -291,6 +303,7 @@ EXTRACTOR_IPC_channel_create_ (struct EXTRACTOR_PluginList *plugin,
   slen = strlen (shm->shm_name) + 1;
   if (NULL == (init = malloc (sizeof (struct InitMessage) + slen)))
     {
+      LOG_STRERROR ("malloc");
       EXTRACTOR_IPC_channel_destroy_ (channel);
       return NULL;
     }  
@@ -304,6 +317,7 @@ EXTRACTOR_IPC_channel_create_ (struct EXTRACTOR_PluginList *plugin,
 				   init,
 				   sizeof (init) + slen) )
     {
+      LOG ("Failed to send INIT_STATE message to plugin\n");
       EXTRACTOR_IPC_channel_destroy_ (channel);
       return NULL;
     }
@@ -322,10 +336,14 @@ EXTRACTOR_IPC_channel_destroy_ (struct EXTRACTOR_Channel *channel)
 {
   int status;
 
-  (void) kill (channel->cpid, SIGKILL);
-  (void) waitpid (channel->cpid, &status, 0);
-  (void) close (channel->cpipe_out);
-  (void) close (channel->cpipe_in);
+  if (0 != kill (channel->cpid, SIGKILL))
+    LOG_STRERROR ("kill");
+  if (-1 == waitpid (channel->cpid, &status, 0))
+    LOG_STRERROR ("waitpid");
+  if (0 != close (channel->cpipe_out))
+    LOG_STRERROR ("close");
+  if (0 != close (channel->cpipe_in))
+    LOG_STRERROR ("close");
   free (channel);
 }
 
@@ -352,7 +370,11 @@ EXTRACTOR_IPC_channel_send_ (struct EXTRACTOR_Channel *channel,
     {
       ret = write (channel->cpipe_in, &cdata[off], size - off);
       if (ret <= 0)
-	return -1;
+	{
+	  if (-1 == ret)
+	    LOG_STRERROR ("write");
+	  return -1;
+	}
       off += ret;
     }
   return size;
@@ -404,6 +426,8 @@ EXTRACTOR_IPC_channel_recv_ (struct EXTRACTOR_Channel **channels,
   if (-1 == select (max + 1, &to_check, NULL, NULL, &tv))
     {
       /* an error or timeout -> something's wrong or all plugins hung up */
+      if (EINTR != errno)
+	LOG_STRERROR ("select");
       return -1;
     }
   for (i=0;i<num_channels;i++)
@@ -421,6 +445,8 @@ EXTRACTOR_IPC_channel_recv_ (struct EXTRACTOR_Channel **channels,
 						channel->size + iret, 
 						proc, proc_cls)) )
 	{
+	  if (-1 == iret)
+	    LOG_STRERROR ("read");
 	  EXTRACTOR_IPC_channel_destroy_ (channel);
 	  channels[i] = NULL;
 	}

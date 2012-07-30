@@ -25,6 +25,7 @@
 #include "extractor_plugins.h"
 #include "extractor_plugpath.h"
 #include "extractor_ipc.h"
+#include "extractor_logging.h"
 
 
 /**
@@ -55,9 +56,11 @@ get_symbol_with_prefix (void *lib_handle,
     return NULL;
   sym_name++;
   if (NULL == (sym = strdup (sym_name)))
-    return NULL;
-  dot = strchr (sym, '.');
-  if (NULL != dot)
+    {
+      LOG_STRERROR ("strdup");
+      return NULL;
+    }
+  if (NULL != (dot = strchr (sym, '.')))
     *dot = '\0';
   if (NULL == (name = malloc(strlen(sym) + strlen(template) + 1)))
     {
@@ -72,34 +75,29 @@ get_symbol_with_prefix (void *lib_handle,
   if (NULL == symbol) 
     {
       /* now try with the '_' */
-#if DEBUG
       char *first_error = strdup (lt_dlerror ());
-#endif
       symbol = lt_dlsym (lib_handle, name);
-#if DEBUG
       if (NULL == symbol)
 	{
-	  fprintf (stderr,
-		   "Resolving symbol `%s' failed, "
-		   "so I tried `%s', but that failed also.  Errors are: "
-		   "`%s' and `%s'.\n",
-		   name+1,
-		   name,
-		   first_error == NULL ? "out of memory" : first_error,
-		   lt_dlerror());
+	  LOG ("Resolving symbol `%s' failed, "
+	       "so I tried `%s', but that failed also.  Errors are: "
+	       "`%s' and `%s'.\n",
+	       name+1,
+	       name,
+	       first_error == NULL ? "out of memory" : first_error,
+	       lt_dlerror ());
 	}
       if (NULL != first_error)
 	free (first_error);
-#endif
     }
 
   if ( (NULL != symbol) &&
        (NULL != options) )
     {
       /* get special options */
-      sprintf(name,
-	      "_EXTRACTOR_%s_options",
-	      sym);
+      sprintf (name,
+	       "_EXTRACTOR_%s_options",
+	       sym);
       /* try without '_' first */
       opt_fun = lt_dlsym (lib_handle, name + 1);
       if (NULL == opt_fun) 
@@ -134,11 +132,8 @@ EXTRACTOR_plugin_load_ (struct EXTRACTOR_PluginList *plugin)
     plugin->libname = EXTRACTOR_find_plugin_ (plugin->short_libname);
   if (NULL == plugin->libname)
     {
-#if DEBUG
-      fprintf (stderr,
-	       "Failed to find plugin `%s'\n",
-	       plugin->short_libname);
-#endif
+      LOG ("Failed to find plugin `%s'\n",
+	   plugin->short_libname);
       plugin->flags = EXTRACTOR_OPTION_DISABLED;
       return -1;
     }
@@ -153,12 +148,9 @@ EXTRACTOR_plugin_load_ (struct EXTRACTOR_PluginList *plugin)
        (WideCharToMultiByte (CP_ACP, 0, wlibname, -1,
 			     llibname, sizeof (llibname), NULL, NULL) < 0) )
     {
-#if DEBUG
-      fprintf (stderr,
-	       "Loading `%s' plugin failed: %s\n",
-	       plugin->short_libname,
-	       "can't convert plugin name to local encoding");
-#endif
+      LOG ("Loading `%s' plugin failed: %s\n",
+	   plugin->short_libname,
+	   "can't convert plugin name to local encoding");
       free (plugin->libname);
       plugin->libname = NULL;
       plugin->flags = EXTRACTOR_OPTION_DISABLED;
@@ -173,12 +165,9 @@ EXTRACTOR_plugin_load_ (struct EXTRACTOR_PluginList *plugin)
   lt_dladvise_destroy (&advise);
   if (NULL == plugin->libraryHandle)
     {
-#if DEBUG
-      fprintf (stderr,
-	       "Loading `%s' plugin failed: %s\n",
-	       plugin->short_libname,
-	       lt_dlerror ());
-#endif
+      LOG ("Loading `%s' plugin failed: %s\n",
+	   plugin->short_libname,
+	   lt_dlerror ());
       free (plugin->libname);
       plugin->libname = NULL;
       plugin->flags = EXTRACTOR_OPTION_DISABLED;
@@ -190,12 +179,9 @@ EXTRACTOR_plugin_load_ (struct EXTRACTOR_PluginList *plugin)
 						   &plugin->specials);
   if (NULL == plugin->extract_method) 
     {
-#if DEBUG
-      fprintf (stderr,
-	       "Resolving `extract' method of plugin `%s' failed: %s\n",
-	       plugin->short_libname,
-	       lt_dlerror ());
-#endif
+      LOG ("Resolving `extract' method of plugin `%s' failed: %s\n",
+	   plugin->short_libname,
+	   lt_dlerror ());
       lt_dlclose (plugin->libraryHandle);
       free (plugin->libname);
       plugin->libname = NULL;
@@ -230,9 +216,8 @@ EXTRACTOR_plugin_add (struct EXTRACTOR_PluginList *prev,
       return prev; /* no change, library already loaded */
   if (NULL == (libname = EXTRACTOR_find_plugin_ (library)))
     {
-      fprintf (stderr,
-	       "Could not load `%s'\n",
-	       library);
+      LOG ("Could not load plugin `%s'\n",
+	   library);
       return prev;
     }
   if (NULL == (result = malloc (sizeof (struct EXTRACTOR_PluginList))))
@@ -367,11 +352,8 @@ EXTRACTOR_plugin_remove (struct EXTRACTOR_PluginList *prev,
     }
   if (NULL == pos)
     {
-#if DEBUG
-      fprintf(stderr,
-	      "Unloading plugin `%s' failed!\n",
-	      library);
-#endif
+      LOG ("Unloading plugin `%s' failed!\n",
+	   library);
       return first;
     }
   /* found, close library */

@@ -17,9 +17,14 @@
      Free Software Foundation, Inc., 59 Temple Place - Suite 330,
      Boston, MA 02111-1307, USA.
  */
-
+/**
+ * @file main/extractor_common.c
+ * @brief commonly used functions within the library
+ * @author Christian Grothoff
+ */
 #include "platform.h"
 #include "extractor_common.h"
+#include "extractor_logging.h"
 #include "extractor.h"
 #include <sys/types.h>
 #include <signal.h>
@@ -48,7 +53,11 @@ EXTRACTOR_write_all_ (int fd,
     {
       ret = write (fd, &data[off], size - off);
       if (ret <= 0)
-	return -1;
+	{
+	  if (-1 == ret)
+	    LOG_STRERROR ("write");
+	  return -1;
+	}
       off += ret;
     }
   return size;
@@ -76,7 +85,11 @@ EXTRACTOR_read_all_ (int fd,
     {
       ret = read (fd, &data[off], size - off);
       if (ret <= 0)
-	return -1;
+	{
+	  if (-1 == ret)
+	    LOG_STRERROR ("write");
+	  return -1;
+	}
       off += ret;
     }
   return size;

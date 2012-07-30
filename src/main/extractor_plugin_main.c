@@ -22,7 +22,6 @@
  * @brief main loop for an out-of-process plugin
  * @author Christian Grothoff
  */
-
 #include "platform.h"
 #include "plibc.h"
 #include "extractor.h"
@@ -30,6 +29,7 @@
 #include "extractor_datasource.h"
 #include "extractor_plugins.h"
 #include "extractor_ipc.h"
+#include "extractor_logging.h"
 #include "extractor_plugin_main.h"
 #include <dirent.h>
 #include <sys/types.h>
@@ -120,24 +120,37 @@ plugin_env_seek (void *cls,
     {
     case SEEK_CUR:
       if ( (pos < 0) && (pc->read_position < - pos) )
-	return -1;
+	{
+	  LOG ("Invalid seek operation\n");
+	  return -1;
+	}
       if ( (pos > 0) && 
 	   ( (pc->read_position + pos < pc->read_position) ||
 	     (pc->read_position + pos > pc->file_size) ) )
-	return -1;
+	{
+	  LOG ("Invalid seek operation\n");
+	  return -1;
+	}
       npos = (uint64_t) (pc->read_position + pos);
       break;
     case SEEK_END:
       if (pos > 0)
-	return -1;
+	{
+	  LOG ("Invalid seek operation\n");
+	  return -1;
+	}
       pos = (int64_t) (pc->file_size + pos);
       /* fall-through! */
     case SEEK_SET:
       if ( (pos < 0) || (pc->file_size < pos) )
-	return -1;
+	{
+	  LOG ("Invalid seek operation\n");
+	  return -1;
+	}
       npos = (uint64_t) pos;
       break;
     default:
+      LOG ("Invalid seek operation\n");
       return -1;
     }
   if ( (pc->shm_off <= npos) &&
@@ -155,15 +168,24 @@ plugin_env_seek (void *cls,
     srm.requested_bytes = pc->file_size - npos;
   srm.file_offset = npos;
   if (-1 == EXTRACTOR_write_all_ (pc->out, &srm, sizeof (srm)))
-    return -1;
+    {
+      LOG ("Failed to send MESSAGE_SEEK\n");
+      return -1;
+    }
   if (-1 ==
       EXTRACTOR_read_all_ (pc->in,
 			   &reply, sizeof (reply)))
-    return -1;
-  if (MESSAGE_SEEK != reply)
+    {
+      LOG ("Failed to read response to MESSAGE_SEEK\n");
+      return -1;
+    }
+  if (MESSAGE_SEEK != reply)    
     return -1; /* was likely a MESSAGE_DISCARD_STATE */
   if (-1 == EXTRACTOR_read_all_ (pc->in, &um.reserved, sizeof (um) - 1))
-    return -1;
+    {
+      LOG ("Failed to read UPDATE_MESSAGE\n");
+      return -1;
+    }
   pc->shm_off = um.shm_off;
   pc->shm_ready_bytes = um.shm_ready_bytes;
   if ( (pc->shm_off <= npos) &&
@@ -174,6 +196,7 @@ plugin_env_seek (void *cls,
     }
   /* oops, serious missunderstanding, we asked to seek
      and then were notified about a different position!? */
+  LOG ("Got invalid UPDATE_MESSAGE in response to my seek\n");
   return -1;
 }
 
@@ -200,7 +223,10 @@ plugin_env_read (void *cls,
   if ( ( (pc->read_position >= pc->shm_off + pc->shm_ready_bytes) ||
 	 (pc->read_position < pc->shm_off) ) &&
        (-1 == plugin_env_seek (pc, pc->read_position, SEEK_SET)) )
-    return -1; 
+    {
+      LOG ("Failed to seek to satisfy read\n");
+      return -1; 
+    }
   if (pc->read_position + count > pc->shm_off + pc->shm_ready_bytes)
     count = pc->shm_off + pc->shm_ready_bytes - pc->read_position;
   dp = pc->shm;
@@ -220,6 +246,7 @@ static uint64_t
 plugin_env_get_size (void *cls)
 {
   struct ProcessingContext *pc = cls;
+
   return pc->file_size;
 }
 
@@ -275,11 +302,17 @@ plugin_env_send_proc (void *cls,
        (data_len !=
 	EXTRACTOR_write_all_ (pc->out, 
 			      data, data_len)) )
-    return 1;
+    {
+      LOG ("Failed to send meta message\n");
+      return 1;
+    }
   if (-1 ==
       EXTRACTOR_read_all_ (pc->in,
 			   &reply, sizeof (reply)))
-    return 1;
+    {
+      LOG ("Failed to read response to meta message\n");
+      return 1;
+    }
   if (MESSAGE_CONTINUE_EXTRACTING != reply)
     return 1;
   return 0;
@@ -298,14 +331,23 @@ handle_init_message (struct ProcessingContext *pc)
   struct InitMessage init;
 
   if (NULL != pc->shm)
-    return -1;
+    {
+      LOG ("Cannot handle 'init' message, have already been initialized\n");
+      return -1;
+    }
   if (sizeof (struct InitMessage) - 1
       != EXTRACTOR_read_all_ (pc->in,
 		   &init.reserved,
 		   sizeof (struct InitMessage) - 1))
-    return -1;
+    {
+      LOG ("Failed to read 'init' message\n");
+      return -1;
+    }
   if (init.shm_name_length > MAX_SHM_NAME)
-    return -1;
+    {
+      LOG ("Invalid 'init' message\n");
+      return -1;
+    }
   {
     char shm_name[init.shm_name_length + 1];
 
@@ -313,7 +355,10 @@ handle_init_message (struct ProcessingContext *pc)
 	!= EXTRACTOR_read_all_ (pc->in,
 		     shm_name,
 		     init.shm_name_length))
-      return -1;
+      {
+	LOG ("Failed to read 'init' message\n");
+	return -1;
+      }
     shm_name[init.shm_name_length] = '\0';
 
     pc->shm_map_size = init.shm_map_size;
@@ -324,14 +369,20 @@ handle_init_message (struct ProcessingContext *pc)
 #else
     pc->shm_id = open (shm_name, O_RDONLY, 0);
     if (-1 == pc->shm_id)
-      return -1;
+      {
+	LOG_STRERROR_FILE ("open", shm_name);
+	return -1;
+      }
     pc->shm = mmap (NULL,
 		    pc->shm_map_size,
 		    PROT_READ,
 		    MAP_SHARED,
 		    pc->shm_id, 0);
     if ( ((void*) -1) == pc->shm)
-      return -1;
+      {
+	LOG_STRERROR_FILE ("mmap", shm_name);
+	return -1;
+      }
 #endif
   }
   return 0;
@@ -355,7 +406,10 @@ handle_start_message (struct ProcessingContext *pc)
       != EXTRACTOR_read_all_ (pc->in,
 		   &start.reserved,
 		   sizeof (struct StartMessage) - 1))
-    return -1;
+    {
+      LOG ("Failed to read 'start' message\n");
+      return -1;
+    }
   pc->shm_ready_bytes = start.shm_ready_bytes;
   pc->file_size = start.file_size;
   pc->read_position = 0;
@@ -369,7 +423,10 @@ handle_start_message (struct ProcessingContext *pc)
   pc->plugin->extract_method (&ec);
   done = MESSAGE_DONE;
   if (-1 == EXTRACTOR_write_all_ (pc->out, &done, sizeof (done)))
-    return -1;
+    {
+      LOG ("Failed to write 'done' message\n");
+      return -1;
+    }
   if ( (NULL != pc->plugin->specials) &&
        (NULL != strstr (pc->plugin->specials, "force-kill")) )
     {
@@ -400,7 +457,10 @@ process_requests (struct ProcessingContext *pc)
       unsigned char code;
   
       if (1 != EXTRACTOR_read_all_ (pc->in, &code, 1))
-	break;
+	{
+	  LOG ("Failed to read next request\n");
+	  break;
+	}
       switch (code)
 	{
 	case MESSAGE_INIT_STATE:
@@ -417,6 +477,7 @@ process_requests (struct ProcessingContext *pc)
 	  /* odd, we're already in the start state... */
 	  continue;
 	default:
+	  LOG ("Received invalid messag %d\n", (int) code);
 	  /* error, unexpected message */
 	  return;
 	}
@@ -440,16 +501,21 @@ open_dev_null (int target_fd,
 
   fd = open ("/dev/null", flags);
   if (-1 == fd)
-    return; /* good luck */
+    {
+      LOG_STRERROR_FILE ("open", "/dev/null");
+      return; /* good luck */
+    }
   if (fd == target_fd)
     return; /* already done */
   if (-1 == dup2 (fd, target_fd))
   {
+    LOG_STRERROR ("dup2");
     (void) close (fd);
     return; /* good luck */
   }
   /* close original result from 'open' */
-  (void) close (fd);
+  if (0 != close (fd))
+    LOG_STRERROR ("close");
 }
 #endif
 
@@ -479,7 +545,8 @@ EXTRACTOR_plugin_main_ (struct EXTRACTOR_PluginList *plugin,
   if ( (NULL != plugin->specials) &&
        (NULL != strstr (plugin->specials, "close-stderr")))
     {
-      (void) close (2);
+      if (0 != close (2))
+	LOG_STRERROR ("close");
 #ifndef WINDOWS
       open_dev_null (2, O_WRONLY);
 #endif
@@ -487,7 +554,8 @@ EXTRACTOR_plugin_main_ (struct EXTRACTOR_PluginList *plugin,
   if ( (NULL != plugin->specials) &&
        (NULL != strstr (plugin->specials, "close-stdout")))
     {
-      (void) close (1);
+      if (0 != close (1))
+	LOG_STRERROR ("close");
 #ifndef WINDOWS
       open_dev_null (1, O_WRONLY);
 #endif
@@ -507,7 +575,10 @@ EXTRACTOR_plugin_main_ (struct EXTRACTOR_PluginList *plugin,
        (((void*) 1) != pc.shm) )
     munmap (pc.shm, pc.shm_map_size);
   if (-1 != pc.shm_id)
-    (void) close (pc.shm_id);
+    {
+      if (0 != close (pc.shm_id))
+	LOG_STRERROR ("close");
+    }
 #endif
 }
 
@@ -529,7 +600,10 @@ read_plugin_data (int fd)
 
   // FIXME: check for errors from 'EXTRACTOR_read_all_'!
   if (NULL == (ret = malloc (sizeof (struct EXTRACTOR_PluginList))))
-    return NULL;
+    {
+      LOG_STRERROR ("malloc");
+      return NULL;
+    }
   GetSystemInfo (&si);
   ret->allocation_granularity = si.dwAllocationGranularity;
   EXTRACTOR_read_all_ (fd, &i, sizeof (size_t));

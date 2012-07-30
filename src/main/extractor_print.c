@@ -20,7 +20,7 @@
 
 #include "platform.h"
 #include "extractor.h"
-
+#include "extractor_logging.h"
 #include "iconv.c"
 
 /**
@@ -58,10 +58,14 @@ EXTRACTOR_meta_data_print (void *handle,
   cd = iconv_open (nl_langinfo(CODESET),
 		   "UTF-8");
   if (((iconv_t) -1) == cd)
-    return 1;
-  buf = iconv_helper(cd, data);
+    {
+      LOG_STRERROR ("iconv_open");
+      return 1;
+    }
+  buf = iconv_helper (cd, data);
   if (NULL == buf)
     {
+      LOG_STRERROR ("iconv_helper");
       ret = -1;
     }
   else
