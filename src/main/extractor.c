@@ -313,7 +313,7 @@ do_extract (struct EXTRACTOR_PluginList *plugins,
 	 if not, send 'seek' notification to plugins in range */
       for (pos = plugins; NULL != pos; pos = pos->next)
 	{
-	  if (NULL == (channel = channels[plugin_count]))
+	  if (NULL == (channel = pos->channel))
 	    continue;
 	  if ( (-1 != pos->seek_request) &&
 	       (min_seek <= pos->seek_request) &&

@@ -426,7 +426,8 @@ bfds_read (struct BufferedFileDataSource *bfds,
       avail = bfds->buffer_bytes - bfds->buffer_pos;
       if (avail > count)
 	avail = count;
-      ASSERT (0 != avail);
+      if (0 == avail)
+	break;
       memcpy (&cbuf[ret], bfds->data + bfds->buffer_pos, avail);
       bfds->buffer_pos += avail;
       count -= avail;
@@ -1137,6 +1138,7 @@ EXTRACTOR_datasource_create_from_buffer_ (const char *buf,
     }
   ds->bfds = bfds;
   ds->fd = -1;
+  ds->cfs = NULL;
   ct = get_compression_type (bfds);
   if ( (COMP_TYPE_ZLIB == ct) ||
        (COMP_TYPE_BZ2 == ct) )
