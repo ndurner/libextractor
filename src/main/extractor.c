@@ -373,6 +373,7 @@ EXTRACTOR_extract (struct EXTRACTOR_PluginList *plugins,
   struct EXTRACTOR_Datasource *datasource;
   struct EXTRACTOR_SharedMemory *shm;
   struct EXTRACTOR_PluginList *pos;
+  int have_oop;
 
   if (NULL == plugins)
     return;
@@ -385,20 +386,29 @@ EXTRACTOR_extract (struct EXTRACTOR_PluginList *plugins,
   if (NULL == datasource)
     return;  
   shm = NULL;
+  have_oop = 0;
   for (pos = plugins; NULL != pos; pos = pos->next)
-    if (NULL != (shm = pos->shm))
-      break;
-  if (NULL == shm)
-    shm = EXTRACTOR_IPC_shared_memory_create_ (DEFAULT_SHM_SIZE);
-  for (pos = plugins; NULL != pos; pos = pos->next)
-    if ( (NULL == pos->shm) &&
-	 (EXTRACTOR_OPTION_IN_PROCESS == pos->flags) )
-      {
-	pos->shm = shm;
-	(void) EXTRACTOR_IPC_shared_memory_change_rc_ (shm, 1);
-	pos->channel = EXTRACTOR_IPC_channel_create_ (pos,
-						      shm);
-      }
+    {
+      if (NULL != (shm = pos->shm))
+	break;
+      if (EXTRACTOR_OPTION_IN_PROCESS != pos->flags)
+	have_oop = 1;
+    }
+  if ( (NULL == shm) &&
+       (1 == have_oop) )
+    {
+      /* need to create shared memory segment */
+      shm = EXTRACTOR_IPC_shared_memory_create_ (DEFAULT_SHM_SIZE);
+      for (pos = plugins; NULL != pos; pos = pos->next)
+	if ( (NULL == pos->shm) &&
+	     (EXTRACTOR_OPTION_IN_PROCESS != pos->flags) )
+	  {
+	    pos->shm = shm;
+	    (void) EXTRACTOR_IPC_shared_memory_change_rc_ (shm, 1);
+	    pos->channel = EXTRACTOR_IPC_channel_create_ (pos,
+							  shm);
+	  }
+    }
   do_extract (plugins, shm, datasource, proc, proc_cls);
   EXTRACTOR_datasource_destroy_ (datasource);
 }
