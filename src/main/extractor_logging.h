@@ -52,6 +52,25 @@ EXTRACTOR_log_ (const char *file, int line, const char *format, ...);
 
 
 /**
+ * Log an error message about a failed system/libc call
+ * using an error message based on 'errno'.
+ *
+ * @param syscall name of the syscall that failed
+ */
+#define LOG_STRERROR(syscall) LOG("System call `%s' failed: %s\n", syscall, STRERROR (errno))
+
+
+/**
+ * Log an error message about a failed system/libc call
+ * involving a file using an error message based on 'errno'.
+ *
+ * @param syscall name of the syscall that failed
+ * @param filename name of the file that was involved
+ */
+#define LOG_STRERROR_FILE(syscall,filename) LOG("System call `%s' failed for file `%s': %s\n", syscall, filename, STRERROR (errno))
+
+
+/**
  * Abort the program reporting an assertion failure
  *
  * @param file filename with the failure
@@ -60,6 +79,7 @@ EXTRACTOR_log_ (const char *file, int line, const char *format, ...);
 void
 EXTRACTOR_abort_ (const char *file,
 		  int line);
+
 
 /**
  * Abort program if assertion fails.
