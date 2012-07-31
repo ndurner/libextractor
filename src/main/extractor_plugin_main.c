@@ -33,9 +33,11 @@
 #include "extractor_plugin_main.h"
 #include <dirent.h>
 #include <sys/types.h>
+#if LINUX
 #include <sys/wait.h>
 #include <sys/shm.h>
 #include <signal.h>
+#endif
 
 
 /**
@@ -363,9 +365,16 @@ handle_init_message (struct ProcessingContext *pc)
 
     pc->shm_map_size = init.shm_map_size;
 #if WINDOWS
+    /* FIXME: storing pointer in an int */
+    pc->shm_id = OpenFileMapping (FILE_MAP_READ, FALSE, shm_name);
+    if (NULL == pc->shm_id)
+      return -1;
     pc->shm = MapViewOfFile (pc->shm_id, FILE_MAP_READ, 0, 0, 0);
     if (NULL == pc->shm)
+    {
+      CloseHandle (pc->shm_id);
       return -1;
+    }
 #else
     pc->shm_id = shm_open (shm_name, O_RDONLY, 0);
     if (-1 == pc->shm_id)
@@ -604,8 +613,9 @@ read_plugin_data (int fd)
       LOG_STRERROR ("malloc");
       return NULL;
     }
-  GetSystemInfo (&si);
-  ret->allocation_granularity = si.dwAllocationGranularity;
+  memset (ret, 0, sizeof (struct EXTRACTOR_PluginList));
+  /*GetSystemInfo (&si);
+  ret->allocation_granularity = si.dwAllocationGranularity;*/
   EXTRACTOR_read_all_ (fd, &i, sizeof (size_t));
   if (NULL == (ret->libname = malloc (i)))
     {
@@ -668,8 +678,7 @@ RundllEntryPoint (HWND hwnd,
       close (out);
       return;
     }
-  plugin_main (plugin,
-	       in, out);
+  EXTRACTOR_plugin_main_ (plugin, in, out);
   close (in);
   close (out);
 }

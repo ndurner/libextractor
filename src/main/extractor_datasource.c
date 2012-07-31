@@ -406,7 +406,7 @@ bfds_read (struct BufferedFileDataSource *bfds,
   size_t avail;
   size_t ret;
 
-  old_off = bfds->fpos + bfds->buffer_pos + bfds->buffer_bytes; 
+  old_off = bfds->fpos + bfds->buffer_pos;
   if (old_off == bfds->fsize)
     return 0; /* end of stream */
   ret = 0;
@@ -414,7 +414,7 @@ bfds_read (struct BufferedFileDataSource *bfds,
     {
       if ( (bfds->buffer_bytes == bfds->buffer_pos) &&
 	   (0 != bfds_pick_next_buffer_at (bfds, 
-					   bfds->fpos + bfds->buffer_pos + bfds->buffer_bytes)) )
+					   bfds->fpos + bfds->buffer_bytes)) )
 	{
 	  /* revert to original position, invalidate buffer */
 	  bfds->fpos = old_off;
@@ -1053,8 +1053,12 @@ EXTRACTOR_datasource_create_from_file_ (const char *filename,
   int fd;
   struct stat sb;
   int64_t fsize;
+  int winmode = 0;
+#if WINDOWS
+  winmode = O_BINARY;
+#endif
 
-  if (-1 == (fd = open (filename, O_RDONLY | O_LARGEFILE)))
+  if (-1 == (fd = open (filename, O_RDONLY | O_LARGEFILE | winmode)))
     {
       LOG_STRERROR_FILE ("open", filename);
       return NULL;
