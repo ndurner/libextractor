@@ -126,9 +126,8 @@ plugin_env_seek (void *cls,
 	  LOG ("Invalid seek operation\n");
 	  return -1;
 	}
-      if ( (pos > 0) && 
-	   ( (pc->read_position + pos < pc->read_position) ||
-	     (pc->read_position + pos > pc->file_size) ) )
+      if ((pos > 0) && ((pc->read_position + pos < pc->read_position) ||
+          (pc->read_position + pos > pc->file_size)))
 	{
 	  LOG ("Invalid seek operation\n");
 	  return -1;
@@ -181,24 +180,26 @@ plugin_env_seek (void *cls,
       LOG ("Failed to read response to MESSAGE_SEEK\n");
       return -1;
     }
-  if (MESSAGE_SEEK != reply)    
+  if (MESSAGE_UPDATED_SHM != reply)    
     return -1; /* was likely a MESSAGE_DISCARD_STATE */
   if (-1 == EXTRACTOR_read_all_ (pc->in, &um.reserved, sizeof (um) - 1))
     {
-      LOG ("Failed to read UPDATE_MESSAGE\n");
+      LOG ("Failed to read MESSAGE_UPDATED_SHM\n");
       return -1;
     }
   pc->shm_off = um.shm_off;
   pc->shm_ready_bytes = um.shm_ready_bytes;
+  pc->file_size = um.file_size;
   if ( (pc->shm_off <= npos) &&
-       (pc->shm_off + pc->shm_ready_bytes > npos) )
+       ((pc->shm_off + pc->shm_ready_bytes > npos) ||
+       (pc->file_size == pc->shm_off)) )
     {
       pc->read_position = npos;
       return (int64_t) npos;
     }
   /* oops, serious missunderstanding, we asked to seek
      and then were notified about a different position!? */
-  LOG ("Got invalid UPDATE_MESSAGE in response to my seek\n");
+  LOG ("Got invalid MESSAGE_UPDATED_SHM in response to my seek\n");
   return -1;
 }
 
@@ -222,9 +223,10 @@ plugin_env_read (void *cls,
   if ( (count + pc->read_position > pc->file_size) ||
        (count + pc->read_position < pc->read_position) )
     count = pc->file_size - pc->read_position;
-  if ( ( (pc->read_position >= pc->shm_off + pc->shm_ready_bytes) ||
-	 (pc->read_position < pc->shm_off) ) &&
-       (-1 == plugin_env_seek (pc, pc->read_position, SEEK_SET)) )
+  if ((((pc->read_position >= pc->shm_off + pc->shm_ready_bytes) &&
+      (pc->read_position < pc->file_size)) ||
+      (pc->read_position < pc->shm_off)) &&
+      (-1 == plugin_env_seek (pc, pc->read_position, SEEK_SET)))
     {
       LOG ("Failed to seek to satisfy read\n");
       return -1; 
@@ -292,6 +294,7 @@ plugin_env_send_proc (void *cls,
     mime_len = UINT16_MAX;
   mm.opcode = MESSAGE_META;
   mm.reserved = 0;
+  mm.meta_type = type;
   mm.meta_format = (uint16_t) format;
   mm.mime_length = (uint16_t) mime_len;
   mm.value_size = (uint32_t) data_len;
@@ -579,6 +582,8 @@ EXTRACTOR_plugin_main_ (struct EXTRACTOR_PluginList *plugin,
 #if WINDOWS
   if (NULL != pc.shm)
     UnmapViewOfFile (pc.shm);
+  if (NULL != pc.shm_id)
+    CloseHandle (pc.shm_id);
 #else
   if ( (NULL != pc.shm) &&
        (((void*) 1) != pc.shm) )

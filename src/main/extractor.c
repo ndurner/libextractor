@@ -216,6 +216,7 @@ do_extract (struct EXTRACTOR_PluginList *plugins,
   struct PluginReplyProcessor prp;
   int64_t min_seek;
   ssize_t data_available;
+  uint64_t last_position;
   uint32_t ready;
   int done;
 
@@ -226,6 +227,8 @@ do_extract (struct EXTRACTOR_PluginList *plugins,
     ready = EXTRACTOR_IPC_shared_memory_set_ (shm, ds, 0, DEFAULT_SHM_SIZE);
   else
     ready = 0;
+
+  last_position = UINT64_MAX;
 
   prp.file_finished = 0;
   prp.proc = proc;
@@ -285,7 +288,10 @@ do_extract (struct EXTRACTOR_PluginList *plugins,
 	  if ( (1 == pos->round_finished) ||
 	       (NULL == pos->channel) )
 	    continue; /* inactive plugin */
-	  if (-1 == pos->seek_request)
+	  if (((last_position <= pos->seek_request) &&
+              (last_position + data_available > pos->seek_request)) &&
+              ((data_available > 0) ||
+              (last_position == EXTRACTOR_datasource_get_size_ (ds))))
 	    {
 	      done = 0; /* possibly more meta data at current position! */
 	      break;
@@ -318,15 +324,17 @@ do_extract (struct EXTRACTOR_PluginList *plugins,
 	{
 	  if (NULL == (channel = pos->channel))
 	    continue;
-	  if ( (-1 != pos->seek_request) &&
+	  if ( (-1 != pos->seek_request) && ((last_position > pos->seek_request) ||
+               (last_position + data_available <= pos->seek_request)) &&
 	       (min_seek <= pos->seek_request) &&
-	       (min_seek + data_available > pos->seek_request) )
+	       ((min_seek + data_available > pos->seek_request) ||
+               (min_seek == EXTRACTOR_datasource_get_size_ (ds))) )
 	    {
 	      send_update_message (pos,
 				   min_seek,
 				   data_available,
 				   ds);
-	      pos->seek_request = -1;
+	      /*pos->seek_request = -1;*/
 	    }
 	  if ( (-1 != pos->seek_request) && 
 	       (1 == prp.file_finished) )
@@ -337,6 +345,8 @@ do_extract (struct EXTRACTOR_PluginList *plugins,
 	  if (0 == pos->round_finished)
 	    done = 0; /* can't be done, plugin still active */	
 	}
+      if (min_seek >= 0)
+        last_position = min_seek;
     }
 
   /* run in-process plugins */

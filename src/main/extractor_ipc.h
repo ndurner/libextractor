@@ -370,6 +370,16 @@ EXTRACTOR_IPC_shared_memory_set_ (struct EXTRACTOR_SharedMemory *shm,
 
 
 /**
+ * Query datasource for current position
+ *
+ * @param ds data source to query
+ * @return current position in the datasource or UINT_MAX on error
+ */
+uint64_t
+EXTRACTOR_datasource_get_pos_ (struct EXTRACTOR_Datasource *ds);
+
+
+/**
  * Create a channel to communicate with a process wrapping
  * the plugin of the given name.  Starts the process as well.
  *

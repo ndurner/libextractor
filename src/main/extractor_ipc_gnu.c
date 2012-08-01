@@ -241,6 +241,20 @@ EXTRACTOR_IPC_shared_memory_set_ (struct EXTRACTOR_SharedMemory *shm,
 				     size);
 }
 
+/**
+ * Query datasource for current position
+ *
+ * @param ds data source to query
+ * @return current position in the datasource or UINT_MAX on error
+ */
+uint64_t
+EXTRACTOR_datasource_get_pos_ (struct EXTRACTOR_Datasource *ds)
+{
+  int64_t pos = EXTRACTOR_datasource_seek_ (ds, 0, SEEK_CUR);
+  if (-1 == pos)
+    return UINT_MAX;
+  return pos;
+}
 
 /**
  * Create a channel to communicate with a process wrapping

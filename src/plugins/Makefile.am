@@ -15,14 +15,14 @@ if HAVE_VORBISFILE
  PLUGIN_OGG=libextractor_ogg.la
 endif
 
-plugin_LTLIBRARIES = \
-  libextractor_id3.la \
-  libextractor_id3v2.la \
-  libextractor_ebml.la \
-  libextractor_s3m.la \
-  $(PLUGIN_OGG) \
-  libextractor_png.la \
-  libextractor_mp3.la
+#plugin_LTLIBRARIES = \
+#  libextractor_id3.la \
+#  libextractor_id3v2.la \
+#  libextractor_ebml.la \
+#  libextractor_s3m.la \
+#  $(PLUGIN_OGG) \
+#  libextractor_png.la \
+#  libextractor_mp3.la
 
 libextractor_mp3_la_SOURCES = \
   mp3_extractor.c 

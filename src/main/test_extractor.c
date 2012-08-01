@@ -20,6 +20,11 @@
 /**
  * @file main/test_extractor.c
  * @brief plugin for testing GNU libextractor
+ * Data file (or buffer) for this test must be 150 * 1024 bytes long,
+ * first 4 bytes must be "test", all other bytes should be equal to
+ * <FILE_OFFSET> % 256. The test client must return 0 after seeing
+ * "Hello World!" metadata, and return 1 after seeing "Goodbye!"
+ * metadata.
  * @author Christian Grothoff
  */
 #include "platform.h"
@@ -44,93 +49,97 @@ EXTRACTOR_test_extract_method (struct EXTRACTOR_ExtractContext *ec)
 {
   unsigned char *dp;
 
-  if ( (NULL == ec->config) ||
-       (0 != strcmp (ec->config, "test")) )
+  if ((NULL == ec->config) || (0 != strcmp (ec->config, "test")))
     return; /* only run in test mode */
-  if ( (4 != ec->read (ec->cls,
-		       &dp,
-		       4)) ||
-       (0 != strncmp ("test",
-		      (const char*) dp, 
-		      4) ) )
+  if (4 != ec->read (ec->cls, &dp, 4))
     {
       fprintf (stderr, "Reading at offset 0 failed\n");
       abort (); 
     }
-  if (1024 * 150 !=
-      ec->get_size (ec->cls))
+  if (0 != strncmp ("test", (const char*) dp, 4))
+    {
+      fprintf (stderr, "Unexpected data at offset 0\n");
+      abort (); 
+    }
+  if (1024 * 150 != ec->get_size (ec->cls))
     {
       fprintf (stderr, "Unexpected file size returned (expected 150k)\n");
       abort (); 
     }		    
-  if (1024 * 100 !=
-      ec->seek (ec->cls,
-		1024 * 100 + 4,
-		SEEK_SET))
+
+  if (1024 * 100 + 4 != ec->seek (ec->cls, 1024 * 100 + 4, SEEK_SET))
     {
       fprintf (stderr, "Failure to seek (SEEK_SET)\n");
       abort ();
     }
-  if ( (1 != ec->read (ec->cls,
-		       &dp,
-		       1)) ||
-       ((1024 * 100 + 4) % 256 != *dp) )
+  if (1 != ec->read (ec->cls, &dp, 1))
     {
       fprintf (stderr, "Failure to read at 100k + 4\n");
       abort ();
     }
-  if (1024 * 50 - 3 !=
-      ec->seek (ec->cls,
-		- (1024 * 50 + 7),
-		SEEK_CUR))
+  if ((1024 * 100 + 4) % 256 != *dp)
+    {
+      fprintf (stderr, "Unexpected data at offset 100k + 4\n");
+      abort ();
+    }
+
+  if (((1024 * 100 + 4) + 1 - (1024 * 50 + 7)) !=
+      ec->seek (ec->cls, - (1024 * 50 + 7), SEEK_CUR))
     {
       fprintf (stderr, "Failure to seek (SEEK_SET)\n");
       abort ();
     }
-  if ( (1 != ec->read (ec->cls,
-		       &dp,
-		       1)) ||
-       ((1024 * 50 - 3) % 256 != *dp) )
+  if (1 != ec->read (ec->cls, &dp, 1))
     {
       fprintf (stderr, "Failure to read at 50k - 3\n");
       abort ();
     }
-  if (1024 * 150 - 3 !=
-      ec->seek (ec->cls,
-		- 2,
-		SEEK_END))
+  if (((1024 * 100 + 4) + 1 - (1024 * 50 + 7)) % 256 != *dp)
     {
-      fprintf (stderr, "Failure to seek (SEEK_SET)\n");
+      fprintf (stderr, "Unexpected data at offset 50k - 3\n");
       abort ();
     }
-  if ( (1 != ec->read (ec->cls,
-		       &dp,
-		       1)) ||
-       ((1024 * 150 - 2) % 256 != *dp) )
+
+  if (1024 * 150 != ec->seek (ec->cls, 0, SEEK_END))
     {
-      fprintf (stderr, "Failure to read at 150k - 2\n");
+      fprintf (stderr, "Failure to seek (SEEK_END)\n");
       abort ();
     }
-  if (0 != 
-      ec->proc (ec->cls,
-		"test",
-		EXTRACTOR_METATYPE_COMMENT,
-		EXTRACTOR_METAFORMAT_UTF8,
-		"<no mime>",
-		"Hello world!",
-		strlen ("Hello world!") + 1))
+  if (0 != ec->read (ec->cls, &dp, 1))
+    {
+      fprintf (stderr, "Failed to receive EOF at 150k\n");
+      abort ();
+    }
+
+  if (1024 * 150 - 2 != ec->seek (ec->cls, -2, SEEK_END))
+    {
+      fprintf (stderr, "Failure to seek (SEEK_END - 2)\n");
+      abort ();
+    }
+  if (1 != ec->read (ec->cls, &dp, 1))
+    {
+      fprintf (stderr, "Failure to read at 150k - 3\n");
+      abort ();
+    }
+  if ((1024 * 150 - 2) % 256 != *dp)
+    {
+      fprintf (stderr, "Unexpected data at offset 150k - 3\n");
+      abort ();
+    }
+
+  if (0 != ec->proc (ec->cls, "test", EXTRACTOR_METATYPE_COMMENT,
+      EXTRACTOR_METAFORMAT_UTF8, "<no mime>", "Hello world!",
+      strlen ("Hello world!") + 1))
     {
       fprintf (stderr, "Unexpected return value from 'proc'\n");
       abort ();
     }
-  if (1 != 
-      ec->proc (ec->cls,
-		"test",
-		EXTRACTOR_METATYPE_COMMENT,
-		EXTRACTOR_METAFORMAT_UTF8,
-		"<no mime>",
-		"Goodbye!",
-		strlen ("Goodbye!") + 1))
+  /* The test assumes that client orders us to stop extraction
+   * after seeing "Goodbye!".
+   */
+  if (1 != ec->proc (ec->cls, "test", EXTRACTOR_METATYPE_COMMENT,
+      EXTRACTOR_METAFORMAT_UTF8, "<no mime>", "Goodbye!",
+      strlen ("Goodbye!") + 1))
     {
       fprintf (stderr, "Unexpected return value from 'proc'\n");
       abort ();
