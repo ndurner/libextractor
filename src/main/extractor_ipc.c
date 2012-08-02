@@ -108,7 +108,7 @@ EXTRACTOR_IPC_process_reply_ (struct EXTRACTOR_PluginList *plugin,
           if (meta.meta_type >= EXTRACTOR_metatype_get_max ())
             meta.meta_type = EXTRACTOR_METATYPE_UNKNOWN;
 	  proc (proc_cls, 
-		plugin, 
+		plugin,
 		(enum EXTRACTOR_MetaType) meta.meta_type,
 		(enum EXTRACTOR_MetaFormat) meta.meta_format,
 		mime_type, value, meta.value_size);
