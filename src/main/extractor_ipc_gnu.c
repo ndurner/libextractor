@@ -154,9 +154,6 @@ EXTRACTOR_IPC_shared_memory_create_ (size_t size)
 	    "%slibextractor-shm-%u-%u", 
 	    tpath, getpid (),
 	    (unsigned int) RANDOM());
-  LOG ("Creating shared memory `%s' with %u bytes capacity\n",
-       shm->shm_name,
-       (unsigned int) size);
   if (-1 == (shm->shm_id = shm_open (shm->shm_name,
 				     O_RDWR | O_CREAT, S_IRUSR | S_IWUSR)))
     {
@@ -207,8 +204,6 @@ EXTRACTOR_IPC_shared_memory_change_rc_ (struct EXTRACTOR_SharedMemory *shm,
 void
 EXTRACTOR_IPC_shared_memory_destroy_ (struct EXTRACTOR_SharedMemory *shm)
 {  
-  LOG ("Destroying shared memory `%s'\n",
-       shm->shm_name);
   munmap (shm->shm_ptr, shm->shm_size);
   (void) close (shm->shm_id);
   (void) shm_unlink (shm->shm_name);

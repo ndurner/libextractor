@@ -96,7 +96,9 @@ process_replies (void *cls,
 		      HLO,
 		      strlen (HLO))) )
     {
+#if 0
       fprintf (stderr, "Received '%s'\n", HLO);
+#endif
       ret = 1;
       return 0;
     }
@@ -106,7 +108,9 @@ process_replies (void *cls,
 		      GOB,
 		      strlen (GOB))) )
     {
+#if 0
       fprintf (stderr, "Received '%s'\n", GOB);
+#endif
       ret = 0;
       return 1;
     }

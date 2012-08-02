@@ -501,7 +501,6 @@ find_plugin_in_path (void *cls,
   struct SearchContext *sc = cls;
   DIR *dir;
   struct dirent *ent;
-  const char *la;
   const char *sym_name;
   char *sym;
   char *dot;
@@ -514,12 +513,8 @@ find_plugin_in_path (void *cls,
     {
       if ('.' == ent->d_name[0])
 	continue;
-      if ( ( (NULL != (la = strstr (ent->d_name, ".la"))) &&
-	     ('\0' == la[3]) ) ||
-	   ( (NULL != (la = strstr (ent->d_name, ".ver"))) &&
-	     (la[4] == '\0') ) ||
-	   ( (NULL != (la = strstr (ent->d_name, ".a"))) &&
-	     (la[2] == '\0') ) )
+      if ( (NULL == strstr (ent->d_name, ".so")) &&
+	   (NULL == strstr (ent->d_name, ".dll")) )
 	continue; /* only load '.so' and '.dll' */
       if (NULL == (sym_name = strrchr (ent->d_name, '_')))
 	continue;	
@@ -592,7 +587,6 @@ load_plugins_from_dir (void *cls,
   struct DefaultLoaderContext *dlc = cls;
   DIR *dir;
   struct dirent *ent;
-  const char *la;
   const char *sym_name;
   char *sym;
   char *dot;
@@ -603,14 +597,9 @@ load_plugins_from_dir (void *cls,
     {
       if (ent->d_name[0] == '.')
 	continue;
-      if ( ( (NULL != (la = strstr (ent->d_name, ".la"))) &&
-	     (la[3] == '\0') ) ||
-	   ( (NULL != (la = strstr (ent->d_name, ".ver"))) &&
-	     (la[4] == '\0') ) ||
-	   ( (NULL != (la = strstr (ent->d_name, ".a"))) &&
-	     (la[2] == '\0')) )
+      if ( (NULL == strstr (ent->d_name, ".so")) &&
+	   (NULL == strstr (ent->d_name, ".dll")) )
 	continue; /* only load '.so' and '.dll' */
-
       if (NULL == (sym_name = strrchr (ent->d_name, '_')))
 	continue;
       sym_name++;
@@ -622,8 +611,6 @@ load_plugins_from_dir (void *cls,
 	}
       if (NULL != (dot = strchr (sym, '.')))
 	*dot = '\0';
-      LOG ("Adding default plugin `%s'\n",
-	   sym);
       dlc->res = EXTRACTOR_plugin_add (dlc->res,
 				       sym,
 				       NULL,

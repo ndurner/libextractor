@@ -57,6 +57,13 @@ main (int argc, char *argv[])
 {
   int ret = 0;
 
+  /* change environment to find 'extractor_test' plugin which is 
+     not installed but should be in the current directory (or .libs)
+     on 'make check' */
+  if (0 != putenv ("LIBEXTRACTOR_PREFIX=." PATH_SEPARATOR_STR ".libs/"))
+    fprintf (stderr, 
+	     "Failed to update my environment, plugin loading may fail: %s\n",
+	     strerror (errno));
   ret += testLoadPlugins ();
   ret += testLoadPlugins ();
   return ret;
