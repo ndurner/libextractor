@@ -30,6 +30,8 @@
  */
 static int ret = 2;
 
+#define HLO "Hello world!"
+#define GOB "Goodbye!"
 
 /**
  * Function that libextractor calls for each
@@ -89,22 +91,22 @@ process_replies (void *cls,
       return 1;
     }
   if ( (2 == ret) &&
-       (data_len == strlen ("Hello world!") + 1) &&
+       (data_len == strlen (HLO) + 1) &&
        (0 == strncmp (data,
-		      "Hello world!",
-		      strlen ("Hello world!"))) )
+		      HLO,
+		      strlen (HLO))) )
     {
-      fprintf (stderr, "Received 'hello world'\n");
+      fprintf (stderr, "Received '%s'\n", HLO);
       ret = 1;
       return 0;
     }
   if ( (1 == ret) &&
-       (data_len == strlen ("Goodbye!") + 1) &&
+       (data_len == strlen (GOB) + 1) &&
        (0 == strncmp (data,
-		      "Goodbyte!",
-		      strlen ("Goodbye!"))) )
+		      GOB,
+		      strlen (GOB))) )
     {
-      fprintf (stderr, "Received 'good bye'\n");
+      fprintf (stderr, "Received '%s'\n", GOB);
       ret = 0;
       return 1;
     }

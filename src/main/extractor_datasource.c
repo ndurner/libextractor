@@ -281,7 +281,8 @@ bfds_new (const void *data,
   memset (result, 0, sizeof (struct BufferedFileDataSource));
   result->data = (NULL != data) ? data : &result[1];
   result->buffer = (NULL != data) ? NULL : &result[1];
-  result->buffer_size = (NULL != data) ? fsize : xtra; 
+  result->buffer_size = (NULL != data) ? fsize : xtra;
+  result->buffer_bytes = (NULL != data) ? fsize : 0;
   result->fsize = fsize;
   result->fd = fd;
   bfds_pick_next_buffer_at (result, 0);

@@ -147,18 +147,18 @@ abort_all_channels (struct EXTRACTOR_PluginList *plugins)
  * @param plugin plugin of the channel sending the message
  * @param meta_type type of the meta data
  * @param meta_format format of the meta data
- * @param value_len number of bytes in 'value'
- * @param value 'data' send from the plugin
  * @param mime mime string send from the plugin
+ * @param value 'data' send from the plugin
+ * @param value_len number of bytes in 'value'
  */
 static void
 process_plugin_reply (void *cls,
 		      struct EXTRACTOR_PluginList *plugin,
 		      enum EXTRACTOR_MetaType meta_type,
 		      enum EXTRACTOR_MetaFormat meta_format,
-		      size_t value_len,
+		      const char *mime,
 		      const void *value,
-		      const char *mime)
+                      size_t value_len)
 {
   static unsigned char cont_msg = MESSAGE_CONTINUE_EXTRACTING;
   struct PluginReplyProcessor *prp = cls;

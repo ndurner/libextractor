@@ -111,8 +111,7 @@ EXTRACTOR_IPC_process_reply_ (struct EXTRACTOR_PluginList *plugin,
 		plugin, 
 		(enum EXTRACTOR_MetaType) meta.meta_type,
 		(enum EXTRACTOR_MetaFormat) meta.meta_format,
-		meta.value_size,
-		mime_type, value);
+		mime_type, value, meta.value_size);
 	  return sizeof (struct MetaMessage) + meta.mime_length + meta.value_size;
 	default:
 	  LOG ("Invalid message type %d\n", (int) code);

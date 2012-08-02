@@ -435,7 +435,7 @@ EXTRACTOR_IPC_channel_create_ (struct EXTRACTOR_PluginList *plugin,
   struct InitMessage *init;
   size_t slen;
 
-  STARTUPINFO startup;
+  STARTUPINFOA startup;
   PROCESS_INFORMATION proc;
   char cmd[MAX_PATH + 1];
   char arg1[10], arg2[10];
@@ -491,16 +491,18 @@ EXTRACTOR_IPC_channel_create_ (struct EXTRACTOR_PluginList *plugin,
     return NULL;
   }
 
-  memset (&startup, 0, sizeof (STARTUPINFO));
+  memset (&proc, 0, sizeof (PROCESS_INFORMATION));
+  memset (&startup, 0, sizeof (STARTUPINFOA));
 
   /* TODO: write our own plugin-hosting executable? rundll32, for once, has smaller than usual stack size.
    * Also, users might freak out seeing over 9000 rundll32 processes (seeing over 9000 processes named
    * "libextractor_plugin_helper" is probably less confusing).
    */
-  snprintf(cmd, MAX_PATH + 1, 
+  snprintf(cmd, MAX_PATH, 
 	   "rundll32.exe libextractor-3.dll,RundllEntryPoint@16 %lu %lu", 
 	   p10_os_inh, p21_os_inh);
   cmd[MAX_PATH] = '\0';
+  startup.cb = sizeof (STARTUPINFOA);
   if (CreateProcessA (NULL, cmd, NULL, NULL, TRUE, CREATE_SUSPENDED, NULL, NULL,
       &startup, &proc))
   {
