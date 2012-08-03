@@ -194,6 +194,162 @@ process_plugin_reply (void *cls,
 
 
 /**
+ * Closure for the in-process callbacks.
+ */
+struct InProcessContext
+{
+  /**
+   * Current plugin.
+   */
+  struct EXTRACTOR_PluginList *plugin;
+
+  /**
+   * Data source to use.
+   */
+  struct EXTRACTOR_Datasource *ds;
+
+  /**
+   * Function to call with meta data.
+   */
+  EXTRACTOR_MetaDataProcessor proc;
+
+  /**
+   * Closure for 'proc'.
+   */
+  void *proc_cls;
+
+  /**
+   * IO buffer.
+   */
+  char buf[DEFAULT_SHM_SIZE];
+
+  /**
+   * 0 to continue extracting, 1 if we are finished
+   */
+  int finished;
+};
+
+
+/**
+ * Obtain a pointer to up to 'size' bytes of data from the file to process.
+ * Callback used for in-process plugins.
+ *
+ * @param cls a 'struct InProcessContext'
+ * @param data pointer to set to the file data, set to NULL on error
+ * @param size maximum number of bytes requested
+ * @return number of bytes now available in data (can be smaller than 'size'),
+ *         -1 on error
+ *
+ */
+static ssize_t
+in_process_read (void *cls,
+		 void **data,
+		 size_t size)
+{
+  struct InProcessContext *ctx = cls;
+  ssize_t ret;
+  size_t bsize;
+
+  bsize = sizeof (ctx->buf);
+  if (size < bsize)
+    bsize = size;
+  ret = EXTRACTOR_datasource_read_ (ctx->ds,
+				    ctx->buf,
+				    bsize);
+  if (-1 == ret)
+    *data = NULL;
+  else
+    *data = ctx->buf;
+  return ret;
+}
+
+
+/**
+ * Seek in the file.  Use 'SEEK_CUR' for whence and 'pos' of 0 to
+ * obtain the current position in the file.
+ * Callback used for in-process plugins.
+ * 
+ * @param cls a 'struct InProcessContext'
+ * @param pos position to seek (see 'man lseek')
+ * @param whence how to see (absolute to start, relative, absolute to end)
+ * @return new absolute position, -1 on error (i.e. desired position
+ *         does not exist)
+ */ 
+static int64_t
+in_process_seek (void *cls,
+		 int64_t pos,
+		 int whence)
+{
+  struct InProcessContext *ctx = cls;
+
+  return EXTRACTOR_datasource_seek_ (ctx->ds,
+				     pos,
+				     whence);
+}
+
+
+/**
+ * Determine the overall size of the file.
+ * Callback used for in-process plugins.
+ * 
+ * @param cls a 'struct InProcessContext'
+ * @return overall file size, UINT64_MAX on error (i.e. IPC failure)
+ */ 
+static uint64_t
+in_process_get_size (void *cls)
+{
+  struct InProcessContext *ctx = cls;
+  
+  return (uint64_t) EXTRACTOR_datasource_get_size_ (ctx->ds);
+}
+
+
+/**
+ * Type of a function that libextractor calls for each
+ * meta data item found.
+ * Callback used for in-process plugins.
+ *
+ * @param cls a 'struct InProcessContext'
+ * @param plugin_name name of the plugin that produced this value;
+ *        special values can be used (i.e. '&lt;zlib&gt;' for zlib being
+ *        used in the main libextractor library and yielding
+ *        meta data).
+ * @param type libextractor-type describing the meta data
+ * @param format basic format information about data 
+ * @param data_mime_type mime-type of data (not of the original file);
+ *        can be NULL (if mime-type is not known)
+ * @param data actual meta-data found
+ * @param data_len number of bytes in data
+ * @return 0 to continue extracting, 1 to abort
+ */ 
+static int
+in_process_proc (void *cls,
+		 const char *plugin_name,
+		 enum EXTRACTOR_MetaType type,
+		 enum EXTRACTOR_MetaFormat format,
+		 const char *data_mime_type,
+		 const char *data,
+		 size_t data_len)
+{
+  struct InProcessContext *ctx = cls;
+  int ret;
+
+  if (0 != ctx->finished)
+    return 1;
+  ret = ctx->proc (ctx->proc_cls,
+		   plugin_name,
+		   type,
+		   format,
+		   data_mime_type,
+		   data,
+		   data_len);
+  if (0 != ret)
+    ctx->finished = 1;
+  return ret;
+}
+
+
+/**
  * Extract keywords using the given set of plugins.
  *
  * @param plugins the list of plugins to use
@@ -214,6 +370,8 @@ do_extract (struct EXTRACTOR_PluginList *plugins,
   struct StartMessage start;
   struct EXTRACTOR_Channel *channel;
   struct PluginReplyProcessor prp;
+  struct InProcessContext ctx;
+  struct EXTRACTOR_ExtractContext ec;
   int64_t min_seek;
   ssize_t data_available;
   uint64_t last_position;
@@ -350,13 +508,24 @@ do_extract (struct EXTRACTOR_PluginList *plugins,
     }
 
   /* run in-process plugins */
+  ctx.finished = 0;
+  ctx.ds = ds;
+  ctx.proc = proc;
+  ctx.proc_cls = proc_cls;
+  ec.cls = &ctx;
+  ec.read = &in_process_read;
+  ec.seek = &in_process_seek;
+  ec.get_size = &in_process_get_size;
+  ec.proc = &in_process_proc;
   for (pos = plugins; NULL != pos; pos = pos->next)
     {
       if (EXTRACTOR_OPTION_IN_PROCESS != pos->flags)
 	continue;
-      LOG ("In-process plugins not implemented\n");
-      // FIXME: initialize read/seek context...
-      // pos->extract_method (FIXME);
+      ctx.plugin = pos;
+      ec.config = pos->plugin_options;
+      pos->extract_method (&ec);
+      if (1 == ctx.finished)
+	break;
     }
 }
 
