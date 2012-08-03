@@ -15,12 +15,12 @@ if HAVE_VORBISFILE
  PLUGIN_OGG=libextractor_ogg.la
 endif
 
-#plugin_LTLIBRARIES = \
+plugin_LTLIBRARIES = \
+  $(PLUGIN_OGG) 
 #  libextractor_id3.la \
 #  libextractor_id3v2.la \
 #  libextractor_ebml.la \
 #  libextractor_s3m.la \
-#  $(PLUGIN_OGG) \
 #  libextractor_png.la \
 #  libextractor_mp3.la
 
@@ -84,7 +84,7 @@ libextractor_png_la_LIBADD = \
 EXTRA_DIST = template_extractor.c 
 
 if HAVE_ZZUF
-  fuzz_tests=fuzz_default.sh fuzz_thumbnail.sh
+  fuzz_tests=fuzz_default.sh 
 endif
 
 TESTS = $(fuzz_tests)

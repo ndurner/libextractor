@@ -24,11 +24,11 @@ do
     trap "echo $tmpfile caused SIGSEGV ; exit 1" SEGV
     while [ $seed -lt $ZZSTOPSEED ]
     do
-#      echo "file $file seed $seed"
+      echo "file $file seed $seed"
       zzuf -c -s $seed cat "$file" > "$tmpfile"
-      if ! "$bindir/extract" "$tmpfile" > /dev/null
+      if ! "$bindir/extract" -i "$tmpfile" > /dev/null
       then
-        echo "$tmpfile caused error exit"
+        echo "$tmpfile with seed $seed failed"
         exit 1
       fi
       seed=`expr $seed + 1`
