@@ -42,7 +42,10 @@ endif
 PLUGINFLAGS = $(makesymbolic) $(LE_PLUGIN_LDFLAGS)
 
 EXTRA_DIST = \
-  iconv.c fuzz_default.sh fuzz_thumbnail.sh
+  iconv.c fuzz_default.sh fuzz_thumbnail.sh \
+  test_file.dat \
+  test_file.dat.gz \
+  test_file.dat.bz2
 
 libextractor_la_CPPFLAGS = -DPLUGINDIR=\"@RPLUGINDIR@\" -DPLUGININSTDIR=\"${plugindir}\" $(AM_CPPFLAGS)
 
@@ -85,7 +88,9 @@ check_PROGRAMS = \
  test_plugin_loading \
  test_plugin_load_multi \
  test_ipc \
- test_file
+ test_file \
+ test_gzip \
+ test_bzip2 
 
 TESTS = $(check_PROGRAMS)
 
@@ -103,4 +108,10 @@ test_ipc_SOURCES = \
 
 test_file_SOURCES = \
  test_file.c 
+
+test_gzip_SOURCES = \
+ test_gzip.c 
+
+test_bzip2_SOURCES = \
+ test_bzip2.c 
 
