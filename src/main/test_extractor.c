@@ -47,7 +47,7 @@
 void
 EXTRACTOR_test_extract_method (struct EXTRACTOR_ExtractContext *ec)
 {
-  unsigned char *dp;
+  void *dp;
 
   if ((NULL == ec->config) || (0 != strcmp (ec->config, "test")))
     return; /* only run in test mode */
@@ -56,7 +56,7 @@ EXTRACTOR_test_extract_method (struct EXTRACTOR_ExtractContext *ec)
       fprintf (stderr, "Reading at offset 0 failed\n");
       abort (); 
     }
-  if (0 != strncmp ("test", (const char*) dp, 4))
+  if (0 != strncmp ("test", dp, 4))
     {
       fprintf (stderr, "Unexpected data at offset 0\n");
       abort (); 
@@ -77,7 +77,7 @@ EXTRACTOR_test_extract_method (struct EXTRACTOR_ExtractContext *ec)
       fprintf (stderr, "Failure to read at 100k + 4\n");
       abort ();
     }
-  if ((1024 * 100 + 4) % 256 != *dp)
+  if ((1024 * 100 + 4) % 256 != * (unsigned char *) dp)
     {
       fprintf (stderr, "Unexpected data at offset 100k + 4\n");
       abort ();
@@ -94,7 +94,7 @@ EXTRACTOR_test_extract_method (struct EXTRACTOR_ExtractContext *ec)
       fprintf (stderr, "Failure to read at 50k - 3\n");
       abort ();
     }
-  if (((1024 * 100 + 4) + 1 - (1024 * 50 + 7)) % 256 != *dp)
+  if (((1024 * 100 + 4) + 1 - (1024 * 50 + 7)) % 256 != * (unsigned char *) dp)
     {
       fprintf (stderr, "Unexpected data at offset 50k - 3\n");
       abort ();
@@ -121,7 +121,7 @@ EXTRACTOR_test_extract_method (struct EXTRACTOR_ExtractContext *ec)
       fprintf (stderr, "Failure to read at 150k - 3\n");
       abort ();
     }
-  if ((1024 * 150 - 2) % 256 != *dp)
+  if ((1024 * 150 - 2) % 256 != * (unsigned char *) dp)
     {
       fprintf (stderr, "Unexpected data at offset 150k - 3\n");
       abort ();

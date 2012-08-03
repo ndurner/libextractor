@@ -407,7 +407,7 @@ struct EXTRACTOR_ExtractContext
    *         -1 on error
    */
   ssize_t (*read) (void *cls,
-		   unsigned char **data,
+		   void **data,
 		   size_t size);
 
   

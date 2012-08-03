@@ -214,7 +214,7 @@ plugin_env_seek (void *cls,
  */
 static ssize_t
 plugin_env_read (void *cls,
-		 unsigned char **data, size_t count)
+		 void **data, size_t count)
 {
   struct ProcessingContext *pc = cls;
   unsigned char *dp;
