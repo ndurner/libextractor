@@ -439,6 +439,8 @@ EXTRACTOR_IPC_channel_recv_ (struct EXTRACTOR_Channel **channels,
       if (max < channel->cpipe_out)
 	max = channel->cpipe_out;
     }
+  if (-1 == max)
+    return 1; /* nothing left to do! */
   tv.tv_sec = 10;
   tv.tv_usec = 0;
   if (-1 == select (max + 1, &to_check, NULL, NULL, &tv))
