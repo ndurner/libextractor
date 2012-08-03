@@ -1,4 +1,5 @@
-* extractor_ipc.c (a bit)
-* extractor.c (a lot)
-* extractor_ipc_w32.c (a lot)
-* test, test, test (a lot)
+* bz2 decompression
+* in-process plugin execution
+* testcases for extract-from-file, extract-from-gz-file, extract-from-bz2-file
+* testcases for running multiple files in one run (known to fail!)
+
