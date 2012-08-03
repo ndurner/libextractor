@@ -707,6 +707,9 @@ EXTRACTOR_IPC_channel_recv_ (struct EXTRACTOR_Channel **channels,
     c++;
   }
 
+  if (c == 0)
+    return 1; /* nothing left to do! */
+
   ms = 10000;
   first_ready = WaitForMultipleObjects (c, events, FALSE, ms);
   if (first_ready == WAIT_TIMEOUT || first_ready == WAIT_FAILED)
