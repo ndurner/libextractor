@@ -11,58 +11,37 @@ PLUGINFLAGS = $(makesymbolic) $(LE_PLUGIN_LDFLAGS)
 
 SUBDIRS = . 
 
+EXTRA_DIST = template_extractor.c \
+  testdata/courseclear.ogg
+
 if HAVE_VORBISFILE
- PLUGIN_OGG=libextractor_ogg.la
+PLUGIN_OGG=libextractor_ogg.la
+TEST_OGG=test_ogg
 endif
 
 plugin_LTLIBRARIES = \
   $(PLUGIN_OGG) 
-#  libextractor_id3.la \
-#  libextractor_id3v2.la \
-#  libextractor_ebml.la \
-#  libextractor_s3m.la \
-#  libextractor_png.la \
-#  libextractor_mp3.la
 
-libextractor_mp3_la_SOURCES = \
-  mp3_extractor.c 
-libextractor_mp3_la_LDFLAGS = \
-  $(PLUGINFLAGS)
-libextractor_mp3_la_LIBADD = \
-  $(top_builddir)/src/common/libextractor_common.la \
-  $(top_builddir)/src/main/libextractor.la \
-  $(LE_LIBINTL)
+if HAVE_ZZUF
+  fuzz_tests=fuzz_default.sh 
+endif
 
-libextractor_ebml_la_SOURCES = \
-  ebml_extractor.c 
-libextractor_ebml_la_LDFLAGS = \
-  $(top_builddir)/src/main/libextractor.la \
-  $(PLUGINFLAGS)
+check_PROGRAMS = \
+  $(TEST_OGG)
 
-libextractor_id3_la_SOURCES = \
-  id3_extractor.c 
-libextractor_id3_la_LDFLAGS = \
-  $(PLUGINFLAGS)
-libextractor_id3_la_LIBADD = \
-  $(top_builddir)/src/common/libextractor_common.la \
-  $(top_builddir)/src/main/libextractor.la \
-  $(LE_LIBINTL)
+TESTS = \
+  $(fuzz_tests) \
+  $(check_PROGRAMS)
 
-libextractor_id3v2_la_SOURCES = \
-  id3v2_extractor.c 
-libextractor_id3v2_la_LDFLAGS = \
-  $(PLUGINFLAGS)
-libextractor_id3v2_la_LIBADD = \
-  $(top_builddir)/src/main/libextractor.la \
-  $(top_builddir)/src/common/libextractor_common.la
 
-libextractor_s3m_la_SOURCES = \
-  s3m_extractor.c
-libextractor_s3m_la_LDFLAGS = \
-  $(PLUGINFLAGS)
-libextractor_s3m_la_LIBADD = \
-  $(top_builddir)/src/main/libextractor.la \
-  $(top_builddir)/src/common/libextractor_common.la
+noinst_LTLIBRARIES = \
+  libtest.la
+
+libtest_la_SOURCES = \
+  test_lib.c 
+libtest_la_LIBADD = \
+  $(top_builddir)/src/main/libextractor.la
+
 
 libextractor_ogg_la_SOURCES = \
   ogg_extractor.c
@@ -73,18 +52,10 @@ libextractor_ogg_la_LIBADD = \
   $(top_builddir)/src/common/libextractor_common.la \
   -lvorbisfile -lvorbis $(vorbisflag) -logg
 
-libextractor_png_la_SOURCES = \
-  png_extractor.c
-libextractor_png_la_LDFLAGS = \
-  $(PLUGINFLAGS)
-libextractor_png_la_LIBADD = \
-  $(top_builddir)/src/main/libextractor.la \
-  $(top_builddir)/src/common/libextractor_common.la
+test_ogg_SOURCES = \
+  test_ogg.c
+test_ogg_LDADD = \
+  $(top_builddir)/src/plugins/libtest.la
 
-EXTRA_DIST = template_extractor.c 
 
-if HAVE_ZZUF
-  fuzz_tests=fuzz_default.sh 
-endif
 
-TESTS = $(fuzz_tests)
