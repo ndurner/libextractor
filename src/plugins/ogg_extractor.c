@@ -158,7 +158,6 @@ EXTRACTOR_ogg_extract_method (struct EXTRACTOR_ExtractContext *ec)
   if (fsize < 8)
     return;
 
-  /* TODO: rewrite pl_seek() to be STDIO-compatible (SEEK_END) and enable seeking. */
   callbacks.read_func = &read_ogg;
   callbacks.seek_func = &seek_ogg;
   callbacks.close_func = NULL;
