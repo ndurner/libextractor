@@ -69,7 +69,7 @@ read_ogg (void *ptr, size_t size, size_t nmemb, void *datasource)
  * @param datasource  the 'struct EXTRACTOR_ExtractContext'
  * @param offset where to seek
  * @param whence how to seek
- * @return -1 on error
+ * @return -1 on error, new position on success
  */
 static int 
 seek_ogg (void *datasource,
@@ -77,12 +77,8 @@ seek_ogg (void *datasource,
 	  int whence)
 {
   struct EXTRACTOR_ExtractContext *ec = datasource;
-
-  if (-1 == ec->seek (ec->cls,
-		      (int64_t) offset,
-		      whence))
-    return -1;
-  return 0;
+  int64_t new_position = ec->seek (ec->cls, (int64_t) offset, whence);
+  return (long) new_position;
 }
 
 
@@ -162,7 +158,8 @@ EXTRACTOR_ogg_extract_method (struct EXTRACTOR_ExtractContext *ec)
   callbacks.seek_func = &seek_ogg;
   callbacks.close_func = NULL;
   callbacks.tell_func = &tell_ogg;
-  if (0 != ov_open_callbacks (ec, &vf, NULL, 0, callbacks))
+  ret = ov_open_callbacks (ec, &vf, NULL, 0, callbacks);
+  if (0 != ret)
   {
     ov_clear (&vf);
     return;
