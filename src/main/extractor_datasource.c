@@ -298,8 +298,6 @@ bfds_new (const void *data,
 static void
 bfds_delete (struct BufferedFileDataSource *bfds)
 {
-  if (NULL != bfds->buffer)
-    free (bfds->buffer);
   free (bfds);
 }
 
