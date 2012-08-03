@@ -335,8 +335,10 @@ EXTRACTOR_IPC_channel_create_ (struct EXTRACTOR_PluginList *plugin,
     {
       LOG ("Failed to send INIT_STATE message to plugin\n");
       EXTRACTOR_IPC_channel_destroy_ (channel);
+      free (init);
       return NULL;
     }
+  free (init);
   return channel;
 }
 
