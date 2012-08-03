@@ -1,5 +1,5 @@
 * bz2 decompression
-* in-process plugin execution
+* testcase for in-process plugin execution
 * testcases for extract-from-file, extract-from-gz-file, extract-from-bz2-file
 * testcases for running multiple files in one run (known to fail!)
 
