@@ -154,6 +154,12 @@ main (int argc, char *argv[])
       return 1;
     }
   EXTRACTOR_extract (pl, NULL, buf, sizeof (buf), &process_replies, "main-cls");
+  if (0 == ret)
+    {
+      /* do it again... */
+      ret = 2;
+      EXTRACTOR_extract (pl, NULL, buf, sizeof (buf), &process_replies, "main-cls");
+    }
   EXTRACTOR_plugin_remove_all (pl);
   return ret;
 }
