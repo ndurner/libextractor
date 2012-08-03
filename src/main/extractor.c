@@ -517,10 +517,15 @@ do_extract (struct EXTRACTOR_PluginList *plugins,
   ec.seek = &in_process_seek;
   ec.get_size = &in_process_get_size;
   ec.proc = &in_process_proc;
+  if (-1 == EXTRACTOR_datasource_seek_ (ds, 0, SEEK_SET))
+    return;
+
   for (pos = plugins; NULL != pos; pos = pos->next)
     {
       if (EXTRACTOR_OPTION_IN_PROCESS != pos->flags)
 	continue;
+      if (-1 == EXTRACTOR_plugin_load_ (pos))
+        continue;
       ctx.plugin = pos;
       ec.config = pos->plugin_options;
       pos->extract_method (&ec);
