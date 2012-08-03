@@ -504,6 +504,7 @@ find_plugin_in_path (void *cls,
   const char *sym_name;
   char *sym;
   char *dot;
+  size_t dlen;
 
   if (NULL != sc->path)
     return;
@@ -513,8 +514,10 @@ find_plugin_in_path (void *cls,
     {
       if ('.' == ent->d_name[0])
 	continue;
-      if ( (NULL == strstr (ent->d_name, ".so")) &&
-	   (NULL == strstr (ent->d_name, ".dll")) )
+      dlen = strlen (ent->d_name);
+      if ( (dlen < 4) ||
+	   ( (0 != strcmp (&ent->d_name[dlen-3], ".so")) &&
+	     (0 != strcasecmp (&ent->d_name[dlen-4], ".dll")) ) )
 	continue; /* only load '.so' and '.dll' */
       if (NULL == (sym_name = strrchr (ent->d_name, '_')))
 	continue;	
@@ -590,6 +593,7 @@ load_plugins_from_dir (void *cls,
   const char *sym_name;
   char *sym;
   char *dot;
+  size_t dlen;
 
   if (NULL == (dir = opendir (path)))
     return;
@@ -597,8 +601,10 @@ load_plugins_from_dir (void *cls,
     {
       if (ent->d_name[0] == '.')
 	continue;
-      if ( (NULL == strstr (ent->d_name, ".so")) &&
-	   (NULL == strstr (ent->d_name, ".dll")) )
+      dlen = strlen (ent->d_name);
+      if ( (dlen < 4) ||
+	   ( (0 != strcmp (&ent->d_name[dlen-3], ".so")) &&
+	     (0 != strcasecmp (&ent->d_name[dlen-4], ".dll")) ) )
 	continue; /* only load '.so' and '.dll' */
       if (NULL == (sym_name = strrchr (ent->d_name, '_')))
 	continue;
