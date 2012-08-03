@@ -39,6 +39,46 @@ main (int argc, char *argv[])
 {
   struct SolutionData courseclear_sol[] =
     {
+      { 
+	EXTRACTOR_METATYPE_MIMETYPE,
+	EXTRACTOR_METAFORMAT_UTF8,
+	"text/plain",
+	"application/ogg",
+	strlen ("application/ogg") + 1,
+	0 
+      },
+      { 
+	EXTRACTOR_METATYPE_VENDOR,
+	EXTRACTOR_METAFORMAT_UTF8,
+	"text/plain",
+	"Xiphophorus libVorbis I 20010813",
+	strlen ("Xiphophorus libVorbis I 20010813") + 1,
+	0 
+      },
+      { 
+	EXTRACTOR_METATYPE_TITLE,
+	EXTRACTOR_METAFORMAT_UTF8,
+	"text/plain",
+	"xoc_SMW_06_courseclear",
+	strlen ("xoc_SMW_06_courseclear") + 1,
+	0 
+      },
+      { 
+	EXTRACTOR_METATYPE_ARTIST,
+	EXTRACTOR_METAFORMAT_UTF8,
+	"text/plain",
+	"XOC",
+	strlen ("XOC") + 1,
+	0 
+      },
+      { 
+	EXTRACTOR_METATYPE_TRACK_NUMBER,
+	EXTRACTOR_METAFORMAT_UTF8,
+	"text/plain",
+	"6",
+	strlen ("6") + 1,
+	0 
+      },
       { 0, 0, NULL, NULL, 0, -1 }
     };
   struct ProblemSet ps[] =
