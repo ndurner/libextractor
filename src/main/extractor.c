@@ -502,7 +502,6 @@ do_extract (struct EXTRACTOR_PluginList *plugins,
 	       ((min_seek + data_available > pos->seek_request) ||
                (min_seek == EXTRACTOR_datasource_get_size_ (ds))) )
 	    {
-	      LOG ("Sending update message\n");
 	      send_update_message (pos,
 				   min_seek,
 				   data_available,
