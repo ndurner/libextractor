@@ -25,9 +25,15 @@ PLUGIN_MIME=libextractor_mime.la
 TEST_MIME=test_mime
 endif
 
+if HAVE_GIF
+PLUGIN_GIF=libextractor_gif.la
+TEST_GIF=test_gif
+endif
+
 plugin_LTLIBRARIES = \
   $(PLUGIN_OGG) \
-  $(PLUGIN_MIME)
+  $(PLUGIN_MIME) \
+  $(PLUGIN_GIF)
 
 if HAVE_ZZUF
   fuzz_tests=fuzz_default.sh 
@@ -35,7 +41,8 @@ endif
 
 check_PROGRAMS = \
   $(TEST_OGG) \
-  $(TEST_MIME)
+  $(TEST_MIME) \
+  $(TEST_GIF)
 
 TESTS = \
   $(fuzz_tests) \
@@ -78,6 +85,21 @@ libextractor_mime_la_LIBADD = \
 test_mime_SOURCES = \
   test_mime.c
 test_mime_LDADD = \
+  $(top_builddir)/src/plugins/libtest.la
+
+
+libextractor_gif_la_SOURCES = \
+  gif_extractor.c
+libextractor_gif_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+libextractor_gif_la_LIBADD = \
+  $(top_builddir)/src/main/libextractor.la \
+  $(top_builddir)/src/common/libextractor_common.la \
+  -lgif
+
+test_gif_SOURCES = \
+  test_gif.c
+test_gif_LDADD = \
   $(top_builddir)/src/plugins/libtest.la
 
 
