@@ -424,6 +424,7 @@ get_installation_paths (EXTRACTOR_PathProcessor pp,
   char *path;
   char *prefix;
   char *d;
+  char *saveptr;
 
   prefix = NULL;
   if (NULL != (p = getenv ("LIBEXTRACTOR_PREFIX")))
@@ -433,9 +434,9 @@ get_installation_paths (EXTRACTOR_PathProcessor pp,
 	  LOG_STRERROR ("strdup");
 	  return;
 	}
-      for (prefix = strtok (d, PATH_SEPARATOR_STR);
+      for (prefix = strtok_r (d, PATH_SEPARATOR_STR, &saveptr);
 	   NULL != prefix;
-	   prefix = strtok (NULL, PATH_SEPARATOR_STR))
+	   prefix = strtok_r (NULL, PATH_SEPARATOR_STR, &saveptr))
 	pp (pp_cls, prefix);	
       free (d);
       return;
