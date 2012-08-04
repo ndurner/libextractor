@@ -326,7 +326,10 @@ bfds_seek (struct BufferedFileDataSource *bfds,
 	}
       if (bfds->fpos + bfds->buffer_pos + pos > bfds->fsize)
 	{
-	  LOG ("Invalid seek operation\n");
+	  LOG ("Invalid seek operation to %lld from %llu (max is %llu)\n",
+	       (long long) pos,
+	       bfds->fpos + bfds->buffer_pos,
+	       (unsigned long long) bfds->fsize);
 	  return -1;
 	}
       if ( (NULL == bfds->buffer) ||
@@ -537,11 +540,16 @@ cfs_init_decompressor_zlib (struct CompressedFileSource *cfs,
   unsigned int gzip_header_length = 10;
   unsigned char hdata[12];
 
+  if (0 != bfds_seek (cfs->bfds, 0, SEEK_SET))
+    {
+      LOG ("Failed to seek to offset 0!\n");
+      return -1;
+    }
   /* Process gzip header */  
   if (sizeof (hdata) > bfds_read (cfs->bfds, hdata, sizeof (hdata)))
     return -1;
   if (0 != (hdata[3] & 0x4)) /* FEXTRA  set */
-    gzip_header_length += 2 + (hdata[10] & 0xff) + ((hdata[11] & 0xff) * 256);
+    gzip_header_length += 2 + (hdata[10] & 0xff) + ((hdata[11] & 0xff) * 256);    
 
   if (0 != (hdata[3] & 0x8)) 
     {
@@ -819,7 +827,7 @@ cfs_read_zlib (struct CompressedFileSource *cfs,
       if ( (Z_OK != ret) && (Z_STREAM_END != ret) )
 	return -1; /* unexpected error */
       /* go backwards by the number of bytes left in the buffer */
-      if (-1 == bfds_seek (cfs->bfds, - cfs->strm.avail_in, SEEK_CUR))
+      if (-1 == bfds_seek (cfs->bfds, - (int64_t) cfs->strm.avail_in, SEEK_CUR))
 	return -1;
       /* copy decompressed bytes to target buffer */
       in = cfs->strm.total_out;

@@ -63,10 +63,14 @@ process_replies (void *cls,
       ret = 3;
       return 1;
     }
+  if (0 == strcmp (plugin_name,
+		   "<zlib>"))
+    return 0; /* skip this one */
   if (0 != strcmp (plugin_name,
 		   "test"))
     {
-      fprintf (stderr, "plugin name invalid\n");
+      fprintf (stderr, "plugin name invalid: `%s'\n",
+	       plugin_name);
       ret = 4;
       return 1;
     }

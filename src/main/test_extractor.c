@@ -61,7 +61,8 @@ EXTRACTOR_test_extract_method (struct EXTRACTOR_ExtractContext *ec)
       fprintf (stderr, "Unexpected data at offset 0\n");
       abort (); 
     }
-  if (1024 * 150 != ec->get_size (ec->cls))
+  if ( (1024 * 150 != ec->get_size (ec->cls)) &&
+       (UINT64_MAX != ec->get_size (ec->cls)) )
     {
       fprintf (stderr, "Unexpected file size returned (expected 150k)\n");
       abort (); 
