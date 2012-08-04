@@ -446,7 +446,6 @@ EXTRACTOR_IPC_channel_recv_ (struct EXTRACTOR_Channel **channels,
     }
   if (-1 == max)
     {
-      LOG ("No channels to select on...\n");
       return 1; /* nothing left to do! */
     }
   tv.tv_sec = 10;
