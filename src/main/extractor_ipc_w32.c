@@ -736,6 +736,8 @@ EXTRACTOR_IPC_channel_recv_ (struct EXTRACTOR_Channel **channels,
             channels[i]->data, channels[i]->size + bytes_read, proc, proc_cls);
       if (!bresult || -1 == ret)
       {
+        DWORD error = GetLastError ();
+        SetErrnoFromWinError (error);
         if (!bresult)
           LOG_STRERROR ("ReadFile");
         EXTRACTOR_IPC_channel_destroy_ (channels[i]);
