@@ -59,8 +59,7 @@
  * Data is read from the source and shoved into decompressor
  * in chunks this big.
  */
-#define COM_CHUNK_SIZE (12345)
-// #define COM_CHUNK_SIZE (10 * 1024)
+#define COM_CHUNK_SIZE (16 * 1024)
 
 
 /**
@@ -849,14 +848,23 @@ cfs_read_zlib (struct CompressedFileSource *cfs,
       /* copy decompressed bytes to target buffer */
       in = COM_CHUNK_SIZE - cfs->strm.avail_out;
       if (in > size - rc)
-	in = size - rc;
+	{
+	  if (Z_STREAM_END == ret)
+	    {
+	      cfs->uncompressed_size = cfs->fpos + in;
+	      ret = Z_OK;
+	    }
+	  in = size - rc;
+	}
       memcpy (&dst[rc], &cfs->result[cfs->result_pos], in);
       cfs->fpos += in;
       cfs->result_pos += in;
       rc += in;
     }
   if (Z_STREAM_END == ret)
-    cfs->uncompressed_size = cfs->fpos;
+    {
+      cfs->uncompressed_size = cfs->fpos;
+    }
   return rc;
 }
 #endif
@@ -937,14 +945,23 @@ cfs_read_bz2 (struct CompressedFileSource *cfs,
       /* copy decompressed bytes to target buffer */
       in = COM_CHUNK_SIZE - cfs->bstrm.avail_out;
       if (in > size - rc)
-	in = size - rc;
+	{
+	  if (BZ_STREAM_END == ret)
+	    {
+	      cfs->uncompressed_size = cfs->fpos + in;
+	      ret = BZ_OK;
+	    }
+	  in = size - rc;
+	}
       memcpy (&dst[rc], &cfs->result[cfs->result_pos], in);
       cfs->fpos += in;
       cfs->result_pos += in;
       rc += in;
     }
   if (BZ_STREAM_END == ret)
-    cfs->uncompressed_size = cfs->fpos;
+    {
+      cfs->uncompressed_size = cfs->fpos;
+    }
   return rc;
 }
 #endif
@@ -1082,7 +1099,10 @@ cfs_seek (struct CompressedFileSource *cfs,
 	}
       if (0 == ret)
 	{
-	  LOG ("Reached unexpected end of stream during seek operation\n");
+	  LOG ("Reached unexpected end of stream at %llu during seek operation to %llu (%d left)\n",
+	       (unsigned long long) cfs->fpos,
+	       (unsigned long long) nposition,
+	       delta);
 	  return -1;
 	}
       ASSERT (ret <= delta);
