@@ -447,6 +447,7 @@ bfds_read (struct BufferedFileDataSource *bfds,
 }
 
 
+#if HAVE_ZLIB
 /**
  * Reset gz-compressed data stream to the beginning.
  *
@@ -483,8 +484,10 @@ cfs_reset_stream_zlib (struct CompressedFileSource *cfs)
   cfs->fpos = 0;
   return 1;
 }
+#endif
 
 
+#if HAVE_LIBBZ2
 /**
  * Reset bz2-compressed data stream to the beginning.
  *
@@ -494,10 +497,16 @@ cfs_reset_stream_zlib (struct CompressedFileSource *cfs)
 static int
 cfs_reset_stream_bz2 (struct CompressedFileSource *cfs)
 {
-  /* not implemented */
-  LOG ("bz2 decompression not implemented\n");
-  return -1;
+  BZ2_bzDecompressEnd (&cfs->bstrm);
+  if (BZ_OK !=
+      BZ2_bzDecompressInit (&cfs->bstrm, 0, 0))
+    {
+      LOG ("Failed to reinitialize BZ2 decompressor\n");
+      return -1;
+    }
+  return 1;
 }
+#endif
 
 
 /**
@@ -514,10 +523,14 @@ cfs_reset_stream (struct CompressedFileSource *cfs)
 {
   switch (cfs->compression_type)
     {
+#if HAVE_ZLIB
     case COMP_TYPE_ZLIB:
       return cfs_reset_stream_zlib (cfs);
+#endif
+#if HAVE_LIBBZ2
     case COMP_TYPE_BZ2:
       return cfs_reset_stream_bz2 (cfs);
+#endif
     default:
       LOG ("invalid compression type selected\n");
       return -1;
@@ -525,6 +538,7 @@ cfs_reset_stream (struct CompressedFileSource *cfs)
 }
 
 
+#if HAVE_ZLIB
 /**
  * Initializes gz-decompression object. Might report metadata about
  * compresse stream, if available. Resets the stream to the beginning.
@@ -628,8 +642,10 @@ cfs_init_decompressor_zlib (struct CompressedFileSource *cfs,
   cfs->gzip_header_length = gzip_header_length;
   return cfs_reset_stream_zlib (cfs);
 }
+#endif
 
 
+#if HAVE_LIBBZ2
 /**
  * Initializes bz2-decompression object. Might report metadata about
  * compresse stream, if available. Resets the stream to the beginning.
@@ -643,9 +659,12 @@ static int
 cfs_init_decompressor_bz2 (struct CompressedFileSource *cfs, 
 			   EXTRACTOR_MetaDataProcessor proc, void *proc_cls)
 {
-  LOG ("bz2 decompression not implemented\n");
-  return -1;
+  if (BZ_OK !=
+      BZ2_bzDecompressInit (&cfs->bstrm, 0, 0))
+    return -1;
+  return 1;
 }
+#endif
 
 
 /**
@@ -663,10 +682,14 @@ cfs_init_decompressor (struct CompressedFileSource *cfs,
 {
   switch (cfs->compression_type)
     {
+#if HAVE_ZLIB
     case COMP_TYPE_ZLIB:
       return cfs_init_decompressor_zlib (cfs, proc, proc_cls);
+#endif
+#if HAVE_LIBBZ2
     case COMP_TYPE_BZ2:
       return cfs_init_decompressor_bz2 (cfs, proc, proc_cls);
+#endif
     default:
       LOG ("invalid compression type selected\n");
       return -1;
@@ -674,6 +697,7 @@ cfs_init_decompressor (struct CompressedFileSource *cfs,
 }
 
 
+#if HAVE_ZLIB
 /**
  * Deinitializes gz-decompression object.
  *
@@ -686,8 +710,10 @@ cfs_deinit_decompressor_zlib (struct CompressedFileSource *cfs)
   inflateEnd (&cfs->strm);
   return 1;
 }
+#endif
 
 
+#if HAVE_LIBBZ2
 /**
  * Deinitializes bz2-decompression object.
  *
@@ -697,9 +723,10 @@ cfs_deinit_decompressor_zlib (struct CompressedFileSource *cfs)
 static int
 cfs_deinit_decompressor_bz2 (struct CompressedFileSource *cfs)
 {
-  LOG ("bz2 decompression not implemented\n");
-  return -1;
+  BZ2_bzDecompressEnd (&cfs->bstrm);
+  return 1;
 }
+#endif
 
 
 /**
@@ -713,10 +740,14 @@ cfs_deinit_decompressor (struct CompressedFileSource *cfs)
 {
   switch (cfs->compression_type)
     {
+#if HAVE_ZLIB
     case COMP_TYPE_ZLIB:
       return cfs_deinit_decompressor_zlib (cfs);
+#endif
+#if HAVE_LIBBZ2
     case COMP_TYPE_BZ2:
       return cfs_deinit_decompressor_bz2 (cfs);
+#endif
     default:
       LOG ("invalid compression type selected\n");
       return -1;
@@ -775,6 +806,7 @@ cfs_new (struct BufferedFileDataSource *bfds,
 }
 
 
+#if HAVE_ZLIB
 /**
  * Fills 'data' with new uncompressed data.  Does the actual
  * decompression. Will set uncompressed_size on the end of compressed
@@ -854,8 +886,10 @@ cfs_read_zlib (struct CompressedFileSource *cfs,
     cfs->uncompressed_size = cfs->fpos;
   return rc;
 }
+#endif
 
 
+#if HAVE_LIBBZ2
 /**
  * Fills 'data' with new uncompressed data.  Does the actual
  * decompression. Will set uncompressed_size on the end of compressed
@@ -874,6 +908,7 @@ cfs_read_bz2 (struct CompressedFileSource *cfs,
   LOG ("bz2 decompression not implemented\n");
   return -1;
 }
+#endif
 
 
 /**
@@ -893,10 +928,14 @@ cfs_read (struct CompressedFileSource *cfs,
 {
   switch (cfs->compression_type)
     {
+#if HAVE_ZLIB
     case COMP_TYPE_ZLIB:
       return cfs_read_zlib (cfs, data, size);
+#endif
+#if HAVE_LIBBZ2
     case COMP_TYPE_BZ2:
       return cfs_read_bz2 (cfs, data, size);
+#endif
     default:
       LOG ("invalid compression type selected\n");
       return -1;
