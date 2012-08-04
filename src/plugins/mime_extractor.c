@@ -28,9 +28,17 @@
  */
 static magic_t magic;
 
- 
 /**
- * Main entry method for the 'application/ogg' extraction plugin.
+ * Path we used for loading magic data, NULL is used for 'default'.
+ */
+static char *magic_path;
+ 
+
+/**
+ * Main entry method for the 'application/ogg' extraction plugin.  The
+ * 'config' of the context can be used to specify an alternative magic
+ * path.  If config is not given, the default magic path will be
+ * used.  The default magic path is '/usr/share/misc/magic'.
  *
  * @param ec extraction context provided to the plugin
  */
@@ -46,6 +54,28 @@ EXTRACTOR_mime_extract_method (struct EXTRACTOR_ExtractContext *ec)
 		  16 * 1024);
   if (-1 == ret)
     return;
+  if ( ( (NULL == magic_path) &&
+	 (NULL != ec->config) ) ||
+       ( (NULL != magic_path) &&
+	 (NULL == ec->config) ) ||
+       ( (NULL != magic_path) &&
+	 (NULL != ec->config) &&
+	 (0 != strcmp (magic_path,
+		       ec->config) )) )
+    {
+      if (NULL != magic_path)
+	free (magic_path);		
+      magic_close (magic);
+      magic = magic_open (MAGIC_MIME_TYPE);
+      if (0 != magic_load (magic, ec->config))
+	{
+	  /* FIXME: report errors? */
+	}
+      if (NULL != ec->config)
+	magic_path = strdup (ec->config);
+      else
+	magic_path = NULL;
+    }
   mime = magic_buffer (magic, buf, ret);
   if (NULL == mime)
     {
@@ -69,10 +99,10 @@ void __attribute__ ((constructor))
 mime_ltdl_init () 
 {
   magic = magic_open (MAGIC_MIME_TYPE);
-  /* FIXME: hard-wiring this path might not be the 
-     most sane thing to do; not sure what is a good
-     portable way to find the 'magic' file though... */
-  magic_load (magic, "/usr/share/misc/magic");
+  if (0 != magic_load (magic, magic_path))
+    {
+      /* FIXME: how to deal with errors? */
+    }
 }
 
 
@@ -84,6 +114,11 @@ mime_ltdl_fini ()
 {
   magic_close (magic);
   magic = NULL;
+  if (NULL != magic_path)
+    {
+      free (magic_path);
+      magic_path = NULL;
+    }
 }
 
 /* end of mime_extractor.c */
