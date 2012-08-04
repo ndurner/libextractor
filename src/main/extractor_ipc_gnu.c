@@ -236,6 +236,7 @@ EXTRACTOR_IPC_shared_memory_set_ (struct EXTRACTOR_SharedMemory *shm,
 				     size);
 }
 
+
 /**
  * Query datasource for current position
  *
@@ -250,6 +251,7 @@ EXTRACTOR_datasource_get_pos_ (struct EXTRACTOR_Datasource *ds)
     return UINT_MAX;
   return pos;
 }
+
 
 /**
  * Create a channel to communicate with a process wrapping
@@ -440,7 +442,10 @@ EXTRACTOR_IPC_channel_recv_ (struct EXTRACTOR_Channel **channels,
 	max = channel->cpipe_out;
     }
   if (-1 == max)
-    return 1; /* nothing left to do! */
+    {
+      LOG ("No channels to select on...\n");
+      return 1; /* nothing left to do! */
+    }
   tv.tv_sec = 10;
   tv.tv_usec = 0;
   if (-1 == select (max + 1, &to_check, NULL, NULL, &tv))

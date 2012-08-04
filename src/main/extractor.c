@@ -414,15 +414,21 @@ do_extract (struct EXTRACTOR_PluginList *plugins,
   while (! done)
     {
       struct EXTRACTOR_Channel *channels[plugin_count];
-      
+
       /* calculate current 'channels' array */
       plugin_count = 0;
       for (pos = plugins; NULL != pos; pos = pos->next)
 	{
-	  if (-1 != pos->seek_request)
-	    channels[plugin_count] = pos->channel;
+	  if (-1 == pos->seek_request)
+	    {
+	      /* channel is not seeking, must be running or done */
+	      channels[plugin_count] = pos->channel;
+	    }
 	  else
-	    channels[plugin_count] = NULL; /* not running this round, seeking! */
+	    {
+	      /* not running this round, seeking! */
+	      channels[plugin_count] = NULL; 
+	    }
 	  plugin_count++;
 	}
       
@@ -438,6 +444,7 @@ do_extract (struct EXTRACTOR_PluginList *plugins,
 	  abort_all_channels (plugins);
 	  break;
 	}
+
       /* calculate minimum seek request (or set done=0 to continue here) */
       done = 1;
       min_seek = -1;
@@ -482,24 +489,26 @@ do_extract (struct EXTRACTOR_PluginList *plugins,
 	{
 	  if (NULL == (channel = pos->channel))
 	    continue;
+	  if ( (-1 != pos->seek_request) && 
+	       (1 == prp.file_finished) )
+	    {
+	      send_discard_message (pos);
+	      pos->round_finished = 1;
+	      pos->seek_request = -1; 
+	    }	      
 	  if ( (-1 != pos->seek_request) && ((last_position > pos->seek_request) ||
                (last_position + data_available <= pos->seek_request)) &&
 	       (min_seek <= pos->seek_request) &&
 	       ((min_seek + data_available > pos->seek_request) ||
                (min_seek == EXTRACTOR_datasource_get_size_ (ds))) )
 	    {
+	      LOG ("Sending update message\n");
 	      send_update_message (pos,
 				   min_seek,
 				   data_available,
 				   ds);
-	      /*pos->seek_request = -1;*/
+	      pos->seek_request = -1; 
 	    }
-	  if ( (-1 != pos->seek_request) && 
-	       (1 == prp.file_finished) )
-	    {
-	      send_discard_message (pos);
-	      pos->round_finished = 1;
-	    }	      
 	  if (0 == pos->round_finished)
 	    done = 0; /* can't be done, plugin still active */	
 	}
@@ -576,10 +585,11 @@ EXTRACTOR_extract (struct EXTRACTOR_PluginList *plugins,
   have_oop = 0;
   for (pos = plugins; NULL != pos; pos = pos->next)
     {
-      if (NULL != (shm = pos->shm))
-	break;
+      if (NULL == shm)
+	shm = pos->shm;
       if (EXTRACTOR_OPTION_IN_PROCESS != pos->flags)
 	have_oop = 1;
+      pos->round_finished = 0;
     }
   if ( (NULL == shm) &&
        (1 == have_oop) )

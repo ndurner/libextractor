@@ -318,8 +318,13 @@ plugin_env_send_proc (void *cls,
       LOG ("Failed to read response to meta message\n");
       return 1;
     }
-  if (MESSAGE_CONTINUE_EXTRACTING != reply)
+  if (MESSAGE_DISCARD_STATE == reply)
     return 1;
+  if (MESSAGE_CONTINUE_EXTRACTING != reply)
+    {
+      LOG ("Received unexpected reply to meta data: %d\n", reply);
+      return 1;
+    }
   return 0;
 }
 
@@ -467,7 +472,7 @@ process_requests (struct ProcessingContext *pc)
   while (1)
     {
       unsigned char code;
-  
+
       if (1 != EXTRACTOR_read_all_ (pc->in, &code, 1))
 	{
 	  LOG ("Failed to read next request\n");
@@ -477,12 +482,20 @@ process_requests (struct ProcessingContext *pc)
 	{
 	case MESSAGE_INIT_STATE:
 	  if (0 != handle_init_message (pc))
-	    return;
+	    {
+	      LOG ("Failure to handle INIT\n");
+	      return;
+	    }
 	  break;
 	case MESSAGE_EXTRACT_START:
 	  if (0 != handle_start_message (pc))
-	    return;
+	    {
+	      LOG ("Failure to handle START\n");
+	      return;
+	    }
+	  break;
 	case MESSAGE_UPDATED_SHM:
+	  LOG ("Illegal message\n");
 	  /* not allowed here, we're not waiting for SHM to move! */
 	  return;
 	case MESSAGE_DISCARD_STATE:
@@ -579,6 +592,8 @@ EXTRACTOR_plugin_main_ (struct EXTRACTOR_PluginList *plugin,
   pc.shm = NULL;
   pc.shm_map_size = 0;
   process_requests (&pc);
+  LOG ("IPC error; plugin `%s' terminates!\n",
+       plugin->short_libname);
 #if WINDOWS
   if (NULL != pc.shm)
     UnmapViewOfFile (pc.shm);

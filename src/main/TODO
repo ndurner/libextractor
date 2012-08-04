@@ -3,3 +3,5 @@
 * testcases for extract-from-file, extract-from-gz-file, extract-from-bz2-file
 * testcases for running multiple files in one run (known to fail!)
 
+* MAX_META_DATA buffer of 32 MB is a bit big as a non-growing default size;
+  also, valgrind reports it is leaked even though printf-debugging shows it is not (!?)

@@ -208,7 +208,7 @@ EXTRACTOR_plugin_add (struct EXTRACTOR_PluginList *prev,
 		      const char *options,
 		      enum EXTRACTOR_Options flags)
 {
-  struct EXTRACTOR_PluginList *result;
+  struct EXTRACTOR_PluginList *plugin;
   struct EXTRACTOR_PluginList *pos;
   char *libname;
 
@@ -221,22 +221,23 @@ EXTRACTOR_plugin_add (struct EXTRACTOR_PluginList *prev,
 	   library);
       return prev;
     }
-  if (NULL == (result = malloc (sizeof (struct EXTRACTOR_PluginList))))
+  if (NULL == (plugin = malloc (sizeof (struct EXTRACTOR_PluginList))))
     return prev;
-  memset (result, 0, sizeof (struct EXTRACTOR_PluginList));
-  result->next = prev;
-  if (NULL == (result->short_libname = strdup (library)))
+  memset (plugin, 0, sizeof (struct EXTRACTOR_PluginList));
+  plugin->next = prev;
+  if (NULL == (plugin->short_libname = strdup (library)))
     {
-      free (result);
+      free (plugin);
       return NULL;
     }
-  result->libname = libname;
-  result->flags = flags;
+  plugin->libname = libname;
+  plugin->flags = flags;
   if (NULL != options)
-    result->plugin_options = strdup (options);
+    plugin->plugin_options = strdup (options);
   else
-    result->plugin_options = NULL;
-  return result;
+    plugin->plugin_options = NULL;
+  plugin->seek_request = -1;
+  return plugin;
 }
 
 
