@@ -364,7 +364,10 @@ bfds_seek (struct BufferedFileDataSource *bfds,
 	}
       if (pos > bfds->fsize)
 	{
-	  LOG ("Invalid seek operation\n");
+	  LOG ("Invalid seek operation (%lld > %llu) %d\n",
+	       (long long) pos,
+	       (unsigned long long) bfds->fsize,
+	       SEEK_SET == whence);
 	  return -1;
 	}
       if ( (NULL == bfds->buffer) ||
@@ -538,8 +541,7 @@ cfs_init_decompressor_zlib (struct CompressedFileSource *cfs,
   if (sizeof (hdata) > bfds_read (cfs->bfds, hdata, sizeof (hdata)))
     return -1;
   if (0 != (hdata[3] & 0x4)) /* FEXTRA  set */
-    gzip_header_length += 2 + (unsigned) (hdata[10] & 0xff) +
-      (((unsigned) (hdata[11] & 0xff)) * 256);
+    gzip_header_length += 2 + (hdata[10] & 0xff) + ((hdata[11] & 0xff) * 256);
 
   if (0 != (hdata[3] & 0x8)) 
     {
@@ -550,18 +552,27 @@ cfs_init_decompressor_zlib (struct CompressedFileSource *cfs,
       ssize_t buf_bytes;
       
       if (gzip_header_length > bfds_seek (cfs->bfds, gzip_header_length, SEEK_SET))
-	return -1;
+	{
+	  LOG ("Corrupt gzip, failed to seek to end of header\n");
+	  return -1;
+	}
       buf_bytes = bfds_read (cfs->bfds, fname, sizeof (fname));
       if (buf_bytes <= 0)
-	return -1;
+	{
+	  LOG ("Corrupt gzip, failed to read filename\n");	  
+	  return -1;
+	}
       if (NULL == (cptr = memchr (fname, 0, buf_bytes)))
-	return -1;
+	{
+	  LOG ("Corrupt gzip, failed to read filename terminator\n");
+	  return -1;
+	}
       len = cptr - fname;
       if (0 != proc (proc_cls, "<zlib>", EXTRACTOR_METATYPE_FILENAME,
 		     EXTRACTOR_METAFORMAT_C_STRING, "text/plain",
 		     fname,
 		     len))
-	return 0; /* done */
+	return 0; /* done */	
       gzip_header_length += len + 1;
     }
   
@@ -574,12 +585,21 @@ cfs_init_decompressor_zlib (struct CompressedFileSource *cfs,
       size_t len;
       
       if (gzip_header_length > bfds_seek (cfs->bfds, gzip_header_length, SEEK_SET))
-	return -1;
+	{
+	  LOG ("Corrupt gzip, failed to seek to end of header\n");
+	  return -1;
+	}
       buf_bytes = bfds_read (cfs->bfds, fcomment, sizeof (fcomment));
       if (buf_bytes <= 0)
-	return -1;
+	{
+	  LOG ("Corrupt gzip, failed to read comment\n");	  
+	  return -1;
+	}
       if (NULL == (cptr = memchr (fcomment, 0, buf_bytes)))
-	return -1;
+	{
+	  LOG ("Corrupt gzip, failed to read comment terminator\n");
+	  return -1;
+	}
       len = cptr - fcomment;
       if (0 != proc (proc_cls, "<zlib>", EXTRACTOR_METATYPE_COMMENT,
 		     EXTRACTOR_METAFORMAT_C_STRING, "text/plain",
