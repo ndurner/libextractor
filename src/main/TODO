@@ -1,5 +1,2 @@
-* bz2 decompression (not implemented)
-* extract-from-bz2-file test fails!
-
 * MAX_META_DATA buffer of 32 MB is a bit big as a non-growing default size;
   also, valgrind reports it is leaked even though printf-debugging shows it is not (!?)

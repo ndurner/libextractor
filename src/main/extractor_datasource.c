@@ -449,97 +449,6 @@ bfds_read (struct BufferedFileDataSource *bfds,
 
 #if HAVE_ZLIB
 /**
- * Reset gz-compressed data stream to the beginning.
- *
- * @return 1 on success, 0 to terminate extraction,
- *        -1 on decompressor initialization failure
- */ 
-static int
-cfs_reset_stream_zlib (struct CompressedFileSource *cfs)
-{
-  if (cfs->gzip_header_length != 
-      bfds_seek (cfs->bfds, cfs->gzip_header_length, SEEK_SET))
-    return -1;
-  memset (&cfs->strm, 0, sizeof (z_stream));
-  cfs->strm.avail_out = COM_CHUNK_SIZE;
-
-  /*
-   * note: maybe plain inflateInit(&strm) is adequate,
-   * it looks more backward-compatible also ;
-   *
-   * ZLIB_VERNUM isn't defined by zlib version 1.1.4 ;
-   * there might be a better check.
-   */
-  if (Z_OK != inflateInit2 (&cfs->strm,
-#ifdef ZLIB_VERNUM
-      15 + 32
-#else
-      - MAX_WBITS
-#endif
-      ))
-    {
-      LOG ("Failed to initialize zlib decompression\n");
-      return -1;
-    }
-  cfs->fpos = 0;
-  return 1;
-}
-#endif
-
-
-#if HAVE_LIBBZ2
-/**
- * Reset bz2-compressed data stream to the beginning.
- *
- * @return 1 on success, 0 to terminate extraction,
- *        -1 on decompressor initialization failure
- */ 
-static int
-cfs_reset_stream_bz2 (struct CompressedFileSource *cfs)
-{
-  BZ2_bzDecompressEnd (&cfs->bstrm);
-  if (BZ_OK !=
-      BZ2_bzDecompressInit (&cfs->bstrm, 0, 0))
-    {
-      LOG ("Failed to reinitialize BZ2 decompressor\n");
-      return -1;
-    }
-  return 1;
-}
-#endif
-
-
-/**
- * Resets the compression stream to begin uncompressing
- * from the beginning. Used at initialization time, and when
- * seeking backward.
- *
- * @param cfs cfs to reset
- * @return 1 on success, 0 to terminate extraction,
- *        -1 on error
- */
-static int
-cfs_reset_stream (struct CompressedFileSource *cfs)
-{
-  switch (cfs->compression_type)
-    {
-#if HAVE_ZLIB
-    case COMP_TYPE_ZLIB:
-      return cfs_reset_stream_zlib (cfs);
-#endif
-#if HAVE_LIBBZ2
-    case COMP_TYPE_BZ2:
-      return cfs_reset_stream_bz2 (cfs);
-#endif
-    default:
-      LOG ("invalid compression type selected\n");
-      return -1;
-    }
-}
-
-
-#if HAVE_ZLIB
-/**
  * Initializes gz-decompression object. Might report metadata about
  * compresse stream, if available. Resets the stream to the beginning.
  *
@@ -591,10 +500,11 @@ cfs_init_decompressor_zlib (struct CompressedFileSource *cfs,
 	  return -1;
 	}
       len = cptr - fname;
-      if (0 != proc (proc_cls, "<zlib>", EXTRACTOR_METATYPE_FILENAME,
-		     EXTRACTOR_METAFORMAT_C_STRING, "text/plain",
-		     fname,
-		     len))
+      if ( (NULL != proc) &&
+	   (0 != proc (proc_cls, "<zlib>", EXTRACTOR_METATYPE_FILENAME,
+		       EXTRACTOR_METAFORMAT_C_STRING, "text/plain",
+		       fname,
+		       len)) )
 	return 0; /* done */	
       gzip_header_length += len + 1;
     }
@@ -624,10 +534,11 @@ cfs_init_decompressor_zlib (struct CompressedFileSource *cfs,
 	  return -1;
 	}
       len = cptr - fcomment;
-      if (0 != proc (proc_cls, "<zlib>", EXTRACTOR_METATYPE_COMMENT,
-		     EXTRACTOR_METAFORMAT_C_STRING, "text/plain",
-		     (const char *) fcomment,
-		     len))
+      if ( (NULL != proc) &&
+	   (0 != proc (proc_cls, "<zlib>", EXTRACTOR_METATYPE_COMMENT,
+		       EXTRACTOR_METAFORMAT_C_STRING, "text/plain",
+		       (const char *) fcomment,
+		       len)) )
 	return 0; /* done */
       gzip_header_length += len + 1;
     }
@@ -640,7 +551,33 @@ cfs_init_decompressor_zlib (struct CompressedFileSource *cfs,
   gzip_header_length = 0;
 #endif
   cfs->gzip_header_length = gzip_header_length;
-  return cfs_reset_stream_zlib (cfs);
+
+  if (cfs->gzip_header_length != 
+      bfds_seek (cfs->bfds, cfs->gzip_header_length, SEEK_SET))
+    {
+      LOG ("Failed to seek to start to initialize gzip decompressor\n");
+      return -1;
+    }
+  cfs->strm.avail_out = COM_CHUNK_SIZE;
+  /*
+   * note: maybe plain inflateInit(&strm) is adequate,
+   * it looks more backward-compatible also ;
+   *
+   * ZLIB_VERNUM isn't defined by zlib version 1.1.4 ;
+   * there might be a better check.
+   */
+  if (Z_OK != inflateInit2 (&cfs->strm,
+#ifdef ZLIB_VERNUM
+      15 + 32
+#else
+      - MAX_WBITS
+#endif
+      ))
+    {
+      LOG ("Failed to initialize zlib decompression\n");
+      return -1;
+    }
+  return 1;
 }
 #endif
 
@@ -659,9 +596,20 @@ static int
 cfs_init_decompressor_bz2 (struct CompressedFileSource *cfs, 
 			   EXTRACTOR_MetaDataProcessor proc, void *proc_cls)
 {
+  if (0 !=
+      bfds_seek (cfs->bfds, 0, SEEK_SET))
+    {
+      LOG ("Failed to seek to start to initialize BZ2 decompressor\n");
+      return -1;
+    }
+  memset (&cfs->bstrm, 0, sizeof (bz_stream));
   if (BZ_OK !=
       BZ2_bzDecompressInit (&cfs->bstrm, 0, 0))
-    return -1;
+    {
+      LOG ("Failed to initialize BZ2 decompressor\n");
+      return -1;
+    }
+  cfs->bstrm.avail_out = COM_CHUNK_SIZE;
   return 1;
 }
 #endif
@@ -680,6 +628,8 @@ static int
 cfs_init_decompressor (struct CompressedFileSource *cfs, 
 		       EXTRACTOR_MetaDataProcessor proc, void *proc_cls)
 {
+  cfs->result_pos = 0;
+  cfs->fpos = 0;
   switch (cfs->compression_type)
     {
 #if HAVE_ZLIB
@@ -756,6 +706,24 @@ cfs_deinit_decompressor (struct CompressedFileSource *cfs)
 
 
 /**
+ * Resets the compression stream to begin uncompressing
+ * from the beginning. Used at initialization time, and when
+ * seeking backward.
+ *
+ * @param cfs cfs to reset
+ * @return 1 on success, 0 to terminate extraction,
+ *        -1 on error
+ */
+static int
+cfs_reset_stream (struct CompressedFileSource *cfs)
+{
+  if (-1 == cfs_deinit_decompressor (cfs))
+    return -1;
+  return cfs_init_decompressor (cfs, NULL, NULL);
+}
+
+
+/**
  * Destroy compressed file source.
  *
  * @param cfs source to destroy
@@ -826,7 +794,7 @@ cfs_read_zlib (struct CompressedFileSource *cfs,
   int ret;
   size_t rc;
   ssize_t in;
-  char buf[COM_CHUNK_SIZE];
+  unsigned char buf[COM_CHUNK_SIZE];
 
   if (cfs->fpos == cfs->uncompressed_size)
     {
@@ -856,7 +824,12 @@ cfs_read_zlib (struct CompressedFileSource *cfs,
 	  LOG ("unexpected EOF\n");
 	  return -1; /* unexpected EOF */
 	}
-      cfs->strm.next_in = (unsigned char *) buf;
+      if (0 == in)
+	{
+	  cfs->uncompressed_size = cfs->fpos;
+	  return rc; 
+	}
+      cfs->strm.next_in = buf;
       cfs->strm.avail_in = (uInt) in;
       cfs->strm.next_out = (unsigned char *) cfs->result;
       cfs->strm.avail_out = COM_CHUNK_SIZE;
@@ -905,8 +878,74 @@ cfs_read_bz2 (struct CompressedFileSource *cfs,
 	      void *data,
 	      size_t size)
 {
-  LOG ("bz2 decompression not implemented\n");
-  return -1;
+  char *dst = data;
+  int ret;
+  size_t rc;
+  ssize_t in;
+  char buf[COM_CHUNK_SIZE];
+
+  if (cfs->fpos == cfs->uncompressed_size)
+    {
+      /* end of file */      
+      return 0;
+    }
+  rc = 0;
+  if (COM_CHUNK_SIZE > cfs->bstrm.avail_out + cfs->result_pos)
+    {
+      /* got left-over decompressed data from previous round! */
+      in = COM_CHUNK_SIZE - (cfs->bstrm.avail_out + cfs->result_pos);
+      if (in > size)
+	in = size;
+      memcpy (&dst[rc], &cfs->result[cfs->result_pos], in);
+      cfs->fpos += in;
+      cfs->result_pos += in;
+      rc += in;
+    }
+  ret = BZ_OK;
+  while ( (rc < size) && (BZ_STREAM_END != ret) )
+    {
+      /* read block from original data source */
+      in = bfds_read (cfs->bfds,
+		      buf, sizeof (buf));
+      if (in < 0)	
+	{
+	  LOG ("unexpected EOF\n");
+	  return -1; /* unexpected EOF */
+	}
+      if (0 == in)
+	{
+	  cfs->uncompressed_size = cfs->fpos;
+	  return rc;
+	}
+      cfs->bstrm.next_in = buf;
+      cfs->bstrm.avail_in = (uInt) in;
+      cfs->bstrm.next_out = cfs->result;
+      cfs->bstrm.avail_out = COM_CHUNK_SIZE;
+      cfs->result_pos = 0;
+      ret = BZ2_bzDecompress (&cfs->bstrm);
+      if ( (BZ_OK != ret) && (BZ_STREAM_END != ret) )
+	{
+	  LOG ("unexpected bzip2 decompress error: %d\n", ret);
+	  return -1; /* unexpected error */
+	}
+      /* go backwards by the number of bytes left in the buffer */
+      if (-1 == bfds_seek (cfs->bfds, - (int64_t) cfs->bstrm.avail_in, SEEK_CUR))
+	{
+	  LOG ("seek failed\n");
+	  return -1;
+	}
+      /* copy decompressed bytes to target buffer */
+      in = COM_CHUNK_SIZE - cfs->bstrm.avail_out;
+      if (in > size - rc)
+	in = size - rc;
+      memcpy (&dst[rc], &cfs->result[cfs->result_pos], in);
+      cfs->fpos += in;
+      cfs->result_pos += in;
+      rc += in;
+    }
+  if (BZ_STREAM_END == ret)
+    cfs->uncompressed_size = cfs->fpos;
+  return rc;
 }
 #endif
 
@@ -1041,6 +1080,12 @@ cfs_seek (struct CompressedFileSource *cfs,
 	  LOG ("Failed to read decompressed stream for seek operation\n");
 	  return -1;
 	}
+      if (0 == ret)
+	{
+	  LOG ("Reached unexpected end of stream during seek operation\n");
+	  return -1;
+	}
+      ASSERT (ret <= delta);
       delta -= ret;      
     }
   return cfs->fpos;

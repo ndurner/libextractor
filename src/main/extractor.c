@@ -377,6 +377,7 @@ do_extract (struct EXTRACTOR_PluginList *plugins,
   ssize_t data_available;
   ssize_t ready;
   int done;
+  int have_in_memory;
 
   plugin_count = 0;
   for (pos = plugins; NULL != pos; pos = pos->next)
@@ -385,7 +386,7 @@ do_extract (struct EXTRACTOR_PluginList *plugins,
     ready = EXTRACTOR_IPC_shared_memory_set_ (shm, ds, 0, DEFAULT_SHM_SIZE);
   else
     ready = 0;
-
+  have_in_memory = 0;
   prp.file_finished = 0;
   prp.proc = proc;
   prp.proc_cls = proc_cls;
@@ -398,6 +399,8 @@ do_extract (struct EXTRACTOR_PluginList *plugins,
   start.file_size = EXTRACTOR_datasource_get_size_ (ds, 0);
   for (pos = plugins; NULL != pos; pos = pos->next)
     {
+      if (EXTRACTOR_OPTION_IN_PROCESS == pos->flags)
+	have_in_memory = 1;
       if ( (NULL != pos->channel) &&
 	   (-1 == EXTRACTOR_IPC_channel_send_ (pos->channel,
 					       &start,
@@ -537,6 +540,8 @@ do_extract (struct EXTRACTOR_PluginList *plugins,
 	}
     }
 
+  if (0 == have_in_memory)
+    return;
   /* run in-process plugins */
   ctx.finished = 0;
   ctx.ds = ds;
@@ -548,7 +553,10 @@ do_extract (struct EXTRACTOR_PluginList *plugins,
   ec.get_size = &in_process_get_size;
   ec.proc = &in_process_proc;
   if (-1 == EXTRACTOR_datasource_seek_ (ds, 0, SEEK_SET))
-    return;
+    {
+      LOG ("Failed to seek to 0 for in-memory plugins\n");
+      return;
+    }
 
   for (pos = plugins; NULL != pos; pos = pos->next)
     {
