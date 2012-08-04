@@ -446,8 +446,12 @@ do_extract (struct EXTRACTOR_PluginList *plugins,
       /* calculate minimum seek request (or set done=0 to continue here) */
       done = 1;
       min_seek = -1;
+      plugin_count = 0;
       for (pos = plugins; NULL != pos; pos = pos->next)
 	{
+	  if (NULL == channels[plugin_count])
+	    pos->channel = NULL;
+	  plugin_count++;
 	  if ( (1 == pos->round_finished) ||
 	       (NULL == pos->channel) )
 	    continue; /* inactive plugin */

@@ -468,6 +468,7 @@ EXTRACTOR_IPC_channel_recv_ (struct EXTRACTOR_Channel **channels,
       if ( (-1 == (iret = read (channel->cpipe_out,
 				&channel->data[channel->size],
 				MAX_META_DATA - channel->size)) ) ||
+	   (0 == iret) ||
 	   (-1 == (ret = EXTRACTOR_IPC_process_reply_ (channel->plugin,
 						       channel->data, 
 						       channel->size + iret, 

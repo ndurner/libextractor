@@ -3,6 +3,3 @@
 
 * MAX_META_DATA buffer of 32 MB is a bit big as a non-growing default size;
   also, valgrind reports it is leaked even though printf-debugging shows it is not (!?)
-
-* for some reason, if a plugin crashes or something goes wrong (i.e. with a seek),
-  the whole system hangs (not good...)
