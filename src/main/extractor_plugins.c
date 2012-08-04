@@ -308,7 +308,7 @@ EXTRACTOR_plugin_add_config (struct EXTRACTOR_PluginList *prev,
 	  cpy[pos++] = '\0';	/* replace ':' by termination */
 	  break;
 	default:
-	  abort ();
+	  ABORT ();
 	}
       if ('-' == cpy[last])
 	{

@@ -62,7 +62,7 @@ EXTRACTOR_abort_ (const char *file,
 #if DEBUG
   EXTRACTOR_log_ (file, line, "Assertion failed.\n");
 #endif
-  abort ();
+  ABORT ();
 }
 
 /* end of extractor_logging.c */

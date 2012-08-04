@@ -75,4 +75,10 @@
 #include <mach-o/ldsyms.h>
 #endif
 
+#if !WINDOWS
+#define ABORT() abort()
+#else
+#define ABORT() DebugBreak ()
+#endif
+
 #endif
