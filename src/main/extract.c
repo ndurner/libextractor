@@ -108,6 +108,7 @@ struct Help
  */
 #define BORDER 29
 
+
 /**
  * Display help text (--help).
  *
@@ -296,7 +297,8 @@ print_selected_keywords (void *cls,
       cd = iconv_open (nl_langinfo(CODESET), "UTF-8");
       if (((iconv_t) -1) != cd)
 	keyword = iconv_helper (cd,
-				data);
+				data,
+				data_len);
       else
 	keyword = strdup (data);
       if (NULL != keyword)
@@ -318,8 +320,9 @@ print_selected_keywords (void *cls,
       break;
     case EXTRACTOR_METAFORMAT_C_STRING:
       fprintf (stdout,
-	       "%s - %s\n",
+	       "%s - %.*s\n",
 	       stype,
+	       (int) data_len,
 	       data);
       break;
     default:
@@ -372,10 +375,11 @@ print_selected_keywords_grep_friendly (void *cls,
 	fprintf (stdout,
 		 "%s: ",
 		 gettext(mt));
-      cd = iconv_open (nl_langinfo(CODESET), "UTF-8");
+      cd = iconv_open (nl_langinfo (CODESET), "UTF-8");
       if (((iconv_t) -1) != cd)
 	keyword = iconv_helper (cd,
-				data);
+				data,
+				data_len);
       else
 	keyword = strdup (data);
       if (NULL != keyword)

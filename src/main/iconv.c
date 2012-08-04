@@ -19,43 +19,53 @@
 */
 
 /**
+ * @file main/iconv.c
+ * @brief convenience functions for character conversion
+ * @author Christian Grothoff
+ */
+
+/**
  * Convert the given input using the given converter
  * and return as a 0-terminated string.
+ *
+ * @param cd converter to use
+ * @param in input string
+ * @param inSize number of bytes in 'in'
+ * @return NULL on error, otherwise the converted string (to be free'd by caller)
  */
 static char * 
-iconv_helper(iconv_t cd,
-	     const char * in) 
+iconv_helper (iconv_t cd,
+	      const char *in,
+	      size_t inSize) 
 {
-  size_t inSize;
   char * buf;
   char * ibuf;
   const char * i;
   size_t outSize;
   size_t outLeft;
 
-  i = in;
-  /* reset iconv */
-  iconv(cd, NULL, NULL, NULL, NULL);
-
-  inSize = strlen(in);
   if (inSize > 1024 * 1024)
     return NULL; /* too big to be meta data */
+  i = in;
+  /* reset iconv */
+  iconv (cd, NULL, NULL, NULL, NULL);
   outSize = 4 * inSize + 2;
   outLeft = outSize - 2; /* make sure we have 2 0-terminations! */
-  buf = malloc(outSize);
-  if (buf == NULL)
+  if (NULL == (buf = malloc (outSize)))
     return NULL;
   ibuf = buf;
-  memset(buf, 0, outSize);
-  if (iconv(cd,
-	    (char**) &in,
-	    &inSize,
-	    &ibuf,
-	    &outLeft) == SIZE_MAX)
+  memset (buf, 0, outSize);
+  if (iconv (cd,
+	     (char**) &in,
+	     &inSize,
+	     &ibuf,
+	     &outLeft) == SIZE_MAX)
     {
       /* conversion failed */
-      free(buf);
-      return strdup(i);
+      free (buf);
+      return strdup (i);
     }
   return buf;
 }
+
+/* end of iconv.c */

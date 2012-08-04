@@ -17,6 +17,11 @@
      Free Software Foundation, Inc., 59 Temple Place - Suite 330,
      Boston, MA 02111-1307, USA.
  */
+/**
+ * @file main/extractor_print.c
+ * @brief convenience functions for printing meta data
+ * @author Christian Grothoff
+ */
 
 #include "platform.h"
 #include "extractor.h"
@@ -62,7 +67,7 @@ EXTRACTOR_meta_data_print (void *handle,
       LOG_STRERROR ("iconv_open");
       return 1;
     }
-  buf = iconv_helper (cd, data);
+  buf = iconv_helper (cd, data, data_len);
   if (NULL == buf)
     {
       LOG_STRERROR ("iconv_helper");
