@@ -49,10 +49,24 @@ main (int argc, char *argv[])
       },
       { 0, 0, NULL, NULL, 0, -1 }
     };
+  struct SolutionData gif_image_sol[] =
+    {
+      { 
+	EXTRACTOR_METATYPE_MIMETYPE,
+	EXTRACTOR_METAFORMAT_UTF8,
+	"text/plain",
+	"image/gif",
+	strlen ("image/gif") + 1,
+	0 
+      },
+      { 0, 0, NULL, NULL, 0, -1 }
+    };
   struct ProblemSet ps[] =
     {
       { "testdata/ogg_courseclear.ogg",
 	courseclear_sol },
+      { "testdata/gif_image.gif",
+	gif_image_sol },
       { NULL, NULL }
     };
   return ET_main ("mime", ps);

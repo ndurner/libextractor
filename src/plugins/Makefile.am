@@ -12,7 +12,8 @@ PLUGINFLAGS = $(makesymbolic) $(LE_PLUGIN_LDFLAGS)
 SUBDIRS = . 
 
 EXTRA_DIST = template_extractor.c \
-  testdata/courseclear.ogg
+  testdata/ogg_courseclear.ogg \
+  testdata/gif_image.gif
 
 if HAVE_VORBISFILE
 PLUGIN_OGG=libextractor_ogg.la
