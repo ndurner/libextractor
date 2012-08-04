@@ -228,7 +228,10 @@ EXTRACTOR_IPC_shared_memory_set_ (struct EXTRACTOR_SharedMemory *shm,
 {
   if (-1 ==
       EXTRACTOR_datasource_seek_ (ds, off, SEEK_SET))
-    return -1;
+    {
+      LOG ("Failed to set IPC memory due to seek error\n");
+      return -1;
+    }
   if (size > shm->shm_size)
     size = shm->shm_size;
   return EXTRACTOR_datasource_read_ (ds,

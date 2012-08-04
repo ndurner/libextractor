@@ -59,7 +59,8 @@
  * Data is read from the source and shoved into decompressor
  * in chunks this big.
  */
-#define COM_CHUNK_SIZE (10 * 1024)
+#define COM_CHUNK_SIZE (12345)
+// #define COM_CHUNK_SIZE (10 * 1024)
 
 
 /**
@@ -230,7 +231,10 @@ bfds_pick_next_buffer_at (struct BufferedFileDataSource *bfds,
     }
   position = (int64_t) LSEEK (bfds->fd, pos, SEEK_SET);
   if (position < 0)
-    return -1;
+    {
+      LOG_STRERROR ("lseek");
+      return -1;
+    }
   bfds->fpos = position;
   bfds->buffer_pos = 0;
   rd = read (bfds->fd, bfds->buffer, bfds->buffer_size);
@@ -374,18 +378,19 @@ bfds_seek (struct BufferedFileDataSource *bfds,
 	  return -1;
 	}
       if ( (NULL == bfds->buffer) ||
-	   ( (bfds->buffer_pos <= pos) &&
-	     (bfds->buffer_pos + bfds->buffer_bytes > pos) ) )
+	   ( (bfds->buffer_pos + bfds->fpos <= pos) &&
+	     (bfds->buffer_pos + bfds->fpos + bfds->buffer_bytes > pos) ) )
 	{
-	  bfds->buffer_pos = pos; 
-	  return bfds->buffer_pos;
+	  bfds->buffer_pos = pos - bfds->fpos; 
+	  return pos;
 	}
       if (0 != bfds_pick_next_buffer_at (bfds, pos))
 	{
 	  LOG ("seek operation failed\n");
 	  return -1;
 	}
-      return bfds->fpos;
+      ASSERT (pos == bfds->fpos + bfds->buffer_pos);
+      return pos;
     }
   return -1;
 }
@@ -453,13 +458,9 @@ cfs_reset_stream_zlib (struct CompressedFileSource *cfs)
 {
   if (cfs->gzip_header_length != 
       bfds_seek (cfs->bfds, cfs->gzip_header_length, SEEK_SET))
-    return 0;
-  cfs->strm.next_in = NULL;
-  cfs->strm.avail_in = 0;
-  cfs->strm.total_in = 0;
-  cfs->strm.zalloc = NULL;
-  cfs->strm.zfree = NULL;
-  cfs->strm.opaque = NULL;
+    return -1;
+  memset (&cfs->strm, 0, sizeof (z_stream));
+  cfs->strm.avail_out = COM_CHUNK_SIZE;
 
   /*
    * note: maybe plain inflateInit(&strm) is adequate,
@@ -624,7 +625,6 @@ cfs_init_decompressor_zlib (struct CompressedFileSource *cfs,
   /* zlib will take care of its header */
   gzip_header_length = 0;
 #endif
-
   cfs->gzip_header_length = gzip_header_length;
   return cfs_reset_stream_zlib (cfs);
 }
@@ -797,12 +797,15 @@ cfs_read_zlib (struct CompressedFileSource *cfs,
   char buf[COM_CHUNK_SIZE];
 
   if (cfs->fpos == cfs->uncompressed_size)
-    return 0;
+    {
+      LOG ("fpos at EOF, returning 0 from cfs_read_zlib\n");
+      return 0;
+    }
   rc = 0;
-  if (cfs->strm.avail_out > 0)
+  if (COM_CHUNK_SIZE > cfs->strm.avail_out + cfs->result_pos)
     {
       /* got left-over decompressed data from previous round! */
-      in = cfs->strm.avail_out;
+      in = COM_CHUNK_SIZE - (cfs->strm.avail_out + cfs->result_pos);
       if (in > size)
 	in = size;
       memcpy (&dst[rc], &cfs->result[cfs->result_pos], in);
@@ -816,8 +819,11 @@ cfs_read_zlib (struct CompressedFileSource *cfs,
       /* read block from original data source */
       in = bfds_read (cfs->bfds,
 		      buf, sizeof (buf));
-      if (in <= 0)
-	return -1; /* unexpected EOF */
+      if (in < 0)	
+	{
+	  LOG ("unexpected EOF\n");
+	  return -1; /* unexpected EOF */
+	}
       cfs->strm.next_in = (unsigned char *) buf;
       cfs->strm.avail_in = (uInt) in;
       cfs->strm.next_out = (unsigned char *) cfs->result;
@@ -825,12 +831,18 @@ cfs_read_zlib (struct CompressedFileSource *cfs,
       cfs->result_pos = 0;
       ret = inflate (&cfs->strm, Z_SYNC_FLUSH);
       if ( (Z_OK != ret) && (Z_STREAM_END != ret) )
-	return -1; /* unexpected error */
+	{
+	  LOG ("unexpected gzip inflate error: %d\n", ret);
+	  return -1; /* unexpected error */
+	}
       /* go backwards by the number of bytes left in the buffer */
       if (-1 == bfds_seek (cfs->bfds, - (int64_t) cfs->strm.avail_in, SEEK_CUR))
-	return -1;
+	{
+	  LOG ("seek failed\n");
+	  return -1;
+	}
       /* copy decompressed bytes to target buffer */
-      in = cfs->strm.total_out;
+      in = COM_CHUNK_SIZE - cfs->strm.avail_out;
       if (in > size - rc)
 	in = size - rc;
       memcpy (&dst[rc], &cfs->result[cfs->result_pos], in);
@@ -840,6 +852,8 @@ cfs_read_zlib (struct CompressedFileSource *cfs,
     }
   if (Z_STREAM_END == ret)
     cfs->uncompressed_size = cfs->fpos;
+  LOG ("returning %d from cfs_read_zlib\n",
+       (int) rc);
   return rc;
 }
 
@@ -963,7 +977,6 @@ cfs_seek (struct CompressedFileSource *cfs,
       LOG ("Invalid seek operation\n");
       return -1;
     }
-  
   delta = nposition - cfs->fpos;
   if (delta < 0)
     {
@@ -1253,15 +1266,36 @@ EXTRACTOR_datasource_seek_ (void *cls,
  * Determine the overall size of the data source (after compression).
  * 
  * @param cls must be a 'struct EXTRACTOR_Datasource'
+ * @param force force computing the size if it is unavailable
  * @return overall file size, UINT64_MAX on error or unknown
  */ 
 int64_t 
-EXTRACTOR_datasource_get_size_ (void *cls)
+EXTRACTOR_datasource_get_size_ (void *cls,
+				int force)
 {
   struct EXTRACTOR_Datasource *ds = cls;
+  char buf[32 * 1024];
+  uint64_t pos;  
 
   if (NULL != ds->cfs)
-    return ds->cfs->uncompressed_size;
+    {
+      if ( (force) &&
+	   (-1 == ds->cfs->uncompressed_size) )
+	{
+	  pos = ds->cfs->fpos;
+	  LOG ("seeking to end\n");
+	  while ( (-1 == ds->cfs->uncompressed_size) &&
+		  (-1 != cfs_read (ds->cfs, buf, sizeof (buf))) ) ;
+	  if (-1 == cfs_seek (ds->cfs, pos, SEEK_SET))
+	    {
+	      LOG ("Serious problem, I moved the buffer to determine the file size but could not restore it...\n");
+	      return -1;
+	    } 
+	  LOG ("File size is %llu bytes decompressed\n",
+	       (unsigned long long) ds->cfs->uncompressed_size);
+	}	
+      return ds->cfs->uncompressed_size;
+    }
   return ds->bfds->fsize;
 }
 

@@ -117,6 +117,7 @@ plugin_env_seek (void *cls,
   struct UpdateMessage um;
   uint64_t npos;
   unsigned char reply;
+  uint16_t wval;
 
   switch (whence)
     {
@@ -133,12 +134,19 @@ plugin_env_seek (void *cls,
 	  return -1;
 	}
       npos = (uint64_t) (pc->read_position + pos);
+      wval = 0;
       break;
     case SEEK_END:
       if (pos > 0)
 	{
 	  LOG ("Invalid seek operation\n");
 	  return -1;
+	}
+      if (UINT64_MAX == pc->file_size)
+	{
+	  wval = 2;
+	  npos = (uint64_t) - pos;
+	  break;
 	}
       pos = (int64_t) (pc->file_size + pos);
       /* fall-through! */
@@ -149,13 +157,15 @@ plugin_env_seek (void *cls,
 	  return -1;
 	}
       npos = (uint64_t) pos;
+      wval = 0;
       break;
     default:
       LOG ("Invalid seek operation\n");
       return -1;
     }
   if ( (pc->shm_off <= npos) &&
-       (pc->shm_off + pc->shm_ready_bytes > npos) )
+       (pc->shm_off + pc->shm_ready_bytes > npos) &&
+       (0 == wval) )
     {
       pc->read_position = npos;
       return (int64_t) npos;
@@ -163,10 +173,17 @@ plugin_env_seek (void *cls,
   /* need to seek */
   srm.opcode = MESSAGE_SEEK;
   srm.reserved = 0;
-  srm.reserved2 = 0;
+  srm.whence = wval;
   srm.requested_bytes = pc->shm_map_size;
-  if (srm.requested_bytes > pc->file_size - npos)
-    srm.requested_bytes = pc->file_size - npos;
+  if (0 == wval)
+    {
+      if (srm.requested_bytes > pc->file_size - npos)
+	srm.requested_bytes = pc->file_size - npos;
+    }
+  else
+    {
+      srm.requested_bytes = npos;
+    }
   srm.file_offset = npos;
   if (-1 == EXTRACTOR_write_all_ (pc->out, &srm, sizeof (srm)))
     {
@@ -181,7 +198,10 @@ plugin_env_seek (void *cls,
       return -1;
     }
   if (MESSAGE_UPDATED_SHM != reply)    
-    return -1; /* was likely a MESSAGE_DISCARD_STATE */
+    {
+      LOG ("Unexpected reply %d to seek\n", reply);
+      return -1; /* was likely a MESSAGE_DISCARD_STATE */
+    }
   if (-1 == EXTRACTOR_read_all_ (pc->in, &um.reserved, sizeof (um) - 1))
     {
       LOG ("Failed to read MESSAGE_UPDATED_SHM\n");
@@ -190,6 +210,11 @@ plugin_env_seek (void *cls,
   pc->shm_off = um.shm_off;
   pc->shm_ready_bytes = um.shm_ready_bytes;
   pc->file_size = um.file_size;
+  if (2 == wval)
+    {
+      /* convert offset to be absolute from beginning of the file */
+      npos = pc->file_size - npos;
+    }
   if ( (pc->shm_off <= npos) &&
        ((pc->shm_off + pc->shm_ready_bytes > npos) ||
        (pc->file_size == pc->shm_off)) )
@@ -199,7 +224,11 @@ plugin_env_seek (void *cls,
     }
   /* oops, serious missunderstanding, we asked to seek
      and then were notified about a different position!? */
-  LOG ("Got invalid MESSAGE_UPDATED_SHM in response to my seek\n");
+  LOG ("Got invalid MESSAGE_UPDATED_SHM in response to my %d-seek (%llu not in %llu-%llu)\n",
+       (int) wval,
+       (unsigned long long) npos,
+       (unsigned long long) pc->shm_off,
+       (unsigned long long) pc->shm_off + pc->shm_ready_bytes);
   return -1;
 }
 

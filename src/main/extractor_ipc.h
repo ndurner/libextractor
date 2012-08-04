@@ -231,9 +231,11 @@ struct SeekRequestMessage
   unsigned char reserved;
 
   /**
-   * Always zero.
+   * 'whence' value for the seek operation;
+   * 0 = SEEK_SET, 1 = SEEK_CUR, 2 = SEEK_END.
+   * Note that 'SEEK_CUR' is never used here.
    */
-  uint16_t reserved2;
+  uint16_t whence;
 
   /**
    * Number of bytes requested for SHM.
@@ -241,7 +243,10 @@ struct SeekRequestMessage
   uint32_t requested_bytes;
 
   /**
-   * Requested offset.
+   * Requested offset; a positive value from the end of the
+   * file is used of 'whence' is SEEK_END; a postive value
+   * from the start is used of 'whence' is SEEK_SET.  
+   * 'SEEK_CUR' is never used.
    */
   uint64_t file_offset;
 

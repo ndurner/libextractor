@@ -67,7 +67,6 @@ EXTRACTOR_test_extract_method (struct EXTRACTOR_ExtractContext *ec)
       fprintf (stderr, "Unexpected file size returned (expected 150k)\n");
       abort (); 
     }		    
-
   if (1024 * 100 + 4 != ec->seek (ec->cls, 1024 * 100 + 4, SEEK_SET))
     {
       fprintf (stderr, "Failure to seek (SEEK_SET)\n");
@@ -83,7 +82,6 @@ EXTRACTOR_test_extract_method (struct EXTRACTOR_ExtractContext *ec)
       fprintf (stderr, "Unexpected data at offset 100k + 4\n");
       abort ();
     }
-
   if (((1024 * 100 + 4) + 1 - (1024 * 50 + 7)) !=
       ec->seek (ec->cls, - (1024 * 50 + 7), SEEK_CUR))
     {
@@ -97,10 +95,10 @@ EXTRACTOR_test_extract_method (struct EXTRACTOR_ExtractContext *ec)
     }
   if (((1024 * 100 + 4) + 1 - (1024 * 50 + 7)) % 256 != * (unsigned char *) dp)
     {
-      fprintf (stderr, "Unexpected data at offset 50k - 3\n");
+      fprintf (stderr, "Unexpected data at offset 100k - 3\n");
       abort ();
     }
-
+  fprintf (stderr, "Seeking to 150k\n");
   if (1024 * 150 != ec->seek (ec->cls, 0, SEEK_END))
     {
       fprintf (stderr, "Failure to seek (SEEK_END)\n");
@@ -111,12 +109,12 @@ EXTRACTOR_test_extract_method (struct EXTRACTOR_ExtractContext *ec)
       fprintf (stderr, "Failed to receive EOF at 150k\n");
       abort ();
     }
-
   if (1024 * 150 - 2 != ec->seek (ec->cls, -2, SEEK_END))
     {
       fprintf (stderr, "Failure to seek (SEEK_END - 2)\n");
       abort ();
     }
+  fprintf (stderr, "Reading at 150k - 2\n");
   if (1 != ec->read (ec->cls, &dp, 1))
     {
       fprintf (stderr, "Failure to read at 150k - 3\n");
@@ -127,7 +125,7 @@ EXTRACTOR_test_extract_method (struct EXTRACTOR_ExtractContext *ec)
       fprintf (stderr, "Unexpected data at offset 150k - 3\n");
       abort ();
     }
-
+  fprintf (stderr, "Good at 150k\n");
   if (0 != ec->proc (ec->cls, "test", EXTRACTOR_METATYPE_COMMENT,
       EXTRACTOR_METAFORMAT_UTF8, "<no mime>", "Hello world!",
       strlen ("Hello world!") + 1))

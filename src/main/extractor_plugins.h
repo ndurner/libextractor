@@ -89,7 +89,9 @@ struct EXTRACTOR_PluginList
 
   /**
    * A position this plugin wants us to seek to. -1 if it's finished.
-   * Starts at 0.
+   * A positive value from the end of the file is used of 'whence' is
+   * SEEK_END; a postive value from the start is used of 'whence' is
+   * SEEK_SET.  'SEEK_CUR' is never used.
    */
   int64_t seek_request;
 
@@ -103,6 +105,13 @@ struct EXTRACTOR_PluginList
    * 0: no, 1: yes
    */
   int round_finished;
+
+  /**
+   * 'whence' value for the seek operation;
+   * 0 = SEEK_SET, 1 = SEEK_CUR, 2 = SEEK_END.
+   * Note that 'SEEK_CUR' is never used here.
+   */
+  uint16_t seek_whence;
 
 };
 

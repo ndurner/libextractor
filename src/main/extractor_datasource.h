@@ -105,10 +105,12 @@ EXTRACTOR_datasource_seek_ (void *cls,
  * Determine the overall size of the data source (after compression).
  * 
  * @param cls must be a 'struct EXTRACTOR_Datasource'
+ * @param force force computing the size if it is unavailable
  * @return overall file size, -1 on error or unknown
  */ 
 int64_t 
-EXTRACTOR_datasource_get_size_ (void *cls);
+EXTRACTOR_datasource_get_size_ (void *cls,
+				int force);
 
 
 #endif

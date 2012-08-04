@@ -82,7 +82,7 @@ send_update_message (struct EXTRACTOR_PluginList *plugin,
   um.reserved2 = 0;
   um.shm_ready_bytes = (uint32_t) data_available;
   um.shm_off = (uint64_t) shm_off;
-  um.file_size = EXTRACTOR_datasource_get_size_ (ds);
+  um.file_size = EXTRACTOR_datasource_get_size_ (ds, 0);
   if (sizeof (um) !=
       EXTRACTOR_IPC_channel_send_ (plugin->channel,
 				   &um,
@@ -300,7 +300,7 @@ in_process_get_size (void *cls)
 {
   struct InProcessContext *ctx = cls;
   
-  return (uint64_t) EXTRACTOR_datasource_get_size_ (ctx->ds);
+  return (uint64_t) EXTRACTOR_datasource_get_size_ (ctx->ds, 0);
 }
 
 
@@ -373,8 +373,8 @@ do_extract (struct EXTRACTOR_PluginList *plugins,
   struct InProcessContext ctx;
   struct EXTRACTOR_ExtractContext ec;
   int64_t min_seek;
+  int64_t end;
   ssize_t data_available;
-  uint64_t last_position;
   uint32_t ready;
   int done;
 
@@ -386,8 +386,6 @@ do_extract (struct EXTRACTOR_PluginList *plugins,
   else
     ready = 0;
 
-  last_position = UINT64_MAX;
-
   prp.file_finished = 0;
   prp.proc = proc;
   prp.proc_cls = proc_cls;
@@ -397,7 +395,7 @@ do_extract (struct EXTRACTOR_PluginList *plugins,
   start.reserved = 0;
   start.reserved2 = 0;
   start.shm_ready_bytes = ready;
-  start.file_size = EXTRACTOR_datasource_get_size_ (ds);  
+  start.file_size = EXTRACTOR_datasource_get_size_ (ds, 0);
   for (pos = plugins; NULL != pos; pos = pos->next)
     {
       if ( (NULL != pos->channel) &&
@@ -453,18 +451,37 @@ do_extract (struct EXTRACTOR_PluginList *plugins,
 	  if ( (1 == pos->round_finished) ||
 	       (NULL == pos->channel) )
 	    continue; /* inactive plugin */
-	  if (((last_position <= pos->seek_request) &&
-              (last_position + data_available > pos->seek_request)) &&
-              ((data_available > 0) ||
-              (last_position == EXTRACTOR_datasource_get_size_ (ds))))
+	  if (-1 == pos->seek_request)
 	    {
-	      done = 0; /* possibly more meta data at current position! */
+	      /* possibly more meta data at current position, at least 
+		 this plugin is still working on it... */
+	      done = 0; 
 	      break;
 	    }
-	  if ( (-1 == min_seek) ||
-	       (min_seek > pos->seek_request) )
+	  if (-1 != pos->seek_request)
 	    {
-	      min_seek = pos->seek_request;
+	      if (SEEK_END == pos->seek_whence)
+		{
+		  /* convert distance from end to absolute position */
+		  pos->seek_whence = 0;
+		  end = EXTRACTOR_datasource_get_size_ (ds, 1);
+		  if (pos->seek_request > end)
+		    {
+		      LOG ("Cannot seek to before the beginning of the file!\n");
+		      pos->seek_request = 0;
+		    }
+		  else
+		    {		      
+		      pos->seek_request = end - pos->seek_request;
+		    }
+		}
+	      if ( (-1 == min_seek) ||
+		   (min_seek > pos->seek_request) )
+		{
+		  LOG ("Updating min seek to %llu\n",
+		       (unsigned long long) pos->seek_request);
+		  min_seek = pos->seek_request;		
+		}
 	    }
 	}
       if ( (1 == done) &&
@@ -482,6 +499,10 @@ do_extract (struct EXTRACTOR_PluginList *plugins,
 	      abort_all_channels (plugins);
 	      break;
 	    }
+	  LOG ("Seeking to %lld, got %d bytes ready there\n",
+	       (long long) min_seek,
+	       (int) data_available);
+
 	}
       /* if 'prp.file_finished', send 'abort' to plugins;
 	 if not, send 'seek' notification to plugins in range */
@@ -496,23 +517,29 @@ do_extract (struct EXTRACTOR_PluginList *plugins,
 	      pos->round_finished = 1;
 	      pos->seek_request = -1; 
 	    }	      
-	  if ( (-1 != pos->seek_request) && ((last_position > pos->seek_request) ||
-               (last_position + data_available <= pos->seek_request)) &&
+	  if ( (-1 != pos->seek_request) && 
 	       (min_seek <= pos->seek_request) &&
-	       ((min_seek + data_available > pos->seek_request) ||
-               (min_seek == EXTRACTOR_datasource_get_size_ (ds))) )
+	       ( (min_seek + data_available > pos->seek_request) ||
+		 (min_seek == EXTRACTOR_datasource_get_size_ (ds, 0))) )
 	    {
+	      LOG ("Notifying plugin about seek\n");
 	      send_update_message (pos,
 				   min_seek,
 				   data_available,
 				   ds);
 	      pos->seek_request = -1; 
 	    }
+	  else
+	    {
+	      if (-1 != pos->seek_request)
+		LOG ("Skipping plugin, seek %lld not in range %llu-%llu\n",
+		     (long long) pos->seek_request,
+		     min_seek,
+		     min_seek + data_available);
+	    }
 	  if (0 == pos->round_finished)
 	    done = 0; /* can't be done, plugin still active */	
 	}
-      if (min_seek >= 0)
-        last_position = min_seek;
     }
 
   /* run in-process plugins */
