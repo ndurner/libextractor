@@ -69,6 +69,9 @@ void __attribute__ ((constructor))
 mime_ltdl_init () 
 {
   magic = magic_open (MAGIC_MIME_TYPE);
+  /* FIXME: hard-wiring this path might not be the 
+     most sane thing to do; not sure what is a good
+     portable way to find the 'magic' file though... */
   magic_load (magic, "/usr/share/misc/magic");
 }
 
