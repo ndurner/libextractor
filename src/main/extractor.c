@@ -478,8 +478,6 @@ do_extract (struct EXTRACTOR_PluginList *plugins,
 	      if ( (-1 == min_seek) ||
 		   (min_seek > pos->seek_request) )
 		{
-		  LOG ("Updating min seek to %llu\n",
-		       (unsigned long long) pos->seek_request);
 		  min_seek = pos->seek_request;		
 		}
 	    }
@@ -499,10 +497,6 @@ do_extract (struct EXTRACTOR_PluginList *plugins,
 	      abort_all_channels (plugins);
 	      break;
 	    }
-	  LOG ("Seeking to %lld, got %d bytes ready there\n",
-	       (long long) min_seek,
-	       (int) data_available);
-
 	}
       /* if 'prp.file_finished', send 'abort' to plugins;
 	 if not, send 'seek' notification to plugins in range */
@@ -522,20 +516,11 @@ do_extract (struct EXTRACTOR_PluginList *plugins,
 	       ( (min_seek + data_available > pos->seek_request) ||
 		 (min_seek == EXTRACTOR_datasource_get_size_ (ds, 0))) )
 	    {
-	      LOG ("Notifying plugin about seek\n");
 	      send_update_message (pos,
 				   min_seek,
 				   data_available,
 				   ds);
 	      pos->seek_request = -1; 
-	    }
-	  else
-	    {
-	      if (-1 != pos->seek_request)
-		LOG ("Skipping plugin, seek %lld not in range %llu-%llu\n",
-		     (long long) pos->seek_request,
-		     min_seek,
-		     min_seek + data_available);
 	    }
 	  if (0 == pos->round_finished)
 	    done = 0; /* can't be done, plugin still active */	

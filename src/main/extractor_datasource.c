@@ -798,7 +798,7 @@ cfs_read_zlib (struct CompressedFileSource *cfs,
 
   if (cfs->fpos == cfs->uncompressed_size)
     {
-      LOG ("fpos at EOF, returning 0 from cfs_read_zlib\n");
+      /* end of file */
       return 0;
     }
   rc = 0;
@@ -852,8 +852,6 @@ cfs_read_zlib (struct CompressedFileSource *cfs,
     }
   if (Z_STREAM_END == ret)
     cfs->uncompressed_size = cfs->fpos;
-  LOG ("returning %d from cfs_read_zlib\n",
-       (int) rc);
   return rc;
 }
 
@@ -941,12 +939,7 @@ cfs_seek (struct CompressedFileSource *cfs,
       nposition = cfs->fpos + position;
       break;
     case SEEK_END:
-      if (-1 == cfs->uncompressed_size)
-	{
-	  /* yuck, need to first find end of file! */
-	  LOG ("Seeking from end-of-file in compressed files not implemented\n");
-	  return -1; // FIXME: not implemented
-	}
+      ASSERT (-1 != cfs->uncompressed_size);
       if (position > 0)
 	{
 	  LOG ("Invalid seek operation\n");
@@ -983,6 +976,7 @@ cfs_seek (struct CompressedFileSource *cfs,
       if (cfs->result_pos >= - delta)
 	{
 	  cfs->result_pos += delta;
+	  cfs->fpos += delta;
 	  delta = 0;
 	}
       else
@@ -1257,7 +1251,17 @@ EXTRACTOR_datasource_seek_ (void *cls,
   struct EXTRACTOR_Datasource *ds = cls;
 
   if (NULL != ds->cfs)
-    return cfs_seek (ds->cfs, pos, whence);
+    {
+      if ( (SEEK_END == whence) &&
+	   (-1 == ds->cfs->uncompressed_size) )
+	{
+	  /* need to obtain uncompressed size */
+	  (void) EXTRACTOR_datasource_get_size_ (ds, 1);
+	  if (-1 == ds->cfs->uncompressed_size)
+	    return -1;
+	}
+      return cfs_seek (ds->cfs, pos, whence);
+    }
   return bfds_seek (ds->bfds, pos, whence);
 }
 
@@ -1283,7 +1287,6 @@ EXTRACTOR_datasource_get_size_ (void *cls,
 	   (-1 == ds->cfs->uncompressed_size) )
 	{
 	  pos = ds->cfs->fpos;
-	  LOG ("seeking to end\n");
 	  while ( (-1 == ds->cfs->uncompressed_size) &&
 		  (-1 != cfs_read (ds->cfs, buf, sizeof (buf))) ) ;
 	  if (-1 == cfs_seek (ds->cfs, pos, SEEK_SET))
@@ -1291,8 +1294,8 @@ EXTRACTOR_datasource_get_size_ (void *cls,
 	      LOG ("Serious problem, I moved the buffer to determine the file size but could not restore it...\n");
 	      return -1;
 	    } 
-	  LOG ("File size is %llu bytes decompressed\n",
-	       (unsigned long long) ds->cfs->uncompressed_size);
+	  if (-1 == ds->cfs->uncompressed_size)
+	    return -1;
 	}	
       return ds->cfs->uncompressed_size;
     }

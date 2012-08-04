@@ -70,9 +70,6 @@ EXTRACTOR_IPC_process_reply_ (struct EXTRACTOR_PluginList *plugin,
 	  memcpy (&seek, cdata, sizeof (seek));
 	  plugin->seek_request = (int64_t) seek.file_offset;
 	  plugin->seek_whence = seek.whence;
-	  LOG ("Received %d-seek request to %llu\n",
-	       (int) seek.whence,
-	       (unsigned long long) seek.file_offset);
 	  return sizeof (struct SeekRequestMessage);
 	case MESSAGE_META: /* Meta */
 	  if (size < sizeof (struct MetaMessage))

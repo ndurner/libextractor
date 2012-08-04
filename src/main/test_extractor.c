@@ -98,7 +98,6 @@ EXTRACTOR_test_extract_method (struct EXTRACTOR_ExtractContext *ec)
       fprintf (stderr, "Unexpected data at offset 100k - 3\n");
       abort ();
     }
-  fprintf (stderr, "Seeking to 150k\n");
   if (1024 * 150 != ec->seek (ec->cls, 0, SEEK_END))
     {
       fprintf (stderr, "Failure to seek (SEEK_END)\n");
@@ -114,7 +113,6 @@ EXTRACTOR_test_extract_method (struct EXTRACTOR_ExtractContext *ec)
       fprintf (stderr, "Failure to seek (SEEK_END - 2)\n");
       abort ();
     }
-  fprintf (stderr, "Reading at 150k - 2\n");
   if (1 != ec->read (ec->cls, &dp, 1))
     {
       fprintf (stderr, "Failure to read at 150k - 3\n");
@@ -125,7 +123,6 @@ EXTRACTOR_test_extract_method (struct EXTRACTOR_ExtractContext *ec)
       fprintf (stderr, "Unexpected data at offset 150k - 3\n");
       abort ();
     }
-  fprintf (stderr, "Good at 150k\n");
   if (0 != ec->proc (ec->cls, "test", EXTRACTOR_METATYPE_COMMENT,
       EXTRACTOR_METAFORMAT_UTF8, "<no mime>", "Hello world!",
       strlen ("Hello world!") + 1))
