@@ -375,7 +375,7 @@ do_extract (struct EXTRACTOR_PluginList *plugins,
   int64_t min_seek;
   int64_t end;
   ssize_t data_available;
-  uint32_t ready;
+  ssize_t ready;
   int done;
 
   plugin_count = 0;
@@ -394,7 +394,7 @@ do_extract (struct EXTRACTOR_PluginList *plugins,
   start.opcode = MESSAGE_EXTRACT_START;
   start.reserved = 0;
   start.reserved2 = 0;
-  start.shm_ready_bytes = ready;
+  start.shm_ready_bytes = (uint32_t) ready;
   start.file_size = EXTRACTOR_datasource_get_size_ (ds, 0);
   for (pos = plugins; NULL != pos; pos = pos->next)
     {
@@ -408,7 +408,13 @@ do_extract (struct EXTRACTOR_PluginList *plugins,
 	  pos->channel = NULL;
 	}
     }
-  done = 0;
+  if (-1 == ready)
+    {
+      LOG ("Failed to initialize IPC shared memory, cannot extract\n");
+      done = 1;
+    }
+  else
+    done = 0;
   while (! done)
     {
       struct EXTRACTOR_Channel *channels[plugin_count];
