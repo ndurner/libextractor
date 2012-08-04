@@ -857,6 +857,7 @@ main (int argc, char *argv[])
     printf ("\n");
   free (print);
   EXTRACTOR_plugin_remove_all (plugins);
+  plugins = NULL;
   cleanup_bibtex (); /* actually free's stuff */
   return ret;
 }
