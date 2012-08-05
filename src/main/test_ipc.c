@@ -63,6 +63,9 @@ process_replies (void *cls,
       ret = 3;
       return 1;
     }
+  if (0 == strcmp (plugin_name,
+		   "test2"))
+    return 0; /* ignore 'test2' plugins */
   if (0 != strcmp (plugin_name,
 		   "test"))
     {
@@ -147,6 +150,8 @@ main (int argc, char *argv[])
 	     "Failed to update my environment, plugin loading may fail: %s\n",
 	     strerror (errno));    
   pl = EXTRACTOR_plugin_add_config (NULL, "test(test)",
+				    EXTRACTOR_OPTION_DEFAULT_POLICY);
+  pl = EXTRACTOR_plugin_add_config (pl, "test2(test2)",
 				    EXTRACTOR_OPTION_DEFAULT_POLICY);
   if (NULL == pl)
     {

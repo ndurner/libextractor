@@ -74,7 +74,8 @@ TESTS_ENVIRONMENT = testdatadir=$(top_srcdir)/test
 TESTS_ENVIRONMENT += bindir=${bindir}
 
 tmp_LTLIBRARIES = \
-  libextractor_test.la 
+  libextractor_test.la \
+  libextractor_test2.la 
 
 libextractor_test_la_SOURCES = \
   test_extractor.c 
@@ -82,6 +83,14 @@ libextractor_test_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_test_la_LIBADD = \
   $(LE_LIBINTL)
+
+libextractor_test2_la_SOURCES = \
+  test2_extractor.c 
+libextractor_test2_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+libextractor_test2_la_LIBADD = \
+  $(LE_LIBINTL)
+
 
 check_PROGRAMS = \
  test_trivial \
