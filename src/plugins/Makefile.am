@@ -42,12 +42,19 @@ PLUGIN_FLAC=libextractor_flac.la
 TEST_FLAC=test_flac
 endif
 
+if HAVE_MPEG2
+PLUGIN_MPEG=libextractor_mpeg.la
+TEST_MPEG=test_mpeg
+endif
+
+
 plugin_LTLIBRARIES = \
   $(PLUGIN_OGG) \
   $(PLUGIN_MIME) \
   $(PLUGIN_GIF) \
   $(PLUGIN_RPM) \
-  $(PLUGIN_FLAC)
+  $(PLUGIN_FLAC) \
+  $(PLUGIN_MPEG)
 
 if HAVE_ZZUF
   fuzz_tests=fuzz_default.sh 
@@ -58,7 +65,8 @@ check_PROGRAMS = \
   $(TEST_MIME) \
   $(TEST_GIF) \
   $(TEST_RPM) \
-  $(TEST_FLAC)
+  $(TEST_FLAC) \
+  $(TEST_MPEG)
 
 TESTS = \
   $(fuzz_tests) \
@@ -137,6 +145,19 @@ libextractor_flac_la_LIBADD = \
 test_flac_SOURCES = \
   test_flac.c
 test_flac_LDADD = \
+  $(top_builddir)/src/plugins/libtest.la
+
+
+libextractor_mpeg_la_SOURCES = \
+  mpeg_extractor.c
+libextractor_mpeg_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+libextractor_mpeg_la_LIBADD = \
+  -lmpeg2
+
+test_mpeg_SOURCES = \
+  test_mpeg.c
+test_mpeg_LDADD = \
   $(top_builddir)/src/plugins/libtest.la
 
 
