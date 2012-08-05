@@ -82,7 +82,9 @@ seek_ogg (void *datasource,
 	  int whence)
 {
   struct EXTRACTOR_ExtractContext *ec = datasource;
-  int64_t new_position = ec->seek (ec->cls, (int64_t) offset, whence);
+  int64_t new_position;
+
+  new_position = ec->seek (ec->cls, (int64_t) offset, whence);
   return (long) new_position;
 }
 
