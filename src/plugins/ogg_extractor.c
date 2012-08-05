@@ -17,6 +17,11 @@
      Free Software Foundation, Inc., 59 Temple Place - Suite 330,
      Boston, MA 02111-1307, USA.
  */
+/**
+ * @file plugins/ogg_extractor.c
+ * @brief plugin to support OGG files
+ * @author Christian Grothoff
+ */
 #include "platform.h"
 #include "extractor.h"
 #include "extractor_plugins.h"

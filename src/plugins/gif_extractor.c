@@ -17,7 +17,11 @@
      Free Software Foundation, Inc., 59 Temple Place - Suite 330,
      Boston, MA 02111-1307, USA.
  */
-
+/**
+ * @file plugins/gif_extractor.c
+ * @brief plugin to support GIF files
+ * @author Christian Grothoff
+ */
 #include "platform.h"
 #include "extractor.h"
 #include <gif_lib.h>

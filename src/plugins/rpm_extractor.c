@@ -1,10 +1,10 @@
 /*
      This file is part of libextractor.
-     (C) 2002, 2003, 2008, 2009 Vidyut Samanta and Christian Grothoff
+     (C) 2002, 2003, 2008, 2009, 2012 Vidyut Samanta and Christian Grothoff
 
      libextractor is free software; you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published
-     by the Free Software Foundation; either version 2, or (at your
+     by the Free Software Foundation; either version 3, or (at your
      option) any later version.
 
      libextractor is distributed in the hope that it will be useful, but
@@ -17,7 +17,11 @@
      Free Software Foundation, Inc., 59 Temple Place - Suite 330,
      Boston, MA 02111-1307, USA.
  */
-
+/**
+ * @file plugins/rpm_extractor.c
+ * @brief plugin to support RPM files
+ * @author Christian Grothoff
+ */
 #include "platform.h"
 #include "extractor.h"
 #include <stdint.h>
@@ -28,47 +32,128 @@
 #include <sys/types.h>
 #include <signal.h>
 
-/* ******************** pipe feeder ************************ */
 
-struct PipeArgs {			       
-  const char * data;
-  size_t pos;
-  size_t size;
+/**
+ * Closure for the 'pipe_feeder'.
+ */
+struct PipeArgs 
+{
+  
+  /**
+   * Context for reading data from.
+   */
+  struct EXTRACTOR_ExtractContext *ec;
+
+  /**
+   * Lock for synchronizing access to 'ec'.
+   */
+  pthread_mutex_t lock;
+
+  /**
+   * Pipe to write to at [1].
+   */
   int pi[2];
+
+  /**
+   * Set to 1 if we should stop writing to the pipe.
+   */
   int shutdown;
 };
 
-static void *
-pipe_feeder(void * args)
-{
-  ssize_t ret;
-  struct PipeArgs * p = args;
 
-  while ( (p->shutdown == 0) &&
-	  (0 < (ret = WRITE(p->pi[1],
-			    &p->data[p->pos],
-			    p->size - p->pos))) )
-	  p->pos += ret;
-  CLOSE(p->pi[1]);
+/**
+ * Size of the buffer we use for reading.
+ */
+#define BUF_SIZE (16 * 1024)
+
+
+/**
+ * Main function of a helper thread that passes the package data
+ * to librpm.
+ *
+ * @param args the 'struct PipeArgs*'
+ * @return NULL
+ */
+static void *
+pipe_feeder (void * args)
+{
+  struct PipeArgs *p = args;
+  ssize_t rret;
+  ssize_t wret;
+  ssize_t done;
+  void *ptr;
+  char *buf;
+
+  /* buffer is heap-allocated as this is a thread and 
+     large stack allocations might not be the best idea */
+  while (0 == p->shutdown)
+    {
+      pthread_mutex_lock (&p->lock);
+      if (-1 == (rret = p->ec->read (p->ec->cls, &ptr, BUF_SIZE)))
+	{
+	  pthread_mutex_unlock (&p->lock);
+	  break;
+	}
+      pthread_mutex_unlock (&p->lock);
+      if (0 == rret)
+	break;
+      buf = ptr;
+      done = 0;
+      while ( (0 == p->shutdown) &&
+	      (done < rret) )
+	{
+	  if (-1 == (wret = WRITE (p->pi[1],
+				   &buf[done],
+				   rret - done)))
+	    {
+	      break;
+	    }
+	  if (0 == wret)
+	    break;
+	  done += wret;	   
+	}
+      if (done != rret)
+	break;
+    }
+  CLOSE (p->pi[1]);
   return NULL;			    
 }
 
-static void
-sigalrmHandler (int sig)
+
+/**
+ * LOG callback called by librpm.  Does nothing, we
+ * just need this to override the default behavior.
+ */
+static int 
+discard_log_callback (rpmlogRec rec,
+		      void *ctx) 
 {
-  /* do nothing */
+  /* do nothing! */
+  return 0;
 }
+ 
 
-
-/* *************** real libextractor stuff ***************** */
-
-typedef struct
+/**
+ * Mapping from RPM tags to LE types.
+ */
+struct Matches
 {
+  /**
+   * RPM tag.
+   */
   int32_t rtype;
-  enum EXTRACTOR_MetaType type;
-} Matches;
 
-static Matches tests[] = {
+  /**
+   * Corresponding LE type.
+   */
+  enum EXTRACTOR_MetaType type;
+};
+
+
+/**
+ * List of mappings from RPM tags to LE types.
+ */ 
+static struct Matches tests[] = {
   {RPMTAG_NAME, EXTRACTOR_METATYPE_PACKAGE_NAME},
   {RPMTAG_VERSION, EXTRACTOR_METATYPE_SOFTWARE_VERSION},
   {RPMTAG_GROUP, EXTRACTOR_METATYPE_SECTION},
@@ -148,25 +233,21 @@ static Matches tests[] = {
     RPMTAG_POSTTRANSPROG	= 1154,	/* s */
     RPMTAG_DISTTAG		= 1155,	/* s */
 #endif
-  {0, 0},
+  {0, 0}
 };
 
-static int discardCB(rpmlogRec rec, void *ctx) {
-  /* do nothing! */
-  return 0;
-}
 
-/* mimetype = application/x-rpm */
-int 
-EXTRACTOR_rpm_extract (const char *data,
-		       size_t size,
-		       EXTRACTOR_MetaDataProcessor proc,
-		       void *proc_cls,
-		       const char *options)
+/**
+ * Main entry method for the 'application/x-rpm' extraction plugin. 
+ *
+ * @param ec extraction context provided to the plugin
+ */
+void
+EXTRACTOR_rpm_extract_method (struct EXTRACTOR_ExtractContext *ec)
 {
   struct PipeArgs parg;
   pthread_t pthr;
-  void * unused;
+  void *unused;
   const char *str;
   Header hdr;
   HeaderIterator hi;
@@ -178,24 +259,28 @@ EXTRACTOR_rpm_extract (const char *data,
   struct sigaction sig;
   struct sigaction old;
 
-  if (0 != pipe(parg.pi))
-    return 0;
-  fdi = NULL;
-  parg.data = data;
-  parg.pos = 0;
-  parg.size = size;
+  parg.ec = ec;
   parg.shutdown = 0;
-  if (0 != pthread_create(&pthr,
-			  NULL,
-			  &pipe_feeder,
-			  &parg))
+  if (0 != pipe (parg.pi))
+    return;
+  if (0 != pthread_mutex_init (&parg.lock, NULL))
     {
-      CLOSE(parg.pi[0]);
-      CLOSE(parg.pi[1]);
-      return 0;
+      CLOSE (parg.pi[0]);
+      CLOSE (parg.pi[1]);
+      return;
     }
-  rpmlogSetCallback(&discardCB, NULL);
-  fdi = fdDup(parg.pi[0]);
+  if (0 != pthread_create (&pthr,
+			   NULL,
+			   &pipe_feeder,
+			   &parg))
+    {
+      pthread_mutex_destroy (&parg.lock);
+      CLOSE (parg.pi[0]);
+      CLOSE (parg.pi[1]);
+      return;
+    }
+  rpmlogSetCallback (&discard_log_callback, NULL);
+  fdi = fdDup (parg.pi[0]);
   ts = rpmtsCreate();
   rc = rpmReadPackageFile (ts, fdi, "GNU libextractor", &hdr);
   switch (rc)
@@ -209,100 +294,123 @@ EXTRACTOR_rpm_extract (const char *data,
     default:
       goto END;
     }
-
-  if (0 != proc (proc_cls, 
-		 "rpm",
-		 EXTRACTOR_METATYPE_MIMETYPE,
-		 EXTRACTOR_METAFORMAT_UTF8,
-		 "text/plain",
-		 "application/x-rpm",
-		 strlen ("application/x-rpm") +1))
-    return 1;
+  pthread_mutex_lock (&parg.lock);
+  if (0 != ec->proc (ec->cls, 
+		     "rpm",
+		     EXTRACTOR_METATYPE_MIMETYPE,
+		     EXTRACTOR_METAFORMAT_UTF8,
+		     "text/plain",
+		     "application/x-rpm",
+		     strlen ("application/x-rpm") +1))
+    {
+      pthread_mutex_unlock (&parg.lock);
+      goto END;
+    }
+  pthread_mutex_unlock (&parg.lock);
   hi = headerInitIterator (hdr);
   p = rpmtdNew ();
   while (1 == headerNext (hi, p))
-    {
-      i = 0;
-      while (tests[i].rtype != 0)
-        {
-          if (tests[i].rtype == p->tag)
-            {
-              switch (p->type)
-                {
-                case RPM_STRING_ARRAY_TYPE:
-                case RPM_I18NSTRING_TYPE:
-                case RPM_STRING_TYPE:
-                    while (NULL != (str = rpmtdNextString (p))) 
-		      {
-			if (0 != proc (proc_cls, 
-				       "rpm",
-				       tests[i].type,
-				       EXTRACTOR_METAFORMAT_UTF8,
-				       "text/plain",
-				       str,
-				       strlen (str) +1))
-			  return 1;
-		      }
-                    break;
-                case RPM_INT32_TYPE:
-                  {
-                    if (p->tag == RPMTAG_BUILDTIME)
-                      {
-                        char tmp[30];
+    for (i = 0; 0 != tests[i].rtype; i++)
+      {
+	if (tests[i].rtype != p->tag)
+	  continue;
+	switch (p->type)
+	  {
+	  case RPM_STRING_ARRAY_TYPE:
+	  case RPM_I18NSTRING_TYPE:
+	  case RPM_STRING_TYPE:
+	    while (NULL != (str = rpmtdNextString (p))) 
+	      {
+		pthread_mutex_lock (&parg.lock);
+		if (0 != ec->proc (ec->cls, 
+				   "rpm",
+				   tests[i].type,
+				   EXTRACTOR_METAFORMAT_UTF8,
+				   "text/plain",
+				   str,
+				   strlen (str) + 1))
+		  
+		  {		 
+		    pthread_mutex_unlock (&parg.lock);
+		    goto CLEANUP;
+		  }
+		pthread_mutex_unlock (&parg.lock);
+	      }
+	    break;
+	  case RPM_INT32_TYPE:
+	    {
+	      if (p->tag == RPMTAG_BUILDTIME)
+		{
+		  char tmp[30];
+		  uint32_t *v = rpmtdNextUint32 (p);
+		  time_t tp = (time_t) *v;
 
-                        ctime_r ((time_t *) p, tmp);
-                        tmp[strlen (tmp) - 1] = '\0';   /* eat linefeed */
+		  ctime_r (&tp, tmp);
+		  tmp[strlen (tmp) - 1] = '\0';   /* eat linefeed */		  
+		  pthread_mutex_lock (&parg.lock);
+		  if (0 != ec->proc (ec->cls, 
+				     "rpm",
+				     tests[i].type,
+				     EXTRACTOR_METAFORMAT_UTF8,
+				     "text/plain",
+				     tmp,
+				     strlen (tmp) + 1))
+		    {
+		      pthread_mutex_unlock (&parg.lock);
+		      goto CLEANUP;
+		    }
+		  pthread_mutex_unlock (&parg.lock);
+		}
+	      else
+		{
+		  char tmp[14];
+		  uint32_t *s = rpmtdNextUint32 (p);
 
-			if (0 != proc (proc_cls, 
-				       "rpm",
-				       tests[i].type,
-				       EXTRACTOR_METAFORMAT_UTF8,
-				       "text/plain",
-				       tmp,
-				       strlen (tmp) +1))
-			  return 1;
-                      }
-                    else
-                      {
-                        char tmp[14];
-
-                        sprintf (tmp, "%d", *(int *) p);
-			if (0 != proc (proc_cls, 
-				       "rpm",
-				       tests[i].type,
-				       EXTRACTOR_METAFORMAT_UTF8,
-				       "text/plain",
-				       tmp,
-				       strlen (tmp) +1))
-			  return 1;
-                      }
-                    break;
-                  }
-		default:
-			break;
-                }
-            }
-          i++;
-        }
-    }
+		  snprintf (tmp, 
+			    sizeof (tmp), 
+			    "%u", 
+			    (unsigned int) *s);
+		  pthread_mutex_lock (&parg.lock);
+		  if (0 != ec->proc (ec->cls, 
+				     "rpm",
+				     tests[i].type,
+				     EXTRACTOR_METAFORMAT_UTF8,
+				     "text/plain",
+				     tmp,
+				     strlen (tmp) + 1))
+		    {
+		      pthread_mutex_unlock (&parg.lock);
+		      goto CLEANUP;
+		    }
+		  pthread_mutex_unlock (&parg.lock);
+		}
+	      break;
+	    }
+	  default:
+	    break;
+	  }      
+      }
+ CLEANUP:
   rpmtdFree (p);
   headerFreeIterator (hi);
   headerFree (hdr);
   rpmtsFree(ts);
- END:						
-  /* make sure SIGALRM does not kill us */
+
+ END:				
+  /* make sure SIGALRM does not kill us, then use it to
+     kill the thread */
   memset (&sig, 0, sizeof (struct sigaction));
   memset (&old, 0, sizeof (struct sigaction));
   sig.sa_flags = SA_NODEFER;
-  sig.sa_handler = &sigalrmHandler;
+  sig.sa_handler = SIG_IGN;
   sigaction (SIGALRM, &sig, &old);
   parg.shutdown = 1;
-  pthread_kill(pthr, SIGALRM);
-  pthread_join(pthr, &unused);
+  CLOSE (parg.pi[0]);
+  Fclose (fdi);  
+  pthread_kill (pthr, SIGALRM);
+  pthread_join (pthr, &unused);
+  pthread_mutex_destroy (&parg.lock);
   sigaction (SIGALRM, &old, &sig);
-  Fclose(fdi);
-  CLOSE(parg.pi[0]);
-  return 0;
 }
 
 /* end of rpm_extractor.c */

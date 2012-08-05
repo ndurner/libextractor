@@ -13,7 +13,8 @@ SUBDIRS = .
 
 EXTRA_DIST = template_extractor.c \
   testdata/ogg_courseclear.ogg \
-  testdata/gif_image.gif
+  testdata/gif_image.gif \
+  testdata/rpm_test.rpm
 
 if HAVE_VORBISFILE
 PLUGIN_OGG=libextractor_ogg.la
@@ -30,10 +31,16 @@ PLUGIN_GIF=libextractor_gif.la
 TEST_GIF=test_gif
 endif
 
+if HAVE_LIBRPM
+PLUGIN_RPM=libextractor_rpm.la
+TEST_RPM=test_rpm
+endif
+
 plugin_LTLIBRARIES = \
   $(PLUGIN_OGG) \
   $(PLUGIN_MIME) \
-  $(PLUGIN_GIF)
+  $(PLUGIN_GIF) \
+  $(PLUGIN_RPM)
 
 if HAVE_ZZUF
   fuzz_tests=fuzz_default.sh 
@@ -42,7 +49,8 @@ endif
 check_PROGRAMS = \
   $(TEST_OGG) \
   $(TEST_MIME) \
-  $(TEST_GIF)
+  $(TEST_GIF) \
+  $(TEST_RPM)
 
 TESTS = \
   $(fuzz_tests) \
@@ -97,6 +105,20 @@ libextractor_gif_la_LIBADD = \
 test_gif_SOURCES = \
   test_gif.c
 test_gif_LDADD = \
+  $(top_builddir)/src/plugins/libtest.la
+
+
+libextractor_rpm_la_SOURCES = \
+  rpm_extractor.c
+libextractor_rpm_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+libextractor_rpm_la_LIBADD = \
+  $(top_builddir)/src/main/libextractor.la \
+  -lrpm
+
+test_rpm_SOURCES = \
+  test_rpm.c
+test_rpm_LDADD = \
   $(top_builddir)/src/plugins/libtest.la
 
 

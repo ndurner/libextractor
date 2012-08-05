@@ -17,7 +17,11 @@
      Free Software Foundation, Inc., 59 Temple Place - Suite 330,
      Boston, MA 02111-1307, USA.
  */
-
+/**
+ * @file plugins/mime_extractor.c
+ * @brief plugin to determine mime types using libmagic (from 'file')
+ * @author Christian Grothoff
+ */
 #include "platform.h"
 #include "extractor.h"
 #include <magic.h>
