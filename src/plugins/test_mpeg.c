@@ -63,17 +63,14 @@ main (int argc, char *argv[])
 	strlen ("MPEG1") + 1,
 	0 
       },
-#if 0
-      /* GOP is somehow not working for this example */
       { 
 	EXTRACTOR_METATYPE_DURATION,
 	EXTRACTOR_METAFORMAT_UTF8,
 	"text/plain",
-	"0:0:0 (0 frames)", /* FIXME: this is obviously the wrong answer */
-	strlen ("0:0:0 (0 frames)") + 1,
+	"00:00:03 (22 frames)",
+	strlen ("00:00:03 (22 frames)") + 1,
 	0 
       },
-#endif
       { 0, 0, NULL, NULL, 0, -1 }
     };
   struct ProblemSet ps[] =

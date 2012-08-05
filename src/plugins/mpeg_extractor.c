@@ -52,7 +52,8 @@ EXTRACTOR_mpeg_extract_method (struct EXTRACTOR_ExtractContext *ec)
   ssize_t avail;
   mpeg2_state_t state;
   char format[256];
-  int finished;
+  char gop_format[256];
+  int have_gop;
 
   if (NULL == (handle = mpeg2_init ()))
     return;
@@ -61,8 +62,8 @@ EXTRACTOR_mpeg_extract_method (struct EXTRACTOR_ExtractContext *ec)
       mpeg2_close (handle);
       return;
     }
-  finished = 3;
-  while (0 != finished)
+  have_gop = 0;
+  while (1)
     {
       state = mpeg2_parse (handle);
       switch (state)
@@ -101,19 +102,16 @@ EXTRACTOR_mpeg_extract_method (struct EXTRACTOR_ExtractContext *ec)
 	    ADD ("MPEG2", EXTRACTOR_METATYPE_FORMAT_VERSION);
 	  else
 	    ADD ("MPEG1", EXTRACTOR_METATYPE_FORMAT_VERSION);	  
-	  finished &= ~2;
 	  break;
 	case STATE_GOP:
-	  if ( (NULL != info->gop) &&
-	       (0 != info->gop->pictures) )
+	  if (NULL != info->gop) 
 	    {
-	      snprintf (format, 
-			sizeof(format),
-			"%u:%u:%u (%u frames)",
-			info->gop->hours,
-			info->gop->minutes, info->gop->seconds, info->gop->pictures);
-	      ADD (format, EXTRACTOR_METATYPE_DURATION);
-	      finished &= ~1;
+	      snprintf (gop_format, 
+			sizeof (gop_format),
+			"%02u:%02u:%02u (%u frames)",
+			info->gop->hours, info->gop->minutes, info->gop->seconds,
+			info->gop->pictures);
+	      have_gop = 1;
 	    }
 	  break;
 	case STATE_SLICE:
@@ -127,6 +125,8 @@ EXTRACTOR_mpeg_extract_method (struct EXTRACTOR_ExtractContext *ec)
 	}
     }
  EXIT:
+  if (1 == have_gop)
+    ADD (gop_format, EXTRACTOR_METATYPE_DURATION);    
   mpeg2_close (handle);
 }
 
