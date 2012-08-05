@@ -64,7 +64,6 @@ libextractor_ogg_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_ogg_la_LIBADD = \
   $(top_builddir)/src/main/libextractor.la \
-  $(top_builddir)/src/common/libextractor_common.la \
   -lvorbisfile -lvorbis $(vorbisflag) -logg
 
 test_ogg_SOURCES = \
@@ -79,7 +78,6 @@ libextractor_mime_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_mime_la_LIBADD = \
   $(top_builddir)/src/main/libextractor.la \
-  $(top_builddir)/src/common/libextractor_common.la \
   -lmagic
 
 test_mime_SOURCES = \
@@ -94,7 +92,6 @@ libextractor_gif_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_gif_la_LIBADD = \
   $(top_builddir)/src/main/libextractor.la \
-  $(top_builddir)/src/common/libextractor_common.la \
   -lgif
 
 test_gif_SOURCES = \
