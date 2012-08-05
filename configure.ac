@@ -314,6 +314,14 @@ AC_LANG_POP(C++)
 
 
 
+AC_MSG_CHECKING(for DGifOpen -lgif)
+SAVED_LDFLAGS=$LDFLAGS
+AC_CHECK_LIB(gif, DGifOpen,
+  [AC_CHECK_HEADERS([gif_lib.h],
+   AM_CONDITIONAL(HAVE_GIF, true),
+   AM_CONDITIONAL(HAVE_GIF, false))],
+  AM_CONDITIONAL(HAVE_GIF, false))
+
 AC_MSG_CHECKING(for magic_open -lmagic)
 SAVED_LDFLAGS=$LDFLAGS
 AC_CHECK_LIB(magic, magic_open,
