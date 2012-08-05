@@ -259,6 +259,9 @@ EXTRACTOR_rpm_extract_method (struct EXTRACTOR_ExtractContext *ec)
   struct sigaction sig;
   struct sigaction old;
 
+  /* FIXME: here it might be worthwhile to do some minimal
+     check to see if this is actually an RPM before we go
+     and create a pipe and a thread for nothing... */
   parg.ec = ec;
   parg.shutdown = 0;
   if (0 != pipe (parg.pi))
