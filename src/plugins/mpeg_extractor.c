@@ -62,6 +62,7 @@ EXTRACTOR_mpeg_extract_method (struct EXTRACTOR_ExtractContext *ec)
       mpeg2_close (handle);
       return;
     }
+  buf = NULL;
   have_gop = 0;
   while (1)
     {
@@ -104,7 +105,8 @@ EXTRACTOR_mpeg_extract_method (struct EXTRACTOR_ExtractContext *ec)
 	    ADD ("MPEG1", EXTRACTOR_METATYPE_FORMAT_VERSION);	  
 	  break;
 	case STATE_GOP:
-	  if (NULL != info->gop) 
+	  if ( (NULL != info->gop) &&
+	       (0 != info->gop->pictures) )
 	    {
 	      snprintf (gop_format, 
 			sizeof (gop_format),
