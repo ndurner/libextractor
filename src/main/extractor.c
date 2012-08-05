@@ -458,8 +458,14 @@ do_extract (struct EXTRACTOR_PluginList *plugins,
       plugin_count = 0;
       for (pos = plugins; NULL != pos; pos = pos->next)
 	{
-	  if (NULL == channels[plugin_count])
-	    pos->channel = NULL;
+	  if ( (NULL == channels[plugin_count]) &&
+	       (-1 == pos->seek_request) )
+	    {
+	      /* EXTRACTOR_IPC_channel_recv_ got a non-NULL channel (-1 == seek_request)
+		 but set it to NULL; that means the channel had an IPC error and was closed;
+		 so we need to update the plugin accordingly */
+	      pos->channel = NULL;
+	    }
 	  plugin_count++;
 	  if ( (1 == pos->round_finished) ||
 	       (NULL == pos->channel) )
@@ -495,6 +501,7 @@ do_extract (struct EXTRACTOR_PluginList *plugins,
 		}
 	    }
 	}
+      data_available = -1;
       if ( (1 == done) &&
 	   (-1 != min_seek) )
 	{
@@ -516,7 +523,10 @@ do_extract (struct EXTRACTOR_PluginList *plugins,
       for (pos = plugins; NULL != pos; pos = pos->next)
 	{
 	  if (NULL == (channel = pos->channel))
-	    continue;
+	    {
+	      /* Skipping plugin: channel down */
+	      continue;
+	    }	  
 	  if ( (-1 != pos->seek_request) && 
 	       (1 == prp.file_finished) )
 	    {
@@ -524,11 +534,13 @@ do_extract (struct EXTRACTOR_PluginList *plugins,
 	      pos->round_finished = 1;
 	      pos->seek_request = -1; 
 	    }	      
-	  if ( (-1 != pos->seek_request) && 
+	  if ( (-1 != data_available) &&
+	       (-1 != pos->seek_request) && 
 	       (min_seek <= pos->seek_request) &&
 	       ( (min_seek + data_available > pos->seek_request) ||
 		 (min_seek == EXTRACTOR_datasource_get_size_ (ds, 0))) )
 	    {
+	      /* Notify plugin about seek to 'min_seek' */
 	      send_update_message (pos,
 				   min_seek,
 				   data_available,

@@ -123,23 +123,6 @@ EXTRACTOR_test2_extract_method (struct EXTRACTOR_ExtractContext *ec)
       fprintf (stderr, "Unexpected data at offset 150k - 3\n");
       ABORT ();
     }
-  if (0 != ec->proc (ec->cls, "test2", EXTRACTOR_METATYPE_COMMENT,
-      EXTRACTOR_METAFORMAT_UTF8, "<no mime>", "Hello world!",
-      strlen ("Hello world!") + 1))
-    {
-      fprintf (stderr, "Unexpected return value from 'proc'\n");
-      ABORT ();
-    }
-  /* The test assumes that client orders us to stop extraction
-   * after seeing "Goodbye!".
-   */
-  if (1 != ec->proc (ec->cls, "test2", EXTRACTOR_METATYPE_COMMENT,
-      EXTRACTOR_METAFORMAT_UTF8, "<no mime>", "Goodbye!",
-      strlen ("Goodbye!") + 1))
-    {
-      fprintf (stderr, "Unexpected return value from 'proc'\n");
-      ABORT ();
-    }
 }
 
 /* end of test2_extractor.c */

@@ -508,6 +508,7 @@ EXTRACTOR_IPC_channel_recv_ (struct EXTRACTOR_Channel **channels,
 	{
 	  if (-1 == iret)
 	    LOG_STRERROR ("read");
+	  LOG ("Read error from channel, closing channel %d\n", i+1);
 	  EXTRACTOR_IPC_channel_destroy_ (channel);
 	  channels[i] = NULL;
 	}

@@ -194,7 +194,8 @@ plugin_env_seek (void *cls,
       EXTRACTOR_read_all_ (pc->in,
 			   &reply, sizeof (reply)))
     {
-      LOG ("Failed to read response to MESSAGE_SEEK\n");
+      LOG ("Plugin `%s' failed to read response to MESSAGE_SEEK\n",
+	   pc->plugin->short_libname);
       return -1;
     }
   if (MESSAGE_UPDATED_SHM != reply)    
@@ -215,7 +216,7 @@ plugin_env_seek (void *cls,
       /* convert offset to be absolute from beginning of the file */
       npos = pc->file_size - npos;
     }
-  if ( (pc->shm_off <= npos) &&
+   if ( (pc->shm_off <= npos) &&
        ((pc->shm_off + pc->shm_ready_bytes > npos) ||
        (pc->file_size == pc->shm_off)) )
     {
@@ -224,7 +225,8 @@ plugin_env_seek (void *cls,
     }
   /* oops, serious missunderstanding, we asked to seek
      and then were notified about a different position!? */
-  LOG ("Got invalid MESSAGE_UPDATED_SHM in response to my %d-seek (%llu not in %llu-%llu)\n",
+  LOG ("Plugin `%s' got invalid MESSAGE_UPDATED_SHM in response to my %d-seek (%llu not in %llu-%llu)\n",
+       pc->plugin->short_libname,
        (int) wval,
        (unsigned long long) npos,
        (unsigned long long) pc->shm_off,

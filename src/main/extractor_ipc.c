@@ -85,7 +85,7 @@ EXTRACTOR_IPC_process_reply_ (struct EXTRACTOR_PluginList *plugin,
 	      return -1; /* not allowing more than MAX_META_DATA meta data */
 	    }
 	  if (size < sizeof (meta) + meta.mime_length + meta.value_size)
-	    {
+	    { 
 	      plugin->seek_request = -1;
 	      return 0;
 	    }
