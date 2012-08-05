@@ -38,7 +38,7 @@ static char *magic_path;
  * Main entry method for the 'application/ogg' extraction plugin.  The
  * 'config' of the context can be used to specify an alternative magic
  * path.  If config is not given, the default magic path will be
- * used.  The default magic path is '/usr/share/misc/magic'.
+ * used.
  *
  * @param ec extraction context provided to the plugin
  */
