@@ -217,9 +217,12 @@ static struct Matches tmap[] = {
 
 
 /**
- * FIXME. 
+ * Give meta data to extractor.
+ *
+ * @param t type of the meta data
+ * @param s meta data value in utf8 format
  */
-#define ADD (t,s) do { if (ctx->ret == 0) ctx->ret = ctx->proc (ctx->proc_cls, "flac", t, EXTRACTOR_METAFORMAT_UTF8, "text/plain", s, strlen(s)+1); } while (0)
+#define ADD(t,s) do { ec->proc (ec->cls, "flac", t, EXTRACTOR_METAFORMAT_UTF8, "text/plain", s, strlen (s) + 1); } while (0)
 
 
 /**
@@ -235,7 +238,7 @@ xstrndup (const char *s,
 {
   char * d;
 
-  if (NULL == (d = malloc(n+1)))
+  if (NULL == (d = malloc (n + 1)))
     return NULL;
   memcpy (d, s, n);
   d[n] = '\0';
@@ -244,7 +247,14 @@ xstrndup (const char *s,
 
 
 /**
- * FIXME. 
+ * Check if a mapping exists for the given meta data value
+ * and if so give the result to LE.
+ *
+ * @param type type of the meta data according to FLAC
+ * @param type_length number of bytes in 'type'
+ * @param value meta data as UTF8 string (non 0-terminated)
+ * @param value_length number of bytes in value
+ * @param ec extractor context
  */
 static void
 check (const char *type,
@@ -269,6 +279,7 @@ check (const char *type,
 	continue;
       ADD (tmap[i].type, tmp);
       free (tmp);
+      break;
     }
 }
 
@@ -293,12 +304,12 @@ flac_metadata (const FLAC__StreamDecoder *decoder,
   const char * eq;
   unsigned int len;
   unsigned int ilen;
-  
+  char buf[128];
+	
   switch (metadata->type)
     {
     case FLAC__METADATA_TYPE_STREAMINFO:
       {
-	char buf[512];
 	snprintf (buf, sizeof (buf),
 		  _("%u Hz, %u channels"), 
 		  metadata->data.stream_info.sample_rate,
@@ -322,7 +333,7 @@ flac_metadata (const FLAC__StreamDecoder *decoder,
 	    eq = (const char*) entry->entry;
 	    len = entry->length;
 	    ilen = 0;
-	    while ( ('=' != *eq) && (*eq != '\0') &&
+	    while ( ('=' != *eq) && ('\0' != *eq) &&
 		    (ilen < len) )
 	      {
 		eq++;
@@ -336,14 +347,12 @@ flac_metadata (const FLAC__StreamDecoder *decoder,
 		   ilen,
 		   eq,
 		   len - ilen,
-		   ctx);		  
+		   ec);		  
 	  }
 	break;
       }
     case FLAC__METADATA_TYPE_PICTURE:
       {
-	if (0 != ctx->ret)
-	  break;
 	switch (metadata->data.picture.type)
 	  {
 	  case FLAC__STREAM_METADATA_PICTURE_TYPE_OTHER:
@@ -387,7 +396,7 @@ flac_metadata (const FLAC__StreamDecoder *decoder,
 		  EXTRACTOR_METAFORMAT_BINARY,
 		  metadata->data.picture.mime_type,
 		  (const char*) metadata->data.picture.data,
-		  metadata->data.picture.data_length))
+		  metadata->data.picture.data_length);
 	break;
       }
     case FLAC__METADATA_TYPE_PADDING:

@@ -14,7 +14,8 @@ SUBDIRS = .
 EXTRA_DIST = template_extractor.c \
   testdata/ogg_courseclear.ogg \
   testdata/gif_image.gif \
-  testdata/rpm_test.rpm
+  testdata/rpm_test.rpm \
+  testdata/flac_kraftwerk.flac
 
 if HAVE_VORBISFILE
 PLUGIN_OGG=libextractor_ogg.la
@@ -36,11 +37,17 @@ PLUGIN_RPM=libextractor_rpm.la
 TEST_RPM=test_rpm
 endif
 
+if HAVE_FLAC
+PLUGIN_FLAC=libextractor_flac.la
+TEST_FLAC=test_flac
+endif
+
 plugin_LTLIBRARIES = \
   $(PLUGIN_OGG) \
   $(PLUGIN_MIME) \
   $(PLUGIN_GIF) \
-  $(PLUGIN_RPM)
+  $(PLUGIN_RPM) \
+  $(PLUGIN_FLAC)
 
 if HAVE_ZZUF
   fuzz_tests=fuzz_default.sh 
@@ -50,7 +57,8 @@ check_PROGRAMS = \
   $(TEST_OGG) \
   $(TEST_MIME) \
   $(TEST_GIF) \
-  $(TEST_RPM)
+  $(TEST_RPM) \
+  $(TEST_FLAC)
 
 TESTS = \
   $(fuzz_tests) \
@@ -64,6 +72,7 @@ libtest_la_SOURCES = \
   test_lib.c 
 libtest_la_LIBADD = \
   $(top_builddir)/src/main/libextractor.la
+
 
 
 libextractor_ogg_la_SOURCES = \
@@ -121,5 +130,18 @@ test_rpm_SOURCES = \
 test_rpm_LDADD = \
   $(top_builddir)/src/plugins/libtest.la
 
+
+libextractor_flac_la_SOURCES = \
+  flac_extractor.c
+libextractor_flac_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+libextractor_flac_la_LIBADD = \
+  $(top_builddir)/src/main/libextractor.la \
+  -lFLAC
+
+test_flac_SOURCES = \
+  test_flac.c
+test_flac_LDADD = \
+  $(top_builddir)/src/plugins/libtest.la
 
 
