@@ -207,6 +207,27 @@ fi
 AM_CONDITIONAL(HAVE_CXX, test "x$HAVE_CXX" = "xyes")
 
 
+# Adam shostack suggests the following for Windows:
+# -D_FORTIFY_SOURCE=2 -fstack-protector-all
+AC_ARG_ENABLE(gcc-hardening,
+   AS_HELP_STRING(--enable-gcc-hardening, enable compiler security checks),
+[if test x$enableval = xyes; then
+    CFLAGS="$CFLAGS -D_FORTIFY_SOURCE=2 -fstack-protector-all"
+    CFLAGS="$CFLAGS -fwrapv -fPIE -Wstack-protector"
+    CFLAGS="$CFLAGS --param ssp-buffer-size=1"
+    LDFLAGS="$LDFLAGS -pie"
+fi])
+
+
+# Linker hardening options
+# Currently these options are ELF specific - you can't use this with MacOSX
+AC_ARG_ENABLE(linker-hardening,
+  AS_HELP_STRING(--enable-linker-hardening, enable linker security fixups),
+[if test x$enableval = xyes; then
+   LDFLAGS="$LDFLAGS -z relro -z now"
+fi])
+
+
 # Checks for libraries.
 
 # Redhat 9, gcc 3.2, libextractor_pdf barfs if we don't check for this
