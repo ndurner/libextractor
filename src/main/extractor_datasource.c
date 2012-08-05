@@ -1204,7 +1204,10 @@ EXTRACTOR_datasource_create_from_file_ (const char *filename,
   if ( (0 != fstat (fd, &sb)) ||
        (S_ISDIR (sb.st_mode)) )       
     {
-      LOG_STRERROR_FILE ("fstat", filename);
+      if (! S_ISDIR (sb.st_mode))
+	LOG_STRERROR_FILE ("fstat", filename);
+      else
+	LOG ("Skipping directory `%s'\n", filename);
       (void) close (fd);
       return NULL;
     }
