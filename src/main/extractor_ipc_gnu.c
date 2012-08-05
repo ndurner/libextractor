@@ -48,11 +48,6 @@ struct EXTRACTOR_SharedMemory
   void *shm_ptr;
 
   /**
-   * Page size. Mmap offset is a multiple of this number.
-   */
-  long allocation_granularity;
-
-  /**
    * Allocated size of the shm
    */ 
   size_t shm_size;
