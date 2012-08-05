@@ -251,7 +251,7 @@ AC_CHECK_LIB(z, inflate,
          AM_CONDITIONAL(HAVE_ZLIB, false))],
          AM_CONDITIONAL(HAVE_ZLIB, false))
 
-AC_CHECK_LIB(bz2, BZ2_decompress,
+AC_CHECK_LIB(bz2, BZ2_bzDecompress,
         [AC_CHECK_HEADERS([bzlib.h],
           AM_CONDITIONAL(HAVE_BZ2, true)
           AC_DEFINE(HAVE_LIBBZ2,1,[Have libbz2]),
