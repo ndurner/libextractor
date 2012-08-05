@@ -123,7 +123,7 @@ libextractor_rpm_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_rpm_la_LIBADD = \
   $(top_builddir)/src/main/libextractor.la \
-  -lrpm
+  -lrpm -lpthread
 
 test_rpm_SOURCES = \
   test_rpm.c
