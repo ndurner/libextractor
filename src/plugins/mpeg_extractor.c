@@ -54,6 +54,7 @@ EXTRACTOR_mpeg_extract_method (struct EXTRACTOR_ExtractContext *ec)
   char gop_format[256];
   int have_gop;
   uint64_t fsize;
+  unsigned int fail_count;
 
   if (NULL == (handle = mpeg2_init ()))
     return;
@@ -65,12 +66,16 @@ EXTRACTOR_mpeg_extract_method (struct EXTRACTOR_ExtractContext *ec)
   fsize = ec->get_size (ec->cls);  
   buf = NULL;
   have_gop = 0;
+  fail_count = 0;
   while (1)
     {
       state = mpeg2_parse (handle);
       switch (state)
 	{
 	case STATE_BUFFER:
+	  if (fail_count > 16)
+	    goto EXIT; /* do not read large non-mpeg files */
+	  fail_count++;
 	  if (0 >= (avail = ec->read (ec->cls,
 				      &buf,
 				      16 * 1024)))
@@ -78,6 +83,7 @@ EXTRACTOR_mpeg_extract_method (struct EXTRACTOR_ExtractContext *ec)
 	  mpeg2_buffer (handle, buf, buf + avail);
 	  break;
 	case STATE_SEQUENCE:
+	  fail_count = 0;
 	  format[0] = fsize;
 	  format[0]++;
 	  ADD ("video/mpeg", EXTRACTOR_METATYPE_MIMETYPE);
@@ -116,6 +122,7 @@ EXTRACTOR_mpeg_extract_method (struct EXTRACTOR_ExtractContext *ec)
 	    }
 	  break;
 	case STATE_GOP:
+	  fail_count = 0;
 	  if ( (NULL != info->gop) &&
 	       (0 != info->gop->pictures) )
 	    {
@@ -128,8 +135,10 @@ EXTRACTOR_mpeg_extract_method (struct EXTRACTOR_ExtractContext *ec)
 	    }
 	  break;
 	case STATE_SLICE:
+	  fail_count = 0;
 	  break;
 	case STATE_END:
+	  fail_count = 0;
 	  break;
 	case STATE_INVALID:
 	  goto EXIT;
