@@ -366,6 +366,7 @@ do_extract (struct EXTRACTOR_PluginList *plugins,
 	    EXTRACTOR_MetaDataProcessor proc, void *proc_cls)
 {
   unsigned int plugin_count;
+  unsigned int plugin_off;
   struct EXTRACTOR_PluginList *pos;
   struct StartMessage start;
   struct EXTRACTOR_Channel *channel;
@@ -423,22 +424,21 @@ do_extract (struct EXTRACTOR_PluginList *plugins,
       struct EXTRACTOR_Channel *channels[plugin_count];
 
       /* calculate current 'channels' array */
-      plugin_count = 0;
+      plugin_off = 0;
       for (pos = plugins; NULL != pos; pos = pos->next)
 	{
 	  if (-1 == pos->seek_request)
 	    {
 	      /* channel is not seeking, must be running or done */
-	      channels[plugin_count] = pos->channel;
+	      channels[plugin_off] = pos->channel;
 	    }
 	  else
 	    {
 	      /* not running this round, seeking! */
-	      channels[plugin_count] = NULL; 
+	      channels[plugin_off] = NULL; 
 	    }
-	  plugin_count++;
+	  plugin_off++;
 	}
-      
       /* give plugins chance to send us meta data, seek or finished messages */
       if (-1 == 
 	  EXTRACTOR_IPC_channel_recv_ (channels,
@@ -455,10 +455,10 @@ do_extract (struct EXTRACTOR_PluginList *plugins,
       /* calculate minimum seek request (or set done=0 to continue here) */
       done = 1;
       min_seek = -1;
-      plugin_count = 0;
+      plugin_off = 0;
       for (pos = plugins; NULL != pos; pos = pos->next)
 	{
-	  if ( (NULL == channels[plugin_count]) &&
+	  if ( (NULL == channels[plugin_off]) &&
 	       (-1 == pos->seek_request) )
 	    {
 	      /* EXTRACTOR_IPC_channel_recv_ got a non-NULL channel (-1 == seek_request)
@@ -466,7 +466,7 @@ do_extract (struct EXTRACTOR_PluginList *plugins,
 		 so we need to update the plugin accordingly */
 	      pos->channel = NULL;
 	    }
-	  plugin_count++;
+	  plugin_off++;
 	  if ( (1 == pos->round_finished) ||
 	       (NULL == pos->channel) )
 	    continue; /* inactive plugin */
@@ -569,7 +569,6 @@ do_extract (struct EXTRACTOR_PluginList *plugins,
       LOG ("Failed to seek to 0 for in-memory plugins\n");
       return;
     }
-
   for (pos = plugins; NULL != pos; pos = pos->next)
     {
       if (EXTRACTOR_OPTION_IN_PROCESS != pos->flags)
