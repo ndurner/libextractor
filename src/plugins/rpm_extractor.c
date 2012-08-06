@@ -396,10 +396,11 @@ EXTRACTOR_rpm_extract_method (struct EXTRACTOR_ExtractContext *ec)
  CLEANUP:
   rpmtdFree (p);
   headerFreeIterator (hi);
+
+ END:				
   headerFree (hdr);
   rpmtsFree(ts);
 
- END:				
   /* make sure SIGALRM does not kill us, then use it to
      kill the thread */
   memset (&sig, 0, sizeof (struct sigaction));
