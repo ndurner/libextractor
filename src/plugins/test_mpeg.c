@@ -73,10 +73,40 @@ main (int argc, char *argv[])
       },
       { 0, 0, NULL, NULL, 0, -1 }
     };
+  struct SolutionData alien_sol[] =
+    {
+      { 
+	EXTRACTOR_METATYPE_MIMETYPE,
+	EXTRACTOR_METAFORMAT_UTF8,
+	"text/plain",
+	"video/mpeg",
+	strlen ("video/mpeg") + 1,
+	0 
+      },
+      { 
+	EXTRACTOR_METATYPE_IMAGE_DIMENSIONS,
+	EXTRACTOR_METAFORMAT_UTF8,
+	"text/plain",
+	"320x240",
+	strlen ("320x240") + 1,
+	0 
+      },
+      { 
+	EXTRACTOR_METATYPE_FORMAT_VERSION,
+	EXTRACTOR_METAFORMAT_UTF8,
+	"text/plain",
+	"MPEG1",
+	strlen ("MPEG1") + 1,
+	0 
+      },
+      { 0, 0, NULL, NULL, 0, -1 }
+    };
   struct ProblemSet ps[] =
     {
       { "testdata/mpeg_melt.mpg",
 	melt_sol },
+      { "testdata/mpeg_alien.mpg",
+	alien_sol },
       { NULL, NULL }
     };
   return ET_main ("mpeg", ps);

@@ -15,7 +15,9 @@ EXTRA_DIST = template_extractor.c \
   testdata/ogg_courseclear.ogg \
   testdata/gif_image.gif \
   testdata/rpm_test.rpm \
-  testdata/flac_kraftwerk.flac
+  testdata/flac_kraftwerk.flac \
+  testdata/mpeg_alien.mpg \
+  testdata/mpeg_melt.mpg
 
 if HAVE_VORBISFILE
 PLUGIN_OGG=libextractor_ogg.la
