@@ -78,6 +78,8 @@ EXTRACTOR_mpeg_extract_method (struct EXTRACTOR_ExtractContext *ec)
 	  mpeg2_buffer (handle, buf, buf + avail);
 	  break;
 	case STATE_SEQUENCE:
+	  format[0] = fsize;
+	  format[0]++;
 	  ADD ("video/mpeg", EXTRACTOR_METATYPE_MIMETYPE);
 	  snprintf (format, 
 		    sizeof(format), "%ux%u",

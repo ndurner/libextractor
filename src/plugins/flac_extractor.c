@@ -474,7 +474,6 @@ EXTRACTOR_flac_extract_method (struct EXTRACTOR_ExtractContext *ec)
     case FLAC__STREAM_DECODER_READ_METADATA:
     case FLAC__STREAM_DECODER_END_OF_STREAM:
     case FLAC__STREAM_DECODER_READ_FRAME:
-      ADD (EXTRACTOR_METATYPE_MIMETYPE, "audio/flac");
       break;
     default:
       /* not so sure... */
