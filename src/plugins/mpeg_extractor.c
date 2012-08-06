@@ -1,4 +1,3 @@
-
 /*
      This file is part of libextractor.
      (C) 2004, 2005, 2006, 2009, 2012 Vidyut Samanta and Christian Grothoff
@@ -54,6 +53,7 @@ EXTRACTOR_mpeg_extract_method (struct EXTRACTOR_ExtractContext *ec)
   char format[256];
   char gop_format[256];
   int have_gop;
+  uint64_t fsize;
 
   if (NULL == (handle = mpeg2_init ()))
     return;
@@ -62,6 +62,7 @@ EXTRACTOR_mpeg_extract_method (struct EXTRACTOR_ExtractContext *ec)
       mpeg2_close (handle);
       return;
     }
+  fsize = ec->get_size (ec->cls);  
   buf = NULL;
   have_gop = 0;
   while (1)
@@ -102,7 +103,15 @@ EXTRACTOR_mpeg_extract_method (struct EXTRACTOR_ExtractContext *ec)
 	  if ((info->sequence->flags & SEQ_FLAG_MPEG2) > 0)
 	    ADD ("MPEG2", EXTRACTOR_METATYPE_FORMAT_VERSION);
 	  else
-	    ADD ("MPEG1", EXTRACTOR_METATYPE_FORMAT_VERSION);	  
+	    ADD ("MPEG1", EXTRACTOR_METATYPE_FORMAT_VERSION);
+	  if ( (fsize != -1) &&
+	       (fsize > 1024 * 256 * 2) )
+	    {
+	      /* skip to the end of the mpeg for speed */
+	      ec->seek (ec->cls,
+			fsize - 256 * 1024,
+			SEEK_SET);
+	    }
 	  break;
 	case STATE_GOP:
 	  if ( (NULL != info->gop) &&
