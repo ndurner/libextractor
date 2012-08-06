@@ -564,11 +564,6 @@ do_extract (struct EXTRACTOR_PluginList *plugins,
   ec.seek = &in_process_seek;
   ec.get_size = &in_process_get_size;
   ec.proc = &in_process_proc;
-  if (-1 == EXTRACTOR_datasource_seek_ (ds, 0, SEEK_SET))
-    {
-      LOG ("Failed to seek to 0 for in-memory plugins\n");
-      return;
-    }
   for (pos = plugins; NULL != pos; pos = pos->next)
     {
       if (EXTRACTOR_OPTION_IN_PROCESS != pos->flags)
@@ -577,6 +572,11 @@ do_extract (struct EXTRACTOR_PluginList *plugins,
         continue;
       ctx.plugin = pos;
       ec.config = pos->plugin_options;
+      if (-1 == EXTRACTOR_datasource_seek_ (ds, 0, SEEK_SET))
+	{
+	  LOG ("Failed to seek to 0 for in-memory plugins\n");
+	  return;
+	}
       pos->extract_method (&ec);
       if (1 == ctx.finished)
 	break;
