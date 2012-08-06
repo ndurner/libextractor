@@ -40,14 +40,6 @@ main (int argc, char *argv[])
   struct SolutionData kraftwerk_sol[] =
     {
       { 
-	EXTRACTOR_METATYPE_MIMETYPE,
-	EXTRACTOR_METAFORMAT_UTF8,
-	"text/plain",
-	"audio/flac",
-	strlen ("audio/flac") + 1,
-	0 
-      },
-      { 
 	EXTRACTOR_METATYPE_RESOURCE_TYPE,
 	EXTRACTOR_METAFORMAT_UTF8,
 	"text/plain",
@@ -65,10 +57,16 @@ main (int argc, char *argv[])
       },
       { 0, 0, NULL, NULL, 0, -1 }
     };
+  struct SolutionData alien_sol[] =
+    {
+      { 0, 0, NULL, NULL, 0, -1 }
+    };
   struct ProblemSet ps[] =
     {
       { "testdata/flac_kraftwerk.flac",
 	kraftwerk_sol },
+      { "testdata/mpeg_alien.mpg",
+	alien_sol },
       { NULL, NULL }
     };
   return ET_main ("flac", ps);
