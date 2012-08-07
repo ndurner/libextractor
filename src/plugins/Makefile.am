@@ -1,4 +1,7 @@
-INCLUDES = -I$(top_srcdir)/src/include -I$(top_srcdir)/src/common -I$(top_srcdir)/src/main
+INCLUDES = \
+ -I$(top_srcdir)/src/include \
+ -I$(top_srcdir)/src/common \
+ -I$(top_srcdir)/src/main
 
 # install plugins under:
 plugindir = $(libdir)/@RPLUGINDIR@
@@ -14,10 +17,13 @@ SUBDIRS = .
 EXTRA_DIST = template_extractor.c \
   testdata/ogg_courseclear.ogg \
   testdata/gif_image.gif \
+  testdata/jpeg_image.jpg \
   testdata/rpm_test.rpm \
   testdata/flac_kraftwerk.flac \
   testdata/mpeg_alien.mpg \
-  testdata/mpeg_melt.mpg
+  testdata/mpeg_melt.mpg \
+  testdata/wav_noise.wav \
+  testdata/wav_alert.wav
 
 if HAVE_VORBISFILE
 PLUGIN_OGG=libextractor_ogg.la
@@ -49,26 +55,43 @@ PLUGIN_MPEG=libextractor_mpeg.la
 TEST_MPEG=test_mpeg
 endif
 
+if HAVE_JPEG
+PLUGIN_JPEG=libextractor_jpeg.la
+TEST_JPEG=test_jpeg
+endif
+
+if HAVE_POPPLER
+PLUGIN_EXIV2=libextractor_exiv2.la
+TEST_EXIV2=test_exiv2
+endif
+
 
 plugin_LTLIBRARIES = \
+  libextractor_xm.la \
+  libextractor_wav.la \
   $(PLUGIN_OGG) \
   $(PLUGIN_MIME) \
   $(PLUGIN_GIF) \
   $(PLUGIN_RPM) \
   $(PLUGIN_FLAC) \
-  $(PLUGIN_MPEG)
+  $(PLUGIN_MPEG) \
+  $(PLUGIN_JPEG) \
+  $(PLUGIN_EXIV2)
 
 if HAVE_ZZUF
   fuzz_tests=fuzz_default.sh 
 endif
 
 check_PROGRAMS = \
+  test_wav \
   $(TEST_OGG) \
   $(TEST_MIME) \
   $(TEST_GIF) \
   $(TEST_RPM) \
   $(TEST_FLAC) \
-  $(TEST_MPEG)
+  $(TEST_MPEG) \
+  $(TEST_JPEG) \
+  $(TEST_EXIV2)
 
 TESTS = \
   $(fuzz_tests) \
@@ -83,6 +106,22 @@ libtest_la_SOURCES = \
 libtest_la_LIBADD = \
   $(top_builddir)/src/main/libextractor.la
 
+
+libextractor_xm_la_SOURCES = \
+  xm_extractor.c
+libextractor_xm_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+
+
+libextractor_wav_la_SOURCES = \
+  wav_extractor.c
+libextractor_wav_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+
+test_wav_SOURCES = \
+  test_wav.c
+test_wav_LDADD = \
+  $(top_builddir)/src/plugins/libtest.la
 
 
 libextractor_ogg_la_SOURCES = \
@@ -160,6 +199,32 @@ libextractor_mpeg_la_LIBADD = \
 test_mpeg_SOURCES = \
   test_mpeg.c
 test_mpeg_LDADD = \
+  $(top_builddir)/src/plugins/libtest.la
+
+
+libextractor_jpeg_la_SOURCES = \
+  jpeg_extractor.c
+libextractor_jpeg_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+libextractor_jpeg_la_LIBADD = \
+  -ljpeg
+
+test_jpeg_SOURCES = \
+  test_jpeg.c
+test_jpeg_LDADD = \
+  $(top_builddir)/src/plugins/libtest.la
+
+
+libextractor_exiv2_la_SOURCES = \
+  exiv2_extractor.cc
+libextractor_exiv2_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+libextractor_exiv2_la_LIBADD = \
+  -lexiv2
+
+test_exiv2_SOURCES = \
+  test_exiv2.c
+test_exiv2_LDADD = \
   $(top_builddir)/src/plugins/libtest.la
 
 

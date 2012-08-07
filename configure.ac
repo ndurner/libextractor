@@ -293,6 +293,13 @@ AC_CHECK_LIB(mpeg2, mpeg2_init,
          AM_CONDITIONAL(HAVE_MPEG2, false))],
          AM_CONDITIONAL(HAVE_MPEG2, false))
 
+AC_CHECK_LIB(jpeg, jpeg_std_error,
+        [AC_CHECK_HEADERS([jpeglib.h],
+           AM_CONDITIONAL(HAVE_JPEG, true)
+           AC_DEFINE(HAVE_JPEG,1,[Have libjpeg]),
+         AM_CONDITIONAL(HAVE_JPEG, false))],
+         AM_CONDITIONAL(HAVE_JPEG, false))
+
 AC_CHECK_LIB(poppler, _ZTI9MemStream,
         [AC_CHECK_HEADERS([poppler/goo/gmem.h],
            AM_CONDITIONAL(HAVE_POPPLER, true)

@@ -1,32 +1,32 @@
-.TH LIBEXTRACTOR 3 "Dec 14, 2009"
+.TH LIBEXTRACTOR 3 "Aug 8, 2012" "libextractor 0.7.0"
 .SH NAME
-libextractor \- meta\-information extraction library 0.6.0
+libextractor \- meta\-information extraction library 0.7.0
 .SH SYNOPSIS
 
 \fB#include <extractor.h>
 
-\fBconst char *EXTRACTOR_metatype_to_string(enum EXTRACTOR_MetaType \fItype\fB);
+\fBconst char *EXTRACTOR_metatype_to_string (enum EXTRACTOR_MetaType \fItype\fB);
 
-\fBconst char *EXTRACTOR_metatype_to_description(enum EXTRACTOR_MetaType \fItype\fB);
+\fBconst char *EXTRACTOR_metatype_to_description (enum EXTRACTOR_MetaType \fItype\fB);
 
 \fBenum EXTRACTOR_MetaTypeEXTRACTOR_metatype_get_max (void);
 
-\fBstruct EXTRACTOR_PluginList *EXTRACTOR_plugin_add_defaults(enum EXTRACTOR_Options \fIflags\fB);
+\fBstruct EXTRACTOR_PluginList *EXTRACTOR_plugin_add_defaults (enum EXTRACTOR_Options \fIflags\fB);
 
-\fBstruct EXTRACTOR_PluginList *EXTRACTOR_plugin_add (struct EXTRACTOR_PluginList * \fIprev\fB, const char * \fIlibrary\fB, const char * \fIoptions\fB, enum EXTRACTOR_Options \fIflags\fB);
+\fBstruct EXTRACTOR_PluginList *EXTRACTOR_plugin_add (struct EXTRACTOR_PluginList *\fIprev\fB, const char *\fIlibrary\fB, const char *\fIoptions\fB, enum EXTRACTOR_Options \fIflags\fB);
 
 
-\fBstruct EXTRACTOR_PluginList *EXTRACTOR_plugin_add_last(struct EXTRACTOR_PluginList *\fIprev\fB, const char *\fIlibrary\fB, const char *\fIoptions\fB, enum EXTRACTOR_Options \fIflags\fB);
+\fBstruct EXTRACTOR_PluginList *EXTRACTOR_plugin_add_last (struct EXTRACTOR_PluginList *\fIprev\fB, const char *\fIlibrary\fB, const char *\fIoptions\fB, enum EXTRACTOR_Options \fIflags\fB);
 
-\fBstruct EXTRACTOR_PluginList *EXTRACTOR_plugin_add_config (struct EXTRACTOR_PluginList * \fIprev\fB, const char *\fIconfig\fB, enum EXTRACTOR_Options \fIflags\fB);
+\fBstruct EXTRACTOR_PluginList *EXTRACTOR_plugin_add_config (struct EXTRACTOR_PluginList *\fIprev\fB, const char *\fIconfig\fB, enum EXTRACTOR_Options \fIflags\fB);
 		
-\fBstruct EXTRACTOR_PluginList *EXTRACTOR_plugin_remove(struct EXTRACTOR_PluginList * \fIprev\fB, const char * \fIlibrary\fB);
+\fBstruct EXTRACTOR_PluginList *EXTRACTOR_plugin_remove (struct EXTRACTOR_PluginList *\fIprev\fB, const char *\fIlibrary\fB);
 
-\fBvoid EXTRACTOR_plugin_remove_all(struct EXTRACTOR_PluginList *\fIplugins\fB);
+\fBvoid EXTRACTOR_plugin_remove_all (struct EXTRACTOR_PluginList *\fIplugins\fB);
 
-\fBvoid EXTRACTOR_extract(struct EXTRACTOR_PluginList *\fIplugins\fB, const char *\fIfilename\fB, const void *\fIdata\fB, size_t \fIsize\fB, EXTRACTOR_MetaDataProcessor \fIproc\fB, void *\fIproc_cls\fB);
+\fBvoid EXTRACTOR_extract (struct EXTRACTOR_PluginList *\fIplugins\fB, const char *\fIfilename\fB, const void *\fIdata\fB, size_t \fIsize\fB, EXTRACTOR_MetaDataProcessor \fIproc\fB, void *\fIproc_cls\fB);
 
-\fBint EXTRACTOR_meta_data_print(void * \fIhandle\fB, const char *\fIplugin_name\fB, enum EXTRACTOR_MetaType \fItype\fB, enum EXTRACTOR_MetaFormat \fIformat\fB, const char *\fIdata_mime_type\fB, const char *\fIdata\fB, size_t \fIdata_len\fB);
+\fBint EXTRACTOR_meta_data_prin t(void *\fIhandle\fB, const char *\fIplugin_name\fB, enum EXTRACTOR_MetaType \fItype\fB, enum EXTRACTOR_MetaFormat \fIformat\fB, const char *\fIdata_mime_type\fB, const char *\fIdata\fB, size_t \fIdata_len\fB);
 
 \fBEXTRACTOR_VERSION
 
@@ -34,16 +34,16 @@ libextractor \- meta\-information extraction library 0.6.0
 .P
 GNU libextractor is a simple library for keyword extraction.  libextractor does not support all formats but supports a simple plugging mechanism such that you can quickly add extractors for additional formats, even without recompiling libextractor.  libextractor typically ships with dozens of plugins that can be used to obtain meta data from common file-types.  If you want to write your own plugin for some filetype, all you need to do is write a little library that implements a single method with this signature:
 
- \fBint EXTRACTOR_name_extract(const char *\fIdata\fB, size_t \fIdatasize\fB, EXTRACTOR_MetaDataProcessor \fIproc\fB, void *\fIproc_cls\fB, const char *\fIoptions\fB);
+ \fBvoid EXTRACTOR_XXX_extract_method (struct EXTRACTOR_ExtractContext *ec);
 
 .P
-Data is a pointer to the contents of the file and datasize is the size of data.  The extract method must call proc for meta data that it finds.  The interpretation of options is up to the plugin.  The function should return 0 if 'proc' always returned 0, otherwise 1.  After 'proc' returned a non-zero value, proc should not be called again. An example implementation can be found in \fIhtml_extractor.c\fP.  Plugins should be automatically found and used once they are installed in the respective directory (typically something like /usr/lib/libextractor/).  
+'ec' contains function pointers for reading, seeking, getting the overall file size and returning meta data.  There is also a field with options for the plugin.  New plugins will be automatically located and used once they are installed in the respective directory (typically something like /usr/lib/libextractor/).  
 .P
-The application extract gives an example how to use libextractor.
+The application 'extract' gives an example how to use libextractor.
 .P
 The basic use of libextractor is to load the plugins (for example with \fBEXTRACTOR_plugin_add_defaults\fP), then to extract the keyword list using \fBEXTRACTOR_extract\fP, and finally unloading the plugins (with \fBEXTRACTOR_plugin_remove_all\fP).
 .P
-Textual meta data obtained from libextractor is supposed to be UTF-8 encoded if the text encoding is known.  Plugins are supposed to convert meta-data to UTF-8 if necessary.    The EXTRACTOR_meta_data_print function converts the UTF-8 keywords to the character set from the current locale before printing them.  
+Textual meta data obtained from libextractor is supposed to be UTF-8 encoded if the text encoding is known.  Plugins are supposed to convert meta\-data to UTF\-8 if necessary.    The \fBEXTRACTOR_meta_data_print\fP function converts the UTF-8 keywords to the character set from the current locale before printing them.  
 .P
 .SH "SEE ALSO"
 extract(1)

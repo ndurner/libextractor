@@ -636,16 +636,19 @@ EXTRACTOR_extract (struct EXTRACTOR_PluginList *plugins,
     {
       /* need to create shared memory segment */
       shm = EXTRACTOR_IPC_shared_memory_create_ (DEFAULT_SHM_SIZE);
-      for (pos = plugins; NULL != pos; pos = pos->next)
-	if ( (NULL == pos->shm) &&
-	     (EXTRACTOR_OPTION_IN_PROCESS != pos->flags) )
+    }
+  for (pos = plugins; NULL != pos; pos = pos->next)
+    if ( (NULL == pos->channel) &&
+	 (EXTRACTOR_OPTION_IN_PROCESS != pos->flags) )
+      {
+	if (NULL == pos->shm)
 	  {
 	    pos->shm = shm;
 	    (void) EXTRACTOR_IPC_shared_memory_change_rc_ (shm, 1);
-	    pos->channel = EXTRACTOR_IPC_channel_create_ (pos,
-							  shm);
 	  }
-    }
+	pos->channel = EXTRACTOR_IPC_channel_create_ (pos,
+						      shm);
+      }
   do_extract (plugins, shm, datasource, proc, proc_cls);
   EXTRACTOR_datasource_destroy_ (datasource);
 }

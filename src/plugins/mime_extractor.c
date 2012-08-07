@@ -80,12 +80,8 @@ EXTRACTOR_mime_extract_method (struct EXTRACTOR_ExtractContext *ec)
       else
 	magic_path = NULL;
     }
-  mime = magic_buffer (magic, buf, ret);
-  if (NULL == mime)
-    {
-      magic_close (magic);
-      return;
-    }
+  if (NULL == (mime = magic_buffer (magic, buf, ret)))
+    return;
   ec->proc (ec->cls,
 	    "mime",
 	    EXTRACTOR_METATYPE_MIMETYPE,
@@ -116,8 +112,11 @@ mime_ltdl_init ()
 void __attribute__ ((destructor)) 
 mime_ltdl_fini () 
 {
-  magic_close (magic);
-  magic = NULL;
+  if (NULL != magic)
+    {
+      magic_close (magic);
+      magic = NULL;
+    }
   if (NULL != magic_path)
     {
       free (magic_path);

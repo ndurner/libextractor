@@ -158,15 +158,9 @@ end-users can be find in the man page on @command{extract} (using
 @verb{|man extract|}).
 
 @cindex license
-@gnule{} is licensed under the GNU General Public License.  The
-developers have frequently received requests to license GNU
-libextractor under alternative terms.  However, @gnule{}
-borrows plenty of GPL-licensed code from various other projects.
-Hence we cannot change the license (even if we wanted to).@footnote{It
-maybe possible to switch to GPLv3 in the future.  For this, an audit
-of the license status of our dependencies would be required.  The new
-code that was developed specifically for @gnule{} has
-always been licensed under GPLv2 @emph{or any later version}.}
+@gnule{} is licensed under the GNU General Public License,
+specifically, since version 0.7, @gnule{} is licensed under GPLv3
+@emph{or any later version}.
 
 @node Preparation
 @chapter Preparation
@@ -181,7 +175,7 @@ using @command{configure} and @command{make}.  For details on the GNU
 autotools build process, read the @file{INSTALL} file and query
 @verb{|./configure --help|} for additional options.  
 
-@gnule{} has various dependencies, some of which are optional. 
+@gnule{} has various dependencies, most of which are optional. 
 Instead of specifying the names of the software packages, we
 will give the list in terms of the names of the respective
 Debian (unstable) packages that should be installed.
@@ -199,38 +193,34 @@ make
 g++ 
 @item
 libltdl7-dev
-@item
-zlib1g-dev
-@item
-libbz2-dev
 @end itemize
 
 Recommended dependencies are:
 @itemize @bullet
 @item
-libgtk2.0-dev
+zlib1g-dev
+@item
+libbz2-dev
+@item
+libgif-dev
 @item
 libvorbis-dev
 @item
 libflac-dev
 @item
-libgsf-1-dev
-@item
 libmpeg2-4-dev
 @item
-libqt4-dev
-@item
 librpm-dev
+@item
+libgtk2.0-dev
+@item
+libgsf-1-dev
+@item
+libqt4-dev
 @item
 libpoppler-dev
 @item
 libexiv2-dev
-@end itemize
-
-Optional dependencies (you would need to additionally specify 
-the configure option @code{--enable-ffmpeg}) to make use of these
-are:
-@itemize @bullet
 @item
 libavformat-dev
 @item
@@ -355,7 +345,8 @@ to LDFLAGS.
 // hello.c
 #include <Extractor/extractor.h>
 
-int main()
+int
+main (int argc, char **argv)
 {
   struct EXTRACTOR_PluginList *el;
   el = EXTRACTOR_plugin_load_defaults (EXTRACTOR_OPTION_DEFAULT_POLICY);
@@ -408,9 +399,7 @@ Notice the difference in the @code{#include} line.
 @section Note to package maintainers
 
 The suggested way to package GNU libextractor is to split it into
-roughly the following binary packages:@footnote{Debian policy
-furthermore requires a @file{-dev} (meta) package that would depend on
-all of the above packages.}
+roughly the following binary packages:
 
 @itemize @bullet
 @item
@@ -491,7 +480,10 @@ executing binary itself) looks like this:
 
 @verbatim
 #include <extractor.h>
-int main(int argc, char ** argv) {
+
+int 
+main (int argc, char ** argv) 
+{
   struct EXTRACTOR_PluginList *plugins
     = EXTRACTOR_plugin_add_defaults (EXTRACTOR_OPTION_DEFAULT_POLICY);
   EXTRACTOR_extract (plugins, argv[1],
@@ -740,7 +732,7 @@ with older versions of Java.
 
 @section Mono
 
-This binding is undocumented at this point.
+his binding is undocumented at this point.
 
 @section Perl
 
@@ -802,77 +794,28 @@ The @verb{|EXTRACTOR_meta_data_print|} is a simple function which prints the met
 
 @itemize @bullet
 @item
-APPLEFILE
+EXIV2 (using libexiv2)
+@item 
+FLAC (using libFLAC)
 @item
-ASF
-@item
-DEB
-@item
-DVI
-@item
-ELF
-@item
-EXIV2
-@item
-FLAC
-@item
-FLV
-@item
-GIF
-@item
-HTML
-@item
-ID3 (v2.0, v2.3, v2.4)
-@item
-IT
+GIF (using libgif)
 @item
 JPEG
 @item
-OLE2
-@item
-thumbnail (GTK, QT or FFMPEG-based)
-@item
-MAN
-@item
-MIME
+MIME (using libmagic)
 @item
 MP3 (ID3v1)
 @item
-MPEG
-@item
-NSF and NSFE
-@item
-ODF
+MPEG (using libmpeg2)
 @item
 PNG
 @item
-PS (PostScript)
-@item
-QT (QuickTime)
-@item
-REAL
-@item
-RIFF
-@item
-RPM
-@item 
-S3M
-@item
-SID
-@item
-TAR
-@item
-TIFF
-@item
-WAV
-@item
-XM
-@item
-ZIP
+RPM (using librpm)
 @end itemize
 
 @file{gzip} and @file{bzip2} compressed versions of these formats are 
-also supported (as well as meta data embedded by @file{gzip} itself).
+also supported (as well as meta data embedded by @file{gzip} itself)
+if zlib or libbz2 are available.
 
 @node Writing new Plugins
 @chapter Writing new Plugins
@@ -891,28 +834,20 @@ assume that the remainder of the file is well formed.
 
 The plugin library must be called libextractor_XXX.so, where XXX 
 denotes the file format of the plugin. The library must export a 
-method @verb{|libextractor_XXX_extract|}, with the following 
+method @verb{|libextractor_XXX_extract_method|}, with the following 
 signature:
 @verbatim
-int
-EXTRACTOR_XXX_extract
-   (const char *data,
-    size_t data_size,
-    EXTRACTOR_MetaDataProcessor proc,
-    void *proc_cls,
-    const char * options);
+void
+EXTRACTOR_XXX_extract_method (struct EXTRACTOR_ExtractContext *ec);
 @end verbatim
 
-@samp{data} is a pointer to the typically memory mapped contents of
-the file.  Note that plugins cannot ignore the @verb{|const|}
-annotation since the memory mapping may have been done read-only (and
-thus writes to this page will result in an error).  The @samp{data_size}
-argument specifies the size of the @samp{data} buffer in bytes.
-
-@samp{proc} should be called on each meta data item found.  If @samp{proc} 
-returns non-zero, processing should be aborted and the @code{extract}
-function must return 1.  Otherwise @code{extract} should always return zero.
-
+@samp{ec} contains various information the plugin may need for its
+execution.  Most importantly, it contains functions for reading
+(``read'') and seeking (``seek'') the input data and for returning
+extracted data (``proc'').  The ``config'' member can contain
+additional configuration options.  ``proc'' should be called on
+each meta data item found.  If ``proc'' returns non-zero,
+processing should be aborted (if possible).
 
 In order to test new plugins, the @file{extract} command can be run
 with the options ``-ni'' and ``-l XXX'' .  This will run the plugin
@@ -926,110 +861,31 @@ The following example shows how a plugin can return the mime type of
 a file.
 @example
 @verbatim
-int
-EXTRACTOR_mymime_extract
-   (const char *data,
-    size_t data_size,
-    EXTRACTOR_MetaDataProcessor proc,
-    void *proc_cls,
-    const char * options)
+void
+EXTRACTOR_mymime_extract (struct EXTRACTOR_ExtractContext *ec)
 {
+  void *data;
+  ssize_t data_size,
+
+  if (-1 == (data_size = ec->read (ec->cls, &data, 4)))
+    return; /* read error */
   if (data_size < 4)
-    return 0;
+    return; /* file too small */
   if (0 != memcmp (data, "\177ELF", 4))
-    return 0;
-  if (0 != proc (proc_cls, 
-                 "mymime",
-                 EXTRACTOR_METATYPE_MIMETYPE,
-                 EXTRACTOR_METAFORMAT_UTF8,
-                 "text/plain",
-                 "application/x-executable",
-                 1 + strlen("application/x-executable")))
-    return 1;
+    return; /* not ELF */
+  if (0 != ec->proc (ec->cls, 
+                     "mymime",
+                     EXTRACTOR_METATYPE_MIMETYPE,
+                     EXTRACTOR_METAFORMAT_UTF8,
+                     "text/plain",
+                     "application/x-executable",
+                     1 + strlen("application/x-executable")))
+    return;
   /* more calls to 'proc' here as needed */
-  return 0;
 }
 @end verbatim
 @end example
 
-@section Plugin execution options
-
-Plugins can request that their execution be done in a particular way.
-For this, the plugin defines a function with the following signature:
-
-@verbatim
-const char *
-EXTRACTOR_XXX_options (void);
-@end verbatim
-
-The function should return a string with the execution options.
-Individual options in this string should be separated by semicolons.
-Options that are included in the string but not known to the library
-are ignored.  The following options are supported:
-
-@itemize @bullet
-@item
-@code{oop-only} ensures that the plugin is only run out-of-process; if
-this is not possible, the plugin will not be executed at all if this
-option is set.
-
-@item
-@code{close-stderr} ensures that @code{stderr} is closed during the
-execution of the plugin.  This is useful if the plugin uses libraries
-that write (error) messages to @code{stderr} and where this behavior cannot be 
-turned off.  This option only works if the plugin is executed out-of-process.
-
-@item
-@code{close-stdout} ensures that @code{stdout} is closed during the
-execution of the plugin.  This is useful if the plugin uses libraries
-that write messages to @code{stdout} and where this behavior cannot be 
-turned off.  This option only works if the plugin is executed out-of-process.
-
-@item
-@code{force-kill} kills and restarts the plugin process for each
-file that is being analyzed.  This is useful if the plugin uses
-libraries that keep global state between runs that is problematic or
-if the plugin uses libraries that are known to have serious resource
-leaks (such as memory leaks).
-
-@item
-@code{want-tail} 
-In order to limit memory consumption, limit the amount if reading from
-disk and to keep the API simple, the @samp{data} argument passed to
-the @code{EXTRACTOR_XXX_extract} method bounded (to 32 MB of normal
-data; for compressed data, a limit of 16 MB is imposed).@footnote{If
-@gnule{} was given a pointer to an existing, uncompressed block of
-data in memory, no bound is imposed for plugins executing in-process;
-for out-of-process plugins, a 32 MB limit is still imposed.}  Since
-some file formats contain meta data at the end of the file, this option
-provides a way for plugins to access not the first 16--32 MB of a file
-but instead the last (roughly) 32 MB. 
-
-Note that even for files larger than 32 MB, @samp{size} is not
-guaranteed to be 32 MB since @samp{data} will be aligned to the page
-size of the operating system.  However, the last byte of @samp{data}
-is guaranteed to be the last byte of the file.  Furthermore, if the
-file was large and compressed, unlike in the case of meta data
-extraction from the header, the end of the file will not be
-automatically decompressed by @gnule{}.  
-
-@end itemize
-
-Note that using options other than @code{want-tail} is pretty much
-always a kludge and should thus be avoided.
-
-@section Example for an options method
-
-The following example shows how a plugin can set some of the options listed above:
-@example
-@verbatim
-const char *
-EXTRACTOR_id3_options ()
-{
-  return "close-stderr;want-tail";
-}
-@end verbatim
-@end example
 
 @node Internal utility functions
 @chapter Internal utility functions
@@ -1055,7 +911,7 @@ byte order at the same time.
 @file{convert.h} provides a function for character set conversion described
 below.
 
-@deftypefun {char *} EXTRACTOR_common_convert_to_utf8 (const char *input, size_t len, const char * charset)
+@deftypefun {char *} EXTRACTOR_common_convert_to_utf8 (const char *input, size_t len, const char *charset)
 @cindex UTF-8
 @cindex character set
 @findex EXTRACTOR_common_convert_to_utf8
