@@ -129,10 +129,13 @@ struct EXTRACTOR_Channel
 
   /**
    * Buffer for reading data from the plugin.
-   * FIXME: we might want to grow this
-   * buffer dynamically instead of always using 32 MB!
    */
-  char data[MAX_META_DATA];
+  char *mdata;
+
+  /**
+   * Size of the 'mdata' buffer.
+   */
+  size_t mdata_size;
 
   /**
    * Number of valid bytes in the channel's buffer.
@@ -443,7 +446,13 @@ EXTRACTOR_IPC_channel_create_ (struct EXTRACTOR_PluginList *plugin,
       LOG_STRERROR ("malloc");
       return NULL;
     }
-  channel->shm = shm;
+  channel->mdata_size = 1024;
+  if (NULL == (channel->mdata = malloc (channel->mdata_size)))
+    {
+      LOG_STRERROR ("malloc");
+      free (channel);
+      return NULL;
+    }    channel->shm = shm;
   channel->plugin = plugin;
   channel->size = 0;
 
@@ -584,6 +593,7 @@ EXTRACTOR_IPC_channel_destroy_ (struct EXTRACTOR_Channel *channel)
     free (channel->ov_write_buffer);
     channel->ov_write_buffer = NULL;
   }
+  free (channel->mdata);
   free (channel);
 }
 
@@ -674,6 +684,7 @@ EXTRACTOR_IPC_channel_recv_ (struct EXTRACTOR_Channel **channels,
   BOOL bresult;
   unsigned int i;
   unsigned int c;
+  char *ndata;
   HANDLE events[MAXIMUM_WAIT_OBJECTS];
 
   c = 0;
@@ -723,12 +734,33 @@ EXTRACTOR_IPC_channel_recv_ (struct EXTRACTOR_Channel **channels,
     if (dwresult == WAIT_OBJECT_0)
     {
       int ret;
+      if (channels[i]->mdata_size == channels[i]->size)
+	{
+	  /* not enough space, need to grow allocation (if allowed) */
+	  if (MAX_META_DATA == channels[i]->mdata_size)
+	    {
+	      LOG ("Inbound message from channel too large, aborting\n");
+	      EXTRACTOR_IPC_channel_destroy_ (channels[i]);
+	      channels[i] = NULL;
+	    }
+	  channels[i]->mdata_size *= 2;
+	  if (channels[i]->mdata_size > MAX_META_DATA)
+	    channels[i]->mdata_size = MAX_META_DATA;
+	  if (NULL == (ndata = realloc (channels[i]->mdata,
+					channels[i]->mdata_size)))
+	    {
+	      LOG_STRERROR ("realloc");
+	      EXTRACTOR_IPC_channel_destroy_ (channels[i]);
+	      channels[i] = NULL;
+	    }
+	  channels[i]->mdata = ndata;
+	}
       bresult = ReadFile (channels[i]->cpipe_out,
-          &channels[i]->data[channels[i]->size],
-          MAX_META_DATA - channels[i]->size, &bytes_read, NULL);
+          &channels[i]->mdata[channels[i]->size],
+          channels[i]->mdata_size - channels[i]->size, &bytes_read, NULL);
       if (bresult)
         ret = EXTRACTOR_IPC_process_reply_ (channels[i]->plugin,
-            channels[i]->data, channels[i]->size + bytes_read, proc, proc_cls);
+            channels[i]->mdata, channels[i]->size + bytes_read, proc, proc_cls);
       if (!bresult || -1 == ret)
       {
         DWORD error = GetLastError ();
@@ -740,7 +772,7 @@ EXTRACTOR_IPC_channel_recv_ (struct EXTRACTOR_Channel **channels,
       }
       else
       {
-        memmove (channels[i]->data, &channels[i]->data[ret],
+        memmove (channels[i]->mdata, &channels[i]->mdata[ret],
           channels[i]->size + bytes_read - ret);
         channels[i]->size = channels[i]->size + bytes_read- ret;
       }
