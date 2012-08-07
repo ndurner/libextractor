@@ -101,11 +101,6 @@ struct EXTRACTOR_Channel
   HANDLE cpipe_out;
 
   /**
-   * Page size. Mmap offset is a multiple of this number.
-   */
-  DWORD allocation_granularity;
-
-  /**
    * A structure for overlapped reads on W32.
    */
   OVERLAPPED ov_read;
