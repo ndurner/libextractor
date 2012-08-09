@@ -75,8 +75,11 @@ process_replies (void *cls,
       return 0;
     }
   fprintf (stderr, 
-	   "Got additional meta data of type %d from plugin `%s'\n",
+	   "Got additional meta data of type %d and format %d with value `%.*s' from plugin `%s'\n",
 	   type,
+	   format,
+	   (int) data_len,
+	   data,
 	   plugin_name);
   return 0;
 }

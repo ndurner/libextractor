@@ -60,7 +60,7 @@ PLUGIN_JPEG=libextractor_jpeg.la
 TEST_JPEG=test_jpeg
 endif
 
-if HAVE_POPPLER
+if HAVE_EXIV2
 PLUGIN_EXIV2=libextractor_exiv2.la
 TEST_EXIV2=test_exiv2
 endif

@@ -33,16 +33,16 @@
 #include <exiv2/futils.hpp>
 
 /**
- * Should we suppress exiv2 warnings?
+ * Enable debugging to get error messages.
  */
-#define SUPPRESS_WARNINGS 1
+#define DEBUG 0
 
 
 /**
  * Implementation of EXIV2's BasicIO interface based
  * on the 'struct EXTRACTOR_ExtractContext.
  */
-class ExtractorIO:Exiv2::BasicIo
+class ExtractorIO : public Exiv2::BasicIo
 {
 private:
 
@@ -263,7 +263,7 @@ ExtractorIO::read (long rcount)
 {
   void *data;
   ssize_t ret;
-  
+
   if (-1 == (ret = ec->read (ec->cls, &data, rcount)))
     return Exiv2::DataBuf (NULL, 0);
   return Exiv2::DataBuf ((const Exiv2::byte *) data, ret);
@@ -301,11 +301,11 @@ int
 ExtractorIO::getb ()
 {
   void *data;
-  char *r;
+  const unsigned char *r;
   
   if (1 != ec->read (ec->cls, &data, 1))
     throw Exiv2::BasicError<char> (42 /* error code */);
-  r = (char *) data;
+  r = (const unsigned char *) data;
   return *r;
 }
 
@@ -514,6 +514,7 @@ ExtractorIO::wpath () const
 Exiv2::BasicIo::AutoPtr
 ExtractorIO::temporary () const
 {
+  fprintf (stderr, "throwing temporary error\n");
   throw Exiv2::BasicError<char> (42 /* error code */);
 }
 
@@ -540,11 +541,11 @@ ExtractorIO::temporary () const
  * @return 0 to continue extracting, 1 to abort
  */
 static int
-addExiv2Tag (const Exiv2::ExifData& exifData,
-	     const std::string& key,
-	     enum EXTRACTOR_MetaType type,
-	     EXTRACTOR_MetaDataProcessor proc,
-	     void *proc_cls)
+add_exiv2_tag (const Exiv2::ExifData& exifData,
+	       const std::string& key,
+	       enum EXTRACTOR_MetaType type,
+	       EXTRACTOR_MetaDataProcessor proc,
+	       void *proc_cls)
 {
   const char *str;
   Exiv2::ExifKey ek (key);
@@ -576,11 +577,11 @@ addExiv2Tag (const Exiv2::ExifData& exifData,
  * @return 0 to continue extracting, 1 to abort
  */
 static int
-addIptcData (const Exiv2::IptcData& iptcData,
-	     const std::string& key,
-	     enum EXTRACTOR_MetaType type,
-	     EXTRACTOR_MetaDataProcessor proc,
-	     void *proc_cls)
+add_iptc_data (const Exiv2::IptcData& iptcData,
+	       const std::string& key,
+	       enum EXTRACTOR_MetaType type,
+	       EXTRACTOR_MetaDataProcessor proc,
+	       void *proc_cls)
 {
   const char *str;
   Exiv2::IptcKey ek (key);
@@ -615,11 +616,11 @@ addIptcData (const Exiv2::IptcData& iptcData,
  * @return 0 to continue extracting, 1 to abort
  */
 static int
-addXmpData(const Exiv2::XmpData& xmpData,
-	   const std::string& key,
-	   enum EXTRACTOR_MetaType type,
-	   EXTRACTOR_MetaDataProcessor proc,
-	   void *proc_cls)
+add_xmp_data (const Exiv2::XmpData& xmpData,
+	      const std::string& key,
+	      enum EXTRACTOR_MetaType type,
+	      EXTRACTOR_MetaDataProcessor proc,
+	      void *proc_cls)
 {
   const char * str;
   Exiv2::XmpKey ek (key);
@@ -641,33 +642,33 @@ addXmpData(const Exiv2::XmpData& xmpData,
 
 
 /**
- * Call 'addExiv2Tag' for the given key-type combination.
- * Uses 'return' if addExiv2Tag returns non-0.
+ * Call 'add_exiv2_tag' for the given key-type combination.
+ * Uses 'return' if add_exiv2_tag returns non-0.
  *
  * @param s key to lookup
  * @param type libextractor type to use for the meta data found under the given key
  */
-#define ADDEXIV(s,t) do { if (0 != addExiv2Tag (exifData, s, t, ec->proc, ec->cls)) return; } while (0)
+#define ADDEXIV(s,t) do { if (0 != add_exiv2_tag (exifData, s, t, ec->proc, ec->cls)) return; } while (0)
 
 
 /**
- * Call 'addIptcData' for the given key-type combination.
- * Uses 'return' if addIptcData returns non-0.
+ * Call 'add_iptc_data' for the given key-type combination.
+ * Uses 'return' if add_iptc_data returns non-0.
  *
  * @param s key to lookup
  * @param type libextractor type to use for the meta data found under the given key
  */
-#define ADDIPTC(s,t) do { if (0 != addIptcData (iptcData, s, t, ec->proc, ec->cls)) return; } while (0)
+#define ADDIPTC(s,t) do { if (0 != add_iptc_data (iptcData, s, t, ec->proc, ec->cls)) return; } while (0)
 
 
 /**
- * Call 'addXmpData' for the given key-type combination.
- * Uses 'return' if addXmpData returns non-0.
+ * Call 'add_xmp_data' for the given key-type combination.
+ * Uses 'return' if add_xmp_data returns non-0.
  *
  * @param s key to lookup
  * @param type libextractor type to use for the meta data found under the given key
  */
-#define ADDXMP(s,t)  do { if (0 != addXmpData  (xmpData,  s, t, ec->proc, ec->cls)) return; } while (0)
+#define ADDXMP(s,t)  do { if (0 != add_xmp_data  (xmpData,  s, t, ec->proc, ec->cls)) return; } while (0)
 
 
 /**
@@ -680,7 +681,8 @@ EXTRACTOR_exiv2_extract_method (struct EXTRACTOR_ExtractContext *ec)
 {
   try
     {	    
-      std::auto_ptr<Exiv2::BasicIo> eio = new ExtractorIO (ec);
+      Exiv2::LogMsg::setLevel (Exiv2::LogMsg::mute);
+      std::auto_ptr<Exiv2::BasicIo> eio(new ExtractorIO (ec));
       Exiv2::Image::AutoPtr image = Exiv2::ImageFactory::open (eio);
       if (0 == image.get ())
 	return;
@@ -735,35 +737,6 @@ EXTRACTOR_exiv2_extract_method (struct EXTRACTOR_ExtractContext *ec)
 	  ADDEXIV ("Exif.Panasonic.WhiteBalance", EXTRACTOR_METATYPE_WHITE_BALANCE);
 	  ADDEXIV ("Exif.Photo.FNumber", EXTRACTOR_METATYPE_APERTURE);
 	  ADDEXIV ("Exif.Photo.ExposureTime", EXTRACTOR_METATYPE_EXPOSURE);
-
-#if FIXME
-	  /* FIXME: the 'ADD' macro below won't work as we don't have 'proc' and 'proc_cls' in
-	     this scope... */
-	  Exiv2::ExifData::const_iterator md = exifData.findKey(Exiv2::ExifKey("Exif.Photo.ApertureValue"));
-	  if (exifData.end() != md) 
-	    {
-	      std::ostringstream os;
-	      os << std::fixed << std::setprecision(1)
-		 << "F" << exp(log(2.0) * md->toFloat() / 2);
-	      ADD (os.str().c_str(), EXTRACTOR_METATYPE_APERTURE);
-	    }
-	  
-	  md = exifData.findKey(Exiv2::ExifKey("Exif.Photo.ShutterSpeedValue"));
-	  if (exifData.end() != md) 
-	    {
-	      double tmp = exp(log(2.0) * md->toFloat()) + 0.5;
-	      std::ostringstream os;
-	      if (tmp > 1) 
-		{
-		  os << "1/" << static_cast<long>(tmp) << " s";
-		}
-	      else 
-		{
-		  os << static_cast<long>(1/tmp) << " s";
-		}
-	      ADD (os.str().c_str(), EXTRACTOR_METATYPE_EXPOSURE);
-	    }
-#endif
 	} 
       
       Exiv2::IptcData &iptcData = image->iptcData();
@@ -773,12 +746,12 @@ EXTRACTOR_exiv2_extract_method (struct EXTRACTOR_ExtractContext *ec)
 	  ADDIPTC ("Iptc.Application2.City", EXTRACTOR_METATYPE_LOCATION_CITY);
 	  ADDIPTC ("Iptc.Application2.SubLocation", EXTRACTOR_METATYPE_LOCATION_SUBLOCATION);
 	  ADDIPTC ("Iptc.Application2.CountryName", EXTRACTOR_METATYPE_LOCATION_COUNTRY);
-	  ADDIPTC ("Xmp.photoshop.Country", EXTRACTOR_METATYPE_RATING);
 	}
       
       Exiv2::XmpData &xmpData = image->xmpData();
       if (! xmpData.empty()) 
 	{
+	  ADDXMP ("Xmp.photoshop.Country", EXTRACTOR_METATYPE_LOCATION_COUNTRY);
 	  ADDXMP ("Xmp.photoshop.City", EXTRACTOR_METATYPE_LOCATION_CITY);
 	  ADDXMP ("Xmp.xmp.Rating", EXTRACTOR_METATYPE_RATING);
 	  ADDXMP ("Xmp.MicrosoftPhoto.Rating", EXTRACTOR_METATYPE_RATING);
@@ -789,8 +762,8 @@ EXTRACTOR_exiv2_extract_method (struct EXTRACTOR_ExtractContext *ec)
       }
   catch (const Exiv2::AnyError& e) 
     {
-#ifndef SUPPRESS_WARNINGS
-      std::cout << "Caught Exiv2 exception '" << e << "'\n";
+#if DEBUG
+      std::cerr << "Caught Exiv2 exception '" << e << "'\n";
 #endif
     }
 }

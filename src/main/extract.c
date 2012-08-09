@@ -117,9 +117,9 @@ struct Help
  * @param opt program options (NULL-terminated array)
  */
 static void 
-formatHelp (const char *general,
-	    const char *description,
-	    const struct Help *opt) 
+format_help (const char *general,
+	     const char *description,
+	     const struct Help *opt) 
 {
   size_t slen;
   unsigned int i;
@@ -209,7 +209,7 @@ formatHelp (const char *general,
  * Run --help.
  */
 static void
-printHelp ()
+print_help ()
 {
   static struct Help help[] = 
     {
@@ -239,7 +239,7 @@ printHelp ()
 	gettext_noop("do not print keywords of the given TYPE") },
       { 0, NULL, NULL, NULL },
     };
-  formatHelp (_("extract [OPTIONS] [FILENAME]*"),
+  format_help (_("extract [OPTIONS] [FILENAME]*"),
 	      _("Extract metadata from files."),
 	      help);
 
@@ -671,7 +671,7 @@ main (int argc, char *argv[])
 	  processor = &print_selected_keywords_grep_friendly;
 	  break;
 	case 'h':
-	  printHelp ();
+	  print_help ();
 	  return 0;
 	case 'i':
 	  in_process = YES;
