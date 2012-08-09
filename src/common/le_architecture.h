@@ -1,4 +1,27 @@
-#if !defined(LE_ARCHITECTURE_H)
+/*
+     This file is part of libextractor.
+     (C) 2002, 2003, 2004, 2009, 2012 Vidyut Samanta and Christian Grothoff
+
+     libextractor is free software; you can redistribute it and/or modify
+     it under the terms of the GNU General Public License as published
+     by the Free Software Foundation; either version 3, or (at your
+     option) any later version.
+
+     libextractor is distributed in the hope that it will be useful, but
+     WITHOUT ANY WARRANTY; without even the implied warranty of
+     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+     General Public License for more details.
+
+     You should have received a copy of the GNU General Public License
+     along with libextractor; see the file COPYING.  If not, write to the
+     Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+     Boston, MA 02111-1307, USA.
+ */
+/**
+ * @file common/le_architecture.h
+ * @brief support routines and defines to deal with architecture-specific issues
+ */
+#ifndef LE_ARCHITECTURE_H
 #define LE_ARCHITECTURE_H
 
 #if WINDOWS
@@ -39,40 +62,38 @@
  * Endian operations
  */
 
-# if __BYTE_ORDER == __LITTLE_ENDIAN
-#  define LE_htobe16(x) __bswap_16 (x)
-#  define LE_htole16(x) (x)
-#  define LE_be16toh(x) __bswap_16 (x)
-#  define LE_le16toh(x) (x)
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+#define LE_htobe16(x) __bswap_16 (x)
+#define LE_htole16(x) (x)
+#define LE_be16toh(x) __bswap_16 (x)
+#define LE_le16toh(x) (x)
 
-#  define LE_htobe32(x) __bswap_32 (x)
-#  define LE_htole32(x) (x)
-#  define LE_be32toh(x) __bswap_32 (x)
-#  define LE_le32toh(x) (x)
+#define LE_htobe32(x) __bswap_32 (x)
+#define LE_htole32(x) (x)
+#define LE_be32toh(x) __bswap_32 (x)
+#define LE_le32toh(x) (x)
 
-#  define LE_htobe64(x) __bswap_64 (x)
-#  define LE_htole64(x) (x)
-#  define LE_be64toh(x) __bswap_64 (x)
-#  define LE_le64toh(x) (x)
+#define LE_htobe64(x) __bswap_64 (x)
+#define LE_htole64(x) (x)
+#define LE_be64toh(x) __bswap_64 (x)
+#define LE_le64toh(x) (x)
 #endif
-# if __BYTE_ORDER == __BIG_ENDIAN
-#  define LE_htobe16(x) (x)
-#  define LE_htole16(x) __bswap_16 (x)
-#  define LE_be16toh(x) (x)
-#  define LE_le16toh(x) __bswap_16 (x)
+#if __BYTE_ORDER == __BIG_ENDIAN
+#define LE_htobe16(x) (x)
+#define LE_htole16(x) __bswap_16 (x)
+#define LE_be16toh(x) (x)
+#define LE_le16toh(x) __bswap_16 (x)
 
-#  define LE_htobe32(x) (x)
-#  define LE_htole32(x) __bswap_32 (x)
-#  define LE_be32toh(x) (x)
-#  define LE_le32toh(x) __bswap_32 (x)
+#define LE_htobe32(x) (x)
+#define LE_htole32(x) __bswap_32 (x)
+#define LE_be32toh(x) (x)
+#define LE_le32toh(x) __bswap_32 (x)
 
-#  define LE_htobe64(x) (x)
-#  define LE_htole64(x) __bswap_64 (x)
-#  define LE_be64toh(x) (x)
-#  define LE_le64toh(x) __bswap_64 (x)
+#define LE_htobe64(x) (x)
+#define LE_htole64(x) __bswap_64 (x)
+#define LE_be64toh(x) (x)
+#define LE_le64toh(x) __bswap_64 (x)
 #endif
-
-
 
 
 /**
@@ -99,6 +120,7 @@
  */
 #define LE_NORETURN __attribute__((noreturn))
 
+#if MINGW
 #if __GNUC__ > 3
 /**
  * gcc 4.x-ism to pack structures even on W32 (to be used before structs)
@@ -112,9 +134,9 @@
  */
 #define LE_NETWORK_STRUCT_END _Pragma("pack(pop)")
 #else
-#ifdef __MINGW32__
 #error gcc 4.x or higher required on W32 systems
 #endif
+#else
 /**
  * Good luck, LE_PACKED should suffice, but this won't work on W32
  */
