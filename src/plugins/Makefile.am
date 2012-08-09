@@ -23,7 +23,8 @@ EXTRA_DIST = template_extractor.c \
   testdata/mpeg_alien.mpg \
   testdata/mpeg_melt.mpg \
   testdata/wav_noise.wav \
-  testdata/wav_alert.wav
+  testdata/wav_alert.wav \
+  testdata/it_dawn.it 
 
 if HAVE_VORBISFILE
 PLUGIN_OGG=libextractor_ogg.la
@@ -69,6 +70,7 @@ endif
 plugin_LTLIBRARIES = \
   libextractor_it.la \
   libextractor_xm.la \
+  libextractor_s3m.la \
   libextractor_wav.la \
   $(PLUGIN_OGG) \
   $(PLUGIN_MIME) \
@@ -85,6 +87,7 @@ endif
 
 check_PROGRAMS = \
   test_wav \
+  test_it \
   $(TEST_OGG) \
   $(TEST_MIME) \
   $(TEST_GIF) \
@@ -113,9 +116,21 @@ libextractor_xm_la_SOURCES = \
 libextractor_xm_la_LDFLAGS = \
   $(PLUGINFLAGS)
 
+
 libextractor_it_la_SOURCES = \
   it_extractor.c
 libextractor_it_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+
+test_it_SOURCES = \
+  test_it.c
+test_it_LDADD = \
+  $(top_builddir)/src/plugins/libtest.la
+
+
+libextractor_s3m_la_SOURCES = \
+  s3m_extractor.c
+libextractor_s3m_la_LDFLAGS = \
   $(PLUGINFLAGS)
 
 
