@@ -18,8 +18,8 @@
      Boston, MA 02111-1307, USA.
 */
 /**
- * @file plugins/test_gif.c
- * @brief testcase for gif plugin
+ * @file plugins/test_s3m.c
+ * @brief testcase for s3m plugin
  * @author Christian Grothoff
  */
 #include "platform.h"
@@ -28,7 +28,7 @@
 
 
 /**
- * Main function for the GIF testcase.
+ * Main function for the S3M testcase.
  *
  * @param argc number of arguments (ignored)
  * @param argv arguments (ignored)
@@ -37,41 +37,33 @@
 int
 main (int argc, char *argv[])
 {
-  struct SolutionData gif_image_sol[] =
+  struct SolutionData s3m_2ndpm_sol[] =
     {
       { 
 	EXTRACTOR_METATYPE_MIMETYPE,
 	EXTRACTOR_METAFORMAT_UTF8,
 	"text/plain",
-	"image/gif",
-	strlen ("image/gif") + 1,
+	"audio/x-s3m",
+	strlen ("audio/x-s3m") + 1,
 	0 
       },
       { 
-	EXTRACTOR_METATYPE_IMAGE_DIMENSIONS,
+	EXTRACTOR_METATYPE_TITLE,
 	EXTRACTOR_METAFORMAT_UTF8,
 	"text/plain",
-	"4x4",
-	strlen ("4x4") + 1,
-	0 
-      },
-      { 
-	EXTRACTOR_METATYPE_COMMENT,
-	EXTRACTOR_METAFORMAT_C_STRING,
-	"text/plain",
-	"Testing keyword extraction\n",
-	strlen ("Testing keyword extraction\n"),
+	"UnreaL ][ / PM ",
+	strlen ("UnreaL ][ / PM ") + 1,
 	0 
       },
       { 0, 0, NULL, NULL, 0, -1 }
     };
   struct ProblemSet ps[] =
     {
-      { "testdata/gif_image.gif",
-	gif_image_sol },
+      { "testdata/s3m_2nd_pm.s3m",
+	s3m_2ndpm_sol },
       { NULL, NULL }
     };
-  return ET_main ("gif", ps);
+  return ET_main ("s3m", ps);
 }
 
-/* end of test_gif.c */
+/* end of test_s3m.c */
