@@ -31,7 +31,7 @@
 /**
  * Header of an XM file.
  */
-struct header
+struct Header
 {
   char magicid[17];
   char title[20];
@@ -64,15 +64,15 @@ void
 EXTRACTOR_xm_extract_method (struct EXTRACTOR_ExtractContext *ec)
 {
   void *data;
-  const struct header *head;
+  const struct Header *head;
   char title[21];
   char tracker[21];
   char xmversion[8];
 
-  if (sizeof (struct header) >
+  if (sizeof (struct Header) >
       ec->read (ec->cls,
 		&data,
-		sizeof (struct header)))
+		sizeof (struct Header)))
     return;
   head = data;
   /* Check "magic" id bytes */

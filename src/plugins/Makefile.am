@@ -67,6 +67,7 @@ endif
 
 
 plugin_LTLIBRARIES = \
+  libextractor_it.la \
   libextractor_xm.la \
   libextractor_wav.la \
   $(PLUGIN_OGG) \
@@ -110,6 +111,11 @@ libtest_la_LIBADD = \
 libextractor_xm_la_SOURCES = \
   xm_extractor.c
 libextractor_xm_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+
+libextractor_it_la_SOURCES = \
+  it_extractor.c
+libextractor_it_la_LDFLAGS = \
   $(PLUGINFLAGS)
 
 

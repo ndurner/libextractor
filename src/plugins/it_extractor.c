@@ -18,13 +18,27 @@
  * Boston, MA 02111-1307, USA.
  *
  */
-
+/**
+ * @file plugins/xm_extractor.c
+ * @brief plugin to support Impulse Tracker (IT) files
+ * @author Toni Ruottu
+ * @author Christian Grothoff
+ */
 #include "platform.h"
 #include "extractor.h"
 
+
+/**
+ * Number of bytes in the full IT header and thus
+ * the minimum size we're going to accept for an IT file.
+ */
 #define HEADER_SIZE  0xD0
 
-struct header
+
+/**
+ * Header of an IT file.
+ */
+struct Header
 {
   char magicid[4];
   char title[26];
@@ -39,65 +53,68 @@ struct header
   char special[2];
 };
 
-/* "extract" keyword from an Impulse Tracker module
+
+/**
+ * extract meta data from an Impulse Tracker module
  *
- * ITTECH.TXT as taken from IT 2.14p5 was used,
- * while this piece of software was originally
- * written.
+ * ITTECH.TXT as taken from IT 2.14p5 was used, while this piece of
+ * software was originally written.
  *
+ * @param ec extraction context
  */
-int 
-EXTRACTOR_it_extract (const char *data,
-		      size_t size,
-		      EXTRACTOR_MetaDataProcessor proc,
-		      void *proc_cls,
-		      const char *options)
+void
+EXTRACTOR_it_extract_method (struct EXTRACTOR_ExtractContext *ec)
 {
+  void *data;
   char title[27];
   char itversion[8];
-  struct header *head;
+  const struct Header *head;
 
-  /* Check header size */
-  if (size < HEADER_SIZE)    
-    return 0;
-  head = (struct header *) data;
+  if (HEADER_SIZE >
+      ec->read (ec->cls,
+		&data,
+		HEADER_SIZE))
+    return;
+  head = (struct Header *) data;
   /* Check "magic" id bytes */
   if (memcmp (head->magicid, "IMPM", 4))
-    return 0;
+    return;
   /* Mime-type */
-  if (0 != proc (proc_cls,
-		 "it",
-		 EXTRACTOR_METATYPE_MIMETYPE,
-		 EXTRACTOR_METAFORMAT_UTF8,
-		 "text/plain",
-		 "audio/x-it",
-		 strlen("audio/x-it")+1))
-    return 1;
+  if (0 != ec->proc (ec->cls,
+		     "it",
+		     EXTRACTOR_METATYPE_MIMETYPE,
+		     EXTRACTOR_METAFORMAT_UTF8,
+		     "text/plain",
+		     "audio/x-it",
+		     strlen ("audio/x-it") + 1))
+    return;
 
   /* Version of Tracker */
   snprintf (itversion, 
 	    sizeof (itversion),
 	    "%d.%d", 
-	    (head->version[0]& 0x01),head->version[1]);
-  if (0 != proc (proc_cls,
-		 "it",
-		 EXTRACTOR_METATYPE_FORMAT_VERSION,
-		 EXTRACTOR_METAFORMAT_C_STRING,
-		 "text/plain",
-		 itversion,
-		 strlen(itversion)+1))
-    return 1;
+	    (head->version[0] & 0x01),
+	    head->version[1]);
+  if (0 != ec->proc (ec->cls,
+		     "it",
+		     EXTRACTOR_METATYPE_FORMAT_VERSION,
+		     EXTRACTOR_METAFORMAT_C_STRING,
+		     "text/plain",
+		     itversion,
+		     strlen (itversion) + 1))
+    return;
 
   /* Song title */
   memcpy (&title, head->title, 26);
   title[26] = '\0';
-  if (0 != proc (proc_cls,
-		 "it",
-		 EXTRACTOR_METATYPE_TITLE,
-		 EXTRACTOR_METAFORMAT_C_STRING,
-		 "text/plain",
-		 title,
-		 strlen(title)+1))
-    return 1;
-  return 0;
+  if (0 != ec->proc (ec->cls,
+		     "it",
+		     EXTRACTOR_METATYPE_TITLE,
+		     EXTRACTOR_METAFORMAT_C_STRING,
+		     "text/plain",
+		     title,
+		     strlen (title) + 1))
+    return;
 }
+
+/* end of it_extractor.c */
