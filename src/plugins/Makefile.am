@@ -67,6 +67,11 @@ PLUGIN_EXIV2=libextractor_exiv2.la
 TEST_EXIV2=test_exiv2
 endif
 
+if HAVE_GSF
+PLUGIN_GSF=libextractor_ole2.la
+TEST_GSF=test_ole2
+endif
+
 
 plugin_LTLIBRARIES = \
   libextractor_it.la \
@@ -80,7 +85,8 @@ plugin_LTLIBRARIES = \
   $(PLUGIN_FLAC) \
   $(PLUGIN_MPEG) \
   $(PLUGIN_JPEG) \
-  $(PLUGIN_EXIV2)
+  $(PLUGIN_EXIV2) \
+  $(PLUGIN_GSF)
 
 if HAVE_ZZUF
   fuzz_tests=fuzz_default.sh 
@@ -97,7 +103,8 @@ check_PROGRAMS = \
   $(TEST_FLAC) \
   $(TEST_MPEG) \
   $(TEST_JPEG) \
-  $(TEST_EXIV2)
+  $(TEST_EXIV2) \
+  $(TEST_GSF)
 
 TESTS = \
   $(fuzz_tests) \
@@ -253,6 +260,24 @@ libextractor_exiv2_la_LIBADD = \
 test_exiv2_SOURCES = \
   test_exiv2.c
 test_exiv2_LDADD = \
+  $(top_builddir)/src/plugins/libtest.la
+
+
+libextractor_ole2_la_SOURCES = \
+  ole2_extractor.c
+libextractor_ole2_la_CFLAGS = \
+  $(GSF_CFLAGS)
+libextractor_ole2_la_CPPFLAGS = \
+  $(GSF_CFLAGS)
+libextractor_ole2_la_LDFLAGS = \
+  $(PLUGINFLAGS) 
+libextractor_ole2_la_LIBADD = \
+  $(top_builddir)/src/common/libextractor_common.la \
+  $(GSF_LIBS)
+
+test_ole2_SOURCES = \
+  test_ole2.c
+test_ole2_LDADD = \
   $(top_builddir)/src/plugins/libtest.la
 
 

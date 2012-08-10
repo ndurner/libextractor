@@ -37,12 +37,21 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <gsf/gsf-utils.h>
+#include <gsf/gsf-input-impl.h>
 #include <gsf/gsf-input-memory.h>
+#include <gsf/gsf-impl-utils.h>
 #include <gsf/gsf-infile.h>
 #include <gsf/gsf-infile-msole.h>
 #include <gsf/gsf-msole-utils.h>
 
-#define DEBUG_OLE2 0
+
+/**
+ * Set to 1 to use our own GsfInput subclass which supports seeking
+ * and thus can handle very large files.  Set to 0 to use the simple
+ * gsf in-memory buffer (which can only access the first ~16k) for
+ * debugging.
+ */
+#define USE_LE_INPUT 1
 
 
 /**
@@ -325,7 +334,7 @@ process_star_office (GsfInput *src,
     if ( (buf[0xd5] + buf[0xd4] > 0) &&
 	 (0 != add_metadata (proc, proc_cls,
 			     &buf[0xd6],
-			     EXTRACTOR_METATYPE_SUBJECT)) _)
+			     EXTRACTOR_METATYPE_SUBJECT)) )
       return 1;
     buf[0x215] = '\0';
     if ( (buf[0x115] + buf[0x116] > 0) &&
@@ -450,7 +459,7 @@ lid_to_language (unsigned int lid)
     case 0x041b:
       return __("Slovak");
     case 0x041c:
-    return __("Albanian");
+      return __("Albanian");
     case 0x041d:
       return __("Swedish");
     case 0x041e:
@@ -583,13 +592,24 @@ history_extract (GsfInput *stream,
 
 /* *************************** custom GSF input method ***************** */
 
-G_BEGIN_DECLS
 #define LE_TYPE_INPUT                  (le_input_get_type ())
-#define LE_INPUT(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), TYPE_LE_INPUT, LeInput))
-#define LE_INPUT_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), TYPE_LE_INPUT, LeInputClass))
-#define IS_LE_INPUT(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), TYPE_LE_INPUT))
-#define IS_LE_INPUT_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), TYPE_LE_INPUT))
-#define LE_INPUT_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), TYPE_LE_INPUT, LeInputClass))
+#define LE_INPUT(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), LE_TYPE_INPUT, LeInput))
+#define LE_INPUT_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), LE_TYPE_INPUT, LeInputClass))
+#define IS_LE_INPUT(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), LE_TYPE_INPUT))
+#define IS_LE_INPUT_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), LE_TYPE_INPUT))
+#define LE_INPUT_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), LE_TYPE_INPUT, LeInputClass))
+
+/**
+ * Internal state of an "LeInput" object.
+ */
+typedef struct _LeInputPrivate 
+{
+  /**
+   * Our extraction context.
+   */
+  struct EXTRACTOR_ExtractContext *ec;
+} LeInputPrivate;
+
 
 /**
  * Overall state of an "LeInput" object.
@@ -607,18 +627,6 @@ typedef struct _LeInput
    */
   LeInputPrivate *priv;
 } LeInput;
-
-
-/**
- * Internal state of an "LeInput" object.
- */
-typedef struct _LeInputPrivate 
-{
-  /**
-   * Our extraction context.
-   */
-  struct EXTRACTOR_ExtractContext *ec;
-} LeInputPrivate;
 
 
 /**
@@ -640,13 +648,6 @@ typedef struct _LeInputClass
 
 
 /**
- * Required method to obtain the LeInput "type".
- */
-GType
-le_input_get_type (void) G_GNUC_CONST;
-
-
-/**
  * Constructor for LeInput objects. 
  *
  * @param ec extraction context to use
@@ -654,29 +655,196 @@ le_input_get_type (void) G_GNUC_CONST;
  */
 GsfInput *
 le_input_new (struct EXTRACTOR_ExtractContext *ec);
-G_END_DECLS
 
 
 /**
- * Macro to create LeInput type definition.
- */
-G_DEFINE_TYPE (LeInput, le_input, GSF_TYPE_INPUT)
-
-
-/**
+ * Class initializer for the "LeInput" class.
  *
+ * @param class class object to initialize
+ */
+static void
+le_input_class_init (LeInputClass *class);
+
+
+/**
+ * Initialize internal state of fresh input object.
+ *
+ * @param input object to initialize
+ */
+static void
+le_input_init (LeInput *input);
+
+
+/**
+ * Macro to create LeInput type definition and register the class.
+ */
+GSF_CLASS (LeInput, le_input, le_input_class_init, le_input_init, GSF_INPUT_TYPE)
+
+
+/**
+ * Duplicate input, leaving the new one at the same offset.
+ *
+ * @param input the input to duplicate
+ * @param err location for error reporting, can be NULL
+ * @return NULL on error (always)
+ */
+static GsfInput *
+le_input_dup (GsfInput *input,
+	      GError **err)
+{
+  if (NULL != err)
+    *err = g_error_new (gsf_input_error_id (), 0,
+			"dup not supported on LeInput");
+  return NULL;
+}
+
+
+/**
+ * Read at least num_bytes. Does not change the current position if
+ * there is an error. Will only read if the entire amount can be
+ * read. Invalidates the buffer associated with previous calls to
+ * gsf_input_read.
+ *
+ * @param input
+ * @param num_bytes
+ * @param optional_buffer
+ * @return buffer where num_bytes data are available, or NULL on error
+ */
+static const guint8 *
+le_input_read (GsfInput *input,
+	       size_t num_bytes,
+	       guint8 *optional_buffer)
+{
+  LeInput *li = LE_INPUT (input);
+  struct EXTRACTOR_ExtractContext *ec;
+  void *buf;
+  uint64_t old_off;
+  ssize_t ret;
+  
+  ec = li->priv->ec;
+  old_off = ec->seek (ec->cls, 0, SEEK_CUR);
+  if (num_bytes 
+      != (ret = ec->read (ec->cls,
+			  &buf,
+			  num_bytes)))
+    {
+      /* we don't support partial reads; 
+	 most other GsfInput implementations in this case
+	 allocate some huge temporary buffer just to avoid
+	 the partial read; we might need to do that as well!? */
+      ec->seek (ec->cls, SEEK_SET, old_off);
+      return NULL;
+    }
+  if (NULL != optional_buffer)
+    {
+      memcpy (optional_buffer, buf, num_bytes);
+      return optional_buffer;
+    }
+  return buf;
+}
+
+
+/**
+ * Move the current location in an input stream
+ *
+ * @param input stream to seek
+ * @param offset target offset
+ * @param whence determines to what the offset is relative to
+ * @return TRUE on error
+ */
+static gboolean
+le_input_seek (GsfInput *input,
+	       gsf_off_t offset,
+	       GSeekType whence)
+{
+  LeInput *li = LE_INPUT (input);
+  struct EXTRACTOR_ExtractContext *ec;
+  int w;
+  int64_t ret;
+
+  ec = li->priv->ec;
+  switch (whence)
+    {
+    case G_SEEK_SET:
+      w = SEEK_SET;
+      break;
+    case G_SEEK_CUR:
+      w = SEEK_CUR;
+      break;
+    case G_SEEK_END:
+      w = SEEK_END;
+      break;
+    default:
+      return TRUE;
+    }
+  if (-1 == 
+      (ret = ec->seek (ec->cls,
+		       offset,
+		       w)))
+    return TRUE;
+  return FALSE;
+}
+
+
+/**
+ * Class initializer for the "LeInput" class.
+ *
+ * @param class class object to initialize
  */
 static void
 le_input_class_init (LeInputClass *class)
 {
-  // GObjectClass *gobject_class;
   GsfInputClass *input_class;
 
-  // gobject_class = (GObjectClass *) class;
   input_class = (GsfInputClass *) class;
-  input_class->read = le_input_read;
+  input_class->Dup = le_input_dup;
+  input_class->Read = le_input_read;
+  input_class->Seek = le_input_seek;
   g_type_class_add_private (class, sizeof (LeInputPrivate));
 }
+
+
+/**
+ * Initialize internal state of fresh input object.
+ *
+ * @param input object to initialize
+ */
+static void
+le_input_init (LeInput *input)
+{
+  LeInputPrivate *priv;
+
+  input->priv =
+    G_TYPE_INSTANCE_GET_PRIVATE (input, LE_TYPE_INPUT,
+				 LeInputPrivate);
+  priv = input->priv;
+  priv->ec = NULL;
+}
+
+
+/**
+ * Creates a new LeInput object.
+ *
+ * @param ec extractor context to wrap
+ * @return NULL on error
+ */
+GsfInput *
+le_input_new (struct EXTRACTOR_ExtractContext *ec)
+{
+  LeInput *input;
+
+  input = g_object_new (LE_TYPE_INPUT, NULL);
+  gsf_input_set_size (GSF_INPUT (input),
+		      ec->get_size (ec->cls));
+  gsf_input_seek_emulate (GSF_INPUT (input),
+			  0);
+  input->input.name = NULL;
+  input->input.container = NULL;
+  input->priv->ec = ec;
+
+  return GSF_INPUT (input);
+}
+
 
 
 
@@ -702,17 +870,50 @@ EXTRACTOR_ole2_extract_method (struct EXTRACTOR_ExtractContext *ec)
   unsigned int lid;
   const char *lang;
   int ret;
+  void *data;
+  uint64_t fsize;
+  ssize_t data_size;
 
-  if (size < 512 + 898)
-    return; /* can hardly be OLE2 */
-  if (NULL == (input = gsf_input_memory_new ((const guint8 *) data,
-					     (gsf_off_t) size,
-					     FALSE)))
+  fsize = ec->get_size (ec->cls);
+  if (fsize < 512 + 898)
+    {
+      /* File too small for OLE2 */
+      return; /* can hardly be OLE2 */
+    }
+  if (512 + 898 > (data_size = ec->read (ec->cls, &data, fsize)))
+    {
+      /* Failed to read minimum file size to buffer */
+      return;
+    }
+  data512 = (const unsigned char*) data + 512;
+  lid = data512[6] + (data512[7] << 8);
+  if ( (NULL != (lang = lid_to_language (lid))) &&
+       (0 != (ret = add_metadata (ec->proc, ec->cls,
+				  lang,
+				  EXTRACTOR_METATYPE_LANGUAGE))) )
     return;
+  lcb = data512[726] + (data512[727] << 8) + (data512[728] << 16) + (data512[729] << 24);
+  fcb = data512[722] + (data512[723] << 8) + (data512[724] << 16) + (data512[725] << 24);
+  if (0 != ec->seek (ec->cls, 0, SEEK_SET))
+    {
+      /* seek failed!? */
+      return;
+    }
+#if USE_LE_INPUT
+  if (NULL == (input = le_input_new (ec)))
+    {
+      fprintf (stderr, "le_input_new failed\n");
+      return;
+    }
+#else
+  input = gsf_input_memory_new ((const guint8 *) data,
+				data_size,
+				FALSE);
+#endif
   if (NULL == (infile = gsf_infile_msole_new (input, NULL)))
     {
       g_object_unref (G_OBJECT (input));
-      return 0;
+      return;
     }
   ret = 0;
   for (i=0;i<gsf_infile_num_children (infile);i++) 
@@ -722,32 +923,23 @@ EXTRACTOR_ole2_extract_method (struct EXTRACTOR_ExtractContext *ec)
       if (NULL == (name = gsf_infile_name_by_index (infile, i)))
 	continue;
       src = NULL;
-      if ( ( (0 == strcmp(name, "\005SummaryInformation")) ||
-	     (0 == strcmp(name, "\005DocumentSummaryInformation")) ) &&
+      if ( ( (0 == strcmp (name, "\005SummaryInformation")) ||
+	     (0 == strcmp (name, "\005DocumentSummaryInformation")) ) &&
 	   (NULL != (src = gsf_infile_child_by_index (infile, i))) )
 	ret = process (src,
-		       proc, 
-		       proc_cls);
+		       ec->proc, 
+		       ec->cls);
       if ( (0 == strcmp (name, "SfxDocumentInfo")) &&
 	   (NULL != (src = gsf_infile_child_by_index (infile, i))) )
 	ret = process_star_office (src,
-				   proc,
-				   proc_cls);
+				   ec->proc,
+				   ec->cls);
       if (NULL != src)
 	g_object_unref (G_OBJECT (src));
     }
   if (0 != ret)
     goto CLEANUP;
 
-  data512 = (const unsigned char*) &data[512];
-  lid = data512[6] + (data512[7] << 8);
-  if ( (NULL != (lang = lid_to_language (lid))) &&
-       (0 != (ret = add_metadata (proc, proc_cls,
-				  lang,
-				  EXTRACTOR_METATYPE_LANGUAGE))) )
-    goto CLEANUP;
-  lcb = data512[726] + (data512[727] << 8) + (data512[728] << 16) + (data512[729] << 24);
-  fcb = data512[722] + (data512[723] << 8) + (data512[724] << 16) + (data512[725] << 24);
   if (lcb < 6)
     goto CLEANUP;
   for (i=0;i<gsf_infile_num_children (infile);i++) 
@@ -763,14 +955,13 @@ EXTRACTOR_ole2_extract_method (struct EXTRACTOR_ExtractContext *ec)
 	  ret = history_extract (src,
 				 lcb,
 				 fcb,
-				 proc, proc_cls);
+				 ec->proc, ec->cls);
 	  g_object_unref (G_OBJECT (src));
 	}    
     }
  CLEANUP:
   g_object_unref (G_OBJECT (infile));
   g_object_unref (G_OBJECT (input));
-  return ret;
 }
 
 

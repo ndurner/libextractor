@@ -575,7 +575,7 @@ AM_CONDITIONAL(HAVE_QT_SVG4, test x$qt_svg4 != x0)
 
 ABI_GSF
 
-AM_CONDITIONAL(WITH_GSF, test "x$have_gsf" = "xtrue")
+AM_CONDITIONAL(HAVE_GSF, test "x$have_gsf" = "xtrue")
 
 # produce new line
 echo ""
