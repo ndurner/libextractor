@@ -21,8 +21,7 @@
      -- the Gnome Structured File Library
      Copyright (C) 2002-2004 Jody Goldberg (jody@gnome.org)
 
-     Part of this code was borrowed from wordleaker.cpp. See also
-     the README file in this directory.
+     Part of this code was adapted from wordleaker.
 */
 /**
  * @file plugins/ole2_extractor.c
@@ -67,10 +66,13 @@
  */
 static int
 add_metadata (EXTRACTOR_MetaDataProcessor proc,
-	    void *proc_cls,
-	    const char *phrase,
-	    enum EXTRACTOR_MetaType type) 
+	      void *proc_cls,
+	      const char *phrase,
+	      enum EXTRACTOR_MetaType type) 
 {
+  char *tmp;
+  int ret;
+
   if (0 == strlen (phrase))
     return 0;
   if (0 == strcmp (phrase, "\"\""))
@@ -79,13 +81,21 @@ add_metadata (EXTRACTOR_MetaDataProcessor proc,
     return 0;
   if (0 == strcmp (phrase, " "))
     return 0;
-  return proc (proc_cls, 
-	       "ole2",
-	       type,
-	       EXTRACTOR_METAFORMAT_UTF8,
-	       "text/plain",
-	       phrase,
-	       strlen (phrase) +1);
+  if (NULL == (tmp = strdup (phrase)))
+    return 0;
+  
+  while ( (strlen (tmp) > 0) &&
+	  (isblank ((unsigned char) tmp [strlen (tmp) - 1])) )
+    tmp [strlen (tmp) - 1] = '\0';
+  ret = proc (proc_cls, 
+	      "ole2",
+	      type,
+	      EXTRACTOR_METAFORMAT_UTF8,
+	      "text/plain",
+	      tmp,
+	      strlen (tmp) + 1);
+  free (tmp);
+  return ret;
 }
 
 
@@ -212,9 +222,6 @@ process_metadata (gpointer key,
     }
   if (NULL == contents)
     return;
-  if ( (strlen (contents) > 0) &&
-       ('\n' == contents[strlen (contents) - 1]) )
-    contents [strlen (contents) - 1] = '\0';
   if (0 == strcmp (type, "meta:generator"))
     {
       const char *mimetype = "application/vnd.ms-files";

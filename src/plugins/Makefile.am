@@ -25,7 +25,11 @@ EXTRA_DIST = template_extractor.c \
   testdata/wav_noise.wav \
   testdata/wav_alert.wav \
   testdata/it_dawn.it \
-  testdata/s3m_2nd_pm.s3m
+  testdata/s3m_2nd_pm.s3m \
+  testdata/ole2_msword.doc \
+  testdata/ole2_starwriter40.sdw \
+  testdata/ole2_blair.doc \
+  testdata/ole2_excel.xls
 
 if HAVE_VORBISFILE
 PLUGIN_OGG=libextractor_ogg.la
