@@ -1,6 +1,6 @@
-]/*
+/*
      This file is part of libextractor.
-     (C) 2008 Christian Grothoff (and other contributing authors)
+     (C) 2008, 2012 Christian Grothoff (and other contributing authors)
 
      libextractor is free software; you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published
@@ -17,98 +17,263 @@
      Free Software Foundation, Inc., 59 Temple Place - Suite 330,
      Boston, MA 02111-1307, USA.
 */
-
-#ifndef UNZIP_H_
-#define UNZIP_H_
+/**
+ * @file common/unzip.h
+ * @brief API to access ZIP archives
+ * @author Christian Grothoff
+ * 
+ * This code is based in part on
+ * unzip 1.00 Copyright 1998-2003 Gilles Vollant
+ * http://www.winimage.com/zLibDll"
+ */
+#ifndef LE_COMMON_UNZIP_H
+#define LE_COMMON_UNZIP_H
 
 #include <zlib.h>
 
+/**
+ * Operation was successful.
+ */
 #define EXTRACTOR_UNZIP_OK                          (0)
+
+/**
+ * Cannot move to next file, we are at the end
+ */
 #define EXTRACTOR_UNZIP_END_OF_LIST_OF_FILE         (-100)
+
+/**
+ * IO error, see errno.
+ */
 #define EXTRACTOR_UNZIP_ERRNO                       (Z_ERRNO)
+
+/**
+ * Reached end of the file (NOTE: same as OK!)
+ */
 #define EXTRACTOR_UNZIP_EOF                         (0)
+
+/**
+ * Invalid arguments to call.
+ */
 #define EXTRACTOR_UNZIP_PARAMERROR                  (-102)
+
+/**
+ * Not a zip file (or malformed)
+ */
 #define EXTRACTOR_UNZIP_BADZIPFILE                  (-103)
+
+/**
+ * Internal error.
+ */
 #define EXTRACTOR_UNZIP_INTERNALERROR               (-104)
+
+/**
+ * Checksum failure.
+ */
 #define EXTRACTOR_UNZIP_CRCERROR                    (-105)
 
-typedef voidp EXTRACTOR_unzip_file;
+/**
+ * Handle for a ZIP archive.
+ */
+struct EXTRACTOR_UnzipFile;
 
 
-typedef struct EXTRACTOR_unzip_filefunc_def_s
+/**
+ * date/time information
+ */
+struct EXTRACTOR_UnzipDateTimeInfo
 {
-  voidpf ( *zopen_file)  (voidpf opaque, const char* filename, int mode);
-  uLong  ( *zread_file)  (voidpf opaque, voidpf stream, void* buf, uLong size);
-  uLong  ( *zwrite_file) (voidpf opaque, voidpf stream, const void* buf, uLong size);
-  long   ( *ztell_file)  (voidpf opaque, voidpf stream);
-  long   ( *zseek_file)  (voidpf opaque, voidpf stream, uLong offset, int origin);
-  int    ( *zclose_file) (voidpf opaque, voidpf stream);
-  int    ( *zerror_file) (voidpf opaque, voidpf stream);
-    voidpf              opaque;
-} EXTRACTOR_unzip_filefunc_def;
+  /**
+   * seconds after the minute - [0,59] 
+   */
+  uInt tm_sec;            
+
+  /**
+   * minutes after the hour - [0,59] 
+   */
+  uInt tm_min;            
+  
+  /**
+   * hours since midnight - [0,23] 
+   */
+  uInt tm_hour;           
+
+  /**
+   * day of the month - [1,31] 
+   */
+  uInt tm_mday;           
+ 
+  /**
+   * months since January - [0,11] 
+   */
+  uInt tm_mon;            
+
+  /**
+   * years - [1980..2044] 
+   */
+  uInt tm_year;           
+};
 
 
-/* tm_unz contain date/time info */
-typedef struct EXTRACTOR_unzip_tm_unz_s
+/**
+ * Information about a file in the zipfile 
+ */
+struct EXTRACTOR_UnzipFileInfo
 {
-    uInt tm_sec;            /* seconds after the minute - [0,59] */
-    uInt tm_min;            /* minutes after the hour - [0,59] */
-    uInt tm_hour;           /* hours since midnight - [0,23] */
-    uInt tm_mday;           /* day of the month - [1,31] */
-    uInt tm_mon;            /* months since January - [0,11] */
-    uInt tm_year;           /* years - [1980..2044] */
-} EXTRACTOR_unzip_tm_unz;
+  /**
+   * version made by                 2 bytes 
+   */
+  uLong version;              
+
+  /**
+   * version needed to extract       2 bytes 
+   */
+  uLong version_needed;       
+
+  /**
+   * general purpose bit flag        2 bytes 
+   */
+  uLong flag;                 
+
+  /**
+   * compression method              2 bytes 
+   */
+  uLong compression_method;   
+
+  /**
+   * last mod file date in Dos fmt   4 bytes 
+   */
+  uLong dosDate;              
+
+  /**
+   * crc-32                          4 bytes 
+   */
+  uLong crc;                  
+
+  /**
+   * compressed size                 4 bytes
+   */
+  uLong compressed_size;      
+
+  /**
+   * uncompressed size               4 bytes 
+   */
+  uLong uncompressed_size;    
+
+  /**
+   * filename length                 2 bytes 
+   */
+  uLong size_filename;        
+
+  /**
+   * extra field length              2 bytes 
+   */
+  uLong size_file_extra;      
+
+  /**
+   * file comment length             2 bytes 
+   */
+  uLong size_file_comment;    
+  
+  /**
+   * disk number start               2 bytes 
+   */
+  uLong disk_num_start;       
+
+  /**
+   * internal file attributes        2 bytes 
+   */
+  uLong internal_fa;          
+
+  /**
+   * external file attributes        4 bytes 
+   */
+  uLong external_fa;          
+  
+  /**
+   * Time and date of last modification.
+   */
+  struct EXTRACTOR_UnzipDateTimeInfo tmu_date;
+};
 
 
-/* unz_file_info contain information about a file in the zipfile */
-typedef struct EXTRACTOR_unzip_file_info_s
-{
-    uLong version;              /* version made by                 2 bytes */
-    uLong version_needed;       /* version needed to extract       2 bytes */
-    uLong flag;                 /* general purpose bit flag        2 bytes */
-    uLong compression_method;   /* compression method              2 bytes */
-    uLong dosDate;              /* last mod file date in Dos fmt   4 bytes */
-    uLong crc;                  /* crc-32                          4 bytes */
-    uLong compressed_size;      /* compressed size                 4 bytes */
-    uLong uncompressed_size;    /* uncompressed size               4 bytes */
-    uLong size_filename;        /* filename length                 2 bytes */
-    uLong size_file_extra;      /* extra field length              2 bytes */
-    uLong size_file_comment;    /* file comment length             2 bytes */
-
-    uLong disk_num_start;       /* disk number start               2 bytes */
-    uLong internal_fa;          /* internal file attributes        2 bytes */
-    uLong external_fa;          /* external file attributes        4 bytes */
-
-    EXTRACTOR_unzip_tm_unz tmu_date;
-} EXTRACTOR_unzip_file_info;
+/**
+ * Open a zip file for processing using the data access
+ * functions from the extract context.
+ *
+ * @param ec extract context to use
+ * @return handle to zip data, NULL on error
+ */
+struct EXTRACTOR_UnzipFile * 
+EXTRACTOR_common_unzip_open (struct EXTRACTOR_ExtractContext *ec);
 
 
-int 
-EXTRACTOR_common_unzip_string_file_name_compare (const char* fileName1,
-						 const char* fileName2, 
-						 int iCaseSensitivity);
-
-
-int 
-EXTRACTOR_common_unzip_go_to_first_file (EXTRACTOR_unzip_file file);
-
-
-EXTRACTOR_unzip_file 
-EXTRACTOR_common_unzip_open2 (const char *path,
-			      EXTRACTOR_unzip_filefunc_def* pzlib_filefunc_def);
-
-
-int 
-EXTRACTOR_common_unzip_close_current_file (EXTRACTOR_unzip_file file);
-
-
+/**
+ * Close a ZipFile.  If there is files inside the .Zip opened with
+ * EXTRACTOR_common_unzip_open_current_file, these files MUST be
+ * closed with EXTRACTOR_common_unzip_close_current_file before
+ * calling EXTRACTOR_common_unzip_close.
+ *
+ * @param file zip file to close
+ * @return EXTRACTOR_UNZIP_OK if there is no problem. 
+ */
 int
-EXTRACTOR_common_unzip_close (EXTRACTOR_unzip_file file);
+EXTRACTOR_common_unzip_close (struct EXTRACTOR_UnzipFile *file);
 
 
+/**
+ * Set the current file of the zipfile to the first file.
+ *
+ * @param file zipfile to manipulate
+ * @return UNZ_OK if there is no problem
+ */
 int 
-EXTRACTOR_common_unzip_get_current_file_info (EXTRACTOR_unzip_file file,
-					      EXTRACTOR_unzip_file_info *pfile_info, 
+EXTRACTOR_common_unzip_go_to_first_file (struct EXTRACTOR_UnzipFile *file);
+
+
+/**
+ * Set the current file of the zipfile to the next file.
+ *
+ * @param file zipfile to manipulate
+ * @return EXTRACTOR_UNZIP_OK if there is no problem,
+ *         EXTRACTOR_UNZIP_END_OF_LIST_OF_FILE if the actual file was the latest.
+ */
+int
+EXTRACTOR_common_unzip_go_to_next_file (struct EXTRACTOR_UnzipFile *file);
+
+
+/**
+ * Try locate the file szFileName in the zipfile.
+ * 
+ * @param file zipfile to manipulate
+ * @param szFileName name to find
+ * @param iCaseSensitivity, use 1 for case sensitivity (like strcmp);
+ *        2 for no case sensitivity (like strcmpi or strcasecmp); or
+ *        0 for defaut of your operating system (like 1 on Unix, 2 on Windows)
+ * @return EXTRACTOR_UNZIP_OK if the file is found. It becomes the current file.
+ *         EXTRACTOR_UNZIP_END_OF_LIST_OF_FILE if the file is not found
+ */
+int
+EXTRACTOR_common_unzip_go_find_local_file (struct EXTRACTOR_UnzipFile *file, 
+					   const char *szFileName,
+					   int iCaseSensitivity);
+
+
+/**
+ * Write info about the ZipFile in the *pglobal_info structure.
+ * No preparation of the structure is needed.
+ *
+ * @param file zipfile to manipulate
+ * @param szFileName where to write the name of the current file
+ * @param fileNameBufferSize number of bytes available in szFileName
+ * @param extraField where to write extra data
+ * @param extraFieldBufferSize number of bytes available in extraField 
+ * @param szComment where to write the comment on the current file
+ * @param commentBufferSize number of bytes available in szComment
+ * @return EXTRACTOR_UNZIP_OK if there is no problem.
+ */
+int 
+EXTRACTOR_common_unzip_get_current_file_info (struct EXTRACTOR_UnzipFile *file,
+					      struct EXTRACTOR_UnzipFileInfo *pfile_info, 
 					      char *szFileName,
 					      uLong fileNameBufferSize,
 					      void *extraField, 
@@ -117,61 +282,40 @@ EXTRACTOR_common_unzip_get_current_file_info (EXTRACTOR_unzip_file file,
 					      uLong commentBufferSize);
 
 
+/**
+ * Open for reading data the current file in the zipfile.
+ *
+ * @param file zipfile to manipulate
+ * @return EXTRACTOR_UNZIP_OK on success
+ */
 int
-EXTRACTOR_common_unzip_go_to_next_file (EXTRACTOR_unzip_file file);
+EXTRACTOR_common_unzip_open_current_file (struct EXTRACTOR_UnzipFile *file);
 
 
-int
-EXTRACTOR_common_unzip_local_file (EXTRACTOR_unzip_file file, 
-				   const char *szFileName,
-				   int iCaseSensitivity);
+/**
+ * Read bytes from the current file (must have been opened).
+ *
+ * @param buf contain buffer where data must be copied
+ * @param len the size of buf.
+ * @return the number of byte copied if somes bytes are copied
+ *         0 if the end of file was reached
+ *         <0 with error code if there is an error
+ *        (EXTRACTOR_UNZIP_ERRNO for IO error, or zLib error for uncompress error)
+ */
+ssize_t 
+EXTRACTOR_common_unzip_read_current_file (struct EXTRACTOR_UnzipFile *file,
+					  void *buf,
+					  size_t len);
 
 
+/**
+ * Close the file in zip opened with EXTRACTOR_common_unzip_open_current_file.
+ *
+ * @return EXTRACTOR_UNZIP_CRCERROR if all the file was read but the CRC is not good
+ */
 int 
-EXTRACTOR_common_unzip_read_current_file (EXTRACTOR_unzip_file file,
-					  voidp buf,
-					  unsigned len);
+EXTRACTOR_common_unzip_close_current_file (struct EXTRACTOR_UnzipFile *file);
 
 
-int
-EXTRACTOR_common_unzip_open_current_file3 (EXTRACTOR_unzip_file file, 
-					   int* method,
-					   int* level,
-					   int raw);
-
-
-voidpf
-EXTRACTOR_common_unzip_zlib_open_file_func (voidpf opaque,
-					    const char* filename, 
-					    int mode);
-
-
-uLong 
-EXTRACTOR_common_unzip_zlib_read_file_func (voidpf opaque, 
-					    voidpf stream,
-					    void* buf, 
-					    uLong size);
-
-
-long 
-EXTRACTOR_common_unzip_zlib_tell_file_func (voidpf opaque, 
-					    voidpf stream);
-
-
-long 
-EXTRACTOR_common_unzip_zlib_seek_file_func (voidpf opaque,
-					    voidpf stream,
-					    uLong offset, 
-					    int origin);
-
-
-int
-EXTRACTOR_common_unzip_zlib_close_file_func (voidpf opaque, 
-					     voidpf stream);
-
-
-int
-EXTRACTOR_common_unzip_zlib_testerror_file_func (voidpf opaque,
-						 voidpf stream);
-
-#endif /* UNZIP_H_ */
+#endif 
+/* LE_COMMON_UNZIP_H */
