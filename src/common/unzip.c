@@ -4,7 +4,7 @@
 
      libextractor is free software; you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published
-     by the Free Software Foundation; either version 2, or (at your
+     by the Free Software Foundation; either version 3, or (at your
      option) any later version.
 
      libextractor is distributed in the hope that it will be useful, but
@@ -695,7 +695,7 @@ EXTRACTOR_common_unzip_close_current_file (EXTRACTOR_unzip_file file)
         (!pfile_in_zip_read_info->raw))
     {
         if (pfile_in_zip_read_info->crc32 != pfile_in_zip_read_info->crc32_wait)
-            err=EXTRACTOR_UNZIP_CRCERROR;
+	              err=EXTRACTOR_UNZIP_CRCERROR;
     }
 
 

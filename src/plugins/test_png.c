@@ -18,17 +18,16 @@
      Boston, MA 02111-1307, USA.
 */
 /**
- * @file plugins/test_jpeg.c
- * @brief testcase for jpeg plugin
+ * @file plugins/test_png.c
+ * @brief testcase for png plugin
  * @author Christian Grothoff
  */
 #include "platform.h"
 #include "test_lib.h"
 
 
-
 /**
- * Main function for the JPEG testcase.
+ * Main function for the PNG testcase.
  *
  * @param argc number of arguments (ignored)
  * @param argv arguments (ignored)
@@ -37,41 +36,49 @@
 int
 main (int argc, char *argv[])
 {
-  struct SolutionData jpeg_image_sol[] =
+  struct SolutionData png_image_sol[] =
     {
       { 
 	EXTRACTOR_METATYPE_MIMETYPE,
 	EXTRACTOR_METAFORMAT_UTF8,
 	"text/plain",
-	"image/jpeg",
-	strlen ("image/jpeg") + 1,
+	"image/png",
+	strlen ("image/png") + 1,
 	0 
       },
       { 
 	EXTRACTOR_METATYPE_IMAGE_DIMENSIONS,
 	EXTRACTOR_METAFORMAT_UTF8,
 	"text/plain",
-	"3x3",
-	strlen ("3x3") + 1,
+	"4x4",
+	strlen ("4x4") + 1,
 	0 
       },
       { 
 	EXTRACTOR_METATYPE_COMMENT,
-	EXTRACTOR_METAFORMAT_C_STRING,
+	EXTRACTOR_METAFORMAT_UTF8,
 	"text/plain",
-	"(C) 2001 by Christian Grothoff, using gimp 1.2 1",
-	strlen ("(C) 2001 by Christian Grothoff, using gimp 1.2 1"),
+	"Testing keyword extraction\n",
+	strlen ("Testing keyword extraction\n") + 1,
+	0 
+      },
+      { 
+	EXTRACTOR_METATYPE_UNKNOWN,
+	EXTRACTOR_METAFORMAT_UTF8,
+	"text/plain",
+	"dc6c58c971715e8043baef058b675eec",
+	strlen ("dc6c58c971715e8043baef058b675eec") + 1,
 	0 
       },
       { 0, 0, NULL, NULL, 0, -1 }
     };
   struct ProblemSet ps[] =
     {
-      { "testdata/jpeg_image.jpg",
-	jpeg_image_sol },
+      { "testdata/png_image.png",
+	png_image_sol },
       { NULL, NULL }
     };
-  return ET_main ("jpeg", ps);
+  return ET_main ("png", ps);
 }
 
-/* end of test_jpeg.c */
+/* end of test_png.c */

@@ -29,7 +29,8 @@ EXTRA_DIST = template_extractor.c \
   testdata/ole2_msword.doc \
   testdata/ole2_starwriter40.sdw \
   testdata/ole2_blair.doc \
-  testdata/ole2_excel.xls
+  testdata/ole2_excel.xls \
+  testdata/png_image.png
 
 if HAVE_VORBISFILE
 PLUGIN_OGG=libextractor_ogg.la
@@ -79,6 +80,7 @@ endif
 
 plugin_LTLIBRARIES = \
   libextractor_it.la \
+  libextractor_png.la \
   libextractor_xm.la \
   libextractor_s3m.la \
   libextractor_wav.la \
@@ -100,6 +102,7 @@ check_PROGRAMS = \
   test_wav \
   test_it \
   test_s3m \
+  test_png \
   $(TEST_OGG) \
   $(TEST_MIME) \
   $(TEST_GIF) \
@@ -128,6 +131,19 @@ libextractor_xm_la_SOURCES = \
   xm_extractor.c
 libextractor_xm_la_LDFLAGS = \
   $(PLUGINFLAGS)
+
+
+libextractor_png_la_SOURCES = \
+  png_extractor.c
+libextractor_png_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+libextractor_png_la_LIBADD = \
+  $(top_builddir)/src/common/libextractor_common.la 
+
+test_png_SOURCES = \
+  test_png.c
+test_png_LDADD = \
+  $(top_builddir)/src/plugins/libtest.la
 
 
 libextractor_it_la_SOURCES = \
