@@ -208,10 +208,21 @@ EXTRACTOR_common_unzip_open (struct EXTRACTOR_ExtractContext *ec);
 
 
 /**
- * Close a ZipFile.  If there is files inside the .Zip opened with
- * EXTRACTOR_common_unzip_open_current_file, these files MUST be
- * closed with EXTRACTOR_common_unzip_close_current_file before
- * calling EXTRACTOR_common_unzip_close.
+ * Obtain the global comment from a ZIP file.
+ *
+ * @param file unzip file to inspect
+ * @param comment where to copy the comment
+ * @param comment_len maximum number of bytes available in comment
+ * @return EXTRACTOR_UNZIP_OK on success
+ */
+int
+EXTRACTOR_common_unzip_get_global_comment (struct EXTRACTOR_UnzipFile *file,
+					   char *comment,
+					   size_t comment_len);
+
+
+/**
+ * Close a ZipFile.
  *
  * @param file zip file to close
  * @return EXTRACTOR_UNZIP_OK if there is no problem. 
@@ -263,6 +274,7 @@ EXTRACTOR_common_unzip_go_find_local_file (struct EXTRACTOR_UnzipFile *file,
  * No preparation of the structure is needed.
  *
  * @param file zipfile to manipulate
+ * @param pfile_info file information to initialize
  * @param szFileName where to write the name of the current file
  * @param fileNameBufferSize number of bytes available in szFileName
  * @param extraField where to write extra data

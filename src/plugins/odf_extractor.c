@@ -28,11 +28,6 @@
 #include "unzip.h"
 
 /**
- * Should filenames be treated as case sensitive?
- */
-#define CASESENSITIVITY 0
-
-/**
  * Maximum length of a filename allowed inside the ZIP archive.
  */
 #define MAXFILENAME 256
@@ -90,17 +85,17 @@ static struct Matches tmap[] = {
  * @return NULL if no mimetype could be found, otherwise the mime type
  */
 static char *
-libextractor_oo_getmimetype (EXTRACTOR_unzip_file uf) 
+libextractor_oo_getmimetype (struct EXTRACTOR_UnzipFile * uf) 
 {
   char filename_inzip[MAXFILENAME];
-  EXTRACTOR_unzip_file_info file_info;
+  struct EXTRACTOR_UnzipFileInfo file_info;
   char *buf;
   size_t buf_size;
 
   if (EXTRACTOR_UNZIP_OK !=
-      EXTRACTOR_common_unzip_local_file (uf,
-					 "mimetype",
-					 CASESENSITIVITY))
+      EXTRACTOR_common_unzip_go_find_local_file (uf,
+						 "mimetype",
+						 2))
     return NULL;
   if (EXTRACTOR_UNZIP_OK != 
       EXTRACTOR_common_unzip_get_current_file_info (uf,
@@ -113,11 +108,8 @@ libextractor_oo_getmimetype (EXTRACTOR_unzip_file uf)
 						    0))
     return NULL;
   if (EXTRACTOR_UNZIP_OK != 
-      EXTRACTOR_common_unzip_open_current_file3 (uf, NULL, NULL, 0))
-    {
-      EXTRACTOR_common_unzip_close_current_file (uf);  
-      return NULL;
-    }
+      EXTRACTOR_common_unzip_open_current_file (uf))
+    return NULL;
   buf_size = file_info.uncompressed_size;    
   if (buf_size > 1024) 
     {
@@ -164,40 +156,25 @@ void
 EXTRACTOR_odf_extract_method (struct EXTRACTOR_ExtractContext *ec)
 {
   char filename_inzip[MAXFILENAME];
-  EXTRACTOR_unzip_file uf;
-  EXTRACTOR_unzip_file_info file_info;
+  struct EXTRACTOR_UnzipFile *uf;
+  struct EXTRACTOR_UnzipFileInfo file_info;
   char *buf;
   char *pbuf;
   size_t buf_size;
   unsigned int i;
-  EXTRACTOR_unzip_filefunc_def io;
   char *mimetype;
 
-  if (size < 100)
-    return 0;
-  if ( !( ('P'==data[0]) && ('K'==data[1]) && (0x03==data[2]) && (0x04==data[3])) )
-    return 0;
-
-  io.zopen_file = &EXTRACTOR_common_unzip_zlib_open_file_func;
-  io.zread_file = &EXTRACTOR_common_unzip_zlib_read_file_func;
-  io.zwrite_file = NULL;
-  io.ztell_file = &EXTRACTOR_common_unzip_zlib_tell_file_func;
-  io.zseek_file = &EXTRACTOR_common_unzip_zlib_seek_file_func;
-  io.zclose_file = &EXTRACTOR_common_unzip_zlib_close_file_func;
-  io.zerror_file = &EXTRACTOR_common_unzip_zlib_testerror_file_func;
-  io.opaque = ec;
-  
-  if (NULL == (uf = EXTRACTOR_common_unzip_open2 ("ERROR", &io)))
+  if (NULL == (uf = EXTRACTOR_common_unzip_open (ec)))
     return;
   if (NULL != (mimetype = libextractor_oo_getmimetype (uf)))
     {
-      if (0 != proc (proc_cls, 
-		     "deb",
-		     EXTRACTOR_METATYPE_MIMETYPE,
-		     EXTRACTOR_METAFORMAT_UTF8,
-		     "text/plain",
-		     mimetype,
-		     strlen (mimetype) + 1))
+      if (0 != ec->proc (ec->cls, 
+			 "odf",
+			 EXTRACTOR_METATYPE_MIMETYPE,
+			 EXTRACTOR_METAFORMAT_UTF8,
+			 "text/plain",
+			 mimetype,
+			 strlen (mimetype) + 1))
 	{
 	  EXTRACTOR_common_unzip_close (uf);
 	  free (mimetype);
@@ -206,9 +183,9 @@ EXTRACTOR_odf_extract_method (struct EXTRACTOR_ExtractContext *ec)
       free (mimetype);
     }
   if (EXTRACTOR_UNZIP_OK !=
-      EXTRACTOR_common_unzip_local_file (uf,
-					 METAFILE,
-					 CASESENSITIVITY)) 
+      EXTRACTOR_common_unzip_go_find_local_file (uf,
+						 METAFILE,
+						 2)) 
     {
       /* metafile not found */
       EXTRACTOR_common_unzip_close (uf);
@@ -219,14 +196,14 @@ EXTRACTOR_odf_extract_method (struct EXTRACTOR_ExtractContext *ec)
 						    &file_info,
 						    filename_inzip,
 						    sizeof (filename_inzip),
-						    NULL,0,NULL,0)) 
+						    NULL, 0, NULL, 0)) 
     {
       /* problems accessing metafile */
       EXTRACTOR_common_unzip_close (uf);
       return;
     }
   if (EXTRACTOR_UNZIP_OK != 
-      EXTRACTOR_common_unzip_open_current_file3 (uf, NULL, NULL, 0)) 
+      EXTRACTOR_common_unzip_open_current_file (uf)) 
     {
       /* problems with unzip */
       EXTRACTOR_common_unzip_close (uf);
@@ -320,16 +297,14 @@ EXTRACTOR_odf_extract_method (struct EXTRACTOR_ExtractContext *ec)
 		  
 		  memcpy(key, spos, epos-spos);
 		  key[epos-spos] = '\0';
-		  if (0 != proc (proc_cls, 
-				 "odf",
-				 tmap[i].type,
-				 EXTRACTOR_METAFORMAT_UTF8,
-				 "text/plain",
-				 key,
-				 epos - spos + 1))
-		    {
-		      goto CLEANUP;
-		    }	  
+		  if (0 != ec->proc (ec->cls, 
+				     "odf",
+				     tmap[i].type,
+				     EXTRACTOR_METAFORMAT_UTF8,
+				     "text/plain",
+				     key,
+				     epos - spos + 1))
+		    goto CLEANUP;		    	  
 		  pbuf = epos;
 		} 
 	      else

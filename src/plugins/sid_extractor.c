@@ -1,10 +1,10 @@
 /*
  * This file is part of libextractor.
- * (C) 2006, 2007 Toni Ruottu
+ * (C) 2006, 2007, 2012 Vidyut Samanta and Christian Grothoff
  *
  * libextractor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published
- * by the Free Software Foundation; either version 2, or (at your
+ * by the Free Software Foundation; either version 3, or (at your
  * option) any later version.
  *
  * libextractor is distributed in the hope that it will be useful, but
@@ -18,15 +18,17 @@
  * Boston, MA 02111-1307, USA.
  *
  */
+/**
+ * @file plugins/sid_extractor.c
+ * @brief plugin to support Scream Tracker (S3M) files
+ * @author Toni Ruottu
+ * @author Christian Grothoff
+ */
 #include "platform.h"
 #include "extractor.h"
 
 
-#define SID1_HEADER_SIZE 0x76
-#define SID2_HEADER_SIZE 0x7c
-
-/* flags */
-
+/* SID flags */
 #define MUSPLAYER_FLAG   0x01
 #define PLAYSID_FLAG     0x02
 #define PAL_FLAG         0x04
@@ -34,51 +36,134 @@
 #define MOS6581_FLAG     0x10
 #define MOS8580_FLAG     0x20
 
+/**
+ * A "SID word".
+ */
 typedef char sidwrd[2];
+
+/**
+ * A "SID long".
+ */
 typedef char sidlongwrd[4];
 
+/**
+ * Header of a SID file.
+ */
 struct header
 {
+  /**
+   * Magic string.
+   */
   char magicid[4];
+
+  /**
+   * Version number.
+   */
   sidwrd sidversion;
+
+  /**
+   * Unknown.
+   */
   sidwrd dataoffset;
+
+  /**
+   * Unknown.
+   */
   sidwrd loadaddr;
+
+  /**
+   * Unknown.
+   */
   sidwrd initaddr;
+
+  /**
+   * Unknown.
+   */
   sidwrd playaddr;
+
+  /**
+   * Number of songs in file.
+   */
   sidwrd songs;
+
+  /**
+   * Starting song.
+   */
   sidwrd firstsong;
+
+  /**
+   * Unknown.
+   */
   sidlongwrd speed;
+
+  /**
+   * Title of the album.
+   */
   char title[32];
+
+  /**
+   * Name of the artist.
+   */
   char artist[32];
+
+  /**
+   * Copyright information.
+   */
   char copyright[32];
-  sidwrd flags;                 /* version 2 specific fields start */
+
+  /* version 2 specific fields start */
+
+  /**
+   * Flags
+   */
+  sidwrd flags;                 
+
+  /**
+   * Unknown.
+   */
   char startpage;
+
+  /**
+   * Unknown.
+   */
   char pagelength;
+
+  /**
+   * Unknown.
+   */
   sidwrd reserved;
 };
 
+
+/**
+ * Convert a 'sidword' to an integer.
+ *
+ * @param data the sidword
+ * @return corresponding integer value
+ */
 static int
 sidword (const sidwrd data)
 {
-  int value = (unsigned char) data[0] * 0x100 + (unsigned char) data[1];
-  return value;
-
+  return (unsigned char) data[0] * 0x100 + (unsigned char) data[1];
 }
 
-#define ADD(s,t) do { if (0 != proc (proc_cls, "sid", t, EXTRACTOR_METAFORMAT_UTF8, "text/plain", s, strlen(s)+1)) return 1; } while (0)
 
-/* "extract" keyword from a SID file
+/**
+ * Give metadata to LE; return if 'proc' returns non-zero.
  *
- *  This plugin is based on the nsf extractor
- *
+ * @param s metadata value as UTF8
+ * @param t metadata type to use
  */
+#define ADD(s,t) do { if (0 != ec->proc (ec->cls, "sid", t, EXTRACTOR_METAFORMAT_UTF8, "text/plain", s, strlen (s) + 1)) return; } while (0)
 
-int 
-EXTRACTOR_sid_extract (const char *data,
-		       size_t size,
-		       EXTRACTOR_MetaDataProcessor proc,
-		       void *proc_cls,
-		       const char *options)
+
+/**
+ * Extract metadata from SID files.
+ *
+ * @param ec extraction context
+ */
+void
+EXTRACTOR_sid_extract_method (struct EXTRACTOR_ExtractContext *ec)
 {
   unsigned int flags;
   int version;
@@ -89,17 +174,19 @@ EXTRACTOR_sid_extract (const char *data,
   char startingsong[32];
   char sidversion[32];
   const struct header *head;
+  void *data;
 
-  /* Check header size */
-
-  if (size < SID1_HEADER_SIZE)
-    return 0;
-  head = (const struct header *) data;
+  if (sizeof (struct header) >
+      ec->read (ec->cls,
+		&data,
+		sizeof (struct header)))
+    return;
+  head = data;
 
   /* Check "magic" id bytes */
-  if (memcmp (head->magicid, "PSID", 4) &&
-      memcmp (head->magicid, "RSID", 4))
-    return 0;
+  if ( (0 != memcmp (head->magicid, "PSID", 4)) &&
+       (0 != memcmp (head->magicid, "RSID", 4)) )
+    return;
 
   /* Mime-type */
   ADD ("audio/prs.sid", EXTRACTOR_METATYPE_MIMETYPE);
@@ -107,24 +194,23 @@ EXTRACTOR_sid_extract (const char *data,
   /* Version of SID format */
   version = sidword (head->sidversion);
   snprintf (sidversion, 
-	    sizeof(sidversion),
+	    sizeof (sidversion),
 	    "%d",
 	    version);
   ADD (sidversion, EXTRACTOR_METATYPE_FORMAT_VERSION);
 
   /* Get song count */
   snprintf (songs,
-	    sizeof(songs),
+	    sizeof (songs),
 	    "%d", sidword (head->songs));
   ADD (songs, EXTRACTOR_METATYPE_SONG_COUNT);
 
   /* Get number of the first song to be played */
   snprintf (startingsong,
-	    sizeof(startingsong),
+	    sizeof (startingsong),
 	    "%d", 
 	    sidword (head->firstsong));
   ADD (startingsong, EXTRACTOR_METATYPE_STARTING_SONG);
-
 
   /* name, artist, copyright fields */
   memcpy (&album, head->title, 32);
@@ -139,9 +225,8 @@ EXTRACTOR_sid_extract (const char *data,
   copyright[32] = '\0';
   ADD (copyright, EXTRACTOR_METATYPE_COPYRIGHT);
 
-
-  if ( (version < 2) || (size < SID2_HEADER_SIZE))
-    return 0;
+  if (version < 2)
+    return;
 
   /* Version 2 specific options follow
    *
@@ -150,42 +235,25 @@ EXTRACTOR_sid_extract (const char *data,
    */
   flags = sidword (head->flags);
   /* MUS data */
-  if (flags & MUSPLAYER_FLAG)    
+  if (0 != (flags & MUSPLAYER_FLAG))
     ADD ("Compute!'s Sidplayer", EXTRACTOR_METATYPE_CREATED_BY_SOFTWARE);    
 
   /* PlaySID data */
-  if (flags & PLAYSID_FLAG)    
+  if (0 != (flags & PLAYSID_FLAG))
     ADD ("PlaySID", EXTRACTOR_METATYPE_CREATED_BY_SOFTWARE);    
 
 
   /* PAL or NTSC */
-
-  if (flags & PAL_FLAG)
-    {
-      if (flags & NTSC_FLAG)
-	ADD ("PAL/NTSC", EXTRACTOR_METATYPE_BROADCAST_TELEVISION_SYSTEM);        
-      else        
-	ADD ("PAL", EXTRACTOR_METATYPE_BROADCAST_TELEVISION_SYSTEM);        
-    }
-  else
-    {
-      if (flags & NTSC_FLAG)
-	ADD ("NTSC", EXTRACTOR_METATYPE_BROADCAST_TELEVISION_SYSTEM);        
-    }
+  if (0 != (flags & NTSC_FLAG))
+    ADD ("PAL/NTSC", EXTRACTOR_METATYPE_BROADCAST_TELEVISION_SYSTEM);        
+  else if (0 != (flags & PAL_FLAG))
+    ADD ("PAL", EXTRACTOR_METATYPE_BROADCAST_TELEVISION_SYSTEM);        
 
   /* Detect SID Chips suitable for play the files */
-  if (flags & MOS6581_FLAG)
-    {
-      if (flags & MOS8580_FLAG)
-	ADD ("MOS6581/MOS8580", EXTRACTOR_METATYPE_TARGET_ARCHITECTURE);        
-      else
-	ADD ("MOS6581", EXTRACTOR_METATYPE_TARGET_ARCHITECTURE);        
-    }
-  else
-    {
-      if (flags & MOS8580_FLAG)
-	ADD ("MOS8580", EXTRACTOR_METATYPE_TARGET_ARCHITECTURE);        
-    }
-
-  return 0;
+  if (0 != (flags & MOS8580_FLAG))
+    ADD ("MOS6581/MOS8580", EXTRACTOR_METATYPE_TARGET_ARCHITECTURE);        
+  else if (0 != (flags & MOS6581_FLAG))
+    ADD ("MOS6581", EXTRACTOR_METATYPE_TARGET_ARCHITECTURE);        
 }
+
+/* end of sid_extractor.c */

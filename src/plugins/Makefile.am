@@ -30,7 +30,9 @@ EXTRA_DIST = template_extractor.c \
   testdata/ole2_starwriter40.sdw \
   testdata/ole2_blair.doc \
   testdata/ole2_excel.xls \
-  testdata/png_image.png
+  testdata/png_image.png \
+  testdata/odf_cg.odt \
+  testdata/deb_bzip2.deb
 
 if HAVE_VORBISFILE
 PLUGIN_OGG=libextractor_ogg.la
@@ -77,13 +79,23 @@ PLUGIN_GSF=libextractor_ole2.la
 TEST_GSF=test_ole2
 endif
 
+if HAVE_ZLIB
+PLUGIN_ZLIB=libextractor_deb.la
+TEST_ZLIB=test_deb
+endif
 
 plugin_LTLIBRARIES = \
   libextractor_it.la \
+  libextractor_nsf.la \
+  libextractor_nsfe.la \
+  libextractor_odf.la \
   libextractor_png.la \
   libextractor_xm.la \
   libextractor_s3m.la \
+  libextractor_sid.la \
   libextractor_wav.la \
+  libextractor_zip.la \
+  $(PLUGIN_ZLIB) \
   $(PLUGIN_OGG) \
   $(PLUGIN_MIME) \
   $(PLUGIN_GIF) \
@@ -103,6 +115,9 @@ check_PROGRAMS = \
   test_it \
   test_s3m \
   test_png \
+  test_odf \
+  test_zip \
+  $(TEST_ZLIB) \
   $(TEST_OGG) \
   $(TEST_MIME) \
   $(TEST_GIF) \
@@ -133,6 +148,55 @@ libextractor_xm_la_LDFLAGS = \
   $(PLUGINFLAGS)
 
 
+libextractor_deb_la_SOURCES = \
+  deb_extractor.c
+libextractor_deb_la_LDFLAGS = \
+  $(PLUGINFLAGS) -lz
+
+test_deb_SOURCES = \
+  test_deb.c
+test_deb_LDADD = \
+  $(top_builddir)/src/plugins/libtest.la
+
+
+libextractor_nsf_la_SOURCES = \
+  nsf_extractor.c
+libextractor_nsf_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+
+
+libextractor_nsfe_la_SOURCES = \
+  nsfe_extractor.c
+libextractor_nsfe_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+
+
+libextractor_odf_la_SOURCES = \
+  odf_extractor.c
+libextractor_odf_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+libextractor_odf_la_LIBADD = \
+  $(top_builddir)/src/common/libextractor_common.la 
+
+test_odf_SOURCES = \
+  test_odf.c
+test_odf_LDADD = \
+  $(top_builddir)/src/plugins/libtest.la
+
+
+libextractor_zip_la_SOURCES = \
+  zip_extractor.c
+libextractor_zip_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+libextractor_zip_la_LIBADD = \
+  $(top_builddir)/src/common/libextractor_common.la 
+
+test_zip_SOURCES = \
+  test_zip.c
+test_zip_LDADD = \
+  $(top_builddir)/src/plugins/libtest.la
+
+
 libextractor_png_la_SOURCES = \
   png_extractor.c
 libextractor_png_la_LDFLAGS = \
@@ -156,6 +220,11 @@ test_it_SOURCES = \
 test_it_LDADD = \
   $(top_builddir)/src/plugins/libtest.la
 
+
+libextractor_sid_la_SOURCES = \
+  sid_extractor.c
+libextractor_sid_la_LDFLAGS = \
+  $(PLUGINFLAGS)
 
 libextractor_s3m_la_SOURCES = \
   s3m_extractor.c

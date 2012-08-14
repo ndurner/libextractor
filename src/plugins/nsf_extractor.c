@@ -1,10 +1,10 @@
 /*
  * This file is part of libextractor.
- * (C) 2006, 2009 Toni Ruottu
+ * (C) 2006, 2009, 2012 Toni Ruottu and Christian Grothoff
  *
  * libextractor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published
- * by the Free Software Foundation; either version 2, or (at your
+ * by the Free Software Foundation; either version 3, or (at your
  * option) any later version.
  *
  * libextractor is distributed in the hope that it will be useful, but
@@ -18,21 +18,22 @@
  * Boston, MA 02111-1307, USA.
  *
  */
-
+/**
+ * @file plugins/nsf_extractor.c
+ * @brief plugin to support Nes Sound Format files
+ * @author Toni Ruottu
+ * @author Christian Grothoff
+ */
 #include "platform.h"
 #include "extractor.h"
-#include "convert.h"
 
 
-#define HEADER_SIZE  0x80
 
 /* television system flags */
-
 #define PAL_FLAG     0x01
 #define DUAL_FLAG    0x02
 
 /* sound chip flags */
-
 #define VRCVI_FLAG   0x01
 #define VRCVII_FLAG  0x02
 #define FDS_FLAG     0x04
@@ -40,43 +41,108 @@
 #define NAMCO_FLAG   0x10
 #define SUNSOFT_FLAG 0x20
 
-#define UINT16 unsigned short
 
+/**
+ * Header of an NSF file.
+ */
 struct header
 {
+  /**
+   * Magic code.
+   */
   char magicid[5];
+  
+  /**
+   * NSF version number.
+   */
   char nsfversion;
-  char songs;
-  char firstsong;
-  UINT16 loadaddr;
-  UINT16 initaddr;
-  UINT16 playaddr;
+
+  /**
+   * Number of songs.
+   */
+  unsigned char songs;
+
+  /**
+   * Starting song.
+   */
+  unsigned char firstsong;
+
+  /**
+   * Unknown.
+   */
+  uint16_t loadaddr;
+
+  /**
+   * Unknown.
+   */
+  uint16_t initaddr;
+
+  /**
+   * Unknown.
+   */
+  uint16_t playaddr;
+
+  /**
+   * Album title.
+   */
   char title[32];
+  
+  /**
+   * Artist name. 
+   */
   char artist[32];
+
+  /**
+   * Copyright information.
+   */
   char copyright[32];
-  UINT16 ntscspeed;
+
+  /**
+   * Unknown.
+   */
+  uint16_t ntscspeed;
+
+  /**
+   * Unknown.
+   */
   char bankswitch[8];
-  UINT16 palspeed;
+
+  /**
+   * Unknown.
+   */
+  uint16_t palspeed;
+
+  /**
+   * Flags for TV encoding.
+   */
   char tvflags;
+
+  /**
+   * Flags about the decoder chip.
+   */
   char chipflags;
 };
 
-#define ADD(s,t) do { if (0 != proc (proc_cls, "nsf", t, EXTRACTOR_METAFORMAT_UTF8, "text/plain", s, strlen(s)+1)) return 1; } while (0)
 
-
-/* "extract" keyword from a Nes Sound Format file
+/**
+ * Give metadata to LE; return if 'proc' returns non-zero.
  *
- * NSF specification version 1.61 was used,
- * while this piece of software was originally
- * written.
- *
+ * @param s metadata value as UTF8
+ * @param t metadata type to use
  */
-int 
-EXTRACTOR_nsf_extract (const unsigned char *data,
-		       size_t size,
-		       EXTRACTOR_MetaDataProcessor proc,
-		       void *proc_cls,
-		       const char *options)
+#define ADD(s,t) do { if (0 != ec->proc (ec->cls, "nsf", t, EXTRACTOR_METAFORMAT_UTF8, "text/plain", s, strlen (s) + 1)) return; } while (0)
+
+
+/**
+ * "extract" meta data from a Nes Sound Format file
+ *
+ * NSF specification version 1.61 was used, while this piece of
+ * software was originally written.
+ *
+ * @param ec extraction context
+ */
+void
+EXTRACTOR_nsf_extract_method (struct EXTRACTOR_ExtractContext *ec)
 {
   char album[33];
   char artist[33];
@@ -85,12 +151,18 @@ EXTRACTOR_nsf_extract (const unsigned char *data,
   char startingsong[32];
   char nsfversion[32];
   const struct header *head;
-  
-  if (size < HEADER_SIZE)    
-    return 0;    
-  head = (const struct header *) data;
+  void *data;
+
+  if (sizeof (struct header) >
+      ec->read (ec->cls,
+		&data,
+		sizeof (struct header)))
+    return;
+  head = data; 
+
+  /* Check "magic" id bytes */
   if (memcmp (head->magicid, "NESM\x1a", 5))
-    return 0;
+    return;
   ADD ("audio/x-nsf", EXTRACTOR_METATYPE_MIMETYPE);
   snprintf (nsfversion,
 	    sizeof(nsfversion),
@@ -100,50 +172,48 @@ EXTRACTOR_nsf_extract (const unsigned char *data,
   snprintf (songs, 
 	    sizeof(songs),
 	    "%d",
-	    head->songs);
+	    (int) head->songs);
   ADD (songs, EXTRACTOR_METATYPE_SONG_COUNT);
   snprintf (startingsong, 
 	    sizeof(startingsong),
 	    "%d", 
-	    head->firstsong);
+	    (int) head->firstsong);
   ADD (startingsong, EXTRACTOR_METATYPE_STARTING_SONG);
-
   memcpy (&album, head->title, 32);
   album[32] = '\0';
   ADD (album, EXTRACTOR_METATYPE_ALBUM);
-
   memcpy (&artist, head->artist, 32);
   artist[32] = '\0';
   ADD (artist, EXTRACTOR_METATYPE_ARTIST);
-
   memcpy (&copyright, head->copyright, 32);
   copyright[32] = '\0';
   ADD (copyright, EXTRACTOR_METATYPE_COPYRIGHT);
 
-  if (head->tvflags & DUAL_FLAG)
+  if (0 != (head->tvflags & DUAL_FLAG))
     {
       ADD ("PAL/NTSC", EXTRACTOR_METATYPE_BROADCAST_TELEVISION_SYSTEM);
     }
   else
     {
-      if (head->tvflags & PAL_FLAG)
+      if (0 != (head->tvflags & PAL_FLAG))
 	ADD ("PAL", EXTRACTOR_METATYPE_BROADCAST_TELEVISION_SYSTEM);        
       else
         ADD ("NTSC", EXTRACTOR_METATYPE_BROADCAST_TELEVISION_SYSTEM);        
     }
 
   /* Detect Extra Sound Chips needed to play the files */
-  if (head->chipflags & VRCVI_FLAG)    
+  if (0 != (head->chipflags & VRCVI_FLAG))
     ADD ("VRCVI", EXTRACTOR_METATYPE_TARGET_ARCHITECTURE);    
-  if (head->chipflags & VRCVII_FLAG)
+  if (0 != (head->chipflags & VRCVII_FLAG))
     ADD ("VRCVII", EXTRACTOR_METATYPE_TARGET_ARCHITECTURE);
-  if (head->chipflags & FDS_FLAG)
+  if (0 != (head->chipflags & FDS_FLAG))
     ADD ("FDS Sound", EXTRACTOR_METATYPE_TARGET_ARCHITECTURE);
-  if (head->chipflags & MMC5_FLAG)
+  if (0 != (head->chipflags & MMC5_FLAG))
     ADD ("MMC5 audio", EXTRACTOR_METATYPE_TARGET_ARCHITECTURE);
-  if (head->chipflags & NAMCO_FLAG)
+  if (0 != (head->chipflags & NAMCO_FLAG))
     ADD ("Namco 106", EXTRACTOR_METATYPE_TARGET_ARCHITECTURE);
-  if (head->chipflags & SUNSOFT_FLAG)
+  if (0 != (head->chipflags & SUNSOFT_FLAG))
     ADD ("Sunsoft FME-07", EXTRACTOR_METATYPE_TARGET_ARCHITECTURE);
-  return 0;
 }
+
+/* end of nsf_extractor.c */
