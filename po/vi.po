@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.6.0\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2012-08-14 17:23+0200\n"
+"POT-Creation-Date: 2012-08-15 01:02+0200\n"
 "PO-Revision-Date: 2010-02-11 00:13+0930\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
@@ -512,7 +512,7 @@ msgstr "chưa biết chính xác"
 msgid "description"
 msgstr "mô tả"
 
-#: src/main/extractor_metatypes.c:149 src/plugins/mp3_extractor.c:206
+#: src/main/extractor_metatypes.c:149
 msgid "copyright"
 msgstr "bản quyền"
 
@@ -1528,714 +1528,10 @@ msgstr "%s: tùy chọn « -W %s » là mơ hồ\n"
 msgid "%s: option `-W %s' doesn't allow an argument\n"
 msgstr "%s: tùy chọn « -W %s » không cho phép đối số\n"
 
-#: src/plugins/applefile_extractor.c:162
-msgid "GB"
-msgstr "GB"
-
-#: src/plugins/applefile_extractor.c:164
-msgid "MB"
-msgstr "MB"
-
-#: src/plugins/applefile_extractor.c:166
-msgid "KB"
-msgstr "KB"
-
-#: src/plugins/applefile_extractor.c:168
-msgid "Bytes"
-msgstr "Byte"
-
 #: src/plugins/flac_extractor.c:314
 #, c-format
 msgid "%u Hz, %u channels"
 msgstr "%u Hz, %u kênh"
-
-#: src/plugins/id3_extractor.c:46 src/plugins/qt_extractor.c:30
-msgid "Blues"
-msgstr "Blu"
-
-#: src/plugins/id3_extractor.c:47 src/plugins/qt_extractor.c:31
-msgid "Classic Rock"
-msgstr "Rốc cổ điển"
-
-#: src/plugins/id3_extractor.c:48 src/plugins/qt_extractor.c:32
-msgid "Country"
-msgstr "Quốc gia"
-
-#: src/plugins/id3_extractor.c:49 src/plugins/qt_extractor.c:33
-msgid "Dance"
-msgstr "Khiêu vũ"
-
-#: src/plugins/id3_extractor.c:50 src/plugins/qt_extractor.c:34
-msgid "Disco"
-msgstr "Đít-xcô"
-
-#: src/plugins/id3_extractor.c:51 src/plugins/qt_extractor.c:35
-msgid "Funk"
-msgstr "Sôi nổi"
-
-#: src/plugins/id3_extractor.c:52 src/plugins/qt_extractor.c:36
-msgid "Grunge"
-msgstr "Vỡ mộng"
-
-#: src/plugins/id3_extractor.c:53 src/plugins/qt_extractor.c:37
-msgid "Hip-Hop"
-msgstr "Hít-họt"
-
-#: src/plugins/id3_extractor.c:54 src/plugins/qt_extractor.c:38
-msgid "Jazz"
-msgstr "Ja"
-
-#: src/plugins/id3_extractor.c:55 src/plugins/qt_extractor.c:39
-msgid "Metal"
-msgstr "Kim"
-
-#: src/plugins/id3_extractor.c:56 src/plugins/qt_extractor.c:40
-msgid "New Age"
-msgstr "Thời kỳ mới"
-
-#: src/plugins/id3_extractor.c:57 src/plugins/qt_extractor.c:41
-msgid "Oldies"
-msgstr "Cũ"
-
-#: src/plugins/id3_extractor.c:58 src/plugins/qt_extractor.c:42
-msgid "Other"
-msgstr "Khác"
-
-#: src/plugins/id3_extractor.c:59 src/plugins/qt_extractor.c:43
-msgid "Pop"
-msgstr "Pốp"
-
-#: src/plugins/id3_extractor.c:60 src/plugins/qt_extractor.c:44
-msgid "R&B"
-msgstr "Nhịp điệu và blu"
-
-#: src/plugins/id3_extractor.c:61 src/plugins/qt_extractor.c:45
-msgid "Rap"
-msgstr "Rap"
-
-#: src/plugins/id3_extractor.c:62 src/plugins/qt_extractor.c:46
-msgid "Reggae"
-msgstr "Re-gê"
-
-#: src/plugins/id3_extractor.c:63 src/plugins/qt_extractor.c:47
-msgid "Rock"
-msgstr "Rốc"
-
-#: src/plugins/id3_extractor.c:64 src/plugins/qt_extractor.c:48
-msgid "Techno"
-msgstr "Kỹ thuật"
-
-#: src/plugins/id3_extractor.c:65 src/plugins/qt_extractor.c:49
-msgid "Industrial"
-msgstr "Công nghiệp"
-
-#: src/plugins/id3_extractor.c:66 src/plugins/qt_extractor.c:50
-msgid "Alternative"
-msgstr "Sự chọn khác"
-
-#: src/plugins/id3_extractor.c:67 src/plugins/qt_extractor.c:51
-msgid "Ska"
-msgstr "Ska"
-
-#: src/plugins/id3_extractor.c:68 src/plugins/qt_extractor.c:52
-msgid "Death Metal"
-msgstr "Kim chết"
-
-#: src/plugins/id3_extractor.c:69 src/plugins/qt_extractor.c:53
-msgid "Pranks"
-msgstr "Trò chơi ác"
-
-#: src/plugins/id3_extractor.c:70 src/plugins/qt_extractor.c:54
-msgid "Soundtrack"
-msgstr "Nhạc của phím"
-
-#: src/plugins/id3_extractor.c:71 src/plugins/qt_extractor.c:55
-msgid "Euro-Techno"
-msgstr "Kỹ thuật Âu"
-
-#: src/plugins/id3_extractor.c:72 src/plugins/qt_extractor.c:56
-msgid "Ambient"
-msgstr "Chung quanh"
-
-#: src/plugins/id3_extractor.c:73 src/plugins/qt_extractor.c:57
-msgid "Trip-Hop"
-msgstr "Tợ-rít-Hot"
-
-#: src/plugins/id3_extractor.c:74 src/plugins/qt_extractor.c:58
-msgid "Vocal"
-msgstr "Thanh nhạc"
-
-#: src/plugins/id3_extractor.c:75 src/plugins/qt_extractor.c:59
-msgid "Jazz+Funk"
-msgstr "Ja và Sôi nổi"
-
-#: src/plugins/id3_extractor.c:76 src/plugins/qt_extractor.c:60
-msgid "Fusion"
-msgstr "Nóng chảy"
-
-#: src/plugins/id3_extractor.c:77 src/plugins/qt_extractor.c:61
-msgid "Trance"
-msgstr "Hôn mê"
-
-#: src/plugins/id3_extractor.c:78 src/plugins/qt_extractor.c:62
-msgid "Classical"
-msgstr "Cổ điển"
-
-#: src/plugins/id3_extractor.c:79 src/plugins/qt_extractor.c:63
-msgid "Instrumental"
-msgstr "Bằng nhạc khí"
-
-#: src/plugins/id3_extractor.c:80 src/plugins/qt_extractor.c:64
-msgid "Acid"
-msgstr "Axit"
-
-#: src/plugins/id3_extractor.c:81 src/plugins/qt_extractor.c:65
-msgid "House"
-msgstr "Nhà"
-
-#: src/plugins/id3_extractor.c:82 src/plugins/qt_extractor.c:66
-msgid "Game"
-msgstr "Trò chơi"
-
-#: src/plugins/id3_extractor.c:83 src/plugins/qt_extractor.c:67
-msgid "Sound Clip"
-msgstr "Trích đoạn âm thanh"
-
-#: src/plugins/id3_extractor.c:84 src/plugins/qt_extractor.c:68
-msgid "Gospel"
-msgstr "Phúc âm"
-
-#: src/plugins/id3_extractor.c:85 src/plugins/qt_extractor.c:69
-msgid "Noise"
-msgstr "Ồn"
-
-#: src/plugins/id3_extractor.c:86 src/plugins/qt_extractor.c:70
-msgid "Alt. Rock"
-msgstr "Rốc thay thế"
-
-#: src/plugins/id3_extractor.c:87 src/plugins/qt_extractor.c:71
-msgid "Bass"
-msgstr "Trầm"
-
-#: src/plugins/id3_extractor.c:88 src/plugins/qt_extractor.c:72
-msgid "Soul"
-msgstr "Hồn"
-
-#: src/plugins/id3_extractor.c:89 src/plugins/qt_extractor.c:73
-msgid "Punk"
-msgstr "Rốc dữ dội"
-
-#: src/plugins/id3_extractor.c:90 src/plugins/qt_extractor.c:74
-msgid "Space"
-msgstr "Khoảng"
-
-#: src/plugins/id3_extractor.c:91 src/plugins/qt_extractor.c:75
-msgid "Meditative"
-msgstr "Tĩnh tọa"
-
-#: src/plugins/id3_extractor.c:92 src/plugins/qt_extractor.c:76
-msgid "Instrumental Pop"
-msgstr "Pốp bằng nhac khí"
-
-#: src/plugins/id3_extractor.c:93 src/plugins/qt_extractor.c:77
-msgid "Instrumental Rock"
-msgstr "Rốc bằng nhạc khí"
-
-#: src/plugins/id3_extractor.c:94 src/plugins/qt_extractor.c:78
-msgid "Ethnic"
-msgstr "Dân tộc"
-
-#: src/plugins/id3_extractor.c:95 src/plugins/qt_extractor.c:79
-msgid "Gothic"
-msgstr "Gô-tích"
-
-#: src/plugins/id3_extractor.c:96 src/plugins/qt_extractor.c:80
-msgid "Darkwave"
-msgstr "Sóng bóng"
-
-#: src/plugins/id3_extractor.c:97 src/plugins/qt_extractor.c:81
-msgid "Techno-Industrial"
-msgstr "Kỹ thuật - Công nghiệp"
-
-#: src/plugins/id3_extractor.c:98 src/plugins/qt_extractor.c:82
-msgid "Electronic"
-msgstr "Điện"
-
-#: src/plugins/id3_extractor.c:99 src/plugins/qt_extractor.c:83
-msgid "Pop-Folk"
-msgstr "Pốp - Dân ca"
-
-#: src/plugins/id3_extractor.c:100 src/plugins/qt_extractor.c:84
-msgid "Eurodance"
-msgstr "Khiêu vũ Âu"
-
-#: src/plugins/id3_extractor.c:101 src/plugins/qt_extractor.c:85
-msgid "Dream"
-msgstr "Mơ mộng"
-
-#: src/plugins/id3_extractor.c:102 src/plugins/qt_extractor.c:86
-msgid "Southern Rock"
-msgstr "Rốc Nam"
-
-#: src/plugins/id3_extractor.c:103 src/plugins/qt_extractor.c:87
-msgid "Comedy"
-msgstr "Kịch vui"
-
-#: src/plugins/id3_extractor.c:104 src/plugins/qt_extractor.c:88
-msgid "Cult"
-msgstr "Giáo phái"
-
-#: src/plugins/id3_extractor.c:105 src/plugins/qt_extractor.c:89
-msgid "Gangsta Rap"
-msgstr "Rap Kẻ cướp"
-
-#: src/plugins/id3_extractor.c:106 src/plugins/qt_extractor.c:90
-msgid "Top 40"
-msgstr "40 tốt nhất"
-
-#: src/plugins/id3_extractor.c:107 src/plugins/qt_extractor.c:91
-msgid "Christian Rap"
-msgstr "Ráp Cơ-đốc"
-
-#: src/plugins/id3_extractor.c:108 src/plugins/qt_extractor.c:92
-msgid "Pop/Funk"
-msgstr "Pốp/Sôi nổi"
-
-#: src/plugins/id3_extractor.c:109 src/plugins/qt_extractor.c:93
-msgid "Jungle"
-msgstr "Rừng"
-
-#: src/plugins/id3_extractor.c:110 src/plugins/qt_extractor.c:94
-msgid "Native American"
-msgstr "Mỹ bản xứ"
-
-#: src/plugins/id3_extractor.c:111 src/plugins/qt_extractor.c:95
-msgid "Cabaret"
-msgstr "Ca-ba-rê"
-
-#: src/plugins/id3_extractor.c:112 src/plugins/qt_extractor.c:96
-msgid "New Wave"
-msgstr "Sóng mới"
-
-#: src/plugins/id3_extractor.c:113 src/plugins/qt_extractor.c:97
-msgid "Psychedelic"
-msgstr "Tạo ảo giác"
-
-#: src/plugins/id3_extractor.c:114 src/plugins/qt_extractor.c:98
-msgid "Rave"
-msgstr "Rít"
-
-#: src/plugins/id3_extractor.c:115 src/plugins/qt_extractor.c:99
-msgid "Showtunes"
-msgstr "Điệu kịch"
-
-#: src/plugins/id3_extractor.c:116 src/plugins/qt_extractor.c:100
-msgid "Trailer"
-msgstr "Quảng cáo trước phím"
-
-#: src/plugins/id3_extractor.c:117 src/plugins/qt_extractor.c:101
-msgid "Lo-Fi"
-msgstr "Độ trung thực thấp"
-
-#: src/plugins/id3_extractor.c:118 src/plugins/qt_extractor.c:102
-msgid "Tribal"
-msgstr "Bộ lạc"
-
-#: src/plugins/id3_extractor.c:119 src/plugins/qt_extractor.c:103
-msgid "Acid Punk"
-msgstr "Rốc dữ dội axit"
-
-#: src/plugins/id3_extractor.c:120 src/plugins/qt_extractor.c:104
-msgid "Acid Jazz"
-msgstr "Ja axit"
-
-#: src/plugins/id3_extractor.c:121 src/plugins/qt_extractor.c:105
-msgid "Polka"
-msgstr "Pôn-ca"
-
-#: src/plugins/id3_extractor.c:122 src/plugins/qt_extractor.c:106
-msgid "Retro"
-msgstr "Lại sau"
-
-#: src/plugins/id3_extractor.c:123 src/plugins/qt_extractor.c:107
-msgid "Musical"
-msgstr "Kịch nhạc"
-
-#: src/plugins/id3_extractor.c:124 src/plugins/qt_extractor.c:108
-msgid "Rock & Roll"
-msgstr "Rốc en rôn"
-
-#: src/plugins/id3_extractor.c:125 src/plugins/qt_extractor.c:109
-msgid "Hard Rock"
-msgstr "Rốc cứng"
-
-#: src/plugins/id3_extractor.c:126 src/plugins/qt_extractor.c:110
-msgid "Folk"
-msgstr "Dân ca"
-
-#: src/plugins/id3_extractor.c:127 src/plugins/qt_extractor.c:111
-msgid "Folk/Rock"
-msgstr "Dân ca/Rốc"
-
-#: src/plugins/id3_extractor.c:128 src/plugins/qt_extractor.c:112
-msgid "National Folk"
-msgstr "Dân ca quốc gia"
-
-#: src/plugins/id3_extractor.c:129 src/plugins/qt_extractor.c:113
-msgid "Swing"
-msgstr "Xuynh"
-
-#: src/plugins/id3_extractor.c:130 src/plugins/qt_extractor.c:114
-msgid "Fast-Fusion"
-msgstr "Nóng chạy nhanh"
-
-#: src/plugins/id3_extractor.c:131 src/plugins/qt_extractor.c:115
-msgid "Bebob"
-msgstr "Bí-bọt"
-
-#: src/plugins/id3_extractor.c:132 src/plugins/qt_extractor.c:116
-msgid "Latin"
-msgstr "Dân tộc Tây-ban-nha"
-
-#: src/plugins/id3_extractor.c:133 src/plugins/qt_extractor.c:117
-msgid "Revival"
-msgstr "Phục âm nhấn mạnh"
-
-#: src/plugins/id3_extractor.c:134 src/plugins/qt_extractor.c:118
-msgid "Celtic"
-msgstr "Xen-tơ"
-
-#: src/plugins/id3_extractor.c:135 src/plugins/qt_extractor.c:119
-msgid "Bluegrass"
-msgstr "Cỏ xanh"
-
-#: src/plugins/id3_extractor.c:136 src/plugins/qt_extractor.c:120
-msgid "Avantgarde"
-msgstr "Đi tiên phong"
-
-#: src/plugins/id3_extractor.c:137 src/plugins/qt_extractor.c:121
-msgid "Gothic Rock"
-msgstr "Rốc Gô-tích"
-
-#: src/plugins/id3_extractor.c:138 src/plugins/qt_extractor.c:122
-msgid "Progressive Rock"
-msgstr "Rốc tiến lên"
-
-#: src/plugins/id3_extractor.c:139 src/plugins/qt_extractor.c:123
-msgid "Psychedelic Rock"
-msgstr "Rốc tạo ảo giác"
-
-#: src/plugins/id3_extractor.c:140 src/plugins/qt_extractor.c:124
-msgid "Symphonic Rock"
-msgstr "Rốc giao hưởng"
-
-#: src/plugins/id3_extractor.c:141 src/plugins/qt_extractor.c:125
-msgid "Slow Rock"
-msgstr "Rốc chậm"
-
-#: src/plugins/id3_extractor.c:142 src/plugins/qt_extractor.c:126
-msgid "Big Band"
-msgstr "Dàn nhạc To"
-
-#: src/plugins/id3_extractor.c:143 src/plugins/qt_extractor.c:127
-msgid "Chorus"
-msgstr "Hợp xướng"
-
-#: src/plugins/id3_extractor.c:144 src/plugins/qt_extractor.c:128
-msgid "Easy Listening"
-msgstr "Nghe dễ dàng"
-
-#: src/plugins/id3_extractor.c:145 src/plugins/qt_extractor.c:129
-msgid "Acoustic"
-msgstr "Độ trung thực âm thanh"
-
-#: src/plugins/id3_extractor.c:146 src/plugins/qt_extractor.c:130
-msgid "Humour"
-msgstr "Hài hước"
-
-#: src/plugins/id3_extractor.c:147 src/plugins/qt_extractor.c:131
-msgid "Speech"
-msgstr "Nói tiếng"
-
-#: src/plugins/id3_extractor.c:148 src/plugins/qt_extractor.c:132
-msgid "Chanson"
-msgstr "Bài hát kiểu Pháp"
-
-#: src/plugins/id3_extractor.c:149 src/plugins/qt_extractor.c:133
-msgid "Opera"
-msgstr "Hát kịch"
-
-#: src/plugins/id3_extractor.c:150 src/plugins/qt_extractor.c:134
-msgid "Chamber Music"
-msgstr "Nhạc phòng"
-
-#: src/plugins/id3_extractor.c:151 src/plugins/qt_extractor.c:135
-msgid "Sonata"
-msgstr "Bản xô-nat"
-
-#: src/plugins/id3_extractor.c:152 src/plugins/qt_extractor.c:136
-msgid "Symphony"
-msgstr "Giao hưởng"
-
-#: src/plugins/id3_extractor.c:153 src/plugins/qt_extractor.c:137
-msgid "Booty Bass"
-msgstr "Trầm Booty"
-
-#: src/plugins/id3_extractor.c:154 src/plugins/qt_extractor.c:138
-msgid "Primus"
-msgstr "Pri-mus"
-
-#: src/plugins/id3_extractor.c:155 src/plugins/qt_extractor.c:139
-msgid "Porn Groove"
-msgstr "Porn Groove"
-
-#: src/plugins/id3_extractor.c:156 src/plugins/qt_extractor.c:140
-msgid "Satire"
-msgstr "Châm biếm"
-
-#: src/plugins/id3_extractor.c:157 src/plugins/qt_extractor.c:141
-msgid "Slow Jam"
-msgstr "Ứng tác chậm"
-
-#: src/plugins/id3_extractor.c:158 src/plugins/qt_extractor.c:142
-msgid "Club"
-msgstr "Hội"
-
-#: src/plugins/id3_extractor.c:159 src/plugins/qt_extractor.c:143
-msgid "Tango"
-msgstr "Tan-gô"
-
-#: src/plugins/id3_extractor.c:160 src/plugins/qt_extractor.c:144
-msgid "Samba"
-msgstr "Sam-ba"
-
-#: src/plugins/id3_extractor.c:161 src/plugins/qt_extractor.c:145
-msgid "Folklore"
-msgstr "Truyền thống dân gian"
-
-#: src/plugins/id3_extractor.c:162 src/plugins/qt_extractor.c:146
-msgid "Ballad"
-msgstr "Khúc balat"
-
-#: src/plugins/id3_extractor.c:163 src/plugins/qt_extractor.c:147
-msgid "Power Ballad"
-msgstr "Khúc balat năng lực"
-
-#: src/plugins/id3_extractor.c:164 src/plugins/qt_extractor.c:148
-msgid "Rhythmic Soul"
-msgstr "Hồn nhịp nhàng"
-
-#: src/plugins/id3_extractor.c:165 src/plugins/qt_extractor.c:149
-msgid "Freestyle"
-msgstr "Kiểu tự do"
-
-#: src/plugins/id3_extractor.c:166 src/plugins/qt_extractor.c:150
-msgid "Duet"
-msgstr "Bản nhạc cho bộ đôi"
-
-#: src/plugins/id3_extractor.c:167 src/plugins/qt_extractor.c:151
-msgid "Punk Rock"
-msgstr "Rốc - rốc dữ dội"
-
-#: src/plugins/id3_extractor.c:168 src/plugins/qt_extractor.c:152
-msgid "Drum Solo"
-msgstr "Trống diễn đơn"
-
-#: src/plugins/id3_extractor.c:169 src/plugins/qt_extractor.c:153
-msgid "A Cappella"
-msgstr "Hát không có nhạc hỗ trợ"
-
-#: src/plugins/id3_extractor.c:170 src/plugins/qt_extractor.c:154
-msgid "Euro-House"
-msgstr "Nhà Âu"
-
-#: src/plugins/id3_extractor.c:171 src/plugins/qt_extractor.c:155
-msgid "Dance Hall"
-msgstr "Phòng khiêu vũ"
-
-#: src/plugins/id3_extractor.c:172 src/plugins/qt_extractor.c:156
-msgid "Goa"
-msgstr "Goa"
-
-#: src/plugins/id3_extractor.c:173 src/plugins/qt_extractor.c:157
-msgid "Drum & Bass"
-msgstr "Trống và Trầm"
-
-#: src/plugins/id3_extractor.c:174 src/plugins/qt_extractor.c:158
-msgid "Club-House"
-msgstr "Nhà hội"
-
-#: src/plugins/id3_extractor.c:175 src/plugins/qt_extractor.c:159
-msgid "Hardcore"
-msgstr "Lõi cứng"
-
-#: src/plugins/id3_extractor.c:176 src/plugins/qt_extractor.c:160
-msgid "Terror"
-msgstr "Kinh hãi"
-
-#: src/plugins/id3_extractor.c:177 src/plugins/qt_extractor.c:161
-msgid "Indie"
-msgstr "In-đi"
-
-#: src/plugins/id3_extractor.c:178 src/plugins/qt_extractor.c:162
-msgid "BritPop"
-msgstr "Pốp quốc Anh"
-
-#: src/plugins/id3_extractor.c:179 src/plugins/qt_extractor.c:163
-msgid "Negerpunk"
-msgstr "Rốc dữ dội đen"
-
-#: src/plugins/id3_extractor.c:180 src/plugins/qt_extractor.c:164
-msgid "Polsk Punk"
-msgstr "Rốc dữ dội Ba-lan"
-
-#: src/plugins/id3_extractor.c:181 src/plugins/qt_extractor.c:165
-msgid "Beat"
-msgstr "Nhịp phách"
-
-#: src/plugins/id3_extractor.c:182 src/plugins/qt_extractor.c:166
-msgid "Christian Gangsta Rap"
-msgstr "Rap kẻ cướp Cơ đốc"
-
-#: src/plugins/id3_extractor.c:183 src/plugins/qt_extractor.c:167
-msgid "Heavy Metal"
-msgstr "Kim nặng"
-
-#: src/plugins/id3_extractor.c:184 src/plugins/qt_extractor.c:168
-msgid "Black Metal"
-msgstr "Kim đen"
-
-#: src/plugins/id3_extractor.c:185 src/plugins/qt_extractor.c:169
-msgid "Crossover"
-msgstr "Xuyên chéo"
-
-#: src/plugins/id3_extractor.c:186 src/plugins/qt_extractor.c:170
-msgid "Contemporary Christian"
-msgstr "Cơ-đốc đương thời"
-
-#: src/plugins/id3_extractor.c:187 src/plugins/qt_extractor.c:171
-msgid "Christian Rock"
-msgstr "Rốc Cơ-đốc"
-
-#: src/plugins/id3_extractor.c:188 src/plugins/qt_extractor.c:172
-msgid "Merengue"
-msgstr "Me-ren-gê"
-
-#: src/plugins/id3_extractor.c:189 src/plugins/qt_extractor.c:173
-msgid "Salsa"
-msgstr "San-sa"
-
-#: src/plugins/id3_extractor.c:190 src/plugins/qt_extractor.c:174
-msgid "Thrash Metal"
-msgstr "Kim quẫy đập"
-
-#: src/plugins/id3_extractor.c:191 src/plugins/qt_extractor.c:175
-msgid "Anime"
-msgstr "A-ni-mê"
-
-#: src/plugins/id3_extractor.c:192 src/plugins/qt_extractor.c:176
-msgid "JPop"
-msgstr "JPốp"
-
-#: src/plugins/id3_extractor.c:193 src/plugins/qt_extractor.c:177
-msgid "Synthpop"
-msgstr "Pốp tổng hợp"
-
-#: src/plugins/man_extractor.c:161
-msgid "Commands"
-msgstr "Lệnh"
-
-#: src/plugins/man_extractor.c:165
-msgid "System calls"
-msgstr "Cuộc gọi hệ thống"
-
-#: src/plugins/man_extractor.c:169
-msgid "Library calls"
-msgstr "Cuộc gọi thư viện"
-
-#: src/plugins/man_extractor.c:173
-msgid "Special files"
-msgstr "Tập tin đặc biệt"
-
-#: src/plugins/man_extractor.c:177
-msgid "File formats and conventions"
-msgstr "Khuôn dang tập tin và quy ước"
-
-#: src/plugins/man_extractor.c:181
-msgid "Games"
-msgstr "Trò chơi"
-
-#: src/plugins/man_extractor.c:185
-msgid "Conventions and miscellaneous"
-msgstr "Quy ước và linh tinh"
-
-#: src/plugins/man_extractor.c:189
-msgid "System management commands"
-msgstr "Lệnh quản lý hệ thống"
-
-#: src/plugins/man_extractor.c:193
-msgid "Kernel routines"
-msgstr "Thao tác hạt nhân"
-
-#: src/plugins/mp3_extractor.c:95 src/plugins/wav_extractor.c:120
-msgid "stereo"
-msgstr "âm lập thể"
-
-#: src/plugins/mp3_extractor.c:96
-msgid "joint stereo"
-msgstr "âm lập thể chung"
-
-#: src/plugins/mp3_extractor.c:97
-msgid "dual channel"
-msgstr "kênh đôi"
-
-#: src/plugins/mp3_extractor.c:98 src/plugins/wav_extractor.c:120
-msgid "mono"
-msgstr "một nguồn"
-
-#: src/plugins/mp3_extractor.c:101
-msgid "MPEG-1"
-msgstr "MPEG-1"
-
-#: src/plugins/mp3_extractor.c:102
-msgid "MPEG-2"
-msgstr "MPEG-2"
-
-#: src/plugins/mp3_extractor.c:103
-msgid "MPEG-2.5"
-msgstr "MPEG-2.5"
-
-#: src/plugins/mp3_extractor.c:106
-msgid "Layer I"
-msgstr "Lớp 1"
-
-#: src/plugins/mp3_extractor.c:107
-msgid "Layer II"
-msgstr "Lớp 2"
-
-#: src/plugins/mp3_extractor.c:108
-msgid "Layer III"
-msgstr "Lớp 3"
-
-#: src/plugins/mp3_extractor.c:203
-msgid "VBR"
-msgstr "VBR"
-
-#: src/plugins/mp3_extractor.c:203
-msgid "CBR"
-msgstr "CBR"
-
-#: src/plugins/mp3_extractor.c:206
-msgid "no copyright"
-msgstr "không có tác quyền"
-
-#: src/plugins/mp3_extractor.c:207
-msgid "original"
-msgstr "gốc"
-
-#: src/plugins/mp3_extractor.c:207
-msgid "copy"
-msgstr "chép"
 
 #: src/plugins/ole2_extractor.c:387
 msgid "No Proofing"
@@ -2318,10 +1614,538 @@ msgstr "Pha-xi"
 msgid "Revision #%u: Author `%s' worked on `%s'"
 msgstr "Bản sửa đổi #%u: Tác giả « %s » đã làm việc « %s »."
 
-#: src/plugins/riff_extractor.c:114
-#, c-format
-msgid "codec: %s, %u fps, %u ms"
-msgstr "codec: %s, %u khung/giây, %u miligiây"
+#: src/plugins/wav_extractor.c:120
+msgid "mono"
+msgstr "một nguồn"
+
+#: src/plugins/wav_extractor.c:120
+msgid "stereo"
+msgstr "âm lập thể"
+
+#~ msgid "GB"
+#~ msgstr "GB"
+
+#~ msgid "MB"
+#~ msgstr "MB"
+
+#~ msgid "KB"
+#~ msgstr "KB"
+
+#~ msgid "Bytes"
+#~ msgstr "Byte"
+
+#~ msgid "Blues"
+#~ msgstr "Blu"
+
+#~ msgid "Classic Rock"
+#~ msgstr "Rốc cổ điển"
+
+#~ msgid "Country"
+#~ msgstr "Quốc gia"
+
+#~ msgid "Dance"
+#~ msgstr "Khiêu vũ"
+
+#~ msgid "Disco"
+#~ msgstr "Đít-xcô"
+
+#~ msgid "Funk"
+#~ msgstr "Sôi nổi"
+
+#~ msgid "Grunge"
+#~ msgstr "Vỡ mộng"
+
+#~ msgid "Hip-Hop"
+#~ msgstr "Hít-họt"
+
+#~ msgid "Jazz"
+#~ msgstr "Ja"
+
+#~ msgid "Metal"
+#~ msgstr "Kim"
+
+#~ msgid "New Age"
+#~ msgstr "Thời kỳ mới"
+
+#~ msgid "Oldies"
+#~ msgstr "Cũ"
+
+#~ msgid "Other"
+#~ msgstr "Khác"
+
+#~ msgid "Pop"
+#~ msgstr "Pốp"
+
+#~ msgid "R&B"
+#~ msgstr "Nhịp điệu và blu"
+
+#~ msgid "Rap"
+#~ msgstr "Rap"
+
+#~ msgid "Reggae"
+#~ msgstr "Re-gê"
+
+#~ msgid "Rock"
+#~ msgstr "Rốc"
+
+#~ msgid "Techno"
+#~ msgstr "Kỹ thuật"
+
+#~ msgid "Industrial"
+#~ msgstr "Công nghiệp"
+
+#~ msgid "Alternative"
+#~ msgstr "Sự chọn khác"
+
+#~ msgid "Ska"
+#~ msgstr "Ska"
+
+#~ msgid "Death Metal"
+#~ msgstr "Kim chết"
+
+#~ msgid "Pranks"
+#~ msgstr "Trò chơi ác"
+
+#~ msgid "Soundtrack"
+#~ msgstr "Nhạc của phím"
+
+#~ msgid "Euro-Techno"
+#~ msgstr "Kỹ thuật Âu"
+
+#~ msgid "Ambient"
+#~ msgstr "Chung quanh"
+
+#~ msgid "Trip-Hop"
+#~ msgstr "Tợ-rít-Hot"
+
+#~ msgid "Vocal"
+#~ msgstr "Thanh nhạc"
+
+#~ msgid "Jazz+Funk"
+#~ msgstr "Ja và Sôi nổi"
+
+#~ msgid "Fusion"
+#~ msgstr "Nóng chảy"
+
+#~ msgid "Trance"
+#~ msgstr "Hôn mê"
+
+#~ msgid "Classical"
+#~ msgstr "Cổ điển"
+
+#~ msgid "Instrumental"
+#~ msgstr "Bằng nhạc khí"
+
+#~ msgid "Acid"
+#~ msgstr "Axit"
+
+#~ msgid "House"
+#~ msgstr "Nhà"
+
+#~ msgid "Game"
+#~ msgstr "Trò chơi"
+
+#~ msgid "Sound Clip"
+#~ msgstr "Trích đoạn âm thanh"
+
+#~ msgid "Gospel"
+#~ msgstr "Phúc âm"
+
+#~ msgid "Noise"
+#~ msgstr "Ồn"
+
+#~ msgid "Alt. Rock"
+#~ msgstr "Rốc thay thế"
+
+#~ msgid "Bass"
+#~ msgstr "Trầm"
+
+#~ msgid "Soul"
+#~ msgstr "Hồn"
+
+#~ msgid "Punk"
+#~ msgstr "Rốc dữ dội"
+
+#~ msgid "Space"
+#~ msgstr "Khoảng"
+
+#~ msgid "Meditative"
+#~ msgstr "Tĩnh tọa"
+
+#~ msgid "Instrumental Pop"
+#~ msgstr "Pốp bằng nhac khí"
+
+#~ msgid "Instrumental Rock"
+#~ msgstr "Rốc bằng nhạc khí"
+
+#~ msgid "Ethnic"
+#~ msgstr "Dân tộc"
+
+#~ msgid "Gothic"
+#~ msgstr "Gô-tích"
+
+#~ msgid "Darkwave"
+#~ msgstr "Sóng bóng"
+
+#~ msgid "Techno-Industrial"
+#~ msgstr "Kỹ thuật - Công nghiệp"
+
+#~ msgid "Electronic"
+#~ msgstr "Điện"
+
+#~ msgid "Pop-Folk"
+#~ msgstr "Pốp - Dân ca"
+
+#~ msgid "Eurodance"
+#~ msgstr "Khiêu vũ Âu"
+
+#~ msgid "Dream"
+#~ msgstr "Mơ mộng"
+
+#~ msgid "Southern Rock"
+#~ msgstr "Rốc Nam"
+
+#~ msgid "Comedy"
+#~ msgstr "Kịch vui"
+
+#~ msgid "Cult"
+#~ msgstr "Giáo phái"
+
+#~ msgid "Gangsta Rap"
+#~ msgstr "Rap Kẻ cướp"
+
+#~ msgid "Top 40"
+#~ msgstr "40 tốt nhất"
+
+#~ msgid "Christian Rap"
+#~ msgstr "Ráp Cơ-đốc"
+
+#~ msgid "Pop/Funk"
+#~ msgstr "Pốp/Sôi nổi"
+
+#~ msgid "Jungle"
+#~ msgstr "Rừng"
+
+#~ msgid "Native American"
+#~ msgstr "Mỹ bản xứ"
+
+#~ msgid "Cabaret"
+#~ msgstr "Ca-ba-rê"
+
+#~ msgid "New Wave"
+#~ msgstr "Sóng mới"
+
+#~ msgid "Psychedelic"
+#~ msgstr "Tạo ảo giác"
+
+#~ msgid "Rave"
+#~ msgstr "Rít"
+
+#~ msgid "Showtunes"
+#~ msgstr "Điệu kịch"
+
+#~ msgid "Trailer"
+#~ msgstr "Quảng cáo trước phím"
+
+#~ msgid "Lo-Fi"
+#~ msgstr "Độ trung thực thấp"
+
+#~ msgid "Tribal"
+#~ msgstr "Bộ lạc"
+
+#~ msgid "Acid Punk"
+#~ msgstr "Rốc dữ dội axit"
+
+#~ msgid "Acid Jazz"
+#~ msgstr "Ja axit"
+
+#~ msgid "Polka"
+#~ msgstr "Pôn-ca"
+
+#~ msgid "Retro"
+#~ msgstr "Lại sau"
+
+#~ msgid "Musical"
+#~ msgstr "Kịch nhạc"
+
+#~ msgid "Rock & Roll"
+#~ msgstr "Rốc en rôn"
+
+#~ msgid "Hard Rock"
+#~ msgstr "Rốc cứng"
+
+#~ msgid "Folk"
+#~ msgstr "Dân ca"
+
+#~ msgid "Folk/Rock"
+#~ msgstr "Dân ca/Rốc"
+
+#~ msgid "National Folk"
+#~ msgstr "Dân ca quốc gia"
+
+#~ msgid "Swing"
+#~ msgstr "Xuynh"
+
+#~ msgid "Fast-Fusion"
+#~ msgstr "Nóng chạy nhanh"
+
+#~ msgid "Bebob"
+#~ msgstr "Bí-bọt"
+
+#~ msgid "Latin"
+#~ msgstr "Dân tộc Tây-ban-nha"
+
+#~ msgid "Revival"
+#~ msgstr "Phục âm nhấn mạnh"
+
+#~ msgid "Celtic"
+#~ msgstr "Xen-tơ"
+
+#~ msgid "Bluegrass"
+#~ msgstr "Cỏ xanh"
+
+#~ msgid "Avantgarde"
+#~ msgstr "Đi tiên phong"
+
+#~ msgid "Gothic Rock"
+#~ msgstr "Rốc Gô-tích"
+
+#~ msgid "Progressive Rock"
+#~ msgstr "Rốc tiến lên"
+
+#~ msgid "Psychedelic Rock"
+#~ msgstr "Rốc tạo ảo giác"
+
+#~ msgid "Symphonic Rock"
+#~ msgstr "Rốc giao hưởng"
+
+#~ msgid "Slow Rock"
+#~ msgstr "Rốc chậm"
+
+#~ msgid "Big Band"
+#~ msgstr "Dàn nhạc To"
+
+#~ msgid "Chorus"
+#~ msgstr "Hợp xướng"
+
+#~ msgid "Easy Listening"
+#~ msgstr "Nghe dễ dàng"
+
+#~ msgid "Acoustic"
+#~ msgstr "Độ trung thực âm thanh"
+
+#~ msgid "Humour"
+#~ msgstr "Hài hước"
+
+#~ msgid "Speech"
+#~ msgstr "Nói tiếng"
+
+#~ msgid "Chanson"
+#~ msgstr "Bài hát kiểu Pháp"
+
+#~ msgid "Opera"
+#~ msgstr "Hát kịch"
+
+#~ msgid "Chamber Music"
+#~ msgstr "Nhạc phòng"
+
+#~ msgid "Sonata"
+#~ msgstr "Bản xô-nat"
+
+#~ msgid "Symphony"
+#~ msgstr "Giao hưởng"
+
+#~ msgid "Booty Bass"
+#~ msgstr "Trầm Booty"
+
+#~ msgid "Primus"
+#~ msgstr "Pri-mus"
+
+#~ msgid "Porn Groove"
+#~ msgstr "Porn Groove"
+
+#~ msgid "Satire"
+#~ msgstr "Châm biếm"
+
+#~ msgid "Slow Jam"
+#~ msgstr "Ứng tác chậm"
+
+#~ msgid "Club"
+#~ msgstr "Hội"
+
+#~ msgid "Tango"
+#~ msgstr "Tan-gô"
+
+#~ msgid "Samba"
+#~ msgstr "Sam-ba"
+
+#~ msgid "Folklore"
+#~ msgstr "Truyền thống dân gian"
+
+#~ msgid "Ballad"
+#~ msgstr "Khúc balat"
+
+#~ msgid "Power Ballad"
+#~ msgstr "Khúc balat năng lực"
+
+#~ msgid "Rhythmic Soul"
+#~ msgstr "Hồn nhịp nhàng"
+
+#~ msgid "Freestyle"
+#~ msgstr "Kiểu tự do"
+
+#~ msgid "Duet"
+#~ msgstr "Bản nhạc cho bộ đôi"
+
+#~ msgid "Punk Rock"
+#~ msgstr "Rốc - rốc dữ dội"
+
+#~ msgid "Drum Solo"
+#~ msgstr "Trống diễn đơn"
+
+#~ msgid "A Cappella"
+#~ msgstr "Hát không có nhạc hỗ trợ"
+
+#~ msgid "Euro-House"
+#~ msgstr "Nhà Âu"
+
+#~ msgid "Dance Hall"
+#~ msgstr "Phòng khiêu vũ"
+
+#~ msgid "Goa"
+#~ msgstr "Goa"
+
+#~ msgid "Drum & Bass"
+#~ msgstr "Trống và Trầm"
+
+#~ msgid "Club-House"
+#~ msgstr "Nhà hội"
+
+#~ msgid "Hardcore"
+#~ msgstr "Lõi cứng"
+
+#~ msgid "Terror"
+#~ msgstr "Kinh hãi"
+
+#~ msgid "Indie"
+#~ msgstr "In-đi"
+
+#~ msgid "BritPop"
+#~ msgstr "Pốp quốc Anh"
+
+#~ msgid "Negerpunk"
+#~ msgstr "Rốc dữ dội đen"
+
+#~ msgid "Polsk Punk"
+#~ msgstr "Rốc dữ dội Ba-lan"
+
+#~ msgid "Beat"
+#~ msgstr "Nhịp phách"
+
+#~ msgid "Christian Gangsta Rap"
+#~ msgstr "Rap kẻ cướp Cơ đốc"
+
+#~ msgid "Heavy Metal"
+#~ msgstr "Kim nặng"
+
+#~ msgid "Black Metal"
+#~ msgstr "Kim đen"
+
+#~ msgid "Crossover"
+#~ msgstr "Xuyên chéo"
+
+#~ msgid "Contemporary Christian"
+#~ msgstr "Cơ-đốc đương thời"
+
+#~ msgid "Christian Rock"
+#~ msgstr "Rốc Cơ-đốc"
+
+#~ msgid "Merengue"
+#~ msgstr "Me-ren-gê"
+
+#~ msgid "Salsa"
+#~ msgstr "San-sa"
+
+#~ msgid "Thrash Metal"
+#~ msgstr "Kim quẫy đập"
+
+#~ msgid "Anime"
+#~ msgstr "A-ni-mê"
+
+#~ msgid "JPop"
+#~ msgstr "JPốp"
+
+#~ msgid "Synthpop"
+#~ msgstr "Pốp tổng hợp"
+
+#~ msgid "Commands"
+#~ msgstr "Lệnh"
+
+#~ msgid "System calls"
+#~ msgstr "Cuộc gọi hệ thống"
+
+#~ msgid "Library calls"
+#~ msgstr "Cuộc gọi thư viện"
+
+#~ msgid "Special files"
+#~ msgstr "Tập tin đặc biệt"
+
+#~ msgid "File formats and conventions"
+#~ msgstr "Khuôn dang tập tin và quy ước"
+
+#~ msgid "Games"
+#~ msgstr "Trò chơi"
+
+#~ msgid "Conventions and miscellaneous"
+#~ msgstr "Quy ước và linh tinh"
+
+#~ msgid "System management commands"
+#~ msgstr "Lệnh quản lý hệ thống"
+
+#~ msgid "Kernel routines"
+#~ msgstr "Thao tác hạt nhân"
+
+#~ msgid "joint stereo"
+#~ msgstr "âm lập thể chung"
+
+#~ msgid "dual channel"
+#~ msgstr "kênh đôi"
+
+#~ msgid "MPEG-1"
+#~ msgstr "MPEG-1"
+
+#~ msgid "MPEG-2"
+#~ msgstr "MPEG-2"
+
+#~ msgid "MPEG-2.5"
+#~ msgstr "MPEG-2.5"
+
+#~ msgid "Layer I"
+#~ msgstr "Lớp 1"
+
+#~ msgid "Layer II"
+#~ msgstr "Lớp 2"
+
+#~ msgid "Layer III"
+#~ msgstr "Lớp 3"
+
+#~ msgid "VBR"
+#~ msgstr "VBR"
+
+#~ msgid "CBR"
+#~ msgstr "CBR"
+
+#~ msgid "no copyright"
+#~ msgstr "không có tác quyền"
+
+#~ msgid "original"
+#~ msgstr "gốc"
+
+#~ msgid "copy"
+#~ msgstr "chép"
+
+#~ msgid "codec: %s, %u fps, %u ms"
+#~ msgstr "codec: %s, %u khung/giây, %u miligiây"
 
 #~ msgid "%ux%u dots per inch"
 #~ msgstr "%ux%u chấm trên mỗi insơ"

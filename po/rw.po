@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.4.2\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2012-08-14 17:23+0200\n"
+"POT-Creation-Date: 2012-08-15 01:02+0200\n"
 "PO-Revision-Date: 2005-04-04 10:55-0700\n"
 "Last-Translator: Steven Michael Murphy <murf@e-tools.com>\n"
 "Language-Team: Kinyarwanda <translation-team-rw@lists.sourceforge.net>\n"
@@ -596,7 +596,7 @@ msgstr ""
 msgid "description"
 msgstr "Isobanuramiterere"
 
-#: src/main/extractor_metatypes.c:149 src/plugins/mp3_extractor.c:206
+#: src/main/extractor_metatypes.c:149
 #, fuzzy
 msgid "copyright"
 msgstr "Uburenganzira bw'umuhimbyi"
@@ -1787,775 +1787,10 @@ msgstr "%s:Ihitamo ni"
 msgid "%s: option `-W %s' doesn't allow an argument\n"
 msgstr "%s:Ihitamo Kwemerera"
 
-#: src/plugins/applefile_extractor.c:162
-msgid "GB"
-msgstr ""
-
-#: src/plugins/applefile_extractor.c:164
-msgid "MB"
-msgstr ""
-
-#: src/plugins/applefile_extractor.c:166
-msgid "KB"
-msgstr ""
-
-#: src/plugins/applefile_extractor.c:168
-msgid "Bytes"
-msgstr ""
-
 #: src/plugins/flac_extractor.c:314
 #, c-format
 msgid "%u Hz, %u channels"
 msgstr ""
-
-#: src/plugins/id3_extractor.c:46 src/plugins/qt_extractor.c:30
-msgid "Blues"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:47 src/plugins/qt_extractor.c:31
-msgid "Classic Rock"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:48 src/plugins/qt_extractor.c:32
-#, fuzzy
-msgid "Country"
-msgstr "Igihugu"
-
-#: src/plugins/id3_extractor.c:49 src/plugins/qt_extractor.c:33
-#, fuzzy
-msgid "Dance"
-msgstr "Umwanya"
-
-#: src/plugins/id3_extractor.c:50 src/plugins/qt_extractor.c:34
-msgid "Disco"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:51 src/plugins/qt_extractor.c:35
-msgid "Funk"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:52 src/plugins/qt_extractor.c:36
-msgid "Grunge"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:53 src/plugins/qt_extractor.c:37
-msgid "Hip-Hop"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:54 src/plugins/qt_extractor.c:38
-msgid "Jazz"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:55 src/plugins/qt_extractor.c:39
-msgid "Metal"
-msgstr "Icyuma"
-
-#: src/plugins/id3_extractor.c:56 src/plugins/qt_extractor.c:40
-msgid "New Age"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:57 src/plugins/qt_extractor.c:41
-msgid "Oldies"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:58 src/plugins/qt_extractor.c:42
-msgid "Other"
-msgstr "Ikindi"
-
-#: src/plugins/id3_extractor.c:59 src/plugins/qt_extractor.c:43
-msgid "Pop"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:60 src/plugins/qt_extractor.c:44
-msgid "R&B"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:61 src/plugins/qt_extractor.c:45
-msgid "Rap"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:62 src/plugins/qt_extractor.c:46
-msgid "Reggae"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:63 src/plugins/qt_extractor.c:47
-msgid "Rock"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:64 src/plugins/qt_extractor.c:48
-msgid "Techno"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:65 src/plugins/qt_extractor.c:49
-msgid "Industrial"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:66 src/plugins/qt_extractor.c:50
-msgid "Alternative"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:67 src/plugins/qt_extractor.c:51
-msgid "Ska"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:68 src/plugins/qt_extractor.c:52
-#, fuzzy
-msgid "Death Metal"
-msgstr "Icyuma"
-
-#: src/plugins/id3_extractor.c:69 src/plugins/qt_extractor.c:53
-msgid "Pranks"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:70 src/plugins/qt_extractor.c:54
-msgid "Soundtrack"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:71 src/plugins/qt_extractor.c:55
-msgid "Euro-Techno"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:72 src/plugins/qt_extractor.c:56
-msgid "Ambient"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:73 src/plugins/qt_extractor.c:57
-msgid "Trip-Hop"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:74 src/plugins/qt_extractor.c:58
-msgid "Vocal"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:75 src/plugins/qt_extractor.c:59
-msgid "Jazz+Funk"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:76 src/plugins/qt_extractor.c:60
-#, fuzzy
-msgid "Fusion"
-msgstr "Isobanuramiterere"
-
-#: src/plugins/id3_extractor.c:77 src/plugins/qt_extractor.c:61
-msgid "Trance"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:78 src/plugins/qt_extractor.c:62
-msgid "Classical"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:79 src/plugins/qt_extractor.c:63
-msgid "Instrumental"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:80 src/plugins/qt_extractor.c:64
-msgid "Acid"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:81 src/plugins/qt_extractor.c:65
-msgid "House"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:82 src/plugins/qt_extractor.c:66
-msgid "Game"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:83 src/plugins/qt_extractor.c:67
-msgid "Sound Clip"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:84 src/plugins/qt_extractor.c:68
-msgid "Gospel"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:85 src/plugins/qt_extractor.c:69
-msgid "Noise"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:86 src/plugins/qt_extractor.c:70
-msgid "Alt. Rock"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:87 src/plugins/qt_extractor.c:71
-msgid "Bass"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:88 src/plugins/qt_extractor.c:72
-msgid "Soul"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:89 src/plugins/qt_extractor.c:73
-msgid "Punk"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:90 src/plugins/qt_extractor.c:74
-msgid "Space"
-msgstr "Umwanya"
-
-#: src/plugins/id3_extractor.c:91 src/plugins/qt_extractor.c:75
-msgid "Meditative"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:92 src/plugins/qt_extractor.c:76
-msgid "Instrumental Pop"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:93 src/plugins/qt_extractor.c:77
-msgid "Instrumental Rock"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:94 src/plugins/qt_extractor.c:78
-#, fuzzy
-msgid "Ethnic"
-msgstr "Ikinyagotike"
-
-#: src/plugins/id3_extractor.c:95 src/plugins/qt_extractor.c:79
-msgid "Gothic"
-msgstr "Ikinyagotike"
-
-#: src/plugins/id3_extractor.c:96 src/plugins/qt_extractor.c:80
-msgid "Darkwave"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:97 src/plugins/qt_extractor.c:81
-msgid "Techno-Industrial"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:98 src/plugins/qt_extractor.c:82
-msgid "Electronic"
-msgstr "elegitoroniki"
-
-#: src/plugins/id3_extractor.c:99 src/plugins/qt_extractor.c:83
-msgid "Pop-Folk"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:100 src/plugins/qt_extractor.c:84
-msgid "Eurodance"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:101 src/plugins/qt_extractor.c:85
-msgid "Dream"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:102 src/plugins/qt_extractor.c:86
-msgid "Southern Rock"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:103 src/plugins/qt_extractor.c:87
-msgid "Comedy"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:104 src/plugins/qt_extractor.c:88
-msgid "Cult"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:105 src/plugins/qt_extractor.c:89
-msgid "Gangsta Rap"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:106 src/plugins/qt_extractor.c:90
-msgid "Top 40"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:107 src/plugins/qt_extractor.c:91
-msgid "Christian Rap"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:108 src/plugins/qt_extractor.c:92
-msgid "Pop/Funk"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:109 src/plugins/qt_extractor.c:93
-msgid "Jungle"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:110 src/plugins/qt_extractor.c:94
-msgid "Native American"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:111 src/plugins/qt_extractor.c:95
-msgid "Cabaret"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:112 src/plugins/qt_extractor.c:96
-msgid "New Wave"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:113 src/plugins/qt_extractor.c:97
-msgid "Psychedelic"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:114 src/plugins/qt_extractor.c:98
-msgid "Rave"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:115 src/plugins/qt_extractor.c:99
-msgid "Showtunes"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:116 src/plugins/qt_extractor.c:100
-msgid "Trailer"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:117 src/plugins/qt_extractor.c:101
-msgid "Lo-Fi"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:118 src/plugins/qt_extractor.c:102
-msgid "Tribal"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:119 src/plugins/qt_extractor.c:103
-msgid "Acid Punk"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:120 src/plugins/qt_extractor.c:104
-msgid "Acid Jazz"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:121 src/plugins/qt_extractor.c:105
-msgid "Polka"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:122 src/plugins/qt_extractor.c:106
-msgid "Retro"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:123 src/plugins/qt_extractor.c:107
-msgid "Musical"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:124 src/plugins/qt_extractor.c:108
-msgid "Rock & Roll"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:125 src/plugins/qt_extractor.c:109
-msgid "Hard Rock"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:126 src/plugins/qt_extractor.c:110
-msgid "Folk"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:127 src/plugins/qt_extractor.c:111
-msgid "Folk/Rock"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:128 src/plugins/qt_extractor.c:112
-msgid "National Folk"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:129 src/plugins/qt_extractor.c:113
-#, fuzzy
-msgid "Swing"
-msgstr "Iburira"
-
-#: src/plugins/id3_extractor.c:130 src/plugins/qt_extractor.c:114
-msgid "Fast-Fusion"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:131 src/plugins/qt_extractor.c:115
-msgid "Bebob"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:132 src/plugins/qt_extractor.c:116
-#, fuzzy
-msgid "Latin"
-msgstr "Ikiratini"
-
-#: src/plugins/id3_extractor.c:133 src/plugins/qt_extractor.c:117
-msgid "Revival"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:134 src/plugins/qt_extractor.c:118
-msgid "Celtic"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:135 src/plugins/qt_extractor.c:119
-msgid "Bluegrass"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:136 src/plugins/qt_extractor.c:120
-msgid "Avantgarde"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:137 src/plugins/qt_extractor.c:121
-#, fuzzy
-msgid "Gothic Rock"
-msgstr "Ikinyagotike"
-
-#: src/plugins/id3_extractor.c:138 src/plugins/qt_extractor.c:122
-msgid "Progressive Rock"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:139 src/plugins/qt_extractor.c:123
-msgid "Psychedelic Rock"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:140 src/plugins/qt_extractor.c:124
-msgid "Symphonic Rock"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:141 src/plugins/qt_extractor.c:125
-msgid "Slow Rock"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:142 src/plugins/qt_extractor.c:126
-msgid "Big Band"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:143 src/plugins/qt_extractor.c:127
-msgid "Chorus"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:144 src/plugins/qt_extractor.c:128
-msgid "Easy Listening"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:145 src/plugins/qt_extractor.c:129
-msgid "Acoustic"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:146 src/plugins/qt_extractor.c:130
-msgid "Humour"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:147 src/plugins/qt_extractor.c:131
-msgid "Speech"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:148 src/plugins/qt_extractor.c:132
-msgid "Chanson"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:149 src/plugins/qt_extractor.c:133
-#, fuzzy
-msgid "Opera"
-msgstr "Ikindi"
-
-#: src/plugins/id3_extractor.c:150 src/plugins/qt_extractor.c:134
-msgid "Chamber Music"
-msgstr ""
-
-# ***** BEGIN LICENSE BLOCK *****
-# Version: MPL 1.1/GPL 2.0/LGPL 2.1
-#
-# The contents of this file are subject to the Mozilla Public License Version
-# 1.1 (the "License"); you may not use this file except in compliance with
-# the License. You may obtain a copy of the License at
-# http://www.mozilla.org/MPL/
-#
-# Software distributed under the License is distributed on an "AS IS" basis,
-# WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
-# for the specific language governing rights and limitations under the
-# License.
-#
-# The Original Code is Mozilla Communicator client code, released
-# March 31, 1998.
-#
-# The Initial Developer of the Original Code is
-# Netscape Communications Corporation.
-# Portions created by the Initial Developer are Copyright (C) 1998-1999
-# the Initial Developer. All Rights Reserved.
-#
-# Contributor(s):
-#
-# Alternatively, the contents of this file may be used under the terms of
-# either of the GNU General Public License Version 2 or later (the "GPL"),
-# or the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
-# in which case the provisions of the GPL or the LGPL are applicable instead
-# of those above. If you wish to allow use of your version of this file only
-# under the terms of either the GPL or the LGPL, and not to allow others to
-# use your version of this file under the terms of the MPL, indicate your
-# decision by deleting the provisions above and replace them with the notice
-# and other provisions required by the GPL or the LGPL. If you do not delete
-# the provisions above, a recipient may use your version of this file under
-# the terms of any one of the MPL, the GPL or the LGPL.
-#
-# ***** END LICENSE BLOCK *****
-# Box Headings
-#: src/plugins/id3_extractor.c:151 src/plugins/qt_extractor.c:135
-#, fuzzy
-msgid "Sonata"
-msgstr "Umuntu"
-
-#: src/plugins/id3_extractor.c:152 src/plugins/qt_extractor.c:136
-msgid "Symphony"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:153 src/plugins/qt_extractor.c:137
-msgid "Booty Bass"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:154 src/plugins/qt_extractor.c:138
-msgid "Primus"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:155 src/plugins/qt_extractor.c:139
-msgid "Porn Groove"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:156 src/plugins/qt_extractor.c:140
-#, fuzzy
-msgid "Satire"
-msgstr "Itariki"
-
-#: src/plugins/id3_extractor.c:157 src/plugins/qt_extractor.c:141
-msgid "Slow Jam"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:158 src/plugins/qt_extractor.c:142
-msgid "Club"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:159 src/plugins/qt_extractor.c:143
-msgid "Tango"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:160 src/plugins/qt_extractor.c:144
-msgid "Samba"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:161 src/plugins/qt_extractor.c:145
-msgid "Folklore"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:162 src/plugins/qt_extractor.c:146
-msgid "Ballad"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:163 src/plugins/qt_extractor.c:147
-msgid "Power Ballad"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:164 src/plugins/qt_extractor.c:148
-msgid "Rhythmic Soul"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:165 src/plugins/qt_extractor.c:149
-msgid "Freestyle"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:166 src/plugins/qt_extractor.c:150
-msgid "Duet"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:167 src/plugins/qt_extractor.c:151
-msgid "Punk Rock"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:168 src/plugins/qt_extractor.c:152
-msgid "Drum Solo"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:169 src/plugins/qt_extractor.c:153
-#, fuzzy
-msgid "A Cappella"
-msgstr "A"
-
-#: src/plugins/id3_extractor.c:170 src/plugins/qt_extractor.c:154
-msgid "Euro-House"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:171 src/plugins/qt_extractor.c:155
-msgid "Dance Hall"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:172 src/plugins/qt_extractor.c:156
-msgid "Goa"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:173 src/plugins/qt_extractor.c:157
-msgid "Drum & Bass"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:174 src/plugins/qt_extractor.c:158
-msgid "Club-House"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:175 src/plugins/qt_extractor.c:159
-msgid "Hardcore"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:176 src/plugins/qt_extractor.c:160
-#, fuzzy
-msgid "Terror"
-msgstr "Nta kosa"
-
-#: src/plugins/id3_extractor.c:177 src/plugins/qt_extractor.c:161
-msgid "Indie"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:178 src/plugins/qt_extractor.c:162
-msgid "BritPop"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:179 src/plugins/qt_extractor.c:163
-msgid "Negerpunk"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:180 src/plugins/qt_extractor.c:164
-msgid "Polsk Punk"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:181 src/plugins/qt_extractor.c:165
-msgid "Beat"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:182 src/plugins/qt_extractor.c:166
-msgid "Christian Gangsta Rap"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:183 src/plugins/qt_extractor.c:167
-#, fuzzy
-msgid "Heavy Metal"
-msgstr "Icyuma"
-
-#: src/plugins/id3_extractor.c:184 src/plugins/qt_extractor.c:168
-#, fuzzy
-msgid "Black Metal"
-msgstr "Icyuma"
-
-#: src/plugins/id3_extractor.c:185 src/plugins/qt_extractor.c:169
-msgid "Crossover"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:186 src/plugins/qt_extractor.c:170
-msgid "Contemporary Christian"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:187 src/plugins/qt_extractor.c:171
-msgid "Christian Rock"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:188 src/plugins/qt_extractor.c:172
-msgid "Merengue"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:189 src/plugins/qt_extractor.c:173
-msgid "Salsa"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:190 src/plugins/qt_extractor.c:174
-msgid "Thrash Metal"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:191 src/plugins/qt_extractor.c:175
-#, fuzzy
-msgid "Anime"
-msgstr "umutwe"
-
-#: src/plugins/id3_extractor.c:192 src/plugins/qt_extractor.c:176
-msgid "JPop"
-msgstr ""
-
-#: src/plugins/id3_extractor.c:193 src/plugins/qt_extractor.c:177
-msgid "Synthpop"
-msgstr ""
-
-#: src/plugins/man_extractor.c:161
-msgid "Commands"
-msgstr "amabwiriza"
-
-#: src/plugins/man_extractor.c:165
-#, fuzzy
-msgid "System calls"
-msgstr "Amahamagara:"
-
-#: src/plugins/man_extractor.c:169
-#, fuzzy
-msgid "Library calls"
-msgstr "Amahamagara:"
-
-#: src/plugins/man_extractor.c:173
-#, fuzzy
-msgid "Special files"
-msgstr "Idosiye"
-
-#: src/plugins/man_extractor.c:177
-#, fuzzy
-msgid "File formats and conventions"
-msgstr "Idosiye Imiterere Na"
-
-#: src/plugins/man_extractor.c:181
-msgid "Games"
-msgstr ""
-
-#: src/plugins/man_extractor.c:185
-#, fuzzy
-msgid "Conventions and miscellaneous"
-msgstr "Na Binyuranye"
-
-#: src/plugins/man_extractor.c:189
-#, fuzzy
-msgid "System management commands"
-msgstr "Amabwiriza"
-
-#: src/plugins/man_extractor.c:193
-msgid "Kernel routines"
-msgstr ""
-
-#: src/plugins/mp3_extractor.c:95 src/plugins/wav_extractor.c:120
-msgid "stereo"
-msgstr ""
-
-#: src/plugins/mp3_extractor.c:96
-msgid "joint stereo"
-msgstr ""
-
-#: src/plugins/mp3_extractor.c:97
-msgid "dual channel"
-msgstr ""
-
-#: src/plugins/mp3_extractor.c:98 src/plugins/wav_extractor.c:120
-msgid "mono"
-msgstr ""
-
-#: src/plugins/mp3_extractor.c:101
-msgid "MPEG-1"
-msgstr ""
-
-#: src/plugins/mp3_extractor.c:102
-msgid "MPEG-2"
-msgstr ""
-
-#: src/plugins/mp3_extractor.c:103
-msgid "MPEG-2.5"
-msgstr ""
-
-#: src/plugins/mp3_extractor.c:106
-msgid "Layer I"
-msgstr ""
-
-#: src/plugins/mp3_extractor.c:107
-msgid "Layer II"
-msgstr ""
-
-#: src/plugins/mp3_extractor.c:108
-msgid "Layer III"
-msgstr ""
-
-#: src/plugins/mp3_extractor.c:203
-msgid "VBR"
-msgstr ""
-
-#: src/plugins/mp3_extractor.c:203
-msgid "CBR"
-msgstr ""
-
-#: src/plugins/mp3_extractor.c:206
-#, fuzzy
-msgid "no copyright"
-msgstr "Uburenganzira bw'umuhimbyi"
-
-#: src/plugins/mp3_extractor.c:207
-msgid "original"
-msgstr ""
-
-#: src/plugins/mp3_extractor.c:207
-#, fuzzy
-msgid "copy"
-msgstr "Uburenganzira bw'umuhimbyi"
 
 #: src/plugins/ole2_extractor.c:387
 msgid "No Proofing"
@@ -2638,10 +1873,164 @@ msgstr ""
 msgid "Revision #%u: Author `%s' worked on `%s'"
 msgstr ""
 
-#: src/plugins/riff_extractor.c:114
-#, c-format
-msgid "codec: %s, %u fps, %u ms"
+#: src/plugins/wav_extractor.c:120
+msgid "mono"
 msgstr ""
+
+#: src/plugins/wav_extractor.c:120
+msgid "stereo"
+msgstr ""
+
+#, fuzzy
+#~ msgid "Country"
+#~ msgstr "Igihugu"
+
+#, fuzzy
+#~ msgid "Dance"
+#~ msgstr "Umwanya"
+
+#~ msgid "Metal"
+#~ msgstr "Icyuma"
+
+#~ msgid "Other"
+#~ msgstr "Ikindi"
+
+#, fuzzy
+#~ msgid "Death Metal"
+#~ msgstr "Icyuma"
+
+#, fuzzy
+#~ msgid "Fusion"
+#~ msgstr "Isobanuramiterere"
+
+#~ msgid "Space"
+#~ msgstr "Umwanya"
+
+#, fuzzy
+#~ msgid "Ethnic"
+#~ msgstr "Ikinyagotike"
+
+#~ msgid "Gothic"
+#~ msgstr "Ikinyagotike"
+
+#~ msgid "Electronic"
+#~ msgstr "elegitoroniki"
+
+#, fuzzy
+#~ msgid "Swing"
+#~ msgstr "Iburira"
+
+#, fuzzy
+#~ msgid "Latin"
+#~ msgstr "Ikiratini"
+
+#, fuzzy
+#~ msgid "Gothic Rock"
+#~ msgstr "Ikinyagotike"
+
+#, fuzzy
+#~ msgid "Opera"
+#~ msgstr "Ikindi"
+
+# ***** BEGIN LICENSE BLOCK *****
+# Version: MPL 1.1/GPL 2.0/LGPL 2.1
+#
+# The contents of this file are subject to the Mozilla Public License Version
+# 1.1 (the "License"); you may not use this file except in compliance with
+# the License. You may obtain a copy of the License at
+# http://www.mozilla.org/MPL/
+#
+# Software distributed under the License is distributed on an "AS IS" basis,
+# WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+# for the specific language governing rights and limitations under the
+# License.
+#
+# The Original Code is Mozilla Communicator client code, released
+# March 31, 1998.
+#
+# The Initial Developer of the Original Code is
+# Netscape Communications Corporation.
+# Portions created by the Initial Developer are Copyright (C) 1998-1999
+# the Initial Developer. All Rights Reserved.
+#
+# Contributor(s):
+#
+# Alternatively, the contents of this file may be used under the terms of
+# either of the GNU General Public License Version 2 or later (the "GPL"),
+# or the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
+# in which case the provisions of the GPL or the LGPL are applicable instead
+# of those above. If you wish to allow use of your version of this file only
+# under the terms of either the GPL or the LGPL, and not to allow others to
+# use your version of this file under the terms of the MPL, indicate your
+# decision by deleting the provisions above and replace them with the notice
+# and other provisions required by the GPL or the LGPL. If you do not delete
+# the provisions above, a recipient may use your version of this file under
+# the terms of any one of the MPL, the GPL or the LGPL.
+#
+# ***** END LICENSE BLOCK *****
+# Box Headings
+#, fuzzy
+#~ msgid "Sonata"
+#~ msgstr "Umuntu"
+
+#, fuzzy
+#~ msgid "Satire"
+#~ msgstr "Itariki"
+
+#, fuzzy
+#~ msgid "A Cappella"
+#~ msgstr "A"
+
+#, fuzzy
+#~ msgid "Terror"
+#~ msgstr "Nta kosa"
+
+#, fuzzy
+#~ msgid "Heavy Metal"
+#~ msgstr "Icyuma"
+
+#, fuzzy
+#~ msgid "Black Metal"
+#~ msgstr "Icyuma"
+
+#, fuzzy
+#~ msgid "Anime"
+#~ msgstr "umutwe"
+
+#~ msgid "Commands"
+#~ msgstr "amabwiriza"
+
+#, fuzzy
+#~ msgid "System calls"
+#~ msgstr "Amahamagara:"
+
+#, fuzzy
+#~ msgid "Library calls"
+#~ msgstr "Amahamagara:"
+
+#, fuzzy
+#~ msgid "Special files"
+#~ msgstr "Idosiye"
+
+#, fuzzy
+#~ msgid "File formats and conventions"
+#~ msgstr "Idosiye Imiterere Na"
+
+#, fuzzy
+#~ msgid "Conventions and miscellaneous"
+#~ msgstr "Na Binyuranye"
+
+#, fuzzy
+#~ msgid "System management commands"
+#~ msgstr "Amabwiriza"
+
+#, fuzzy
+#~ msgid "no copyright"
+#~ msgstr "Uburenganzira bw'umuhimbyi"
+
+#, fuzzy
+#~ msgid "copy"
+#~ msgstr "Uburenganzira bw'umuhimbyi"
 
 #, fuzzy
 #~ msgid "%ux%u dots per inch"
