@@ -1,11 +1,11 @@
 # Process this file with autoconf to produce a configure script.
 AC_PREREQ(2.61)
 AC_INIT([libextractor], [0.6.3], [bug-libextractor@gnu.org])
-LT_CONFIG_LTDL_DIR([libltdl])
-AC_CONFIG_AUX_DIR([libltdl/config])
-AM_INIT_AUTOMAKE([silent-rules])
 AC_CONFIG_HEADERS([config.h])
 AH_TOP([#define _GNU_SOURCE  1])
+AC_CANONICAL_TARGET
+AC_CANONICAL_HOST
+AC_CANONICAL_SYSTEM
 
 LIB_VERSION_CURRENT=3
 LIB_VERSION_REVISION=2
@@ -14,9 +14,11 @@ AC_SUBST(LIB_VERSION_CURRENT)
 AC_SUBST(LIB_VERSION_REVISION)
 AC_SUBST(LIB_VERSION_AGE)
 
+LT_CONFIG_LTDL_DIR([libltdl])
+AC_CONFIG_AUX_DIR([libltdl/config])
+AM_INIT_AUTOMAKE([silent-rules])
+
 # Checks for programs.
-AC_CANONICAL_HOST
-AC_CANONICAL_TARGET
 AC_USE_SYSTEM_EXTENSIONS
 AC_PROG_AWK
 AC_PROG_CC
@@ -88,7 +90,8 @@ darwin*)
      AM_CONDITIONAL(HAVE_GNU_LD, false)
      AM_CONDITIONAL(SOMEBSD, false)
      AM_CONDITIONAL(WINDOWS, false)
-     CFLAGS="-fno-common $CFLAGS"
+     CPPFLAGS="-D_APPLE_C_SOURCE $CPPFLAGS"
+     CFLAGS="-no-cpp-precomp -fno-common $CFLAGS" 
      LIBEXT=.so
      ;;
 cygwin*)
@@ -360,21 +363,6 @@ AC_CHECK_LIB(magic, magic_open,
 
 # restore LIBS
 LIBS=$LIBSOLD
-
-# Special check for broken Operating Systems (OS X)
-AC_CACHE_CHECK(whether ${CC-cc} accepts -no-cpp-precomp,
-cv_prog_cc_darwin_cpp_precomp,
-[echo 'void f(){}' > conftest.c
-if test -z "`${CC-cc} -no-cpp-precomp -c conftest.c 2>&1`"; then
-  cv_prog_cc_darwin_cpp_precomp=yes
-else
-  cv_prog_cc_darwin_cpp_precomp=no
-fi
-rm -f conftest*
-])
-if test $cv_prog_cc_darwin_cpp_precomp = yes; then
-  CFLAGS="$CFLAGS -no-cpp-precomp"
-fi
 
 
 # Checks for header files.
@@ -676,12 +664,27 @@ AC_OUTPUT
 
 if test "x$HAVE_ZLIB_TRUE" = "x#"
 then
- AC_MSG_ERROR([FATAL: zlib not found (headers not installed?)])
+ AC_MSG_NOTICE([NOTICE: zlib not found, zlib support disabled])
 fi
 
-if test "x$HAVE_EXIV2" = "x#"
+if test "x$HAVE_BZ2_TRUE" = "x#"
 then
- AC_MSG_NOTICE([NOTICE: exiv2 disabled])
+ AC_MSG_NOTICE([NOTICE: libbz2 not found, bz2 support disabled])
+fi
+
+if test "x$HAVE_EXIV2_TRUE" = "x#"
+then
+ AC_MSG_NOTICE([NOTICE: libexiv2 not found, exiv2 disabled])
+fi
+
+if test "x$HAVE_JPEG_TRUE" = "x#"
+then
+ AC_MSG_NOTICE([NOTICE: libjpeg not found, jpeg disabled])
+fi
+
+if test "x$HAVE_GIF_TRUE" = "x#"
+then
+ AC_MSG_NOTICE([NOTICE: libgif not found, gif disabled])
 fi
 
 if test "x$have_gsf" != "xtrue"
