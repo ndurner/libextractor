@@ -34,7 +34,8 @@ EXTRA_DIST = template_extractor.c \
   testdata/odf_cg.odt \
   testdata/deb_bzip2.deb \
   testdata/nsf_arkanoid.nsf \
-  testdata/nsfe_classics.nsfe
+  testdata/nsfe_classics.nsfe \
+  testdata/xm_diesel.xm
 
 if HAVE_VORBISFILE
 PLUGIN_OGG=libextractor_ogg.la
@@ -119,6 +120,7 @@ check_PROGRAMS = \
   test_png \
   test_odf \
   test_zip \
+  test_xm \
   test_nsf \
   test_nsfe \
   $(TEST_ZLIB) \
@@ -150,6 +152,11 @@ libextractor_xm_la_SOURCES = \
   xm_extractor.c
 libextractor_xm_la_LDFLAGS = \
   $(PLUGINFLAGS)
+
+test_xm_SOURCES = \
+  test_xm.c
+test_xm_LDADD = \
+  $(top_builddir)/src/plugins/libtest.la
 
 
 libextractor_deb_la_SOURCES = \
@@ -239,6 +246,7 @@ libextractor_sid_la_SOURCES = \
   sid_extractor.c
 libextractor_sid_la_LDFLAGS = \
   $(PLUGINFLAGS)
+
 
 libextractor_s3m_la_SOURCES = \
   s3m_extractor.c

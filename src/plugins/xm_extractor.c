@@ -68,6 +68,7 @@ EXTRACTOR_xm_extract_method (struct EXTRACTOR_ExtractContext *ec)
   char title[21];
   char tracker[21];
   char xmversion[8];
+  size_t n;
 
   if (sizeof (struct Header) >
       ec->read (ec->cls,
@@ -88,11 +89,17 @@ EXTRACTOR_xm_extract_method (struct EXTRACTOR_ExtractContext *ec)
   ADD (xmversion, EXTRACTOR_METATYPE_FORMAT_VERSION);
   /* Song title */
   memcpy (&title, head->title, 20);
-  title[20] = '\0';
+  n = 19;
+  while ( (n > 0) && isspace ((unsigned char) title[n]))
+    n--;
+  title[n + 1] = '\0';
   ADD (title, EXTRACTOR_METATYPE_TITLE);
   /* software used for creating the data */
   memcpy (&tracker, head->tracker, 20);
-  tracker[20] = '\0';
+  n = 19;
+  while ( (n > 0) && isspace ((unsigned char) tracker[n]))
+    n--;
+  tracker[n + 1] = '\0'; 
   ADD (tracker, EXTRACTOR_METATYPE_CREATED_BY_SOFTWARE);
   return;
 }
