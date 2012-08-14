@@ -1,31 +1,23 @@
-* ffmpeg needs make 3.81: add configure check for it
-
-Core:
-* port test cases
-* support "hash" plugins as *optional* plugins
-  (need a way to indicate that they should not be used
-   "by default")
-* support "footer" plugins that need the end of the file,
-  and not the beginning
-* document the new APIs
-* document special options; we have:
-  - force-kill: plugin process committs suicide after each file
-  - oop-only: plugin is never run in-process 
-  - close-stdout: stdout is closed for the (external) plugin process
-  - close-stderr: stderr is closed for the (external) plugin process
-
-'Unclean' code:
-* ASF
-* RPM
-
-Incomplete code (missing features):
-* RIFF (idx1 attribute)
-* StarOffice sdw (some attributes, see doc/)
-* man pages (interpret sections for authors, brief description)
-* pdf: full-text extraction!
-* EXIV2
-* ELF: 64-bit support, lists of architectures, OSes, etc. are incomplete
-* ID3v2x: unsynchronization support, (de)compression support, footer support (24)
+* Update plugins to new API (and cleanup code):
+  - mp3/id3/id3v2 tags
+  - thumbnail-ffmpeg
+  - thumbnail-gtk
+  - thumbnail-qt
+  - tar
+  - html
+  - man
+  - dvi
+  - elf
+  - applefile
+  - flv
+  - qt
+  - riff
+  - tiff  
+  - ps
+  - pdf
+  - mkv
+  - ebml
+  - asf
 
 Desirable missing formats:
 * mbox / various e-mail formats
@@ -34,27 +26,9 @@ Desirable missing formats:
 * a.out (== ar?)
 * rtf
 * EXE
-* APEv2 (MPC file format, www.personal.uni-jena.de/~pfk/mpp/sv8/apetag.html)
+* APEv2 (MPC file format, http://www.personal.uni-jena.de/~pfk/mpp/sv8/apetag.html)
 * PRC (Palm module, http://web.mit.edu/tytso/www/pilot/prc-format.html)
 * KOffice
 * TGA
 * ODF (OpenDocument format)
 * Microsoft OOXML (MS Office >= 2007)
-
-==============
-
-UTF-8 conversion (only listing what is left to do):
-* DVI: special headers are in what format? (rest is ASCII)
-* SDW: needs to be done (need info about charsets)
-* JPEG: presumably ASCII (or not specified)
-* PS?
-* WAV?
-* ZIP?
-* TAR?
-* RIFF?
-* MAN: presumably ASCII/Utf-8
-* DEB: to be done
-* ASF: ?
-* HTML: to be done
-* OLE2: done
-* OO: to be done

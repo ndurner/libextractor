@@ -233,9 +233,6 @@ fi])
 
 # Checks for libraries.
 
-# Redhat 9, gcc 3.2, libextractor_pdf barfs if we don't check for this
-AC_CHECK_LIB(stdc++, fclose)
-
 AC_CHECK_HEADERS(langinfo.h)
 LIBS=$LIBSOLD
 # FIXME: allow --with-oggvorbis=PFX
@@ -303,13 +300,6 @@ AC_CHECK_LIB(jpeg, jpeg_std_error,
          AM_CONDITIONAL(HAVE_JPEG, false))],
          AM_CONDITIONAL(HAVE_JPEG, false))
 
-AC_CHECK_LIB(poppler, _ZTI9MemStream,
-        [AC_CHECK_HEADERS([poppler/goo/gmem.h],
-           AM_CONDITIONAL(HAVE_POPPLER, true)
-           AC_DEFINE(HAVE_POPPLER,1,[Have libpoppler]),
-         AM_CONDITIONAL(HAVE_POPPLER, false))],
-         AM_CONDITIONAL(HAVE_POPPLER, false))
-
 AC_MSG_CHECKING(for ImageFactory::iptcData in -lexiv2)
 AC_LANG_PUSH(C++)
 SAVED_LDFLAGS=$LDFLAGS
@@ -327,22 +317,6 @@ AC_LINK_IFELSE(
    AM_CONDITIONAL(HAVE_EXIV2, false)])
 LDFLAGS=$SAVED_LDFLAGS
 AC_LANG_POP(C++)
-
-
-
-AC_MSG_CHECKING(for getPDFMajorVersion in -lpoppler)
-AC_LANG_PUSH(C++)
-SAVED_LDFLAGS=$LDFLAGS
-LDFLAGS="$LDFLAGS -lpoppler"
-AC_LINK_IFELSE(
-  [AC_LANG_PROGRAM([[#include <poppler/PDFDoc.h>]],
-    [[PDFDoc *foo = NULL; foo->getPDFMajorVersion(); ]])],
-  [AC_MSG_RESULT(yes)
-   AC_DEFINE(HAVE_POPPLER_GETPDFMAJORVERSION,1,[Have getPDFMajorVersion in libpoppler])],
-  [AC_MSG_RESULT(no)])
-LDFLAGS=$SAVED_LDFLAGS
-AC_LANG_POP(C++)
-
 
 
 AC_MSG_CHECKING(for DGifOpen -lgif)
@@ -440,127 +414,6 @@ else
  AM_CONDITIONAL(HAVE_GTK,false)
 fi
 
-# check for all C++ dependencies...
-qt=0
-qt4=0
-
-if test "x$HAVE_CXX" = "xyes"
-then
-  
-# check for Qt 4
-SAVED_CPPFLAGS=$CPPFLAGS
-SAVED_LDFLAGS=$LDFLAGS
-AC_LANG_PUSH([C++])
-AC_MSG_CHECKING(for Qt)
-AC_ARG_WITH(qt,
-   [  --with-qt=PFX    Base of Qt installation],
-   [AC_MSG_RESULT([$with_qt])
-    case $with_qt in
-      no)
-        ;;
-      yes)
-        AC_CHECK_HEADERS([Qt/qpixmap.h],
-          AC_CHECK_LIB([QtGui4], [_ZN7QPixmap12defaultDepthEv],
-            qt4=1,
-              AC_CHECK_LIB([QtGui], [_ZN7QPixmap12defaultDepthEv],
-              qt=1)))
-        ;;
-      *)
-        LDFLAGS="-L$with_qt/lib $LDFLAGS"
-        CPPFLAGS="-I$with_qt/include -I$with_qt/include/qt4 $CPPFLAGS"
-        AC_CHECK_HEADERS([Qt/qpixmap.h],
-          AC_CHECK_LIB([QtGui4], [_ZN7QPixmap12defaultDepthEv],
-            EXT_LIB_PATH="-L$with_qt/lib $EXT_LIB_PATH"
-            qt4=1,
-              AC_CHECK_LIB([QtGui], [_ZN7QPixmap12defaultDepthEv],
-              EXT_LIB_PATH="-L$with_qt/lib $EXT_LIB_PATH"
-              qt=1)))
-        ;;
-    esac
-   ],
-   [AC_MSG_RESULT([--with-qt not specified])
-    LDFLAGS="-L/usr/lib $LDFLAGS"
-    CPPFLAGS="-I/usr/include -I/usr/include/qt4 $CPPFLAGS"    
-    AC_CHECK_HEADERS([Qt/qpixmap.h],
-          AC_CHECK_LIB([QtGui4], [_ZN7QPixmap12defaultDepthEv],
-            EXT_LIB_PATH="-L$with_qt/lib $EXT_LIB_PATH"
-            qt4=1,
-              AC_CHECK_LIB([QtGui], [_ZN7QPixmap12defaultDepthEv],
-              EXT_LIB_PATH="-L$with_qt/lib $EXT_LIB_PATH"
-              qt=1)))])
-
-# check for Qt SVG module
-qt_svg=0
-qt_svg4=0
-AC_MSG_CHECKING(for Qt SVG)
-AC_ARG_WITH(qt,
-   [  --with-qt=PFX    Base of Qt installation],
-   [AC_MSG_RESULT([$with_qt])
-    case $with_qt in
-      no)
-        ;;
-      yes)
-        AC_CHECK_HEADERS([Qt/qsvgrenderer.h],
-          AC_CHECK_LIB([QtSvg4], [_ZN10QSvgWidgetD0Ev],
-            qt_svg4=1,
-              AC_CHECK_LIB([QtSvg], [_ZN10QSvgWidgetD0Ev],
-              qt_svg=1)))
-        ;;
-      *)
-        LDFLAGS="-L$with_qt/lib $LDFLAGS"
-        CPPFLAGS="-I$with_qt/include -I$with_qt/include/qt4 $CPPFLAGS"
-        AC_CHECK_HEADERS([Qt/qsvgrenderer.h],
-          AC_CHECK_LIB([QtSvg4], [_ZN10QSvgWidgetD0Ev],
-            EXT_LIB_PATH="-L$with_qt/lib $EXT_LIB_PATH"
-            qt_svg4=1,
-              AC_CHECK_LIB([QtSvg], [_ZN10QSvgWidgetD0Ev],
-              EXT_LIB_PATH="-L$with_qt/lib $EXT_LIB_PATH"
-              qt_svg=1)))
-        ;;
-    esac
-   ],
-   [AC_MSG_RESULT([--with-qt not specified])
-    LDFLAGS="-L/usr/lib $LDFLAGS"
-    CPPFLAGS="-I/usr/include -I/usr/include/qt4 $CPPFLAGS"    
-    AC_CHECK_HEADERS([Qt/qsvgrenderer.h],
-          AC_CHECK_LIB([QtSvg4], [_ZN10QSvgWidgetD0Ev],
-            EXT_LIB_PATH="-L$with_qt/lib $EXT_LIB_PATH"
-            qt_svg4=1,
-              AC_CHECK_LIB([QtSvg], [_ZN10QSvgWidgetD0Ev],
-              EXT_LIB_PATH="-L$with_qt/lib $EXT_LIB_PATH"
-              qt_svg=1)))])
-QT_CPPFLAGS=$CPPFLAGS
-QT_LDFLAGS=$LDFLAGS
-LDFLAGS=$SAVED_LDFLAGS
-CPPFLAGS=$SAVED_CPPFLAGS
-AC_LANG_POP([C++])
-
-# end C++ checks
-fi
-
-# set C++-dependent defines
-if test x$qt != x0
-then
- AC_DEFINE(HAVE_QT, 1, [We have Qt])
-fi
-AM_CONDITIONAL(HAVE_QT, test x$qt != x0)
-if test x$qt4 != x0
-then
- AC_DEFINE(HAVE_QT4, 1, [We have Qt4])
-fi
-AM_CONDITIONAL(HAVE_QT4, test x$qt4 != x0)
-
-if test x$qt_svg != x0
-then
- AC_DEFINE(HAVE_QT_SVG, 1, [We have Qt SVG])
-fi
-if test x$qt_svg4 != x0
-then
- AC_DEFINE(HAVE_QT_SVG4, 1, [We have Qt SVG4])
-fi
-AM_CONDITIONAL(HAVE_QT_SVG, test x$qt_svg != x0)
-AM_CONDITIONAL(HAVE_QT_SVG4, test x$qt_svg4 != x0)
-
 ABI_GSF
 
 AM_CONDITIONAL(HAVE_GSF, test "x$have_gsf" = "xtrue")
@@ -614,7 +467,7 @@ LE_LIB_LDFLAGS="-export-dynamic -no-undefined"
 LE_PLUGIN_LDFLAGS="-export-dynamic -avoid-version -module -no-undefined"
 
 
-dnl TODO insert a proper check here
+# TODO insert a proper check here
 AC_CACHE_CHECK([whether -export-symbols-regex works],
  gn_cv_export_symbols_regex_works, 
  [
@@ -644,9 +497,9 @@ AC_SUBST(LIBEXT)
 PACKAGE_VERSION_NOALPHA=`echo $PACKAGE_VERSION | sed "s/@<:@A-Za-z@:>@*//g;"`
 AC_SUBST(PACKAGE_VERSION_NOALPHA)
 
-AC_CONFIG_FILES([Makefile po/Makefile.in m4/Makefile
-
-
+AC_CONFIG_FILES([Makefile
+po/Makefile.in 
+m4/Makefile
 contrib/macosx/Info.plist
 contrib/macosx/Pkg-Info.plist
 doc/Makefile
@@ -699,24 +552,24 @@ else
  AC_MSG_NOTICE([NOTICE: FFmpeg thumbnailer plugin enabled (security untested)])
 fi
 
-if test "x$without_gtk" = "xtrue" -a "x$qt" = "x0" -a "x$qt4" = "x0" -a "x$ffmpeg_enabled" = "x0"
+if test "x$without_gtk" = "xtrue" 
 then
- AC_MSG_NOTICE([NOTICE: neither gtk nor Qt not found, no thumbnail support])
+ AC_MSG_NOTICE([NOTICE: libgtk2+ not found, gtk thumbnail support disabled])
 fi
 
 if test "x$HAVE_VORBISFILE_TRUE" = "x#"
 then
- AC_MSG_NOTICE([NOTICE: vorbis support disabled])
+ AC_MSG_NOTICE([NOTICE: libvorbis not found, vorbis support disabled])
+fi
+
+if test "x$HAVE_FLAC_TRUE" = "x#"
+then
+ AC_MSG_NOTICE([NOTICE: libflac not found, flac support disabled])
 fi
 
 if test "x$HAVE_MPEG2_TRUE" = "x#"
 then
- AC_MSG_NOTICE([NOTICE: libmpeg2 not found (will not compile mpeg2 plugin)])
-fi
-
-if test "x$HAVE_POPPLER_TRUE" = "x#"
-then
- AC_MSG_NOTICE([NOTICE: libpoppler not found (will not compile pdf plugin)])
+ AC_MSG_NOTICE([NOTICE: libmpeg2 not found, mpeg2 support disabled])
 fi
 
 if test "x$HAVE_CXX" != "xyes"
