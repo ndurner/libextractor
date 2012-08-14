@@ -42,7 +42,7 @@ endif
 PLUGINFLAGS = $(makesymbolic) $(LE_PLUGIN_LDFLAGS)
 
 EXTRA_DIST = \
-  iconv.c fuzz_default.sh fuzz_thumbnail.sh \
+  iconv.c \
   test_file.dat \
   test_file.dat.gz \
   test_file.dat.bz2

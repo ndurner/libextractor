@@ -340,7 +340,7 @@ bfds_seek (struct BufferedFileDataSource *bfds,
 	     (bfds->buffer_pos + pos >= 0) ) )
 	{
 	  bfds->buffer_pos += pos; 
-	  return bfds->buffer_pos;
+	  return bfds->buffer_pos + bfds->fpos;
 	}
       if (0 != bfds_pick_next_buffer_at (bfds, 
 					 bfds->fpos + bfds->buffer_pos + pos))
