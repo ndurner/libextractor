@@ -33,7 +33,8 @@ EXTRA_DIST = template_extractor.c \
   testdata/png_image.png \
   testdata/odf_cg.odt \
   testdata/deb_bzip2.deb \
-  testdata/nsf_arkanoid.nsf
+  testdata/nsf_arkanoid.nsf \
+  testdata/nsfe_classics.nsfe
 
 if HAVE_VORBISFILE
 PLUGIN_OGG=libextractor_ogg.la
@@ -119,6 +120,7 @@ check_PROGRAMS = \
   test_odf \
   test_zip \
   test_nsf \
+  test_nsfe \
   $(TEST_ZLIB) \
   $(TEST_OGG) \
   $(TEST_MIME) \
@@ -176,6 +178,11 @@ libextractor_nsfe_la_SOURCES = \
   nsfe_extractor.c
 libextractor_nsfe_la_LDFLAGS = \
   $(PLUGINFLAGS)
+
+test_nsfe_SOURCES = \
+  test_nsfe.c
+test_nsfe_LDADD = \
+  $(top_builddir)/src/plugins/libtest.la
 
 
 libextractor_odf_la_SOURCES = \
