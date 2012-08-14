@@ -32,7 +32,8 @@ EXTRA_DIST = template_extractor.c \
   testdata/ole2_excel.xls \
   testdata/png_image.png \
   testdata/odf_cg.odt \
-  testdata/deb_bzip2.deb
+  testdata/deb_bzip2.deb \
+  testdata/nsf_arkanoid.nsf
 
 if HAVE_VORBISFILE
 PLUGIN_OGG=libextractor_ogg.la
@@ -117,6 +118,7 @@ check_PROGRAMS = \
   test_png \
   test_odf \
   test_zip \
+  test_nsf \
   $(TEST_ZLIB) \
   $(TEST_OGG) \
   $(TEST_MIME) \
@@ -163,6 +165,11 @@ libextractor_nsf_la_SOURCES = \
   nsf_extractor.c
 libextractor_nsf_la_LDFLAGS = \
   $(PLUGINFLAGS)
+
+test_nsf_SOURCES = \
+  test_nsf.c
+test_nsf_LDADD = \
+  $(top_builddir)/src/plugins/libtest.la
 
 
 libextractor_nsfe_la_SOURCES = \
