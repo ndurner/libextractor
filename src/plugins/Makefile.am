@@ -35,7 +35,8 @@ EXTRA_DIST = template_extractor.c \
   testdata/deb_bzip2.deb \
   testdata/nsf_arkanoid.nsf \
   testdata/nsfe_classics.nsfe \
-  testdata/xm_diesel.xm
+  testdata/xm_diesel.xm \
+  testdata/tiff_haute.tiff
 
 if HAVE_VORBISFILE
 PLUGIN_OGG=libextractor_ogg.la
@@ -66,6 +67,11 @@ endif
 if HAVE_FLAC
 PLUGIN_FLAC=libextractor_flac.la
 TEST_FLAC=test_flac
+endif
+
+if HAVE_TIFF
+PLUGIN_TIFF=libextractor_tiff.la
+TEST_TIFF=test_tiff
 endif
 
 if HAVE_MPEG2
@@ -108,6 +114,7 @@ plugin_LTLIBRARIES = \
   $(PLUGIN_ZLIB) \
   $(PLUGIN_OGG) \
   $(PLUGIN_MIME) \
+  $(PLUGIN_TIFF) \
   $(PLUGIN_GIF) \
   $(PLUGIN_RPM) \
   $(PLUGIN_FLAC) \
@@ -134,6 +141,7 @@ check_PROGRAMS = \
   $(TEST_GTK) \
   $(TEST_OGG) \
   $(TEST_MIME) \
+  $(TEST_TIFF) \
   $(TEST_GIF) \
   $(TEST_RPM) \
   $(TEST_FLAC) \
@@ -394,6 +402,19 @@ libextractor_exiv2_la_LIBADD = \
 test_exiv2_SOURCES = \
   test_exiv2.c
 test_exiv2_LDADD = \
+  $(top_builddir)/src/plugins/libtest.la
+
+
+libextractor_tiff_la_SOURCES = \
+  tiff_extractor.c
+libextractor_tiff_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+libextractor_tiff_la_LIBADD = \
+  -ltiff
+
+test_tiff_SOURCES = \
+  test_tiff.c
+test_tiff_LDADD = \
   $(top_builddir)/src/plugins/libtest.la
 
 

@@ -300,6 +300,13 @@ AC_CHECK_LIB(jpeg, jpeg_std_error,
          AM_CONDITIONAL(HAVE_JPEG, false))],
          AM_CONDITIONAL(HAVE_JPEG, false))
 
+AC_CHECK_LIB(tiff, TIFFClientOpen,
+        [AC_CHECK_HEADERS([tiffio.h],
+           AM_CONDITIONAL(HAVE_TIFF, true)
+           AC_DEFINE(HAVE_TIFF,1,[Have libtiff]),
+         AM_CONDITIONAL(HAVE_TIFF, false))],
+         AM_CONDITIONAL(HAVE_TIFF, false))
+
 AC_MSG_CHECKING(for ImageFactory::iptcData in -lexiv2)
 AC_LANG_PUSH(C++)
 SAVED_LDFLAGS=$LDFLAGS
@@ -528,6 +535,11 @@ fi
 if test "x$HAVE_EXIV2_TRUE" = "x#"
 then
  AC_MSG_NOTICE([NOTICE: libexiv2 not found, exiv2 disabled])
+fi
+
+if test "x$HAVE_TIFF_TRUE" = "x#"
+then
+ AC_MSG_NOTICE([NOTICE: libtiff not found, tiff disabled])
 fi
 
 if test "x$HAVE_JPEG_TRUE" = "x#"

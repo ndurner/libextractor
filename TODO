@@ -1,7 +1,6 @@
 * Update plugins to new API (and cleanup code):
   - mp3/id3/id3v2 tags
   - thumbnail-ffmpeg
-  - thumbnail-gtk
   - thumbnail-qt
   - tar
   - html
@@ -12,7 +11,6 @@
   - flv
   - qt
   - riff
-  - tiff  
   - ps
   - pdf
   - mkv
