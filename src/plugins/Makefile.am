@@ -45,6 +45,12 @@ endif
 if HAVE_MAGIC
 PLUGIN_MIME=libextractor_mime.la
 TEST_MIME=test_mime
+
+if HAVE_GTK
+# Thumbnailer requires MAGIC and GTK
+PLUGIN_GTK=libextractor_thumbnailgtk.la
+TEST_GTK=test_thumbnailgtk
+endif
 endif
 
 if HAVE_GIF
@@ -98,6 +104,7 @@ plugin_LTLIBRARIES = \
   libextractor_sid.la \
   libextractor_wav.la \
   libextractor_zip.la \
+  $(PLUGIN_GTK) \
   $(PLUGIN_ZLIB) \
   $(PLUGIN_OGG) \
   $(PLUGIN_MIME) \
@@ -124,6 +131,7 @@ check_PROGRAMS = \
   test_nsf \
   test_nsfe \
   $(TEST_ZLIB) \
+  $(TEST_GTK) \
   $(TEST_OGG) \
   $(TEST_MIME) \
   $(TEST_GIF) \
@@ -293,6 +301,21 @@ libextractor_mime_la_LIBADD = \
 test_mime_SOURCES = \
   test_mime.c
 test_mime_LDADD = \
+  $(top_builddir)/src/plugins/libtest.la
+
+
+libextractor_thumbnailgtk_la_SOURCES = \
+  thumbnailgtk_extractor.c
+libextractor_thumbnailgtk_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+libextractor_thumbnailgtk_la_CFLAGS = \
+  $(GTK_CFLAGS)
+libextractor_thumbnailgtk_la_LIBADD = \
+  -lmagic $(GTK_LIBS)
+
+test_thumbnailgtk_SOURCES = \
+  test_thumbnailgtk.c
+test_thumbnailgtk_LDADD = \
   $(top_builddir)/src/plugins/libtest.la
 
 
