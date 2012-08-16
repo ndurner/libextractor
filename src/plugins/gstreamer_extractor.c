@@ -711,8 +711,10 @@ _source_setup (GstDiscoverer * dc, GstElement * source, PrivStruct * ps)
   if (ps->length > 0)
   {
     g_object_set (ps->source, "size", (gint64) ps->length, NULL);
+    gst_util_set_object_arg (G_OBJECT (ps->source), "stream-type", "random-access");
   }
-  gst_util_set_object_arg (G_OBJECT (ps->source), "stream-type", "seekable");
+  else
+    gst_util_set_object_arg (G_OBJECT (ps->source), "stream-type", "seekable");
 
   /* configure the appsrc, we will push a buffer to appsrc when it needs more
    * data */
@@ -726,6 +728,11 @@ feed_data (GstElement * appsrc, guint size, PrivStruct * ps)
   GstFlowReturn ret;
   long data_len;
   uint8_t *le_data;
+  guint accumulated;
+  GstMemory *mem;
+  GstMapInfo mi;
+
+  GST_DEBUG ("Request %u bytes", size);
 
   if (ps->length > 0 && ps->offset >= ps->length) {
     /* we are at the EOS, send end-of-stream */
@@ -736,37 +743,47 @@ feed_data (GstElement * appsrc, guint size, PrivStruct * ps)
   if (ps->length > 0 && ps->offset + size > ps->length)
     size = ps->length - ps->offset;
 
-  data_len = ps->ec->read (ps->ec->cls, (void **) &le_data, size);
-  if (data_len > 0)
+  mem = gst_allocator_alloc (NULL, size, NULL);
+  if (!gst_memory_map (mem, &mi, GST_MAP_WRITE))
   {
-    GstMemory *mem;
-    GstMapInfo mi;
-    mem = gst_allocator_alloc (NULL, data_len, NULL);
-    if (gst_memory_map (mem, &mi, GST_MAP_WRITE))
-    {
-      GstBuffer *buffer;
-      memcpy (mi.data, le_data, data_len);
-      gst_memory_unmap (mem, &mi);
-      buffer = gst_buffer_new ();
-      gst_buffer_append_memory (buffer, mem);
+    gst_memory_unref (mem);
+    GST_DEBUG ("Failed to map the memory");
+    ret = gst_app_src_end_of_stream (GST_APP_SRC (ps->source));
+    return;
+  }
 
-      /* we need to set an offset for random access */
-      GST_BUFFER_OFFSET (buffer) = ps->offset;
-      GST_BUFFER_OFFSET_END (buffer) = ps->offset + data_len;
-
-      GST_DEBUG ("feed buffer %p, offset %" G_GUINT64_FORMAT "-%u", buffer,
-          ps->offset, data_len);
-      ret = gst_app_src_push_buffer (GST_APP_SRC (ps->source), buffer);
-      ps->offset += data_len;
-    }
-    else
+  accumulated = 0;
+  data_len = 1;
+  while (accumulated < size && data_len > 0)
+  {
+    data_len = ps->ec->read (ps->ec->cls, (void **) &le_data, size - accumulated);
+    if (data_len > 0)
     {
-      gst_memory_unref (mem);
-      ret = gst_app_src_end_of_stream (GST_APP_SRC (ps->source));
+      memcpy (&mi.data[accumulated], le_data, data_len);
+      accumulated += data_len;
     }
   }
+  gst_memory_unmap (mem, &mi);
+  if (data_len > 0)
+  {
+    GstBuffer *buffer;
+    buffer = gst_buffer_new ();
+    gst_buffer_append_memory (buffer, mem);
+
+    /* we need to set an offset for random access */
+    GST_BUFFER_OFFSET (buffer) = ps->offset;
+    GST_BUFFER_OFFSET_END (buffer) = ps->offset + size;
+
+    GST_DEBUG ("feed buffer %p, offset %" G_GUINT64_FORMAT "-%u", buffer,
+        ps->offset, size);
+    ret = gst_app_src_push_buffer (GST_APP_SRC (ps->source), buffer);
+    ps->offset += size;
+  }
   else
+  {
+    gst_memory_unref (mem);
     ret = gst_app_src_end_of_stream (GST_APP_SRC (ps->source));
+  }
 
   return;
 }
