@@ -412,14 +412,50 @@ fi
 
 # check for gtk >= 2.6.0
 AC_MSG_CHECKING(for gtk)
-AM_PATH_GTK_2_0(2.6.0,without_gtk=false,without_gtk=true)
+check_for_3=3.0.0
+check_for_2=false
+AC_ARG_WITH(gtk_version,
+   [  --with-gtk-version=VERSION    version number of gtk to use (>=3.0.0 by default)],
+   [AC_MSG_RESULT([$with_gtk_version])
+    case $with_gtk_version in
+      *)
+        if test "x${with_gtk_version:0:1}" == "x2"
+        then
+          check_for_3=false
+          check_for_2=$with_gtk_version
+        elif test "x${with_gtk_version:0:1}" == "x3"
+        then
+          check_for_3=$with_gtk_version
+          check_for_2=false
+        fi
+        ;;
+    esac
+   ],
+   [AC_MSG_RESULT([--with-gtk-version not specified])])
+
+without_gtk=false
+if test "x$check_for_3" != "xfalse"
+then
+  AM_PATH_GTK_3_0([$check_for_3],without_gtk=false,)
+fi
+
+if test "x$without_gtk" == "xfalse" -a "x$check_for_2" != "xfalse"
+then
+  AM_PATH_GTK_2_0([$check_for_2],without_gtk=false,)
+fi
+
 AM_CONDITIONAL(HAVE_GTK, test x$without_gtk != xtrue)
 if test $without_gtk != true
 then
- AC_DEFINE_UNQUOTED([HAVE_GTK], 1, [We have GTK])
+  AC_DEFINE_UNQUOTED([HAVE_GTK], 1, [We have GTK])
 else
- AM_CONDITIONAL(HAVE_GTK,false)
+  AC_MSG_ERROR(Cannot find GTK: Is pkg-config in path?)
 fi
+
+CFLAGS="$CFLAGS $GTK_CFLAGS"
+CPPFLAGS="$CPPFLAGS $GTK_CFLAGS"
+LIBS="$LIBS $GTK_LIBS"
+
 
 AC_ARG_WITH([gstreamer], AS_HELP_STRING([--with-gstreamer], [Build with the GStreamer plugin]), [], [with_gstreamer=yes])
 
