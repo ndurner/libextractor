@@ -426,13 +426,15 @@ AC_ARG_WITH([gstreamer], AS_HELP_STRING([--with-gstreamer], [Build with the GStr
 have_gstreamer=no
 have_gstreamer_pbutils=no
 have_gstreamer_tag=no
+have_gstreamer_app=no
 AS_IF([test "x$with_gstreamer" = "xyes"], [
    PKG_CHECK_MODULES([GSTREAMER], [gstreamer-1.0 >= 0.11.93], [have_gstreamer=yes], [have_gstreamer=no])
    PKG_CHECK_MODULES([GSTREAMER_PBUTILS], [gstreamer-pbutils-1.0 >= 0.11.93], [have_gstreamer_pbutils=yes], [have_gstreamer_pbutils=no])
    PKG_CHECK_MODULES([GSTREAMER_TAG], [gstreamer-tag-1.0 >= 0.11.93], [have_gstreamer_tag=yes], [have_gstreamer_tag=no])
+   PKG_CHECK_MODULES([GSTREAMER_APP], [gstreamer-app-1.0 >= 0.11.93], [have_gstreamer_app=yes], [have_gstreamer_app=no])
 ])
 
-AM_CONDITIONAL(HAVE_GSTREAMER, test x$have_gstreamer = xyes -a x$have_gstreamer_pbutils = xyes -a x$have_gstreamer_tag = xyes -a ! x$without_glib = xtrue)
+AM_CONDITIONAL(HAVE_GSTREAMER, test x$have_gstreamer = xyes -a x$have_gstreamer_pbutils = xyes -a x$have_gstreamer_tag = xyes -a x$have_gstreamer_app = xyes -a ! x$without_glib = xtrue)
 
 ABI_GSF
 

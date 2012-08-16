@@ -29,6 +29,10 @@
 #include <glib-object.h>
 #include <gst/pbutils/pbutils.h>
 #include <gst/tag/tag.h>
+#include <gst/app/gstappsrc.h>
+
+GST_DEBUG_CATEGORY_STATIC (gstreamer_extractor);
+#define GST_CAT_DEFAULT gstreamer_extractor
 
 struct KnownTag
 {
@@ -668,6 +672,8 @@ initialize ()
 
   gst_init (NULL, NULL);
 
+  GST_DEBUG_CATEGORY_INIT (gstreamer_extractor, "GstExtractor",
+                         0, "GStreamer-based libextractor plugin");
   dc = gst_discoverer_new (timeout * GST_SECOND, &err);
   if (G_UNLIKELY (dc == NULL)) {
     g_print ("Error initializing: %s\n", err->message);
@@ -719,37 +725,32 @@ _source_setup (GstDiscoverer * dc, GstElement * source, PrivStruct * ps)
 static void
 feed_data (GstElement * appsrc, guint size, PrivStruct * ps)
 {
-  GstBuffer *buffer;
   GstFlowReturn ret;
-  GstMemory *data;
-  GstMapInfo mi;
   long data_len;
-  int eos = FALSE;
+  uint8_t *le_data;
 
   if (ps->length > 0 && ps->offset >= ps->length) {
     /* we are at the EOS, send end-of-stream */
-    g_signal_emit_by_name (ps->source, "end-of-stream", &ret);
+    ret = gst_app_src_end_of_stream (GST_APP_SRC (ps->source));
     return;
   }
 
-  buffer = gst_buffer_new ();
-  
   if (ps->length > 0 && ps->offset + size > ps->length)
     size = ps->length - ps->offset;
 
-  data = gst_allocator_alloc (NULL, size, NULL);
-  eos = TRUE;
-  if (gst_memory_map (data, &mi, GST_MAP_WRITE | GST_MAP_READ))
+  data_len = ps->ec->read (ps->ec->cls, (void **) &le_data, size);
+  if (data_len > 0)
   {
-    uint8_t *le_data;
-    data_len = ps->ec->read (ps->ec->cls, (void **) &le_data, size);
-    if (data_len > 0)
-      memcpy (mi.data, le_data, data_len);
-    gst_memory_unmap (data, &mi);
-    if (data_len > 0)
+    GstMemory *mem;
+    GstMapInfo mi;
+    mem = gst_allocator_alloc (NULL, data_len, NULL);
+    if (gst_memory_map (mem, &mi, GST_MAP_WRITE))
     {
-      gst_memory_resize (data, 0, data_len);
-      gst_buffer_append_memory (buffer, data);
+      GstBuffer *buffer;
+      memcpy (mi.data, le_data, data_len);
+      gst_memory_unmap (mem, &mi);
+      buffer = gst_buffer_new ();
+      gst_buffer_append_memory (buffer, mem);
 
       /* we need to set an offset for random access */
       GST_BUFFER_OFFSET (buffer) = ps->offset;
@@ -757,20 +758,17 @@ feed_data (GstElement * appsrc, guint size, PrivStruct * ps)
 
       GST_DEBUG ("feed buffer %p, offset %" G_GUINT64_FORMAT "-%u", buffer,
           ps->offset, data_len);
-      g_signal_emit_by_name (ps->source, "push-buffer", buffer, &ret);
-      eos = FALSE;
+      ret = gst_app_src_push_buffer (GST_APP_SRC (ps->source), buffer);
+      ps->offset += data_len;
+    }
+    else
+    {
+      gst_memory_unref (mem);
+      ret = gst_app_src_end_of_stream (GST_APP_SRC (ps->source));
     }
   }
-
-  if (eos)
-  {
-    g_signal_emit_by_name (ps->source, "end-of-stream", &ret);
-    gst_memory_unref (data);
-  }
-
-  gst_buffer_unref (buffer);
-
-  ps->offset += data_len;
+  else
+    ret = gst_app_src_end_of_stream (GST_APP_SRC (ps->source));
 
   return;
 }
@@ -871,8 +869,10 @@ send_structure_foreach (GQuark field_id, const GValue *value,
     }
     /* This is a potential source of invalid characters */
     /* And it also might attempt to serialize binary data - such as images. */
+    str = gst_value_serialize (value);
+    g_print ("Will not try to serialize structure field %s (%s) = %s\n", field_name, type_name, str);
+    g_free (str);
     str = NULL;
-    g_print ("Will not try to serialize structure field %s (%s)\n", field_name, type_name);
     break;
   }
   if (str != NULL)
@@ -1361,8 +1361,10 @@ send_toc_tags_foreach (const GstTagList * tags, const gchar * tag,
     }
     /* This is a potential source of invalid characters */
     /* And it also might attempt to serialize binary data - such as images. */
+    str = gst_value_serialize (&val);
+    g_print ("Will not try to serialize tag %s (%s) = %s\n", tag, type_name, str);
+    g_free (str);
     str = NULL;
-    g_print ("Will not try to serialize tag %s (%s)\n", tag, type_name);
     break;
   }
   if (str != NULL)
