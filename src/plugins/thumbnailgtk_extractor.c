@@ -52,7 +52,7 @@ static magic_t magic;
 
 
 /**
- * Main method for the thumbnailer plugin.
+ * Main method for the gtk-thumbnailer plugin.
  *
  * @param ec extraction context
  */
@@ -209,7 +209,7 @@ EXTRACTOR_thumbnail_extract_method (struct EXTRACTOR_ExtractContext *ec)
  * Initialize glib and load magic file.
  */
 void __attribute__ ((constructor)) 
-ole_gobject_init ()
+thumbnailgtk_gobject_init ()
 {
   g_type_init ();
   magic = magic_open (MAGIC_MIME_TYPE);
@@ -224,7 +224,7 @@ ole_gobject_init ()
  * Destructor for the library, cleans up.
  */
 void __attribute__ ((destructor)) 
-mime_ltdl_fini () 
+thumbnailgtk_ltdl_fini () 
 {
   if (NULL != magic)
     {

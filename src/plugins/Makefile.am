@@ -48,9 +48,15 @@ PLUGIN_MIME=libextractor_mime.la
 TEST_MIME=test_mime
 
 if HAVE_GTK
-# Thumbnailer requires MAGIC and GTK
+# Gtk-thumbnailer requires MAGIC and GTK
 PLUGIN_GTK=libextractor_thumbnailgtk.la
 TEST_GTK=test_thumbnailgtk
+endif
+
+if HAVE_FFMPEG
+# FFmpeg-thumbnailer requires MAGIC and FFMPEG
+PLUGIN_FFMPEG=libextractor_thumbnailffmpeg.la
+TEST_FFMPEG=test_thumbnailffmpeg
 endif
 endif
 
@@ -116,6 +122,7 @@ plugin_LTLIBRARIES = \
   libextractor_wav.la \
   libextractor_zip.la \
   $(PLUGIN_GTK) \
+  $(PLUGIN_FFMPEG) \
   $(PLUGIN_ZLIB) \
   $(PLUGIN_OGG) \
   $(PLUGIN_MIME) \
@@ -145,6 +152,7 @@ check_PROGRAMS = \
   test_nsfe \
   $(TEST_ZLIB) \
   $(TEST_GTK) \
+  $(TEST_FFMPEG) \
   $(TEST_OGG) \
   $(TEST_MIME) \
   $(TEST_TIFF) \
@@ -455,4 +463,17 @@ libextractor_gstreamer_la_CFLAGS = \
 test_gstreamer_SOURCES = \
   test_gstreamer.c
 test_gstreamer_LDADD = \
+  $(top_builddir)/src/plugins/libtest.la
+
+
+libextractor_thumbnailffmpeg_la_SOURCES = \
+  thumbnailffmpeg_extractor.c
+libextractor_thumbnailffmpeg_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+libextractor_thumbnailffmpeg_la_LIBADD = \
+  -lavutil -lavformat -lavcodec -lswscale -lmagic
+
+test_thumbnailffmpeg_SOURCES = \
+  test_thumbnailffmpeg.c
+test_thumbnailffmpeg_LDADD = \
   $(top_builddir)/src/plugins/libtest.la
