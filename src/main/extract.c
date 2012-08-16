@@ -325,6 +325,13 @@ print_selected_keywords (void *cls,
 	       (int) data_len,
 	       data);
       break;
+    case EXTRACTOR_METAFORMAT_XML:
+      fprintf (stdout,
+	       "%s - %.*s\n",
+	       stype,
+	       (int) data_len,
+	       data);
+      break;
     default:
       break;
     }

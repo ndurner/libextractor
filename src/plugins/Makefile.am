@@ -99,6 +99,11 @@ PLUGIN_ZLIB=libextractor_deb.la
 TEST_ZLIB=test_deb
 endif
 
+if HAVE_GSTREAMER
+PLUGIN_GSTREAMER=libextractor_gstreamer.la
+TEST_GSTREAMER=test_gstreamer
+endif
+
 plugin_LTLIBRARIES = \
   libextractor_it.la \
   libextractor_nsf.la \
@@ -121,6 +126,7 @@ plugin_LTLIBRARIES = \
   $(PLUGIN_MPEG) \
   $(PLUGIN_JPEG) \
   $(PLUGIN_EXIV2) \
+  $(PLUGIN_GSTREAMER) \
   $(PLUGIN_GSF)
 
 if HAVE_ZZUF
@@ -148,6 +154,7 @@ check_PROGRAMS = \
   $(TEST_MPEG) \
   $(TEST_JPEG) \
   $(TEST_EXIV2) \
+  $(TEST_GSTREAMER) \
   $(TEST_GSF)
 
 TESTS = \
@@ -436,3 +443,16 @@ test_ole2_LDADD = \
   $(top_builddir)/src/plugins/libtest.la
 
 
+libextractor_gstreamer_la_SOURCES = \
+  gstreamer_extractor.c
+libextractor_gstreamer_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+libextractor_gstreamer_la_LIBADD = \
+  $(GSTREAMER_LIBS) $(GSTREAMER_PBUTILS_LIBS) $(GSTREAMER_TAG_LIBS)
+libextractor_gstreamer_la_CFLAGS = \
+  $(GSTREAMER_CFLAGS) $(GSTREAMER_PBUTILS_CFLAGS) $(GSTREAMER_TAG_CFLAGS)
+
+test_gstreamer_SOURCES = \
+  test_gstreamer.c
+test_gstreamer_LDADD = \
+  $(top_builddir)/src/plugins/libtest.la
