@@ -621,7 +621,7 @@ typedef struct
   GstElement *source;
   struct EXTRACTOR_ExtractContext *ec;
   long length;
-  long offset;
+  guint64 offset;
   long toc_depth;
   size_t toc_length;
   size_t toc_pos;
