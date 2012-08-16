@@ -70,7 +70,7 @@ cut_bin (char * in)
       p -= 4;
     }
   else if (0 == strcmp (&in[p-4],
-			"\bin")) 
+			"\\bin"))
     {
       in[p-4] = '\0';
       p -= 4;
