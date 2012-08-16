@@ -117,19 +117,20 @@ struct BufferedFileDataSource
   uint64_t fpos;
 
   /**
-   * Position within the buffer.
+   * Position within the buffer.  Our absolute offset in the file
+   * is thus 'fpos + buffer_pos'.
    */ 
-  uint64_t buffer_pos;
+  size_t buffer_pos;
 
   /**
    * Number of valid bytes in the buffer (<= buffer_size)
    */ 
-  uint64_t buffer_bytes;
+  size_t buffer_bytes;
 
   /**
    * Allocated size of the buffer
    */ 
-  uint64_t buffer_size;
+  size_t buffer_size;
 
   /**
    * Descriptor of the file to read data from (may be -1)
@@ -377,8 +378,8 @@ bfds_seek (struct BufferedFileDataSource *bfds,
 	  return -1;
 	}
       if ( (NULL == bfds->buffer) ||
-	   ( (bfds->buffer_pos + bfds->fpos <= pos) &&
-	     (bfds->buffer_pos + bfds->fpos + bfds->buffer_bytes > pos) ) )
+	   ( (bfds->fpos <= pos) &&
+	     (bfds->fpos + bfds->buffer_bytes > pos) ) )
 	{
 	  bfds->buffer_pos = pos - bfds->fpos; 
 	  return pos;
