@@ -847,7 +847,8 @@ send_structure_foreach (GQuark field_id, const GValue *value,
 {
   PrivStruct *ps = (PrivStruct *) user_data;
   gchar *str;
-  const char *field_name = g_quark_to_string (field_id);
+  const gchar *field_name = g_quark_to_string (field_id);
+  const gchar *type_name = g_type_name (G_VALUE_TYPE (value));
 
   /* TODO: check a list of known quarks, use specific EXTRACTOR_MetaType  */
   switch (G_VALUE_TYPE (value))
@@ -856,9 +857,17 @@ send_structure_foreach (GQuark field_id, const GValue *value,
     str = g_value_dup_string (value);
     break;
   case G_TYPE_UINT:
+  case G_TYPE_INT:
   case G_TYPE_DOUBLE:
-  default:
+  case G_TYPE_BOOLEAN:
     str = gst_value_serialize (value);
+    break;
+  default:
+    /* This is a potential source of invalid characters */
+    /* And it also might attempt to serialize binary data - such as images. */
+    str = NULL;
+    g_print ("Will not try to serialize structure field %s (%s)\n", field_name, type_name);
+    break;
   }
   if (str != NULL)
   {
@@ -1164,7 +1173,9 @@ send_tag_foreach (const GstTagList * tags, const gchar * tag,
     str = g_value_dup_string (&val);
     break;
   case G_TYPE_UINT:
+  case G_TYPE_INT:
   case G_TYPE_DOUBLE:
+  case G_TYPE_BOOLEAN:
     str = gst_value_serialize (&val);
     break;
   default:
@@ -1319,8 +1330,11 @@ send_toc_tags_foreach (const GstTagList * tags, const gchar * tag,
   PrivStruct *ps = (PrivStruct *) user_data;
   GValue val = { 0, };
   gchar *topen, *str, *tclose;
+  const gchar *type_name;
 
   gst_tag_list_copy_value (&val, tags, tag);
+
+  type_name = g_type_name (G_VALUE_TYPE (&val));
 
   switch (G_VALUE_TYPE (&val))
   {
@@ -1336,6 +1350,7 @@ send_toc_tags_foreach (const GstTagList * tags, const gchar * tag,
     /* This is a potential source of invalid characters */
     /* And it also might attempt to serialize binary data - such as images. */
     str = NULL;
+    g_print ("Will not try to serialize tag %s (%s)\n", tag, type_name);
     break;
   }
   if (str != NULL)
