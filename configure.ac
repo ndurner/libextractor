@@ -639,3 +639,10 @@ if test "x$HAVE_CXX" != "xyes"
 then
  AC_MSG_NOTICE([NOTICE: no C++ compiler found (not compiling plugins that require C++)])
 fi
+
+if test x$have_gstreamer = xyes -a x$have_gstreamer_pbutils = xyes -a x$have_gstreamer_tag = xyes -a x$have_gstreamer_app = xyes -a ! x$without_glib = xtrue
+then
+ AC_MSG_NOTICE([NOTICE: gstreamer enabled])
+else
+ AC_MSG_NOTICE([NOTICE: gstreamer not found, gstreamer support disabled])
+fi
