@@ -849,6 +849,7 @@ send_structure_foreach (GQuark field_id, const GValue *value,
   gchar *str;
   const gchar *field_name = g_quark_to_string (field_id);
   const gchar *type_name = g_type_name (G_VALUE_TYPE (value));
+  GType gst_fraction = GST_TYPE_FRACTION;
 
   /* TODO: check a list of known quarks, use specific EXTRACTOR_MetaType  */
   switch (G_VALUE_TYPE (value))
@@ -863,6 +864,11 @@ send_structure_foreach (GQuark field_id, const GValue *value,
     str = gst_value_serialize (value);
     break;
   default:
+    if (G_VALUE_TYPE (value) == gst_fraction)
+    {
+      str = gst_value_serialize (value);
+      break;
+    }
     /* This is a potential source of invalid characters */
     /* And it also might attempt to serialize binary data - such as images. */
     str = NULL;
@@ -1331,6 +1337,7 @@ send_toc_tags_foreach (const GstTagList * tags, const gchar * tag,
   GValue val = { 0, };
   gchar *topen, *str, *tclose;
   const gchar *type_name;
+  GType gst_fraction = GST_TYPE_FRACTION;
 
   gst_tag_list_copy_value (&val, tags, tag);
 
@@ -1347,6 +1354,11 @@ send_toc_tags_foreach (const GstTagList * tags, const gchar * tag,
     str = gst_value_serialize (&val);
     break;
   default:
+    if (G_VALUE_TYPE (&val) == gst_fraction)
+    {
+      str = gst_value_serialize (&val);
+      break;
+    }
     /* This is a potential source of invalid characters */
     /* And it also might attempt to serialize binary data - such as images. */
     str = NULL;
