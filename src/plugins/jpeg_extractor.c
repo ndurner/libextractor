@@ -24,6 +24,9 @@
  */
 #include "platform.h"
 #include "extractor.h"
+#if WINDOWS
+#define HAVE_BOOLEAN
+#endif
 #include <jpeglib.h>
 #include <setjmp.h>
 
