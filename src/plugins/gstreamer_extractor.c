@@ -711,10 +711,8 @@ _source_setup (GstDiscoverer * dc, GstElement * source, PrivStruct * ps)
   if (ps->length > 0)
   {
     g_object_set (ps->source, "size", (gint64) ps->length, NULL);
-    gst_util_set_object_arg (G_OBJECT (ps->source), "stream-type", "random-access");
   }
-  else
-    gst_util_set_object_arg (G_OBJECT (ps->source), "stream-type", "seekable");
+  gst_util_set_object_arg (G_OBJECT (ps->source), "stream-type", "seekable");
 
   /* configure the appsrc, we will push a buffer to appsrc when it needs more
    * data */
