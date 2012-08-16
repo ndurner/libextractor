@@ -32,7 +32,7 @@ extern "C" {
  * 0.2.6-1 => 0x00020601
  * 4.5.2-0 => 0x04050200
  */
-#define EXTRACTOR_VERSION 0x00060900
+#define EXTRACTOR_VERSION 0x00070000
 
 #include <stdio.h>
 
@@ -102,12 +102,8 @@ enum EXTRACTOR_MetaFormat
      * 0-terminated string.  The specific encoding is unknown.
      * "data_len" is strlen(data)+1.
      */
-    EXTRACTOR_METAFORMAT_C_STRING = 3,
+    EXTRACTOR_METAFORMAT_C_STRING = 3
 
-    /**
-     * 0-terminated string.  Contains a valid XML (with header and all).
-     */
-    EXTRACTOR_METAFORMAT_XML = 4
   };
 
 

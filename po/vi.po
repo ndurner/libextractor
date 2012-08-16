@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.6.0\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2012-08-15 01:02+0200\n"
+"POT-Creation-Date: 2012-08-17 01:19+0200\n"
 "PO-Revision-Date: 2010-02-11 00:13+0930\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
@@ -104,7 +104,7 @@ msgstr "Rút siêu dữ liệu ra tập tin."
 msgid "Found by `%s' plugin:\n"
 msgstr "Tìm bởi phần bổ sung « %s »:\n"
 
-#: src/main/extract.c:287 src/main/extract.c:368
+#: src/main/extract.c:287 src/main/extract.c:375
 #: src/main/extractor_metatypes.c:145 src/main/extractor_print.c:82
 msgid "unknown"
 msgstr "không rõ"
@@ -119,29 +119,29 @@ msgstr "%s - (không rõ, %u byte)\n"
 msgid "%s - (binary, %u bytes)\n"
 msgstr "%s - (nhị phân, %u byte)\n"
 
-#: src/main/extract.c:658 src/main/extract.c:668
+#: src/main/extract.c:665 src/main/extract.c:675
 #, c-format
 msgid ""
 "Illegal combination of options, cannot combine multiple styles of printing.\n"
 msgstr "sai tổ hợp các tuỳ chọn này, không thể kết hợp nhiều cách in.\n"
 
-#: src/main/extract.c:698
+#: src/main/extract.c:705
 #, c-format
 msgid "You must specify an argument for the `%s' option (option ignored).\n"
 msgstr "Bạn phải ghi rõ một đối số cho tùy chọn « %s » (tùy chọn bị bỏ qua).\n"
 
-#: src/main/extract.c:763
+#: src/main/extract.c:770
 #, c-format
 msgid "Use --help to get a list of options.\n"
 msgstr ""
 "Hãy sử dụng lệnh « --help » (trợ giúp) để xem một danh sách các tùy chọn.\n"
 
-#: src/main/extract.c:801
+#: src/main/extract.c:808
 #, c-format
 msgid "%% BiBTeX file\n"
 msgstr "%% tập tin BiBTeX\n"
 
-#: src/main/extract.c:809
+#: src/main/extract.c:816
 #, c-format
 msgid "Keywords for file %s:\n"
 msgstr "Từ khoá cho tập tin %s:\n"
@@ -1469,7 +1469,398 @@ msgstr "tên gốc"
 msgid "name of the original file (reserved for GNUnet)"
 msgstr "tên của người biểu diễn gốc"
 
-#: src/main/extractor_metatypes.c:447 src/main/extractor_metatypes.c:448
+#: src/main/extractor_metatypes.c:447
+#, fuzzy
+msgid "disc count"
+msgstr "số đếm trang"
+
+#: src/main/extractor_metatypes.c:448
+msgid "count of discs inside collection this disc belongs to"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:449
+msgid "codec"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:450
+msgid "codec the data is stored in"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:451
+msgid "video codec"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:452
+msgid "codec the video data is stored in"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:453
+msgid "audio codec"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:454
+msgid "codec the audio data is stored in"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:456
+#, fuzzy
+msgid "subtitle codec"
+msgstr "phụ đề"
+
+#: src/main/extractor_metatypes.c:457
+msgid "codec/format the subtitle data is stored in"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:458
+msgid "container format"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:459
+msgid "container format the data is stored in"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:460
+msgid "bitrate"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:461
+msgid "exact or average bitrate in bits/s"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:462
+#, fuzzy
+msgid "nominal bitrate"
+msgstr "tên gốc"
+
+#: src/main/extractor_metatypes.c:463
+msgid ""
+"nominal bitrate in bits/s. The actual bitrate might be different from this "
+"target bitrate."
+msgstr ""
+
+#: src/main/extractor_metatypes.c:464
+msgid "minimum bitrate"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:465
+msgid "minimum bitrate in bits/s"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:467
+msgid "maximum bitrate"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:468
+msgid "maximum bitrate in bits/s"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:469
+#, fuzzy
+msgid "serial"
+msgstr "Công nghiệp"
+
+#: src/main/extractor_metatypes.c:470
+#, fuzzy
+msgid "serial number of track"
+msgstr "số các ký tự"
+
+#: src/main/extractor_metatypes.c:471
+#, fuzzy
+msgid "encoder"
+msgstr "má hoá theo"
+
+#: src/main/extractor_metatypes.c:472
+msgid "encoder used to encode this stream"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:473
+#, fuzzy
+msgid "encoder version"
+msgstr "phiên bản định dạng"
+
+#: src/main/extractor_metatypes.c:474
+msgid "version of the encoder used to encode this stream"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:475
+#, fuzzy
+msgid "track gain"
+msgstr "số thứ tự rãnh"
+
+#: src/main/extractor_metatypes.c:476
+msgid "track gain in db"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:478
+#, fuzzy
+msgid "track peak"
+msgstr "số thứ tự rãnh"
+
+#: src/main/extractor_metatypes.c:479
+#, fuzzy
+msgid "peak of the track"
+msgstr "tên của tác phẩm"
+
+#: src/main/extractor_metatypes.c:480
+#, fuzzy
+msgid "album gain"
+msgstr "tập"
+
+#: src/main/extractor_metatypes.c:481
+msgid "album gain in db"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:482
+#, fuzzy
+msgid "album peak"
+msgstr "tập"
+
+#: src/main/extractor_metatypes.c:483
+#, fuzzy
+msgid "peak of the album"
+msgstr "tên của tập nhạc"
+
+#: src/main/extractor_metatypes.c:484
+msgid "reference level"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:485
+msgid "reference level of track and album gain values"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:486
+#, fuzzy
+msgid "location name"
+msgstr "giờ tạo"
+
+#: src/main/extractor_metatypes.c:487
+msgid ""
+"human readable descriptive location of where the media has been recorded or "
+"produced"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:489
+msgid "location elevation"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:490
+msgid ""
+"geo elevation of where the media has been recorded or produced in meters "
+"according to WGS84 (zero is average sea level)"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:491
+msgid "location horizontal error"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:492
+msgid "represents the expected error on the horizontal positioning in meters"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:493
+#, fuzzy
+msgid "location movement speed"
+msgstr "tháng xuất bản"
+
+#: src/main/extractor_metatypes.c:494
+msgid ""
+"speed of the capturing device when performing the capture. Represented in m/s"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:495
+msgid "location movement direction"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:496
+msgid ""
+"indicates the movement direction of the device performing the capture of a "
+"media. It is represented as degrees in floating point representation, 0 "
+"means the geographic north, and increases clockwise"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:497
+msgid "location capture direction"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:498
+msgid ""
+"indicates the direction the device is pointing to when capturing a media. It "
+"is represented as degrees in floating point representation, 0 means the "
+"geographic north, and increases clockwise"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:500
+#, fuzzy
+msgid "show episode number"
+msgstr "số thứ tự bản sửa đổi"
+
+#: src/main/extractor_metatypes.c:501
+msgid "number of the episode within a season/show"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:502
+#, fuzzy
+msgid "show season number"
+msgstr "số thứ tự bản sửa đổi"
+
+#: src/main/extractor_metatypes.c:503
+#, fuzzy
+msgid "number of the season of a show/series"
+msgstr "số thứ tự của bài hát đầu tiên cần phát"
+
+#: src/main/extractor_metatypes.c:504
+msgid "gourping"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:505
+msgid ""
+"groups together media that are related and spans multiple tracks. An example "
+"are multiple pieces of a concerto"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:506
+msgid "device manufacturer"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:507
+#, fuzzy
+msgid "manufacturer of the device used to create the media"
+msgstr "thiết bị được dùng để tạo đối tượng"
+
+#: src/main/extractor_metatypes.c:508
+#, fuzzy
+msgid "device model"
+msgstr "mô hình máy ảnh"
+
+#: src/main/extractor_metatypes.c:509
+#, fuzzy
+msgid "model of the device used to create the media"
+msgstr "thiết bị được dùng để tạo đối tượng"
+
+#: src/main/extractor_metatypes.c:511
+#, fuzzy
+msgid "audio language"
+msgstr "ngôn ngữ"
+
+#: src/main/extractor_metatypes.c:512
+#, fuzzy
+msgid "language of the audio track"
+msgstr "ngôn ngữ của tác phẩm"
+
+#: src/main/extractor_metatypes.c:513
+#, fuzzy
+msgid "channels"
+msgstr "kênh đôi"
+
+#: src/main/extractor_metatypes.c:514
+#, fuzzy
+msgid "number of audio channels"
+msgstr "số các dòng"
+
+#: src/main/extractor_metatypes.c:515
+msgid "sample rate"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:516
+#, fuzzy
+msgid "sample rate of the audio track"
+msgstr "tên của người đạo diễn"
+
+#: src/main/extractor_metatypes.c:517
+msgid "audio depth"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:518
+#, fuzzy
+msgid "number of bits per audio sample"
+msgstr "số các lần đã phát phương tiện này"
+
+#: src/main/extractor_metatypes.c:519
+msgid "audio bitrate"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:520
+#, fuzzy
+msgid "bitrate of the audio track"
+msgstr "tên của tác phẩm"
+
+#: src/main/extractor_metatypes.c:522 src/main/extractor_metatypes.c:523
+msgid "maximum audio bitrate"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:524
+#, fuzzy
+msgid "video dimensions"
+msgstr "các chiều ảnh"
+
+#: src/main/extractor_metatypes.c:525
+msgid "width and height of the video track (WxH)"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:526
+msgid "video depth"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:527
+#, fuzzy
+msgid "numbers of bits per pixel"
+msgstr "số các dòng"
+
+#: src/main/extractor_metatypes.c:528
+#, fuzzy
+msgid "frame rate"
+msgstr "phạm vi trang"
+
+#: src/main/extractor_metatypes.c:529
+msgid "number of frames per second (as D/N or floating point)"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:530
+msgid "pixel aspect ratio"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:531
+msgid "pixel aspect ratio (as D/N)"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:533 src/main/extractor_metatypes.c:534
+msgid "video bitrate"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:535 src/main/extractor_metatypes.c:536
+msgid "maximum video bitrate"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:537
+#, fuzzy
+msgid "subtitle language"
+msgstr "ngôn ngữ"
+
+#: src/main/extractor_metatypes.c:538
+#, fuzzy
+msgid "language of the subtitle track"
+msgstr "tên nhà xuất bản"
+
+#: src/main/extractor_metatypes.c:539
+#, fuzzy
+msgid "video language"
+msgstr "ngôn ngữ"
+
+#: src/main/extractor_metatypes.c:540
+#, fuzzy
+msgid "language of the video track"
+msgstr "ngôn ngữ của tác phẩm"
+
+#: src/main/extractor_metatypes.c:541
+#, fuzzy
+msgid "table of contents"
+msgstr "đánh giá nội dung"
+
+#: src/main/extractor_metatypes.c:542
+msgid "chapters, contents or bookmarks (in xml format)"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:544 src/main/extractor_metatypes.c:545
 msgid "last"
 msgstr "cuối"
 
@@ -1690,9 +2081,6 @@ msgstr "âm lập thể"
 
 #~ msgid "Techno"
 #~ msgstr "Kỹ thuật"
-
-#~ msgid "Industrial"
-#~ msgstr "Công nghiệp"
 
 #~ msgid "Alternative"
 #~ msgstr "Sự chọn khác"
@@ -2107,9 +2495,6 @@ msgstr "âm lập thể"
 
 #~ msgid "joint stereo"
 #~ msgstr "âm lập thể chung"
-
-#~ msgid "dual channel"
-#~ msgstr "kênh đôi"
 
 #~ msgid "MPEG-1"
 #~ msgstr "MPEG-1"

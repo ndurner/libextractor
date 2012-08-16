@@ -4,49 +4,47 @@ Nils Durner <durner@gnunet.org>
 LRN <lrn1986@gmail.com>
 
 Formats:
-html          - core team with code from libhtmlparse 0.1.13, http://msalem.translator.cx/libhtmlparse.html
 jpeg          - core team
-mp3           - core team and James Blackwell <jblack@linuxguru.net>
-ogg           - core team using ogg-vorbis
+ogg           - core team
 png           - core team
 gif           - core team
-flv           - Heikki Lindholm
 flac          - core team
-real          - core team
-mime          - core team and Igor Wronsky <iwronsky@users.sourceforge.net>
-pdf           - core team with code form xpdf 0.93, http://www.foolabs.com/xpdf/
-ps            - core team
+mime          - core team
 tiff          - core team
-zip           - Julia Wolf <julia@virtadpt.net>
 rpm           - core team
-asf           - core team based on code from xine
-printable     - core team based in part on code from GNUnet (bloom filters)
-avi           - core team based in part on code from avinfo 1.0.0 alpha 11 and bitcollider 0.6.0
-mpeg          - core team based in part on code from avinfo 1.0.0 alpha 11 and bitcollider 0.6.0
-ole2          - core team based on code from libgsf
-tar           - core team and Ronan MELENNEC <ronan.melennec@cena.fr>
-tar.gz        - core team using zlib
-deb           - core team using zlib
-man           - core team using zlib (for man.gz)
-id3v2         - core team with Milan <milan@skoid.org>
-qt            - core team with Heikki Lindholm 
-hash          - core team using GNU coreutils/textutils and GPL'ed RMD160 code.
-translit      - Nils Durner <durner@gnunet.org>
-thumbnail     - core team using GTK
-thumbnailqt   - Nils Durner <durner@gnunet.org>
-exiv2         - Andreas Huggel <ahuggel@gmx.net>
-language      - Roberto Cappuccio <roberto.cappuccio@gmail.com> (from libkat)
-word          - Ariya Hidayat <ariya@kde.org> and Sacha Fuentes <mandelman@iname.com>
+mpeg          - core team
+ole2          - core team
+deb           - core team
+thumbnailgtk  - core team 
 nsf           - Toni Ruottu <toni.ruottu@iki.fi>
 sid           - Toni Ruottu <toni.ruottu@iki.fi>
 nsfe          - Toni Ruottu <toni.ruottu@iki.fi>
-applefile     - Heikki Lindholm
 it            - Toni Ruottu <toni.ruottu@iki.fi>
 xm            - Toni Ruottu <toni.ruottu@iki.fi>
 s3m           - Toni Ruottu <toni.ruottu@iki.fi>
+exiv2         - Andreas Huggel <ahuggel@gmx.net>
+
+Currently dead (plugins/old/):
+html          - core team with code from libhtmlparse 0.1.13, http://msalem.translator.cx/libhtmlparse.html
+thumbnailqt   - Nils Durner <durner@gnunet.org>
+mp3           - core team and James Blackwell <jblack@linuxguru.net>
+flv           - Heikki Lindholm
+applefile     - Heikki Lindholm
+qt            - core team with Heikki Lindholm 
+real          - core team
+pdf           - core team with code form xpdf 0.93, http://www.foolabs.com/xpdf/
+ps            - core team
+asf           - core team based on code from xine
+avi           - core team based in part on code from avinfo 1.0.0 alpha 11 and bitcollider 0.6.0
+tar           - core team and Ronan MELENNEC <ronan.melennec@cena.fr>
+man           - core team
+id3v2         - core team with Milan <milan@skoid.org>
 mkv	      - Gabriel Peixoto <peixotogm@gmail.com>
 
+
 General contributors:
+Milan <milan@skoid.org>
+James Blackwell <jblack@linuxguru.net>
 Yuri N. Sedunov <aris@altlinux.ru>
 Filip Pizlo <pizlo@purdue.edu>
 Blake Matheny <bmatheny@mobocracy.net>
@@ -59,14 +57,15 @@ Vasil Dimov <vd@freebsd.org>
 Pavol Rusnak <prusnak@suse.cz>
 Vidyut Samanta <vids@cs.ucla.edu>
 LRN <lrn1986@gmail.com>
+Gabriel Peixoto <peixotogm@gmail.com>
 
 Translations:
-German - Karl Eichwalder <ke@gnu.franken.de>
-Irish - Kevin Patrick Scannell <scannell@SLU.EDU>
+German      - Karl Eichwalder <ke@gnu.franken.de>
+Irish       - Kevin Patrick Scannell <scannell@SLU.EDU>
 Kinyarwanda - Steve Murphy <murf@e-tools.com>
-Romanian - Laurentiu Buzdugan <lbuz@rolix.org>
-Swedish - Daniel Nylander <po@danielnylander.se>
-Vietnamese - Clytie Siddall <clytie@riverland.net.au>
+Romanian    - Laurentiu Buzdugan <lbuz@rolix.org>
+Swedish     - Daniel Nylander <po@danielnylander.se>
+Vietnamese  - Clytie Siddall <clytie@riverland.net.au>
 
 Specific contributions:
 catlib      - Christopher Adam Telfer
@@ -75,15 +74,3 @@ xpdf        - derekn@foolabs.com
 xine        - http://xinehq.de/
 avinfo      - (c) George Shuklin, gs]AT[shounen.ru, 2002-2004
 bitcollider - Mark Nelson [delirium] <delirium4u@theoffspring.net>
-libgsf      - Jody Goldberg <jody@gnome.org>
-rmd160      - Philip Howard <phil@ipal.org>
-md5         - Ulrich Drepper <drepper@gnu.ai.mit.edu>
-sha1        - Scott G. Miller and Robert Klep <robert@ilse.nl>
-
-Libraries used:
-libz        -
-ogg-vorbis  -
-glib        -
-libltdl     -
-gtk (pixbuf)-
-libflac     -

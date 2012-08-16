@@ -1,5 +1,4 @@
 * Update plugins to new API (and cleanup code):
-  - mp3/id3/id3v2 tags
   - thumbnail-ffmpeg
   - thumbnail-qt
   - tar
@@ -8,14 +7,9 @@
   - dvi
   - elf
   - applefile
-  - flv
-  - qt
   - riff
   - ps
   - pdf
-  - mkv
-  - ebml
-  - asf
 
 Desirable missing formats:
 * mbox / various e-mail formats
@@ -24,9 +18,7 @@ Desirable missing formats:
 * a.out (== ar?)
 * rtf
 * EXE
-* APEv2 (MPC file format, http://www.personal.uni-jena.de/~pfk/mpp/sv8/apetag.html)
 * PRC (Palm module, http://web.mit.edu/tytso/www/pilot/prc-format.html)
 * KOffice
 * TGA
-* ODF (OpenDocument format)
 * Microsoft OOXML (MS Office >= 2007)

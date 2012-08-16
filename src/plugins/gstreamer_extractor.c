@@ -1525,7 +1525,7 @@ send_info (GstDiscovererInfo * info, PrivStruct *ps)
       g_list_foreach (entries, send_toc_foreach, ps);
       ps->toc[ps->toc_length - 1] = '\0';
       ps->time_to_leave = ps->ec->proc (ps->ec->cls, "gstreamer",
-          EXTRACTOR_METATYPE_TOC, EXTRACTOR_METAFORMAT_XML, "application/xml",
+          EXTRACTOR_METATYPE_TOC, EXTRACTOR_METAFORMAT_C_STRING, "application/xml",
           (const char *) ps->toc, ps->toc_length);
 
     }
