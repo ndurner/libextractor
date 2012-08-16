@@ -62,7 +62,7 @@
 /**
  * Set to 1 to enable debug output.
  */ 
-#define DEBUG 1
+#define DEBUG 0
 
 /**
  * max dimension in pixels for the thumbnail.
@@ -474,18 +474,17 @@ extract_video (struct EXTRACTOR_ExtractContext *ec)
   if (0 != avformat_open_input (&format_ctx, "<no file>", NULL, &options))
     return;
   av_dict_free (&options);  
-  options = NULL;
-  if (0 > avformat_find_stream_info (format_ctx, &options))
+  if (0 > avformat_find_stream_info (format_ctx, NULL))
     {
  #if DEBUG
       fprintf (stderr,
                "Failed to read stream info\n");
 #endif
       avformat_close_input (&format_ctx);
+      av_free (io_ctx);
+      av_free (iob);
       return;
     }
-  av_dict_free (&options);  
-
   codec = NULL;
   codec_ctx = NULL;
   video_stream_index = -1;
@@ -517,6 +516,7 @@ extract_video (struct EXTRACTOR_ExtractContext *ec)
       if (NULL != codec)
         avcodec_close (codec_ctx);
       avformat_close_input (&format_ctx);
+      av_free (io_ctx);
       return;
     }
 
@@ -528,6 +528,7 @@ extract_video (struct EXTRACTOR_ExtractContext *ec)
 #endif
       avcodec_close (codec_ctx);
       avformat_close_input (&format_ctx);
+      av_free (io_ctx);
       return;
     }
 #if DEBUG
@@ -573,6 +574,7 @@ extract_video (struct EXTRACTOR_ExtractContext *ec)
       av_free (frame);
       avcodec_close (codec_ctx);
       avformat_close_input (&format_ctx);
+      av_free (io_ctx);
       return;
     }
   calculate_thumbnail_dimensions (codec_ctx->width, codec_ctx->height,
@@ -598,6 +600,7 @@ extract_video (struct EXTRACTOR_ExtractContext *ec)
   av_free (frame);
   avcodec_close (codec_ctx);
   avformat_close_input (&format_ctx);
+  av_free (io_ctx);
 }
 
 
