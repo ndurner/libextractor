@@ -36,7 +36,9 @@ EXTRA_DIST = template_extractor.c \
   testdata/nsf_arkanoid.nsf \
   testdata/nsfe_classics.nsfe \
   testdata/xm_diesel.xm \
-  testdata/tiff_haute.tiff
+  testdata/tiff_haute.tiff \
+  testdata/man_extract.1 \
+  testdata/html_grothoff.html
 
 if HAVE_VORBISFILE
 PLUGIN_OGG=libextractor_ogg.la
@@ -57,6 +59,11 @@ if HAVE_FFMPEG
 # FFmpeg-thumbnailer requires MAGIC and FFMPEG
 PLUGIN_FFMPEG=libextractor_thumbnailffmpeg.la
 TEST_FFMPEG=test_thumbnailffmpeg
+endif
+
+if HAVE_TIDY
+PLUGIN_HTML=libextractor_html.la
+TEST_HTML=test_html
 endif
 endif
 
@@ -105,6 +112,7 @@ PLUGIN_ZLIB=libextractor_deb.la
 TEST_ZLIB=test_deb
 endif
 
+
 if HAVE_GSTREAMER
 PLUGIN_GSTREAMER=libextractor_gstreamer.la
 TEST_GSTREAMER=test_gstreamer
@@ -112,6 +120,7 @@ endif
 
 plugin_LTLIBRARIES = \
   libextractor_it.la \
+  libextractor_man.la \
   libextractor_nsf.la \
   libextractor_nsfe.la \
   libextractor_odf.la \
@@ -119,9 +128,11 @@ plugin_LTLIBRARIES = \
   libextractor_xm.la \
   libextractor_s3m.la \
   libextractor_sid.la \
+  libextractor_riff.la \
   libextractor_wav.la \
   libextractor_zip.la \
   $(PLUGIN_GTK) \
+  $(PLUGIN_HTML) \
   $(PLUGIN_FFMPEG) \
   $(PLUGIN_ZLIB) \
   $(PLUGIN_OGG) \
@@ -142,6 +153,7 @@ endif
 
 check_PROGRAMS = \
   test_wav \
+  test_man \
   test_it \
   test_s3m \
   test_png \
@@ -151,6 +163,7 @@ check_PROGRAMS = \
   test_nsf \
   test_nsfe \
   $(TEST_ZLIB) \
+  $(TEST_HTML) \
   $(TEST_GTK) \
   $(TEST_FFMPEG) \
   $(TEST_OGG) \
@@ -198,6 +211,17 @@ libextractor_deb_la_LDFLAGS = \
 test_deb_SOURCES = \
   test_deb.c
 test_deb_LDADD = \
+  $(top_builddir)/src/plugins/libtest.la
+
+
+libextractor_man_la_SOURCES = \
+  man_extractor.c
+libextractor_man_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+
+test_man_SOURCES = \
+  test_man.c
+test_man_LDADD = \
   $(top_builddir)/src/plugins/libtest.la
 
 
@@ -276,6 +300,12 @@ test_it_LDADD = \
 libextractor_sid_la_SOURCES = \
   sid_extractor.c
 libextractor_sid_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+
+
+libextractor_riff_la_SOURCES = \
+  riff_extractor.c
+libextractor_riff_la_LDFLAGS = \
   $(PLUGINFLAGS)
 
 
@@ -476,4 +506,17 @@ libextractor_thumbnailffmpeg_la_LIBADD = \
 test_thumbnailffmpeg_SOURCES = \
   test_thumbnailffmpeg.c
 test_thumbnailffmpeg_LDADD = \
+  $(top_builddir)/src/plugins/libtest.la
+
+
+libextractor_html_la_SOURCES = \
+  html_extractor.c
+libextractor_html_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+libextractor_html_la_LIBADD = \
+  -ltidy -lmagic
+
+test_html_SOURCES = \
+  test_html.c
+test_html_LDADD = \
   $(top_builddir)/src/plugins/libtest.la

@@ -1,15 +1,16 @@
 * Update plugins to new API (and cleanup code):
-  - thumbnail-ffmpeg
-  - thumbnail-qt
   - tar
-  - html
-  - man
   - dvi
   - elf
   - applefile
-  - riff
   - ps
   - pdf
+
+* plugins without tests:
+  - gstreamer (testcase file exists, but does nothing)
+  - riff
+  - sid
+
 
 Desirable missing formats:
 * mbox / various e-mail formats

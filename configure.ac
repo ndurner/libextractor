@@ -342,6 +342,14 @@ AC_CHECK_LIB(magic, magic_open,
    AM_CONDITIONAL(HAVE_MAGIC, false))],
   AM_CONDITIONAL(HAVE_MAGIC, false))
 
+AC_MSG_CHECKING(for tidyInitSource -ltidy)
+SAVED_LDFLAGS=$LDFLAGS
+AC_CHECK_LIB(tidy, tidyInitSource,
+  [AC_CHECK_HEADERS([tidy/tidy.h],
+   AM_CONDITIONAL(HAVE_TIDY, true),
+   AM_CONDITIONAL(HAVE_TIDY, false))],
+  AM_CONDITIONAL(HAVE_TIDY, false))
+
 # restore LIBS
 LIBS=$LIBSOLD
 
@@ -449,7 +457,7 @@ if test $without_gtk != true
 then
   AC_DEFINE_UNQUOTED([HAVE_GTK], 1, [We have GTK])
 else
-  AC_MSG_ERROR(Cannot find GTK: Is pkg-config in path?)
+  AC_MSG_NOTICE([Cannot find GTK: Is pkg-config in path?])
 fi
 
 CFLAGS="$CFLAGS $GTK_CFLAGS"

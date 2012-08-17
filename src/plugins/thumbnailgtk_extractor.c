@@ -74,10 +74,9 @@ EXTRACTOR_thumbnailgtk_extract_method (struct EXTRACTOR_ExtractContext *ec)
   void *buf;
   const char *mime;
 
-  iret = ec->read (ec->cls,
-		   &data,
-		   16 * 1024);
-  if (-1 == iret)
+  if (-1 == (iret = ec->read (ec->cls,
+			      &data,
+			      16 * 1024)))
     return;
   if (NULL == (mime = magic_buffer (magic, data, iret)))
     return;
