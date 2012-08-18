@@ -40,6 +40,7 @@ Dependencies
 The following dependencies are all optional, but should be
 available in order for maximum coverage:
 
+* libarchive
 * libavutil / libavformat / libavcodec / libswscale (ffmpeg)
 * libbz2 (bzip2)
 * libexiv2

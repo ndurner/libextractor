@@ -16,6 +16,7 @@ SUBDIRS = .
 
 EXTRA_DIST = \
   template_extractor.c \
+  testdata/archive_test.tar \
   testdata/deb_bzip2.deb \
   testdata/dvi_ora.dvi \
   testdata/flac_kraftwerk.flac \
@@ -70,6 +71,11 @@ TEST_HTML=test_html
 endif
 endif
 
+
+if HAVE_ARCHIVE
+PLUGIN_ARCHIVE=libextractor_archive.la
+TEST_ARCHIVE=test_archive
+endif
 
 if HAVE_EXIV2
 PLUGIN_EXIV2=libextractor_exiv2.la
@@ -142,6 +148,7 @@ plugin_LTLIBRARIES = \
   libextractor_wav.la \
   libextractor_xm.la \
   libextractor_zip.la \
+  $(PLUGIN_ARCHIVE) \
   $(PLUGIN_EXIV2) \
   $(PLUGIN_FFMPEG) \
   $(PLUGIN_FLAC) \
@@ -175,6 +182,7 @@ check_PROGRAMS = \
   test_wav \
   test_xm \
   test_zip \
+  $(TEST_ARCHIVE) \
   $(TEST_EXIV2) \
   $(TEST_FFMPEG) \
   $(TEST_FLAC) \
@@ -479,6 +487,19 @@ libextractor_sid_la_SOURCES = \
   sid_extractor.c
 libextractor_sid_la_LDFLAGS = \
   $(PLUGINFLAGS)
+
+
+libextractor_archive_la_SOURCES = \
+  archive_extractor.c
+libextractor_archive_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+libextractor_archive_la_LIBADD = \
+  -larchive
+
+test_archive_SOURCES = \
+  test_archive.c
+test_archive_LDADD = \
+  $(top_builddir)/src/plugins/libtest.la
 
 
 libextractor_thumbnailffmpeg_la_SOURCES = \

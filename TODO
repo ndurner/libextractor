@@ -1,5 +1,4 @@
 * Update plugins to new API (and cleanup code):
-  - tar
   - elf
   - applefile
   - pdf

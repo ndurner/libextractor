@@ -307,6 +307,13 @@ AC_CHECK_LIB(tiff, TIFFClientOpen,
          AM_CONDITIONAL(HAVE_TIFF, false))],
          AM_CONDITIONAL(HAVE_TIFF, false))
 
+AC_CHECK_LIB(archive, archive_read_open,
+        [AC_CHECK_HEADERS([archive.h],
+           AM_CONDITIONAL(HAVE_ARCHIVE, true)
+           AC_DEFINE(HAVE_ARCHIVE,1,[Have libarchive]),
+         AM_CONDITIONAL(HAVE_ARCHIVE, false))],
+         AM_CONDITIONAL(HAVE_ARCHIVE, false))
+
 AC_MSG_CHECKING(for ImageFactory::iptcData in -lexiv2)
 AC_LANG_PUSH(C++)
 SAVED_LDFLAGS=$LDFLAGS
