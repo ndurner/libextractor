@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor-0.6.0\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2012-08-17 01:19+0200\n"
+"POT-Creation-Date: 2012-08-17 20:43+0200\n"
 "PO-Revision-Date: 2010-09-30 23:41+0200\n"
 "Last-Translator: Sergio Zanchetta <primes2h@ubuntu.com>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
@@ -94,7 +94,7 @@ msgstr ""
 msgid "Found by `%s' plugin:\n"
 msgstr ""
 
-#: src/main/extract.c:287 src/main/extract.c:375
+#: src/main/extract.c:287 src/main/extract.c:368
 #: src/main/extractor_metatypes.c:145 src/main/extractor_print.c:82
 msgid "unknown"
 msgstr ""
@@ -109,30 +109,30 @@ msgstr ""
 msgid "%s - (binary, %u bytes)\n"
 msgstr "%s - (binario, %u bite)\n"
 
-#: src/main/extract.c:665 src/main/extract.c:675
+#: src/main/extract.c:658 src/main/extract.c:668
 #, c-format
 msgid ""
 "Illegal combination of options, cannot combine multiple styles of printing.\n"
 msgstr ""
 
-#: src/main/extract.c:705
+#: src/main/extract.c:698
 #, c-format
 msgid "You must specify an argument for the `%s' option (option ignored).\n"
 msgstr ""
 "Deve essere specificato un argomento per l'opzione \"%s\" (opzione "
 "ignorata).\n"
 
-#: src/main/extract.c:770
+#: src/main/extract.c:763
 #, c-format
 msgid "Use --help to get a list of options.\n"
 msgstr "Usare --help per ottenere un elenco di opzioni.\n"
 
-#: src/main/extract.c:808
+#: src/main/extract.c:801
 #, c-format
 msgid "%% BiBTeX file\n"
 msgstr "%% file BiBTeX\n"
 
-#: src/main/extract.c:816
+#: src/main/extract.c:809
 #, c-format
 msgid "Keywords for file %s:\n"
 msgstr ""

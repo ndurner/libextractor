@@ -4,7 +4,7 @@ Tue Mar 27 15:04:00 CEST 2012
 	work). -LRN
 
 Sun Jan 29 17:27:08 CET 2012
-	Documented recently discovered issues with pthreads and 
+	Documented recently discovered issues with pthreads and
 	out-of-process plugin executions in the manual. -CG
 
 Tue Nov 29 12:55:40 CET 2011

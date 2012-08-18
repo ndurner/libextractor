@@ -1,76 +1,84 @@
-Core Team:
+Current core team (and security contacts):
 Christian Grothoff <christian@grothoff.org>
-Nils Durner <durner@gnunet.org>
 LRN <lrn1986@gmail.com>
 
-Formats:
-jpeg          - core team
-ogg           - core team
-png           - core team
-gif           - core team
-flac          - core team
-mime          - core team
-tiff          - core team
-rpm           - core team
-mpeg          - core team
-ole2          - core team
-deb           - core team
-thumbnailgtk  - core team 
-nsf           - Toni Ruottu <toni.ruottu@iki.fi>
-sid           - Toni Ruottu <toni.ruottu@iki.fi>
-nsfe          - Toni Ruottu <toni.ruottu@iki.fi>
-it            - Toni Ruottu <toni.ruottu@iki.fi>
-xm            - Toni Ruottu <toni.ruottu@iki.fi>
-s3m           - Toni Ruottu <toni.ruottu@iki.fi>
-exiv2         - Andreas Huggel <ahuggel@gmx.net>
-
-Currently dead (plugins/old/):
-html          - core team with code from libhtmlparse 0.1.13, http://msalem.translator.cx/libhtmlparse.html
-thumbnailqt   - Nils Durner <durner@gnunet.org>
-mp3           - core team and James Blackwell <jblack@linuxguru.net>
-flv           - Heikki Lindholm
-applefile     - Heikki Lindholm
-qt            - core team with Heikki Lindholm 
-real          - core team
-pdf           - core team with code form xpdf 0.93, http://www.foolabs.com/xpdf/
-ps            - core team
-asf           - core team based on code from xine
-avi           - core team based in part on code from avinfo 1.0.0 alpha 11 and bitcollider 0.6.0
-tar           - core team and Ronan MELENNEC <ronan.melennec@cena.fr>
-man           - core team
-id3v2         - core team with Milan <milan@skoid.org>
-mkv	      - Gabriel Peixoto <peixotogm@gmail.com>
-
-
-General contributors:
-Milan <milan@skoid.org>
-James Blackwell <jblack@linuxguru.net>
-Yuri N. Sedunov <aris@altlinux.ru>
-Filip Pizlo <pizlo@purdue.edu>
+Developers:
+Andreas Huggel <ahuggel@gmx.net>
 Blake Matheny <bmatheny@mobocracy.net>
 Bruno Haible <bruno@clisp.org>
-Nils Durner <n.durner@t-online.de>
+Christopher Adam Telfer
+Filip Pizlo <pizlo@purdue.edu>
+Gabriel Peixoto <peixotogm@gmail.com>
+George Shuklin, gs]AT[shounen.ru
 Heikki Lindholm <holin@iki.fi>
 Heiko Wundram <modelnine@ceosg.de>
-Ronan MELENNEC <ronan.melennec@cena.fr>
-Vasil Dimov <vd@freebsd.org>
+James Blackwell <jblack@linuxguru.net>
+Mark Nelson [delirium] <delirium4u@theoffspring.net>
+Milan <milan@skoid.org>
+mooneer@translator.cx
+Nils Durner <durner@gnunet.org>
 Pavol Rusnak <prusnak@suse.cz>
+Ronan MELENNEC <ronan.melennec@cena.fr>
+Toni Ruottu <toni.ruottu@iki.fi>
+Vasil Dimov <vd@freebsd.org>
 Vidyut Samanta <vids@cs.ucla.edu>
-LRN <lrn1986@gmail.com>
-Gabriel Peixoto <peixotogm@gmail.com>
+Yuri N. Sedunov <aris@altlinux.ru>
 
 Translations:
+Dutch       - Benno Schulenberg <benno@vertaalt.nl>
+French      - Nicolas Provost <nprovost@quadriv.com>
 German      - Karl Eichwalder <ke@gnu.franken.de>
 Irish       - Kevin Patrick Scannell <scannell@SLU.EDU>
+Italian     - Sergio Zanchetta <primes2h@ubuntu.com>
 Kinyarwanda - Steve Murphy <murf@e-tools.com>
 Romanian    - Laurentiu Buzdugan <lbuz@rolix.org>
 Swedish     - Daniel Nylander <po@danielnylander.se>
+Ukrainian   - Yuri Chornoivan <yurchor@ukr.net>
 Vietnamese  - Clytie Siddall <clytie@riverland.net.au>
 
-Specific contributions:
-catlib      - Christopher Adam Telfer
-html        - mooneer@translator.cx
-xpdf        - derekn@foolabs.com
-xine        - http://xinehq.de/
-avinfo      - (c) George Shuklin, gs]AT[shounen.ru, 2002-2004
-bitcollider - Mark Nelson [delirium] <delirium4u@theoffspring.net>
+Plugins and primary authors:
+deb            - Christian Grothoff
+dvi            - Christian Grothoff
+exiv2          - Andreas Huggel
+flac           - Christian Grothoff
+gif            - Christian Grothoff
+gstreamer      - LRN
+html           - Christian Grothoff
+it             - Toni Ruottu
+jpeg           - Christian Grothoff
+man            - Christian Grothoff
+mime           - Christian Grothoff
+mpeg           - Christian Grothoff
+nsf            - Toni Ruottu
+nsfe           - Toni Ruottu
+odf            - Christian Grothoff
+ole2           - Christian Grothoff
+ogg            - Christian Grothoff
+png            - Christian Grothoff
+ps             - Christian Grothoff
+riff           - Christian Grothoff
+rpm            - Christian Grothoff
+s3m            - Toni Ruottu
+sid            - Toni Ruottu
+tiff           - Christian Grothoff
+thumbnailffmpeg- Heikki Lindholm
+thumbnailgtk   - Christian Grothoff 
+wav            - Christian Grothoff
+xm             - Toni Ruottu
+zip            - Christian Grothoff
+
+Currently dead (plugins/old/):
+tar            - Christian Grothoff and Ronan MELENNEC [to be ported to 0.7]
+applefile      - Heikki Lindholm [to be ported to 0.7]
+elf            - Christian Grothoff [to be ported to 0.7]
+
+asf            - Christian Grothoff  [to be replaced by gstreamer?]
+avi            - Christian Grothoff  [to be replaced by gstreamer?]
+flv            - Heikki Lindholm   [to be replaced by gstreamer?]
+id3v2          - Milan [to be replaced by gstreamer?]
+mkv	       - Gabriel Peixoto  [to be replaced by gstreamer?]
+mp3            - Christian Grothoff and James Blackwell [to be replaced by gstreamer?]
+qt             - Heikki Lindholm    [to be replaced by gstreamer?]
+real           - Christian Grothoff  [to be replaced by gstreamer???]
+
+pdf            - Christian Grothoff [GPLv2-only issue]

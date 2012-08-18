@@ -24,7 +24,6 @@
  */
 #include "platform.h"
 #include "extractor.h"
-#include "extractor_plugins.h"
 #include <vorbis/vorbisfile.h>
 
 /**

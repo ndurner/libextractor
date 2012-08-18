@@ -1,9 +1,7 @@
 * Update plugins to new API (and cleanup code):
   - tar
-  - dvi
   - elf
   - applefile
-  - ps
   - pdf
 
 * plugins without tests:

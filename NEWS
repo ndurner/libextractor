@@ -1,3 +1,19 @@
+Fri Aug 17 21:28:33 CEST 2012
+    	Major changes to plugin mechanism now allow out-of-process
+	plugins full random-access to the entire file.  Most plugins
+	have now been rewritten to the new plugin API (0.7).  The external
+	(libextractor) API will remain unchanged and compatible with LE 0.6.
+
+	As part of the rewrite, many plugins were changed to use 
+	standard 3rd party libraries (libjpeg, libtiff, libgif, 
+	libtidy, libmagic) for parsing.  A new plugin based on
+	gstreamer replaces many existing multimedia plugins.
+
+	Automated testcases for (almost all) of the plugins
+	were also written and the documentation was updated.
+
+	The license was changed to GNU GPL v3+.
+
 Mon Nov 28 12:17:42 CET 2011
     	Added MKV (Matroska) plugin.
 
@@ -30,7 +46,7 @@ Mon Nov 20 22:08:55 EET 2006
 	Added an SID (C64 music file) plugin.
 
 Sat Nov 11 00:04:34 EET 2006
-	Added an NSF ( NES Sound Format ) plugin.
+	Added an NSF (NES Sound Format) plugin.
 
 Tue Apr 18 14:44:37 PDT 2006
 	Added dictionaries for Finnish, French, Gaelic and Swedish

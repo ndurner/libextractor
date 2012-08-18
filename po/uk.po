@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.6.2\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2012-08-17 01:19+0200\n"
+"POT-Creation-Date: 2012-08-17 20:43+0200\n"
 "PO-Revision-Date: 2011-07-22 16:22+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <translation-team-uk@lists.sourceforge.net>\n"
@@ -103,7 +103,7 @@ msgstr "Видобути метадані з файлів."
 msgid "Found by `%s' plugin:\n"
 msgstr "Знайдено додатком «%s»:\n"
 
-#: src/main/extract.c:287 src/main/extract.c:375
+#: src/main/extract.c:287 src/main/extract.c:368
 #: src/main/extractor_metatypes.c:145 src/main/extractor_print.c:82
 msgid "unknown"
 msgstr "невідомий"
@@ -118,7 +118,7 @@ msgstr "%s — (невідомий, %u байтів)\n"
 msgid "%s - (binary, %u bytes)\n"
 msgstr "%s — (бінарний, %u байтів)\n"
 
-#: src/main/extract.c:665 src/main/extract.c:675
+#: src/main/extract.c:658 src/main/extract.c:668
 #, c-format
 msgid ""
 "Illegal combination of options, cannot combine multiple styles of printing.\n"
@@ -126,26 +126,26 @@ msgstr ""
 "Некоректне поєднання параметрів, не можна визначати декілька стилів "
 "виведення даних.\n"
 
-#: src/main/extract.c:705
+#: src/main/extract.c:698
 #, c-format
 msgid "You must specify an argument for the `%s' option (option ignored).\n"
 msgstr ""
 "Параметр «%s» можна використовувати лише з додатковим аргументом (параметр "
 "проігноровано).\n"
 
-#: src/main/extract.c:770
+#: src/main/extract.c:763
 #, c-format
 msgid "Use --help to get a list of options.\n"
 msgstr ""
 "Скористайтеся параметром --help для отримання списку можливих параметрів "
 "командного рядка.\n"
 
-#: src/main/extract.c:808
+#: src/main/extract.c:801
 #, c-format
 msgid "%% BiBTeX file\n"
 msgstr "%% файл BiBTeX\n"
 
-#: src/main/extract.c:816
+#: src/main/extract.c:809
 #, c-format
 msgid "Keywords for file %s:\n"
 msgstr "Ключові слова для файла %s:\n"

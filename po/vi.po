@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.6.0\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2012-08-17 01:19+0200\n"
+"POT-Creation-Date: 2012-08-17 20:43+0200\n"
 "PO-Revision-Date: 2010-02-11 00:13+0930\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
@@ -104,7 +104,7 @@ msgstr "Rút siêu dữ liệu ra tập tin."
 msgid "Found by `%s' plugin:\n"
 msgstr "Tìm bởi phần bổ sung « %s »:\n"
 
-#: src/main/extract.c:287 src/main/extract.c:375
+#: src/main/extract.c:287 src/main/extract.c:368
 #: src/main/extractor_metatypes.c:145 src/main/extractor_print.c:82
 msgid "unknown"
 msgstr "không rõ"
@@ -119,29 +119,29 @@ msgstr "%s - (không rõ, %u byte)\n"
 msgid "%s - (binary, %u bytes)\n"
 msgstr "%s - (nhị phân, %u byte)\n"
 
-#: src/main/extract.c:665 src/main/extract.c:675
+#: src/main/extract.c:658 src/main/extract.c:668
 #, c-format
 msgid ""
 "Illegal combination of options, cannot combine multiple styles of printing.\n"
 msgstr "sai tổ hợp các tuỳ chọn này, không thể kết hợp nhiều cách in.\n"
 
-#: src/main/extract.c:705
+#: src/main/extract.c:698
 #, c-format
 msgid "You must specify an argument for the `%s' option (option ignored).\n"
 msgstr "Bạn phải ghi rõ một đối số cho tùy chọn « %s » (tùy chọn bị bỏ qua).\n"
 
-#: src/main/extract.c:770
+#: src/main/extract.c:763
 #, c-format
 msgid "Use --help to get a list of options.\n"
 msgstr ""
 "Hãy sử dụng lệnh « --help » (trợ giúp) để xem một danh sách các tùy chọn.\n"
 
-#: src/main/extract.c:808
+#: src/main/extract.c:801
 #, c-format
 msgid "%% BiBTeX file\n"
 msgstr "%% tập tin BiBTeX\n"
 
-#: src/main/extract.c:816
+#: src/main/extract.c:809
 #, c-format
 msgid "Keywords for file %s:\n"
 msgstr "Từ khoá cho tập tin %s:\n"

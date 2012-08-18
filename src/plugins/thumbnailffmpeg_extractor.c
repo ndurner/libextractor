@@ -482,7 +482,6 @@ extract_video (struct EXTRACTOR_ExtractContext *ec)
 #endif
       avformat_close_input (&format_ctx);
       av_free (io_ctx);
-      av_free (iob);
       return;
     }
   codec = NULL;

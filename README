@@ -1,34 +1,70 @@
-libextractor
-============
+About
+=====
 
-libextractor is a simple library for keyword extraction.  libextractor
-does not support all formats but supports a simple plugging mechanism
-such that you can quickly add extractors for additional formats, even
-without recompiling libextractor.  libextractor typically ships with a
-few dozen helper-libraries (plugins) that can be used to obtain
-keywords from common file-types.
+GNU libextractor is a simple C library for keyword extraction. 
+Common use-cases for GNU libextractor include detail-views in
+file managers, detailed search results in file-sharing networks 
+and general information gathering in forensics investigations
+and penetration testing.
 
-libextractor is a GNU package (http://www.gnu.org/).
+Bindings for GNU libextractor exists for many languages in addition to
+the standard C/C++ API (we know about bindings for Java, Perl, PHP,
+Mono, Python, Ruby).  
 
-More detailed documentation is available in the GNU libextractor manual.
+libextractor uses a plugin mechanism to enable developers to quickly
+add extractors for additional formats.  Plugins are executed
+out-of-process and can thus bugs in them (or the libraries that they
+use) cannot crash the main application.  libextractor typically ships
+with a few dozen plugins that can be used to obtain keywords from
+common file types.
+
+More detailed documentation is available in the GNU libextractor
+manual.  libextractor is an official GNU package and available from
+http://www.gnu.org/s/libextractor/.
 
 
 extract
 =======
 
-extract is a simple command-line interface to libextractor.
-
+extract is a simple command-line interface to GNU libextractor.
 
 
 Dependencies
 ============
 
-* zlib (compression library)
 * GNU C/C++ compiler
 * libltdl 2.2.x (from GNU libtool)
 * GNU libtool 2.2 or higher
 * GNU gettext
 
+The following dependencies are all optional, but should be
+available in order for maximum coverage:
+
+* libavutil / libavformat / libavcodec / libswscale (ffmpeg)
+* libbz2 (bzip2)
+* libexiv2
+* libflac
+* libgif (giflib)
+* libglib (glib)
+* libgtk+
+* libgsf
+* libgstreamer
+* libjpeg
+* libmagic (file)
+* libmpeg2
+* librpm
+* libtidy
+* libtiff
+* libvorbis / libogg
+* libz (zlib)
+
 When building libextractor binaries, please make sure all of these
-dependencies are available.  Otherwise the build system may
-automatically build only a subset of libextractor.
+dependencies are available and configure detects a sufficiently recent
+installation.  Otherwise the build system may automatically build only
+a subset of GNU libextractor resulting in mediocre meta data
+production.
+
+Finally, 'zzuf' is a fuzzing tool that can optionally be detected by
+the build system and be used for debugging / testing.  It is not required
+at runtime or for normal builds.
+
