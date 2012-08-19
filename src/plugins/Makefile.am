@@ -553,6 +553,13 @@ test_wav_SOURCES = \
 test_wav_LDADD = \
   $(top_builddir)/src/plugins/libtest.la
 
+test_gstreamer_SOURCES = \
+  test_gstreamer.c
+test_gstreamer_LDADD = \
+  $(top_builddir)/src/plugins/libtest.la \
+  $(GSTREAMER_LIBS) $(GSTREAMER_PBUTILS_LIBS)
+test_gstreamer_CFLAGS = \
+  $(GSTREAMER_CFLAGS) $(GSTREAMER_PBUTILS_CFLAGS)
 
 libextractor_xm_la_SOURCES = \
   xm_extractor.c
