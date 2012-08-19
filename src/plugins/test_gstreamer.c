@@ -256,30 +256,6 @@ main (int argc, char *argv[])
 	EXTRACTOR_METATYPE_UNKNOWN,
 	EXTRACTOR_METAFORMAT_UTF8,
 	"text/plain",
-	"depth=16",
-	strlen ("depth=16") + 1,
-	0 
-        },
-        { 
-	EXTRACTOR_METATYPE_UNKNOWN,
-	EXTRACTOR_METAFORMAT_UTF8,
-	"text/plain",
-	"rate=44100",
-	strlen ("rate=44100") + 1,
-	0 
-        },
-        { 
-	EXTRACTOR_METATYPE_UNKNOWN,
-	EXTRACTOR_METAFORMAT_UTF8,
-	"text/plain",
-	"channels=2",
-	strlen ("channels=2") + 1,
-	0 
-        },
-        { 
-	EXTRACTOR_METATYPE_UNKNOWN,
-	EXTRACTOR_METAFORMAT_UTF8,
-	"text/plain",
 	"block_align=4459",
 	strlen ("block_align=4459") + 1,
 	0 
