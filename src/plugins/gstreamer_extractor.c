@@ -825,62 +825,12 @@ _run_async (struct PrivStruct * ps)
   return FALSE;
 }
 
-/**
- * This will be the main method of your plugin.
- * Describe a bit what it does here.
- *
- * @param ec extraction context, here you get the API
- *   for accessing the file data and for returning
- *   meta data
- */
-void
-EXTRACTOR_gstreamer_extract_method (struct EXTRACTOR_ExtractContext *ec)
-{
-  static int initialized = FALSE;
-  int64_t offset;
-  void *data;
-
-  if (!initialized)
-    if (! (initialized = initialize ()))
-      return;
-
-  ps->ec = ec;
-  ps->length = ps->ec->get_size (ps->ec->cls);
-  if (ps->length == UINT_MAX)
-    ps->length = 0;
-
-  gst_discoverer_start (dc);
-
-  g_idle_add ((GSourceFunc) _run_async, ps);
-
-  g_main_loop_run (ps->loop);
-
-  gst_discoverer_stop (dc);
-
-  /* initialize state here */
-  
-  /* Call seek (plugin, POSITION, WHENCE) to seek (if you know where
-   * data starts):
-   */
-  // ec->seek (ec->cls, POSITION, SEEK_SET);
-
-  /* Call read (plugin, &data, COUNT) to read COUNT bytes 
-   */
-
-
-  /* Once you find something, call proc(). If it returns non-0 - you're done.
-   */
-  // if (0 != ec->proc (ec->cls, ...)) return;
-
-  /* Don't forget to free anything you've allocated before returning! */
-  return;
-}
 
 static gboolean
 send_structure_foreach (GQuark field_id, const GValue *value,
     gpointer user_data)
 {
-  struct PrivStruct *ps = (struct PrivStruct *) user_data;
+  struct PrivStruct *ps = user_data;
   gchar *str;
   const gchar *field_name = g_quark_to_string (field_id);
   const gchar *type_name = g_type_name (G_VALUE_TYPE (value));
@@ -1218,7 +1168,7 @@ static void
 send_tag_foreach (const GstTagList * tags, const gchar * tag,
     gpointer user_data)
 {
-  struct PrivStruct *ps = (struct PrivStruct *) user_data;
+  struct PrivStruct *ps = user_data;
   size_t i;
   size_t tagl = sizeof (__known_tags) / sizeof (struct KnownTag);
   struct KnownTag *kt = NULL;
@@ -1410,7 +1360,7 @@ static void
 send_toc_tags_foreach (const GstTagList * tags, const gchar * tag,
     gpointer user_data)
 {
-  struct PrivStruct *ps = (struct PrivStruct *) user_data;
+  struct PrivStruct *ps = user_data;
   GValue val = { 0, };
   gchar *topen, *str, *tclose;
   const gchar *type_name;
@@ -1463,11 +1413,12 @@ send_toc_tags_foreach (const GstTagList * tags, const gchar * tag,
   g_value_unset (&val);
 }
 
+
 static void
 send_toc_foreach (gpointer data, gpointer user_data)
 {
-  struct PrivStruct *ps = (struct PrivStruct *) user_data;
-  GstTocEntry *entry = (GstTocEntry *) data;
+  GstTocEntry *entry = data;
+  struct PrivStruct *ps = user_data;
   GstTagList *tags;
   GList *subentries;
   gint64 start, stop;
@@ -1627,8 +1578,37 @@ send_discovered_info (GstDiscovererInfo * info, struct PrivStruct * ps)
   case GST_DISCOVERER_MISSING_PLUGINS:
     break;
   }
-
   send_info (info, ps);
+}
+
+
+/**
+ * This will be the main method of your plugin.
+ * Describe a bit what it does here.
+ *
+ * @param ec extraction context, here you get the API
+ *   for accessing the file data and for returning
+ *   meta data
+ */
+void
+EXTRACTOR_gstreamer_extract_method (struct EXTRACTOR_ExtractContext *ec)
+{
+  static int initialized = FALSE;
+  int64_t offset;
+  void *data;
+
+  if (! initialized)
+    if (! (initialized = initialize ()))
+      return;
+  ps->ec = ec;
+  ps->length = ps->ec->get_size (ps->ec->cls);
+  if (ps->length == UINT_MAX)
+    ps->length = 0;
+
+  gst_discoverer_start (dc);
+  g_idle_add ((GSourceFunc) _run_async, ps);
+  g_main_loop_run (ps->loop);
+  gst_discoverer_stop (dc);
 }
 
 /* end of gstreamer_extractor.c */
