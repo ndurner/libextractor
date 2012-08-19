@@ -619,7 +619,7 @@ enum CurrentStreamType
   STREAM_TYPE_IMAGE = 5
 };
 
-typedef struct
+struct PrivStruct
 {
   GMainLoop *loop;
   GstDiscoverer *dc;
@@ -634,37 +634,36 @@ typedef struct
   gboolean toc_print_phase;
   unsigned char time_to_leave;
   enum CurrentStreamType st;
-} PrivStruct;
+};
 
-static void send_streams (GstDiscovererStreamInfo *info, PrivStruct *ps);
+static void send_streams (GstDiscovererStreamInfo *info, struct PrivStruct *ps);
 
 static void send_tag_foreach (const GstTagList * tags, const gchar * tag,
     gpointer user_data);
 
-static void send_discovered_info (GstDiscovererInfo * info, PrivStruct * ps);
+static void send_discovered_info (GstDiscovererInfo * info, struct PrivStruct * ps);
 
-static void _source_setup (GstDiscoverer * dc, GstElement * source, PrivStruct * ps);
+static void _source_setup (GstDiscoverer * dc, GstElement * source, struct PrivStruct * ps);
 
-static void feed_data (GstElement * appsrc, guint size, PrivStruct * ps);
-static gboolean seek_data (GstElement * appsrc, guint64 position, PrivStruct * ps);
+static void feed_data (GstElement * appsrc, guint size, struct PrivStruct * ps);
+static gboolean seek_data (GstElement * appsrc, guint64 position, struct PrivStruct * ps);
 
-static int initialized = FALSE;
 
 static GstDiscoverer *dc;
-static PrivStruct *ps;
+static struct PrivStruct *ps;
 
 static GQuark *audio_quarks;
 static GQuark *video_quarks;
 static GQuark *subtitle_quarks;
 
 static void
-_new_discovered_uri (GstDiscoverer * dc, GstDiscovererInfo * info, GError * err, PrivStruct * ps)
+_new_discovered_uri (GstDiscoverer * dc, GstDiscovererInfo * info, GError * err, struct PrivStruct * ps)
 {
   send_discovered_info (info, ps);
 }
 
 static void
-_discoverer_finished (GstDiscoverer * dc, PrivStruct * ps)
+_discoverer_finished (GstDiscoverer * dc, struct PrivStruct * ps)
 {
   g_main_loop_quit (ps->loop);
 }
@@ -685,8 +684,7 @@ initialize ()
     return FALSE;
   }
 
-  ps = g_new0 (PrivStruct, 1);
-
+  ps = g_new0 (struct PrivStruct, 1);
   ps->dc = dc;
   ps->loop = g_main_loop_new (NULL, TRUE);
 
@@ -721,7 +719,7 @@ initialize ()
  * the appsrc that we must handle. We set up some signals - one to push data
  * into appsrc and one to perform a seek. */
 static void
-_source_setup (GstDiscoverer * dc, GstElement * source, PrivStruct * ps)
+_source_setup (GstDiscoverer * dc, GstElement * source, struct PrivStruct * ps)
 {
   if (ps->source)
     gst_object_unref (GST_OBJECT (ps->source));
@@ -746,7 +744,7 @@ _source_setup (GstDiscoverer * dc, GstElement * source, PrivStruct * ps)
 }
 
 static void
-feed_data (GstElement * appsrc, guint size, PrivStruct * ps)
+feed_data (GstElement * appsrc, guint size, struct PrivStruct * ps)
 {
   GstFlowReturn ret;
   long data_len;
@@ -812,7 +810,7 @@ feed_data (GstElement * appsrc, guint size, PrivStruct * ps)
 }
 
 static gboolean
-seek_data (GstElement * appsrc, guint64 position, PrivStruct * ps)
+seek_data (GstElement * appsrc, guint64 position, struct PrivStruct * ps)
 {
   GST_DEBUG ("seek to offset %" G_GUINT64_FORMAT, position);
   ps->offset = ps->ec->seek (ps->ec->cls, position, SEEK_SET);
@@ -821,7 +819,7 @@ seek_data (GstElement * appsrc, guint64 position, PrivStruct * ps)
 }
 
 static gboolean
-_run_async (PrivStruct * ps)
+_run_async (struct PrivStruct * ps)
 {
   gst_discoverer_discover_uri_async (ps->dc, "appsrc://");
   return FALSE;
@@ -838,6 +836,7 @@ _run_async (PrivStruct * ps)
 void
 EXTRACTOR_gstreamer_extract_method (struct EXTRACTOR_ExtractContext *ec)
 {
+  static int initialized = FALSE;
   int64_t offset;
   void *data;
 
@@ -881,7 +880,7 @@ static gboolean
 send_structure_foreach (GQuark field_id, const GValue *value,
     gpointer user_data)
 {
-  PrivStruct *ps = (PrivStruct *) user_data;
+  struct PrivStruct *ps = (struct PrivStruct *) user_data;
   gchar *str;
   const gchar *field_name = g_quark_to_string (field_id);
   const gchar *type_name = g_type_name (G_VALUE_TYPE (value));
@@ -952,7 +951,7 @@ send_structure_foreach (GQuark field_id, const GValue *value,
 }
 
 static int
-send_audio_info (GstDiscovererAudioInfo *info, PrivStruct *ps)
+send_audio_info (GstDiscovererAudioInfo *info, struct PrivStruct *ps)
 {
   gchar *tmp;
   const gchar *ctmp;
@@ -1029,7 +1028,7 @@ send_audio_info (GstDiscovererAudioInfo *info, PrivStruct *ps)
 }
 
 static int
-send_video_info (GstDiscovererVideoInfo *info, PrivStruct *ps)
+send_video_info (GstDiscovererVideoInfo *info, struct PrivStruct *ps)
 {
   gchar *tmp;
   guint u, u2;
@@ -1115,7 +1114,7 @@ send_video_info (GstDiscovererVideoInfo *info, PrivStruct *ps)
 }
 
 static int
-send_subtitle_info (GstDiscovererSubtitleInfo *info, PrivStruct *ps)
+send_subtitle_info (GstDiscovererSubtitleInfo *info, struct PrivStruct *ps)
 {
   gchar *tmp;
   const gchar *ctmp;
@@ -1131,7 +1130,7 @@ send_subtitle_info (GstDiscovererSubtitleInfo *info, PrivStruct *ps)
 }
 
 static void
-send_stream_info (GstDiscovererStreamInfo * info, PrivStruct *ps)
+send_stream_info (GstDiscovererStreamInfo * info, struct PrivStruct *ps)
 {
   gchar *desc = NULL;
   const GstStructure *misc;
@@ -1219,7 +1218,7 @@ static void
 send_tag_foreach (const GstTagList * tags, const gchar * tag,
     gpointer user_data)
 {
-  PrivStruct *ps = (PrivStruct *) user_data;
+  struct PrivStruct *ps = (struct PrivStruct *) user_data;
   size_t i;
   size_t tagl = sizeof (__known_tags) / sizeof (struct KnownTag);
   struct KnownTag *kt = NULL;
@@ -1411,7 +1410,7 @@ static void
 send_toc_tags_foreach (const GstTagList * tags, const gchar * tag,
     gpointer user_data)
 {
-  PrivStruct *ps = (PrivStruct *) user_data;
+  struct PrivStruct *ps = (struct PrivStruct *) user_data;
   GValue val = { 0, };
   gchar *topen, *str, *tclose;
   const gchar *type_name;
@@ -1467,7 +1466,7 @@ send_toc_tags_foreach (const GstTagList * tags, const gchar * tag,
 static void
 send_toc_foreach (gpointer data, gpointer user_data)
 {
-  PrivStruct *ps = (PrivStruct *) user_data;
+  struct PrivStruct *ps = (struct PrivStruct *) user_data;
   GstTocEntry *entry = (GstTocEntry *) data;
   GstTagList *tags;
   GList *subentries;
@@ -1522,7 +1521,7 @@ send_toc_foreach (gpointer data, gpointer user_data)
 }
 
 static void
-send_streams (GstDiscovererStreamInfo *info, PrivStruct *ps)
+send_streams (GstDiscovererStreamInfo *info, struct PrivStruct *ps)
 {
   while (NULL != info && !ps->time_to_leave)
   {
@@ -1537,7 +1536,7 @@ send_streams (GstDiscovererStreamInfo *info, PrivStruct *ps)
 #define TOC_XML_HEADER "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n"
 
 static void
-send_info (GstDiscovererInfo * info, PrivStruct *ps)
+send_info (GstDiscovererInfo * info, struct PrivStruct *ps)
 {
   const GstTagList *tags;
   const GstToc *toc;
@@ -1604,7 +1603,7 @@ send_info (GstDiscovererInfo * info, PrivStruct *ps)
 }
 
 static void
-send_discovered_info (GstDiscovererInfo * info, PrivStruct * ps)
+send_discovered_info (GstDiscovererInfo * info, struct PrivStruct * ps)
 {
   GstDiscovererResult result;
 
