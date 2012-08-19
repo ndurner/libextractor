@@ -178,6 +178,7 @@ check_PROGRAMS = \
   test_odf \
   test_ps \
   test_png \
+  test_riff \
   test_s3m \
   test_wav \
   test_xm \
@@ -457,6 +458,11 @@ libextractor_riff_la_SOURCES = \
   riff_extractor.c
 libextractor_riff_la_LDFLAGS = \
   $(PLUGINFLAGS)
+
+test_riff_SOURCES = \
+  test_riff.c
+test_riff_LDADD = \
+  $(top_builddir)/src/plugins/libtest.la
 
 
 libextractor_rpm_la_SOURCES = \
