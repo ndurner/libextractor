@@ -568,8 +568,10 @@ extract_video (struct EXTRACTOR_ExtractContext *ec)
 
   if (! frame_finished)
     {
+#if DEBUG
       fprintf (stderr,
 	       "Failed to decode a complete frame\n");
+#endif
       av_free (frame);
       avcodec_close (codec_ctx);
       avformat_close_input (&format_ctx);
