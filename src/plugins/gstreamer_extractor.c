@@ -615,7 +615,8 @@ enum CurrentStreamType
   STREAM_TYPE_AUDIO = 1,
   STREAM_TYPE_VIDEO = 2,
   STREAM_TYPE_SUBTITLE = 3,
-  STREAM_TYPE_CONTAINER = 4
+  STREAM_TYPE_CONTAINER = 4,
+  STREAM_TYPE_IMAGE = 5
 };
 
 typedef struct
@@ -651,6 +652,10 @@ static int initialized = FALSE;
 
 static GstDiscoverer *dc;
 static PrivStruct *ps;
+
+static GQuark *audio_quarks;
+static GQuark *video_quarks;
+static GQuark *subtitle_quarks;
 
 static void
 _new_discovered_uri (GstDiscoverer * dc, GstDiscovererInfo * info, GError * err, PrivStruct * ps)
@@ -689,6 +694,24 @@ initialize ()
   g_signal_connect (dc, "discovered", G_CALLBACK (_new_discovered_uri), ps);
   g_signal_connect (dc, "finished", G_CALLBACK (_discoverer_finished), ps);
   g_signal_connect (dc, "source-setup", G_CALLBACK (_source_setup), ps);
+
+  audio_quarks = g_new0 (GQuark, 4);
+  audio_quarks[0] = g_quark_from_string ("rate");
+  audio_quarks[1] = g_quark_from_string ("channels");
+  audio_quarks[2] = g_quark_from_string ("depth");
+  audio_quarks[3] = g_quark_from_string (NULL);
+
+  video_quarks = g_new0 (GQuark, 6);
+  video_quarks[0] = g_quark_from_string ("width");
+  video_quarks[1] = g_quark_from_string ("height");
+  video_quarks[2] = g_quark_from_string ("framerate");
+  video_quarks[3] = g_quark_from_string ("max-framerate");
+  video_quarks[4] = g_quark_from_string ("pixel-aspect-ratio");
+  video_quarks[5] = g_quark_from_string (NULL);
+
+  subtitle_quarks = g_new0 (GQuark, 2);
+  subtitle_quarks[0] = g_quark_from_string ("language-code");
+  subtitle_quarks[1] = g_quark_from_string (NULL);
 
   return TRUE;
 }
@@ -863,6 +886,30 @@ send_structure_foreach (GQuark field_id, const GValue *value,
   const gchar *field_name = g_quark_to_string (field_id);
   const gchar *type_name = g_type_name (G_VALUE_TYPE (value));
   GType gst_fraction = GST_TYPE_FRACTION;
+  GQuark *quark;
+
+  switch (ps->st)
+  {
+  case STREAM_TYPE_AUDIO:
+    for (quark = audio_quarks; *quark != 0; quark++)
+      if (*quark == field_id)
+        return TRUE;
+    break;
+  case STREAM_TYPE_VIDEO:
+  case STREAM_TYPE_IMAGE:
+    for (quark = video_quarks; *quark != 0; quark++)
+      if (*quark == field_id)
+        return TRUE;
+    break;
+  case STREAM_TYPE_SUBTITLE:
+    for (quark = subtitle_quarks; *quark != 0; quark++)
+      if (*quark == field_id)
+        return TRUE;
+    break;
+  case STREAM_TYPE_CONTAINER:
+    break;
+  }
+  
 
   /* TODO: check a list of known quarks, use specific EXTRACTOR_MetaType  */
   switch (G_VALUE_TYPE (value))
@@ -1093,10 +1140,21 @@ send_stream_info (GstDiscovererStreamInfo * info, PrivStruct *ps)
 
   caps = gst_discoverer_stream_info_get_caps (info);
 
+  if (GST_IS_DISCOVERER_AUDIO_INFO (info))
+    ps->st = STREAM_TYPE_AUDIO;
+  else if (GST_IS_DISCOVERER_VIDEO_INFO (info))
+    ps->st = STREAM_TYPE_VIDEO;
+  else if (GST_IS_DISCOVERER_SUBTITLE_INFO (info))
+    ps->st = STREAM_TYPE_SUBTITLE;
+  else if (GST_IS_DISCOVERER_CONTAINER_INFO (info))
+    ps->st = STREAM_TYPE_CONTAINER;
+
   if (caps)
   {
     GstStructure *structure = gst_caps_get_structure (caps, 0);
     const gchar *structname = gst_structure_get_name (structure);
+    if (g_str_has_prefix (structname, "image/"))
+      ps->st = STREAM_TYPE_IMAGE;
     ps->time_to_leave = ps->ec->proc (ps->ec->cls, "gstreamer",
       EXTRACTOR_METATYPE_MIMETYPE, EXTRACTOR_METAFORMAT_UTF8, "text/plain",
       (const char *) structname, strlen (structname) + 1);
@@ -1108,7 +1166,10 @@ send_stream_info (GstDiscovererStreamInfo * info, PrivStruct *ps)
   }
 
   if (ps->time_to_leave)
+  {
+    ps->st = STREAM_TYPE_NONE;
     return;
+  }
 
   misc = gst_discoverer_stream_info_get_misc (info);
   if (misc)
@@ -1117,22 +1178,17 @@ send_stream_info (GstDiscovererStreamInfo * info, PrivStruct *ps)
   }
 
   if (ps->time_to_leave)
+  {
+    ps->st = STREAM_TYPE_NONE;
     return;
+  }
 
   tags = gst_discoverer_stream_info_get_tags (info);
   if (tags)
   {
-    if (GST_IS_DISCOVERER_AUDIO_INFO (info))
-      ps->st = STREAM_TYPE_AUDIO;
-    else if (GST_IS_DISCOVERER_VIDEO_INFO (info))
-      ps->st = STREAM_TYPE_VIDEO;
-    else if (GST_IS_DISCOVERER_SUBTITLE_INFO (info))
-      ps->st = STREAM_TYPE_SUBTITLE;
-    else if (GST_IS_DISCOVERER_CONTAINER_INFO (info))
-      ps->st = STREAM_TYPE_CONTAINER;
     gst_tag_list_foreach (tags, send_tag_foreach, ps);
-    ps->st = STREAM_TYPE_NONE;
   }
+  ps->st = STREAM_TYPE_NONE;
 
   if (ps->time_to_leave)
     return;
