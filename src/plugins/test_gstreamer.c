@@ -221,14 +221,6 @@ main (int argc, char *argv[])
 	0 
         },
         { 
-	EXTRACTOR_METATYPE_LANGUAGE,
-	EXTRACTOR_METAFORMAT_UTF8,
-	"text/plain",
-	"en",
-	strlen ("en") + 1,
-	0 
-        },
-        { 
 	EXTRACTOR_METATYPE_MIMETYPE,
 	EXTRACTOR_METAFORMAT_UTF8,
 	"text/plain",

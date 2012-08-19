@@ -1497,10 +1497,12 @@ send_info (GstDiscovererInfo * info, PrivStruct *ps)
   if (ps->time_to_leave)
     return;
 
+  /* Disable this for now (i.e. only print per-stream tags)
   if ((tags = gst_discoverer_info_get_tags (info)))
   {
     gst_tag_list_foreach (tags, send_tag_foreach, ps);
   }
+  */
 
   if (ps->time_to_leave)
     return;
