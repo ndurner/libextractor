@@ -40,6 +40,7 @@ EXTRA_DIST = \
   testdata/ps_wallace.ps \
   testdata/rpm_test.rpm \
   testdata/s3m_2nd_pm.s3m \
+  testdata/sid_wizball.sid \
   testdata/thumbnail_torsten.jpg \
   testdata/tiff_haute.tiff \
   testdata/wav_noise.wav \
@@ -180,6 +181,7 @@ check_PROGRAMS = \
   test_png \
   test_riff \
   test_s3m \
+  test_sid \
   test_wav \
   test_xm \
   test_zip \
@@ -494,6 +496,11 @@ libextractor_sid_la_SOURCES = \
 libextractor_sid_la_LDFLAGS = \
   $(PLUGINFLAGS)
 
+test_sid_SOURCES = \
+  test_sid.c
+test_sid_LDADD = \
+  $(top_builddir)/src/plugins/libtest.la
+
 
 libextractor_archive_la_SOURCES = \
   archive_extractor.c
@@ -559,13 +566,6 @@ test_wav_SOURCES = \
 test_wav_LDADD = \
   $(top_builddir)/src/plugins/libtest.la
 
-test_gstreamer_SOURCES = \
-  test_gstreamer.c
-test_gstreamer_LDADD = \
-  $(top_builddir)/src/plugins/libtest.la \
-  $(GSTREAMER_LIBS) $(GSTREAMER_PBUTILS_LIBS)
-test_gstreamer_CFLAGS = \
-  $(GSTREAMER_CFLAGS) $(GSTREAMER_PBUTILS_CFLAGS)
 
 libextractor_xm_la_SOURCES = \
   xm_extractor.c
