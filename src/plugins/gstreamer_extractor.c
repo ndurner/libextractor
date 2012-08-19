@@ -1579,7 +1579,7 @@ EXTRACTOR_gstreamer_extract_method (struct EXTRACTOR_ExtractContext *ec)
   int64_t offset;
   void *data;
   GstDiscoverer *dc;
-  struct PrivStruct *ps;
+  struct PrivStruct ps;
   GError *err = NULL;
   gint timeout = 10;
 
@@ -1596,22 +1596,19 @@ EXTRACTOR_gstreamer_extract_method (struct EXTRACTOR_ExtractContext *ec)
   g_signal_connect (dc, "finished", G_CALLBACK (_discoverer_finished), ps);
   g_signal_connect (dc, "source-setup", G_CALLBACK (_source_setup), ps);
 
-  ps = g_new0 (struct PrivStruct, 1);
-  ps->dc = dc;
-  ps->loop = g_main_loop_new (NULL, TRUE);
-  ps->ec = ec;
-  ps->length = ps->ec->get_size (ps->ec->cls);
-  if (ps->length == UINT_MAX)
-    ps->length = 0;
+  memset (&ps, 0, sizeof (ps));
+  ps.dc = dc;
+  ps.loop = g_main_loop_new (NULL, TRUE);
+  ps.ec = ec;
+  ps.length = ps->ec->get_size (ps->ec->cls);
+  if (ps.length == UINT_MAX)
+    ps.length = 0;
 
   gst_discoverer_start (dc);
-  g_idle_add ((GSourceFunc) _run_async, ps);
-  g_main_loop_run (ps->loop);
+  g_idle_add ((GSourceFunc) &_run_async, &ps);
+  g_main_loop_run (ps.loop);
   gst_discoverer_stop (dc);
-  g_free (ps);
-  ps = NULL;
   gst_object_unref (GST_OBJECT (dc));
-  dc = NULL;
 }
 
 
