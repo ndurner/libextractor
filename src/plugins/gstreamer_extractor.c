@@ -1328,6 +1328,12 @@ send_tag_foreach (const GstTagList * tags, const gchar * tag,
   }
   if (str != NULL)
   {
+    /* Discoverer internally uses some tags to provide streaminfo;
+     * ignore these tags to avoid duplicates.
+     * This MIGHT be fixed in new GStreamer versions, but won't affect
+     * this code (we simply won't get the tags that we think we should skip).
+     */
+    gboolean skip = FALSE;
     /* We have one tag-processing routine and use it for different
      * stream types. However, tags themselves don't know the type of the
      * stream they are attached to. We remember that before listing the
@@ -1340,10 +1346,10 @@ send_tag_foreach (const GstTagList * tags, const gchar * tag,
       switch (ps->st)
       {
       case STREAM_TYPE_AUDIO:
-        le_type = EXTRACTOR_METATYPE_AUDIO_LANGUAGE;
+        skip = TRUE;
         break;
       case STREAM_TYPE_SUBTITLE:
-        le_type = EXTRACTOR_METATYPE_SUBTITLE_LANGUAGE;
+        skip = TRUE;
         break;
       case STREAM_TYPE_VIDEO:
         le_type = EXTRACTOR_METATYPE_VIDEO_LANGUAGE; /* New! */
@@ -1356,10 +1362,10 @@ send_tag_foreach (const GstTagList * tags, const gchar * tag,
       switch (ps->st)
       {
       case STREAM_TYPE_AUDIO:
-        le_type = EXTRACTOR_METATYPE_AUDIO_BITRATE;
+        skip = TRUE;
         break;
       case STREAM_TYPE_VIDEO:
-        le_type = EXTRACTOR_METATYPE_VIDEO_BITRATE;
+        skip = TRUE;
         break;
       default:
         break;
@@ -1369,10 +1375,10 @@ send_tag_foreach (const GstTagList * tags, const gchar * tag,
       switch (ps->st)
       {
       case STREAM_TYPE_AUDIO:
-        le_type = EXTRACTOR_METATYPE_MAXIMUM_AUDIO_BITRATE;
+        skip = TRUE;
         break;
       case STREAM_TYPE_VIDEO:
-        le_type = EXTRACTOR_METATYPE_MAXIMUM_VIDEO_BITRATE;
+        skip = TRUE;
         break;
       default:
         break;
@@ -1391,9 +1397,10 @@ send_tag_foreach (const GstTagList * tags, const gchar * tag,
     default:
       break;
     }
-    ps->time_to_leave = ps->ec->proc (ps->ec->cls, "gstreamer", le_type,
-        EXTRACTOR_METAFORMAT_UTF8, "text/plain",
-        (const char *) str, strlen (str) + 1);
+    if (!skip)
+      ps->time_to_leave = ps->ec->proc (ps->ec->cls, "gstreamer", le_type,
+          EXTRACTOR_METAFORMAT_UTF8, "text/plain",
+          (const char *) str, strlen (str) + 1);
   }
 
   g_free (str);
