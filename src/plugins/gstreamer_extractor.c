@@ -636,6 +636,14 @@ struct PrivStruct
   enum CurrentStreamType st;
 };
 
+
+static GQuark *audio_quarks;
+
+static GQuark *video_quarks;
+
+static GQuark *subtitle_quarks;
+
+
 static void send_streams (GstDiscovererStreamInfo *info, struct PrivStruct *ps);
 
 static void send_tag_foreach (const GstTagList * tags, const gchar * tag,
@@ -648,13 +656,6 @@ static void _source_setup (GstDiscoverer * dc, GstElement * source, struct PrivS
 static void feed_data (GstElement * appsrc, guint size, struct PrivStruct * ps);
 static gboolean seek_data (GstElement * appsrc, guint64 position, struct PrivStruct * ps);
 
-
-static GstDiscoverer *dc;
-static struct PrivStruct *ps;
-
-static GQuark *audio_quarks;
-static GQuark *video_quarks;
-static GQuark *subtitle_quarks;
 
 static void
 _new_discovered_uri (GstDiscoverer * dc, GstDiscovererInfo * info, GError * err, struct PrivStruct * ps)
@@ -671,28 +672,9 @@ _discoverer_finished (GstDiscoverer * dc, struct PrivStruct * ps)
 static int
 initialize ()
 {
-  gint timeout = 10;
-  GError *err = NULL;
-
   gst_init (NULL, NULL);
-
   GST_DEBUG_CATEGORY_INIT (gstreamer_extractor, "GstExtractor",
                          0, "GStreamer-based libextractor plugin");
-  dc = gst_discoverer_new (timeout * GST_SECOND, &err);
-  if (G_UNLIKELY (dc == NULL)) {
-    g_print ("Error initializing: %s\n", err->message);
-    return FALSE;
-  }
-
-  ps = g_new0 (struct PrivStruct, 1);
-  ps->dc = dc;
-  ps->loop = g_main_loop_new (NULL, TRUE);
-
-  /* connect signals */
-  g_signal_connect (dc, "discovered", G_CALLBACK (_new_discovered_uri), ps);
-  g_signal_connect (dc, "finished", G_CALLBACK (_discoverer_finished), ps);
-  g_signal_connect (dc, "source-setup", G_CALLBACK (_source_setup), ps);
-
   audio_quarks = g_new0 (GQuark, 4);
   audio_quarks[0] = g_quark_from_string ("rate");
   audio_quarks[1] = g_quark_from_string ("channels");
@@ -1596,10 +1578,27 @@ EXTRACTOR_gstreamer_extract_method (struct EXTRACTOR_ExtractContext *ec)
   static int initialized = FALSE;
   int64_t offset;
   void *data;
+  GstDiscoverer *dc;
+  struct PrivStruct *ps;
+  GError *err = NULL;
+  gint timeout = 10;
 
-  if (! initialized)
-    if (! (initialized = initialize ()))
-      return;
+  if ( (! initialized) &&
+       (! (initialized = initialize ())) )
+    return;
+  dc = gst_discoverer_new (timeout * GST_SECOND, &err);
+  if (G_UNLIKELY (dc == NULL)) {
+    g_print ("Error initializing: %s\n", err->message);
+    return;
+  }
+  /* connect signals */
+  g_signal_connect (dc, "discovered", G_CALLBACK (_new_discovered_uri), ps);
+  g_signal_connect (dc, "finished", G_CALLBACK (_discoverer_finished), ps);
+  g_signal_connect (dc, "source-setup", G_CALLBACK (_source_setup), ps);
+
+  ps = g_new0 (struct PrivStruct, 1);
+  ps->dc = dc;
+  ps->loop = g_main_loop_new (NULL, TRUE);
   ps->ec = ec;
   ps->length = ps->ec->get_size (ps->ec->cls);
   if (ps->length == UINT_MAX)
@@ -1609,6 +1608,11 @@ EXTRACTOR_gstreamer_extract_method (struct EXTRACTOR_ExtractContext *ec)
   g_idle_add ((GSourceFunc) _run_async, ps);
   g_main_loop_run (ps->loop);
   gst_discoverer_stop (dc);
+  g_free (ps);
+  ps = NULL;
+  gst_object_unref (GST_OBJECT (dc));
+  dc = NULL;
 }
+
 
 /* end of gstreamer_extractor.c */
