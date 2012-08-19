@@ -4,9 +4,7 @@
   - pdf
 
 * plugins without tests:
-  - gstreamer (testcase file exists, but does nothing)
-  - riff
-  - sid
+  - gstreamer (testcase file exists, but does not test everything important)
 
 
 Desirable missing formats:
