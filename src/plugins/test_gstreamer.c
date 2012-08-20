@@ -499,6 +499,207 @@ main (int argc, char *argv[])
     result += (0 == ET_main ("gstreamer", ps) ? 0 : 1);
   }
 
+  pre_test = discoverer_main (dc, "testdata/sample_sorenson.mov");
+  if (pre_test != GST_DISCOVERER_MISSING_PLUGINS)
+  {
+    struct SolutionData sample_sorenson_sol[] =
+      {
+        {
+	EXTRACTOR_METATYPE_DURATION,
+	EXTRACTOR_METAFORMAT_UTF8,
+	"text/plain",
+	"0:00:05.000000000",
+	strlen ("0:00:05.000000000") + 1,
+	0
+        },
+        {
+	EXTRACTOR_METATYPE_MIMETYPE,
+	EXTRACTOR_METAFORMAT_UTF8,
+	"text/plain",
+	"video/quicktime",
+	strlen ("video/quicktime") + 1,
+	0
+        },
+        {
+	EXTRACTOR_METATYPE_MIMETYPE,
+	EXTRACTOR_METAFORMAT_UTF8,
+	"text/plain",
+	"audio/x-qdm2",
+	strlen ("audio/x-qdm2") + 1,
+	0
+        },
+        {
+	EXTRACTOR_METATYPE_UNKNOWN,
+	EXTRACTOR_METAFORMAT_UTF8,
+	"text/plain",
+	"samplesize=16",
+	strlen ("samplesize=16") + 1,
+	0
+        },
+        {
+	EXTRACTOR_METATYPE_AUDIO_CODEC,
+	EXTRACTOR_METAFORMAT_UTF8,
+	"text/plain",
+	"QDesign Music v.2",
+	strlen ("QDesign Music v.2") + 1,
+	0
+        },
+        {
+	EXTRACTOR_METATYPE_CREATION_TIME,
+	EXTRACTOR_METAFORMAT_UTF8,
+	"text/plain",
+	"2001-02-19T16:45:54Z",
+	strlen ("2001-02-19T16:45:54Z") + 1,
+	0
+        },
+        {
+	EXTRACTOR_METATYPE_TITLE,
+	EXTRACTOR_METAFORMAT_UTF8,
+	"text/plain",
+	"QuickTime Sample Movie",
+	strlen ("QuickTime Sample Movie") + 1,
+	0
+        },
+        {
+	EXTRACTOR_METATYPE_COPYRIGHT,
+	EXTRACTOR_METAFORMAT_UTF8,
+	"text/plain",
+	"© Apple Computer, Inc. 2001",
+	strlen ("© Apple Computer, Inc. 2001") + 1,
+	0
+        },
+        {
+	EXTRACTOR_METATYPE_CONTAINER_FORMAT,
+	EXTRACTOR_METAFORMAT_UTF8,
+	"text/plain",
+	"ISO MP4/M4A",
+	strlen ("ISO MP4/M4A") + 1,
+	0
+        },
+        {
+	EXTRACTOR_METATYPE_AUDIO_LANGUAGE,
+	EXTRACTOR_METAFORMAT_UTF8,
+	"text/plain",
+	"en",
+	strlen ("en") + 1,
+	0
+        },
+        {
+	EXTRACTOR_METATYPE_CHANNELS,
+	EXTRACTOR_METAFORMAT_UTF8,
+	"text/plain",
+	"2",
+	strlen ("2") + 1,
+	0
+        },
+        {
+	EXTRACTOR_METATYPE_SAMPLE_RATE,
+	EXTRACTOR_METAFORMAT_UTF8,
+	"text/plain",
+	"22050",
+	strlen ("22050") + 1,
+	0
+        },
+        {
+	EXTRACTOR_METATYPE_MIMETYPE,
+	EXTRACTOR_METAFORMAT_UTF8,
+	"text/plain",
+	"video/x-svq",
+	strlen ("video/x-svq") + 1,
+	0
+        },
+        {
+	EXTRACTOR_METATYPE_UNKNOWN,
+	EXTRACTOR_METAFORMAT_UTF8,
+	"text/plain",
+	"svqversion=1",
+	strlen ("svqversion=1") + 1,
+	0
+        },
+        /* Yep, again... */
+        {
+	EXTRACTOR_METATYPE_CREATION_TIME,
+	EXTRACTOR_METAFORMAT_UTF8,
+	"text/plain",
+	"2001-02-19T16:45:54Z",
+	strlen ("2001-02-19T16:45:54Z") + 1,
+	0
+        },
+        {
+	EXTRACTOR_METATYPE_TITLE,
+	EXTRACTOR_METAFORMAT_UTF8,
+	"text/plain",
+	"QuickTime Sample Movie",
+	strlen ("QuickTime Sample Movie") + 1,
+	0
+        },
+        {
+	EXTRACTOR_METATYPE_COPYRIGHT,
+	EXTRACTOR_METAFORMAT_UTF8,
+	"text/plain",
+	"© Apple Computer, Inc. 2001",
+	strlen ("© Apple Computer, Inc. 2001") + 1,
+	0
+        },
+        {
+	EXTRACTOR_METATYPE_CONTAINER_FORMAT,
+	EXTRACTOR_METAFORMAT_UTF8,
+	"text/plain",
+	"ISO MP4/M4A",
+	strlen ("ISO MP4/M4A") + 1,
+	0
+        },
+        {
+	EXTRACTOR_METATYPE_VIDEO_CODEC,
+	EXTRACTOR_METAFORMAT_UTF8,
+	"text/plain",
+	"Sorensen video v.1",
+	strlen ("Sorensen video v.1") + 1,
+	0
+        },
+        {
+	EXTRACTOR_METATYPE_VIDEO_LANGUAGE,
+	EXTRACTOR_METAFORMAT_UTF8,
+	"text/plain",
+	"en",
+	strlen ("en") + 1,
+	0
+        },
+        {
+	EXTRACTOR_METATYPE_VIDEO_DIMENSIONS,
+	EXTRACTOR_METAFORMAT_UTF8,
+	"text/plain",
+	"190x240",
+	strlen ("190x240") + 1,
+	0
+        },
+        {
+	EXTRACTOR_METATYPE_FRAME_RATE,
+	EXTRACTOR_METAFORMAT_UTF8,
+	"text/plain",
+	"12/1",
+	strlen ("12/1") + 1,
+	0
+        },
+        {
+	EXTRACTOR_METATYPE_PIXEL_ASPECT_RATIO,
+	EXTRACTOR_METAFORMAT_UTF8,
+	"text/plain",
+	"1/1",
+	strlen ("1/1") + 1,
+	0
+        },
+        { 0, 0, NULL, NULL, 0, -1 }
+      };
+    struct ProblemSet ps[] =
+      {
+        { "testdata/sample_sorenson.mov",
+	sample_sorenson_sol },
+        { NULL, NULL }
+      };
+    result += (0 == ET_main ("gstreamer", ps) ? 0 : 1);
+  }
+
   g_object_unref (dc);
   return result;
 }
