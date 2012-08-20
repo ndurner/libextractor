@@ -705,6 +705,8 @@ initialize (struct InitData *id, struct PrivStruct *ps)
     g_print ("Error initializing: %s\n", err->message);
     return FALSE;
   }
+  if (err)
+    g_error_free (err);
   /* connect signals */
   g_signal_connect (id->dc, "discovered", G_CALLBACK (_new_discovered_uri), ps);
   g_signal_connect (id->dc, "finished", G_CALLBACK (_discoverer_finished), id);
@@ -1597,12 +1599,8 @@ void
 EXTRACTOR_gstreamer_extract_method (struct EXTRACTOR_ExtractContext *ec)
 {
   static int initialized = FALSE;
-  int64_t offset;
-  void *data;
-  GstDiscoverer *dc;
   static struct PrivStruct ps;
   static struct InitData id;
-  GError *err = NULL;
 
   if ( (! initialized) &&
        (! (initialized = initialize (&id, &ps))) )
