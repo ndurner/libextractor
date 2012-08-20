@@ -123,7 +123,16 @@ ET_main (const char *plugin_name,
   for (i=0; NULL != ps[i].filename; i++)    
     for (j=0; -1 != ps[i].solution[j].solved; j++)
       if (0 == ps[i].solution[j].solved)
+      {
 	ret = 1;
+        fprintf (stderr,
+	   "Did not get expected meta data of type %d and format %d with value `%.*s' from plugin `%s'\n",
+	   ps[i].solution[j].type,
+	   ps[i].solution[j].format,
+	   (int) ps[i].solution[j].data_len,
+	   ps[i].solution[j].data,
+	   plugin_name);
+      }
   return ret;
 }
 
