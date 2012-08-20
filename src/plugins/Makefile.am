@@ -289,7 +289,10 @@ libextractor_gstreamer_la_CFLAGS = \
 test_gstreamer_SOURCES = \
   test_gstreamer.c
 test_gstreamer_LDADD = \
-  $(top_builddir)/src/plugins/libtest.la
+  $(top_builddir)/src/plugins/libtest.la \
+  $(GSTREAMER_LIBS) $(GSTREAMER_PBUTILS_LIBS)
+test_gstreamer_CFLAGS = \
+  $(GSTREAMER_CFLAGS) $(GSTREAMER_PBUTILS_CFLAGS)
 
 
 libextractor_html_la_SOURCES = \
