@@ -170,7 +170,7 @@ struct KnownTag __known_tags[] =
  *
  * count of discs inside collection this disc belongs to (unsigned integer)
  */
-  {GST_TAG_ALBUM_VOLUME_NUMBER, EXTRACTOR_METATYPE_DISC_COUNT}, /* New! */
+  {GST_TAG_ALBUM_VOLUME_NUMBER, EXTRACTOR_METATYPE_DISC_COUNT},
 /**
  * GST_TAG_LOCATION:
  *
@@ -266,62 +266,62 @@ struct KnownTag __known_tags[] =
  *
  * codec the data is stored in (string)
  */
-  {GST_TAG_CODEC, EXTRACTOR_METATYPE_CODEC}, /* New! */
+  {GST_TAG_CODEC, EXTRACTOR_METATYPE_CODEC},
 /**
  * GST_TAG_VIDEO_CODEC:
  *
  * codec the video data is stored in (string)
  */
-  {GST_TAG_VIDEO_CODEC, EXTRACTOR_METATYPE_VIDEO_CODEC}, /* New! */
+  {GST_TAG_VIDEO_CODEC, EXTRACTOR_METATYPE_VIDEO_CODEC},
 /**
  * GST_TAG_AUDIO_CODEC:
  *
  * codec the audio data is stored in (string)
  */
-  {GST_TAG_AUDIO_CODEC, EXTRACTOR_METATYPE_AUDIO_CODEC}, /* New! */
+  {GST_TAG_AUDIO_CODEC, EXTRACTOR_METATYPE_AUDIO_CODEC},
 /**
  * GST_TAG_SUBTITLE_CODEC:
  *
  * codec/format the subtitle data is stored in (string)
  */
-  {GST_TAG_SUBTITLE_CODEC, EXTRACTOR_METATYPE_SUBTITLE_CODEC}, /* New! */
+  {GST_TAG_SUBTITLE_CODEC, EXTRACTOR_METATYPE_SUBTITLE_CODEC},
 /**
  * GST_TAG_CONTAINER_FORMAT:
  *
  * container format the data is stored in (string)
  */
-  {GST_TAG_CONTAINER_FORMAT, EXTRACTOR_METATYPE_CONTAINER_FORMAT}, /* New! */
+  {GST_TAG_CONTAINER_FORMAT, EXTRACTOR_METATYPE_CONTAINER_FORMAT},
 /**
  * GST_TAG_BITRATE:
  *
  * exact or average bitrate in bits/s (unsigned integer)
  */
-  {GST_TAG_BITRATE, EXTRACTOR_METATYPE_BITRATE}, /* New! */
+  {GST_TAG_BITRATE, EXTRACTOR_METATYPE_BITRATE},
 /**
  * GST_TAG_NOMINAL_BITRATE:
  *
  * nominal bitrate in bits/s (unsigned integer). The actual bitrate might be
  * different from this target bitrate.
  */
-  {GST_TAG_NOMINAL_BITRATE, EXTRACTOR_METATYPE_NOMINAL_BITRATE}, /* New! */
+  {GST_TAG_NOMINAL_BITRATE, EXTRACTOR_METATYPE_NOMINAL_BITRATE},
 /**
  * GST_TAG_MINIMUM_BITRATE:
  *
  * minimum bitrate in bits/s (unsigned integer)
  */
-  {GST_TAG_MINIMUM_BITRATE, EXTRACTOR_METATYPE_MINIMUM_BITRATE}, /* New! */
+  {GST_TAG_MINIMUM_BITRATE, EXTRACTOR_METATYPE_MINIMUM_BITRATE},
 /**
  * GST_TAG_MAXIMUM_BITRATE:
  *
  * maximum bitrate in bits/s (unsigned integer)
  */
-  {GST_TAG_MAXIMUM_BITRATE, EXTRACTOR_METATYPE_MAXIMUM_BITRATE}, /* New! */
+  {GST_TAG_MAXIMUM_BITRATE, EXTRACTOR_METATYPE_MAXIMUM_BITRATE},
 /**
  * GST_TAG_SERIAL:
  *
  * serial number of track (unsigned integer)
  */
-  {GST_TAG_SERIAL, EXTRACTOR_METATYPE_SERIAL}, /* New! */
+  {GST_TAG_SERIAL, EXTRACTOR_METATYPE_SERIAL},
 /**
  * GST_TAG_ENCODER:
  *
@@ -333,37 +333,37 @@ struct KnownTag __known_tags[] =
  *
  * version of the encoder used to encode this stream (unsigned integer)
  */
-  {GST_TAG_ENCODER_VERSION, EXTRACTOR_METATYPE_ENCODER_VERSION}, /* New! */
+  {GST_TAG_ENCODER_VERSION, EXTRACTOR_METATYPE_ENCODER_VERSION},
 /**
  * GST_TAG_TRACK_GAIN:
  *
  * track gain in db (double)
  */
-  {GST_TAG_TRACK_GAIN, EXTRACTOR_METATYPE_TRACK_GAIN}, /* New! */
+  {GST_TAG_TRACK_GAIN, EXTRACTOR_METATYPE_TRACK_GAIN},
 /**
  * GST_TAG_TRACK_PEAK:
  *
  * peak of the track (double)
  */
-  {GST_TAG_TRACK_PEAK, EXTRACTOR_METATYPE_TRACK_PEAK}, /* New! */
+  {GST_TAG_TRACK_PEAK, EXTRACTOR_METATYPE_TRACK_PEAK},
 /**
  * GST_TAG_ALBUM_GAIN:
  *
  * album gain in db (double)
  */
-  {GST_TAG_ALBUM_GAIN, EXTRACTOR_METATYPE_ALBUM_GAIN}, /* New! */
+  {GST_TAG_ALBUM_GAIN, EXTRACTOR_METATYPE_ALBUM_GAIN},
 /**
  * GST_TAG_ALBUM_PEAK:
  *
  * peak of the album (double)
  */
-  {GST_TAG_ALBUM_PEAK, EXTRACTOR_METATYPE_ALBUM_PEAK}, /* New! */
+  {GST_TAG_ALBUM_PEAK, EXTRACTOR_METATYPE_ALBUM_PEAK},
 /**
  * GST_TAG_REFERENCE_LEVEL:
  *
  * reference level of track and album gain values (double)
  */
-  {GST_TAG_REFERENCE_LEVEL, EXTRACTOR_METATYPE_REFERENCE_LEVEL}, /* New! */
+  {GST_TAG_REFERENCE_LEVEL, EXTRACTOR_METATYPE_REFERENCE_LEVEL},
 /**
  * GST_TAG_LANGUAGE_CODE:
  *
@@ -423,7 +423,7 @@ struct KnownTag __known_tags[] =
  * human readable descriptive location of where the media has been recorded or
  * produced. (string).
  */
-  {GST_TAG_GEO_LOCATION_NAME, EXTRACTOR_METATYPE_LOCATION_NAME}, /* New! */
+  {GST_TAG_GEO_LOCATION_NAME, EXTRACTOR_METATYPE_LOCATION_NAME},
 /**
  * GST_TAG_GEO_LOCATION_LATITUDE:
  *
@@ -446,7 +446,7 @@ struct KnownTag __known_tags[] =
  * geo elevation of where the media has been recorded or produced in meters
  * according to WGS84 (zero is average sea level) (double).
  */
-  {GST_TAG_GEO_LOCATION_ELEVATION, EXTRACTOR_METATYPE_LOCATION_ELEVATION}, /* New! */
+  {GST_TAG_GEO_LOCATION_ELEVATION, EXTRACTOR_METATYPE_LOCATION_ELEVATION},
 /**
  * GST_TAG_GEO_LOCATION_COUNTRY:
  *
@@ -475,7 +475,7 @@ struct KnownTag __known_tags[] =
  * Represents the expected error on the horizontal positioning in
  * meters (double).
  */
-  {GST_TAG_GEO_LOCATION_HORIZONTAL_ERROR, EXTRACTOR_METATYPE_LOCATION_HORIZONTAL_ERROR}, /* New! */
+  {GST_TAG_GEO_LOCATION_HORIZONTAL_ERROR, EXTRACTOR_METATYPE_LOCATION_HORIZONTAL_ERROR},
 /**
  * GST_TAG_GEO_LOCATION_MOVEMENT_SPEED:
  *
@@ -484,7 +484,7 @@ struct KnownTag __known_tags[] =
  *
  * See also #GST_TAG_GEO_LOCATION_MOVEMENT_DIRECTION
  */
-  {GST_TAG_GEO_LOCATION_MOVEMENT_SPEED, EXTRACTOR_METATYPE_LOCATION_MOVEMENT_SPEED}, /* New! */
+  {GST_TAG_GEO_LOCATION_MOVEMENT_SPEED, EXTRACTOR_METATYPE_LOCATION_MOVEMENT_SPEED},
 /**
  * GST_TAG_GEO_LOCATION_MOVEMENT_DIRECTION:
  *
@@ -494,7 +494,7 @@ struct KnownTag __known_tags[] =
  *
  * See also #GST_TAG_GEO_LOCATION_CAPTURE_DIRECTION
  */
-  {GST_TAG_GEO_LOCATION_MOVEMENT_DIRECTION, EXTRACTOR_METATYPE_LOCATION_MOVEMENT_DIRECTION}, /* New! */
+  {GST_TAG_GEO_LOCATION_MOVEMENT_DIRECTION, EXTRACTOR_METATYPE_LOCATION_MOVEMENT_DIRECTION},
 /**
  * GST_TAG_GEO_LOCATION_CAPTURE_DIRECTION:
  *
@@ -504,7 +504,7 @@ struct KnownTag __known_tags[] =
  *
  * See also #GST_TAG_GEO_LOCATION_MOVEMENT_DIRECTION
  */
-  {GST_TAG_GEO_LOCATION_CAPTURE_DIRECTION, EXTRACTOR_METATYPE_LOCATION_CAPTURE_DIRECTION}, /* New! */
+  {GST_TAG_GEO_LOCATION_CAPTURE_DIRECTION, EXTRACTOR_METATYPE_LOCATION_CAPTURE_DIRECTION},
 /**
  * GST_TAG_SHOW_NAME:
  *
@@ -522,13 +522,13 @@ struct KnownTag __known_tags[] =
  *
  * Number of the episode within a season/show (unsigned integer)
  */
-  {GST_TAG_SHOW_EPISODE_NUMBER, EXTRACTOR_METATYPE_SHOW_EPISODE_NUMBER}, /* New! */
+  {GST_TAG_SHOW_EPISODE_NUMBER, EXTRACTOR_METATYPE_SHOW_EPISODE_NUMBER},
 /**
  * GST_TAG_SHOW_SEASON_NUMBER:
  *
  * Number of the season of a show/series (unsigned integer)
  */
-  {GST_TAG_SHOW_SEASON_NUMBER, EXTRACTOR_METATYPE_SHOW_SEASON_NUMBER}, /* New! */
+  {GST_TAG_SHOW_SEASON_NUMBER, EXTRACTOR_METATYPE_SHOW_SEASON_NUMBER},
 /**
  * GST_TAG_LYRICS:
  *
@@ -547,7 +547,7 @@ struct KnownTag __known_tags[] =
  * Groups together media that are related and spans multiple tracks. An
  * example are multiple pieces of a concerto. (string)
  */
-  {GST_TAG_GROUPING, EXTRACTOR_METATYPE_GROUPING}, /* New! */
+  {GST_TAG_GROUPING, EXTRACTOR_METATYPE_GROUPING},
 /**
  * GST_TAG_USER_RATING:
  *
@@ -561,13 +561,13 @@ struct KnownTag __known_tags[] =
  *
  * Manufacturer of the device used to create the media (string)
  */
-  {GST_TAG_DEVICE_MANUFACTURER, EXTRACTOR_METATYPE_DEVICE_MANUFACTURER}, /* New! */
+  {GST_TAG_DEVICE_MANUFACTURER, EXTRACTOR_METATYPE_DEVICE_MANUFACTURER},
 /**
  * GST_TAG_DEVICE_MODEL:
  *
  * Model of the device used to create the media (string)
  */
-  {GST_TAG_DEVICE_MODEL, EXTRACTOR_METATYPE_DEVICE_MODEL}, /* New! */
+  {GST_TAG_DEVICE_MODEL, EXTRACTOR_METATYPE_DEVICE_MODEL},
 /**
  * GST_TAG_APPLICATION_NAME:
  *
@@ -918,7 +918,7 @@ send_audio_info (GstDiscovererAudioInfo *info, struct PrivStruct *ps)
   ctmp = gst_discoverer_audio_info_get_language (info);
   if (ctmp)
     if (ps->time_to_leave = ps->ec->proc (ps->ec->cls, "gstreamer",
-        EXTRACTOR_METATYPE_AUDIO_LANGUAGE, EXTRACTOR_METAFORMAT_UTF8, "text/plain", /* New! */
+        EXTRACTOR_METATYPE_AUDIO_LANGUAGE, EXTRACTOR_METAFORMAT_UTF8, "text/plain",
         (const char *) ctmp, strlen (ctmp) + 1))
       return TRUE;
 
@@ -927,7 +927,7 @@ send_audio_info (GstDiscovererAudioInfo *info, struct PrivStruct *ps)
   {
     tmp = g_strdup_printf ("%u", u);
     ps->time_to_leave = ps->ec->proc (ps->ec->cls, "gstreamer",
-      EXTRACTOR_METATYPE_CHANNELS, EXTRACTOR_METAFORMAT_UTF8, "text/plain", /* New! */
+      EXTRACTOR_METATYPE_CHANNELS, EXTRACTOR_METAFORMAT_UTF8, "text/plain",
       (const char *) tmp, strlen (tmp) + 1);
     g_free (tmp);
     if (ps->time_to_leave)
@@ -939,7 +939,7 @@ send_audio_info (GstDiscovererAudioInfo *info, struct PrivStruct *ps)
   {
     tmp = g_strdup_printf ("%u", u);
     ps->time_to_leave = ps->ec->proc (ps->ec->cls, "gstreamer",
-      EXTRACTOR_METATYPE_SAMPLE_RATE, EXTRACTOR_METAFORMAT_UTF8, "text/plain", /* New! */
+      EXTRACTOR_METATYPE_SAMPLE_RATE, EXTRACTOR_METAFORMAT_UTF8, "text/plain",
       (const char *) tmp, strlen (tmp) + 1);
     g_free (tmp);
     if (ps->time_to_leave)
@@ -951,7 +951,7 @@ send_audio_info (GstDiscovererAudioInfo *info, struct PrivStruct *ps)
   {
     tmp = g_strdup_printf ("%u", u);
     ps->time_to_leave = ps->ec->proc (ps->ec->cls, "gstreamer",
-      EXTRACTOR_METATYPE_AUDIO_DEPTH, EXTRACTOR_METAFORMAT_UTF8, "text/plain", /* New! */
+      EXTRACTOR_METATYPE_AUDIO_DEPTH, EXTRACTOR_METAFORMAT_UTF8, "text/plain",
       (const char *) tmp, strlen (tmp) + 1);
     g_free (tmp);
     if (ps->time_to_leave)
@@ -963,7 +963,7 @@ send_audio_info (GstDiscovererAudioInfo *info, struct PrivStruct *ps)
   {
     tmp = g_strdup_printf ("%u", u);
     ps->time_to_leave = ps->ec->proc (ps->ec->cls, "gstreamer",
-      EXTRACTOR_METATYPE_AUDIO_BITRATE, EXTRACTOR_METAFORMAT_UTF8, "text/plain", /* New! */
+      EXTRACTOR_METATYPE_AUDIO_BITRATE, EXTRACTOR_METAFORMAT_UTF8, "text/plain",
       (const char *) tmp, strlen (tmp) + 1);
     g_free (tmp);
     if (ps->time_to_leave)
@@ -975,7 +975,7 @@ send_audio_info (GstDiscovererAudioInfo *info, struct PrivStruct *ps)
   {
     tmp = g_strdup_printf ("%u", u);
     ps->time_to_leave = ps->ec->proc (ps->ec->cls, "gstreamer",
-      EXTRACTOR_METATYPE_MAXIMUM_AUDIO_BITRATE, EXTRACTOR_METAFORMAT_UTF8, "text/plain", /* New! */
+      EXTRACTOR_METATYPE_MAXIMUM_AUDIO_BITRATE, EXTRACTOR_METAFORMAT_UTF8, "text/plain",
       (const char *) tmp, strlen (tmp) + 1);
     g_free (tmp);
     if (ps->time_to_leave)
@@ -997,7 +997,7 @@ send_video_info (GstDiscovererVideoInfo *info, struct PrivStruct *ps)
   {
     tmp = g_strdup_printf ("%ux%u", u, u2);
     ps->time_to_leave = ps->ec->proc (ps->ec->cls, "gstreamer",
-      EXTRACTOR_METATYPE_VIDEO_DIMENSIONS, EXTRACTOR_METAFORMAT_UTF8, "text/plain", /* New! */
+      EXTRACTOR_METATYPE_VIDEO_DIMENSIONS, EXTRACTOR_METAFORMAT_UTF8, "text/plain",
       (const char *) tmp, strlen (tmp) + 1);
     g_free (tmp);
     if (ps->time_to_leave)
@@ -1009,7 +1009,7 @@ send_video_info (GstDiscovererVideoInfo *info, struct PrivStruct *ps)
   {
     tmp = g_strdup_printf ("%u", u);
     ps->time_to_leave = ps->ec->proc (ps->ec->cls, "gstreamer",
-      EXTRACTOR_METATYPE_VIDEO_DEPTH, EXTRACTOR_METAFORMAT_UTF8, "text/plain", /* New! */
+      EXTRACTOR_METATYPE_VIDEO_DEPTH, EXTRACTOR_METAFORMAT_UTF8, "text/plain",
       (const char *) tmp, strlen (tmp) + 1);
     g_free (tmp);
     if (ps->time_to_leave)
@@ -1022,7 +1022,7 @@ send_video_info (GstDiscovererVideoInfo *info, struct PrivStruct *ps)
   {
     tmp = g_strdup_printf ("%u/%u", u, u2);
     ps->time_to_leave = ps->ec->proc (ps->ec->cls, "gstreamer",
-      EXTRACTOR_METATYPE_FRAME_RATE, EXTRACTOR_METAFORMAT_UTF8, "text/plain", /* New! */
+      EXTRACTOR_METATYPE_FRAME_RATE, EXTRACTOR_METAFORMAT_UTF8, "text/plain",
       (const char *) tmp, strlen (tmp) + 1);
     g_free (tmp);
     if (ps->time_to_leave)
@@ -1035,7 +1035,7 @@ send_video_info (GstDiscovererVideoInfo *info, struct PrivStruct *ps)
   {
     tmp = g_strdup_printf ("%u/%u", u, u2);
     ps->time_to_leave = ps->ec->proc (ps->ec->cls, "gstreamer",
-      EXTRACTOR_METATYPE_PIXEL_ASPECT_RATIO, EXTRACTOR_METAFORMAT_UTF8, "text/plain", /* New! */
+      EXTRACTOR_METATYPE_PIXEL_ASPECT_RATIO, EXTRACTOR_METAFORMAT_UTF8, "text/plain",
       (const char *) tmp, strlen (tmp) + 1);
     g_free (tmp);
     if (ps->time_to_leave)
@@ -1049,7 +1049,7 @@ send_video_info (GstDiscovererVideoInfo *info, struct PrivStruct *ps)
   {
     tmp = g_strdup_printf ("%u", u);
     ps->time_to_leave = ps->ec->proc (ps->ec->cls, "gstreamer",
-      EXTRACTOR_METATYPE_VIDEO_BITRATE, EXTRACTOR_METAFORMAT_UTF8, "text/plain", /* New! */
+      EXTRACTOR_METATYPE_VIDEO_BITRATE, EXTRACTOR_METAFORMAT_UTF8, "text/plain",
       (const char *) tmp, strlen (tmp) + 1);
     g_free (tmp);
     if (ps->time_to_leave)
@@ -1061,7 +1061,7 @@ send_video_info (GstDiscovererVideoInfo *info, struct PrivStruct *ps)
   {
     tmp = g_strdup_printf ("%u", u);
     ps->time_to_leave = ps->ec->proc (ps->ec->cls, "gstreamer",
-      EXTRACTOR_METATYPE_MAXIMUM_VIDEO_BITRATE, EXTRACTOR_METAFORMAT_UTF8, "text/plain", /* New! */
+      EXTRACTOR_METATYPE_MAXIMUM_VIDEO_BITRATE, EXTRACTOR_METAFORMAT_UTF8, "text/plain",
       (const char *) tmp, strlen (tmp) + 1);
     g_free (tmp);
     if (ps->time_to_leave)
@@ -1080,7 +1080,7 @@ send_subtitle_info (GstDiscovererSubtitleInfo *info, struct PrivStruct *ps)
   ctmp = gst_discoverer_subtitle_info_get_language (info);
   if (ctmp)
     if (ps->time_to_leave = ps->ec->proc (ps->ec->cls, "gstreamer",
-        EXTRACTOR_METATYPE_SUBTITLE_LANGUAGE, EXTRACTOR_METAFORMAT_UTF8, "text/plain", /* New! */
+        EXTRACTOR_METATYPE_SUBTITLE_LANGUAGE, EXTRACTOR_METAFORMAT_UTF8, "text/plain",
         (const char *) ctmp, strlen (ctmp) + 1))
       return TRUE;
 
@@ -1324,7 +1324,7 @@ send_tag_foreach (const GstTagList * tags, const gchar * tag,
         skip = TRUE;
         break;
       case STREAM_TYPE_VIDEO:
-        le_type = EXTRACTOR_METATYPE_VIDEO_LANGUAGE; /* New! */
+        le_type = EXTRACTOR_METATYPE_VIDEO_LANGUAGE;
         break;
       default:
         break;
