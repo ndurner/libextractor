@@ -144,153 +144,153 @@ main (int argc, char *argv[])
   {
     struct SolutionData thirty_and_thirtythree_sol[] =
       {
-        { 
+        {
 	EXTRACTOR_METATYPE_DURATION,
 	EXTRACTOR_METAFORMAT_UTF8,
 	"text/plain",
 	"0:00:05.061000000",
 	strlen ("0:00:05.061000000") + 1,
-	0 
+	0
         },
-        { 
+        {
 	EXTRACTOR_METATYPE_TRACK_NUMBER,
 	EXTRACTOR_METAFORMAT_UTF8,
 	"text/plain",
 	"21",
 	strlen ("21") + 1,
-	0 
+	0
         },
-        { 
+        {
 	EXTRACTOR_METATYPE_ALBUM,
 	EXTRACTOR_METAFORMAT_UTF8,
 	"text/plain",
 	"Zee Album",
 	strlen ("Zee Album") + 1,
-	0 
+	0
         },
-        { 
+        {
 	EXTRACTOR_METATYPE_CREATION_TIME,
 	EXTRACTOR_METAFORMAT_UTF8,
 	"text/plain",
 	"9999",
 	strlen ("9999") + 1,
-	0 
+	0
         },
         /* Suggest a fix to gst devs; "performed by" and "contributors" should
          * be separate.
          */
-        { 
+        {
 	EXTRACTOR_METATYPE_ARTIST,
 	EXTRACTOR_METAFORMAT_UTF8,
 	"text/plain",
 	"All performed by Nobody, This Artist Contributed",
 	strlen ("All performed by Nobody, This Artist Contributed") + 1,
-	0 
+	0
         },
-        { 
+        {
 	EXTRACTOR_METATYPE_TITLE,
 	EXTRACTOR_METAFORMAT_UTF8,
 	"text/plain",
 	"Some title",
 	strlen ("Some title") + 1,
-	0 
+	0
         },
         /* Suggest a fix to gst devs; should be a comment, not description */
-        { 
+        {
 	EXTRACTOR_METATYPE_DESCRIPTION,
 	EXTRACTOR_METAFORMAT_UTF8,
 	"text/plain",
 	"A witty comment",
 	strlen ("A witty comment") + 1,
-	0 
+	0
         },
-        { 
+        {
 	EXTRACTOR_METATYPE_CONTAINER_FORMAT,
 	EXTRACTOR_METAFORMAT_UTF8,
 	"text/plain",
 	"ASF",
 	strlen ("ASF") + 1,
-	0 
+	0
         },
-        { 
+        {
 	EXTRACTOR_METATYPE_AUDIO_CODEC,
 	EXTRACTOR_METAFORMAT_UTF8,
 	"text/plain",
 	"WMA Version 8",
 	strlen ("WMA Version 8") + 1,
-	0 
+	0
         },
-        { 
+        {
 	EXTRACTOR_METATYPE_MIMETYPE,
 	EXTRACTOR_METAFORMAT_UTF8,
 	"text/plain",
 	"video/x-ms-asf",
 	strlen ("video/x-ms-asf") + 1,
-	0 
+	0
         },
-        { 
+        {
 	EXTRACTOR_METATYPE_MIMETYPE,
 	EXTRACTOR_METAFORMAT_UTF8,
 	"text/plain",
 	"audio/x-wma",
 	strlen ("audio/x-wma") + 1,
-	0 
+	0
         },
-        { 
+        {
 	EXTRACTOR_METATYPE_UNKNOWN,
 	EXTRACTOR_METAFORMAT_UTF8,
 	"text/plain",
 	"wmaversion=2",
 	strlen ("wmaversion=2") + 1,
-	0 
+	0
         },
-        { 
+        {
 	EXTRACTOR_METATYPE_UNKNOWN,
 	EXTRACTOR_METAFORMAT_UTF8,
 	"text/plain",
 	"bitrate=96024",
 	strlen ("bitrate=96024") + 1,
-	0 
+	0
         },
-        { 
+        {
 	EXTRACTOR_METATYPE_UNKNOWN,
 	EXTRACTOR_METAFORMAT_UTF8,
 	"text/plain",
 	"block_align=4459",
 	strlen ("block_align=4459") + 1,
-	0 
+	0
         },
-        { 
+        {
 	EXTRACTOR_METATYPE_AUDIO_LANGUAGE,
 	EXTRACTOR_METAFORMAT_UTF8,
 	"text/plain",
 	"en",
 	strlen ("en") + 1,
-	0 
+	0
         },
-        { 
+        {
 	EXTRACTOR_METATYPE_CHANNELS,
 	EXTRACTOR_METAFORMAT_UTF8,
 	"text/plain",
 	"2",
 	strlen ("2") + 1,
-	0 
+	0
         },
-        { 
+        {
 	EXTRACTOR_METATYPE_SAMPLE_RATE,
 	EXTRACTOR_METAFORMAT_UTF8,
 	"text/plain",
 	"44100",
 	strlen ("44100") + 1,
-	0 
+	0
         },
-        { 
+        {
 	EXTRACTOR_METATYPE_AUDIO_DEPTH,
 	EXTRACTOR_METAFORMAT_UTF8,
 	"text/plain",
 	"16",
 	strlen ("16") + 1,
-	0 
+	0
         },
         { 0, 0, NULL, NULL, 0, -1 }
       };

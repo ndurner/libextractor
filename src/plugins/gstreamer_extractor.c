@@ -863,7 +863,7 @@ send_structure_foreach (GQuark field_id, const GValue *value,
   case STREAM_TYPE_CONTAINER:
     break;
   }
-  
+
 
   /* TODO: check a list of known quarks, use specific EXTRACTOR_MetaType  */
   switch (G_VALUE_TYPE (value))
@@ -901,7 +901,7 @@ send_structure_foreach (GQuark field_id, const GValue *value,
   }
 
   g_free (str);
-  
+
   return !ps->time_to_leave;
 }
 
