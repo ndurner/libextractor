@@ -541,6 +541,13 @@ static const struct MetaTypeDescription meta_type_descriptions[] = {
   { gettext_noop ("table of contents"),
     gettext_noop ("chapters, contents or bookmarks (in xml format)") },
   /* 225 */
+  { gettext_noop ("video duration"),
+    gettext_noop ("duration of a video stream") },
+  { gettext_noop ("audio duration"),
+    gettext_noop ("duration of an audio stream") },
+  { gettext_noop ("subtitle duration"),
+    gettext_noop ("duration of a subtitle stream") },
+
   { gettext_noop ("last"),
     gettext_noop ("last") }
 };

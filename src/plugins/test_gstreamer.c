@@ -302,6 +302,203 @@ main (int argc, char *argv[])
       };
     result += (0 == ET_main ("gstreamer", ps) ? 0 : 1);
   }
+
+  pre_test = discoverer_main (dc, "testdata/barsandtone.flv");
+  if (pre_test != GST_DISCOVERER_MISSING_PLUGINS)
+  {
+    struct SolutionData barsandtone_sol[] =
+      {
+        {
+	EXTRACTOR_METATYPE_DURATION,
+	EXTRACTOR_METAFORMAT_UTF8,
+	"text/plain",
+	"0:00:06.060000000",
+	strlen ("0:00:06.060000000") + 1,
+	0
+        },
+        {
+	EXTRACTOR_METATYPE_MIMETYPE,
+	EXTRACTOR_METAFORMAT_UTF8,
+	"text/plain",
+	"video/x-flv",
+	strlen ("video/x-flv") + 1,
+	0
+        },
+        {
+	EXTRACTOR_METATYPE_MIMETYPE,
+	EXTRACTOR_METAFORMAT_UTF8,
+	"text/plain",
+	"video/x-vp6-flash",
+	strlen ("video/x-vp6-flash") + 1,
+	0
+        },
+        {
+	EXTRACTOR_METATYPE_VIDEO_DURATION,
+	EXTRACTOR_METAFORMAT_UTF8,
+	"text/plain",
+	"0:00:06.000000000",
+	strlen ("0:00:06.000000000") + 1,
+	0
+        },
+        {
+	EXTRACTOR_METATYPE_AUDIO_CODEC,
+	EXTRACTOR_METAFORMAT_UTF8,
+	"text/plain",
+	"MPEG-1 Layer 3 (MP3)",
+	strlen ("MPEG-1 Layer 3 (MP3)") + 1,
+	0
+        },
+        {
+	EXTRACTOR_METATYPE_VIDEO_CODEC,
+	EXTRACTOR_METAFORMAT_UTF8,
+	"text/plain",
+	"On2 VP6/Flash",
+	strlen ("On2 VP6/Flash") + 1,
+	0
+        },
+        {
+	EXTRACTOR_METATYPE_VIDEO_DIMENSIONS,
+	EXTRACTOR_METAFORMAT_UTF8,
+	"text/plain",
+	"368x288",
+	strlen ("368x288") + 1,
+	0
+        },
+        {
+	EXTRACTOR_METATYPE_FRAME_RATE,
+	EXTRACTOR_METAFORMAT_UTF8,
+	"text/plain",
+	"10/1",
+	strlen ("10/1") + 1,
+	0
+        },
+        {
+	EXTRACTOR_METATYPE_PIXEL_ASPECT_RATIO,
+	EXTRACTOR_METAFORMAT_UTF8,
+	"text/plain",
+	"1/1",
+	strlen ("1/1") + 1,
+	0
+        },
+        {
+	EXTRACTOR_METATYPE_MIMETYPE,
+	EXTRACTOR_METAFORMAT_UTF8,
+	"text/plain",
+	"audio/mpeg",
+	strlen ("audio/mpeg") + 1,
+	0
+        },
+        {
+	EXTRACTOR_METATYPE_UNKNOWN,
+	EXTRACTOR_METAFORMAT_UTF8,
+	"text/plain",
+	"mpegversion=1",
+	strlen ("mpegversion=1") + 1,
+	0
+        },
+        {
+	EXTRACTOR_METATYPE_UNKNOWN,
+	EXTRACTOR_METAFORMAT_UTF8,
+	"text/plain",
+	"mpegaudioversion=1",
+	strlen ("mpegaudioversion=1") + 1,
+	0
+        },
+        {
+	EXTRACTOR_METATYPE_UNKNOWN,
+	EXTRACTOR_METAFORMAT_UTF8,
+	"text/plain",
+	"layer=3",
+	strlen ("layer=3") + 1,
+	0
+        },
+        {
+	EXTRACTOR_METATYPE_UNKNOWN,
+	EXTRACTOR_METAFORMAT_UTF8,
+	"text/plain",
+	"parsed=true",
+	strlen ("parsed=true") + 1,
+	0
+        },
+        {
+	EXTRACTOR_METATYPE_AUDIO_DURATION,
+	EXTRACTOR_METAFORMAT_UTF8,
+	"text/plain",
+	"0:00:06.000000000",
+	strlen ("0:00:06.000000000") + 1,
+	0
+        },
+        /* Yes, again. This seems to be a bug/feature of the element that
+         * gives us these streams; this doesn't happen when discovering
+         * Matroska files, for example. Or maybe file itself is made that way.
+         */
+        {
+	EXTRACTOR_METATYPE_AUDIO_CODEC,
+	EXTRACTOR_METAFORMAT_UTF8,
+	"text/plain",
+	"MPEG-1 Layer 3 (MP3)",
+	strlen ("MPEG-1 Layer 3 (MP3)") + 1,
+	0
+        },
+        {
+	EXTRACTOR_METATYPE_VIDEO_CODEC,
+	EXTRACTOR_METAFORMAT_UTF8,
+	"text/plain",
+	"On2 VP6/Flash",
+	strlen ("On2 VP6/Flash") + 1,
+	0
+        },
+        {
+	EXTRACTOR_METATYPE_UNKNOWN,
+	EXTRACTOR_METAFORMAT_UTF8,
+	"text/plain",
+	"has-crc=false",
+	strlen ("has-crc=false") + 1,
+	0
+        },
+        {
+	EXTRACTOR_METATYPE_UNKNOWN,
+	EXTRACTOR_METAFORMAT_UTF8,
+	"text/plain",
+	"channel-mode=joint-stereo",
+	strlen ("channel-mode=joint-stereo") + 1,
+	0
+        },
+        {
+	EXTRACTOR_METATYPE_CHANNELS,
+	EXTRACTOR_METAFORMAT_UTF8,
+	"text/plain",
+	"2",
+	strlen ("2") + 1,
+	0
+        },
+        {
+	EXTRACTOR_METATYPE_SAMPLE_RATE,
+	EXTRACTOR_METAFORMAT_UTF8,
+	"text/plain",
+	"44100",
+	strlen ("44100") + 1,
+	0
+        },
+        {
+	EXTRACTOR_METATYPE_AUDIO_BITRATE,
+	EXTRACTOR_METAFORMAT_UTF8,
+	"text/plain",
+	"96000",
+	strlen ("96000") + 1,
+	0
+        },
+        { 0, 0, NULL, NULL, 0, -1 }
+      };
+    struct ProblemSet ps[] =
+      {
+        { "testdata/barsandtone.flv",
+	barsandtone_sol },
+        { NULL, NULL }
+      };
+    result += (0 == ET_main ("gstreamer", ps) ? 0 : 1);
+  }
+
   g_object_unref (dc);
   return result;
 }

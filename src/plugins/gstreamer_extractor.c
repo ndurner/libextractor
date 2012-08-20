@@ -647,6 +647,7 @@ static GQuark *video_quarks;
 
 static GQuark *subtitle_quarks;
 
+static GQuark duration_quark;
 
 static void send_streams (GstDiscovererStreamInfo *info, struct PrivStruct *ps);
 
@@ -699,6 +700,8 @@ initialize (struct InitData *id, struct PrivStruct *ps)
   subtitle_quarks = g_new0 (GQuark, 2);
   subtitle_quarks[0] = g_quark_from_string ("language-code");
   subtitle_quarks[1] = g_quark_from_string (NULL);
+
+  duration_quark = g_quark_from_string ("duration");
 
   id->dc = gst_discoverer_new (timeout * GST_SECOND, &err);
   if (G_UNLIKELY (id->dc == NULL)) {
@@ -1155,16 +1158,19 @@ send_stream_info (GstDiscovererStreamInfo * info, struct PrivStruct *ps)
     send_subtitle_info (GST_DISCOVERER_SUBTITLE_INFO (info), ps);
   else if (GST_IS_DISCOVERER_CONTAINER_INFO (info))
   {
+    GList *child;
     GstDiscovererContainerInfo *c = GST_DISCOVERER_CONTAINER_INFO (info);
     GList *children = gst_discoverer_container_info_get_streams (c);
-    if (children)
+    for (child = children; (NULL != child) && (!ps->time_to_leave);
+        child = child->next)
     {
-      GstDiscovererStreamInfo *sinfo = children->data;
+      GstDiscovererStreamInfo *sinfo = child->data;
       /* send_streams () will unref it */
       gst_discoverer_stream_info_ref (sinfo);
       send_streams (sinfo, ps);
-      gst_discoverer_stream_info_list_free (children);
     }
+    if (children)
+      gst_discoverer_stream_info_list_free (children);
   }
 }
 
@@ -1177,9 +1183,12 @@ send_tag_foreach (const GstTagList * tags, const gchar * tag,
   size_t i;
   size_t tagl = sizeof (__known_tags) / sizeof (struct KnownTag);
   struct KnownTag *kt = NULL;
+  struct KnownTag unknown_tag = {NULL, EXTRACTOR_METATYPE_UNKNOWN};
+
 
   GValue val = { 0, };
-  gchar *str;
+  gchar *str = NULL;
+  GQuark tag_quark;
 
   GstSample *sample;
 
@@ -1194,9 +1203,11 @@ send_tag_foreach (const GstTagList * tags, const gchar * tag,
     break;
   }
   if (kt == NULL)
-    return;
+    kt = &unknown_tag;
 
   gst_tag_list_copy_value (&val, tags, tag);
+
+  tag_quark = g_quark_from_string (tag);
 
   switch (G_VALUE_TYPE (&val))
   {
@@ -1276,6 +1287,13 @@ send_tag_foreach (const GstTagList * tags, const gchar * tag,
         gst_buffer_unmap (buf, &mi);
       }
     }
+    else if ((G_VALUE_TYPE (&val) == G_TYPE_UINT64) &&
+        (tag_quark == duration_quark))
+    {
+      GstClockTime duration = (GstClockTime) g_value_get_uint64 (&val);
+      if ((GST_CLOCK_TIME_IS_VALID (duration)) && (duration > 0))
+        str = g_strdup_printf ("%" GST_TIME_FORMAT, GST_TIME_ARGS (duration));
+    }
     else
       str = gst_value_serialize (&val);
     break;
@@ -1338,6 +1356,19 @@ send_tag_foreach (const GstTagList * tags, const gchar * tag,
         break;
       }
       break;
+    case EXTRACTOR_METATYPE_NOMINAL_BITRATE:
+      switch (ps->st)
+      {
+      case STREAM_TYPE_AUDIO:
+        skip = TRUE;
+        break;
+      case STREAM_TYPE_VIDEO:
+        skip = TRUE;
+        break;
+      default:
+        break;
+      }
+      break;
     case EXTRACTOR_METATYPE_IMAGE_DIMENSIONS:
       switch (ps->st)
       {
@@ -1346,6 +1377,30 @@ send_tag_foreach (const GstTagList * tags, const gchar * tag,
         break;
       default:
         break;
+      }
+      break;
+    case EXTRACTOR_METATYPE_DURATION:
+      switch (ps->st)
+      {
+      case STREAM_TYPE_VIDEO:
+        le_type = EXTRACTOR_METATYPE_VIDEO_DURATION;
+        break;
+      case STREAM_TYPE_AUDIO:
+        le_type = EXTRACTOR_METATYPE_AUDIO_DURATION;
+        break;
+      case STREAM_TYPE_SUBTITLE:
+        le_type = EXTRACTOR_METATYPE_SUBTITLE_DURATION;
+        break;
+      default:
+        break;
+      }
+      break;
+    case EXTRACTOR_METATYPE_UNKNOWN:
+      /* Convert to "key=value" form */
+      {
+        gchar *new_str = g_strdup_printf ("%s=%s", tag, str);
+        g_free (str);
+        str = new_str;
       }
       break;
     default:
@@ -1501,10 +1556,9 @@ send_info (GstDiscovererInfo * info, struct PrivStruct *ps)
   GstClockTime duration;
 
   duration = gst_discoverer_info_get_duration (info);
-  if (duration > 0)
+  if ((GST_CLOCK_TIME_IS_VALID (duration)) && (duration > 0))
   {
-    s = g_strdup_printf ("%" GST_TIME_FORMAT,
-        GST_TIME_ARGS (gst_discoverer_info_get_duration (info)));
+    s = g_strdup_printf ("%" GST_TIME_FORMAT, GST_TIME_ARGS (duration));
     if (s)
       ps->time_to_leave = ps->ec->proc (ps->ec->cls, "gstreamer",
           EXTRACTOR_METATYPE_DURATION, EXTRACTOR_METAFORMAT_UTF8, "text/plain",
