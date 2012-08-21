@@ -86,6 +86,55 @@ process_replies (void *cls,
 
 
 /**
+ * Run a test for the given plugin, problem set and options.
+ *
+ * @param plugin_name name of the plugin to load
+ * @param ps array of problems the plugin should solve;
+ *        NULL in filename terminates the array. 
+ * @param opt options to use for loading the plugin
+ * @return 0 on success, 1 on failure
+ */
+static int 
+run (const char *plugin_name,
+     struct ProblemSet *ps,
+     enum EXTRACTOR_Options opt)
+{
+  struct EXTRACTOR_PluginList *pl;
+  unsigned int i;
+  unsigned int j;
+  int ret;
+
+  pl = EXTRACTOR_plugin_add_config (NULL, 
+				    plugin_name,
+				    opt);
+  for (i=0; NULL != ps[i].filename; i++)
+    EXTRACTOR_extract (pl,
+		       ps[i].filename,
+		       NULL, 0, 
+		       &process_replies,
+		       ps[i].solution);   
+  EXTRACTOR_plugin_remove_all (pl);
+  ret = 0;
+  for (i=0; NULL != ps[i].filename; i++)    
+    for (j=0; -1 != ps[i].solution[j].solved; j++)
+      if (0 == ps[i].solution[j].solved)	
+      {
+	ret = 1;
+        fprintf (stderr,
+	   "Did not get expected meta data of type %d and format %d with value `%.*s' from plugin `%s'\n",
+	   ps[i].solution[j].type,
+	   ps[i].solution[j].format,
+	   (int) ps[i].solution[j].data_len,
+	   ps[i].solution[j].data,
+	   plugin_name);
+      }
+      else
+	ps[i].solution[j].solved = 0;
+  return ret;
+}
+
+
+/**
  * Main function to be called to test a plugin.
  *
  * @param plugin_name name of the plugin to load
@@ -97,9 +146,6 @@ int
 ET_main (const char *plugin_name,
 	 struct ProblemSet *ps)
 {
-  struct EXTRACTOR_PluginList *pl;
-  unsigned int i;
-  unsigned int j;
   int ret;
   
   /* change environment to find plugins which may not yet be
@@ -109,33 +155,14 @@ ET_main (const char *plugin_name,
     fprintf (stderr, 
 	     "Failed to update my environment, plugin loading may fail: %s\n",
 	     strerror (errno));    
-  pl = EXTRACTOR_plugin_add_config (NULL, 
-				    plugin_name,
-				    EXTRACTOR_OPTION_IN_PROCESS);
-  for (i=0; NULL != ps[i].filename; i++)
-    EXTRACTOR_extract (pl,
-		       ps[i].filename,
-		       NULL, 0, 
-		       &process_replies,
-		       ps[i].solution);   
-  EXTRACTOR_plugin_remove_all (pl);
-  ret = 0;
-  for (i=0; NULL != ps[i].filename; i++)    
-    for (j=0; -1 != ps[i].solution[j].solved; j++)
-      if (0 == ps[i].solution[j].solved)
-      {
-	ret = 1;
-        fprintf (stderr,
-	   "Did not get expected meta data of type %d and format %d with value `%.*s' from plugin `%s'\n",
-	   ps[i].solution[j].type,
-	   ps[i].solution[j].format,
-	   (int) ps[i].solution[j].data_len,
-	   ps[i].solution[j].data,
-	   plugin_name);
-      }
-  return ret;
+  ret = run (plugin_name, ps, EXTRACTOR_OPTION_IN_PROCESS);
+  if (0 != ret)
+    return ret;
+  ret = run (plugin_name, ps, EXTRACTOR_OPTION_DEFAULT_POLICY);
+  if (0 != ret)
+    return ret;
+  return 0;
 }
-
 
 
 /* end of test_lib.c */

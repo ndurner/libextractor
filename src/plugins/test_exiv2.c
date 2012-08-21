@@ -175,11 +175,27 @@ main (int argc, char *argv[])
 	0 
       },
       { 
+	EXTRACTOR_METATYPE_LOCATION_CITY,
+	EXTRACTOR_METAFORMAT_UTF8,
+	"text/plain",
+	"Los Verdes",
+	strlen ("Los Verdes") + 1,
+	0 
+      },
+      { 
 	EXTRACTOR_METATYPE_LOCATION_SUBLOCATION,
 	EXTRACTOR_METAFORMAT_UTF8,
 	"text/plain",
 	"Fuerteventura",
 	strlen ("Fuerteventura") + 1,
+	0 
+      },
+      { 
+	EXTRACTOR_METATYPE_LOCATION_COUNTRY,
+	EXTRACTOR_METAFORMAT_UTF8,
+	"text/plain",
+	"Spain",
+	strlen ("Spain") + 1,
 	0 
       },
       { 
@@ -268,6 +284,46 @@ main (int argc, char *argv[])
 	"text/plain",
 	"Wo?",
 	strlen ("Wo?") + 1,
+	0 
+      },
+      { 
+	EXTRACTOR_METATYPE_RATING,
+	EXTRACTOR_METAFORMAT_UTF8,
+	"text/plain",
+	"3",
+	strlen ("3") + 1,
+	0 
+      },
+      { 
+	EXTRACTOR_METATYPE_RATING,
+	EXTRACTOR_METAFORMAT_UTF8,
+	"text/plain",
+	"50",
+	strlen ("50") + 1,
+	0 
+      },
+      { 
+	EXTRACTOR_METATYPE_LOCATION_COUNTRY_CODE,
+	EXTRACTOR_METAFORMAT_UTF8,
+	"text/plain",
+	"ES",
+	strlen ("ES") + 1,
+	0 
+      },
+      { 
+	EXTRACTOR_METATYPE_CREATED_BY_SOFTWARE,
+	EXTRACTOR_METAFORMAT_UTF8,
+	"text/plain",
+	"Optio W30 Ver 1.00",
+	strlen ("Optio W30 Ver 1.00") + 1,
+	0 
+      },
+      { 
+	EXTRACTOR_METATYPE_SUBJECT,
+	EXTRACTOR_METAFORMAT_UTF8,
+	"text/plain",
+	"Wo?, Wo?|Fuerteventura, Was?, Was?|Anlass]|Urlaub, Was?|Aufnahme]|Landschaftsbild, Was?|Natur]|Wind, Was?|Natur]|Sand, Wo?|Fuerteventura|ProCenter Rene Egli, Was?|Sport, Was?|Sport|Windsurfen",
+	strlen ("Wo?, Wo?|Fuerteventura, Was?, Was?|Anlass]|Urlaub, Was?|Aufnahme]|Landschaftsbild, Was?|Natur]|Wind, Was?|Natur]|Sand, Wo?|Fuerteventura|ProCenter Rene Egli, Was?|Sport, Was?|Sport|Windsurfen") + 1,
 	0 
       },
       { 0, 0, NULL, NULL, 0, -1 }
