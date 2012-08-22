@@ -22,6 +22,7 @@ AM_INIT_AUTOMAKE([silent-rules])
 AC_USE_SYSTEM_EXTENSIONS
 AC_PROG_AWK
 AC_PROG_CC
+AM_PROG_CC_C_O
 AC_PROG_CPP
 AC_PROG_CXX
 AC_CHECK_PROG(HAVE_CXX, $CXX, yes, no)
@@ -423,7 +424,18 @@ else
  AM_CONDITIONAL(HAVE_GLIB,false)
  AC_DEFINE(HAVE_GLIB, 0, [Have glib])
 fi
-        
+
+# smf requires glib.h
+CFLAGS_OLD=$CFLAGS
+export CFLAGS="$CFLAGS $GLIB_CFLAGS"
+
+AC_CHECK_LIB(smf, smf_load_from_memory,
+        [AC_CHECK_HEADERS([smf.h],
+           AM_CONDITIONAL(HAVE_SMF, true)
+           AC_DEFINE(HAVE_MPEG2,1,[Have libsmf]),
+         AM_CONDITIONAL(HAVE_SMF, false))],
+         AM_CONDITIONAL(HAVE_SMF, false))
+export CFLAGS=$CFLAGS_OLD
 
 # check for gtk >= 2.6.0
 AC_MSG_CHECKING(for gtk)
@@ -643,6 +655,11 @@ fi
 if test "x$HAVE_FLAC_TRUE" = "x#"
 then
  AC_MSG_NOTICE([NOTICE: libflac not found, flac support disabled])
+fi
+
+if test "x$HAVE_SMF_TRUE" = "x#"
+then
+ AC_MSG_NOTICE([NOTICE: libsmf not found, midi support disabled])
 fi
 
 if test "x$HAVE_MPEG2_TRUE" = "x#"

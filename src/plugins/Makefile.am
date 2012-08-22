@@ -25,6 +25,7 @@ EXTRA_DIST = \
   testdata/it_dawn.it \
   testdata/jpeg_image.jpg \
   testdata/man_extract.1 \
+  testdata/midi_dth.mid \
   testdata/mpeg_alien.mpg \
   testdata/mpeg_melt.mpg \
   testdata/nsf_arkanoid.nsf \
@@ -118,6 +119,11 @@ PLUGIN_RPM=libextractor_rpm.la
 TEST_RPM=test_rpm
 endif
 
+if HAVE_SMF
+PLUGIN_MIDI=libextractor_midi.la
+TEST_MIDI=test_midi
+endif
+
 if HAVE_TIFF
 PLUGIN_TIFF=libextractor_tiff.la
 TEST_TIFF=test_tiff
@@ -159,6 +165,7 @@ plugin_LTLIBRARIES = \
   $(PLUGIN_GTK) \
   $(PLUGIN_HTML) \
   $(PLUGIN_JPEG) \
+  $(PLUGIN_MIDI) \
   $(PLUGIN_MIME) \
   $(PLUGIN_MPEG) \
   $(PLUGIN_OGG) \
@@ -195,6 +202,7 @@ check_PROGRAMS = \
   $(TEST_GTK) \
   $(TEST_HTML) \
   $(TEST_JPEG) \
+  $(TEST_MIDI) \
   $(TEST_MIME) \
   $(TEST_MPEG) \
   $(TEST_OGG) \
@@ -340,6 +348,21 @@ libextractor_man_la_LDFLAGS = \
 test_man_SOURCES = \
   test_man.c
 test_man_LDADD = \
+  $(top_builddir)/src/plugins/libtest.la
+
+
+libextractor_midi_la_SOURCES = \
+  midi_extractor.c
+libextractor_midi_la_CFLAGS = \
+  $(GLIB_CFLAGS)
+libextractor_midi_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+libextractor_midi_la_LIBADD = \
+  -lsmf
+
+test_midi_SOURCES = \
+  test_midi.c
+test_midi_LDADD = \
   $(top_builddir)/src/plugins/libtest.la
 
 
