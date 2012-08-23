@@ -283,11 +283,17 @@ ExtractorIO::read (Exiv2::byte *buf,
 {
   void *data;
   ssize_t ret;
-  
-  if (-1 == (ret = ec->read (ec->cls, &data, rcount)))
-    return 0;
-  memcpy (buf, data, ret);
-  return ret;
+  long got;
+
+  got = 0;
+  while (got < rcount)
+    {
+      if (-1 == (ret = ec->read (ec->cls, &data, rcount - got)))
+	return got;
+      memcpy (&buf[got], data, ret);
+      got += ret;
+    }
+  return got;
 }
 
 
