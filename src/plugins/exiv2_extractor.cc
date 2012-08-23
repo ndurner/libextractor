@@ -290,6 +290,8 @@ ExtractorIO::read (Exiv2::byte *buf,
     {
       if (-1 == (ret = ec->read (ec->cls, &data, rcount - got)))
 	return got;
+      if (0 == ret)
+	break;
       memcpy (&buf[got], data, ret);
       got += ret;
     }
