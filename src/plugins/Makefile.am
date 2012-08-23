@@ -109,6 +109,11 @@ PLUGIN_JPEG=libextractor_jpeg.la
 TEST_JPEG=test_jpeg
 endif
 
+if HAVE_MP4
+PLUGIN_MP4=libextractor_mp4.la
+TEST_MP4=test_mp4
+endif
+
 if HAVE_MPEG2
 PLUGIN_MPEG=libextractor_mpeg.la
 TEST_MPEG=test_mpeg
@@ -167,6 +172,7 @@ plugin_LTLIBRARIES = \
   $(PLUGIN_JPEG) \
   $(PLUGIN_MIDI) \
   $(PLUGIN_MIME) \
+  $(PLUGIN_MP4) \
   $(PLUGIN_MPEG) \
   $(PLUGIN_OGG) \
   $(PLUGIN_RPM) \
@@ -377,6 +383,14 @@ test_mime_SOURCES = \
   test_mime.c
 test_mime_LDADD = \
   $(top_builddir)/src/plugins/libtest.la
+
+
+libextractor_mp4_la_SOURCES = \
+  mp4_extractor.c
+libextractor_mp4_la_LDFLAGS = \
+  $(PLUGINFLAGS) 
+libextractor_mp4_la_LIBADD = \
+  -lmp4v2
 
 
 libextractor_mpeg_la_SOURCES = \

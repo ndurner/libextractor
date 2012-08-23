@@ -53,7 +53,9 @@ available in order for maximum coverage:
 * libjpeg
 * libmagic (file)
 * libmpeg2
+* libmp4v2
 * librpm
+* libsmf
 * libtidy
 * libtiff
 * libvorbis / libogg

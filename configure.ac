@@ -294,6 +294,13 @@ AC_CHECK_LIB(mpeg2, mpeg2_init,
          AM_CONDITIONAL(HAVE_MPEG2, false))],
          AM_CONDITIONAL(HAVE_MPEG2, false))
 
+AC_CHECK_LIB(mp4v2, MP4ReadProvider,
+        [AC_CHECK_HEADERS([mp4v2/mp4v2.h],
+           AM_CONDITIONAL(HAVE_MP4, true)
+           AC_DEFINE(HAVE_MP4,1,[Have libmp4v2]),
+         AM_CONDITIONAL(HAVE_MP4, false))],
+         AM_CONDITIONAL(HAVE_MP4, false))
+
 AC_CHECK_LIB(jpeg, jpeg_std_error,
         [AC_CHECK_HEADERS([jpeglib.h],
            AM_CONDITIONAL(HAVE_JPEG, true)
@@ -427,7 +434,9 @@ fi
 
 # smf requires glib.h
 CFLAGS_OLD=$CFLAGS
+CPPFLAGS_OLD=$CPPFLAGS
 export CFLAGS="$CFLAGS $GLIB_CFLAGS"
+export CPPFLAGS="$CPPFLAGS $GLIB_CFLAGS"
 
 AC_CHECK_LIB(smf, smf_load_from_memory,
         [AC_CHECK_HEADERS([smf.h],
@@ -436,6 +445,7 @@ AC_CHECK_LIB(smf, smf_load_from_memory,
          AM_CONDITIONAL(HAVE_SMF, false))],
          AM_CONDITIONAL(HAVE_SMF, false))
 export CFLAGS=$CFLAGS_OLD
+export CPPFLAGS=$CPPFLAGS_OLD
 
 # check for gtk >= 2.6.0
 AC_MSG_CHECKING(for gtk)
@@ -665,6 +675,11 @@ fi
 if test "x$HAVE_MPEG2_TRUE" = "x#"
 then
  AC_MSG_NOTICE([NOTICE: libmpeg2 not found, mpeg2 support disabled])
+fi
+
+if test "x$HAVE_MP4V2_TRUE" = "x#"
+then
+ AC_MSG_NOTICE([NOTICE: libmp4v2 not found, mp4 support disabled])
 fi
 
 if test "x$HAVE_CXX" != "xyes"
