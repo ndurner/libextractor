@@ -182,7 +182,6 @@ EXTRACTOR_mp4_extract_method (struct EXTRACTOR_ExtractContext *ec)
   MP4FileHandle mp4;
   const MP4Tags *tags;
   char ecp[128];
-  void *dl;
 
   if (1)
     return; /* plugin is known not to work yet;
