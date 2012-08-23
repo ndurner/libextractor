@@ -129,7 +129,7 @@ run (const char *plugin_name,
 	   plugin_name);
       }
       else
-	ps[i].solution[j].solved = 0;
+	ps[i].solution[j].solved = 1;
   return ret;
 }
 
