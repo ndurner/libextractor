@@ -1398,9 +1398,14 @@ send_tag_foreach (const GstTagList * tags, const gchar * tag,
     case EXTRACTOR_METATYPE_UNKNOWN:
       /* Convert to "key=value" form */
       {
-        gchar *new_str = g_strdup_printf ("%s=%s", tag, str);
-        g_free (str);
-        str = new_str;
+        gchar *new_str;
+        /* GST_TAG_EXTENDED_COMMENT is already in key=value form */
+        if ((0 != strcmp (tag, "extended-comment")) || !strchr (str, '='))
+        {
+          new_str = g_strdup_printf ("%s=%s", tag, str);
+          g_free (str);
+          str = new_str;
+        }
       }
       break;
     default:
