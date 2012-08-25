@@ -449,6 +449,7 @@ EXTRACTOR_IPC_channel_create_ (struct EXTRACTOR_PluginList *plugin,
       LOG_STRERROR ("malloc");
       return NULL;
     }
+  memset (channel, 0, sizeof (struct EXTRACTOR_Channel));
   channel->mdata_size = 1024;
   if (NULL == (channel->mdata = malloc (channel->mdata_size)))
     {
