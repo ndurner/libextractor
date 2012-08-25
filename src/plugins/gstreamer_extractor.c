@@ -1186,9 +1186,8 @@ send_tag_foreach (const GstTagList * tags, const gchar * tag,
   struct KnownTag unknown_tag = {NULL, EXTRACTOR_METATYPE_UNKNOWN};
 
 
-  GValue val = { 0, };
-  gchar *str = NULL;
   GQuark tag_quark;
+  guint vallen;
 
   GstSample *sample;
 
@@ -1205,220 +1204,238 @@ send_tag_foreach (const GstTagList * tags, const gchar * tag,
   if (kt == NULL)
     kt = &unknown_tag;
 
-  gst_tag_list_copy_value (&val, tags, tag);
+  vallen = gst_tag_list_get_tag_size (tags, tag);
+  if (vallen == 0)
+    return;
 
   tag_quark = g_quark_from_string (tag);
 
-  switch (G_VALUE_TYPE (&val))
+  for (i = 0; i < vallen; i++)
   {
-  case G_TYPE_STRING:
-    str = g_value_dup_string (&val);
-    break;
-  case G_TYPE_UINT:
-  case G_TYPE_INT:
-  case G_TYPE_DOUBLE:
-  case G_TYPE_BOOLEAN:
-    str = gst_value_serialize (&val);
-    break;
-  default:
-    if (G_VALUE_TYPE (&val) == GST_TYPE_SAMPLE && (sample = gst_value_get_sample (&val)))
+    GValue val = { 0, };
+    const GValue *val_ref;
+    gchar *str = NULL;
+
+    val_ref = gst_tag_list_get_value_index (tags, tag, i);
+    if (val_ref == NULL)
     {
-      GstMapInfo mi;
-      const gchar *structname;
-      GstCaps *caps;
-
-      caps = gst_sample_get_caps (sample);
-      if (caps)
-      {
-        GstTagImageType imagetype;
-        const GstStructure *info;
-        GstBuffer *buf;
-        const gchar *mime_type;
-        enum EXTRACTOR_MetaType le_type;
-
-        mime_type = gst_structure_get_name (gst_caps_get_structure (caps, 0));
-        info = gst_sample_get_info (sample);
-
-        if (!gst_structure_get (info, "image-type", GST_TYPE_TAG_IMAGE_TYPE, &imagetype, NULL))
-          le_type = EXTRACTOR_METATYPE_PICTURE;
-        else
-        {
-          switch (imagetype)
-          {
-          case GST_TAG_IMAGE_TYPE_NONE:
-          case GST_TAG_IMAGE_TYPE_UNDEFINED:
-          case GST_TAG_IMAGE_TYPE_FISH:
-          case GST_TAG_IMAGE_TYPE_ILLUSTRATION:
-          default:
-            le_type = EXTRACTOR_METATYPE_PICTURE;
-            break;
-          case GST_TAG_IMAGE_TYPE_FRONT_COVER:
-          case GST_TAG_IMAGE_TYPE_BACK_COVER:
-          case GST_TAG_IMAGE_TYPE_LEAFLET_PAGE:
-          case GST_TAG_IMAGE_TYPE_MEDIUM:
-            le_type = EXTRACTOR_METATYPE_COVER_PICTURE;
-            break;
-          case GST_TAG_IMAGE_TYPE_LEAD_ARTIST:
-          case GST_TAG_IMAGE_TYPE_ARTIST:
-          case GST_TAG_IMAGE_TYPE_CONDUCTOR:
-          case GST_TAG_IMAGE_TYPE_BAND_ORCHESTRA:
-          case GST_TAG_IMAGE_TYPE_COMPOSER:
-          case GST_TAG_IMAGE_TYPE_LYRICIST:
-            le_type = EXTRACTOR_METATYPE_CONTRIBUTOR_PICTURE;
-            break;
-          case GST_TAG_IMAGE_TYPE_RECORDING_LOCATION:
-          case GST_TAG_IMAGE_TYPE_DURING_RECORDING:
-          case GST_TAG_IMAGE_TYPE_DURING_PERFORMANCE:
-          case GST_TAG_IMAGE_TYPE_VIDEO_CAPTURE:
-            le_type = EXTRACTOR_METATYPE_EVENT_PICTURE;
-            break;
-          case GST_TAG_IMAGE_TYPE_BAND_ARTIST_LOGO:
-          case GST_TAG_IMAGE_TYPE_PUBLISHER_STUDIO_LOGO:
-            le_type = EXTRACTOR_METATYPE_LOGO;
-            break;
-          }
-        }
-
-        buf = gst_sample_get_buffer (sample);
-        gst_buffer_map (buf, &mi, GST_MAP_READ);
-        ps->time_to_leave = ps->ec->proc (ps->ec->cls, "gstreamer", le_type,
-            EXTRACTOR_METAFORMAT_BINARY, mime_type,
-            (const char *) mi.data, mi.size);
-        gst_buffer_unmap (buf, &mi);
-      }
+      g_value_unset (&val);
+      continue;
     }
-    else if ((G_VALUE_TYPE (&val) == G_TYPE_UINT64) &&
-        (tag_quark == duration_quark))
+    g_value_init (&val, G_VALUE_TYPE (val_ref));
+    g_value_copy (val_ref, &val);
+
+    switch (G_VALUE_TYPE (&val))
     {
-      GstClockTime duration = (GstClockTime) g_value_get_uint64 (&val);
-      if ((GST_CLOCK_TIME_IS_VALID (duration)) && (duration > 0))
-        str = g_strdup_printf ("%" GST_TIME_FORMAT, GST_TIME_ARGS (duration));
-    }
-    else
+    case G_TYPE_STRING:
+      str = g_value_dup_string (&val);
+      break;
+    case G_TYPE_UINT:
+    case G_TYPE_INT:
+    case G_TYPE_DOUBLE:
+    case G_TYPE_BOOLEAN:
       str = gst_value_serialize (&val);
-    break;
-  }
-  if (str != NULL)
-  {
-    /* Discoverer internally uses some tags to provide streaminfo;
-     * ignore these tags to avoid duplicates.
-     * This MIGHT be fixed in new GStreamer versions, but won't affect
-     * this code (we simply won't get the tags that we think we should skip).
-     */
-    gboolean skip = FALSE;
-    /* We have one tag-processing routine and use it for different
-     * stream types. However, tags themselves don't know the type of the
-     * stream they are attached to. We remember that before listing the
-     * tags, and adjust LE type accordingly.
-     */
-    enum EXTRACTOR_MetaType le_type = kt->le_type;
-    switch (kt->le_type)
-    {
-    case EXTRACTOR_METATYPE_LANGUAGE:
-      switch (ps->st)
-      {
-      case STREAM_TYPE_AUDIO:
-        skip = TRUE;
-        break;
-      case STREAM_TYPE_SUBTITLE:
-        skip = TRUE;
-        break;
-      case STREAM_TYPE_VIDEO:
-        le_type = EXTRACTOR_METATYPE_VIDEO_LANGUAGE;
-        break;
-      default:
-        break;
-      }
-      break;
-    case EXTRACTOR_METATYPE_BITRATE:
-      switch (ps->st)
-      {
-      case STREAM_TYPE_AUDIO:
-        skip = TRUE;
-        break;
-      case STREAM_TYPE_VIDEO:
-        skip = TRUE;
-        break;
-      default:
-        break;
-      }
-      break;
-    case EXTRACTOR_METATYPE_MAXIMUM_BITRATE:
-      switch (ps->st)
-      {
-      case STREAM_TYPE_AUDIO:
-        skip = TRUE;
-        break;
-      case STREAM_TYPE_VIDEO:
-        skip = TRUE;
-        break;
-      default:
-        break;
-      }
-      break;
-    case EXTRACTOR_METATYPE_NOMINAL_BITRATE:
-      switch (ps->st)
-      {
-      case STREAM_TYPE_AUDIO:
-        skip = TRUE;
-        break;
-      case STREAM_TYPE_VIDEO:
-        skip = TRUE;
-        break;
-      default:
-        break;
-      }
-      break;
-    case EXTRACTOR_METATYPE_IMAGE_DIMENSIONS:
-      switch (ps->st)
-      {
-      case STREAM_TYPE_VIDEO:
-        le_type = EXTRACTOR_METATYPE_VIDEO_DIMENSIONS;
-        break;
-      default:
-        break;
-      }
-      break;
-    case EXTRACTOR_METATYPE_DURATION:
-      switch (ps->st)
-      {
-      case STREAM_TYPE_VIDEO:
-        le_type = EXTRACTOR_METATYPE_VIDEO_DURATION;
-        break;
-      case STREAM_TYPE_AUDIO:
-        le_type = EXTRACTOR_METATYPE_AUDIO_DURATION;
-        break;
-      case STREAM_TYPE_SUBTITLE:
-        le_type = EXTRACTOR_METATYPE_SUBTITLE_DURATION;
-        break;
-      default:
-        break;
-      }
-      break;
-    case EXTRACTOR_METATYPE_UNKNOWN:
-      /* Convert to "key=value" form */
-      {
-        gchar *new_str;
-        /* GST_TAG_EXTENDED_COMMENT is already in key=value form */
-        if ((0 != strcmp (tag, "extended-comment")) || !strchr (str, '='))
-        {
-          new_str = g_strdup_printf ("%s=%s", tag, str);
-          g_free (str);
-          str = new_str;
-        }
-      }
       break;
     default:
+      if (G_VALUE_TYPE (&val) == GST_TYPE_SAMPLE && (sample = gst_value_get_sample (&val)))
+      {
+        GstMapInfo mi;
+        const gchar *structname;
+        GstCaps *caps;
+
+        caps = gst_sample_get_caps (sample);
+        if (caps)
+        {
+          GstTagImageType imagetype;
+          const GstStructure *info;
+          GstBuffer *buf;
+          const gchar *mime_type;
+          enum EXTRACTOR_MetaType le_type;
+
+          mime_type = gst_structure_get_name (gst_caps_get_structure (caps, 0));
+          info = gst_sample_get_info (sample);
+
+          if (!gst_structure_get (info, "image-type", GST_TYPE_TAG_IMAGE_TYPE, &imagetype, NULL))
+            le_type = EXTRACTOR_METATYPE_PICTURE;
+          else
+          {
+            switch (imagetype)
+            {
+            case GST_TAG_IMAGE_TYPE_NONE:
+            case GST_TAG_IMAGE_TYPE_UNDEFINED:
+            case GST_TAG_IMAGE_TYPE_FISH:
+            case GST_TAG_IMAGE_TYPE_ILLUSTRATION:
+            default:
+              le_type = EXTRACTOR_METATYPE_PICTURE;
+              break;
+            case GST_TAG_IMAGE_TYPE_FRONT_COVER:
+            case GST_TAG_IMAGE_TYPE_BACK_COVER:
+            case GST_TAG_IMAGE_TYPE_LEAFLET_PAGE:
+            case GST_TAG_IMAGE_TYPE_MEDIUM:
+              le_type = EXTRACTOR_METATYPE_COVER_PICTURE;
+              break;
+            case GST_TAG_IMAGE_TYPE_LEAD_ARTIST:
+            case GST_TAG_IMAGE_TYPE_ARTIST:
+            case GST_TAG_IMAGE_TYPE_CONDUCTOR:
+            case GST_TAG_IMAGE_TYPE_BAND_ORCHESTRA:
+            case GST_TAG_IMAGE_TYPE_COMPOSER:
+            case GST_TAG_IMAGE_TYPE_LYRICIST:
+              le_type = EXTRACTOR_METATYPE_CONTRIBUTOR_PICTURE;
+              break;
+            case GST_TAG_IMAGE_TYPE_RECORDING_LOCATION:
+            case GST_TAG_IMAGE_TYPE_DURING_RECORDING:
+            case GST_TAG_IMAGE_TYPE_DURING_PERFORMANCE:
+            case GST_TAG_IMAGE_TYPE_VIDEO_CAPTURE:
+              le_type = EXTRACTOR_METATYPE_EVENT_PICTURE;
+              break;
+            case GST_TAG_IMAGE_TYPE_BAND_ARTIST_LOGO:
+            case GST_TAG_IMAGE_TYPE_PUBLISHER_STUDIO_LOGO:
+              le_type = EXTRACTOR_METATYPE_LOGO;
+              break;
+            }
+          }
+
+          buf = gst_sample_get_buffer (sample);
+          gst_buffer_map (buf, &mi, GST_MAP_READ);
+          ps->time_to_leave = ps->ec->proc (ps->ec->cls, "gstreamer", le_type,
+              EXTRACTOR_METAFORMAT_BINARY, mime_type,
+              (const char *) mi.data, mi.size);
+          gst_buffer_unmap (buf, &mi);
+        }
+      }
+      else if ((G_VALUE_TYPE (&val) == G_TYPE_UINT64) &&
+          (tag_quark == duration_quark))
+      {
+        GstClockTime duration = (GstClockTime) g_value_get_uint64 (&val);
+        if ((GST_CLOCK_TIME_IS_VALID (duration)) && (duration > 0))
+          str = g_strdup_printf ("%" GST_TIME_FORMAT, GST_TIME_ARGS (duration));
+      }
+      else
+        str = gst_value_serialize (&val);
       break;
     }
-    if (!skip)
-      ps->time_to_leave = ps->ec->proc (ps->ec->cls, "gstreamer", le_type,
-          EXTRACTOR_METAFORMAT_UTF8, "text/plain",
-          (const char *) str, strlen (str) + 1);
-  }
+    if (str != NULL)
+    {
+      /* Discoverer internally uses some tags to provide streaminfo;
+       * ignore these tags to avoid duplicates.
+       * This MIGHT be fixed in new GStreamer versions, but won't affect
+       * this code (we simply won't get the tags that we think we should skip).
+       */
+      gboolean skip = FALSE;
+      /* We have one tag-processing routine and use it for different
+       * stream types. However, tags themselves don't know the type of the
+       * stream they are attached to. We remember that before listing the
+       * tags, and adjust LE type accordingly.
+       */
+      enum EXTRACTOR_MetaType le_type = kt->le_type;
+      switch (kt->le_type)
+      {
+      case EXTRACTOR_METATYPE_LANGUAGE:
+        switch (ps->st)
+        {
+        case STREAM_TYPE_AUDIO:
+          skip = TRUE;
+          break;
+        case STREAM_TYPE_SUBTITLE:
+          skip = TRUE;
+          break;
+        case STREAM_TYPE_VIDEO:
+          le_type = EXTRACTOR_METATYPE_VIDEO_LANGUAGE;
+          break;
+        default:
+          break;
+        }
+        break;
+      case EXTRACTOR_METATYPE_BITRATE:
+        switch (ps->st)
+        {
+        case STREAM_TYPE_AUDIO:
+          skip = TRUE;
+          break;
+        case STREAM_TYPE_VIDEO:
+          skip = TRUE;
+          break;
+        default:
+          break;
+        }
+        break;
+      case EXTRACTOR_METATYPE_MAXIMUM_BITRATE:
+        switch (ps->st)
+        {
+        case STREAM_TYPE_AUDIO:
+          skip = TRUE;
+          break;
+        case STREAM_TYPE_VIDEO:
+          skip = TRUE;
+          break;
+        default:
+          break;
+        }
+        break;
+      case EXTRACTOR_METATYPE_NOMINAL_BITRATE:
+        switch (ps->st)
+        {
+        case STREAM_TYPE_AUDIO:
+          skip = TRUE;
+          break;
+        case STREAM_TYPE_VIDEO:
+          skip = TRUE;
+          break;
+        default:
+          break;
+        }
+        break;
+      case EXTRACTOR_METATYPE_IMAGE_DIMENSIONS:
+        switch (ps->st)
+        {
+        case STREAM_TYPE_VIDEO:
+          le_type = EXTRACTOR_METATYPE_VIDEO_DIMENSIONS;
+          break;
+        default:
+          break;
+        }
+        break;
+      case EXTRACTOR_METATYPE_DURATION:
+        switch (ps->st)
+        {
+        case STREAM_TYPE_VIDEO:
+          le_type = EXTRACTOR_METATYPE_VIDEO_DURATION;
+          break;
+        case STREAM_TYPE_AUDIO:
+          le_type = EXTRACTOR_METATYPE_AUDIO_DURATION;
+          break;
+        case STREAM_TYPE_SUBTITLE:
+          le_type = EXTRACTOR_METATYPE_SUBTITLE_DURATION;
+          break;
+        default:
+          break;
+        }
+        break;
+      case EXTRACTOR_METATYPE_UNKNOWN:
+        /* Convert to "key=value" form */
+        {
+          gchar *new_str;
+          /* GST_TAG_EXTENDED_COMMENT is already in key=value form */
+          if ((0 != strcmp (tag, "extended-comment")) || !strchr (str, '='))
+          {
+            new_str = g_strdup_printf ("%s=%s", tag, str);
+            g_free (str);
+            str = new_str;
+          }
+        }
+        break;
+      default:
+        break;
+      }
+      if (!skip)
+        ps->time_to_leave = ps->ec->proc (ps->ec->cls, "gstreamer", le_type,
+            EXTRACTOR_METAFORMAT_UTF8, "text/plain",
+            (const char *) str, strlen (str) + 1);
+    }
 
-  g_free (str);
-  g_value_unset (&val);
+    g_free (str);
+    g_value_unset (&val);
+  }
 }
 
 static void
