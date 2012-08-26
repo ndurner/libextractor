@@ -1,11 +1,5 @@
-* Update plugins to new API (and cleanup code):
-  - elf
-  - applefile
-  - pdf
-
-* plugins without tests:
+* tests needed:
   - gstreamer (testcase file exists, but does not test everything important)
-
 
 Desirable missing formats:
 * mbox / various e-mail formats
@@ -13,7 +7,9 @@ Desirable missing formats:
 * sources (Java, C, C++, see doxygen!)
 * a.out (== ar?)
 * rtf
+* applefile (0.6.x-plugin exists)
 * EXE
+* ELF (linkage information, 0.6.x-plugin exists)
 * PRC (Palm module, http://web.mit.edu/tytso/www/pilot/prc-format.html)
 * KOffice
 * TGA

@@ -155,10 +155,10 @@ ET_main (const char *plugin_name,
     fprintf (stderr, 
 	     "Failed to update my environment, plugin loading may fail: %s\n",
 	     strerror (errno));    
-  ret = run (plugin_name, ps, EXTRACTOR_OPTION_IN_PROCESS);
+  ret = run (plugin_name, ps, EXTRACTOR_OPTION_DEFAULT_POLICY);
   if (0 != ret)
     return ret;
-  ret = run (plugin_name, ps, EXTRACTOR_OPTION_DEFAULT_POLICY);
+  ret = run (plugin_name, ps, EXTRACTOR_OPTION_IN_PROCESS);
   if (0 != ret)
     return ret;
   return 0;

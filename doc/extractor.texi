@@ -794,23 +794,65 @@ The @verb{|EXTRACTOR_meta_data_print|} is a simple function which prints the met
 
 @itemize @bullet
 @item
+ARCHIVE (using libarchive)
+@item
+DVI
+@item
 EXIV2 (using libexiv2)
 @item 
 FLAC (using libFLAC)
 @item
 GIF (using libgif)
 @item
-JPEG
+GSTREAMER (using libgstreamer)
+@item
+HTML (using libtidy)
+@item
+IT 
+@item
+JPEG (using libjpeg)
+@item
+MAN
+@item
+MIDI (using libsmf)
 @item
 MIME (using libmagic)
 @item
-MP3 (ID3v1)
-@item
 MPEG (using libmpeg2)
+@item
+NSF
+@item
+NSFE
+@item
+ODF
+@item
+OLE2 (with libgsf)
+@item
+OGG (with libogg)
 @item
 PNG
 @item
+PS
+@item
+RIFF
+@item
 RPM (using librpm)
+@item
+S3M
+@item
+SID
+@item
+ThumbnailFFMPEG (using libavformat)
+@item
+ThumbnailGtk (using libgtk)
+@item
+TIFF (with libtiff)
+@item
+WAV
+@item
+XM
+@item
+ZIP
 @end itemize
 
 @file{gzip} and @file{bzip2} compressed versions of these formats are 

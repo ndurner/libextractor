@@ -110,8 +110,10 @@ TEST_JPEG=test_jpeg
 endif
 
 if HAVE_MP4
+if HAVE_EXPERIMENTAL
 PLUGIN_MP4=libextractor_mp4.la
 TEST_MP4=test_mp4
+endif
 endif
 
 if HAVE_MPEG2
@@ -228,6 +230,19 @@ libtest_la_SOURCES = \
   test_lib.c 
 libtest_la_LIBADD = \
   $(top_builddir)/src/main/libextractor.la
+
+
+libextractor_archive_la_SOURCES = \
+  archive_extractor.c
+libextractor_archive_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+libextractor_archive_la_LIBADD = \
+  -larchive
+
+test_archive_SOURCES = \
+  test_archive.c
+test_archive_LDADD = \
+  $(top_builddir)/src/plugins/libtest.la
 
 
 libextractor_deb_la_SOURCES = \
@@ -539,19 +554,6 @@ libextractor_sid_la_LDFLAGS = \
 test_sid_SOURCES = \
   test_sid.c
 test_sid_LDADD = \
-  $(top_builddir)/src/plugins/libtest.la
-
-
-libextractor_archive_la_SOURCES = \
-  archive_extractor.c
-libextractor_archive_la_LDFLAGS = \
-  $(PLUGINFLAGS)
-libextractor_archive_la_LIBADD = \
-  -larchive
-
-test_archive_SOURCES = \
-  test_archive.c
-test_archive_LDADD = \
   $(top_builddir)/src/plugins/libtest.la
 
 

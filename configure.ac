@@ -322,6 +322,16 @@ AC_CHECK_LIB(archive, archive_read_open,
          AM_CONDITIONAL(HAVE_ARCHIVE, false))],
          AM_CONDITIONAL(HAVE_ARCHIVE, false))
 
+# should experimental code be compiled (code that may not yet compile)?
+AC_MSG_CHECKING(whether to compile experimental code)
+AC_ARG_ENABLE([experimental],
+   [AS_HELP_STRING([--enable-experimental], [enable compiling experimental code])],
+   [enable_experimental=${enableval}],
+   [enable_experimental=no])
+AC_MSG_RESULT($enable_experimental)
+AM_CONDITIONAL([HAVE_EXPERIMENTAL], [test "x$enable_experimental" = "xyes"])
+
+
 AC_MSG_CHECKING(for ImageFactory::iptcData in -lexiv2)
 AC_LANG_PUSH(C++)
 SAVED_LDFLAGS=$LDFLAGS

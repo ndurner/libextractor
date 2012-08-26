@@ -716,6 +716,7 @@ thumbnailffmpeg_lib_init (void)
     }
 }
 
+
 /**
  * Destructor for the library, cleans up.
  */
