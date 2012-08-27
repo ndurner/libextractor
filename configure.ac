@@ -483,12 +483,12 @@ AC_ARG_WITH(gtk_version,
 without_gtk=false
 if test "x$check_for_3" != "xfalse"
 then
-  AM_PATH_GTK_3_0([$check_for_3],without_gtk=false,)
+  AM_PATH_GTK_3_0([$check_for_3],without_gtk=false,without_gtk=true)
 fi
 
 if test "x$without_gtk" == "xfalse" -a "x$check_for_2" != "xfalse"
 then
-  AM_PATH_GTK_2_0([$check_for_2],without_gtk=false,)
+  AM_PATH_GTK_2_0([$check_for_2],without_gtk=false,without_gtk=true)
 fi
 
 AM_CONDITIONAL(HAVE_GTK, test x$without_gtk != xtrue)
@@ -702,4 +702,9 @@ then
  AC_MSG_NOTICE([NOTICE: gstreamer enabled])
 else
  AC_MSG_NOTICE([NOTICE: gstreamer not found, gstreamer support disabled])
+fi
+
+if test $without_gtk != false
+then
+  AC_MSG_NOTICE([NOTICE: gtk+ not found, gtk support disabled])
 fi
