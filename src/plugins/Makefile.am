@@ -20,6 +20,7 @@ EXTRA_DIST = \
   testdata/archive_test.tar \
   testdata/deb_bzip2.deb \
   testdata/dvi_ora.dvi \
+  testdata/exiv2_iptc.jpg \
   testdata/flac_kraftwerk.flac \
   testdata/gif_image.gif \
   testdata/html_grothoff.html \
@@ -40,6 +41,7 @@ EXTRA_DIST = \
   testdata/png_image.png \
   testdata/ps_bloomfilter.ps \
   testdata/ps_wallace.ps \
+  testdata/riff_flame.avi \
   testdata/rpm_test.rpm \
   testdata/s3m_2nd_pm.s3m \
   testdata/sid_wizball.sid \
