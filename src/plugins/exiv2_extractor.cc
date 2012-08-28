@@ -774,6 +774,9 @@ EXTRACTOR_exiv2_extract_method (struct EXTRACTOR_ExtractContext *ec)
       std::cerr << "Caught Exiv2 exception '" << e << "'\n";
 #endif
     }
+  catch (void *anything)
+    {
+    }
 }
 
 /* end of exiv2_extractor.cc */
