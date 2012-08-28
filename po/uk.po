@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.6.2\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2012-08-17 20:43+0200\n"
+"POT-Creation-Date: 2012-08-28 10:29+0200\n"
 "PO-Revision-Date: 2011-07-22 16:22+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <translation-team-uk@lists.sourceforge.net>\n"
@@ -515,7 +515,7 @@ msgstr "специфіка не відома"
 msgid "description"
 msgstr "опис"
 
-#: src/main/extractor_metatypes.c:149
+#: src/main/extractor_metatypes.c:149 src/plugins/old/mp3_extractor.c:206
 msgid "copyright"
 msgstr "захищено авторськими правами"
 
@@ -1860,7 +1860,37 @@ msgstr "оцінка вмісту"
 msgid "chapters, contents or bookmarks (in xml format)"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:544 src/main/extractor_metatypes.c:545
+#: src/main/extractor_metatypes.c:544
+#, fuzzy
+msgid "video duration"
+msgstr "тривалість"
+
+#: src/main/extractor_metatypes.c:545
+#, fuzzy
+msgid "duration of a video stream"
+msgstr "мова роботи"
+
+#: src/main/extractor_metatypes.c:546
+#, fuzzy
+msgid "audio duration"
+msgstr "тривалість"
+
+#: src/main/extractor_metatypes.c:547
+#, fuzzy
+msgid "duration of an audio stream"
+msgstr "назва роботи"
+
+#: src/main/extractor_metatypes.c:548
+#, fuzzy
+msgid "subtitle duration"
+msgstr "мова"
+
+#: src/main/extractor_metatypes.c:549
+#, fuzzy
+msgid "duration of a subtitle stream"
+msgstr "назва видавництва"
+
+#: src/main/extractor_metatypes.c:551 src/main/extractor_metatypes.c:552
 msgid "last"
 msgstr "тривалість"
 
@@ -1923,6 +1953,712 @@ msgstr "%s: параметр «-W %s» не повинен мати аргуме
 #, c-format
 msgid "%u Hz, %u channels"
 msgstr "%u Гц, %u каналів"
+
+#: src/plugins/man_extractor.c:215
+msgid "Commands"
+msgstr "Команди"
+
+#: src/plugins/man_extractor.c:219
+msgid "System calls"
+msgstr "Системні виклики"
+
+#: src/plugins/man_extractor.c:223
+msgid "Library calls"
+msgstr "Виклики бібліотек"
+
+#: src/plugins/man_extractor.c:227
+msgid "Special files"
+msgstr "Спеціальні файли"
+
+#: src/plugins/man_extractor.c:231
+msgid "File formats and conventions"
+msgstr "Формати файлів та правила"
+
+#: src/plugins/man_extractor.c:235
+msgid "Games"
+msgstr "Ігри"
+
+#: src/plugins/man_extractor.c:239
+msgid "Conventions and miscellaneous"
+msgstr "Угоди та інше"
+
+#: src/plugins/man_extractor.c:243
+msgid "System management commands"
+msgstr "Команди керування системою"
+
+#: src/plugins/man_extractor.c:247
+msgid "Kernel routines"
+msgstr "Процедури ядра"
+
+#: src/plugins/old/applefile_extractor.c:162
+msgid "GB"
+msgstr "ГБ"
+
+#: src/plugins/old/applefile_extractor.c:164
+msgid "MB"
+msgstr "МБ"
+
+#: src/plugins/old/applefile_extractor.c:166
+msgid "KB"
+msgstr "КБ"
+
+#: src/plugins/old/applefile_extractor.c:168
+msgid "Bytes"
+msgstr "байтів"
+
+#: src/plugins/old/mp3_extractor.c:95 src/plugins/wav_extractor.c:120
+msgid "stereo"
+msgstr "стерео"
+
+#: src/plugins/old/mp3_extractor.c:96
+msgid "joint stereo"
+msgstr "об'єднане стерео"
+
+#: src/plugins/old/mp3_extractor.c:97
+#, fuzzy
+msgid "dual channel"
+msgstr "два канали"
+
+#: src/plugins/old/mp3_extractor.c:98 src/plugins/wav_extractor.c:120
+msgid "mono"
+msgstr "моно"
+
+#: src/plugins/old/mp3_extractor.c:101
+msgid "MPEG-1"
+msgstr "MPEG-1"
+
+#: src/plugins/old/mp3_extractor.c:102
+msgid "MPEG-2"
+msgstr "MPEG-2"
+
+#: src/plugins/old/mp3_extractor.c:103
+msgid "MPEG-2.5"
+msgstr "MPEG-2.5"
+
+#: src/plugins/old/mp3_extractor.c:106
+msgid "Layer I"
+msgstr "Layer I"
+
+#: src/plugins/old/mp3_extractor.c:107
+msgid "Layer II"
+msgstr "Layer II"
+
+#: src/plugins/old/mp3_extractor.c:108
+msgid "Layer III"
+msgstr "Layer III"
+
+#: src/plugins/old/mp3_extractor.c:203
+msgid "VBR"
+msgstr "VBR"
+
+#: src/plugins/old/mp3_extractor.c:203
+msgid "CBR"
+msgstr "CBR"
+
+#: src/plugins/old/mp3_extractor.c:206
+msgid "no copyright"
+msgstr "без захисту авторськими правами"
+
+#: src/plugins/old/mp3_extractor.c:207
+msgid "original"
+msgstr "оригінал"
+
+#: src/plugins/old/mp3_extractor.c:207
+msgid "copy"
+msgstr "копія"
+
+#: src/plugins/old/qt_extractor.c:30
+msgid "Blues"
+msgstr "Блюз"
+
+#: src/plugins/old/qt_extractor.c:31
+msgid "Classic Rock"
+msgstr "Класичний рок"
+
+#: src/plugins/old/qt_extractor.c:32
+msgid "Country"
+msgstr "Кантрі"
+
+#: src/plugins/old/qt_extractor.c:33
+msgid "Dance"
+msgstr "Танцювальна"
+
+#: src/plugins/old/qt_extractor.c:34
+msgid "Disco"
+msgstr "Диско"
+
+#: src/plugins/old/qt_extractor.c:35
+msgid "Funk"
+msgstr "Фанк"
+
+#: src/plugins/old/qt_extractor.c:36
+msgid "Grunge"
+msgstr "Ґрандж"
+
+#: src/plugins/old/qt_extractor.c:37
+msgid "Hip-Hop"
+msgstr "Хіп-хоп"
+
+#: src/plugins/old/qt_extractor.c:38
+msgid "Jazz"
+msgstr "Джаз"
+
+#: src/plugins/old/qt_extractor.c:39
+msgid "Metal"
+msgstr "Метал"
+
+#: src/plugins/old/qt_extractor.c:40
+msgid "New Age"
+msgstr "Нью-ейдж"
+
+#: src/plugins/old/qt_extractor.c:41
+msgid "Oldies"
+msgstr "Ретро"
+
+#: src/plugins/old/qt_extractor.c:42
+msgid "Other"
+msgstr "Інша"
+
+#: src/plugins/old/qt_extractor.c:43
+msgid "Pop"
+msgstr "Поп"
+
+#: src/plugins/old/qt_extractor.c:44
+msgid "R&B"
+msgstr "Ритм-енд-блюз"
+
+#: src/plugins/old/qt_extractor.c:45
+msgid "Rap"
+msgstr "Реп"
+
+#: src/plugins/old/qt_extractor.c:46
+msgid "Reggae"
+msgstr "Регі"
+
+#: src/plugins/old/qt_extractor.c:47
+msgid "Rock"
+msgstr "Рок"
+
+#: src/plugins/old/qt_extractor.c:48
+msgid "Techno"
+msgstr "Техно"
+
+#: src/plugins/old/qt_extractor.c:49
+#, fuzzy
+msgid "Industrial"
+msgstr "Техно-індастріал"
+
+#: src/plugins/old/qt_extractor.c:50
+msgid "Alternative"
+msgstr "Альтернативна"
+
+#: src/plugins/old/qt_extractor.c:51
+msgid "Ska"
+msgstr "Ска"
+
+#: src/plugins/old/qt_extractor.c:52
+msgid "Death Metal"
+msgstr "Деф-метал"
+
+#: src/plugins/old/qt_extractor.c:53
+msgid "Pranks"
+msgstr "Жарти-розиграші"
+
+#: src/plugins/old/qt_extractor.c:54
+msgid "Soundtrack"
+msgstr "Звукова доріжка"
+
+#: src/plugins/old/qt_extractor.c:55
+msgid "Euro-Techno"
+msgstr "Євротехно"
+
+#: src/plugins/old/qt_extractor.c:56
+msgid "Ambient"
+msgstr "Ембієнт"
+
+#: src/plugins/old/qt_extractor.c:57
+msgid "Trip-Hop"
+msgstr "Тріп-хоп"
+
+#: src/plugins/old/qt_extractor.c:58
+msgid "Vocal"
+msgstr "Вокал"
+
+#: src/plugins/old/qt_extractor.c:59
+msgid "Jazz+Funk"
+msgstr "Джаз+Фанк"
+
+#: src/plugins/old/qt_extractor.c:60
+msgid "Fusion"
+msgstr "Ф’южн"
+
+#: src/plugins/old/qt_extractor.c:61
+msgid "Trance"
+msgstr "Транс"
+
+#: src/plugins/old/qt_extractor.c:62
+msgid "Classical"
+msgstr "Класика"
+
+#: src/plugins/old/qt_extractor.c:63
+msgid "Instrumental"
+msgstr "Інструментальна"
+
+#: src/plugins/old/qt_extractor.c:64
+msgid "Acid"
+msgstr "Ейсід"
+
+#: src/plugins/old/qt_extractor.c:65
+msgid "House"
+msgstr "Хаус"
+
+#: src/plugins/old/qt_extractor.c:66
+msgid "Game"
+msgstr "Гра"
+
+#: src/plugins/old/qt_extractor.c:67
+msgid "Sound Clip"
+msgstr "Звуковий уривок"
+
+#: src/plugins/old/qt_extractor.c:68
+msgid "Gospel"
+msgstr "Ґоспел"
+
+#: src/plugins/old/qt_extractor.c:69
+msgid "Noise"
+msgstr "Шум"
+
+#: src/plugins/old/qt_extractor.c:70
+msgid "Alt. Rock"
+msgstr "Альт. рок"
+
+#: src/plugins/old/qt_extractor.c:71
+msgid "Bass"
+msgstr "Бейс"
+
+#: src/plugins/old/qt_extractor.c:72
+msgid "Soul"
+msgstr "Душа"
+
+#: src/plugins/old/qt_extractor.c:73
+msgid "Punk"
+msgstr "Панк"
+
+#: src/plugins/old/qt_extractor.c:74
+msgid "Space"
+msgstr "Простір"
+
+#: src/plugins/old/qt_extractor.c:75
+msgid "Meditative"
+msgstr "Медитативна"
+
+#: src/plugins/old/qt_extractor.c:76
+msgid "Instrumental Pop"
+msgstr "Інструментальний поп"
+
+#: src/plugins/old/qt_extractor.c:77
+msgid "Instrumental Rock"
+msgstr "Інструментальний рок"
+
+#: src/plugins/old/qt_extractor.c:78
+msgid "Ethnic"
+msgstr "Етнічна"
+
+#: src/plugins/old/qt_extractor.c:79
+msgid "Gothic"
+msgstr "Готична"
+
+#: src/plugins/old/qt_extractor.c:80
+msgid "Darkwave"
+msgstr "Дарквейв"
+
+#: src/plugins/old/qt_extractor.c:81
+msgid "Techno-Industrial"
+msgstr "Техно-індастріал"
+
+#: src/plugins/old/qt_extractor.c:82
+msgid "Electronic"
+msgstr "Електронна"
+
+#: src/plugins/old/qt_extractor.c:83
+msgid "Pop-Folk"
+msgstr "Поп-фолк"
+
+#: src/plugins/old/qt_extractor.c:84
+msgid "Eurodance"
+msgstr "Євроденс"
+
+#: src/plugins/old/qt_extractor.c:85
+msgid "Dream"
+msgstr "Дрім"
+
+#: src/plugins/old/qt_extractor.c:86
+msgid "Southern Rock"
+msgstr "Південний рок"
+
+#: src/plugins/old/qt_extractor.c:87
+msgid "Comedy"
+msgstr "Комедія"
+
+#: src/plugins/old/qt_extractor.c:88
+msgid "Cult"
+msgstr "Культова"
+
+#: src/plugins/old/qt_extractor.c:89
+msgid "Gangsta Rap"
+msgstr "Гангста-реп"
+
+#: src/plugins/old/qt_extractor.c:90
+msgid "Top 40"
+msgstr "Топ-40"
+
+#: src/plugins/old/qt_extractor.c:91
+msgid "Christian Rap"
+msgstr "Християнський реп"
+
+#: src/plugins/old/qt_extractor.c:92
+msgid "Pop/Funk"
+msgstr "Поп/фанк"
+
+#: src/plugins/old/qt_extractor.c:93
+msgid "Jungle"
+msgstr "Джангл"
+
+#: src/plugins/old/qt_extractor.c:94
+msgid "Native American"
+msgstr "Індіанська"
+
+#: src/plugins/old/qt_extractor.c:95
+msgid "Cabaret"
+msgstr "Кабаре"
+
+#: src/plugins/old/qt_extractor.c:96
+msgid "New Wave"
+msgstr "Нью-вейв"
+
+#: src/plugins/old/qt_extractor.c:97
+msgid "Psychedelic"
+msgstr "Психоделіка"
+
+#: src/plugins/old/qt_extractor.c:98
+msgid "Rave"
+msgstr "Рейв"
+
+#: src/plugins/old/qt_extractor.c:99
+msgid "Showtunes"
+msgstr "Шоу-мелодії"
+
+#: src/plugins/old/qt_extractor.c:100
+msgid "Trailer"
+msgstr "Трейлер"
+
+#: src/plugins/old/qt_extractor.c:101
+msgid "Lo-Fi"
+msgstr "Лоу-фай"
+
+#: src/plugins/old/qt_extractor.c:102
+msgid "Tribal"
+msgstr "Племенна"
+
+#: src/plugins/old/qt_extractor.c:103
+msgid "Acid Punk"
+msgstr "Ейсід-панк"
+
+#: src/plugins/old/qt_extractor.c:104
+msgid "Acid Jazz"
+msgstr "Ейсід-джаз"
+
+#: src/plugins/old/qt_extractor.c:105
+msgid "Polka"
+msgstr "Полька"
+
+#: src/plugins/old/qt_extractor.c:106
+msgid "Retro"
+msgstr "Ретро"
+
+#: src/plugins/old/qt_extractor.c:107
+msgid "Musical"
+msgstr "Музична"
+
+#: src/plugins/old/qt_extractor.c:108
+msgid "Rock & Roll"
+msgstr "Рок-н-рол"
+
+#: src/plugins/old/qt_extractor.c:109
+msgid "Hard Rock"
+msgstr "Хардрок"
+
+#: src/plugins/old/qt_extractor.c:110
+msgid "Folk"
+msgstr "Фольклор"
+
+#: src/plugins/old/qt_extractor.c:111
+msgid "Folk/Rock"
+msgstr "Фольклор/рок"
+
+#: src/plugins/old/qt_extractor.c:112
+msgid "National Folk"
+msgstr "Народний фольклор"
+
+#: src/plugins/old/qt_extractor.c:113
+msgid "Swing"
+msgstr "Свінг"
+
+#: src/plugins/old/qt_extractor.c:114
+msgid "Fast-Fusion"
+msgstr "Фаст-ф’южн"
+
+#: src/plugins/old/qt_extractor.c:115
+msgid "Bebob"
+msgstr "Бібоб"
+
+#: src/plugins/old/qt_extractor.c:116
+msgid "Latin"
+msgstr "Латинська"
+
+#: src/plugins/old/qt_extractor.c:117
+msgid "Revival"
+msgstr "Ривайвл"
+
+#: src/plugins/old/qt_extractor.c:118
+msgid "Celtic"
+msgstr "Кельтська"
+
+#: src/plugins/old/qt_extractor.c:119
+msgid "Bluegrass"
+msgstr "Блюграс"
+
+#: src/plugins/old/qt_extractor.c:120
+msgid "Avantgarde"
+msgstr "Авангард"
+
+#: src/plugins/old/qt_extractor.c:121
+msgid "Gothic Rock"
+msgstr "Готичний рок"
+
+#: src/plugins/old/qt_extractor.c:122
+msgid "Progressive Rock"
+msgstr "Прогресивний рок"
+
+#: src/plugins/old/qt_extractor.c:123
+msgid "Psychedelic Rock"
+msgstr "Психоделічний рок"
+
+#: src/plugins/old/qt_extractor.c:124
+msgid "Symphonic Rock"
+msgstr "Симфонічний рок"
+
+#: src/plugins/old/qt_extractor.c:125
+msgid "Slow Rock"
+msgstr "Повільний рок"
+
+#: src/plugins/old/qt_extractor.c:126
+msgid "Big Band"
+msgstr "Біг-бенд"
+
+#: src/plugins/old/qt_extractor.c:127
+msgid "Chorus"
+msgstr "Хорова"
+
+#: src/plugins/old/qt_extractor.c:128
+msgid "Easy Listening"
+msgstr "Легка музика"
+
+#: src/plugins/old/qt_extractor.c:129
+msgid "Acoustic"
+msgstr "Акустична"
+
+#: src/plugins/old/qt_extractor.c:130
+msgid "Humour"
+msgstr "Гумор"
+
+#: src/plugins/old/qt_extractor.c:131
+msgid "Speech"
+msgstr "Мова"
+
+#: src/plugins/old/qt_extractor.c:132
+msgid "Chanson"
+msgstr "Шансон"
+
+#: src/plugins/old/qt_extractor.c:133
+msgid "Opera"
+msgstr "Опера"
+
+#: src/plugins/old/qt_extractor.c:134
+msgid "Chamber Music"
+msgstr "Камерна музика"
+
+#: src/plugins/old/qt_extractor.c:135
+msgid "Sonata"
+msgstr "Соната"
+
+#: src/plugins/old/qt_extractor.c:136
+msgid "Symphony"
+msgstr "Симфонія"
+
+#: src/plugins/old/qt_extractor.c:137
+msgid "Booty Bass"
+msgstr "Буті-бейс"
+
+#: src/plugins/old/qt_extractor.c:138
+msgid "Primus"
+msgstr "Примас"
+
+#: src/plugins/old/qt_extractor.c:139
+msgid "Porn Groove"
+msgstr "Порн-рів"
+
+#: src/plugins/old/qt_extractor.c:140
+msgid "Satire"
+msgstr "Сатира"
+
+#: src/plugins/old/qt_extractor.c:141
+msgid "Slow Jam"
+msgstr "Повільний джем"
+
+#: src/plugins/old/qt_extractor.c:142
+msgid "Club"
+msgstr "Клуб"
+
+#: src/plugins/old/qt_extractor.c:143
+msgid "Tango"
+msgstr "Танго"
+
+#: src/plugins/old/qt_extractor.c:144
+msgid "Samba"
+msgstr "Самба"
+
+#: src/plugins/old/qt_extractor.c:145
+msgid "Folklore"
+msgstr "Фольклор"
+
+#: src/plugins/old/qt_extractor.c:146
+msgid "Ballad"
+msgstr "Балада"
+
+#: src/plugins/old/qt_extractor.c:147
+msgid "Power Ballad"
+msgstr "Пауер-балада"
+
+#: src/plugins/old/qt_extractor.c:148
+msgid "Rhythmic Soul"
+msgstr "Ритмічний соул"
+
+#: src/plugins/old/qt_extractor.c:149
+msgid "Freestyle"
+msgstr "Вільний стиль"
+
+#: src/plugins/old/qt_extractor.c:150
+msgid "Duet"
+msgstr "Дует"
+
+#: src/plugins/old/qt_extractor.c:151
+msgid "Punk Rock"
+msgstr "Панк-рок"
+
+#: src/plugins/old/qt_extractor.c:152
+msgid "Drum Solo"
+msgstr "Соло ударних"
+
+#: src/plugins/old/qt_extractor.c:153
+msgid "A Cappella"
+msgstr "А капелла"
+
+#: src/plugins/old/qt_extractor.c:154
+msgid "Euro-House"
+msgstr "Єврохаус"
+
+#: src/plugins/old/qt_extractor.c:155
+msgid "Dance Hall"
+msgstr "Танцмайданчик"
+
+#: src/plugins/old/qt_extractor.c:156
+msgid "Goa"
+msgstr "Гоа"
+
+#: src/plugins/old/qt_extractor.c:157
+msgid "Drum & Bass"
+msgstr "Драм-енд-бейс"
+
+#: src/plugins/old/qt_extractor.c:158
+msgid "Club-House"
+msgstr "Клаб-хаус"
+
+#: src/plugins/old/qt_extractor.c:159
+msgid "Hardcore"
+msgstr "Хардкор"
+
+#: src/plugins/old/qt_extractor.c:160
+msgid "Terror"
+msgstr "Терор"
+
+#: src/plugins/old/qt_extractor.c:161
+msgid "Indie"
+msgstr "Інді"
+
+#: src/plugins/old/qt_extractor.c:162
+msgid "BritPop"
+msgstr "Бритпоп"
+
+#: src/plugins/old/qt_extractor.c:163
+msgid "Negerpunk"
+msgstr "Негритянський панк"
+
+#: src/plugins/old/qt_extractor.c:164
+msgid "Polsk Punk"
+msgstr "Польський панк"
+
+#: src/plugins/old/qt_extractor.c:165
+msgid "Beat"
+msgstr "Біт"
+
+#: src/plugins/old/qt_extractor.c:166
+msgid "Christian Gangsta Rap"
+msgstr "Християнський гангста-реп"
+
+#: src/plugins/old/qt_extractor.c:167
+msgid "Heavy Metal"
+msgstr "Важкий метал"
+
+#: src/plugins/old/qt_extractor.c:168
+msgid "Black Metal"
+msgstr "Блек-метал"
+
+#: src/plugins/old/qt_extractor.c:169
+msgid "Crossover"
+msgstr "Перетин"
+
+#: src/plugins/old/qt_extractor.c:170
+msgid "Contemporary Christian"
+msgstr "Сучасна християнська"
+
+#: src/plugins/old/qt_extractor.c:171
+msgid "Christian Rock"
+msgstr "Християнський рок"
+
+#: src/plugins/old/qt_extractor.c:172
+msgid "Merengue"
+msgstr "Меренга"
+
+#: src/plugins/old/qt_extractor.c:173
+msgid "Salsa"
+msgstr "Сальса"
+
+#: src/plugins/old/qt_extractor.c:174
+msgid "Thrash Metal"
+msgstr "Треш-метал"
+
+#: src/plugins/old/qt_extractor.c:175
+msgid "Anime"
+msgstr "Аніме"
+
+#: src/plugins/old/qt_extractor.c:176
+msgid "JPop"
+msgstr "Джей-поп"
+
+#: src/plugins/old/qt_extractor.c:177
+msgid "Synthpop"
+msgstr "Синтез-поп"
 
 #: src/plugins/ole2_extractor.c:387
 msgid "No Proofing"
@@ -2005,532 +2741,10 @@ msgstr "Фарсі"
 msgid "Revision #%u: Author `%s' worked on `%s'"
 msgstr "Модифікація %u: автор «%s», співробітник «%s»"
 
-#: src/plugins/wav_extractor.c:120
-msgid "mono"
-msgstr "моно"
-
-#: src/plugins/wav_extractor.c:120
-msgid "stereo"
-msgstr "стерео"
-
-#~ msgid "GB"
-#~ msgstr "ГБ"
-
-#~ msgid "MB"
-#~ msgstr "МБ"
-
-#~ msgid "KB"
-#~ msgstr "КБ"
-
-#~ msgid "Bytes"
-#~ msgstr "байтів"
-
-#~ msgid "Blues"
-#~ msgstr "Блюз"
-
-#~ msgid "Classic Rock"
-#~ msgstr "Класичний рок"
-
-#~ msgid "Country"
-#~ msgstr "Кантрі"
-
-#~ msgid "Dance"
-#~ msgstr "Танцювальна"
-
-#~ msgid "Disco"
-#~ msgstr "Диско"
-
-#~ msgid "Funk"
-#~ msgstr "Фанк"
-
-#~ msgid "Grunge"
-#~ msgstr "Ґрандж"
-
-#~ msgid "Hip-Hop"
-#~ msgstr "Хіп-хоп"
-
-#~ msgid "Jazz"
-#~ msgstr "Джаз"
-
-#~ msgid "Metal"
-#~ msgstr "Метал"
-
-#~ msgid "New Age"
-#~ msgstr "Нью-ейдж"
-
-#~ msgid "Oldies"
-#~ msgstr "Ретро"
-
-#~ msgid "Other"
-#~ msgstr "Інша"
-
-#~ msgid "Pop"
-#~ msgstr "Поп"
-
-#~ msgid "R&B"
-#~ msgstr "Ритм-енд-блюз"
-
-#~ msgid "Rap"
-#~ msgstr "Реп"
-
-#~ msgid "Reggae"
-#~ msgstr "Регі"
-
-#~ msgid "Rock"
-#~ msgstr "Рок"
-
-#~ msgid "Techno"
-#~ msgstr "Техно"
-
-#~ msgid "Alternative"
-#~ msgstr "Альтернативна"
-
-#~ msgid "Ska"
-#~ msgstr "Ска"
-
-#~ msgid "Death Metal"
-#~ msgstr "Деф-метал"
-
-#~ msgid "Pranks"
-#~ msgstr "Жарти-розиграші"
-
-#~ msgid "Soundtrack"
-#~ msgstr "Звукова доріжка"
-
-#~ msgid "Euro-Techno"
-#~ msgstr "Євротехно"
-
-#~ msgid "Ambient"
-#~ msgstr "Ембієнт"
-
-#~ msgid "Trip-Hop"
-#~ msgstr "Тріп-хоп"
-
-#~ msgid "Vocal"
-#~ msgstr "Вокал"
-
-#~ msgid "Jazz+Funk"
-#~ msgstr "Джаз+Фанк"
-
-#~ msgid "Fusion"
-#~ msgstr "Ф’южн"
-
-#~ msgid "Trance"
-#~ msgstr "Транс"
-
-#~ msgid "Classical"
-#~ msgstr "Класика"
-
-#~ msgid "Instrumental"
-#~ msgstr "Інструментальна"
-
-#~ msgid "Acid"
-#~ msgstr "Ейсід"
-
-#~ msgid "House"
-#~ msgstr "Хаус"
-
-#~ msgid "Game"
-#~ msgstr "Гра"
-
-#~ msgid "Sound Clip"
-#~ msgstr "Звуковий уривок"
-
-#~ msgid "Gospel"
-#~ msgstr "Ґоспел"
-
-#~ msgid "Noise"
-#~ msgstr "Шум"
-
-#~ msgid "Alt. Rock"
-#~ msgstr "Альт. рок"
-
-#~ msgid "Bass"
-#~ msgstr "Бейс"
-
-#~ msgid "Soul"
-#~ msgstr "Душа"
-
-#~ msgid "Punk"
-#~ msgstr "Панк"
-
-#~ msgid "Space"
-#~ msgstr "Простір"
-
-#~ msgid "Meditative"
-#~ msgstr "Медитативна"
-
-#~ msgid "Instrumental Pop"
-#~ msgstr "Інструментальний поп"
-
-#~ msgid "Instrumental Rock"
-#~ msgstr "Інструментальний рок"
-
-#~ msgid "Ethnic"
-#~ msgstr "Етнічна"
-
-#~ msgid "Gothic"
-#~ msgstr "Готична"
-
-#~ msgid "Darkwave"
-#~ msgstr "Дарквейв"
-
-#~ msgid "Techno-Industrial"
-#~ msgstr "Техно-індастріал"
-
-#~ msgid "Electronic"
-#~ msgstr "Електронна"
-
-#~ msgid "Pop-Folk"
-#~ msgstr "Поп-фолк"
-
-#~ msgid "Eurodance"
-#~ msgstr "Євроденс"
-
-#~ msgid "Dream"
-#~ msgstr "Дрім"
-
-#~ msgid "Southern Rock"
-#~ msgstr "Південний рок"
-
-#~ msgid "Comedy"
-#~ msgstr "Комедія"
-
-#~ msgid "Cult"
-#~ msgstr "Культова"
-
-#~ msgid "Gangsta Rap"
-#~ msgstr "Гангста-реп"
-
-#~ msgid "Top 40"
-#~ msgstr "Топ-40"
-
-#~ msgid "Christian Rap"
-#~ msgstr "Християнський реп"
-
-#~ msgid "Pop/Funk"
-#~ msgstr "Поп/фанк"
-
-#~ msgid "Jungle"
-#~ msgstr "Джангл"
-
-#~ msgid "Native American"
-#~ msgstr "Індіанська"
-
-#~ msgid "Cabaret"
-#~ msgstr "Кабаре"
-
-#~ msgid "New Wave"
-#~ msgstr "Нью-вейв"
-
-#~ msgid "Psychedelic"
-#~ msgstr "Психоделіка"
-
-#~ msgid "Rave"
-#~ msgstr "Рейв"
-
-#~ msgid "Showtunes"
-#~ msgstr "Шоу-мелодії"
-
-#~ msgid "Trailer"
-#~ msgstr "Трейлер"
-
-#~ msgid "Lo-Fi"
-#~ msgstr "Лоу-фай"
-
-#~ msgid "Tribal"
-#~ msgstr "Племенна"
-
-#~ msgid "Acid Punk"
-#~ msgstr "Ейсід-панк"
-
-#~ msgid "Acid Jazz"
-#~ msgstr "Ейсід-джаз"
-
-#~ msgid "Polka"
-#~ msgstr "Полька"
-
-#~ msgid "Retro"
-#~ msgstr "Ретро"
-
-#~ msgid "Musical"
-#~ msgstr "Музична"
-
-#~ msgid "Rock & Roll"
-#~ msgstr "Рок-н-рол"
-
-#~ msgid "Hard Rock"
-#~ msgstr "Хардрок"
-
-#~ msgid "Folk"
-#~ msgstr "Фольклор"
-
-#~ msgid "Folk/Rock"
-#~ msgstr "Фольклор/рок"
-
-#~ msgid "National Folk"
-#~ msgstr "Народний фольклор"
-
-#~ msgid "Swing"
-#~ msgstr "Свінг"
-
-#~ msgid "Fast-Fusion"
-#~ msgstr "Фаст-ф’южн"
-
-#~ msgid "Bebob"
-#~ msgstr "Бібоб"
-
-#~ msgid "Latin"
-#~ msgstr "Латинська"
-
-#~ msgid "Revival"
-#~ msgstr "Ривайвл"
-
-#~ msgid "Celtic"
-#~ msgstr "Кельтська"
-
-#~ msgid "Bluegrass"
-#~ msgstr "Блюграс"
-
-#~ msgid "Avantgarde"
-#~ msgstr "Авангард"
-
-#~ msgid "Gothic Rock"
-#~ msgstr "Готичний рок"
-
-#~ msgid "Progressive Rock"
-#~ msgstr "Прогресивний рок"
-
-#~ msgid "Psychedelic Rock"
-#~ msgstr "Психоделічний рок"
-
-#~ msgid "Symphonic Rock"
-#~ msgstr "Симфонічний рок"
-
-#~ msgid "Slow Rock"
-#~ msgstr "Повільний рок"
-
-#~ msgid "Big Band"
-#~ msgstr "Біг-бенд"
-
-#~ msgid "Chorus"
-#~ msgstr "Хорова"
-
-#~ msgid "Easy Listening"
-#~ msgstr "Легка музика"
-
-#~ msgid "Acoustic"
-#~ msgstr "Акустична"
-
-#~ msgid "Humour"
-#~ msgstr "Гумор"
-
-#~ msgid "Speech"
-#~ msgstr "Мова"
-
-#~ msgid "Chanson"
-#~ msgstr "Шансон"
-
-#~ msgid "Opera"
-#~ msgstr "Опера"
-
-#~ msgid "Chamber Music"
-#~ msgstr "Камерна музика"
-
-#~ msgid "Sonata"
-#~ msgstr "Соната"
-
-#~ msgid "Symphony"
-#~ msgstr "Симфонія"
-
-#~ msgid "Booty Bass"
-#~ msgstr "Буті-бейс"
-
-#~ msgid "Primus"
-#~ msgstr "Примас"
-
-#~ msgid "Porn Groove"
-#~ msgstr "Порн-рів"
-
-#~ msgid "Satire"
-#~ msgstr "Сатира"
-
-#~ msgid "Slow Jam"
-#~ msgstr "Повільний джем"
-
-#~ msgid "Club"
-#~ msgstr "Клуб"
-
-#~ msgid "Tango"
-#~ msgstr "Танго"
-
-#~ msgid "Samba"
-#~ msgstr "Самба"
-
-#~ msgid "Folklore"
-#~ msgstr "Фольклор"
-
-#~ msgid "Ballad"
-#~ msgstr "Балада"
-
-#~ msgid "Power Ballad"
-#~ msgstr "Пауер-балада"
-
-#~ msgid "Rhythmic Soul"
-#~ msgstr "Ритмічний соул"
-
-#~ msgid "Freestyle"
-#~ msgstr "Вільний стиль"
-
-#~ msgid "Duet"
-#~ msgstr "Дует"
-
-#~ msgid "Punk Rock"
-#~ msgstr "Панк-рок"
-
-#~ msgid "Drum Solo"
-#~ msgstr "Соло ударних"
-
-#~ msgid "A Cappella"
-#~ msgstr "А капелла"
-
-#~ msgid "Euro-House"
-#~ msgstr "Єврохаус"
-
-#~ msgid "Dance Hall"
-#~ msgstr "Танцмайданчик"
-
-#~ msgid "Goa"
-#~ msgstr "Гоа"
-
-#~ msgid "Drum & Bass"
-#~ msgstr "Драм-енд-бейс"
-
-#~ msgid "Club-House"
-#~ msgstr "Клаб-хаус"
-
-#~ msgid "Hardcore"
-#~ msgstr "Хардкор"
-
-#~ msgid "Terror"
-#~ msgstr "Терор"
-
-#~ msgid "Indie"
-#~ msgstr "Інді"
-
-#~ msgid "BritPop"
-#~ msgstr "Бритпоп"
-
-#~ msgid "Negerpunk"
-#~ msgstr "Негритянський панк"
-
-#~ msgid "Polsk Punk"
-#~ msgstr "Польський панк"
-
-#~ msgid "Beat"
-#~ msgstr "Біт"
-
-#~ msgid "Christian Gangsta Rap"
-#~ msgstr "Християнський гангста-реп"
-
-#~ msgid "Heavy Metal"
-#~ msgstr "Важкий метал"
-
-#~ msgid "Black Metal"
-#~ msgstr "Блек-метал"
-
-#~ msgid "Crossover"
-#~ msgstr "Перетин"
-
-#~ msgid "Contemporary Christian"
-#~ msgstr "Сучасна християнська"
-
-#~ msgid "Christian Rock"
-#~ msgstr "Християнський рок"
-
-#~ msgid "Merengue"
-#~ msgstr "Меренга"
-
-#~ msgid "Salsa"
-#~ msgstr "Сальса"
-
-#~ msgid "Thrash Metal"
-#~ msgstr "Треш-метал"
-
-#~ msgid "Anime"
-#~ msgstr "Аніме"
-
-#~ msgid "JPop"
-#~ msgstr "Джей-поп"
-
-#~ msgid "Synthpop"
-#~ msgstr "Синтез-поп"
-
-#~ msgid "Commands"
-#~ msgstr "Команди"
-
-#~ msgid "System calls"
-#~ msgstr "Системні виклики"
-
-#~ msgid "Library calls"
-#~ msgstr "Виклики бібліотек"
-
-#~ msgid "Special files"
-#~ msgstr "Спеціальні файли"
-
-#~ msgid "File formats and conventions"
-#~ msgstr "Формати файлів та правила"
-
-#~ msgid "Games"
-#~ msgstr "Ігри"
-
-#~ msgid "Conventions and miscellaneous"
-#~ msgstr "Угоди та інше"
-
-#~ msgid "System management commands"
-#~ msgstr "Команди керування системою"
-
-#~ msgid "Kernel routines"
-#~ msgstr "Процедури ядра"
-
-#~ msgid "joint stereo"
-#~ msgstr "об'єднане стерео"
-
-#~ msgid "MPEG-1"
-#~ msgstr "MPEG-1"
-
-#~ msgid "MPEG-2"
-#~ msgstr "MPEG-2"
-
-#~ msgid "MPEG-2.5"
-#~ msgstr "MPEG-2.5"
-
-#~ msgid "Layer I"
-#~ msgstr "Layer I"
-
-#~ msgid "Layer II"
-#~ msgstr "Layer II"
-
-#~ msgid "Layer III"
-#~ msgstr "Layer III"
-
-#~ msgid "VBR"
-#~ msgstr "VBR"
-
-#~ msgid "CBR"
-#~ msgstr "CBR"
-
-#~ msgid "no copyright"
-#~ msgstr "без захисту авторськими правами"
-
-#~ msgid "original"
-#~ msgstr "оригінал"
-
-#~ msgid "copy"
-#~ msgstr "копія"
-
-#~ msgid "codec: %s, %u fps, %u ms"
-#~ msgstr "кодек: %s, %u кд/с, %u мс"
+#: src/plugins/riff_extractor.c:145
+#, c-format
+msgid "codec: %s, %u fps, %u ms"
+msgstr "кодек: %s, %u кд/с, %u мс"
 
 #~ msgid "%ux%u dots per inch"
 #~ msgstr "%ux%u точок на дюйм"

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.5.20\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2012-08-17 20:43+0200\n"
+"POT-Creation-Date: 2012-08-28 10:29+0200\n"
 "PO-Revision-Date: 2008-03-21 20:46-0700\n"
 "Last-Translator: Kevin Scannell <kscanne@gmail.com>\n"
 "Language-Team: Irish <gaeilge-gnulinux@lists.sourceforge.net>\n"
@@ -529,7 +529,7 @@ msgstr ""
 msgid "description"
 msgstr "cur síos"
 
-#: src/main/extractor_metatypes.c:149
+#: src/main/extractor_metatypes.c:149 src/plugins/old/mp3_extractor.c:206
 msgid "copyright"
 msgstr "cóipcheart"
 
@@ -1931,7 +1931,37 @@ msgstr ""
 msgid "chapters, contents or bookmarks (in xml format)"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:544 src/main/extractor_metatypes.c:545
+#: src/main/extractor_metatypes.c:544
+#, fuzzy
+msgid "video duration"
+msgstr "achar"
+
+#: src/main/extractor_metatypes.c:545
+#, fuzzy
+msgid "duration of a video stream"
+msgstr "foilsitheoir"
+
+#: src/main/extractor_metatypes.c:546
+#, fuzzy
+msgid "audio duration"
+msgstr "achar"
+
+#: src/main/extractor_metatypes.c:547
+#, fuzzy
+msgid "duration of an audio stream"
+msgstr "foilsitheoir"
+
+#: src/main/extractor_metatypes.c:548
+#, fuzzy
+msgid "subtitle duration"
+msgstr "teanga"
+
+#: src/main/extractor_metatypes.c:549
+#, fuzzy
+msgid "duration of a subtitle stream"
+msgstr "foilsitheoir"
+
+#: src/main/extractor_metatypes.c:551 src/main/extractor_metatypes.c:552
 #, fuzzy
 msgid "last"
 msgstr "splanc"
@@ -1995,6 +2025,718 @@ msgstr "%s: ní cheadaítear argóint i ndiaidh na rogha `-W %s'\n"
 #, c-format
 msgid "%u Hz, %u channels"
 msgstr ""
+
+#: src/plugins/man_extractor.c:215
+msgid "Commands"
+msgstr "Orduithe"
+
+#: src/plugins/man_extractor.c:219
+msgid "System calls"
+msgstr "Glaonna ar an chóras"
+
+#: src/plugins/man_extractor.c:223
+msgid "Library calls"
+msgstr "Glaonna ar leabharlanna"
+
+#: src/plugins/man_extractor.c:227
+msgid "Special files"
+msgstr "Comhaid speisialta"
+
+#: src/plugins/man_extractor.c:231
+msgid "File formats and conventions"
+msgstr "Formáidí comhaid agus coinbhinsiúin"
+
+#: src/plugins/man_extractor.c:235
+msgid "Games"
+msgstr "Cluichí"
+
+#: src/plugins/man_extractor.c:239
+msgid "Conventions and miscellaneous"
+msgstr "Coinbhinsiúin agus rudaí eile"
+
+#: src/plugins/man_extractor.c:243
+msgid "System management commands"
+msgstr "Orduithe bainisteoireacht an chórais"
+
+#: src/plugins/man_extractor.c:247
+msgid "Kernel routines"
+msgstr "Feidhmeanna eithne"
+
+#: src/plugins/old/applefile_extractor.c:162
+msgid "GB"
+msgstr "GB"
+
+#: src/plugins/old/applefile_extractor.c:164
+msgid "MB"
+msgstr "MB"
+
+#: src/plugins/old/applefile_extractor.c:166
+msgid "KB"
+msgstr "kB"
+
+#: src/plugins/old/applefile_extractor.c:168
+msgid "Bytes"
+msgstr "Beart"
+
+#: src/plugins/old/mp3_extractor.c:95 src/plugins/wav_extractor.c:120
+msgid "stereo"
+msgstr "steirió"
+
+#: src/plugins/old/mp3_extractor.c:96
+#, fuzzy
+msgid "joint stereo"
+msgstr "steirió"
+
+#: src/plugins/old/mp3_extractor.c:97
+msgid "dual channel"
+msgstr ""
+
+#: src/plugins/old/mp3_extractor.c:98 src/plugins/wav_extractor.c:120
+msgid "mono"
+msgstr "mona"
+
+#: src/plugins/old/mp3_extractor.c:101
+msgid "MPEG-1"
+msgstr ""
+
+#: src/plugins/old/mp3_extractor.c:102
+msgid "MPEG-2"
+msgstr ""
+
+#: src/plugins/old/mp3_extractor.c:103
+msgid "MPEG-2.5"
+msgstr ""
+
+#: src/plugins/old/mp3_extractor.c:106
+msgid "Layer I"
+msgstr ""
+
+#: src/plugins/old/mp3_extractor.c:107
+msgid "Layer II"
+msgstr ""
+
+#: src/plugins/old/mp3_extractor.c:108
+msgid "Layer III"
+msgstr ""
+
+#: src/plugins/old/mp3_extractor.c:203
+msgid "VBR"
+msgstr ""
+
+#: src/plugins/old/mp3_extractor.c:203
+msgid "CBR"
+msgstr ""
+
+#: src/plugins/old/mp3_extractor.c:206
+#, fuzzy
+msgid "no copyright"
+msgstr "cóipcheart"
+
+#: src/plugins/old/mp3_extractor.c:207
+#, fuzzy
+msgid "original"
+msgstr "ainm iomlán"
+
+#: src/plugins/old/mp3_extractor.c:207
+#, fuzzy
+msgid "copy"
+msgstr "comhlacht"
+
+#: src/plugins/old/qt_extractor.c:30
+msgid "Blues"
+msgstr "Gormacha"
+
+#: src/plugins/old/qt_extractor.c:31
+msgid "Classic Rock"
+msgstr "Rac Clasaiceach"
+
+#: src/plugins/old/qt_extractor.c:32
+#, fuzzy
+msgid "Country"
+msgstr "Ceolta Tuaithe"
+
+#: src/plugins/old/qt_extractor.c:33
+msgid "Dance"
+msgstr "Damhsa"
+
+#: src/plugins/old/qt_extractor.c:34
+msgid "Disco"
+msgstr "Dioscó"
+
+#: src/plugins/old/qt_extractor.c:35
+msgid "Funk"
+msgstr "Func"
+
+#: src/plugins/old/qt_extractor.c:36
+msgid "Grunge"
+msgstr "Gruinse"
+
+#: src/plugins/old/qt_extractor.c:37
+msgid "Hip-Hop"
+msgstr "Hip-Hap"
+
+#: src/plugins/old/qt_extractor.c:38
+msgid "Jazz"
+msgstr "Snagcheol"
+
+#: src/plugins/old/qt_extractor.c:39
+msgid "Metal"
+msgstr "Miotal"
+
+#: src/plugins/old/qt_extractor.c:40
+msgid "New Age"
+msgstr "Nua-Aoiseach"
+
+#: src/plugins/old/qt_extractor.c:41
+msgid "Oldies"
+msgstr "Seancheol"
+
+#: src/plugins/old/qt_extractor.c:42
+msgid "Other"
+msgstr "Eile"
+
+#: src/plugins/old/qt_extractor.c:43
+msgid "Pop"
+msgstr "Popcheol"
+
+#: src/plugins/old/qt_extractor.c:44
+msgid "R&B"
+msgstr "Rithim & Gormacha"
+
+#: src/plugins/old/qt_extractor.c:45
+msgid "Rap"
+msgstr "Rapcheol"
+
+#: src/plugins/old/qt_extractor.c:46
+msgid "Reggae"
+msgstr "Reggae"
+
+#: src/plugins/old/qt_extractor.c:47
+msgid "Rock"
+msgstr "Rac-Cheol"
+
+#: src/plugins/old/qt_extractor.c:48
+msgid "Techno"
+msgstr "Teicneo"
+
+#: src/plugins/old/qt_extractor.c:49
+#, fuzzy
+msgid "Industrial"
+msgstr "Teicneo-Tionsclaíoch"
+
+#: src/plugins/old/qt_extractor.c:50
+msgid "Alternative"
+msgstr "Malartach"
+
+#: src/plugins/old/qt_extractor.c:51
+msgid "Ska"
+msgstr "Ska"
+
+#: src/plugins/old/qt_extractor.c:52
+msgid "Death Metal"
+msgstr "Básmhiotal"
+
+#: src/plugins/old/qt_extractor.c:53
+msgid "Pranks"
+msgstr "Cleasa"
+
+#: src/plugins/old/qt_extractor.c:54
+msgid "Soundtrack"
+msgstr "Fuaimrian"
+
+#: src/plugins/old/qt_extractor.c:55
+msgid "Euro-Techno"
+msgstr "Eora-Teicneo"
+
+#: src/plugins/old/qt_extractor.c:56
+msgid "Ambient"
+msgstr "Timpeallach"
+
+#: src/plugins/old/qt_extractor.c:57
+msgid "Trip-Hop"
+msgstr "Truip-Hap"
+
+#: src/plugins/old/qt_extractor.c:58
+msgid "Vocal"
+msgstr "Guthach"
+
+#: src/plugins/old/qt_extractor.c:59
+msgid "Jazz+Funk"
+msgstr "Snagcheol+Func"
+
+#: src/plugins/old/qt_extractor.c:60
+msgid "Fusion"
+msgstr "Comhleá"
+
+#: src/plugins/old/qt_extractor.c:61
+msgid "Trance"
+msgstr "Támhnéal"
+
+#: src/plugins/old/qt_extractor.c:62
+msgid "Classical"
+msgstr "Clasaiceach"
+
+#: src/plugins/old/qt_extractor.c:63
+msgid "Instrumental"
+msgstr "Ionstraimeach"
+
+#: src/plugins/old/qt_extractor.c:64
+msgid "Acid"
+msgstr "Aigéad"
+
+#: src/plugins/old/qt_extractor.c:65
+msgid "House"
+msgstr "Teach"
+
+#: src/plugins/old/qt_extractor.c:66
+msgid "Game"
+msgstr "Cluiche"
+
+#: src/plugins/old/qt_extractor.c:67
+msgid "Sound Clip"
+msgstr "Gearrthóg Fhuaime"
+
+#: src/plugins/old/qt_extractor.c:68
+msgid "Gospel"
+msgstr "Ceol Gaspal"
+
+#: src/plugins/old/qt_extractor.c:69
+msgid "Noise"
+msgstr "Torann"
+
+#: src/plugins/old/qt_extractor.c:70
+msgid "Alt. Rock"
+msgstr "Rac-Cheol Mal."
+
+#: src/plugins/old/qt_extractor.c:71
+msgid "Bass"
+msgstr "Dord"
+
+#: src/plugins/old/qt_extractor.c:72
+msgid "Soul"
+msgstr "Anamcheol"
+
+#: src/plugins/old/qt_extractor.c:73
+msgid "Punk"
+msgstr "Punc"
+
+#: src/plugins/old/qt_extractor.c:74
+msgid "Space"
+msgstr "Spás"
+
+#: src/plugins/old/qt_extractor.c:75
+msgid "Meditative"
+msgstr "Machnamhach"
+
+#: src/plugins/old/qt_extractor.c:76
+msgid "Instrumental Pop"
+msgstr "Popcheol Ionstraimeach"
+
+#: src/plugins/old/qt_extractor.c:77
+msgid "Instrumental Rock"
+msgstr "Rac Ionstraimeach"
+
+#: src/plugins/old/qt_extractor.c:78
+msgid "Ethnic"
+msgstr "Eitneach"
+
+#: src/plugins/old/qt_extractor.c:79
+msgid "Gothic"
+msgstr "Gotach"
+
+#: src/plugins/old/qt_extractor.c:80
+msgid "Darkwave"
+msgstr "An Tonn Dhubh"
+
+#: src/plugins/old/qt_extractor.c:81
+msgid "Techno-Industrial"
+msgstr "Teicneo-Tionsclaíoch"
+
+#: src/plugins/old/qt_extractor.c:82
+msgid "Electronic"
+msgstr "Leictreonach"
+
+#: src/plugins/old/qt_extractor.c:83
+msgid "Pop-Folk"
+msgstr "Popcheol Tíre"
+
+#: src/plugins/old/qt_extractor.c:84
+msgid "Eurodance"
+msgstr "Eoradamhsa"
+
+#: src/plugins/old/qt_extractor.c:85
+msgid "Dream"
+msgstr "Aisling"
+
+#: src/plugins/old/qt_extractor.c:86
+msgid "Southern Rock"
+msgstr "Rac Deisceartach"
+
+#: src/plugins/old/qt_extractor.c:87
+msgid "Comedy"
+msgstr "Coiméide"
+
+#: src/plugins/old/qt_extractor.c:88
+msgid "Cult"
+msgstr "Cultas"
+
+#: src/plugins/old/qt_extractor.c:89
+msgid "Gangsta Rap"
+msgstr "Rapcheol Gangstaeir"
+
+#: src/plugins/old/qt_extractor.c:90
+msgid "Top 40"
+msgstr "Cnagshingilí"
+
+#: src/plugins/old/qt_extractor.c:91
+msgid "Christian Rap"
+msgstr "Rapcheol Críostaí"
+
+#: src/plugins/old/qt_extractor.c:92
+msgid "Pop/Funk"
+msgstr "Popcheol/Func"
+
+#: src/plugins/old/qt_extractor.c:93
+msgid "Jungle"
+msgstr "Dufair"
+
+#: src/plugins/old/qt_extractor.c:94
+msgid "Native American"
+msgstr "Indiach-Mheiriceánach"
+
+#: src/plugins/old/qt_extractor.c:95
+msgid "Cabaret"
+msgstr "Cabaret"
+
+#: src/plugins/old/qt_extractor.c:96
+msgid "New Wave"
+msgstr "Tonn Nua"
+
+#: src/plugins/old/qt_extractor.c:97
+msgid "Psychedelic"
+msgstr "Sícideileach"
+
+#: src/plugins/old/qt_extractor.c:98
+msgid "Rave"
+msgstr "Réibhcheol"
+
+#: src/plugins/old/qt_extractor.c:99
+msgid "Showtunes"
+msgstr "Seóthiúineanna"
+
+#: src/plugins/old/qt_extractor.c:100
+msgid "Trailer"
+msgstr "Tréiléar"
+
+#: src/plugins/old/qt_extractor.c:101
+msgid "Lo-Fi"
+msgstr "Ísle-Dílse"
+
+#: src/plugins/old/qt_extractor.c:102
+msgid "Tribal"
+msgstr "Treibheach"
+
+#: src/plugins/old/qt_extractor.c:103
+msgid "Acid Punk"
+msgstr "Punc Aigéadach"
+
+#: src/plugins/old/qt_extractor.c:104
+msgid "Acid Jazz"
+msgstr "Snagcheol Aigéadach"
+
+#: src/plugins/old/qt_extractor.c:105
+msgid "Polka"
+msgstr "Polca"
+
+#: src/plugins/old/qt_extractor.c:106
+msgid "Retro"
+msgstr "Aischeol"
+
+#: src/plugins/old/qt_extractor.c:107
+msgid "Musical"
+msgstr "Ceolra"
+
+#: src/plugins/old/qt_extractor.c:108
+msgid "Rock & Roll"
+msgstr "Rac Is Roll"
+
+#: src/plugins/old/qt_extractor.c:109
+msgid "Hard Rock"
+msgstr "Rac-Cheol Crua"
+
+#: src/plugins/old/qt_extractor.c:110
+msgid "Folk"
+msgstr "Ceol na nDaoine"
+
+#: src/plugins/old/qt_extractor.c:111
+msgid "Folk/Rock"
+msgstr "Ceol Tíre/Rac-Cheol"
+
+#: src/plugins/old/qt_extractor.c:112
+msgid "National Folk"
+msgstr "Ceol an Náisiúin"
+
+#: src/plugins/old/qt_extractor.c:113
+msgid "Swing"
+msgstr "Luasc-Cheol"
+
+#: src/plugins/old/qt_extractor.c:114
+msgid "Fast-Fusion"
+msgstr "Comhleá Tapa"
+
+#: src/plugins/old/qt_extractor.c:115
+msgid "Bebob"
+msgstr "Bap"
+
+#: src/plugins/old/qt_extractor.c:116
+#, fuzzy
+msgid "Latin"
+msgstr "Laitvis"
+
+#: src/plugins/old/qt_extractor.c:117
+msgid "Revival"
+msgstr "Athbheochan"
+
+#: src/plugins/old/qt_extractor.c:118
+msgid "Celtic"
+msgstr "Ceilteach"
+
+#: src/plugins/old/qt_extractor.c:119
+msgid "Bluegrass"
+msgstr "Bluegrass"
+
+#: src/plugins/old/qt_extractor.c:120
+msgid "Avantgarde"
+msgstr "Avant garde"
+
+#: src/plugins/old/qt_extractor.c:121
+msgid "Gothic Rock"
+msgstr "Rac Gotach"
+
+#: src/plugins/old/qt_extractor.c:122
+msgid "Progressive Rock"
+msgstr "Rac Forásach"
+
+#: src/plugins/old/qt_extractor.c:123
+msgid "Psychedelic Rock"
+msgstr "Rac Sícideileach"
+
+#: src/plugins/old/qt_extractor.c:124
+msgid "Symphonic Rock"
+msgstr "Rac Siansach"
+
+#: src/plugins/old/qt_extractor.c:125
+msgid "Slow Rock"
+msgstr "Rac-Cheol Mall"
+
+#: src/plugins/old/qt_extractor.c:126
+msgid "Big Band"
+msgstr "Banna Mór"
+
+#: src/plugins/old/qt_extractor.c:127
+msgid "Chorus"
+msgstr "Cór"
+
+#: src/plugins/old/qt_extractor.c:128
+msgid "Easy Listening"
+msgstr "Récheol"
+
+#: src/plugins/old/qt_extractor.c:129
+msgid "Acoustic"
+msgstr "Fuaimiúil"
+
+#: src/plugins/old/qt_extractor.c:130
+msgid "Humour"
+msgstr "Greann"
+
+#: src/plugins/old/qt_extractor.c:131
+msgid "Speech"
+msgstr "Caint"
+
+#: src/plugins/old/qt_extractor.c:132
+msgid "Chanson"
+msgstr "Chanson"
+
+#: src/plugins/old/qt_extractor.c:133
+msgid "Opera"
+msgstr "Ceoldráma"
+
+#: src/plugins/old/qt_extractor.c:134
+msgid "Chamber Music"
+msgstr "Ceol Aireagail"
+
+#: src/plugins/old/qt_extractor.c:135
+msgid "Sonata"
+msgstr "Sonáid"
+
+#: src/plugins/old/qt_extractor.c:136
+msgid "Symphony"
+msgstr "Siansa"
+
+#: src/plugins/old/qt_extractor.c:137
+msgid "Booty Bass"
+msgstr "Dord Búití"
+
+#: src/plugins/old/qt_extractor.c:138
+msgid "Primus"
+msgstr "Primus"
+
+#: src/plugins/old/qt_extractor.c:139
+msgid "Porn Groove"
+msgstr "PornGrúibh"
+
+#: src/plugins/old/qt_extractor.c:140
+msgid "Satire"
+msgstr "Aoir"
+
+#: src/plugins/old/qt_extractor.c:141
+msgid "Slow Jam"
+msgstr "Seam Mall"
+
+#: src/plugins/old/qt_extractor.c:142
+msgid "Club"
+msgstr "Club"
+
+#: src/plugins/old/qt_extractor.c:143
+msgid "Tango"
+msgstr "Tangó"
+
+#: src/plugins/old/qt_extractor.c:144
+msgid "Samba"
+msgstr "Samba"
+
+#: src/plugins/old/qt_extractor.c:145
+msgid "Folklore"
+msgstr "Béaloideas"
+
+#: src/plugins/old/qt_extractor.c:146
+msgid "Ballad"
+msgstr "Bailéad"
+
+#: src/plugins/old/qt_extractor.c:147
+msgid "Power Ballad"
+msgstr "Bailéad Cumhachta"
+
+#: src/plugins/old/qt_extractor.c:148
+msgid "Rhythmic Soul"
+msgstr "Anamcheol Rithimeach"
+
+#: src/plugins/old/qt_extractor.c:149
+msgid "Freestyle"
+msgstr "Saorstíl"
+
+#: src/plugins/old/qt_extractor.c:150
+msgid "Duet"
+msgstr "Díséad"
+
+#: src/plugins/old/qt_extractor.c:151
+msgid "Punk Rock"
+msgstr "Punc-Rac"
+
+#: src/plugins/old/qt_extractor.c:152
+msgid "Drum Solo"
+msgstr "Aonréad Druma"
+
+#: src/plugins/old/qt_extractor.c:153
+msgid "A Cappella"
+msgstr "A Cappella"
+
+#: src/plugins/old/qt_extractor.c:154
+msgid "Euro-House"
+msgstr "Eora-Teach"
+
+#: src/plugins/old/qt_extractor.c:155
+msgid "Dance Hall"
+msgstr "Halla Damhsa"
+
+#: src/plugins/old/qt_extractor.c:156
+msgid "Goa"
+msgstr "Goa"
+
+#: src/plugins/old/qt_extractor.c:157
+msgid "Drum & Bass"
+msgstr "Druma & Dord"
+
+#: src/plugins/old/qt_extractor.c:158
+msgid "Club-House"
+msgstr "Clubtheach"
+
+#: src/plugins/old/qt_extractor.c:159
+msgid "Hardcore"
+msgstr "Fíorchrua"
+
+#: src/plugins/old/qt_extractor.c:160
+msgid "Terror"
+msgstr "Uafás"
+
+#: src/plugins/old/qt_extractor.c:161
+msgid "Indie"
+msgstr "Neamhspleách"
+
+#: src/plugins/old/qt_extractor.c:162
+msgid "BritPop"
+msgstr "BriotPhop"
+
+#: src/plugins/old/qt_extractor.c:163
+msgid "Negerpunk"
+msgstr "Negerpunk"
+
+#: src/plugins/old/qt_extractor.c:164
+msgid "Polsk Punk"
+msgstr "Punc Polannach"
+
+#: src/plugins/old/qt_extractor.c:165
+msgid "Beat"
+msgstr "Buille"
+
+#: src/plugins/old/qt_extractor.c:166
+msgid "Christian Gangsta Rap"
+msgstr "Rapcheol Críostaí Gangstaeir"
+
+#: src/plugins/old/qt_extractor.c:167
+msgid "Heavy Metal"
+msgstr "Ceol Trom-Mhiotalach"
+
+#: src/plugins/old/qt_extractor.c:168
+msgid "Black Metal"
+msgstr "Miotal Dubh"
+
+#: src/plugins/old/qt_extractor.c:169
+msgid "Crossover"
+msgstr "Trasach"
+
+#: src/plugins/old/qt_extractor.c:170
+msgid "Contemporary Christian"
+msgstr "Críostaí Comhaimseartha"
+
+#: src/plugins/old/qt_extractor.c:171
+msgid "Christian Rock"
+msgstr "Rac-Cheol Críostaí"
+
+#: src/plugins/old/qt_extractor.c:172
+msgid "Merengue"
+msgstr "Meireang"
+
+#: src/plugins/old/qt_extractor.c:173
+msgid "Salsa"
+msgstr "Salsa"
+
+#: src/plugins/old/qt_extractor.c:174
+msgid "Thrash Metal"
+msgstr "Miotal Traiseála"
+
+# no "é"
+#: src/plugins/old/qt_extractor.c:175
+msgid "Anime"
+msgstr "Anime"
+
+#: src/plugins/old/qt_extractor.c:176
+msgid "JPop"
+msgstr "JPap"
+
+#: src/plugins/old/qt_extractor.c:177
+msgid "Synthpop"
+msgstr "Popcheol sintéiseach"
 
 #: src/plugins/ole2_extractor.c:387
 msgid "No Proofing"
@@ -2077,511 +2819,10 @@ msgstr "Fairsis"
 msgid "Revision #%u: Author `%s' worked on `%s'"
 msgstr "Leasú #%u: D'oibrigh údar '%s' ar '%s'"
 
-#: src/plugins/wav_extractor.c:120
-msgid "mono"
-msgstr "mona"
-
-#: src/plugins/wav_extractor.c:120
-msgid "stereo"
-msgstr "steirió"
-
-#~ msgid "GB"
-#~ msgstr "GB"
-
-#~ msgid "MB"
-#~ msgstr "MB"
-
-#~ msgid "KB"
-#~ msgstr "kB"
-
-#~ msgid "Bytes"
-#~ msgstr "Beart"
-
-#~ msgid "Blues"
-#~ msgstr "Gormacha"
-
-#~ msgid "Classic Rock"
-#~ msgstr "Rac Clasaiceach"
-
-#, fuzzy
-#~ msgid "Country"
-#~ msgstr "Ceolta Tuaithe"
-
-#~ msgid "Dance"
-#~ msgstr "Damhsa"
-
-#~ msgid "Disco"
-#~ msgstr "Dioscó"
-
-#~ msgid "Funk"
-#~ msgstr "Func"
-
-#~ msgid "Grunge"
-#~ msgstr "Gruinse"
-
-#~ msgid "Hip-Hop"
-#~ msgstr "Hip-Hap"
-
-#~ msgid "Jazz"
-#~ msgstr "Snagcheol"
-
-#~ msgid "Metal"
-#~ msgstr "Miotal"
-
-#~ msgid "New Age"
-#~ msgstr "Nua-Aoiseach"
-
-#~ msgid "Oldies"
-#~ msgstr "Seancheol"
-
-#~ msgid "Other"
-#~ msgstr "Eile"
-
-#~ msgid "Pop"
-#~ msgstr "Popcheol"
-
-#~ msgid "R&B"
-#~ msgstr "Rithim & Gormacha"
-
-#~ msgid "Rap"
-#~ msgstr "Rapcheol"
-
-#~ msgid "Reggae"
-#~ msgstr "Reggae"
-
-#~ msgid "Rock"
-#~ msgstr "Rac-Cheol"
-
-#~ msgid "Techno"
-#~ msgstr "Teicneo"
-
-#~ msgid "Alternative"
-#~ msgstr "Malartach"
-
-#~ msgid "Ska"
-#~ msgstr "Ska"
-
-#~ msgid "Death Metal"
-#~ msgstr "Básmhiotal"
-
-#~ msgid "Pranks"
-#~ msgstr "Cleasa"
-
-#~ msgid "Soundtrack"
-#~ msgstr "Fuaimrian"
-
-#~ msgid "Euro-Techno"
-#~ msgstr "Eora-Teicneo"
-
-#~ msgid "Ambient"
-#~ msgstr "Timpeallach"
-
-#~ msgid "Trip-Hop"
-#~ msgstr "Truip-Hap"
-
-#~ msgid "Vocal"
-#~ msgstr "Guthach"
-
-#~ msgid "Jazz+Funk"
-#~ msgstr "Snagcheol+Func"
-
-#~ msgid "Fusion"
-#~ msgstr "Comhleá"
-
-#~ msgid "Trance"
-#~ msgstr "Támhnéal"
-
-#~ msgid "Classical"
-#~ msgstr "Clasaiceach"
-
-#~ msgid "Instrumental"
-#~ msgstr "Ionstraimeach"
-
-#~ msgid "Acid"
-#~ msgstr "Aigéad"
-
-#~ msgid "House"
-#~ msgstr "Teach"
-
-#~ msgid "Game"
-#~ msgstr "Cluiche"
-
-#~ msgid "Sound Clip"
-#~ msgstr "Gearrthóg Fhuaime"
-
-#~ msgid "Gospel"
-#~ msgstr "Ceol Gaspal"
-
-#~ msgid "Noise"
-#~ msgstr "Torann"
-
-#~ msgid "Alt. Rock"
-#~ msgstr "Rac-Cheol Mal."
-
-#~ msgid "Bass"
-#~ msgstr "Dord"
-
-#~ msgid "Soul"
-#~ msgstr "Anamcheol"
-
-#~ msgid "Punk"
-#~ msgstr "Punc"
-
-#~ msgid "Space"
-#~ msgstr "Spás"
-
-#~ msgid "Meditative"
-#~ msgstr "Machnamhach"
-
-#~ msgid "Instrumental Pop"
-#~ msgstr "Popcheol Ionstraimeach"
-
-#~ msgid "Instrumental Rock"
-#~ msgstr "Rac Ionstraimeach"
-
-#~ msgid "Ethnic"
-#~ msgstr "Eitneach"
-
-#~ msgid "Gothic"
-#~ msgstr "Gotach"
-
-#~ msgid "Darkwave"
-#~ msgstr "An Tonn Dhubh"
-
-#~ msgid "Techno-Industrial"
-#~ msgstr "Teicneo-Tionsclaíoch"
-
-#~ msgid "Electronic"
-#~ msgstr "Leictreonach"
-
-#~ msgid "Pop-Folk"
-#~ msgstr "Popcheol Tíre"
-
-#~ msgid "Eurodance"
-#~ msgstr "Eoradamhsa"
-
-#~ msgid "Dream"
-#~ msgstr "Aisling"
-
-#~ msgid "Southern Rock"
-#~ msgstr "Rac Deisceartach"
-
-#~ msgid "Comedy"
-#~ msgstr "Coiméide"
-
-#~ msgid "Cult"
-#~ msgstr "Cultas"
-
-#~ msgid "Gangsta Rap"
-#~ msgstr "Rapcheol Gangstaeir"
-
-#~ msgid "Top 40"
-#~ msgstr "Cnagshingilí"
-
-#~ msgid "Christian Rap"
-#~ msgstr "Rapcheol Críostaí"
-
-#~ msgid "Pop/Funk"
-#~ msgstr "Popcheol/Func"
-
-#~ msgid "Jungle"
-#~ msgstr "Dufair"
-
-#~ msgid "Native American"
-#~ msgstr "Indiach-Mheiriceánach"
-
-#~ msgid "Cabaret"
-#~ msgstr "Cabaret"
-
-#~ msgid "New Wave"
-#~ msgstr "Tonn Nua"
-
-#~ msgid "Psychedelic"
-#~ msgstr "Sícideileach"
-
-#~ msgid "Rave"
-#~ msgstr "Réibhcheol"
-
-#~ msgid "Showtunes"
-#~ msgstr "Seóthiúineanna"
-
-#~ msgid "Trailer"
-#~ msgstr "Tréiléar"
-
-#~ msgid "Lo-Fi"
-#~ msgstr "Ísle-Dílse"
-
-#~ msgid "Tribal"
-#~ msgstr "Treibheach"
-
-#~ msgid "Acid Punk"
-#~ msgstr "Punc Aigéadach"
-
-#~ msgid "Acid Jazz"
-#~ msgstr "Snagcheol Aigéadach"
-
-#~ msgid "Polka"
-#~ msgstr "Polca"
-
-#~ msgid "Retro"
-#~ msgstr "Aischeol"
-
-#~ msgid "Musical"
-#~ msgstr "Ceolra"
-
-#~ msgid "Rock & Roll"
-#~ msgstr "Rac Is Roll"
-
-#~ msgid "Hard Rock"
-#~ msgstr "Rac-Cheol Crua"
-
-#~ msgid "Folk"
-#~ msgstr "Ceol na nDaoine"
-
-#~ msgid "Folk/Rock"
-#~ msgstr "Ceol Tíre/Rac-Cheol"
-
-#~ msgid "National Folk"
-#~ msgstr "Ceol an Náisiúin"
-
-#~ msgid "Swing"
-#~ msgstr "Luasc-Cheol"
-
-#~ msgid "Fast-Fusion"
-#~ msgstr "Comhleá Tapa"
-
-#~ msgid "Bebob"
-#~ msgstr "Bap"
-
-#, fuzzy
-#~ msgid "Latin"
-#~ msgstr "Laitvis"
-
-#~ msgid "Revival"
-#~ msgstr "Athbheochan"
-
-#~ msgid "Celtic"
-#~ msgstr "Ceilteach"
-
-#~ msgid "Bluegrass"
-#~ msgstr "Bluegrass"
-
-#~ msgid "Avantgarde"
-#~ msgstr "Avant garde"
-
-#~ msgid "Gothic Rock"
-#~ msgstr "Rac Gotach"
-
-#~ msgid "Progressive Rock"
-#~ msgstr "Rac Forásach"
-
-#~ msgid "Psychedelic Rock"
-#~ msgstr "Rac Sícideileach"
-
-#~ msgid "Symphonic Rock"
-#~ msgstr "Rac Siansach"
-
-#~ msgid "Slow Rock"
-#~ msgstr "Rac-Cheol Mall"
-
-#~ msgid "Big Band"
-#~ msgstr "Banna Mór"
-
-#~ msgid "Chorus"
-#~ msgstr "Cór"
-
-#~ msgid "Easy Listening"
-#~ msgstr "Récheol"
-
-#~ msgid "Acoustic"
-#~ msgstr "Fuaimiúil"
-
-#~ msgid "Humour"
-#~ msgstr "Greann"
-
-#~ msgid "Speech"
-#~ msgstr "Caint"
-
-#~ msgid "Chanson"
-#~ msgstr "Chanson"
-
-#~ msgid "Opera"
-#~ msgstr "Ceoldráma"
-
-#~ msgid "Chamber Music"
-#~ msgstr "Ceol Aireagail"
-
-#~ msgid "Sonata"
-#~ msgstr "Sonáid"
-
-#~ msgid "Symphony"
-#~ msgstr "Siansa"
-
-#~ msgid "Booty Bass"
-#~ msgstr "Dord Búití"
-
-#~ msgid "Primus"
-#~ msgstr "Primus"
-
-#~ msgid "Porn Groove"
-#~ msgstr "PornGrúibh"
-
-#~ msgid "Satire"
-#~ msgstr "Aoir"
-
-#~ msgid "Slow Jam"
-#~ msgstr "Seam Mall"
-
-#~ msgid "Club"
-#~ msgstr "Club"
-
-#~ msgid "Tango"
-#~ msgstr "Tangó"
-
-#~ msgid "Samba"
-#~ msgstr "Samba"
-
-#~ msgid "Folklore"
-#~ msgstr "Béaloideas"
-
-#~ msgid "Ballad"
-#~ msgstr "Bailéad"
-
-#~ msgid "Power Ballad"
-#~ msgstr "Bailéad Cumhachta"
-
-#~ msgid "Rhythmic Soul"
-#~ msgstr "Anamcheol Rithimeach"
-
-#~ msgid "Freestyle"
-#~ msgstr "Saorstíl"
-
-#~ msgid "Duet"
-#~ msgstr "Díséad"
-
-#~ msgid "Punk Rock"
-#~ msgstr "Punc-Rac"
-
-#~ msgid "Drum Solo"
-#~ msgstr "Aonréad Druma"
-
-#~ msgid "A Cappella"
-#~ msgstr "A Cappella"
-
-#~ msgid "Euro-House"
-#~ msgstr "Eora-Teach"
-
-#~ msgid "Dance Hall"
-#~ msgstr "Halla Damhsa"
-
-#~ msgid "Goa"
-#~ msgstr "Goa"
-
-#~ msgid "Drum & Bass"
-#~ msgstr "Druma & Dord"
-
-#~ msgid "Club-House"
-#~ msgstr "Clubtheach"
-
-#~ msgid "Hardcore"
-#~ msgstr "Fíorchrua"
-
-#~ msgid "Terror"
-#~ msgstr "Uafás"
-
-#~ msgid "Indie"
-#~ msgstr "Neamhspleách"
-
-#~ msgid "BritPop"
-#~ msgstr "BriotPhop"
-
-#~ msgid "Negerpunk"
-#~ msgstr "Negerpunk"
-
-#~ msgid "Polsk Punk"
-#~ msgstr "Punc Polannach"
-
-#~ msgid "Beat"
-#~ msgstr "Buille"
-
-#~ msgid "Christian Gangsta Rap"
-#~ msgstr "Rapcheol Críostaí Gangstaeir"
-
-#~ msgid "Heavy Metal"
-#~ msgstr "Ceol Trom-Mhiotalach"
-
-#~ msgid "Black Metal"
-#~ msgstr "Miotal Dubh"
-
-#~ msgid "Crossover"
-#~ msgstr "Trasach"
-
-#~ msgid "Contemporary Christian"
-#~ msgstr "Críostaí Comhaimseartha"
-
-#~ msgid "Christian Rock"
-#~ msgstr "Rac-Cheol Críostaí"
-
-#~ msgid "Merengue"
-#~ msgstr "Meireang"
-
-#~ msgid "Salsa"
-#~ msgstr "Salsa"
-
-#~ msgid "Thrash Metal"
-#~ msgstr "Miotal Traiseála"
-
-# no "é"
-#~ msgid "Anime"
-#~ msgstr "Anime"
-
-#~ msgid "JPop"
-#~ msgstr "JPap"
-
-#~ msgid "Synthpop"
-#~ msgstr "Popcheol sintéiseach"
-
-#~ msgid "Commands"
-#~ msgstr "Orduithe"
-
-#~ msgid "System calls"
-#~ msgstr "Glaonna ar an chóras"
-
-#~ msgid "Library calls"
-#~ msgstr "Glaonna ar leabharlanna"
-
-#~ msgid "Special files"
-#~ msgstr "Comhaid speisialta"
-
-#~ msgid "File formats and conventions"
-#~ msgstr "Formáidí comhaid agus coinbhinsiúin"
-
-#~ msgid "Games"
-#~ msgstr "Cluichí"
-
-#~ msgid "Conventions and miscellaneous"
-#~ msgstr "Coinbhinsiúin agus rudaí eile"
-
-#~ msgid "System management commands"
-#~ msgstr "Orduithe bainisteoireacht an chórais"
-
-#~ msgid "Kernel routines"
-#~ msgstr "Feidhmeanna eithne"
-
-#, fuzzy
-#~ msgid "joint stereo"
-#~ msgstr "steirió"
-
-#, fuzzy
-#~ msgid "no copyright"
-#~ msgstr "cóipcheart"
-
-#, fuzzy
-#~ msgid "copy"
-#~ msgstr "comhlacht"
-
-#~ msgid "codec: %s, %u fps, %u ms"
-#~ msgstr "codec: %s, %u fss, %u ms"
+#: src/plugins/riff_extractor.c:145
+#, c-format
+msgid "codec: %s, %u fps, %u ms"
+msgstr "codec: %s, %u fss, %u ms"
 
 #, fuzzy
 #~ msgid "%ux%u dots per inch"

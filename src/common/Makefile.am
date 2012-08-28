@@ -13,6 +13,7 @@ libextractor_common_la_LIBADD = \
   $(LTLIBICONV) -lz
 
 libextractor_common_la_SOURCES = \
+  le_architecture.h \
   unzip.c \
   unzip.h \
   pack.c \

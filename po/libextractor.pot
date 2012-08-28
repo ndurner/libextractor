@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2012-08-17 20:43+0200\n"
+"POT-Creation-Date: 2012-08-28 10:29+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -494,7 +494,7 @@ msgstr ""
 msgid "description"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:149
+#: src/main/extractor_metatypes.c:149 src/plugins/old/mp3_extractor.c:206
 msgid "copyright"
 msgstr ""
 
@@ -1796,7 +1796,31 @@ msgstr ""
 msgid "chapters, contents or bookmarks (in xml format)"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:544 src/main/extractor_metatypes.c:545
+#: src/main/extractor_metatypes.c:544
+msgid "video duration"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:545
+msgid "duration of a video stream"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:546
+msgid "audio duration"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:547
+msgid "duration of an audio stream"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:548
+msgid "subtitle duration"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:549
+msgid "duration of a subtitle stream"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:551 src/main/extractor_metatypes.c:552
 msgid "last"
 msgstr ""
 
@@ -1858,6 +1882,710 @@ msgstr ""
 #: src/plugins/flac_extractor.c:314
 #, c-format
 msgid "%u Hz, %u channels"
+msgstr ""
+
+#: src/plugins/man_extractor.c:215
+msgid "Commands"
+msgstr ""
+
+#: src/plugins/man_extractor.c:219
+msgid "System calls"
+msgstr ""
+
+#: src/plugins/man_extractor.c:223
+msgid "Library calls"
+msgstr ""
+
+#: src/plugins/man_extractor.c:227
+msgid "Special files"
+msgstr ""
+
+#: src/plugins/man_extractor.c:231
+msgid "File formats and conventions"
+msgstr ""
+
+#: src/plugins/man_extractor.c:235
+msgid "Games"
+msgstr ""
+
+#: src/plugins/man_extractor.c:239
+msgid "Conventions and miscellaneous"
+msgstr ""
+
+#: src/plugins/man_extractor.c:243
+msgid "System management commands"
+msgstr ""
+
+#: src/plugins/man_extractor.c:247
+msgid "Kernel routines"
+msgstr ""
+
+#: src/plugins/old/applefile_extractor.c:162
+msgid "GB"
+msgstr ""
+
+#: src/plugins/old/applefile_extractor.c:164
+msgid "MB"
+msgstr ""
+
+#: src/plugins/old/applefile_extractor.c:166
+msgid "KB"
+msgstr ""
+
+#: src/plugins/old/applefile_extractor.c:168
+msgid "Bytes"
+msgstr ""
+
+#: src/plugins/old/mp3_extractor.c:95 src/plugins/wav_extractor.c:120
+msgid "stereo"
+msgstr ""
+
+#: src/plugins/old/mp3_extractor.c:96
+msgid "joint stereo"
+msgstr ""
+
+#: src/plugins/old/mp3_extractor.c:97
+msgid "dual channel"
+msgstr ""
+
+#: src/plugins/old/mp3_extractor.c:98 src/plugins/wav_extractor.c:120
+msgid "mono"
+msgstr ""
+
+#: src/plugins/old/mp3_extractor.c:101
+msgid "MPEG-1"
+msgstr ""
+
+#: src/plugins/old/mp3_extractor.c:102
+msgid "MPEG-2"
+msgstr ""
+
+#: src/plugins/old/mp3_extractor.c:103
+msgid "MPEG-2.5"
+msgstr ""
+
+#: src/plugins/old/mp3_extractor.c:106
+msgid "Layer I"
+msgstr ""
+
+#: src/plugins/old/mp3_extractor.c:107
+msgid "Layer II"
+msgstr ""
+
+#: src/plugins/old/mp3_extractor.c:108
+msgid "Layer III"
+msgstr ""
+
+#: src/plugins/old/mp3_extractor.c:203
+msgid "VBR"
+msgstr ""
+
+#: src/plugins/old/mp3_extractor.c:203
+msgid "CBR"
+msgstr ""
+
+#: src/plugins/old/mp3_extractor.c:206
+msgid "no copyright"
+msgstr ""
+
+#: src/plugins/old/mp3_extractor.c:207
+msgid "original"
+msgstr ""
+
+#: src/plugins/old/mp3_extractor.c:207
+msgid "copy"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:30
+msgid "Blues"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:31
+msgid "Classic Rock"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:32
+msgid "Country"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:33
+msgid "Dance"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:34
+msgid "Disco"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:35
+msgid "Funk"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:36
+msgid "Grunge"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:37
+msgid "Hip-Hop"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:38
+msgid "Jazz"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:39
+msgid "Metal"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:40
+msgid "New Age"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:41
+msgid "Oldies"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:42
+msgid "Other"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:43
+msgid "Pop"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:44
+msgid "R&B"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:45
+msgid "Rap"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:46
+msgid "Reggae"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:47
+msgid "Rock"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:48
+msgid "Techno"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:49
+msgid "Industrial"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:50
+msgid "Alternative"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:51
+msgid "Ska"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:52
+msgid "Death Metal"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:53
+msgid "Pranks"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:54
+msgid "Soundtrack"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:55
+msgid "Euro-Techno"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:56
+msgid "Ambient"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:57
+msgid "Trip-Hop"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:58
+msgid "Vocal"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:59
+msgid "Jazz+Funk"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:60
+msgid "Fusion"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:61
+msgid "Trance"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:62
+msgid "Classical"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:63
+msgid "Instrumental"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:64
+msgid "Acid"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:65
+msgid "House"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:66
+msgid "Game"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:67
+msgid "Sound Clip"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:68
+msgid "Gospel"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:69
+msgid "Noise"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:70
+msgid "Alt. Rock"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:71
+msgid "Bass"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:72
+msgid "Soul"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:73
+msgid "Punk"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:74
+msgid "Space"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:75
+msgid "Meditative"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:76
+msgid "Instrumental Pop"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:77
+msgid "Instrumental Rock"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:78
+msgid "Ethnic"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:79
+msgid "Gothic"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:80
+msgid "Darkwave"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:81
+msgid "Techno-Industrial"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:82
+msgid "Electronic"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:83
+msgid "Pop-Folk"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:84
+msgid "Eurodance"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:85
+msgid "Dream"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:86
+msgid "Southern Rock"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:87
+msgid "Comedy"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:88
+msgid "Cult"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:89
+msgid "Gangsta Rap"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:90
+msgid "Top 40"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:91
+msgid "Christian Rap"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:92
+msgid "Pop/Funk"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:93
+msgid "Jungle"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:94
+msgid "Native American"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:95
+msgid "Cabaret"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:96
+msgid "New Wave"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:97
+msgid "Psychedelic"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:98
+msgid "Rave"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:99
+msgid "Showtunes"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:100
+msgid "Trailer"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:101
+msgid "Lo-Fi"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:102
+msgid "Tribal"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:103
+msgid "Acid Punk"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:104
+msgid "Acid Jazz"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:105
+msgid "Polka"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:106
+msgid "Retro"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:107
+msgid "Musical"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:108
+msgid "Rock & Roll"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:109
+msgid "Hard Rock"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:110
+msgid "Folk"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:111
+msgid "Folk/Rock"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:112
+msgid "National Folk"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:113
+msgid "Swing"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:114
+msgid "Fast-Fusion"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:115
+msgid "Bebob"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:116
+msgid "Latin"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:117
+msgid "Revival"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:118
+msgid "Celtic"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:119
+msgid "Bluegrass"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:120
+msgid "Avantgarde"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:121
+msgid "Gothic Rock"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:122
+msgid "Progressive Rock"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:123
+msgid "Psychedelic Rock"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:124
+msgid "Symphonic Rock"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:125
+msgid "Slow Rock"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:126
+msgid "Big Band"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:127
+msgid "Chorus"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:128
+msgid "Easy Listening"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:129
+msgid "Acoustic"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:130
+msgid "Humour"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:131
+msgid "Speech"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:132
+msgid "Chanson"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:133
+msgid "Opera"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:134
+msgid "Chamber Music"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:135
+msgid "Sonata"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:136
+msgid "Symphony"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:137
+msgid "Booty Bass"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:138
+msgid "Primus"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:139
+msgid "Porn Groove"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:140
+msgid "Satire"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:141
+msgid "Slow Jam"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:142
+msgid "Club"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:143
+msgid "Tango"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:144
+msgid "Samba"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:145
+msgid "Folklore"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:146
+msgid "Ballad"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:147
+msgid "Power Ballad"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:148
+msgid "Rhythmic Soul"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:149
+msgid "Freestyle"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:150
+msgid "Duet"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:151
+msgid "Punk Rock"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:152
+msgid "Drum Solo"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:153
+msgid "A Cappella"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:154
+msgid "Euro-House"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:155
+msgid "Dance Hall"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:156
+msgid "Goa"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:157
+msgid "Drum & Bass"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:158
+msgid "Club-House"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:159
+msgid "Hardcore"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:160
+msgid "Terror"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:161
+msgid "Indie"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:162
+msgid "BritPop"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:163
+msgid "Negerpunk"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:164
+msgid "Polsk Punk"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:165
+msgid "Beat"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:166
+msgid "Christian Gangsta Rap"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:167
+msgid "Heavy Metal"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:168
+msgid "Black Metal"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:169
+msgid "Crossover"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:170
+msgid "Contemporary Christian"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:171
+msgid "Christian Rock"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:172
+msgid "Merengue"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:173
+msgid "Salsa"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:174
+msgid "Thrash Metal"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:175
+msgid "Anime"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:176
+msgid "JPop"
+msgstr ""
+
+#: src/plugins/old/qt_extractor.c:177
+msgid "Synthpop"
 msgstr ""
 
 #: src/plugins/ole2_extractor.c:387
@@ -1941,10 +2669,7 @@ msgstr ""
 msgid "Revision #%u: Author `%s' worked on `%s'"
 msgstr ""
 
-#: src/plugins/wav_extractor.c:120
-msgid "mono"
-msgstr ""
-
-#: src/plugins/wav_extractor.c:120
-msgid "stereo"
+#: src/plugins/riff_extractor.c:145
+#, c-format
+msgid "codec: %s, %u fps, %u ms"
 msgstr ""

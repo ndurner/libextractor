@@ -15,6 +15,7 @@ PLUGINFLAGS = $(makesymbolic) $(LE_PLUGIN_LDFLAGS)
 SUBDIRS = . 
 
 EXTRA_DIST = \
+  fuzz_default.sh \
   template_extractor.c \
   testdata/archive_test.tar \
   testdata/deb_bzip2.deb \
@@ -227,7 +228,7 @@ noinst_LTLIBRARIES = \
   libtest.la
 
 libtest_la_SOURCES = \
-  test_lib.c 
+  test_lib.c test_lib.h
 libtest_la_LIBADD = \
   $(top_builddir)/src/main/libextractor.la
 
