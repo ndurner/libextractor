@@ -2,6 +2,7 @@
 AC_PREREQ(2.61)
 AC_INIT([libextractor], [0.7.0], [bug-libextractor@gnu.org])
 AC_CONFIG_HEADERS([config.h])
+AC_CONFIG_MACRO_DIR([m4])
 AH_TOP([#define _GNU_SOURCE  1])
 AC_CANONICAL_TARGET
 AC_CANONICAL_HOST
@@ -14,8 +15,6 @@ AC_SUBST(LIB_VERSION_CURRENT)
 AC_SUBST(LIB_VERSION_REVISION)
 AC_SUBST(LIB_VERSION_AGE)
 
-LT_CONFIG_LTDL_DIR([libltdl])
-AC_CONFIG_AUX_DIR([libltdl/config])
 AM_INIT_AUTOMAKE([silent-rules])
 
 # Checks for programs.
@@ -30,6 +29,8 @@ AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_PROG_MAKE_SET
 AC_CANONICAL_HOST
+AC_LIBLTDL_CONVENIENCE
+AC_PROG_LIBTOOL
 # save LIBS, libtool does a AC_SEARCH_LIBS(dlopen, dl), but plugins
 # need not have -ldl added
 LIBSOLD=$LIBS
@@ -530,7 +531,6 @@ AC_CHECK_LIB(gsf-1, gsf_init, AC_DEFINE(HAVE_GSF_INIT,1,[gsf_init supported]))
 AC_CHECK_PROG([HAVE_ZZUF],[zzuf], 1, 0)
 AM_CONDITIONAL(HAVE_ZZUF, test 0 != $HAVE_ZZUF)
 
-ffmpeg_enabled=0
 AC_MSG_CHECKING([whether to enable the FFmpeg thumbnail extractor])
 AC_ARG_ENABLE(ffmpeg,
  [AC_HELP_STRING([--enable-ffmpeg],[Enable FFmpeg support])
@@ -543,16 +543,16 @@ AC_ARG_ENABLE(ffmpeg,
         ffmpeg_enabled=1
 	;;
   esac],
-  [     AC_MSG_RESULT(no)
-        ffmpeg_enabled=0])
-AM_CONDITIONAL(HAVE_FFMPEG, test x$ffmpeg_enabled != x0)
+  [     AC_MSG_RESULT(yes)
+        ffmpeg_enabled=1])
 if test x$ffmpeg_enabled = x1
 then
-  AC_CHECK_HEADERS(libavutil/avutil.h ffmpeg/avutil.h)
-  AC_CHECK_HEADERS(libavformat/avformat.h ffmpeg/avformat.h)
-  AC_CHECK_HEADERS(libavcodec/avcodec.h ffmpeg/avcodec.h)
-  AC_CHECK_HEADERS(libswscale/swscale.h ffmpeg/swscale.h)
+  ffmpeg_enabled=0
+  AC_CHECK_LIB(swscale, sws_getContext,
+    ffmpeg_enabled=1)
+  AC_CHECK_HEADERS([libavutil/avutil.h ffmpeg/avutil.h libavformat/avformat.h ffmpeg/avformat.h libavcodec/avcodec.h ffmpeg/avcodec.h libswscale/swscale.h ffmpeg/swscale.h])
 fi
+AM_CONDITIONAL(HAVE_FFMPEG, test x$ffmpeg_enabled != x0)
 
 
 LE_INTLINCL=""
@@ -658,8 +658,6 @@ fi
 if test "x$ffmpeg_enabled" = "x0"
 then
  AC_MSG_NOTICE([NOTICE: FFmpeg thumbnailer plugin disabled])
-else 
- AC_MSG_NOTICE([NOTICE: FFmpeg thumbnailer plugin enabled (security untested)])
 fi
 
 if test "x$without_gtk" = "xtrue" 
