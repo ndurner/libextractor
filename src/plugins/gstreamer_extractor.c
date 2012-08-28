@@ -625,7 +625,7 @@ struct PrivStruct
   struct EXTRACTOR_ExtractContext *ec;
   long length;
   guint64 offset;
-  long toc_depth;
+  int toc_depth;
   size_t toc_length;
   size_t toc_pos;
   gchar *toc;
@@ -754,7 +754,6 @@ _source_setup (GstDiscoverer * dc, GstElement * source, struct PrivStruct * ps)
 static void
 feed_data (GstElement * appsrc, guint size, struct PrivStruct * ps)
 {
-  GstFlowReturn ret;
   long data_len;
   uint8_t *le_data;
   guint accumulated;
@@ -765,7 +764,7 @@ feed_data (GstElement * appsrc, guint size, struct PrivStruct * ps)
 
   if (ps->length > 0 && ps->offset >= ps->length) {
     /* we are at the EOS, send end-of-stream */
-    ret = gst_app_src_end_of_stream (GST_APP_SRC (ps->source));
+    gst_app_src_end_of_stream (GST_APP_SRC (ps->source));
     return;
   }
 
@@ -777,7 +776,7 @@ feed_data (GstElement * appsrc, guint size, struct PrivStruct * ps)
   {
     gst_memory_unref (mem);
     GST_DEBUG ("Failed to map the memory");
-    ret = gst_app_src_end_of_stream (GST_APP_SRC (ps->source));
+    gst_app_src_end_of_stream (GST_APP_SRC (ps->source));
     return;
   }
 
@@ -805,13 +804,13 @@ feed_data (GstElement * appsrc, guint size, struct PrivStruct * ps)
 
     GST_DEBUG ("feed buffer %p, offset %" G_GUINT64_FORMAT "-%u", buffer,
         ps->offset, size);
-    ret = gst_app_src_push_buffer (GST_APP_SRC (ps->source), buffer);
+    gst_app_src_push_buffer (GST_APP_SRC (ps->source), buffer);
     ps->offset += size;
   }
   else
   {
     gst_memory_unref (mem);
-    ret = gst_app_src_end_of_stream (GST_APP_SRC (ps->source));
+    gst_app_src_end_of_stream (GST_APP_SRC (ps->source));
   }
 
   return;
@@ -864,6 +863,7 @@ send_structure_foreach (GQuark field_id, const GValue *value,
         return TRUE;
     break;
   case STREAM_TYPE_CONTAINER:
+  case STREAM_TYPE_NONE:
     break;
   }
 
@@ -917,9 +917,9 @@ send_audio_info (GstDiscovererAudioInfo *info, struct PrivStruct *ps)
 
   ctmp = gst_discoverer_audio_info_get_language (info);
   if (ctmp)
-    if (ps->time_to_leave = ps->ec->proc (ps->ec->cls, "gstreamer",
+    if ((ps->time_to_leave = ps->ec->proc (ps->ec->cls, "gstreamer",
         EXTRACTOR_METATYPE_AUDIO_LANGUAGE, EXTRACTOR_METAFORMAT_UTF8, "text/plain",
-        (const char *) ctmp, strlen (ctmp) + 1))
+        (const char *) ctmp, strlen (ctmp) + 1)))
       return TRUE;
 
   u = gst_discoverer_audio_info_get_channels (info);
@@ -1074,14 +1074,13 @@ send_video_info (GstDiscovererVideoInfo *info, struct PrivStruct *ps)
 static int
 send_subtitle_info (GstDiscovererSubtitleInfo *info, struct PrivStruct *ps)
 {
-  gchar *tmp;
   const gchar *ctmp;
 
   ctmp = gst_discoverer_subtitle_info_get_language (info);
   if (ctmp)
-    if (ps->time_to_leave = ps->ec->proc (ps->ec->cls, "gstreamer",
+    if ((ps->time_to_leave = ps->ec->proc (ps->ec->cls, "gstreamer",
         EXTRACTOR_METATYPE_SUBTITLE_LANGUAGE, EXTRACTOR_METAFORMAT_UTF8, "text/plain",
-        (const char *) ctmp, strlen (ctmp) + 1))
+        (const char *) ctmp, strlen (ctmp) + 1)))
       return TRUE;
 
   return FALSE;
@@ -1090,7 +1089,6 @@ send_subtitle_info (GstDiscovererSubtitleInfo *info, struct PrivStruct *ps)
 static void
 send_stream_info (GstDiscovererStreamInfo * info, struct PrivStruct *ps)
 {
-  gchar *desc = NULL;
   const GstStructure *misc;
   GstCaps *caps;
   const GstTagList *tags;
@@ -1166,7 +1164,7 @@ send_stream_info (GstDiscovererStreamInfo * info, struct PrivStruct *ps)
     {
       GstDiscovererStreamInfo *sinfo = child->data;
       /* send_streams () will unref it */
-      gst_discoverer_stream_info_ref (sinfo);
+      sinfo = gst_discoverer_stream_info_ref (sinfo);
       send_streams (sinfo, ps);
     }
     if (children)
@@ -1240,7 +1238,6 @@ send_tag_foreach (const GstTagList * tags, const gchar * tag,
       if (G_VALUE_TYPE (&val) == GST_TYPE_SAMPLE && (sample = gst_value_get_sample (&val)))
       {
         GstMapInfo mi;
-        const gchar *structname;
         GstCaps *caps;
 
         caps = gst_sample_get_caps (sample);
@@ -1571,7 +1568,6 @@ send_streams (GstDiscovererStreamInfo *info, struct PrivStruct *ps)
 static void
 send_info (GstDiscovererInfo * info, struct PrivStruct *ps)
 {
-  const GstTagList *tags;
   const GstToc *toc;
   gchar *s;
   GstDiscovererStreamInfo *sinfo;
@@ -1601,7 +1597,7 @@ send_info (GstDiscovererInfo * info, struct PrivStruct *ps)
   if (ps->time_to_leave)
     return;
 
-  if (toc = gst_discoverer_info_get_toc (info))
+  if ((toc = gst_discoverer_info_get_toc (info)))
   {
     GList *entries;
 
