@@ -689,7 +689,9 @@ EXTRACTOR_exiv2_extract_method (struct EXTRACTOR_ExtractContext *ec)
 {
   try
     {	    
+#if EXIV2_MAKE_VERSION(0,23,0) <= EXIV2_VERSION
       Exiv2::LogMsg::setLevel (Exiv2::LogMsg::mute);
+#endif
       std::auto_ptr<Exiv2::BasicIo> eio(new ExtractorIO (ec));
       Exiv2::Image::AutoPtr image = Exiv2::ImageFactory::open (eio);
       if (0 == image.get ())
