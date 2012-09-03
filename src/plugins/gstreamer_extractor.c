@@ -1606,8 +1606,7 @@ send_info (GstDiscovererInfo * info, struct PrivStruct *ps)
     ps->toc_length = 0;
     g_list_foreach (entries, send_toc_foreach, ps);
 
-    /* FIXME: correct limit */
-    if (ps->toc_length > 0 && ps->toc_length < 32*1024 - 1 - strlen (TOC_XML_HEADER))
+    if (ps->toc_length > 0)
     {
       ps->toc_print_phase = TRUE;
       ps->toc_length += 1 + strlen (TOC_XML_HEADER);
@@ -1619,7 +1618,8 @@ send_info (GstDiscovererInfo * info, struct PrivStruct *ps)
       ps->time_to_leave = ps->ec->proc (ps->ec->cls, "gstreamer",
           EXTRACTOR_METATYPE_TOC, EXTRACTOR_METAFORMAT_C_STRING, "application/xml",
           (const char *) ps->toc, ps->toc_length);
-
+      g_free (ps->toc);
+      ps->toc = NULL;
     }
   }
 
