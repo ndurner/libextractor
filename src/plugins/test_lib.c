@@ -55,10 +55,17 @@ process_replies (void *cls,
     {
       if ( (0 != sd[i].solved) ||
 	   (sd[i].type != type) ||
-	   (sd[i].format != format) ||
-	   (sd[i].data_len != data_len) ||
-	   (0 != memcmp (sd[i].data, data, data_len)) )
+	   (sd[i].format != format) )
 	continue;
+      if ( (EXTRACTOR_METAFORMAT_BINARY != format) &&
+	   ( (sd[i].data_len != data_len) ||
+	     (0 != memcmp (sd[i].data, data, data_len)) ) )
+	continue;
+      if ( (EXTRACTOR_METAFORMAT_BINARY == format) &&
+	   ( (sd[i].data_len > data_len) ||
+	     (0 != memcmp (sd[i].data, data, sd[i].data_len)) ) )
+	continue;
+      
       if (NULL != sd[i].data_mime_type)
 	{
 	  if (NULL == data_mime_type)
