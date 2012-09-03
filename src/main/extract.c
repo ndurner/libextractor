@@ -847,7 +847,7 @@ main (int argc, char *argv[])
 	  if (NULL != data)
 	    free (data);
 	  if (-1 != f)
-	    close (f);
+	    (void) close (f);
 	}
       if (YES == grepfriendly)
 	fprintf (stdout, "\n");
