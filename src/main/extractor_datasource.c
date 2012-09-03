@@ -321,6 +321,7 @@ bfds_seek (struct BufferedFileDataSource *bfds,
 	   int64_t pos, int whence)
 {
   uint64_t npos;
+  size_t nbpos;
 
   switch (whence)
     {
@@ -334,11 +335,11 @@ bfds_seek (struct BufferedFileDataSource *bfds,
 	       (unsigned long long) bfds->fsize);
 	  return -1;
 	}
+      nbpos = bfds->buffer_pos + pos;
       if ( (NULL == bfds->buffer) ||
-	   ( (bfds->buffer_pos + pos < bfds->buffer_bytes) &&
-	     (bfds->buffer_pos + pos >= 0) ) )
+	   (nbpos < bfds->buffer_bytes) )
 	{
-	  bfds->buffer_pos += pos; 
+	  bfds->buffer_pos = nbpos; 
 	  return npos;
 	}
       if (0 != bfds_pick_next_buffer_at (bfds, 
