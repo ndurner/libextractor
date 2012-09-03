@@ -170,7 +170,8 @@ EXTRACTOR_ps_extract_method (struct EXTRACTOR_ExtractContext *ec)
 	  while ( (NULL != next) &&
 		  (0 == strncmp (next, "%%+", strlen ("%%+"))) )
 	    {
-	      acc = malloc (strlen (line) + strlen (next) - 1);
+	      if (NULL == (acc = malloc (strlen (line) + strlen (next) - 1)))		
+		break;			      
 	      strcpy (acc, line);
 	      strcat (acc, " ");
 	      strcat (acc, next + 3);
