@@ -320,15 +320,13 @@ static int64_t
 bfds_seek (struct BufferedFileDataSource *bfds, 
 	   int64_t pos, int whence)
 {
+  uint64_t npos;
+
   switch (whence)
     {
     case SEEK_CUR:
-      if (bfds->fpos + bfds->buffer_pos + pos < 0)
-	{
-	  LOG ("Invalid seek operation\n");
-	  return -1;
-	}
-      if (bfds->fpos + bfds->buffer_pos + pos > bfds->fsize)
+      npos = bfds->fpos + bfds->buffer_pos + pos;
+      if (npos > bfds->fsize)
 	{
 	  LOG ("Invalid seek operation to %lld from %llu (max is %llu)\n",
 	       (long long) pos,
@@ -341,15 +339,15 @@ bfds_seek (struct BufferedFileDataSource *bfds,
 	     (bfds->buffer_pos + pos >= 0) ) )
 	{
 	  bfds->buffer_pos += pos; 
-	  return bfds->buffer_pos + bfds->fpos;
+	  return npos;
 	}
       if (0 != bfds_pick_next_buffer_at (bfds, 
-					 bfds->fpos + bfds->buffer_pos + pos))
+					 npos))
 	{
 	  LOG ("seek operation failed\n");
 	  return -1;
 	}
-      return bfds->fpos;
+      return npos;
     case SEEK_END:
       if (pos > 0)
 	{
