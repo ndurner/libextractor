@@ -101,7 +101,9 @@ check_PROGRAMS = \
  test_gzip \
  test_bzip2 
 
+if ENABLE_TEST_RUN
 TESTS = $(check_PROGRAMS)
+endif
 
 test_trivial_SOURCES = \
  test_trivial.c 

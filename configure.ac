@@ -380,6 +380,18 @@ AC_CHECK_LIB(tidy, tidyInitSource,
 LIBS=$LIBSOLD
 
 
+
+# should 'make check' run tests?
+AC_MSG_CHECKING(whether to run tests)
+AC_ARG_ENABLE([testruns],
+   [AS_HELP_STRING([--disable-testruns], [disable running tests on make check (default is YES)])],
+   [enable_tests_run=${enableval}],
+   [enable_tests_run=yes])
+AC_MSG_RESULT($enable_test_run)
+AM_CONDITIONAL([ENABLE_TEST_RUN], [test "x$enable_tests_run" = "xyes"])
+
+
+
 # Checks for header files.
 AC_HEADER_STDC
 AC_HEADER_DIRENT

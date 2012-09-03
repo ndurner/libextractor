@@ -221,10 +221,11 @@ check_PROGRAMS = \
   $(TEST_TIFF) \
   $(TEST_ZLIB) 
 
+if ENABLE_TEST_RUN
 TESTS = \
   $(fuzz_tests) \
   $(check_PROGRAMS)
-
+endif
 
 noinst_LTLIBRARIES = \
   libtest.la
