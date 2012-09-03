@@ -317,6 +317,8 @@ plugin_env_send_proc (void *cls,
   size_t mime_len;
   unsigned char reply;
 
+  if (data_len > MAX_META_DATA)
+    return 0; /* skip, too large */
   if (NULL == data_mime_type)
     mime_len = 0;
   else
