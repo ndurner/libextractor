@@ -1012,7 +1012,7 @@ cfs_read (struct CompressedFileSource *cfs,
  */
 static int64_t
 cfs_seek (struct CompressedFileSource *cfs, 
-	  uint64_t position,
+	  int64_t position,
 	  int whence)
 {
   uint64_t nposition;
@@ -1023,6 +1023,7 @@ cfs_seek (struct CompressedFileSource *cfs,
     case SEEK_CUR:
       if (cfs->fpos + position < 0)
 	{
+	  /* underflow */
 	  LOG ("Invalid seek operation\n");
 	  return -1;
 	}
@@ -1353,7 +1354,7 @@ EXTRACTOR_datasource_read_ (void *cls,
  */
 int64_t
 EXTRACTOR_datasource_seek_ (void *cls,
-			    uint64_t pos,
+			    int64_t pos,
 			    int whence)
 {
   struct EXTRACTOR_Datasource *ds = cls;

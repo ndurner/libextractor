@@ -97,7 +97,7 @@ EXTRACTOR_datasource_read_ (void *cls,
  */
 int64_t
 EXTRACTOR_datasource_seek_ (void *cls,
-			    uint64_t pos,
+			    int64_t pos,
 			    int whence);
 
 
