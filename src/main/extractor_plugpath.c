@@ -305,7 +305,7 @@ get_path_from_PATH() {
       LOG_STRERROR ("strdup");
       return NULL;
     }
-  if (NULL == (buf = malloc (strlen(path) + 20)))
+  if (NULL == (buf = malloc (strlen (path) + 20)))
     {
       LOG_STRERROR ("malloc");
       free (path);
@@ -315,18 +315,19 @@ get_path_from_PATH() {
   while (NULL != (end = strchr(pos, ':'))) 
     {
       *end = '\0';
-      sprintf(buf, "%s/%s", pos, "extract");
+      sprintf (buf, "%s/%s", pos, "extract");
       if (0 == stat(buf, &sbuf)) 
 	{
 	  free (buf);
-	  free (path);
-	  if (NULL == (pos = strdup(pos)))
+	  if (NULL == (pos = strdup (pos)))
 	    {
 	      LOG_STRERROR ("strdup");
+	      free (path);
 	      return NULL;
 	    }
+	  free (path);
 	  pos = cut_bin (pos);
-	  if (NULL == (ret = realloc (pos, strlen(pos) + 5)))
+	  if (NULL == (ret = realloc (pos, strlen (pos) + 5)))
 	    {
 	      LOG_STRERROR ("realloc");
 	      free (pos);
@@ -337,7 +338,7 @@ get_path_from_PATH() {
 	}
       pos = end + 1;
     }
-  sprintf(buf, "%s/%s", pos, "extract");
+  sprintf (buf, "%s/%s", pos, "extract");
   if (0 == stat (buf, &sbuf)) 
     {
       pos = strdup (pos);
@@ -346,7 +347,7 @@ get_path_from_PATH() {
       if (NULL == pos)
 	return NULL;
       pos = cut_bin (pos);
-      if (NULL == (ret = realloc (pos, strlen(pos) + 5)))
+      if (NULL == (ret = realloc (pos, strlen (pos) + 5)))
 	{
 	  LOG_STRERROR ("realloc");
 	  free (pos);
@@ -355,8 +356,8 @@ get_path_from_PATH() {
       strcat (ret, "lib/");
       return ret;
     }
-  free(buf);
-  free(path);
+  free (buf);
+  free (path);
   return NULL;
 }
 
