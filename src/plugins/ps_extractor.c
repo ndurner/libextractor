@@ -208,6 +208,8 @@ EXTRACTOR_ps_extract_method (struct EXTRACTOR_ExtractContext *ec)
 	}
       free (line);
     }
+  if (NULL != next)
+    free (next);
 }
 
 /* end of ps_extractor.c */
