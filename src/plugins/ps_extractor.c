@@ -177,6 +177,7 @@ EXTRACTOR_ps_extract_method (struct EXTRACTOR_ExtractContext *ec)
 	      strcat (acc, next + 3);
 	      free (line);
 	      line = acc;
+	      free (next);
 	      next = readline (ec);
 	    }
 	  if ( (line[strlen (line) - 1] == ')') && 
