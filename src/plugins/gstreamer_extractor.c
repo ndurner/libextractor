@@ -24,7 +24,6 @@
  */
 #include "platform.h"
 #include "extractor.h"
-
 #include <glib.h>
 #include <glib-object.h>
 #include <gst/pbutils/pbutils.h>
@@ -52,6 +51,9 @@ struct KnownTag
 };
 
 
+/**
+ * Struct mapping known tags (that do occur in GST API) to LE tags.
+ */
 static struct KnownTag __known_tags[] =
 {
   /**
@@ -719,22 +721,26 @@ struct NamedTag
 };
 
 
+/**
+ * Mapping from GST tag names to LE types for tags that are not in
+ * the public GST API.
+ */
 struct NamedTag named_tags[] =
   {
-    "FPS", EXTRACTOR_METATYPE_FRAME_RATE,
-    "PLAY_COUNTER", EXTRACTOR_METATYPE_PLAY_COUNTER,
-    "RATING", EXTRACTOR_METATYPE_RATING,
-    "SUMMARY", EXTRACTOR_METATYPE_SUMMARY,
-    "SUBJECT", EXTRACTOR_METATYPE_SUBJECT,
-    "MOOD", EXTRACTOR_METATYPE_MOOD,
-    "LEAD_PERFORMER", EXTRACTOR_METATYPE_PERFORMER,
-    "DIRECTOR", EXTRACTOR_METATYPE_MOVIE_DIRECTOR,
-    "WRITTEN_BY", EXTRACTOR_METATYPE_WRITER,
-    "PRODUCER", EXTRACTOR_METATYPE_PRODUCER,
-    "PUBLISHER", EXTRACTOR_METATYPE_PUBLISHER,
-    "ORIGINAL/ARTIST", EXTRACTOR_METATYPE_ORIGINAL_ARTIST,
-    "ORIGINAL/TITLE", EXTRACTOR_METATYPE_ORIGINAL_TITLE,
-    NULL, EXTRACTOR_METATYPE_UNKNOWN
+    { "FPS", EXTRACTOR_METATYPE_FRAME_RATE },
+    { "PLAY_COUNTER", EXTRACTOR_METATYPE_PLAY_COUNTER },
+    { "RATING", EXTRACTOR_METATYPE_RATING },
+    { "SUMMARY", EXTRACTOR_METATYPE_SUMMARY },
+    { "SUBJECT", EXTRACTOR_METATYPE_SUBJECT },
+    { "MOOD", EXTRACTOR_METATYPE_MOOD },
+    { "LEAD_PERFORMER", EXTRACTOR_METATYPE_PERFORMER },
+    { "DIRECTOR", EXTRACTOR_METATYPE_MOVIE_DIRECTOR },
+    { "WRITTEN_BY", EXTRACTOR_METATYPE_WRITER },
+    { "PRODUCER", EXTRACTOR_METATYPE_PRODUCER },
+    { "PUBLISHER", EXTRACTOR_METATYPE_PUBLISHER },
+    { "ORIGINAL/ARTIST", EXTRACTOR_METATYPE_ORIGINAL_ARTIST },
+    { "ORIGINAL/TITLE", EXTRACTOR_METATYPE_ORIGINAL_TITLE },
+    { NULL, EXTRACTOR_METATYPE_UNKNOWN }
   };
 
 
@@ -747,6 +753,7 @@ enum CurrentStreamType
   STREAM_TYPE_CONTAINER = 4,
   STREAM_TYPE_IMAGE = 5
 };
+
 
 struct PrivStruct
 {
@@ -763,12 +770,14 @@ struct PrivStruct
   enum CurrentStreamType st;
 };
 
+
 struct InitData
 {
   GMainLoop *loop;
   GstDiscoverer *dc;
   struct PrivStruct *ps;
 };
+
 
 static GQuark *audio_quarks;
 
@@ -778,107 +787,6 @@ static GQuark *subtitle_quarks;
 
 static GQuark duration_quark;
 
-static void send_streams (GstDiscovererStreamInfo *info, struct PrivStruct *ps);
-
-static void send_tag_foreach (const GstTagList * tags, const gchar * tag,
-    gpointer user_data);
-
-static void send_discovered_info (GstDiscovererInfo * info, struct PrivStruct * ps);
-
-static void _source_setup (GstDiscoverer * dc, GstElement * source, struct PrivStruct * ps);
-
-static void feed_data (GstElement * appsrc, guint size, struct PrivStruct * ps);
-static gboolean seek_data (GstElement * appsrc, guint64 position, struct PrivStruct * ps);
-
-
-static void
-_new_discovered_uri (GstDiscoverer * dc, GstDiscovererInfo * info, GError * err, struct PrivStruct * ps)
-{
-  send_discovered_info (info, ps);
-}
-
-static void
-_discoverer_finished (GstDiscoverer * dc, struct InitData * id)
-{
-  g_main_loop_quit (id->loop);
-}
-
-static int
-initialize (struct InitData *id, struct PrivStruct *ps)
-{
-  GError *err = NULL;
-  gint timeout = 10;
-
-  gst_init (NULL, NULL);
-  GST_DEBUG_CATEGORY_INIT (gstreamer_extractor, "GstExtractor",
-                         0, "GStreamer-based libextractor plugin");
-  audio_quarks = g_new0 (GQuark, 4);
-  audio_quarks[0] = g_quark_from_string ("rate");
-  audio_quarks[1] = g_quark_from_string ("channels");
-  audio_quarks[2] = g_quark_from_string ("depth");
-  audio_quarks[3] = g_quark_from_string (NULL);
-
-  video_quarks = g_new0 (GQuark, 6);
-  video_quarks[0] = g_quark_from_string ("width");
-  video_quarks[1] = g_quark_from_string ("height");
-  video_quarks[2] = g_quark_from_string ("framerate");
-  video_quarks[3] = g_quark_from_string ("max-framerate");
-  video_quarks[4] = g_quark_from_string ("pixel-aspect-ratio");
-  video_quarks[5] = g_quark_from_string (NULL);
-
-  subtitle_quarks = g_new0 (GQuark, 2);
-  subtitle_quarks[0] = g_quark_from_string ("language-code");
-  subtitle_quarks[1] = g_quark_from_string (NULL);
-
-  duration_quark = g_quark_from_string ("duration");
-
-  id->dc = gst_discoverer_new (timeout * GST_SECOND, &err);
-  if (G_UNLIKELY (id->dc == NULL)) {
-    g_print ("Error initializing: %s\n", err->message);
-    return FALSE;
-  }
-  if (err)
-    g_error_free (err);
-  /* connect signals */
-  g_signal_connect (id->dc, "discovered", G_CALLBACK (_new_discovered_uri), ps);
-  g_signal_connect (id->dc, "finished", G_CALLBACK (_discoverer_finished), id);
-  g_signal_connect (id->dc, "source-setup", G_CALLBACK (_source_setup), ps);
-
-  id->loop = g_main_loop_new (NULL, TRUE);
-
-  id->ps = ps;
-
-  return TRUE;
-}
-
-/* this callback is called when discoverer has constructed a source object to
- * read from. Since we provided the appsrc:// uri to discoverer, this will be
- * the appsrc that we must handle. We set up some signals - one to push data
- * into appsrc and one to perform a seek. */
-static void
-_source_setup (GstDiscoverer * dc, GstElement * source, struct PrivStruct * ps)
-{
-  if (ps->source)
-    gst_object_unref (GST_OBJECT (ps->source));
-  ps->source = source;
-  gst_object_ref (source);
-
-  /* we can set the length in appsrc. This allows some elements to estimate the
-   * total duration of the stream. It's a good idea to set the property when you
-   * can but it's not required. */
-  if (ps->length > 0)
-  {
-    g_object_set (ps->source, "size", (gint64) ps->length, NULL);
-    gst_util_set_object_arg (G_OBJECT (ps->source), "stream-type", "random-access");
-  }
-  else
-    gst_util_set_object_arg (G_OBJECT (ps->source), "stream-type", "seekable");
-
-  /* configure the appsrc, we will push a buffer to appsrc when it needs more
-   * data */
-  g_signal_connect (ps->source, "need-data", G_CALLBACK (feed_data), ps);
-  g_signal_connect (ps->source, "seek-data", G_CALLBACK (seek_data), ps);
-}
 
 static void
 feed_data (GstElement * appsrc, guint size, struct PrivStruct * ps)
@@ -945,6 +853,7 @@ feed_data (GstElement * appsrc, guint size, struct PrivStruct * ps)
   return;
 }
 
+
 static gboolean
 seek_data (GstElement * appsrc, guint64 position, struct PrivStruct * ps)
 {
@@ -953,6 +862,7 @@ seek_data (GstElement * appsrc, guint64 position, struct PrivStruct * ps)
 
   return ps->offset >= 0;
 }
+
 
 static gboolean
 _run_async (struct InitData * id)
@@ -963,8 +873,9 @@ _run_async (struct InitData * id)
 
 
 static gboolean
-send_structure_foreach (GQuark field_id, const GValue *value,
-    gpointer user_data)
+send_structure_foreach (GQuark field_id, 
+			const GValue *value,
+			gpointer user_data)
 {
   struct PrivStruct *ps = user_data;
   gchar *str;
@@ -1052,8 +963,10 @@ send_structure_foreach (GQuark field_id, const GValue *value,
   return !ps->time_to_leave;
 }
 
+
 static int
-send_audio_info (GstDiscovererAudioInfo *info, struct PrivStruct *ps)
+send_audio_info (GstDiscovererAudioInfo *info, 
+		 struct PrivStruct *ps)
 {
   gchar *tmp;
   const gchar *ctmp;
@@ -1062,8 +975,10 @@ send_audio_info (GstDiscovererAudioInfo *info, struct PrivStruct *ps)
   ctmp = gst_discoverer_audio_info_get_language (info);
   if (ctmp)
     if ((ps->time_to_leave = ps->ec->proc (ps->ec->cls, "gstreamer",
-        EXTRACTOR_METATYPE_AUDIO_LANGUAGE, EXTRACTOR_METAFORMAT_UTF8, "text/plain",
-        (const char *) ctmp, strlen (ctmp) + 1)))
+					   EXTRACTOR_METATYPE_AUDIO_LANGUAGE,
+					   EXTRACTOR_METAFORMAT_UTF8, 
+					   "text/plain",
+					   (const char *) ctmp, strlen (ctmp) + 1)))
       return TRUE;
 
   u = gst_discoverer_audio_info_get_channels (info);
@@ -1128,6 +1043,7 @@ send_audio_info (GstDiscovererAudioInfo *info, struct PrivStruct *ps)
 
   return FALSE;
 }
+
 
 static int
 send_video_info (GstDiscovererVideoInfo *info, struct PrivStruct *ps)
@@ -1215,6 +1131,7 @@ send_video_info (GstDiscovererVideoInfo *info, struct PrivStruct *ps)
   return FALSE;
 }
 
+
 static int
 send_subtitle_info (GstDiscovererSubtitleInfo *info, struct PrivStruct *ps)
 {
@@ -1230,107 +1147,19 @@ send_subtitle_info (GstDiscovererSubtitleInfo *info, struct PrivStruct *ps)
   return FALSE;
 }
 
-static void
-send_stream_info (GstDiscovererStreamInfo * info, struct PrivStruct *ps)
-{
-  const GstStructure *misc;
-  GstCaps *caps;
-  const GstTagList *tags;
-
-  caps = gst_discoverer_stream_info_get_caps (info);
-
-  if (GST_IS_DISCOVERER_AUDIO_INFO (info))
-    ps->st = STREAM_TYPE_AUDIO;
-  else if (GST_IS_DISCOVERER_VIDEO_INFO (info))
-    ps->st = STREAM_TYPE_VIDEO;
-  else if (GST_IS_DISCOVERER_SUBTITLE_INFO (info))
-    ps->st = STREAM_TYPE_SUBTITLE;
-  else if (GST_IS_DISCOVERER_CONTAINER_INFO (info))
-    ps->st = STREAM_TYPE_CONTAINER;
-
-  if (caps)
-  {
-    GstStructure *structure = gst_caps_get_structure (caps, 0);
-    const gchar *structname = gst_structure_get_name (structure);
-    if (g_str_has_prefix (structname, "image/"))
-      ps->st = STREAM_TYPE_IMAGE;
-    ps->time_to_leave = ps->ec->proc (ps->ec->cls, "gstreamer",
-      EXTRACTOR_METATYPE_MIMETYPE, EXTRACTOR_METAFORMAT_UTF8, "text/plain",
-      (const char *) structname, strlen (structname) + 1);
-    if (!ps->time_to_leave)
-    {
-      gst_structure_foreach (structure, send_structure_foreach, ps);
-    }
-    gst_caps_unref (caps);
-  }
-
-  if (ps->time_to_leave)
-  {
-    ps->st = STREAM_TYPE_NONE;
-    return;
-  }
-
-  misc = gst_discoverer_stream_info_get_misc (info);
-  if (misc)
-  {
-    gst_structure_foreach (misc, send_structure_foreach, ps);
-  }
-
-  if (ps->time_to_leave)
-  {
-    ps->st = STREAM_TYPE_NONE;
-    return;
-  }
-
-  tags = gst_discoverer_stream_info_get_tags (info);
-  if (tags)
-  {
-    gst_tag_list_foreach (tags, send_tag_foreach, ps);
-  }
-  ps->st = STREAM_TYPE_NONE;
-
-  if (ps->time_to_leave)
-    return;
-
-  if (GST_IS_DISCOVERER_AUDIO_INFO (info))
-    send_audio_info (GST_DISCOVERER_AUDIO_INFO (info), ps);
-  else if (GST_IS_DISCOVERER_VIDEO_INFO (info))
-    send_video_info (GST_DISCOVERER_VIDEO_INFO (info), ps);
-  else if (GST_IS_DISCOVERER_SUBTITLE_INFO (info))
-    send_subtitle_info (GST_DISCOVERER_SUBTITLE_INFO (info), ps);
-  else if (GST_IS_DISCOVERER_CONTAINER_INFO (info))
-  {
-    GList *child;
-    GstDiscovererContainerInfo *c = GST_DISCOVERER_CONTAINER_INFO (info);
-    GList *children = gst_discoverer_container_info_get_streams (c);
-    for (child = children; (NULL != child) && (!ps->time_to_leave);
-        child = child->next)
-    {
-      GstDiscovererStreamInfo *sinfo = child->data;
-      /* send_streams () will unref it */
-      sinfo = gst_discoverer_stream_info_ref (sinfo);
-      send_streams (sinfo, ps);
-    }
-    if (children)
-      gst_discoverer_stream_info_list_free (children);
-  }
-}
-
 
 static void
-send_tag_foreach (const GstTagList * tags, const gchar * tag,
-    gpointer user_data)
+send_tag_foreach (const GstTagList * tags,
+		  const gchar * tag,
+		  gpointer user_data)
 {
   struct PrivStruct *ps = user_data;
   size_t i;
   size_t tagl = sizeof (__known_tags) / sizeof (struct KnownTag);
   struct KnownTag *kt = NULL;
   struct KnownTag unknown_tag = {NULL, EXTRACTOR_METATYPE_UNKNOWN};
-
-
   GQuark tag_quark;
   guint vallen;
-
   GstSample *sample;
 
   if (ps->time_to_leave)
@@ -1455,7 +1284,7 @@ send_tag_foreach (const GstTagList * tags, const gchar * tag,
         str = gst_value_serialize (&val);
       break;
     }
-    if (str != NULL)
+    if (NULL != str)
     {
       /* Discoverer internally uses some tags to provide streaminfo;
        * ignore these tags to avoid duplicates.
@@ -1579,20 +1408,128 @@ send_tag_foreach (const GstTagList * tags, const gchar * tag,
   }
 }
 
+
+static void 
+send_streams (GstDiscovererStreamInfo *info, 
+	      struct PrivStruct *ps);
+
+
 static void
-send_toc_tags_foreach (const GstTagList * tags, const gchar * tag,
-    gpointer user_data)
+send_stream_info (GstDiscovererStreamInfo * info, 
+		  struct PrivStruct *ps)
+{
+  const GstStructure *misc;
+  GstCaps *caps;
+  const GstTagList *tags;
+
+  caps = gst_discoverer_stream_info_get_caps (info);
+
+  if (GST_IS_DISCOVERER_AUDIO_INFO (info))
+    ps->st = STREAM_TYPE_AUDIO;
+  else if (GST_IS_DISCOVERER_VIDEO_INFO (info))
+    ps->st = STREAM_TYPE_VIDEO;
+  else if (GST_IS_DISCOVERER_SUBTITLE_INFO (info))
+    ps->st = STREAM_TYPE_SUBTITLE;
+  else if (GST_IS_DISCOVERER_CONTAINER_INFO (info))
+    ps->st = STREAM_TYPE_CONTAINER;
+
+  if (caps)
+  {
+    GstStructure *structure = gst_caps_get_structure (caps, 0);
+    const gchar *structname = gst_structure_get_name (structure);
+    if (g_str_has_prefix (structname, "image/"))
+      ps->st = STREAM_TYPE_IMAGE;
+    ps->time_to_leave = ps->ec->proc (ps->ec->cls, "gstreamer",
+      EXTRACTOR_METATYPE_MIMETYPE, EXTRACTOR_METAFORMAT_UTF8, "text/plain",
+      (const char *) structname, strlen (structname) + 1);
+    if (!ps->time_to_leave)
+    {
+      gst_structure_foreach (structure, send_structure_foreach, ps);
+    }
+    gst_caps_unref (caps);
+  }
+
+  if (ps->time_to_leave)
+  {
+    ps->st = STREAM_TYPE_NONE;
+    return;
+  }
+
+  misc = gst_discoverer_stream_info_get_misc (info);
+  if (misc)
+  {
+    gst_structure_foreach (misc, send_structure_foreach, ps);
+  }
+
+  if (ps->time_to_leave)
+  {
+    ps->st = STREAM_TYPE_NONE;
+    return;
+  }
+
+  tags = gst_discoverer_stream_info_get_tags (info);
+  if (tags)
+  {
+    gst_tag_list_foreach (tags, send_tag_foreach, ps);
+  }
+  ps->st = STREAM_TYPE_NONE;
+
+  if (ps->time_to_leave)
+    return;
+
+  if (GST_IS_DISCOVERER_AUDIO_INFO (info))
+    send_audio_info (GST_DISCOVERER_AUDIO_INFO (info), ps);
+  else if (GST_IS_DISCOVERER_VIDEO_INFO (info))
+    send_video_info (GST_DISCOVERER_VIDEO_INFO (info), ps);
+  else if (GST_IS_DISCOVERER_SUBTITLE_INFO (info))
+    send_subtitle_info (GST_DISCOVERER_SUBTITLE_INFO (info), ps);
+  else if (GST_IS_DISCOVERER_CONTAINER_INFO (info))
+  {
+    GList *child;
+    GstDiscovererContainerInfo *c = GST_DISCOVERER_CONTAINER_INFO (info);
+    GList *children = gst_discoverer_container_info_get_streams (c);
+    for (child = children; (NULL != child) && (!ps->time_to_leave);
+        child = child->next)
+    {
+      GstDiscovererStreamInfo *sinfo = child->data;
+      /* send_streams () will unref it */
+      sinfo = gst_discoverer_stream_info_ref (sinfo);
+      send_streams (sinfo, ps);
+    }
+    if (children)
+      gst_discoverer_stream_info_list_free (children);
+  }
+}
+
+
+static void
+send_streams (GstDiscovererStreamInfo *info, struct PrivStruct *ps)
+{
+  while ( (NULL != info) && (! ps->time_to_leave) )
+  {
+    GstDiscovererStreamInfo *next;
+
+    send_stream_info (info, ps);
+    next = gst_discoverer_stream_info_get_next (info);
+    gst_discoverer_stream_info_unref (info);
+    info = next;
+  }
+}
+
+
+static void
+send_toc_tags_foreach (const GstTagList * tags,
+		       const gchar * tag,
+		       gpointer user_data)
 {
   struct PrivStruct *ps = user_data;
-  GValue val = { 0, };
+  GValue val = { 0 };
   gchar *topen, *str, *tclose;
   const gchar *type_name;
   GType gst_fraction = GST_TYPE_FRACTION;
 
   gst_tag_list_copy_value (&val, tags, tag);
-
   type_name = g_type_name (G_VALUE_TYPE (&val));
-
   switch (G_VALUE_TYPE (&val))
   {
   case G_TYPE_STRING:
@@ -1651,6 +1588,7 @@ send_toc_foreach (gpointer data, gpointer user_data)
   if (GST_TOC_ENTRY_TYPE_INVALID != entype)
   {
     char *s;
+
     gst_toc_entry_get_start_stop_times (entry, &start, &stop);
     s = g_strdup_printf ("%*.*s<%s start=\"%" GST_TIME_FORMAT "\" stop=\"%"
       GST_TIME_FORMAT"\">\n", ps->toc_depth * 2, ps->toc_depth * 2, " ",
@@ -1694,20 +1632,9 @@ send_toc_foreach (gpointer data, gpointer user_data)
   }
 }
 
-static void
-send_streams (GstDiscovererStreamInfo *info, struct PrivStruct *ps)
-{
-  while (NULL != info && !ps->time_to_leave)
-  {
-    GstDiscovererStreamInfo *next;
-    send_stream_info (info, ps);
-    next = gst_discoverer_stream_info_get_next (info);
-    gst_discoverer_stream_info_unref (info);
-    info = next;
-  }
-}
 
 #define TOC_XML_HEADER "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n"
+
 
 static void
 send_info (GstDiscovererInfo * info, struct PrivStruct *ps)
@@ -1774,6 +1701,7 @@ send_info (GstDiscovererInfo * info, struct PrivStruct *ps)
   send_streams (sinfo, ps);
 }
 
+
 static void
 send_discovered_info (GstDiscovererInfo * info, struct PrivStruct * ps)
 {
@@ -1800,6 +1728,101 @@ send_discovered_info (GstDiscovererInfo * info, struct PrivStruct * ps)
     break;
   }
   send_info (info, ps);
+}
+
+
+static void
+_new_discovered_uri (GstDiscoverer * dc, GstDiscovererInfo * info, GError * err, struct PrivStruct * ps)
+{
+  send_discovered_info (info, ps);
+}
+
+
+static void
+_discoverer_finished (GstDiscoverer * dc, struct InitData * id)
+{
+  g_main_loop_quit (id->loop);
+}
+
+
+/**
+ * This callback is called when discoverer has constructed a source object to
+ * read from. Since we provided the appsrc:// uri to discoverer, this will be
+ * the appsrc that we must handle. We set up some signals - one to push data
+ * into appsrc and one to perform a seek. */
+static void
+_source_setup (GstDiscoverer * dc, GstElement * source, struct PrivStruct * ps)
+{
+  if (ps->source)
+    gst_object_unref (GST_OBJECT (ps->source));
+  ps->source = source;
+  gst_object_ref (source);
+
+  /* we can set the length in appsrc. This allows some elements to estimate the
+   * total duration of the stream. It's a good idea to set the property when you
+   * can but it's not required. */
+  if (ps->length > 0)
+  {
+    g_object_set (ps->source, "size", (gint64) ps->length, NULL);
+    gst_util_set_object_arg (G_OBJECT (ps->source), "stream-type", "random-access");
+  }
+  else
+    gst_util_set_object_arg (G_OBJECT (ps->source), "stream-type", "seekable");
+
+  /* configure the appsrc, we will push a buffer to appsrc when it needs more
+   * data */
+  g_signal_connect (ps->source, "need-data", G_CALLBACK (feed_data), ps);
+  g_signal_connect (ps->source, "seek-data", G_CALLBACK (seek_data), ps);
+}
+
+
+static int
+initialize (struct InitData *id, struct PrivStruct *ps)
+{
+  GError *err = NULL;
+  gint timeout = 10;
+
+  gst_init (NULL, NULL);
+  GST_DEBUG_CATEGORY_INIT (gstreamer_extractor, "GstExtractor",
+                         0, "GStreamer-based libextractor plugin");
+  audio_quarks = g_new0 (GQuark, 4);
+  audio_quarks[0] = g_quark_from_string ("rate");
+  audio_quarks[1] = g_quark_from_string ("channels");
+  audio_quarks[2] = g_quark_from_string ("depth");
+  audio_quarks[3] = g_quark_from_string (NULL);
+
+  video_quarks = g_new0 (GQuark, 6);
+  video_quarks[0] = g_quark_from_string ("width");
+  video_quarks[1] = g_quark_from_string ("height");
+  video_quarks[2] = g_quark_from_string ("framerate");
+  video_quarks[3] = g_quark_from_string ("max-framerate");
+  video_quarks[4] = g_quark_from_string ("pixel-aspect-ratio");
+  video_quarks[5] = g_quark_from_string (NULL);
+
+  subtitle_quarks = g_new0 (GQuark, 2);
+  subtitle_quarks[0] = g_quark_from_string ("language-code");
+  subtitle_quarks[1] = g_quark_from_string (NULL);
+
+  duration_quark = g_quark_from_string ("duration");
+
+  id->dc = gst_discoverer_new (timeout * GST_SECOND, &err);
+  if (NULL == id->dc) 
+    {
+      g_print ("Error initializing: %s\n", err->message);
+      return FALSE;
+    }
+  if (err)
+    g_error_free (err);
+  /* connect signals */
+  g_signal_connect (id->dc, "discovered", G_CALLBACK (_new_discovered_uri), ps);
+  g_signal_connect (id->dc, "finished", G_CALLBACK (_discoverer_finished), id);
+  g_signal_connect (id->dc, "source-setup", G_CALLBACK (_source_setup), ps);
+
+  id->loop = g_main_loop_new (NULL, TRUE);
+
+  id->ps = ps;
+
+  return TRUE;
 }
 
 
