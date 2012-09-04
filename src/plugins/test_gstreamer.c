@@ -695,7 +695,6 @@ main (int argc, char *argv[])
     result += (0 == ET_main ("gstreamer", ps) ? 0 : 1);
   }
 
-#if 0
   pre_test = discoverer_main (dc, "testdata/matroska_flame.mkv");
   if (pre_test != GST_DISCOVERER_MISSING_PLUGINS)
   {
@@ -1658,7 +1657,7 @@ main (int argc, char *argv[])
     if (result_stock && result_patched)
       result++;  
   }
-#endif
+
   g_object_unref (dc);
   return result;
 }
