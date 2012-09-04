@@ -1,6 +1,4 @@
 src/common/convert.c
-src/common/convert_numeric.c
-src/common/pack.c
 src/common/unzip.c
 src/intlemu/intlemu.c
 src/main/extract.c
@@ -40,11 +38,13 @@ src/plugins/odf_extractor.c
 src/plugins/ogg_extractor.c
 src/plugins/old/applefile_extractor.c
 src/plugins/old/asf_extractor.c
+src/plugins/old/convert_numeric.c
 src/plugins/old/ebml_extractor.c
 src/plugins/old/elf_extractor.c
 src/plugins/old/flv_extractor.c
 src/plugins/old/mkv_extractor.c
 src/plugins/old/mp3_extractor.c
+src/plugins/old/pack.c
 src/plugins/old/qt_extractor.c
 src/plugins/old/real_extractor.c
 src/plugins/ole2_extractor.c
