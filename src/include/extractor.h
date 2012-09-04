@@ -32,7 +32,7 @@ extern "C" {
  * 0.2.6-1 => 0x00020601
  * 4.5.2-0 => 0x04050200
  */
-#define EXTRACTOR_VERSION 0x00070000
+#define EXTRACTOR_VERSION 0x01000000
 
 #include <stdio.h>
 
@@ -54,12 +54,7 @@ enum EXTRACTOR_Options
     EXTRACTOR_OPTION_DEFAULT_POLICY = 0,
 
     /**
-     * Run plugins out-of-process, starting the process
-     * once at the time the plugin is loaded.  This will
-     * prevent the main process crashing if a plugin dies.
-     * Ignored on platforms where out-of-process starts
-     * are not supported (in-process execution will be
-     * attempted, unless the plugin itself forbids it).
+     * Deprecated option.  Ignored.
      */
     EXTRACTOR_OPTION_OUT_OF_PROCESS_NO_RESTART = 1,
 

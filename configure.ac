@@ -1,6 +1,6 @@
 # Process this file with autoconf to produce a configure script.
 AC_PREREQ(2.61)
-AC_INIT([libextractor], [0.7.0], [bug-libextractor@gnu.org])
+AC_INIT([libextractor], [1.0.0], [bug-libextractor@gnu.org])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
 AH_TOP([#define _GNU_SOURCE  1])
@@ -8,9 +8,9 @@ AC_CANONICAL_TARGET
 AC_CANONICAL_HOST
 AC_CANONICAL_SYSTEM
 
-LIB_VERSION_CURRENT=3
-LIB_VERSION_REVISION=2
-LIB_VERSION_AGE=0
+LIB_VERSION_CURRENT=4
+LIB_VERSION_REVISION=0
+LIB_VERSION_AGE=1
 AC_SUBST(LIB_VERSION_CURRENT)
 AC_SUBST(LIB_VERSION_REVISION)
 AC_SUBST(LIB_VERSION_AGE)

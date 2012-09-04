@@ -57,7 +57,6 @@ main (int argc, char *argv[])
   ret += testLoadPlugins (EXTRACTOR_OPTION_DEFAULT_POLICY);
   ret += testLoadPlugins (EXTRACTOR_OPTION_DEFAULT_POLICY);
   ret += testLoadPlugins (EXTRACTOR_OPTION_DEFAULT_POLICY);
-  ret += testLoadPlugins (EXTRACTOR_OPTION_OUT_OF_PROCESS_NO_RESTART);
   return ret;
 }
 

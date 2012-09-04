@@ -405,9 +405,9 @@ roughly the following binary packages:
 @item
 libextractor (main library only, only hard dependency for other packages depending on GNU libextractor)
 @item
-extract (command-line tool and man page)
+extract (command-line tool and man page extract.1)
 @item
-libextractor-dev (extractor.h header and man page)
+libextractor-dev (extractor.h header and man page libextractor.3)
 @item
 libextractor-doc (this manual)
 @item
@@ -415,13 +415,17 @@ libextractor-plugins (plugins without external dependencies; recommended but not
 @item
 libextractor-plugin-XXX (plugin with dependency on libXXX, for example for XXX=mpeg this would be @file{libextractor_mpeg.so})
 @item
-libextractor-plugins-all (meta package that requires all plugins)
+libextractor-plugins-all (meta package that requires all plugins except experimental plugins)
 @end itemize
 
 This would enable minimal installations (i.e. for embedded systems) to
 not include any plugins, as well as moderate-size installations (that
-do not trigger GTK, QT and X11) for systems that have limited
-resources.
+do not trigger GTK and X11) for systems that have limited resources.
+Right now, the MP4 plugin is experimental and does nothing and should
+thus never be included at all.  The gstreamer plugin is experimental
+but largely works with the correct version of gstreamer and can thus
+be packaged (especially if the dependency is available on the target
+system) but should probably not be part of libextractor-plugins-all.
 
 
 @node Generalities
@@ -551,7 +555,7 @@ time is not safe.
 
 All plugin code is expected required to be reentrant and state-less,
 but due to the extensive use of 3rd party libraries this cannot
-be guaranteed.  
+be guaranteed.
 
 
 @deftp {C Struct} EXTRACTOR_PluginList
@@ -798,19 +802,19 @@ ARCHIVE (using libarchive)
 @item
 DVI
 @item
-EXIV2 (using libexiv2)
+EXIV2 (using libexiv2, 0.23 or later preferred)
 @item 
 FLAC (using libFLAC)
 @item
 GIF (using libgif)
 @item
-GSTREAMER (using libgstreamer)
+GSTREAMER (using libgstreamer v1.0 or later)
 @item
 HTML (using libtidy)
 @item
 IT 
 @item
-JPEG (using libjpeg)
+JPEG (using libjpeg v8 or later)
 @item
 MAN
 @item
@@ -842,11 +846,11 @@ S3M
 @item
 SID
 @item
-ThumbnailFFMPEG (using libavformat)
+ThumbnailFFMPEG (using libavformat and related libav-libraries, including libswscale)
 @item
 ThumbnailGtk (using libgtk)
 @item
-TIFF (with libtiff)
+TIFF (with libtiff, tested with v4)
 @item
 WAV
 @item
@@ -986,7 +990,7 @@ caller, so storing the string in the keyword list is acceptable.
 @chapter Reporting bugs
 
 @cindex bug
-@gnule{} uses the @url{http://gnunet.org/bugs/,Mantis bugtracking
+@gnule{} uses the @url{https://gnunet.org/bugs/,Mantis bugtracking
 system}.  If possible, please report bugs there.  You can also e-mail
 the @gnule{} mailinglist at @url{libextractor@@gnu.org}.
 
