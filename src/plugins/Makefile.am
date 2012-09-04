@@ -23,10 +23,14 @@ EXTRA_DIST = \
   testdata/exiv2_iptc.jpg \
   testdata/flac_kraftwerk.flac \
   testdata/gif_image.gif \
+  testdata/gstreamer_30_and_33.asf \
+  testdata/gstreamer_barsandtone.flv \
+  testdata/gstreamer_sample_sorenson.mov \
   testdata/html_grothoff.html \
   testdata/it_dawn.it \
   testdata/jpeg_image.jpg \
   testdata/man_extract.1 \
+  testdata/matroska_flame.mkv \
   testdata/midi_dth.mid \
   testdata/mpeg_alien.mpg \
   testdata/mpeg_melt.mpg \
