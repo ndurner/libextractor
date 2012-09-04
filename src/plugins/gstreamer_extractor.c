@@ -1814,7 +1814,7 @@ EXTRACTOR_gstreamer_extract_method (struct EXTRACTOR_ExtractContext *ec)
   g_main_loop_run (ps.loop);
   gst_discoverer_stop (ps.dc);
   g_object_unref (ps.dc);
-  g_main_destroy (ps.loop);
+  g_main_loop_unref (ps.loop);
 }
 
 
