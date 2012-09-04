@@ -101,24 +101,6 @@
  */
 #define LE_PACKED __attribute__((packed))
 
-/**
- * gcc-ism to get gcc bitfield layout when compiling with -mms-bitfields
- */
-#ifdef __MINGW32__
-#define LE_GCC_STRUCT_LAYOUT __attribute__((gcc_struct))
-#else
-#define LE_GCC_STRUCT_LAYOUT
-#endif
-
-/**
- * gcc-ism to document unused arguments
- */
-#define LE_UNUSED __attribute__((unused))
-
-/**
- * gcc-ism to document functions that don't return
- */
-#define LE_NORETURN __attribute__((noreturn))
 
 #if MINGW
 #if __GNUC__ > 3

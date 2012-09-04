@@ -7,18 +7,13 @@ lib_LTLIBRARIES = \
   libextractor_common.la
 
 libextractor_common_la_LDFLAGS = \
-  $(LE_LIB_LDFLAGS)
+  $(LE_LIB_LDFLAGS) \
+  -version-info 1:0:0
 
 libextractor_common_la_LIBADD = \
   $(LTLIBICONV) -lz
 
 libextractor_common_la_SOURCES = \
   le_architecture.h \
-  unzip.c \
-  unzip.h \
-  pack.c \
-  pack.h \
-  convert.c \
-  convert.h \
-  convert_numeric.c \
-  convert_numeric.h
+  unzip.c unzip.h \
+  convert.c convert.h 
