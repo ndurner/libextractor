@@ -1,6 +1,5 @@
 src/common/convert.c
 src/common/unzip.c
-src/intlemu/intlemu.c
 src/main/extract.c
 src/main/extractor.c
 src/main/extractor_common.c
@@ -17,7 +16,6 @@ src/main/extractor_print.c
 src/main/getopt1.c
 src/main/getopt.c
 src/main/iconv.c
-src/main/test2_extractor.c
 src/plugins/archive_extractor.c
 src/plugins/deb_extractor.c
 src/plugins/dvi_extractor.c
@@ -36,17 +34,6 @@ src/plugins/nsfe_extractor.c
 src/plugins/nsf_extractor.c
 src/plugins/odf_extractor.c
 src/plugins/ogg_extractor.c
-src/plugins/old/applefile_extractor.c
-src/plugins/old/asf_extractor.c
-src/plugins/old/convert_numeric.c
-src/plugins/old/ebml_extractor.c
-src/plugins/old/elf_extractor.c
-src/plugins/old/flv_extractor.c
-src/plugins/old/mkv_extractor.c
-src/plugins/old/mp3_extractor.c
-src/plugins/old/pack.c
-src/plugins/old/qt_extractor.c
-src/plugins/old/real_extractor.c
 src/plugins/ole2_extractor.c
 src/plugins/png_extractor.c
 src/plugins/ps_extractor.c
@@ -54,7 +41,6 @@ src/plugins/riff_extractor.c
 src/plugins/rpm_extractor.c
 src/plugins/s3m_extractor.c
 src/plugins/sid_extractor.c
-src/plugins/template_extractor.c
 src/plugins/thumbnailffmpeg_extractor.c
 src/plugins/thumbnailgtk_extractor.c
 src/plugins/tiff_extractor.c
