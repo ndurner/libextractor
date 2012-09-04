@@ -24,93 +24,90 @@
  */
 #include "platform.h"
 #include "test_lib.h"
-
 #include <glib.h>
 #include <gst/gst.h>
 #include <gst/pbutils/pbutils.h>
 
-/* This is a miniaturized version of gst-discoverer, its only purpose is
+
+/**
+ * This is a miniaturized version of gst-discoverer, its only purpose is
  * to detect missing plugins situations and skip a test in such cases.
  */
-GstDiscovererResult
-discoverer_main (GstDiscoverer *dc, char *filename)
+static GstDiscovererResult
+discoverer_main (GstDiscoverer *dc, const char *filename)
 {
   GError *err = NULL;
-  GDir *dir;
-  gchar *uri, *path;
+  gchar *uri;
+  gchar *path;
   GstDiscovererInfo *info;
-
   GstDiscovererResult result;
 
-  if (!gst_uri_is_valid (filename)) {
-    if (!g_path_is_absolute (filename)) {
-      gchar *cur_dir;
-
-      cur_dir = g_get_current_dir ();
-      path = g_build_filename (cur_dir, filename, NULL);
-      g_free (cur_dir);
-    } else {
-      path = g_strdup (filename);
+  if (! gst_uri_is_valid (filename)) 
+    {
+      if (! g_path_is_absolute (filename)) 
+	{
+	  gchar *cur_dir;
+	  
+	  cur_dir = g_get_current_dir ();
+	  path = g_build_filename (cur_dir, filename, NULL);
+	  g_free (cur_dir);
+	}
+      else 
+	{
+	  path = g_strdup (filename);
+	}
+      
+      uri = g_filename_to_uri (path, NULL, &err);
+      g_free (path);
+      path = NULL;
+      
+      if (err) 
+	{
+	  g_warning ("Couldn't convert filename %s to URI: %s\n", filename, err->message);
+	  g_error_free (err);
+	  return GST_DISCOVERER_ERROR;
+	}
     }
-
-    uri = g_filename_to_uri (path, NULL, &err);
-    g_free (path);
-    path = NULL;
-
-    if (err) {
-      g_warning ("Couldn't convert filename %s to URI: %s\n", filename, err->message);
-      g_error_free (err);
-      return;
+  else 
+    {
+      uri = g_strdup (filename);
     }
-  } else {
-    uri = g_strdup (filename);
-  }
-
   info = gst_discoverer_discover_uri (dc, uri, &err);
-
-  result = gst_discoverer_info_get_result (info);
-
-  switch (result) {
+  result = gst_discoverer_info_get_result (info);  
+  switch (result) 
+    {
     case GST_DISCOVERER_OK:
-    {
-      break;
-    }
+      break;      
     case GST_DISCOVERER_URI_INVALID:
-    {
       g_print ("URI %s is not valid\n", uri);
       break;
-    }
     case GST_DISCOVERER_ERROR:
-    {
       g_print ("An error was encountered while discovering the file %s\n", filename);
       g_print (" %s\n", err->message);
       break;
-    }
     case GST_DISCOVERER_TIMEOUT:
-    {
       g_print ("Analyzing URI %s timed out\n", uri);
-      break;
-    }
+      break;    
     case GST_DISCOVERER_BUSY:
-    {
       g_print ("Discoverer was busy\n");
-      break;
-    }
-    case GST_DISCOVERER_MISSING_PLUGINS:
-    {
+      break;    
+    case GST_DISCOVERER_MISSING_PLUGINS:      
       g_print ("Will skip %s: missing plugins\n", filename);
       break;
+    default:
+      g_print ("Unexpected result %d\n", result);
+      break;
     }
-  }
-
+  
   if (err)
     g_error_free (err);
   gst_discoverer_info_unref (info);
-
+  
   g_free (uri);
-
+  
   return result;
 }
+
 
 /**
  * Main function for the GStreamer testcase.
@@ -123,24 +120,22 @@ int
 main (int argc, char *argv[])
 {
   GError *err = NULL;
-  gint timeout = 10;
   GstDiscoverer *dc;
-
   int result = 0;
   GstDiscovererResult pre_test;
 
   gst_init (&argc, &argv);
-
-  dc = gst_discoverer_new (timeout * GST_SECOND, &err);
-  if (G_UNLIKELY (dc == NULL)) {
-    g_print ("Error initializing: %s\n", err->message);
-    exit (1);
-  }
-  if (err)
+  dc = gst_discoverer_new (10 * GST_SECOND, &err);
+  if (NULL == dc) 
+    {
+      g_print ("Error initializing: %s\n", err->message);
+      return 0;
+    }
+  if (NULL != err)
     g_error_free (err);
 
   pre_test = discoverer_main (dc, "testdata/30_and_33.asf");
-  if (pre_test != GST_DISCOVERER_MISSING_PLUGINS)
+  if (GST_DISCOVERER_MISSING_PLUGINS != pre_test)
   {
     struct SolutionData thirty_and_thirtythree_sol[] =
       {
@@ -1667,7 +1662,7 @@ main (int argc, char *argv[])
     result_patched = (0 == ET_main ("gstreamer", patched_ps) ? 0 : 1);
     g_print ("Patched GStreamer test result: %s\n", result_patched == 0 ? "OK" : "FAILED");
     if (result_stock && result_patched)
-      result += 1;
+      result++;
   }
   g_object_unref (dc);
   return result;
