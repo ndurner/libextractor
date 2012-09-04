@@ -302,7 +302,7 @@ AC_CHECK_LIB(mp4v2, MP4ReadProvider,
          AM_CONDITIONAL(HAVE_MP4, false))],
          AM_CONDITIONAL(HAVE_MP4, false))
 
-AC_CHECK_LIB(jpeg, jpeg_std_error,
+AC_CHECK_LIB(jpeg, jpeg_mem_src,
         [AC_CHECK_HEADERS([jpeglib.h],
            AM_CONDITIONAL(HAVE_JPEG, true)
            AC_DEFINE(HAVE_JPEG,1,[Have libjpeg]),

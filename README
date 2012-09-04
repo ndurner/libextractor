@@ -50,7 +50,7 @@ available in order for maximum coverage:
 * libgtk+
 * libgsf
 * libgstreamer
-* libjpeg
+* libjpeg (v8 or later)
 * libmagic (file)
 * libmpeg2
 * libmp4v2
