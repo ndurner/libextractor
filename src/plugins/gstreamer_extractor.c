@@ -768,14 +768,8 @@ struct PrivStruct
   gboolean toc_print_phase;
   unsigned char time_to_leave;
   enum CurrentStreamType st;
-};
-
-
-struct InitData
-{
   GMainLoop *loop;
   GstDiscoverer *dc;
-  struct PrivStruct *ps;
 };
 
 
@@ -865,9 +859,9 @@ seek_data (GstElement * appsrc, guint64 position, struct PrivStruct * ps)
 
 
 static gboolean
-_run_async (struct InitData * id)
+_run_async (struct PrivStruct * ps)
 {
-  gst_discoverer_discover_uri_async (id->dc, "appsrc://");
+  gst_discoverer_discover_uri_async (ps->dc, "appsrc://");
   return FALSE;
 }
 
@@ -1599,7 +1593,7 @@ send_toc_foreach (gpointer data, gpointer user_data)
     else
       ps->toc_length += strlen (s);
     g_free (s);
-    ps->toc_depth += 1;
+    ps->toc_depth++;
     tags = gst_toc_entry_get_tags (entry);
     if (tags)
     {
@@ -1608,9 +1602,9 @@ send_toc_foreach (gpointer data, gpointer user_data)
         "%*.*s<tags>\n", ps->toc_depth * 2, ps->toc_depth * 2, " ");
       else
         ps->toc_length += strlen ("<tags>\n") + ps->toc_depth * 2;
-      ps->toc_depth += 1;
+      ps->toc_depth++;
       gst_tag_list_foreach (tags, send_toc_tags_foreach, ps);
-      ps->toc_depth -= 1;
+      ps->toc_depth--;
       if (ps->toc_print_phase)
         ps->toc_pos += g_snprintf (&ps->toc[ps->toc_pos], ps->toc_length - ps->toc_pos,
         "%*.*s</tags>\n", ps->toc_depth * 2, ps->toc_depth * 2, " ");
@@ -1620,7 +1614,7 @@ send_toc_foreach (gpointer data, gpointer user_data)
 
     subentries = gst_toc_entry_get_sub_entries (entry);
     g_list_foreach (subentries, send_toc_foreach, ps);
-    ps->toc_depth -= 1;
+    ps->toc_depth--;
 
     s = g_strdup_printf ("%*.*s</%s>\n", ps->toc_depth * 2, ps->toc_depth * 2, " ",
       gst_toc_entry_type_get_nick (entype));
@@ -1713,35 +1707,38 @@ send_discovered_info (GstDiscovererInfo * info, struct PrivStruct * ps)
   result = gst_discoverer_info_get_result (info);
 
   switch (result)
-  {
-  case GST_DISCOVERER_OK:
-    break;
-  case GST_DISCOVERER_URI_INVALID:
-    break;
-  case GST_DISCOVERER_ERROR:
-    break;
-  case GST_DISCOVERER_TIMEOUT:
-    break;
-  case GST_DISCOVERER_BUSY:
-    break;
-  case GST_DISCOVERER_MISSING_PLUGINS:
-    break;
-  }
+    {
+    case GST_DISCOVERER_OK:
+      break;
+    case GST_DISCOVERER_URI_INVALID:
+      break;
+    case GST_DISCOVERER_ERROR:
+      break;
+    case GST_DISCOVERER_TIMEOUT:
+      break;
+    case GST_DISCOVERER_BUSY:
+      break;
+    case GST_DISCOVERER_MISSING_PLUGINS:
+      break;
+    }
   send_info (info, ps);
 }
 
 
 static void
-_new_discovered_uri (GstDiscoverer * dc, GstDiscovererInfo * info, GError * err, struct PrivStruct * ps)
+_new_discovered_uri (GstDiscoverer * dc, 
+		     GstDiscovererInfo * info, 
+		     GError * err, 
+		     struct PrivStruct *ps)
 {
   send_discovered_info (info, ps);
 }
 
 
 static void
-_discoverer_finished (GstDiscoverer * dc, struct InitData * id)
+_discoverer_finished (GstDiscoverer * dc, struct PrivStruct *ps)
 {
-  g_main_loop_quit (id->loop);
+  g_main_loop_quit (ps->loop);
 }
 
 
@@ -1751,7 +1748,9 @@ _discoverer_finished (GstDiscoverer * dc, struct InitData * id)
  * the appsrc that we must handle. We set up some signals - one to push data
  * into appsrc and one to perform a seek. */
 static void
-_source_setup (GstDiscoverer * dc, GstElement * source, struct PrivStruct * ps)
+_source_setup (GstDiscoverer * dc, 
+	       GstElement * source,
+	       struct PrivStruct *ps)
 {
   if (ps->source)
     gst_object_unref (GST_OBJECT (ps->source));
@@ -1776,15 +1775,59 @@ _source_setup (GstDiscoverer * dc, GstElement * source, struct PrivStruct * ps)
 }
 
 
-static int
-initialize (struct InitData *id, struct PrivStruct *ps)
+/**
+ * This will be the main method of your plugin.
+ * Describe a bit what it does here.
+ *
+ * @param ec extraction context, here you get the API
+ *   for accessing the file data and for returning
+ *   meta data
+ */
+void
+EXTRACTOR_gstreamer_extract_method (struct EXTRACTOR_ExtractContext *ec)
 {
+  struct PrivStruct ps;
   GError *err = NULL;
-  gint timeout = 10;
 
+  memset (&ps, 0, sizeof (ps));
+  ps.dc = gst_discoverer_new (10 * GST_SECOND, &err);
+  if (NULL == ps.dc) 
+    {
+      g_print ("Error initializing: %s\n", err->message);
+      if (NULL != err)
+	g_error_free (err);
+      return;
+    }
+  if (NULL != err)
+    g_error_free (err);
+  /* connect signals */
+  g_signal_connect (ps.dc, "discovered", G_CALLBACK (_new_discovered_uri), &ps);
+  g_signal_connect (ps.dc, "finished", G_CALLBACK (_discoverer_finished), &ps);
+  g_signal_connect (ps.dc, "source-setup", G_CALLBACK (_source_setup), &ps);
+  ps.loop = g_main_loop_new (NULL, TRUE);
+  ps.ec = ec;
+  ps.length = ps.ec->get_size (ps.ec->cls);
+  if (ps.length == UINT_MAX)
+    ps.length = 0;
+  gst_discoverer_start (ps.dc);
+  g_psle_add ((GSourceFunc) &_run_async, &ps);
+  g_main_loop_run (ps.loop);
+  gst_discoverer_stop (ps.dc);
+  g_object_unref (ps.dc);
+  g_object_unref (ps.loop);
+}
+
+
+/**
+ * Initialize glib and globals.
+ */
+void __attribute__ ((constructor)) 
+gstreamer_init ()
+{
   gst_init (NULL, NULL);
   GST_DEBUG_CATEGORY_INIT (gstreamer_extractor, "GstExtractor",
                          0, "GStreamer-based libextractor plugin");
+
   audio_quarks = g_new0 (GQuark, 4);
   audio_quarks[0] = g_quark_from_string ("rate");
   audio_quarks[1] = g_quark_from_string ("channels");
@@ -1804,57 +1847,6 @@ initialize (struct InitData *id, struct PrivStruct *ps)
   subtitle_quarks[1] = g_quark_from_string (NULL);
 
   duration_quark = g_quark_from_string ("duration");
-
-  id->dc = gst_discoverer_new (timeout * GST_SECOND, &err);
-  if (NULL == id->dc) 
-    {
-      g_print ("Error initializing: %s\n", err->message);
-      return FALSE;
-    }
-  if (err)
-    g_error_free (err);
-  /* connect signals */
-  g_signal_connect (id->dc, "discovered", G_CALLBACK (_new_discovered_uri), ps);
-  g_signal_connect (id->dc, "finished", G_CALLBACK (_discoverer_finished), id);
-  g_signal_connect (id->dc, "source-setup", G_CALLBACK (_source_setup), ps);
-
-  id->loop = g_main_loop_new (NULL, TRUE);
-
-  id->ps = ps;
-
-  return TRUE;
-}
-
-
-/**
- * This will be the main method of your plugin.
- * Describe a bit what it does here.
- *
- * @param ec extraction context, here you get the API
- *   for accessing the file data and for returning
- *   meta data
- */
-void
-EXTRACTOR_gstreamer_extract_method (struct EXTRACTOR_ExtractContext *ec)
-{
-  static int initialized = FALSE;
-  static struct PrivStruct ps;
-  static struct InitData id;
-
-  if ( (! initialized) &&
-       (! (initialized = initialize (&id, &ps))) )
-    return;
-
-  memset (&ps, 0, sizeof (ps));
-  ps.ec = ec;
-  ps.length = ps.ec->get_size (ps.ec->cls);
-  if (ps.length == UINT_MAX)
-    ps.length = 0;
-
-  gst_discoverer_start (id.dc);
-  g_idle_add ((GSourceFunc) &_run_async, &id);
-  g_main_loop_run (id.loop);
-  gst_discoverer_stop (id.dc);
 }
 
 
