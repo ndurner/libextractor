@@ -34,580 +34,709 @@
 GST_DEBUG_CATEGORY_STATIC (gstreamer_extractor);
 #define GST_CAT_DEFAULT gstreamer_extractor
 
+
+/**
+ * Struct mapping GSTREAMER tags to LE tags.
+ */
 struct KnownTag
 {
+  /**
+   * GStreamer tag.
+   */
   const char *gst_tag_id;
+
+  /**
+   * Corresponding LE tag.
+   */
   enum EXTRACTOR_MetaType le_type;
 };
 
-struct KnownTag __known_tags[] =
+
+static struct KnownTag __known_tags[] =
 {
-/**
- * GST_TAG_TITLE:
- *
- * commonly used title (string)
- *
- * The title as it should be displayed, e.g. 'The Doll House'
- */
+  /**
+   * GST_TAG_TITLE:
+   *
+   * commonly used title (string)
+   *
+   * The title as it should be displayed, e.g. 'The Doll House'
+   */
   {GST_TAG_TITLE, EXTRACTOR_METATYPE_TITLE},
-/**
- * GST_TAG_TITLE_SORTNAME:
- *
- * commonly used title, as used for sorting (string)
- *
- * The title as it should be sorted, e.g. 'Doll House, The'
- */
+
+  /**
+   * GST_TAG_TITLE_SORTNAME:
+   *
+   * commonly used title, as used for sorting (string)
+   *
+   * The title as it should be sorted, e.g. 'Doll House, The'
+   */
   {GST_TAG_TITLE_SORTNAME, EXTRACTOR_METATYPE_TITLE},
-/**
- * GST_TAG_ARTIST:
- *
- * person(s) responsible for the recording (string)
- *
- * The artist name as it should be displayed, e.g. 'Jimi Hendrix' or
- * 'The Guitar Heroes'
- */
+
+  /**
+   * GST_TAG_ARTIST:
+   *
+   * person(s) responsible for the recording (string)
+   *
+   * The artist name as it should be displayed, e.g. 'Jimi Hendrix' or
+   * 'The Guitar Heroes'
+   */
   {GST_TAG_ARTIST, EXTRACTOR_METATYPE_ARTIST},
-/**
- * GST_TAG_ARTIST_SORTNAME:
- *
- * person(s) responsible for the recording, as used for sorting (string)
- *
- * The artist name as it should be sorted, e.g. 'Hendrix, Jimi' or
- * 'Guitar Heroes, The'
- */
+
+  /**
+   * GST_TAG_ARTIST_SORTNAME:
+   *
+   * person(s) responsible for the recording, as used for sorting (string)
+   *
+   * The artist name as it should be sorted, e.g. 'Hendrix, Jimi' or
+   * 'Guitar Heroes, The'
+   */
   {GST_TAG_ARTIST_SORTNAME, EXTRACTOR_METATYPE_ARTIST},
-/**
- * GST_TAG_ALBUM:
- *
- * album containing this data (string)
- *
- * The album name as it should be displayed, e.g. 'The Jazz Guitar'
- */
+
+  /**
+   * GST_TAG_ALBUM:
+   *
+   * album containing this data (string)
+   *
+   * The album name as it should be displayed, e.g. 'The Jazz Guitar'
+   */
   {GST_TAG_ALBUM, EXTRACTOR_METATYPE_ALBUM},
-/**
- * GST_TAG_ALBUM_SORTNAME:
- *
- * album containing this data, as used for sorting (string)
- *
- * The album name as it should be sorted, e.g. 'Jazz Guitar, The'
- */
+
+  /**
+   * GST_TAG_ALBUM_SORTNAME:
+   *
+   * album containing this data, as used for sorting (string)
+   *
+   * The album name as it should be sorted, e.g. 'Jazz Guitar, The'
+   */
   {GST_TAG_ALBUM_SORTNAME, EXTRACTOR_METATYPE_ALBUM},
-/**
- * GST_TAG_ALBUM_ARTIST:
- *
- * The artist of the entire album, as it should be displayed.
- */
+
+  /**
+   * GST_TAG_ALBUM_ARTIST:
+   *
+   * The artist of the entire album, as it should be displayed.
+   */
   {GST_TAG_ALBUM_ARTIST, EXTRACTOR_METATYPE_ARTIST},
-/**
- * GST_TAG_ALBUM_ARTIST_SORTNAME:
- *
- * The artist of the entire album, as it should be sorted.
- */
+
+  /**
+   * GST_TAG_ALBUM_ARTIST_SORTNAME:
+   *
+   * The artist of the entire album, as it should be sorted.
+   */
   {GST_TAG_ALBUM_ARTIST_SORTNAME, EXTRACTOR_METATYPE_ARTIST},
-/**
- * GST_TAG_COMPOSER:
- *
- * person(s) who composed the recording (string)
- */
+
+  /**
+   * GST_TAG_COMPOSER:
+   *
+   * person(s) who composed the recording (string)
+   */
   {GST_TAG_COMPOSER, EXTRACTOR_METATYPE_COMPOSER},
-/**
- * GST_TAG_DATE:
- *
- * date the data was created (#GDate structure)
- */
+
+  /**
+   * GST_TAG_DATE:
+   *
+   * date the data was created (#GDate structure)
+   */
   {GST_TAG_DATE, EXTRACTOR_METATYPE_CREATION_TIME},
-/**
- * GST_TAG_DATE_TIME:
- *
- * date and time the data was created (#GstDateTime structure)
- */
+
+  /**
+   * GST_TAG_DATE_TIME:
+   *
+   * date and time the data was created (#GstDateTime structure)
+   */
   {GST_TAG_DATE_TIME, EXTRACTOR_METATYPE_CREATION_TIME},
-/**
- * GST_TAG_GENRE:
- *
- * genre this data belongs to (string)
- */
+
+  /**
+   * GST_TAG_GENRE:
+   *
+   * genre this data belongs to (string)
+   */
   {GST_TAG_GENRE, EXTRACTOR_METATYPE_GENRE},
-/**
- * GST_TAG_COMMENT:
- *
- * free text commenting the data (string)
- */
+
+  /**
+   * GST_TAG_COMMENT:
+   *
+   * free text commenting the data (string)
+   */
   {GST_TAG_COMMENT, EXTRACTOR_METATYPE_COMMENT},
-/**
- * GST_TAG_EXTENDED_COMMENT:
- *
- * key/value text commenting the data (string)
- *
- * Must be in the form of 'key=comment' or
- * 'key[lc]=comment' where 'lc' is an ISO-639
- * language code.
- *
- * This tag is used for unknown Vorbis comment tags,
- * unknown APE tags and certain ID3v2 comment fields.
- */
-  {GST_TAG_EXTENDED_COMMENT, EXTRACTOR_METATYPE_UNKNOWN},
-/**
- * GST_TAG_TRACK_NUMBER:
- *
- * track number inside a collection (unsigned integer)
- */
+
+  /**
+   * GST_TAG_EXTENDED_COMMENT:
+   *
+   * key/value text commenting the data (string)
+   *
+   * Must be in the form of 'key=comment' or
+   * 'key[lc]=comment' where 'lc' is an ISO-639
+   * language code.
+   *
+   * This tag is used for unknown Vorbis comment tags,
+   * unknown APE tags and certain ID3v2 comment fields.
+   */
+  {GST_TAG_EXTENDED_COMMENT, EXTRACTOR_METATYPE_COMMENT},
+
+  /**
+   * GST_TAG_TRACK_NUMBER:
+   *
+   * track number inside a collection (unsigned integer)
+   */
   {GST_TAG_TRACK_NUMBER, EXTRACTOR_METATYPE_TRACK_NUMBER},
-/**
- * GST_TAG_TRACK_COUNT:
- *
- * count of tracks inside collection this track belongs to (unsigned integer)
- */
+
+  /**
+   * GST_TAG_TRACK_COUNT:
+   *
+   * count of tracks inside collection this track belongs to (unsigned integer)
+   */
   {GST_TAG_TRACK_COUNT, EXTRACTOR_METATYPE_SONG_COUNT},
-/**
- * GST_TAG_ALBUM_VOLUME_NUMBER:
- *
- * disc number inside a collection (unsigned integer)
- */
+
+  /**
+   * GST_TAG_ALBUM_VOLUME_NUMBER:
+   *
+   * disc number inside a collection (unsigned integer)
+   */
   {GST_TAG_ALBUM_VOLUME_NUMBER, EXTRACTOR_METATYPE_DISC_NUMBER},
-/**
- * GST_TAG_ALBUM_VOLUME_COUNT:
- *
- * count of discs inside collection this disc belongs to (unsigned integer)
- */
+
+  /**
+   * GST_TAG_ALBUM_VOLUME_COUNT:
+   *
+   * count of discs inside collection this disc belongs to (unsigned integer)
+   */
   {GST_TAG_ALBUM_VOLUME_NUMBER, EXTRACTOR_METATYPE_DISC_COUNT},
-/**
- * GST_TAG_LOCATION:
- *
- * Origin of media as a URI (location, where the original of the file or stream
- * is hosted) (string)
- */
+
+  /**
+   * GST_TAG_LOCATION:
+   *
+   * Origin of media as a URI (location, where the original of the file or stream
+   * is hosted) (string)
+   */
   {GST_TAG_LOCATION, EXTRACTOR_METATYPE_URL},
-/**
- * GST_TAG_HOMEPAGE:
- *
- * Homepage for this media (i.e. artist or movie homepage) (string)
- */
+
+  /**
+   * GST_TAG_HOMEPAGE:
+   *
+   * Homepage for this media (i.e. artist or movie homepage) (string)
+   */
   {GST_TAG_HOMEPAGE, EXTRACTOR_METATYPE_URL},
-/**
- * GST_TAG_DESCRIPTION:
- *
- * short text describing the content of the data (string)
- */
+
+  /**
+   * GST_TAG_DESCRIPTION:
+   *
+   * short text describing the content of the data (string)
+   */
   {GST_TAG_DESCRIPTION, EXTRACTOR_METATYPE_DESCRIPTION},
-/**
- * GST_TAG_VERSION:
- *
- * version of this data (string)
- */
+
+  /**
+   * GST_TAG_VERSION:
+   *
+   * version of this data (string)
+   */
   {GST_TAG_VERSION, EXTRACTOR_METATYPE_PRODUCT_VERSION},
-/**
- * GST_TAG_ISRC:
- *
- * International Standard Recording Code - see http://www.ifpi.org/isrc/ (string)
- */
+
+  /**
+   * GST_TAG_ISRC:
+   *
+   * International Standard Recording Code - see http://www.ifpi.org/isrc/ (string)
+   */
   {GST_TAG_ISRC, EXTRACTOR_METATYPE_ISRC},
-/**
- * GST_TAG_ORGANIZATION:
- *
- * organization (string)
- */
+
+  /**
+   * GST_TAG_ORGANIZATION:
+   *
+   * organization (string)
+   */
   {GST_TAG_ORGANIZATION, EXTRACTOR_METATYPE_COMPANY},
-/**
- * GST_TAG_COPYRIGHT:
- *
- * copyright notice of the data (string)
- */
+
+  /**
+   * GST_TAG_COPYRIGHT:
+   *
+   * copyright notice of the data (string)
+   */
   {GST_TAG_COPYRIGHT, EXTRACTOR_METATYPE_COPYRIGHT},
-/**
- * GST_TAG_COPYRIGHT_URI:
- *
- * URI to location where copyright details can be found (string)
- */
+
+  /**
+   * GST_TAG_COPYRIGHT_URI:
+   *
+   * URI to location where copyright details can be found (string)
+   */
   {GST_TAG_COPYRIGHT_URI, EXTRACTOR_METATYPE_COPYRIGHT},
-/**
- * GST_TAG_ENCODED_BY:
- *
- * name of the person or organisation that encoded the file. May contain a
- * copyright message if the person or organisation also holds the copyright
- * (string)
- *
- * Note: do not use this field to describe the encoding application. Use
- * #GST_TAG_APPLICATION_NAME or #GST_TAG_COMMENT for that.
- */
+
+  /**
+   * GST_TAG_ENCODED_BY:
+   *
+   * name of the person or organisation that encoded the file. May contain a
+   * copyright message if the person or organisation also holds the copyright
+   * (string)
+   *
+   * Note: do not use this field to describe the encoding application. Use
+   * #GST_TAG_APPLICATION_NAME or #GST_TAG_COMMENT for that.
+   */
   {GST_TAG_ENCODED_BY, EXTRACTOR_METATYPE_ENCODED_BY},
-/**
- * GST_TAG_CONTACT:
- *
- * contact information (string)
- */
+
+  /**
+   * GST_TAG_CONTACT:
+   *
+   * contact information (string)
+   */
   {GST_TAG_CONTACT, EXTRACTOR_METATYPE_CONTACT_INFORMATION},
-/**
- * GST_TAG_LICENSE:
- *
- * license of data (string)
- */
+
+  /**
+   * GST_TAG_LICENSE:
+   *
+   * license of data (string)
+   */
   {GST_TAG_LICENSE, EXTRACTOR_METATYPE_LICENSE},
-/**
- * GST_TAG_LICENSE_URI:
- *
- * URI to location where license details can be found (string)
- */
+
+  /**
+   * GST_TAG_LICENSE_URI:
+   *
+   * URI to location where license details can be found (string)
+   */
   {GST_TAG_LICENSE_URI, EXTRACTOR_METATYPE_LICENSE},
-/**
- * GST_TAG_PERFORMER:
- *
- * person(s) performing (string)
- */
+
+  /**
+   * GST_TAG_PERFORMER:
+   *
+   * person(s) performing (string)
+   */
   {GST_TAG_PERFORMER, EXTRACTOR_METATYPE_PERFORMER},
-/**
- * GST_TAG_DURATION:
- *
- * length in GStreamer time units (nanoseconds) (unsigned 64-bit integer)
- */
+
+  /**
+   * GST_TAG_DURATION:
+   *
+   * length in GStreamer time units (nanoseconds) (unsigned 64-bit integer)
+   */
   {GST_TAG_DURATION, EXTRACTOR_METATYPE_DURATION},
-/**
- * GST_TAG_CODEC:
- *
- * codec the data is stored in (string)
- */
+
+  /**
+   * GST_TAG_CODEC:
+   *
+   * codec the data is stored in (string)
+   */
   {GST_TAG_CODEC, EXTRACTOR_METATYPE_CODEC},
-/**
- * GST_TAG_VIDEO_CODEC:
- *
- * codec the video data is stored in (string)
- */
+
+  /**
+   * GST_TAG_VIDEO_CODEC:
+   *
+   * codec the video data is stored in (string)
+   */
   {GST_TAG_VIDEO_CODEC, EXTRACTOR_METATYPE_VIDEO_CODEC},
-/**
- * GST_TAG_AUDIO_CODEC:
- *
- * codec the audio data is stored in (string)
- */
+
+  /**
+   * GST_TAG_AUDIO_CODEC:
+   *
+   * codec the audio data is stored in (string)
+   */
   {GST_TAG_AUDIO_CODEC, EXTRACTOR_METATYPE_AUDIO_CODEC},
-/**
- * GST_TAG_SUBTITLE_CODEC:
- *
- * codec/format the subtitle data is stored in (string)
- */
+
+  /**
+   * GST_TAG_SUBTITLE_CODEC:
+   *
+   * codec/format the subtitle data is stored in (string)
+   */
   {GST_TAG_SUBTITLE_CODEC, EXTRACTOR_METATYPE_SUBTITLE_CODEC},
-/**
- * GST_TAG_CONTAINER_FORMAT:
- *
- * container format the data is stored in (string)
- */
+
+  /**
+   * GST_TAG_CONTAINER_FORMAT:
+   *
+   * container format the data is stored in (string)
+   */
   {GST_TAG_CONTAINER_FORMAT, EXTRACTOR_METATYPE_CONTAINER_FORMAT},
-/**
- * GST_TAG_BITRATE:
- *
- * exact or average bitrate in bits/s (unsigned integer)
- */
+
+  /**
+   * GST_TAG_BITRATE:
+   *
+   * exact or average bitrate in bits/s (unsigned integer)
+   */
   {GST_TAG_BITRATE, EXTRACTOR_METATYPE_BITRATE},
-/**
- * GST_TAG_NOMINAL_BITRATE:
- *
- * nominal bitrate in bits/s (unsigned integer). The actual bitrate might be
- * different from this target bitrate.
- */
+
+  /**
+   * GST_TAG_NOMINAL_BITRATE:
+   *
+   * nominal bitrate in bits/s (unsigned integer). The actual bitrate might be
+   * different from this target bitrate.
+   */
   {GST_TAG_NOMINAL_BITRATE, EXTRACTOR_METATYPE_NOMINAL_BITRATE},
-/**
- * GST_TAG_MINIMUM_BITRATE:
- *
- * minimum bitrate in bits/s (unsigned integer)
- */
+
+  /**
+   * GST_TAG_MINIMUM_BITRATE:
+   *
+   * minimum bitrate in bits/s (unsigned integer)
+   */
   {GST_TAG_MINIMUM_BITRATE, EXTRACTOR_METATYPE_MINIMUM_BITRATE},
-/**
- * GST_TAG_MAXIMUM_BITRATE:
- *
- * maximum bitrate in bits/s (unsigned integer)
- */
+
+  /**
+   * GST_TAG_MAXIMUM_BITRATE:
+   *
+   * maximum bitrate in bits/s (unsigned integer)
+   */
   {GST_TAG_MAXIMUM_BITRATE, EXTRACTOR_METATYPE_MAXIMUM_BITRATE},
-/**
- * GST_TAG_SERIAL:
- *
- * serial number of track (unsigned integer)
- */
+
+  /**
+   * GST_TAG_SERIAL:
+   *
+   * serial number of track (unsigned integer)
+   */
   {GST_TAG_SERIAL, EXTRACTOR_METATYPE_SERIAL},
-/**
- * GST_TAG_ENCODER:
- *
- * encoder used to encode this stream (string)
- */
+
+  /**
+   * GST_TAG_ENCODER:
+   *
+   * encoder used to encode this stream (string)
+   */
   {GST_TAG_ENCODER, EXTRACTOR_METATYPE_ENCODER}, /* New */
-/**
- * GST_TAG_ENCODER_VERSION:
- *
- * version of the encoder used to encode this stream (unsigned integer)
- */
+
+  /**
+   * GST_TAG_ENCODER_VERSION:
+   *
+   * version of the encoder used to encode this stream (unsigned integer)
+   */
   {GST_TAG_ENCODER_VERSION, EXTRACTOR_METATYPE_ENCODER_VERSION},
-/**
- * GST_TAG_TRACK_GAIN:
- *
- * track gain in db (double)
- */
+
+  /**
+   * GST_TAG_TRACK_GAIN:
+   *
+   * track gain in db (double)
+   */
   {GST_TAG_TRACK_GAIN, EXTRACTOR_METATYPE_TRACK_GAIN},
-/**
- * GST_TAG_TRACK_PEAK:
- *
- * peak of the track (double)
- */
+
+  /**
+   * GST_TAG_TRACK_PEAK:
+   *
+   * peak of the track (double)
+   */
   {GST_TAG_TRACK_PEAK, EXTRACTOR_METATYPE_TRACK_PEAK},
-/**
- * GST_TAG_ALBUM_GAIN:
- *
- * album gain in db (double)
- */
+
+  /**
+   * GST_TAG_ALBUM_GAIN:
+   *
+   * album gain in db (double)
+   */
   {GST_TAG_ALBUM_GAIN, EXTRACTOR_METATYPE_ALBUM_GAIN},
-/**
- * GST_TAG_ALBUM_PEAK:
- *
- * peak of the album (double)
- */
+
+  /**
+   * GST_TAG_ALBUM_PEAK:
+   *
+   * peak of the album (double)
+   */
   {GST_TAG_ALBUM_PEAK, EXTRACTOR_METATYPE_ALBUM_PEAK},
-/**
- * GST_TAG_REFERENCE_LEVEL:
- *
- * reference level of track and album gain values (double)
- */
+
+  /**
+   * GST_TAG_REFERENCE_LEVEL:
+   *
+   * reference level of track and album gain values (double)
+   */
   {GST_TAG_REFERENCE_LEVEL, EXTRACTOR_METATYPE_REFERENCE_LEVEL},
-/**
- * GST_TAG_LANGUAGE_CODE:
- *
- * ISO-639-2 or ISO-639-1 code for the language the content is in (string)
- *
- * There is utility API in libgsttag in gst-plugins-base to obtain a translated
- * language name from the language code: gst_tag_get_language_name()
- */
+
+  /**
+   * GST_TAG_LANGUAGE_CODE:
+   *
+   * ISO-639-2 or ISO-639-1 code for the language the content is in (string)
+   *
+   * There is utility API in libgsttag in gst-plugins-base to obtain a translated
+   * language name from the language code: gst_tag_get_language_name()
+   */
   {GST_TAG_LANGUAGE_CODE, EXTRACTOR_METATYPE_LANGUAGE},
-/**
- * GST_TAG_LANGUAGE_NAME:
- *
- * Name of the language the content is in (string)
- *
- * Free-form name of the language the content is in, if a language code
- * is not available. This tag should not be set in addition to a language
- * code. It is undefined what language or locale the language name is in.
- */
+
+  /**
+   * GST_TAG_LANGUAGE_NAME:
+   *
+   * Name of the language the content is in (string)
+   *
+   * Free-form name of the language the content is in, if a language code
+   * is not available. This tag should not be set in addition to a language
+   * code. It is undefined what language or locale the language name is in.
+   */
   {GST_TAG_LANGUAGE_NAME, EXTRACTOR_METATYPE_LANGUAGE},
-/**
- * GST_TAG_IMAGE:
- *
- * image (sample) (sample taglist should specify the content type and preferably
- * also set "image-type" field as #GstTagImageType)
- */
+
+  /**
+   * GST_TAG_IMAGE:
+   *
+   * image (sample) (sample taglist should specify the content type and preferably
+   * also set "image-type" field as #GstTagImageType)
+   */
   {GST_TAG_IMAGE, EXTRACTOR_METATYPE_PICTURE},
-/**
- * GST_TAG_PREVIEW_IMAGE:
- *
- * image that is meant for preview purposes, e.g. small icon-sized version
- * (sample) (sample taglist should specify the content type)
- */
+
+  /**
+   * GST_TAG_PREVIEW_IMAGE:
+   *
+   * image that is meant for preview purposes, e.g. small icon-sized version
+   * (sample) (sample taglist should specify the content type)
+   */
   {GST_TAG_IMAGE, EXTRACTOR_METATYPE_THUMBNAIL},
-/**
- * GST_TAG_ATTACHMENT:
- *
- * generic file attachment (sample) (sample taglist should specify the content
- * type and if possible set "filename" to the file name of the
- * attachment)
- */
+
+  /**
+   * GST_TAG_ATTACHMENT:
+   *
+   * generic file attachment (sample) (sample taglist should specify the content
+   * type and if possible set "filename" to the file name of the
+   * attachment)
+   */
   /* No equivalent, and none needed? */
-/**
- * GST_TAG_BEATS_PER_MINUTE:
- *
- * number of beats per minute in audio (double)
- */
+
+  /**
+   * GST_TAG_BEATS_PER_MINUTE:
+   *
+   * number of beats per minute in audio (double)
+   */
   {GST_TAG_BEATS_PER_MINUTE, EXTRACTOR_METATYPE_BEATS_PER_MINUTE},
-/**
- * GST_TAG_KEYWORDS:
- *
- * comma separated keywords describing the content (string).
- */
+
+  /**
+   * GST_TAG_KEYWORDS:
+   *
+   * comma separated keywords describing the content (string).
+   */
   {GST_TAG_KEYWORDS, EXTRACTOR_METATYPE_KEYWORDS},
-/**
- * GST_TAG_GEO_LOCATION_NAME:
- *
- * human readable descriptive location of where the media has been recorded or
- * produced. (string).
- */
+
+  /**
+   * GST_TAG_GEO_LOCATION_NAME:
+   *
+   * human readable descriptive location of where the media has been recorded or
+   * produced. (string).
+   */
   {GST_TAG_GEO_LOCATION_NAME, EXTRACTOR_METATYPE_LOCATION_NAME},
-/**
- * GST_TAG_GEO_LOCATION_LATITUDE:
- *
- * geo latitude location of where the media has been recorded or produced in
- * degrees according to WGS84 (zero at the equator, negative values for southern
- * latitudes) (double).
- */
+
+  /**
+   * GST_TAG_GEO_LOCATION_LATITUDE:
+   *
+   * geo latitude location of where the media has been recorded or produced in
+   * degrees according to WGS84 (zero at the equator, negative values for southern
+   * latitudes) (double).
+   */
   {GST_TAG_GEO_LOCATION_LATITUDE, EXTRACTOR_METATYPE_GPS_LATITUDE},
-/**
- * GST_TAG_GEO_LOCATION_LONGITUDE:
- *
- * geo longitude location of where the media has been recorded or produced in
- * degrees according to WGS84 (zero at the prime meridian in Greenwich/UK,
- * negative values for western longitudes). (double).
- */
+
+  /**
+   * GST_TAG_GEO_LOCATION_LONGITUDE:
+   *
+   * geo longitude location of where the media has been recorded or produced in
+   * degrees according to WGS84 (zero at the prime meridian in Greenwich/UK,
+   * negative values for western longitudes). (double).
+   */
   {GST_TAG_GEO_LOCATION_LONGITUDE, EXTRACTOR_METATYPE_GPS_LONGITUDE},
-/**
- * GST_TAG_GEO_LOCATION_ELEVATION:
- *
- * geo elevation of where the media has been recorded or produced in meters
- * according to WGS84 (zero is average sea level) (double).
- */
+
+  /**
+   * GST_TAG_GEO_LOCATION_ELEVATION:
+   *
+   * geo elevation of where the media has been recorded or produced in meters
+   * according to WGS84 (zero is average sea level) (double).
+   */
   {GST_TAG_GEO_LOCATION_ELEVATION, EXTRACTOR_METATYPE_LOCATION_ELEVATION},
-/**
- * GST_TAG_GEO_LOCATION_COUNTRY:
- *
- * The country (english name) where the media has been produced (string).
- */
+
+  /**
+   * GST_TAG_GEO_LOCATION_COUNTRY:
+   *
+   * The country (english name) where the media has been produced (string).
+   */
   {GST_TAG_GEO_LOCATION_COUNTRY, EXTRACTOR_METATYPE_LOCATION_COUNTRY},
-/**
- * GST_TAG_GEO_LOCATION_CITY:
- *
- * The city (english name) where the media has been produced (string).
- */
+
+  /**
+   * GST_TAG_GEO_LOCATION_CITY:
+   *
+   * The city (english name) where the media has been produced (string).
+   */
   {GST_TAG_GEO_LOCATION_CITY, EXTRACTOR_METATYPE_LOCATION_CITY},
-/**
- * GST_TAG_GEO_LOCATION_SUBLOCATION:
- *
- * A location 'smaller' than GST_TAG_GEO_LOCATION_CITY that specifies better
- * where the media has been produced. (e.g. the neighborhood) (string).
- *
- * This tag has been added as this is how it is handled/named in XMP's
- * Iptc4xmpcore schema.
- */
+
+  /**
+   * GST_TAG_GEO_LOCATION_SUBLOCATION:
+   *
+   * A location 'smaller' than GST_TAG_GEO_LOCATION_CITY that specifies better
+   * where the media has been produced. (e.g. the neighborhood) (string).
+   *
+   * This tag has been added as this is how it is handled/named in XMP's
+   * Iptc4xmpcore schema.
+   */
   {GST_TAG_GEO_LOCATION_SUBLOCATION, EXTRACTOR_METATYPE_LOCATION_SUBLOCATION},
-/**
- * GST_TAG_GEO_LOCATION_HORIZONTAL_ERROR:
- *
- * Represents the expected error on the horizontal positioning in
- * meters (double).
- */
+
+  /**
+   * GST_TAG_GEO_LOCATION_HORIZONTAL_ERROR:
+   *
+   * Represents the expected error on the horizontal positioning in
+   * meters (double).
+   */
   {GST_TAG_GEO_LOCATION_HORIZONTAL_ERROR, EXTRACTOR_METATYPE_LOCATION_HORIZONTAL_ERROR},
-/**
- * GST_TAG_GEO_LOCATION_MOVEMENT_SPEED:
- *
- * Speed of the capturing device when performing the capture.
- * Represented in m/s. (double)
- *
- * See also #GST_TAG_GEO_LOCATION_MOVEMENT_DIRECTION
- */
+
+  /**
+   * GST_TAG_GEO_LOCATION_MOVEMENT_SPEED:
+   *
+   * Speed of the capturing device when performing the capture.
+   * Represented in m/s. (double)
+   *
+   * See also #GST_TAG_GEO_LOCATION_MOVEMENT_DIRECTION
+   */
   {GST_TAG_GEO_LOCATION_MOVEMENT_SPEED, EXTRACTOR_METATYPE_LOCATION_MOVEMENT_SPEED},
-/**
- * GST_TAG_GEO_LOCATION_MOVEMENT_DIRECTION:
- *
- * Indicates the movement direction of the device performing the capture
- * of a media. It is represented as degrees in floating point representation,
- * 0 means the geographic north, and increases clockwise (double from 0 to 360)
- *
- * See also #GST_TAG_GEO_LOCATION_CAPTURE_DIRECTION
- */
+
+  /**
+   * GST_TAG_GEO_LOCATION_MOVEMENT_DIRECTION:
+   *
+   * Indicates the movement direction of the device performing the capture
+   * of a media. It is represented as degrees in floating point representation,
+   * 0 means the geographic north, and increases clockwise (double from 0 to 360)
+   *
+   * See also #GST_TAG_GEO_LOCATION_CAPTURE_DIRECTION
+   */
   {GST_TAG_GEO_LOCATION_MOVEMENT_DIRECTION, EXTRACTOR_METATYPE_LOCATION_MOVEMENT_DIRECTION},
-/**
- * GST_TAG_GEO_LOCATION_CAPTURE_DIRECTION:
- *
- * Indicates the direction the device is pointing to when capturing
- * a media. It is represented as degrees in floating point representation,
- * 0 means the geographic north, and increases clockwise (double from 0 to 360)
- *
- * See also #GST_TAG_GEO_LOCATION_MOVEMENT_DIRECTION
- */
+
+  /**
+   * GST_TAG_GEO_LOCATION_CAPTURE_DIRECTION:
+   *
+   * Indicates the direction the device is pointing to when capturing
+   * a media. It is represented as degrees in floating point representation,
+   * 0 means the geographic north, and increases clockwise (double from 0 to 360)
+   *
+   * See also #GST_TAG_GEO_LOCATION_MOVEMENT_DIRECTION
+   */
   {GST_TAG_GEO_LOCATION_CAPTURE_DIRECTION, EXTRACTOR_METATYPE_LOCATION_CAPTURE_DIRECTION},
-/**
- * GST_TAG_SHOW_NAME:
- *
- * Name of the show, used for displaying (string)
- */
+
+  /**
+   * GST_TAG_SHOW_NAME:
+   *
+   * Name of the show, used for displaying (string)
+   */
   {GST_TAG_SHOW_NAME, EXTRACTOR_METATYPE_SHOW_NAME},
-/**
- * GST_TAG_SHOW_SORTNAME:
- *
- * Name of the show, used for sorting (string)
- */
+
+  /**
+   * GST_TAG_SHOW_SORTNAME:
+   *
+   * Name of the show, used for sorting (string)
+   */
   {GST_TAG_SHOW_SORTNAME, EXTRACTOR_METATYPE_SHOW_NAME},
-/**
- * GST_TAG_SHOW_EPISODE_NUMBER:
- *
- * Number of the episode within a season/show (unsigned integer)
- */
+
+  /**
+   * GST_TAG_SHOW_EPISODE_NUMBER:
+   *
+   * Number of the episode within a season/show (unsigned integer)
+   */
   {GST_TAG_SHOW_EPISODE_NUMBER, EXTRACTOR_METATYPE_SHOW_EPISODE_NUMBER},
-/**
- * GST_TAG_SHOW_SEASON_NUMBER:
- *
- * Number of the season of a show/series (unsigned integer)
- */
+
+  /**
+   * GST_TAG_SHOW_SEASON_NUMBER:
+   *
+   * Number of the season of a show/series (unsigned integer)
+   */
   {GST_TAG_SHOW_SEASON_NUMBER, EXTRACTOR_METATYPE_SHOW_SEASON_NUMBER},
-/**
- * GST_TAG_LYRICS:
- *
- * The lyrics of the media (string)
- */
+
+  /**
+   * GST_TAG_LYRICS:
+   *
+   * The lyrics of the media (string)
+   */
   {GST_TAG_LYRICS, EXTRACTOR_METATYPE_LYRICS},
-/**
- * GST_TAG_COMPOSER_SORTNAME:
- *
- * The composer's name, used for sorting (string)
- */
+
+  /**
+   * GST_TAG_COMPOSER_SORTNAME:
+   *
+   * The composer's name, used for sorting (string)
+   */
   {GST_TAG_COMPOSER_SORTNAME, EXTRACTOR_METATYPE_COMPOSER},
-/**
- * GST_TAG_GROUPING:
- *
- * Groups together media that are related and spans multiple tracks. An
- * example are multiple pieces of a concerto. (string)
- */
+
+  /**
+   * GST_TAG_GROUPING:
+   *
+   * Groups together media that are related and spans multiple tracks. An
+   * example are multiple pieces of a concerto. (string)
+   */
   {GST_TAG_GROUPING, EXTRACTOR_METATYPE_GROUPING},
-/**
- * GST_TAG_USER_RATING:
- *
- * Rating attributed by a person (likely the application user).
- * The higher the value, the more the user likes this media
- * (unsigned int from 0 to 100)
- */
+
+  /**
+   * GST_TAG_USER_RATING:
+   *
+   * Rating attributed by a person (likely the application user).
+   * The higher the value, the more the user likes this media
+   * (unsigned int from 0 to 100)
+   */
   {GST_TAG_USER_RATING, EXTRACTOR_METATYPE_POPULARITY_METER},
-/**
- * GST_TAG_DEVICE_MANUFACTURER:
- *
- * Manufacturer of the device used to create the media (string)
- */
+
+  /**
+   * GST_TAG_DEVICE_MANUFACTURER:
+   *
+   * Manufacturer of the device used to create the media (string)
+   */
   {GST_TAG_DEVICE_MANUFACTURER, EXTRACTOR_METATYPE_DEVICE_MANUFACTURER},
-/**
- * GST_TAG_DEVICE_MODEL:
- *
- * Model of the device used to create the media (string)
- */
+
+  /**
+   * GST_TAG_DEVICE_MODEL:
+   *
+   * Model of the device used to create the media (string)
+   */
   {GST_TAG_DEVICE_MODEL, EXTRACTOR_METATYPE_DEVICE_MODEL},
-/**
- * GST_TAG_APPLICATION_NAME:
- *
- * Name of the application used to create the media (string)
- */
+
+  /**
+   * GST_TAG_APPLICATION_NAME:
+   *
+   * Name of the application used to create the media (string)
+   */
   {GST_TAG_APPLICATION_NAME, EXTRACTOR_METATYPE_CREATED_BY_SOFTWARE},
-/**
- * GST_TAG_APPLICATION_DATA:
- *
- * Arbitrary application data (sample)
- *
- * Some formats allow applications to add their own arbitrary data
- * into files. This data is application dependent.
- */
+
+  /**
+   * GST_TAG_APPLICATION_DATA:
+   *
+   * Arbitrary application data (sample)
+   *
+   * Some formats allow applications to add their own arbitrary data
+   * into files. This data is application dependent.
+   */
   /* No equivalent, and none needed (not really metadata)? */
-/**
- * GST_TAG_IMAGE_ORIENTATION:
- *
- * Represents the 'Orientation' tag from EXIF. Defines how the image
- * should be rotated and mirrored for display. (string)
- *
- * This tag has a predefined set of allowed values:
- *   "rotate-0"
- *   "rotate-90"
- *   "rotate-180"
- *   "rotate-270"
- *   "flip-rotate-0"
- *   "flip-rotate-90"
- *   "flip-rotate-180"
- *   "flip-rotate-270"
- *
- * The naming is adopted according to a possible transformation to perform
- * on the image to fix its orientation, obviously equivalent operations will
- * yield the same result.
- *
- * Rotations indicated by the values are in clockwise direction and
- * 'flip' means an horizontal mirroring.
- */
+
+  /**
+   * GST_TAG_IMAGE_ORIENTATION:
+   *
+   * Represents the 'Orientation' tag from EXIF. Defines how the image
+   * should be rotated and mirrored for display. (string)
+   *
+   * This tag has a predefined set of allowed values:
+   *   "rotate-0"
+   *   "rotate-90"
+   *   "rotate-180"
+   *   "rotate-270"
+   *   "flip-rotate-0"
+   *   "flip-rotate-90"
+   *   "flip-rotate-180"
+   *   "flip-rotate-270"
+   *
+   * The naming is adopted according to a possible transformation to perform
+   * on the image to fix its orientation, obviously equivalent operations will
+   * yield the same result.
+   *
+   * Rotations indicated by the values are in clockwise direction and
+   * 'flip' means an horizontal mirroring.
+   */
   {GST_TAG_IMAGE_ORIENTATION, EXTRACTOR_METATYPE_ORIENTATION}
+
 };
+
+
+/**
+ * Struct mapping named tags (that don't occur in GST API) to LE tags.
+ */
+struct NamedTag
+{
+  /**
+   * tag.
+   */
+  const char *tag;
+
+  /**
+   * Corresponding LE tag.
+   */
+  enum EXTRACTOR_MetaType le_type;
+};
+
+
+struct NamedTag named_tags[] =
+  {
+    "FPS", EXTRACTOR_METATYPE_FRAME_RATE,
+    "PLAY_COUNTER", EXTRACTOR_METATYPE_PLAY_COUNTER,
+    "RATING", EXTRACTOR_METATYPE_RATING,
+    "SUMMARY", EXTRACTOR_METATYPE_SUMMARY,
+    "SUBJECT", EXTRACTOR_METATYPE_SUBJECT,
+    "MOOD", EXTRACTOR_METATYPE_MOOD,
+    "LEAD_PERFORMER", EXTRACTOR_METATYPE_PERFORMER,
+    "DIRECTOR", EXTRACTOR_METATYPE_MOVIE_DIRECTOR,
+    "WRITTEN_BY", EXTRACTOR_METATYPE_WRITER,
+    "PRODUCER", EXTRACTOR_METATYPE_PRODUCER,
+    "PUBLISHER", EXTRACTOR_METATYPE_PUBLISHER,
+    "ORIGINAL/ARTIST", EXTRACTOR_METATYPE_ORIGINAL_ARTIST,
+    "ORIGINAL/TITLE", EXTRACTOR_METATYPE_ORIGINAL_TITLE,
+    NULL, EXTRACTOR_METATYPE_UNKNOWN
+  };
+
 
 enum CurrentStreamType
 {
@@ -894,15 +1023,30 @@ send_structure_foreach (GQuark field_id, const GValue *value,
     str = NULL;
     break;
   }
-  if (str != NULL)
+  if (NULL != str)
+  {
+    unsigned int i;
+
+    for (i=0; NULL != named_tags[i].tag; i++)
+      if (0 == strcmp (named_tags[i].tag, field_name))
+	{
+	  ps->time_to_leave = ps->ec->proc (ps->ec->cls, "gstreamer",
+					    named_tags[i].le_type, 
+					    EXTRACTOR_METAFORMAT_UTF8, "text/plain",
+					    (const char *) str, strlen (str) + 1);
+	  g_free (str);
+	  str = NULL;
+	  break;
+	}
+  }
+  if (NULL != str)
   {
     gchar *senddata = g_strdup_printf ("%s=%s", field_name, str);
     ps->time_to_leave = ps->ec->proc (ps->ec->cls, "gstreamer",
-        EXTRACTOR_METATYPE_UNKNOWN, EXTRACTOR_METAFORMAT_UTF8, "text/plain",
-        (const char *) senddata, strlen (senddata) + 1);
+				      EXTRACTOR_METATYPE_UNKNOWN, EXTRACTOR_METAFORMAT_UTF8, "text/plain",
+				      (const char *) senddata, strlen (senddata) + 1);
     g_free (senddata);
   }
-
   g_free (str);
 
   return !ps->time_to_leave;
