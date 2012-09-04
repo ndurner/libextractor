@@ -1810,7 +1810,7 @@ EXTRACTOR_gstreamer_extract_method (struct EXTRACTOR_ExtractContext *ec)
   if (ps.length == UINT_MAX)
     ps.length = 0;
   gst_discoverer_start (ps.dc);
-  g_psle_add ((GSourceFunc) &_run_async, &ps);
+  g_idle_add ((GSourceFunc) &_run_async, &ps);
   g_main_loop_run (ps.loop);
   gst_discoverer_stop (ps.dc);
   g_object_unref (ps.dc);
