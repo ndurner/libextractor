@@ -126,16 +126,40 @@ main (int argc, char *argv[])
 	strlen ("standard") + 1,
 	0 
       },
-#if 0
       { 
 	EXTRACTOR_METATYPE_DESCRIPTION,
 	EXTRACTOR_METAFORMAT_UTF8,
 	"text/plain",
-	"",
-	strlen ("") + 1,
+	"high-quality block-sorting file compressor - utilities\n"
+" bzip2 is a freely available, patent free, high-quality data compressor.\n"
+" It typically compresses files to within 10% to 15% of the best available\n"
+" techniques, whilst being around twice as fast at compression and six\n"
+" times faster at decompression.\n"
+" .\n"
+" bzip2 compresses files using the Burrows-Wheeler block-sorting text\n"
+" compression algorithm, and Huffman coding.  Compression is generally\n"
+" considerably better than that achieved by more conventional\n"
+" LZ77/LZ78-based compressors, and approaches the performance of the PPM\n"
+" family of statistical compressors.\n"
+" .\n"
+" The archive file format of bzip2 (.bz2) is incompatible with that of its\n"
+" predecessor, bzip (.bz).",
+	strlen ("high-quality block-sorting file compressor - utilities\n"
+" bzip2 is a freely available, patent free, high-quality data compressor.\n"
+" It typically compresses files to within 10% to 15% of the best available\n"
+" techniques, whilst being around twice as fast at compression and six\n"
+" times faster at decompression.\n"
+" .\n"
+" bzip2 compresses files using the Burrows-Wheeler block-sorting text\n"
+" compression algorithm, and Huffman coding.  Compression is generally\n"
+" considerably better than that achieved by more conventional\n"
+" LZ77/LZ78-based compressors, and approaches the performance of the PPM\n"
+" family of statistical compressors.\n"
+" .\n"
+" The archive file format of bzip2 (.bz2) is incompatible with that of its\n"
+" predecessor, bzip (.bz).") + 1,
 	0 
       },
-#endif
       { 0, 0, NULL, NULL, 0, -1 }
     };
   struct ProblemSet ps[] =
