@@ -455,8 +455,8 @@ EXTRACTOR_IPC_channel_recv_ (struct EXTRACTOR_Channel **channels,
     {
       return 1; /* nothing left to do! */
     }
-  tv.tv_sec = 10;
-  tv.tv_usec = 0;
+  tv.tv_sec = 0;
+  tv.tv_usec = 100000000;
   if (-1 == select (max + 1, &to_check, NULL, NULL, &tv))
     {
       /* an error or timeout -> something's wrong or all plugins hung up */
