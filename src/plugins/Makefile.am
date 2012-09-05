@@ -525,6 +525,9 @@ libextractor_riff_la_SOURCES = \
   riff_extractor.c
 libextractor_riff_la_LDFLAGS = \
   $(PLUGINFLAGS)
+libextractor_rpm_la_LIBADD = \
+  -lm
+
 
 test_riff_SOURCES = \
   test_riff.c
