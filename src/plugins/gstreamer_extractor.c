@@ -1790,7 +1790,7 @@ EXTRACTOR_gstreamer_extract_method (struct EXTRACTOR_ExtractContext *ec)
   GError *err = NULL;
 
   memset (&ps, 0, sizeof (ps));
-  ps.dc = gst_discoverer_new (10 * GST_SECOND, &err);
+  ps.dc = gst_discoverer_new (8 * GST_SECOND, &err);
   if (NULL == ps.dc) 
     {
       g_print ("Error initializing: %s\n", err->message);
