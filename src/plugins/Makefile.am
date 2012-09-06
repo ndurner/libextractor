@@ -10,6 +10,11 @@ if HAVE_GNU_LD
  makesymbolic=-Wl,-Bsymbolic
 endif
 
+if USE_COVERAGE
+  AM_CFLAGS = --coverage -O0
+  XLIB = -lgcov
+endif
+
 PLUGINFLAGS = $(makesymbolic) $(LE_PLUGIN_LDFLAGS)
 
 SUBDIRS = . 

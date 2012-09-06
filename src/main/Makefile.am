@@ -9,6 +9,11 @@ tmpdir = /tmp/
 LIBS = \
  @LE_LIBINTL@ @LE_LIB_LIBS@
 
+if USE_COVERAGE
+  AM_CFLAGS = --coverage -O0
+  XLIB = -lgcov
+endif
+
 lib_LTLIBRARIES = \
   libextractor.la 
 

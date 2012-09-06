@@ -614,6 +614,18 @@ AC_SUBST(LIBEXT)
 PACKAGE_VERSION_NOALPHA=`echo $PACKAGE_VERSION | sed "s/@<:@A-Za-z@:>@*//g;"`
 AC_SUBST(PACKAGE_VERSION_NOALPHA)
 
+# gcov compilation
+AC_MSG_CHECKING(whether to compile with support for code coverage analysis)
+AC_ARG_ENABLE([coverage], 
+              AS_HELP_STRING([--enable-coverage],
+                             [compile the library with code coverage support]),
+              [use_gcov=${enableval}], 
+              [use_gcov=no])
+AC_MSG_RESULT($use_gcov)
+AM_CONDITIONAL([USE_COVERAGE], [test "x$use_gcov" = "xyes"])
+
+
+
 AC_CONFIG_FILES([Makefile
 po/Makefile.in 
 m4/Makefile
