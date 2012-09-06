@@ -1,3 +1,6 @@
+Thu Sep  6 09:52:13 CEST 2012
+	Updated Ukrainian translation. -CG
+
 Tue Mar 27 15:04:00 CEST 2012
 	Refactoring plugin API to allow seeks to arbitrary positions in the
 	file (breaks existing plugins, so the current version will not

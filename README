@@ -1,15 +1,18 @@
 About
 =====
 
-GNU libextractor is a simple C library for keyword extraction. 
-Common use-cases for GNU libextractor include detail-views in
-file managers, detailed search results in file-sharing networks 
-and general information gathering in forensics investigations
-and penetration testing.
+GNU libextractor is a library used to extract meta data from files of
+arbitrary type.  It is designed to use helper-libraries to perform the
+actual extraction, and to be trivially extendable by linking against
+external extractors for additional file types.  Common use-cases for
+GNU libextractor include detail-views in file managers, detailed
+search results in file-sharing networks and general information
+gathering in forensics investigations and penetration testing.
 
-Bindings for GNU libextractor exists for many languages in addition to
-the standard C/C++ API (we know about bindings for Java, Perl, PHP,
-Mono, Python, Ruby).  
+GNU libextractor is a simple C library with a small API.  Bindings for
+GNU libextractor exists for many languages in addition to the standard
+C/C++ API (we know about bindings for Java, Perl, PHP, Mono, Python,
+Ruby).
 
 libextractor uses a plugin mechanism to enable developers to quickly
 add extractors for additional formats.  Plugins are executed
