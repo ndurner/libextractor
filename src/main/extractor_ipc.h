@@ -30,7 +30,7 @@
  * communication in both directions. 
  * First, the main library send an 'INIT_STATE' message
  * to the plugin.  The start message specifies the name (and size)
- * of a shared memory segment which will contain parts of the the (uncompressed)
+ * of a shared memory segment which will contain parts of the (uncompressed)
  * data of the file that is being processed.  The same shared memory
  * segment is used throughout the lifetime of the plugin.
  *

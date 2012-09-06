@@ -501,7 +501,7 @@ static const struct MetaTypeDescription meta_type_descriptions[] = {
     gettext_noop ("number of the episode within a season/show") },
   { gettext_noop ("show season number"),
     gettext_noop ("number of the season of a show/series") },
-  { gettext_noop ("gourping"),
+  { gettext_noop ("grouping"),
     gettext_noop ("groups together media that are related and spans multiple tracks. An example are multiple pieces of a concerto") },
   { gettext_noop ("device manufacturer"),
     gettext_noop ("manufacturer of the device used to create the media") },
