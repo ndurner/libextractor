@@ -34,12 +34,12 @@ GNU libextractor \- meta\-information extraction library 1.0.0
 .P
 GNU libextractor is a simple library for keyword extraction.  libextractor does not support all formats but supports a simple plugging mechanism such that you can quickly add extractors for additional formats, even without recompiling libextractor.  libextractor typically ships with dozens of plugins that can be used to obtain meta data from common file-types.  If you want to write your own plugin for some filetype, all you need to do is write a little library that implements a single method with this signature:
 
- \fBvoid EXTRACTOR_XXX_extract_method (struct EXTRACTOR_ExtractContext *ec);
+ \fBvoid EXTRACTOR_XXX_extract_method (struct EXTRACTOR_ExtractContext *\fIec\fB);\fP
 
 .P
-'ec' contains function pointers for reading, seeking, getting the overall file size and returning meta data.  There is also a field with options for the plugin.  New plugins will be automatically located and used once they are installed in the respective directory (typically something like /usr/lib/libextractor/).  
+\fIec\fP contains function pointers for reading, seeking, getting the overall file size and returning meta data.  There is also a field with options for the plugin.  New plugins will be automatically located and used once they are installed in the respective directory (typically something like /usr/lib/libextractor/).  
 .P
-The application 'extract' gives an example how to use libextractor.
+The application \fBextract\fP gives an example how to use libextractor.
 .P
 The basic use of libextractor is to load the plugins (for example with \fBEXTRACTOR_plugin_add_defaults\fP), then to extract the keyword list using \fBEXTRACTOR_extract\fP, and finally unloading the plugins (with \fBEXTRACTOR_plugin_remove_all\fP).
 .P
