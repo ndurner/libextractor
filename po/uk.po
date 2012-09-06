@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 1.0.0-pre1\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2012-09-04 20:36+0200\n"
+"POT-Creation-Date: 2012-09-06 09:40+0200\n"
 "PO-Revision-Date: 2012-09-05 22:36+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <translation-team-uk@lists.sourceforge.net>\n"
@@ -16,7 +16,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Lokalize 1.5\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: src/main/extract.c:132
 #, c-format
@@ -31,8 +32,11 @@ msgstr ""
 
 #: src/main/extract.c:135
 #, c-format
-msgid "Arguments mandatory for long options are also mandatory for short options.\n"
-msgstr "Обов’язкові аргументи для довгих форм запису параметрів є обов’язковими і для скорочених форм.\n"
+msgid ""
+"Arguments mandatory for long options are also mandatory for short options.\n"
+msgstr ""
+"Обов’язкові аргументи для довгих форм запису параметрів є обов’язковими і "
+"для скорочених форм.\n"
 
 #: src/main/extract.c:217
 msgid "print output in bibtex format"
@@ -40,7 +44,9 @@ msgstr "вивести дані у форматі bibtex"
 
 #: src/main/extract.c:219
 msgid "produce grep-friendly output (all results on one line per file)"
-msgstr "виводити дані у режимі сумісності з grep (єдиний рядок для всіх результатів з файла)"
+msgstr ""
+"виводити дані у режимі сумісності з grep (єдиний рядок для всіх результатів "
+"з файла)"
 
 #: src/main/extract.c:221
 msgid "print this help"
@@ -52,7 +58,9 @@ msgstr "запускати додатки у межах процесу (спро
 
 #: src/main/extract.c:225
 msgid "read data from file into memory and extract from memory"
-msgstr "прочитати дані з файла до оперативної пам’яті і видобути метадані з оперативної пам’яті"
+msgstr ""
+"прочитати дані з файла до оперативної пам’яті і видобути метадані з "
+"оперативної пам’яті"
 
 #: src/main/extract.c:227
 msgid "load an extractor plugin named LIBRARY"
@@ -68,7 +76,9 @@ msgstr "не використовувати типовий набір додат
 
 #: src/main/extract.c:233
 msgid "print only keywords of the given TYPE (use -L to get a list)"
-msgstr "виводити ключові слова лише вказаного типу TYPE (скористайтеся -L, щоб отримати список)"
+msgstr ""
+"виводити ключові слова лише вказаного типу TYPE (скористайтеся -L, щоб "
+"отримати список)"
 
 #: src/main/extract.c:235
 msgid "print the version number"
@@ -112,18 +122,25 @@ msgstr "%s — (бінарний, %u байтів)\n"
 
 #: src/main/extract.c:658 src/main/extract.c:668
 #, c-format
-msgid "Illegal combination of options, cannot combine multiple styles of printing.\n"
-msgstr "Некоректне поєднання параметрів, не можна визначати декілька стилів виведення даних.\n"
+msgid ""
+"Illegal combination of options, cannot combine multiple styles of printing.\n"
+msgstr ""
+"Некоректне поєднання параметрів, не можна визначати декілька стилів "
+"виведення даних.\n"
 
 #: src/main/extract.c:698
 #, c-format
 msgid "You must specify an argument for the `%s' option (option ignored).\n"
-msgstr "Параметр «%s» можна використовувати лише з додатковим аргументом (параметр проігноровано).\n"
+msgstr ""
+"Параметр «%s» можна використовувати лише з додатковим аргументом (параметр "
+"проігноровано).\n"
 
 #: src/main/extract.c:763
 #, c-format
 msgid "Use --help to get a list of options.\n"
-msgstr "Скористайтеся параметром --help для отримання списку можливих параметрів командного рядка.\n"
+msgstr ""
+"Скористайтеся параметром --help для отримання списку можливих параметрів "
+"командного рядка.\n"
 
 #: src/main/extract.c:801
 #, c-format
@@ -289,8 +306,12 @@ msgid "publishing institution"
 msgstr "організація-видавець"
 
 #: src/main/extractor_metatypes.c:86
-msgid "institution that was involved in the publishing, but not necessarily the publisher"
-msgstr "установа, яка брала участь у опублікуванні, не обов’язково безпосередній видавець"
+msgid ""
+"institution that was involved in the publishing, but not necessarily the "
+"publisher"
+msgstr ""
+"установа, яка брала участь у опублікуванні, не обов’язково безпосередній "
+"видавець"
 
 #: src/main/extractor_metatypes.c:87
 msgid "publication series"
@@ -329,8 +350,12 @@ msgid "publication day"
 msgstr "день публікації"
 
 #: src/main/extractor_metatypes.c:97
-msgid "day of publication (or, if unpublished, the day of creation), relative to the given month"
-msgstr "день публікації (або, якщо не опубліковано, день створення) у вказаному місяці"
+msgid ""
+"day of publication (or, if unpublished, the day of creation), relative to "
+"the given month"
+msgstr ""
+"день публікації (або, якщо не опубліковано, день створення) у вказаному "
+"місяці"
 
 #: src/main/extractor_metatypes.c:98
 msgid "publication date"
@@ -565,8 +590,12 @@ msgid "unknown date"
 msgstr "невідома дата"
 
 #: src/main/extractor_metatypes.c:172
-msgid "ambiguous date (could specify creation time, modification time or access time)"
-msgstr "неоднозначні дані (можуть відповідати часу створення, часу внесення змін або часу доступу)"
+msgid ""
+"ambiguous date (could specify creation time, modification time or access "
+"time)"
+msgstr ""
+"неоднозначні дані (можуть відповідати часу створення, часу внесення змін або "
+"часу доступу)"
 
 #: src/main/extractor_metatypes.c:173
 msgid "creation date"
@@ -833,15 +862,21 @@ msgid "target platform"
 msgstr "платформа призначення"
 
 #: src/main/extractor_metatypes.c:247
-msgid "name of the architecture, operating system and distribution this package is for"
-msgstr "назва архітектури, операційної системи та дистрибутива, для яких призначено цей пакунок"
+msgid ""
+"name of the architecture, operating system and distribution this package is "
+"for"
+msgstr ""
+"назва архітектури, операційної системи та дистрибутива, для яких призначено "
+"цей пакунок"
 
 #: src/main/extractor_metatypes.c:248
 msgid "resource type"
 msgstr "тип ресурсу"
 
 #: src/main/extractor_metatypes.c:249
-msgid "categorization of the nature of the resource that is more specific than the file format"
+msgid ""
+"categorization of the nature of the resource that is more specific than the "
+"file format"
 msgstr "категорія, до якої належить ресурс, специфічніша за формат файла"
 
 #: src/main/extractor_metatypes.c:250
@@ -849,7 +884,8 @@ msgid "library search path"
 msgstr "шлях пошуку бібліотек"
 
 #: src/main/extractor_metatypes.c:251
-msgid "path in the file system to be considered when looking for required libraries"
+msgid ""
+"path in the file system to be considered when looking for required libraries"
 msgstr "шлях у файловій системі, за яким слід шукати потрібні бібліотеки"
 
 #: src/main/extractor_metatypes.c:252
@@ -1077,7 +1113,9 @@ msgid "performer"
 msgstr "виконавець"
 
 #: src/main/extractor_metatypes.c:344
-msgid "The artist(s) who performed the work (conductor, orchestra, soloists, actor, etc.)"
+msgid ""
+"The artist(s) who performed the work (conductor, orchestra, soloists, actor, "
+"etc.)"
 msgstr "Виконавець твору (диригент, оркестр, солісти тощо)"
 
 #: src/main/extractor_metatypes.c:346
@@ -1265,7 +1303,8 @@ msgid "interpretation"
 msgstr "інтерпретація"
 
 #: src/main/extractor_metatypes.c:397
-msgid "information about the people behind interpretations of an existing piece"
+msgid ""
+"information about the people behind interpretations of an existing piece"
 msgstr "дані щодо творців інтерпретації твору"
 
 #: src/main/extractor_metatypes.c:398
@@ -1389,7 +1428,8 @@ msgid "full data"
 msgstr "дані повністю"
 
 #: src/main/extractor_metatypes.c:432
-msgid "entry that contains the full, original binary data (not really meta data)"
+msgid ""
+"entry that contains the full, original binary data (not really meta data)"
 msgstr "запис, що містить повні початкові двійкові дані (а не метадані)"
 
 #: src/main/extractor_metatypes.c:434
@@ -1489,8 +1529,12 @@ msgid "nominal bitrate"
 msgstr "номінальна щільність потоку бітів"
 
 #: src/main/extractor_metatypes.c:463
-msgid "nominal bitrate in bits/s. The actual bitrate might be different from this target bitrate."
-msgstr "номінальна щільність потоку бітів у біт/с. Справжня щільність потоку може відрізнятися від цієї очікуваної щільності."
+msgid ""
+"nominal bitrate in bits/s. The actual bitrate might be different from this "
+"target bitrate."
+msgstr ""
+"номінальна щільність потоку бітів у біт/с. Справжня щільність потоку може "
+"відрізнятися від цієї очікуваної щільності."
 
 #: src/main/extractor_metatypes.c:464
 msgid "minimum bitrate"
@@ -1577,16 +1621,24 @@ msgid "location name"
 msgstr "назва місця"
 
 #: src/main/extractor_metatypes.c:487
-msgid "human readable descriptive location of where the media has been recorded or produced"
-msgstr "зручний для читання описова назва місцевості, у якій було записано або створено дані"
+msgid ""
+"human readable descriptive location of where the media has been recorded or "
+"produced"
+msgstr ""
+"зручний для читання описова назва місцевості, у якій було записано або "
+"створено дані"
 
 #: src/main/extractor_metatypes.c:489
 msgid "location elevation"
 msgstr "географічна висота"
 
 #: src/main/extractor_metatypes.c:490
-msgid "geo elevation of where the media has been recorded or produced in meters according to WGS84 (zero is average sea level)"
-msgstr "висота над рівнем моря, де було записано або створено дані у метрах відповідно до WGS84 (нуль відповідає рівню моря)"
+msgid ""
+"geo elevation of where the media has been recorded or produced in meters "
+"according to WGS84 (zero is average sea level)"
+msgstr ""
+"висота над рівнем моря, де було записано або створено дані у метрах "
+"відповідно до WGS84 (нуль відповідає рівню моря)"
 
 #: src/main/extractor_metatypes.c:491
 msgid "location horizontal error"
@@ -1601,7 +1653,8 @@ msgid "location movement speed"
 msgstr "географічна швидкість пересування"
 
 #: src/main/extractor_metatypes.c:494
-msgid "speed of the capturing device when performing the capture. Represented in m/s"
+msgid ""
+"speed of the capturing device when performing the capture. Represented in m/s"
 msgstr "швидкість руху пристрою для знімання під час виконання зйомки у м/с"
 
 #: src/main/extractor_metatypes.c:495
@@ -1609,16 +1662,28 @@ msgid "location movement direction"
 msgstr "географічний напрямок пересування"
 
 #: src/main/extractor_metatypes.c:496
-msgid "indicates the movement direction of the device performing the capture of a media. It is represented as degrees in floating point representation, 0 means the geographic north, and increases clockwise"
-msgstr "напрямок руху пристрою, яким виконувалося знімання даних. Визначається у градусах з використанням десяткових дробів, 0 відповідає географічній півночі, відлік ведеться за годинниковою стрілкою."
+msgid ""
+"indicates the movement direction of the device performing the capture of a "
+"media. It is represented as degrees in floating point representation, 0 "
+"means the geographic north, and increases clockwise"
+msgstr ""
+"напрямок руху пристрою, яким виконувалося знімання даних. Визначається у "
+"градусах з використанням десяткових дробів, 0 відповідає географічній "
+"півночі, відлік ведеться за годинниковою стрілкою."
 
 #: src/main/extractor_metatypes.c:497
 msgid "location capture direction"
 msgstr "географічний напрямок зйомки"
 
 #: src/main/extractor_metatypes.c:498
-msgid "indicates the direction the device is pointing to when capturing a media. It is represented as degrees in floating point representation, 0 means the geographic north, and increases clockwise"
-msgstr "напрямок, у якому було спрямовано об’єктив пристрою, яким виконувалося знімання даних. Визначається у градусах з використанням десяткових дробів, 0 відповідає географічній півночі, відлік ведеться за годинниковою стрілкою."
+msgid ""
+"indicates the direction the device is pointing to when capturing a media. It "
+"is represented as degrees in floating point representation, 0 means the "
+"geographic north, and increases clockwise"
+msgstr ""
+"напрямок, у якому було спрямовано об’єктив пристрою, яким виконувалося "
+"знімання даних. Визначається у градусах з використанням десяткових дробів, 0 "
+"відповідає географічній півночі, відлік ведеться за годинниковою стрілкою."
 
 #: src/main/extractor_metatypes.c:500
 msgid "show episode number"
@@ -1637,12 +1702,17 @@ msgid "number of the season of a show/series"
 msgstr "номер сезону програми або серіалу"
 
 #: src/main/extractor_metatypes.c:504
-msgid "gourping"
+#, fuzzy
+msgid "grouping"
 msgstr "групування"
 
 #: src/main/extractor_metatypes.c:505
-msgid "groups together media that are related and spans multiple tracks. An example are multiple pieces of a concerto"
-msgstr "групування пов’язаних мультимедійних даних з різних доріжок. Прикладом є різні частини одного концерту."
+msgid ""
+"groups together media that are related and spans multiple tracks. An example "
+"are multiple pieces of a concerto"
+msgstr ""
+"групування пов’язаних мультимедійних даних з різних доріжок. Прикладом є "
+"різні частини одного концерту."
 
 #: src/main/extractor_metatypes.c:506
 msgid "device manufacturer"
