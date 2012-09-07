@@ -2,7 +2,7 @@
 
 ZZSTARTSEED=0
 ZZSTOPSEED=100
-
+ret=0
 # fallbacks for direct, non-"make check" usage
 if test x"$testdatadir" = x""
 then
@@ -29,7 +29,7 @@ do
       if ! "$bindir/extract" -i "$tmpfile" > /dev/null
       then
         echo "$tmpfile with seed $seed failed"
-        exit 1
+	ret=1
       fi
       seed=`expr $seed + 1`
     done
@@ -37,3 +37,4 @@ do
   fi
 done
 
+exit $ret

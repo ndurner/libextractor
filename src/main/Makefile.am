@@ -32,7 +32,7 @@ endif
 libextractor_la_LDFLAGS = \
   $(LE_LIB_LDFLAGS) -version-info @LIB_VERSION_CURRENT@:@LIB_VERSION_REVISION@:@LIB_VERSION_AGE@
 libextractor_la_LIBADD = \
-  $(LIBLTDL) $(zlib) $(bz2lib) $(LTLIBICONV)
+  $(LIBLTDL) $(zlib) $(bz2lib) $(LTLIBICONV) $(XLIB)
 
 if WINDOWS
 EXTRACTOR_IPC=extractor_ipc_w32.c
@@ -87,14 +87,14 @@ libextractor_test_la_SOURCES = \
 libextractor_test_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_test_la_LIBADD = \
-  $(LE_LIBINTL)
+  $(LE_LIBINTL) $(XLIB)
 
 libextractor_test2_la_SOURCES = \
   test2_extractor.c 
 libextractor_test2_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_test2_la_LIBADD = \
-  $(LE_LIBINTL)
+  $(LE_LIBINTL) $(XLIB)
 
 
 check_PROGRAMS = \

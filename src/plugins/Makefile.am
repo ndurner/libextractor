@@ -244,7 +244,7 @@ noinst_LTLIBRARIES = \
 libtest_la_SOURCES = \
   test_lib.c test_lib.h
 libtest_la_LIBADD = \
-  $(top_builddir)/src/main/libextractor.la
+  $(top_builddir)/src/main/libextractor.la $(XLIB) 
 
 
 libextractor_archive_la_SOURCES = \
@@ -252,7 +252,7 @@ libextractor_archive_la_SOURCES = \
 libextractor_archive_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_archive_la_LIBADD = \
-  -larchive
+  -larchive $(XLIB) 
 
 test_archive_SOURCES = \
   test_archive.c
@@ -264,6 +264,8 @@ libextractor_deb_la_SOURCES = \
   deb_extractor.c
 libextractor_deb_la_LDFLAGS = \
   $(PLUGINFLAGS) -lz
+libextractor_deb_la_LIBADD = \
+ $(XLIB) 
 
 test_deb_SOURCES = \
   test_deb.c
@@ -275,6 +277,8 @@ libextractor_dvi_la_SOURCES = \
   dvi_extractor.c
 libextractor_dvi_la_LDFLAGS = \
   $(PLUGINFLAGS)
+libextractor_dvi_la_LIBADD = \
+ $(XLIB) 
 
 test_dvi_SOURCES = \
   test_dvi.c
@@ -287,7 +291,7 @@ libextractor_exiv2_la_SOURCES = \
 libextractor_exiv2_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_exiv2_la_LIBADD = \
-  -lexiv2
+  -lexiv2 $(XLIB)
 
 test_exiv2_SOURCES = \
   test_exiv2.c
@@ -300,7 +304,7 @@ libextractor_flac_la_SOURCES = \
 libextractor_flac_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_flac_la_LIBADD = \
-  -lFLAC
+  -lFLAC $(XLIB)
 
 test_flac_SOURCES = \
   test_flac.c
@@ -313,7 +317,7 @@ libextractor_gif_la_SOURCES = \
 libextractor_gif_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_gif_la_LIBADD = \
-  -lgif
+  -lgif $(XLIB)
 
 test_gif_SOURCES = \
   test_gif.c
@@ -326,9 +330,9 @@ libextractor_gstreamer_la_SOURCES = \
 libextractor_gstreamer_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_gstreamer_la_LIBADD = \
-  $(GSTREAMER_LIBS) $(GSTREAMER_PBUTILS_LIBS) $(GSTREAMER_TAG_LIBS) $(GSTREAMER_APP_LIBS)
+  $(GSTREAMER_LIBS) $(GSTREAMER_PBUTILS_LIBS) $(GSTREAMER_TAG_LIBS) $(GSTREAMER_APP_LIBS) $(XLIB)
 libextractor_gstreamer_la_CFLAGS = \
-  $(GSTREAMER_CFLAGS) $(GSTREAMER_PBUTILS_CFLAGS) $(GSTREAMER_TAG_CFLAGS) $(GSTREAMER_APP_CFALGS)
+  $(GSTREAMER_CFLAGS) $(GSTREAMER_PBUTILS_CFLAGS) $(GSTREAMER_TAG_CFLAGS) $(GSTREAMER_APP_CFALGS) 
 
 test_gstreamer_SOURCES = \
   test_gstreamer.c
@@ -344,7 +348,7 @@ libextractor_html_la_SOURCES = \
 libextractor_html_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_html_la_LIBADD = \
-  -ltidy -lmagic
+  -ltidy -lmagic $(XLIB)
 
 test_html_SOURCES = \
   test_html.c
@@ -356,6 +360,8 @@ libextractor_it_la_SOURCES = \
   it_extractor.c
 libextractor_it_la_LDFLAGS = \
   $(PLUGINFLAGS)
+libextractor_it_la_LIBADD = \
+ $(XLIB) 
 
 test_it_SOURCES = \
   test_it.c
@@ -368,7 +374,7 @@ libextractor_jpeg_la_SOURCES = \
 libextractor_jpeg_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_jpeg_la_LIBADD = \
-  -ljpeg
+  -ljpeg $(XLIB)
 
 test_jpeg_SOURCES = \
   test_jpeg.c
@@ -380,6 +386,8 @@ libextractor_man_la_SOURCES = \
   man_extractor.c
 libextractor_man_la_LDFLAGS = \
   $(PLUGINFLAGS)
+libextractor_man_la_LIBADD = \
+ $(XLIB) 
 
 test_man_SOURCES = \
   test_man.c
@@ -394,7 +402,7 @@ libextractor_midi_la_CFLAGS = \
 libextractor_midi_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_midi_la_LIBADD = \
-  -lsmf
+  -lsmf $(XLIB)
 
 test_midi_SOURCES = \
   test_midi.c
@@ -407,7 +415,7 @@ libextractor_mime_la_SOURCES = \
 libextractor_mime_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_mime_la_LIBADD = \
-  -lmagic
+  -lmagic $(XLIB)
 
 test_mime_SOURCES = \
   test_mime.c
@@ -420,7 +428,7 @@ libextractor_mp4_la_SOURCES = \
 libextractor_mp4_la_LDFLAGS = \
   $(PLUGINFLAGS) 
 libextractor_mp4_la_LIBADD = \
-  -lmp4v2
+  -lmp4v2 $(XLIB)
 
 
 libextractor_mpeg_la_SOURCES = \
@@ -428,7 +436,7 @@ libextractor_mpeg_la_SOURCES = \
 libextractor_mpeg_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_mpeg_la_LIBADD = \
-  -lmpeg2
+  -lmpeg2 $(XLIB)
 
 test_mpeg_SOURCES = \
   test_mpeg.c
@@ -440,6 +448,8 @@ libextractor_nsf_la_SOURCES = \
   nsf_extractor.c
 libextractor_nsf_la_LDFLAGS = \
   $(PLUGINFLAGS)
+libextractor_nsf_la_LIBADD = \
+ $(XLIB) 
 
 test_nsf_SOURCES = \
   test_nsf.c
@@ -451,6 +461,8 @@ libextractor_nsfe_la_SOURCES = \
   nsfe_extractor.c
 libextractor_nsfe_la_LDFLAGS = \
   $(PLUGINFLAGS)
+libextractor_nsfe_la_LIBADD = \
+ $(XLIB) 
 
 test_nsfe_SOURCES = \
   test_nsfe.c
@@ -463,7 +475,7 @@ libextractor_odf_la_SOURCES = \
 libextractor_odf_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_odf_la_LIBADD = \
-  $(top_builddir)/src/common/libextractor_common.la 
+  $(top_builddir)/src/common/libextractor_common.la $(XLIB)
 
 test_odf_SOURCES = \
   test_odf.c
@@ -481,7 +493,7 @@ libextractor_ole2_la_LDFLAGS = \
   $(PLUGINFLAGS) 
 libextractor_ole2_la_LIBADD = \
   $(top_builddir)/src/common/libextractor_common.la \
-  $(GSF_LIBS)
+  $(GSF_LIBS) $(XLIB)
 
 test_ole2_SOURCES = \
   test_ole2.c
@@ -494,7 +506,7 @@ libextractor_ogg_la_SOURCES = \
 libextractor_ogg_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_ogg_la_LIBADD = \
-  -lvorbisfile -lvorbis $(vorbisflag) -logg
+  -lvorbisfile -lvorbis $(vorbisflag) -logg $(XLIB)
 
 test_ogg_SOURCES = \
   test_ogg.c
@@ -507,7 +519,7 @@ libextractor_png_la_SOURCES = \
 libextractor_png_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_png_la_LIBADD = \
-  $(top_builddir)/src/common/libextractor_common.la 
+  $(top_builddir)/src/common/libextractor_common.la $(XLIB)
 
 test_png_SOURCES = \
   test_png.c
@@ -519,6 +531,8 @@ libextractor_ps_la_SOURCES = \
   ps_extractor.c
 libextractor_ps_la_LDFLAGS = \
   $(PLUGINFLAGS)
+libextractor_ps_la_LIBADD = \
+ $(XLIB) 
 
 test_ps_SOURCES = \
   test_ps.c
@@ -531,7 +545,7 @@ libextractor_riff_la_SOURCES = \
 libextractor_riff_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_riff_la_LIBADD = \
-  -lm
+  -lm $(XLIB)
 
 
 test_riff_SOURCES = \
@@ -545,7 +559,7 @@ libextractor_rpm_la_SOURCES = \
 libextractor_rpm_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_rpm_la_LIBADD = \
-  -lrpm -lpthread
+  -lrpm -lpthread $(XLIB)
 
 test_rpm_SOURCES = \
   test_rpm.c
@@ -557,6 +571,8 @@ libextractor_s3m_la_SOURCES = \
   s3m_extractor.c
 libextractor_s3m_la_LDFLAGS = \
   $(PLUGINFLAGS)
+libextractor_s3m_la_LIBADD = \
+ $(XLIB) 
 
 test_s3m_SOURCES = \
   test_s3m.c
@@ -568,6 +584,8 @@ libextractor_sid_la_SOURCES = \
   sid_extractor.c
 libextractor_sid_la_LDFLAGS = \
   $(PLUGINFLAGS)
+libextractor_sid_la_LIBADD = \
+ $(XLIB) 
 
 test_sid_SOURCES = \
   test_sid.c
@@ -580,7 +598,7 @@ libextractor_thumbnailffmpeg_la_SOURCES = \
 libextractor_thumbnailffmpeg_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_thumbnailffmpeg_la_LIBADD = \
-  -lavutil -lavformat -lavcodec -lswscale -lmagic
+  -lavutil -lavformat -lavcodec -lswscale -lmagic $(XLIB)
 
 test_thumbnailffmpeg_SOURCES = \
   test_thumbnailffmpeg.c
@@ -595,7 +613,7 @@ libextractor_thumbnailgtk_la_LDFLAGS = \
 libextractor_thumbnailgtk_la_CFLAGS = \
   $(GTK_CFLAGS)
 libextractor_thumbnailgtk_la_LIBADD = \
-  -lmagic $(GTK_LIBS)
+  -lmagic $(GTK_LIBS) $(XLIB)
 
 test_thumbnailgtk_SOURCES = \
   test_thumbnailgtk.c
@@ -608,7 +626,7 @@ libextractor_tiff_la_SOURCES = \
 libextractor_tiff_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_tiff_la_LIBADD = \
-  -ltiff
+  -ltiff $(XLIB)
 
 test_tiff_SOURCES = \
   test_tiff.c
@@ -620,6 +638,8 @@ libextractor_wav_la_SOURCES = \
   wav_extractor.c
 libextractor_wav_la_LDFLAGS = \
   $(PLUGINFLAGS)
+libextractor_wav_la_LIBADD = \
+ $(XLIB) 
 
 test_wav_SOURCES = \
   test_wav.c
@@ -631,6 +651,8 @@ libextractor_xm_la_SOURCES = \
   xm_extractor.c
 libextractor_xm_la_LDFLAGS = \
   $(PLUGINFLAGS)
+libextractor_xm_la_LIBADD = \
+ $(XLIB) 
 
 test_xm_SOURCES = \
   test_xm.c
@@ -643,7 +665,7 @@ libextractor_zip_la_SOURCES = \
 libextractor_zip_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_zip_la_LIBADD = \
-  $(top_builddir)/src/common/libextractor_common.la 
+  $(top_builddir)/src/common/libextractor_common.la $(XLIB)
 
 test_zip_SOURCES = \
   test_zip.c
