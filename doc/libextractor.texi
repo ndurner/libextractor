@@ -199,6 +199,8 @@ libexiv2-dev
 libavformat-dev
 @item
 libswscale-dev
+@item
+@libgstreamer1.0-dev
 @end itemize
 
 For Subversion access and compilation one also needs:
