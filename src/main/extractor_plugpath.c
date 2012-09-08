@@ -79,7 +79,7 @@ cut_bin (char * in)
 }
 
 
-#if LINUX
+#if GNU_LINUX
 /**
  * Try to determine path by reading /proc/PID/exe or
  * /proc/PID/maps.
@@ -442,7 +442,7 @@ get_installation_paths (EXTRACTOR_PathProcessor pp,
       free (d);
       return;
     }
-#if LINUX
+#if GNU_LINUX
   if (NULL == prefix)
     prefix = get_path_from_proc_exe ();
 #endif

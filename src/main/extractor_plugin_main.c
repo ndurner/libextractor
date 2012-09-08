@@ -33,7 +33,7 @@
 #include "extractor_plugin_main.h"
 #include <dirent.h>
 #include <sys/types.h>
-#if LINUX
+#if GNU_LINUX
 #include <sys/wait.h>
 #include <sys/shm.h>
 #include <signal.h>
