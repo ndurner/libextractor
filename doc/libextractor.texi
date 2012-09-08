@@ -200,7 +200,7 @@ libavformat-dev
 @item
 libswscale-dev
 @item
-@libgstreamer1.0-dev
+libgstreamer1.0-dev
 @end itemize
 
 For Subversion access and compilation one also needs:
@@ -294,22 +294,22 @@ inside it. The Mac OS X installer application will then run. The framework
 is installed to the root volume's @file{/Library/Frameworks} folder and installing
 will require admin privileges.
 
-The framework can be uninstalled by dragging
-@file{/Library/Frameworks/Extractor.framework} cto the @file{Trash}.
+The framework can be uninstalled by dragging @*
+@file{/Library/Frameworks/Extractor.framework} to the @file{Trash}.
 
 
 @subsection Using the framework
 
-In the framework, the @command{extract} command line tool can be found at 
+In the framework, the @command{extract} command line tool can be found at @*
 @file{/Library/Frameworks/Extractor.framework/Versions/Current/bin/extract}
 
 The framework can be used in software projects as a framework or as a dynamic
 library. 
 
 When using the framework as a dynamic library in projects using autotools,
-one would most likely want to add 
+one would most likely want to add  @*
 "-I/Library/Frameworks/Extractor.framework/Versions/Current/include"
-to CPPFLAGS and 
+to CPPFLAGS and @*
 "-L/Library/Frameworks/Extractor.framework/Versions/Current/lib"
 to LDFLAGS.
 
