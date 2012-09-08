@@ -3,7 +3,7 @@
 @c % Texinfo manual from libgcrypt by Werner Koch and 
 @c % and Moritz Schulte.
 @c %**start of header
-@setfilename extractor.info
+@setfilename libextractor.info
 @include version.texi
 @settitle The GNU libextractor Reference Manual
 @c Unify all the indices into concept index.
@@ -32,7 +32,7 @@ Free Documentation License''.
 
 @dircategory Software libraries
 @direntry
-* Libextractor: (extractor).    Metadata extraction library.
+* Libextractor: (libextractor).    Metadata extraction library.
 @end direntry
 
 
