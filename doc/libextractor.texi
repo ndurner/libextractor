@@ -152,7 +152,7 @@ autotools build process, read the @file{INSTALL} file and query
 GNU libextractor has various dependencies, most of which are optional. 
 Instead of specifying the names of the software packages, we
 will give the list in terms of the names of the respective
-Debian (unstable) packages that should be installed.
+Debian (wheezy) packages that should be installed.
 
 You absolutely need:
 
@@ -186,7 +186,7 @@ libmpeg2-4-dev
 @item
 librpm-dev
 @item
-libgtk2.0-dev
+libgtk2.0-dev or libgtk3.0-dev
 @item
 libgsf-1-dev
 @item
