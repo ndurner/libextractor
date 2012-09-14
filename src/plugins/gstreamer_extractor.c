@@ -923,7 +923,6 @@ send_structure_foreach (GQuark field_id,
   }
 
 
-  /* TODO: check a list of known quarks, use specific EXTRACTOR_MetaType  */
   switch (G_VALUE_TYPE (value))
   {
   case G_TYPE_STRING:
