@@ -746,14 +746,6 @@ main (int argc, char *argv[])
 	  EXTRACTOR_METATYPE_TITLE,
 	  EXTRACTOR_METAFORMAT_UTF8,
 	  "text/plain",
-	  "ALBUM/TITLE",
-	  strlen ("ALBUM/TITLE") + 1,
-	  0
-        },
-        {
-	  EXTRACTOR_METATYPE_TITLE,
-	  EXTRACTOR_METAFORMAT_UTF8,
-	  "text/plain",
 	  "TITLE",
 	  strlen ("TITLE") + 1,
 	  0
@@ -812,14 +804,6 @@ main (int argc, char *argv[])
 	  "text/plain",
 	  "ISRC",
 	  strlen ("ISRC") + 1,
-	  0
-        },
-        {
-	  EXTRACTOR_METATYPE_LICENSE,
-	  EXTRACTOR_METAFORMAT_UTF8,
-	  "text/plain",
-	  "TERMS_OF_USE",
-	  strlen ("TERMS_OF_USE") + 1,
 	  0
         },
         {
