@@ -1809,7 +1809,7 @@ _source_setup (GstDiscoverer * dc,
    * data */
   g_signal_connect (ps->source, "need-data", G_CALLBACK (feed_data), ps);
   g_signal_connect (ps->source, "seek-data", G_CALLBACK (seek_data), ps);
-  ps->timeout_id = g_timeout_add (DATA_TIMEOUT_FREQUENCY, _data_timeout, ps);
+  ps->timeout_id = g_timeout_add (DATA_TIMEOUT_FREQUENCY, (GSourceFunc) _data_timeout, ps);
   ps->last_data_request_time = g_get_monotonic_time ();
 }
 
