@@ -33,6 +33,19 @@
 GST_DEBUG_CATEGORY_STATIC (gstreamer_extractor);
 #define GST_CAT_DEFAULT gstreamer_extractor
 
+/**
+ * How often should we check for data timeout.
+ * In milliseconds.
+ */
+#define DATA_TIMEOUT_FREQUENCY 45 /* 45ms, hang up for 90ms at most */
+
+/**
+ * Once discoverer has gone for that long without asking for data or
+ * asking to seek, or giving us discovered info, assume it hanged up
+ * and kill it.
+ * In microseconds.
+ */
+#define DATA_TIMEOUT 80000 /* 80ms */
 
 /**
  * Struct mapping GSTREAMER tags to LE tags.
@@ -770,6 +783,8 @@ struct PrivStruct
   enum CurrentStreamType st;
   GMainLoop *loop;
   GstDiscoverer *dc;
+  guint timeout_id;
+  gint64 last_data_request_time;
 };
 
 
@@ -792,6 +807,9 @@ feed_data (GstElement * appsrc, guint size, struct PrivStruct * ps)
   GstMapInfo mi;
 
   GST_DEBUG ("Request %u bytes", size);
+
+  /* Update it now, in case we bail out due to error */
+  ps->last_data_request_time = g_get_monotonic_time ();
 
   if (ps->length > 0 && ps->offset >= ps->length) {
     /* we are at the EOS, send end-of-stream */
@@ -844,6 +862,8 @@ feed_data (GstElement * appsrc, guint size, struct PrivStruct * ps)
     gst_app_src_end_of_stream (GST_APP_SRC (ps->source));
   }
 
+  /* Update it again to account for time we spent fulfilling the request */
+  ps->last_data_request_time = g_get_monotonic_time ();
   return;
 }
 
@@ -854,6 +874,7 @@ seek_data (GstElement * appsrc, guint64 position, struct PrivStruct * ps)
   GST_DEBUG ("seek to offset %" G_GUINT64_FORMAT, position);
   ps->offset = ps->ec->seek (ps->ec->cls, position, SEEK_SET);
 
+  ps->last_data_request_time = g_get_monotonic_time ();
   return ps->offset >= 0;
 }
 
@@ -1732,15 +1753,31 @@ _new_discovered_uri (GstDiscoverer * dc,
 		     struct PrivStruct *ps)
 {
   send_discovered_info (info, ps);
+  ps->last_data_request_time = g_get_monotonic_time ();
 }
 
 
 static void
 _discoverer_finished (GstDiscoverer * dc, struct PrivStruct *ps)
 {
+  if (ps->timeout_id > 0)
+    g_source_remove (ps->timeout_id);
+  ps->timeout_id = 0;
   g_main_loop_quit (ps->loop);
 }
 
+static gboolean
+_data_timeout (struct PrivStruct *ps)
+{
+  gint64 now = g_get_monotonic_time ();
+  if (now - ps->last_data_request_time > DATA_TIMEOUT)
+  {
+    ps->timeout_id = 0;
+    g_main_loop_quit (ps->loop);
+    return FALSE;
+  }
+  return TRUE;
+}
 
 /**
  * This callback is called when discoverer has constructed a source object to
@@ -1772,6 +1809,8 @@ _source_setup (GstDiscoverer * dc,
    * data */
   g_signal_connect (ps->source, "need-data", G_CALLBACK (feed_data), ps);
   g_signal_connect (ps->source, "seek-data", G_CALLBACK (seek_data), ps);
+  ps->timeout_id = g_timeout_add (DATA_TIMEOUT_FREQUENCY, _data_timeout, ps);
+  ps->last_data_request_time = g_get_monotonic_time ();
 }
 
 
@@ -1812,6 +1851,8 @@ EXTRACTOR_gstreamer_extract_method (struct EXTRACTOR_ExtractContext *ec)
   gst_discoverer_start (ps.dc);
   g_idle_add ((GSourceFunc) &_run_async, &ps);
   g_main_loop_run (ps.loop);
+  if (ps.timeout_id > 0)
+    g_source_remove (ps.timeout_id);
   gst_discoverer_stop (ps.dc);
   g_object_unref (ps.dc);
   g_main_loop_unref (ps.loop);
