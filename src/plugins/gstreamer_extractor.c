@@ -45,7 +45,7 @@ GST_DEBUG_CATEGORY_STATIC (gstreamer_extractor);
  * and kill it.
  * In microseconds.
  */
-#define DATA_TIMEOUT 80000 /* 80ms */
+#define DATA_TIMEOUT 80000LL /* 80ms */
 
 /**
  * Struct mapping GSTREAMER tags to LE tags.
@@ -1772,6 +1772,8 @@ _data_timeout (struct PrivStruct *ps)
   gint64 now = g_get_monotonic_time ();
   if (now - ps->last_data_request_time > DATA_TIMEOUT)
   {
+    GST_ERROR ("GstDiscoverer I/O timed out (last heard from discoverer on %lld, now is %lld, difference is %lld > %lld",
+        ps->last_data_request_time, now, now - ps->last_data_request_time, DATA_TIMEOUT);
     ps->timeout_id = 0;
     g_main_loop_quit (ps->loop);
     return FALSE;

@@ -135,6 +135,7 @@ main (int argc, char *argv[])
   pre_test = discoverer_main (dc, "testdata/gstreamer_30_and_33.asf");
   if (GST_DISCOVERER_MISSING_PLUGINS != pre_test)
   {
+    int test_result;
     struct SolutionData thirty_and_thirtythree_sol[] =
       {
         {
@@ -297,12 +298,16 @@ main (int argc, char *argv[])
         { "testdata/30_and_33.asf", thirty_and_thirtythree_sol },
         { NULL, NULL }
       };
-    result += (0 == ET_main ("gstreamer", ps) ? 0 : 1);
+    g_print ("Running asf test on GStreamer:\n");
+    test_result = (0 == ET_main ("gstreamer", ps) ? 0 : 1);
+    g_print ("asf GStreamer test result: %s\n", test_result == 0 ? "OK" : "FAILED");
+    result += test_result;
   }
 
   pre_test = discoverer_main (dc, "testdata/gstreamer_barsandtone.flv");
   if (pre_test != GST_DISCOVERER_MISSING_PLUGINS)
   {
+    int test_result;
     struct SolutionData barsandtone_sol[] =
       {
         {
@@ -492,12 +497,16 @@ main (int argc, char *argv[])
         { "testdata/barsandtone.flv", barsandtone_sol },
         { NULL, NULL }
       };
-    result += (0 == ET_main ("gstreamer", ps) ? 0 : 1);
+    g_print ("Running flv test on GStreamer:\n");
+    test_result = (0 == ET_main ("gstreamer", ps) ? 0 : 1);
+    g_print ("flv GStreamer test result: %s\n", test_result == 0 ? "OK" : "FAILED");
+    result += test_result;
   }
 
   pre_test = discoverer_main (dc, "testdata/gstreamer_sample_sorenson.mov");
   if (pre_test != GST_DISCOVERER_MISSING_PLUGINS)
   {
+    int test_result;
     struct SolutionData sample_sorenson_sol[] =
       {
         {
@@ -692,7 +701,10 @@ main (int argc, char *argv[])
         { "testdata/gstreamer_sample_sorenson.mov", sample_sorenson_sol },
         { NULL, NULL }
       };
-    result += (0 == ET_main ("gstreamer", ps) ? 0 : 1);
+    g_print ("Running mov test on GStreamer:\n");
+    test_result = (0 == ET_main ("gstreamer", ps) ? 0 : 1);
+    g_print ("mov GStreamer test result: %s\n", test_result == 0 ? "OK" : "FAILED");
+    result += test_result;
   }
 
   pre_test = discoverer_main (dc, "testdata/matroska_flame.mkv");
