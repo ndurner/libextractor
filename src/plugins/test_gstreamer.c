@@ -295,7 +295,7 @@ main (int argc, char *argv[])
       };
     struct ProblemSet ps[] =
       {
-        { "testdata/30_and_33.asf", thirty_and_thirtythree_sol },
+        { "testdata/gstreamer_30_and_33.asf", thirty_and_thirtythree_sol },
         { NULL, NULL }
       };
     g_print ("Running asf test on GStreamer:\n");
@@ -494,7 +494,7 @@ main (int argc, char *argv[])
       };
     struct ProblemSet ps[] =
       {
-        { "testdata/barsandtone.flv", barsandtone_sol },
+        { "testdata/gstreamer_barsandtone.flv", barsandtone_sol },
         { NULL, NULL }
       };
     g_print ("Running flv test on GStreamer:\n");
