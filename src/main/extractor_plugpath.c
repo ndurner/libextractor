@@ -191,6 +191,9 @@ get_path_from_module_filename ()
 
 
 #if DARWIN
+#include <dlfcn.h>
+#include <mach-o/dyld.h>
+
 /**
  * Signature of the '_NSGetExecutablePath" function.
  *
