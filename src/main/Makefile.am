@@ -69,7 +69,7 @@ libextractor_la_SOURCES = \
 extract_SOURCES = \
   extract.c \
   getopt.c getopt.h getopt1.c 
-
+extract_DEPENDENCIES = libextractor.la
 
 
 LDADD = \
