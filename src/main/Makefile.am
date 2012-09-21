@@ -2,10 +2,6 @@ SUBDIRS  = .
 
 INCLUDES = -I$(top_srcdir)/src/include $(LTDLINCL)
 
-# install test plugins under /tmp (we must install them somewhere,
-# with 'noinst' automake insists on building a static library...)
-tmpdir = /tmp/
-
 LIBS = \
  @LE_LIBINTL@ @LE_LIB_LIBS@
 
@@ -78,21 +74,21 @@ LDADD = \
 TESTS_ENVIRONMENT = testdatadir=$(top_srcdir)/test
 TESTS_ENVIRONMENT += bindir=${bindir}
 
-tmp_LTLIBRARIES = \
+noinst_LTLIBRARIES = \
   libextractor_test.la \
   libextractor_test2.la 
 
 libextractor_test_la_SOURCES = \
   test_extractor.c 
 libextractor_test_la_LDFLAGS = \
-  $(PLUGINFLAGS)
+  $(PLUGINFLAGS) -rpath /nowhere
 libextractor_test_la_LIBADD = \
   $(LE_LIBINTL) $(XLIB)
 
 libextractor_test2_la_SOURCES = \
   test2_extractor.c 
 libextractor_test2_la_LDFLAGS = \
-  $(PLUGINFLAGS)
+  $(PLUGINFLAGS) -rpath /nowhere
 libextractor_test2_la_LIBADD = \
   $(LE_LIBINTL) $(XLIB)
 
