@@ -506,7 +506,7 @@ ExtractorIO::path () const
  *
  * @throws error
  */
-std::string
+std::wstring
 ExtractorIO::wpath () const
 {
   throw Exiv2::BasicError<char> (42 /* error code */);
