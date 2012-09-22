@@ -19,10 +19,12 @@ extract_LDADD = \
   $(top_builddir)/src/main/libextractor.la 
 
 if HAVE_ZLIB
-  zlib =-lz
+zlib =-lz
+TEST_ZLIB = test_gzip
 endif
 if HAVE_BZ2
-  bz2lib = -lbz2
+bz2lib = -lbz2
+TEST_BZIP2 = test_bzip2
 endif
 
 libextractor_la_LDFLAGS = \
@@ -99,8 +101,8 @@ check_PROGRAMS = \
  test_plugin_load_multi \
  test_ipc \
  test_file \
- test_gzip \
- test_bzip2 
+ $(TEST_ZLIB) \
+ $(TEST_BZIP2)
 
 if ENABLE_TEST_RUN
 TESTS = $(check_PROGRAMS)
