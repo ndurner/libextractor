@@ -15,9 +15,6 @@ lib_LTLIBRARIES = \
 
 bin_PROGRAMS = extract
 
-extract_LDADD = \
-  $(top_builddir)/src/main/libextractor.la 
-
 if HAVE_ZLIB
 zlib =-lz
 TEST_ZLIB = test_gzip
@@ -27,10 +24,6 @@ bz2lib = -lbz2
 TEST_BZIP2 = test_bzip2
 endif
 
-libextractor_la_LDFLAGS = \
-  $(LE_LIB_LDFLAGS) -version-info @LIB_VERSION_CURRENT@:@LIB_VERSION_REVISION@:@LIB_VERSION_AGE@
-libextractor_la_LIBADD = \
-  $(LIBLTDL) $(zlib) $(bz2lib) $(LTLIBICONV) $(XLIB)
 
 if WINDOWS
 EXTRACTOR_IPC=extractor_ipc_w32.c
@@ -50,8 +43,8 @@ EXTRA_DIST = \
   test_file.dat.gz \
   test_file.dat.bz2
 
-libextractor_la_CPPFLAGS = -DPLUGINDIR=\"@RPLUGINDIR@\" -DPLUGININSTDIR=\"${plugindir}\" $(AM_CPPFLAGS)
-
+libextractor_la_CPPFLAGS = \
+  -DPLUGINDIR=\"@RPLUGINDIR@\" -DPLUGININSTDIR=\"${plugindir}\" $(AM_CPPFLAGS)
 libextractor_la_SOURCES = \
   extractor_common.c extractor_common.h \
   extractor_datasource.c extractor_datasource.h \
@@ -62,16 +55,19 @@ libextractor_la_SOURCES = \
   extractor_plugins.c extractor_plugins.h \
   extractor_print.c \
   extractor_plugin_main.c extractor_plugin_main.h \
-  extractor.c 
+  extractor.c
+libextractor_la_LDFLAGS = \
+  $(LE_LIB_LDFLAGS) -version-info @LIB_VERSION_CURRENT@:@LIB_VERSION_REVISION@:@LIB_VERSION_AGE@
+libextractor_la_LIBADD = \
+  $(LIBLTDL) $(zlib) $(bz2lib) $(LTLIBICONV) $(XLIB) $(LE_LIBINTL)
 
 extract_SOURCES = \
   extract.c \
   getopt.c getopt.h getopt1.c 
-extract_DEPENDENCIES = libextractor.la
-
-
-LDADD = \
- $(top_builddir)/src/main/libextractor.la  
+extract_DEPENDENCIES = \
+  libextractor.la
+extract_LDADD = \
+ $(top_builddir)/src/main/libextractor.la $(LE_LIBINTL)
 
 TESTS_ENVIRONMENT = testdatadir=$(top_srcdir)/test
 TESTS_ENVIRONMENT += bindir=${bindir}
@@ -110,22 +106,36 @@ endif
 
 test_trivial_SOURCES = \
  test_trivial.c 
+test_trivial_LDADD = \
+ $(top_builddir)/src/main/libextractor.la  
 
 test_plugin_loading_SOURCES = \
  test_plugin_loading.c 
+test_plugin_loading_LDADD = \
+ $(top_builddir)/src/main/libextractor.la  
 
 test_plugin_load_multi_SOURCES = \
  test_plugin_load_multi.c 
+test_plugin_load_multi_LDADD = \
+ $(top_builddir)/src/main/libextractor.la  
 
 test_ipc_SOURCES = \
  test_ipc.c 
+test_ipc_LDADD = \
+ $(top_builddir)/src/main/libextractor.la  
 
 test_file_SOURCES = \
  test_file.c 
+test_file_LDADD = \
+ $(top_builddir)/src/main/libextractor.la  
 
 test_gzip_SOURCES = \
  test_gzip.c 
+test_gzip_LDADD = \
+ $(top_builddir)/src/main/libextractor.la  
 
 test_bzip2_SOURCES = \
  test_bzip2.c 
+test_bzip2_LDADD = \
+ $(top_builddir)/src/main/libextractor.la  
 
