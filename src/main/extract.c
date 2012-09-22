@@ -245,7 +245,9 @@ print_help ()
 
 }
 
+#if HAVE_ICONV
 #include "iconv.c"
+#endif
 
 /**
  * Print a keyword list to a file.
@@ -273,7 +275,9 @@ print_selected_keywords (void *cls,
 			 size_t data_len)
 { 
   char *keyword;
+#if HAVE_ICONV
   iconv_t cd;
+#endif
   const char *stype;
   const char *mt;
 
@@ -294,12 +298,14 @@ print_selected_keywords (void *cls,
 	       (unsigned int) data_len);
       break;
     case EXTRACTOR_METAFORMAT_UTF8:
+#if HAVE_ICONV
       cd = iconv_open (nl_langinfo(CODESET), "UTF-8");
       if (((iconv_t) -1) != cd)
 	keyword = iconv_helper (cd,
 				data,
 				data_len);
       else
+#endif
 	keyword = strdup (data);
       if (NULL != keyword)
 	{
@@ -309,8 +315,10 @@ print_selected_keywords (void *cls,
 		   keyword);
 	  free (keyword);
 	}
+#if HAVE_ICONV
       if (((iconv_t) -1) != cd)
 	iconv_close (cd);
+#endif
       break;
     case EXTRACTOR_METAFORMAT_BINARY:
       fprintf (stdout,
@@ -358,7 +366,9 @@ print_selected_keywords_grep_friendly (void *cls,
 				       size_t data_len)
 { 
   char *keyword;
+#if HAVE_ICONV 
   iconv_t cd;
+#endif
   const char *mt;
 
   if (YES != print[type])
@@ -375,12 +385,14 @@ print_selected_keywords_grep_friendly (void *cls,
 	fprintf (stdout,
 		 "%s: ",
 		 gettext(mt));
+#if HAVE_ICONV 
       cd = iconv_open (nl_langinfo (CODESET), "UTF-8");
       if (((iconv_t) -1) != cd)
 	keyword = iconv_helper (cd,
 				data,
 				data_len);
       else
+#endif
 	keyword = strdup (data);
       if (NULL != keyword)
 	{
@@ -389,8 +401,10 @@ print_selected_keywords_grep_friendly (void *cls,
 		   keyword);
 	  free (keyword);
 	}
+#if HAVE_ICONV 
       if (((iconv_t) -1) != cd)
 	iconv_close (cd);
+#endif
       break;
     case EXTRACTOR_METAFORMAT_BINARY:
       break;

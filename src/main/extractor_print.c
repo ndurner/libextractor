@@ -22,11 +22,12 @@
  * @brief convenience functions for printing meta data
  * @author Christian Grothoff
  */
-
 #include "platform.h"
 #include "extractor.h"
 #include "extractor_logging.h"
+#if HAVE_ICONV
 #include "iconv.c"
+#endif
 
 /**
  * Simple EXTRACTOR_MetaDataProcessor implementation that simply
@@ -53,13 +54,16 @@ EXTRACTOR_meta_data_print (void *handle,
 			   const char *data,
 			   size_t data_len)
 {
+#if HAVE_ICONV
   iconv_t cd;
+#endif
   char * buf;
   int ret;
   const char *mt;
 
   if (EXTRACTOR_METAFORMAT_UTF8 != format)
     return 0;
+#if HAVE_ICONV
   cd = iconv_open (nl_langinfo(CODESET),
 		   "UTF-8");
   if (((iconv_t) -1) == cd)
@@ -85,6 +89,15 @@ EXTRACTOR_meta_data_print (void *handle,
       free(buf);
     }
   iconv_close(cd);
+#else
+  ret = fprintf (handle,
+		 "%s - %.*s\n",
+		 (NULL == mt) 
+		 ? dgettext ("libextractor", gettext_noop ("unknown"))
+		 : dgettext ("libextractor", mt),
+		 (int) data_len,
+		 data);
+#endif
   return (ret < 0) ? 1 : 0;
 }
 

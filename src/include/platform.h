@@ -63,7 +63,9 @@
  #include <winsock2.h>
 #endif
 #include <locale.h>
+#if HAVE_ICONV_H
 #include <iconv.h>
+#endif
 #include <langinfo.h>
 
 #ifndef SIZE_MAX

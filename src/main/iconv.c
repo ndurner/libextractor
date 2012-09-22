@@ -38,9 +38,10 @@ iconv_helper (iconv_t cd,
 	      const char *in,
 	      size_t inSize) 
 {
-  char * buf;
-  char * ibuf;
-  const char * i;
+#if HAVE_ICONV
+  char *buf;
+  char *ibuf;
+  const char *i;
   size_t outSize;
   size_t outLeft;
 
@@ -66,6 +67,14 @@ iconv_helper (iconv_t cd,
       return strdup (i);
     }
   return buf;
+#else
+  /* good luck, just copying string... */
+  char *buf;
+  
+  buf = malloc (inSize + 1);
+  memcpy (buf, in, inSize);
+  buf[inSize] = '\0';
+#endif
 }
 
 /* end of iconv.c */
