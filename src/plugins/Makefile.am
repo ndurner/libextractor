@@ -304,7 +304,7 @@ libextractor_flac_la_SOURCES = \
 libextractor_flac_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_flac_la_LIBADD = \
-  -lFLAC $(XLIB)
+  -lFLAC $(XLIB) $(LE_LIBINTL) 
 
 test_flac_SOURCES = \
   test_flac.c
@@ -392,7 +392,8 @@ libextractor_man_la_LIBADD = \
 test_man_SOURCES = \
   test_man.c
 test_man_LDADD = \
-  $(top_builddir)/src/plugins/libtest.la
+  $(top_builddir)/src/plugins/libtest.la \
+  $(LE_LIBINTL) 
 
 
 libextractor_midi_la_SOURCES = \
@@ -493,7 +494,7 @@ libextractor_ole2_la_LDFLAGS = \
   $(PLUGINFLAGS) 
 libextractor_ole2_la_LIBADD = \
   $(top_builddir)/src/common/libextractor_common.la \
-  $(GSF_LIBS) $(XLIB)
+  $(GSF_LIBS) $(XLIB)  $(LE_LIBINTL) 
 
 test_ole2_SOURCES = \
   test_ole2.c
@@ -545,7 +546,7 @@ libextractor_riff_la_SOURCES = \
 libextractor_riff_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_riff_la_LIBADD = \
-  -lm $(XLIB)
+  -lm $(XLIB)  $(LE_LIBINTL) 
 
 
 test_riff_SOURCES = \
@@ -639,7 +640,7 @@ libextractor_wav_la_SOURCES = \
 libextractor_wav_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_wav_la_LIBADD = \
- $(XLIB) 
+ $(XLIB) $(LE_LIBINTL) 
 
 test_wav_SOURCES = \
   test_wav.c
