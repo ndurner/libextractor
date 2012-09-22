@@ -257,13 +257,14 @@ get_path_from_dyld_image ()
 {
   const char *path;
   char *s;
+  char *p;
   unsigned int i;
   int c;
 
   c = _dyld_image_count ();
   for (i = 0; i < c; i++) 
     {
-      if (_dyld_get_image_header (i) != &_mh_dylib_header)
+      if (((void *) _dyld_get_image_header (i)) != (void *) &_mh_dylib_header)
 	continue;
       path = _dyld_get_image_name (i);
       if ( (NULL == path) || (0 == strlen (path)) )
