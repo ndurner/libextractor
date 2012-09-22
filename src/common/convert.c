@@ -40,6 +40,7 @@ EXTRACTOR_common_convert_to_utf8 (const char *input,
 				  size_t len, 
 				  const char *charset)
 {
+#if HAVE_ICONV
   size_t tmpSize;
   size_t finSize;
   char *tmp;
@@ -84,6 +85,9 @@ EXTRACTOR_common_convert_to_utf8 (const char *input,
   free (tmp);
   iconv_close (cd);
   return ret;
+#else
+  return strdup (input);
+#endif
 }
 
 /* end of convert.c */
