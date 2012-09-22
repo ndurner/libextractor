@@ -387,7 +387,7 @@ libextractor_man_la_SOURCES = \
 libextractor_man_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_man_la_LIBADD = \
- $(XLIB) 
+ $(XLIB) $(LE_LIBINTL) 
 
 test_man_SOURCES = \
   test_man.c

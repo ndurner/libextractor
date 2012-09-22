@@ -92,7 +92,6 @@ darwin*)
      AM_CONDITIONAL(HAVE_GNU_LD, false)
      AM_CONDITIONAL(SOMEBSD, false)
      AM_CONDITIONAL(WINDOWS, false)
-     CPPFLAGS="-D_APPLE_C_SOURCE $CPPFLAGS"
      CFLAGS="-no-cpp-precomp -fno-common $CFLAGS" 
      LIBEXT=.so
      ;;
