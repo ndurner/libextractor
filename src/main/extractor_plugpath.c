@@ -236,7 +236,7 @@ get_path_from_NSGetExecutablePath ()
     }
   if (0 != func (path, &len))
   {
-    GNUNET_free (path);
+    free (path);
     return NULL;
   }
   len = strlen (path);
