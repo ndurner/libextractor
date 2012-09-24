@@ -636,6 +636,11 @@ EXTRACTOR_extract (struct EXTRACTOR_PluginList *plugins,
     {
       /* need to create shared memory segment */
       shm = EXTRACTOR_IPC_shared_memory_create_ (DEFAULT_SHM_SIZE);
+      if (NULL == shm)
+	{
+	  LOG ("Failed to setup IPC\n");
+	  return;
+	}
     }
   for (pos = plugins; NULL != pos; pos = pos->next)
     if ( (NULL == pos->channel) &&

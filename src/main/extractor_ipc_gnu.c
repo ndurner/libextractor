@@ -149,7 +149,7 @@ EXTRACTOR_IPC_shared_memory_create_ (size_t size)
 #endif 
   snprintf (shm->shm_name,
 	    MAX_SHM_NAME, 
-	    "%slibextractor-shm-%u-%u", 
+	    "%sLE-%u-%u", 
 	    tpath, getpid (),
 	    (unsigned int) RANDOM());
   if (-1 == (shm->shm_id = shm_open (shm->shm_name,
