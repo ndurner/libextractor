@@ -51,6 +51,18 @@ read_cb (struct archive *a,
 
 
 /**
+ * Older versions of libarchive do not define __LA_INT64_T.
+ */
+#if ARCHIVE_VERSION_NUMBER < 2000000
+#define __LA_INT64_T size_t
+#else
+#ifndef __LA_INT64_T
+#define __LA_INT64_T int64_t
+#endif
+#endif
+
+
+/**
  * Callback for libarchive for 'skipping'.
  *
  * @param a archive handle
