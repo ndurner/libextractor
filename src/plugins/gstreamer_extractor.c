@@ -757,61 +757,181 @@ struct NamedTag named_tags[] =
   };
 
 
+/**
+ *
+ */
 enum CurrentStreamType
 {
+  /**
+   *
+   */
   STREAM_TYPE_NONE = 0,
+
+  /**
+   *
+   */
   STREAM_TYPE_AUDIO = 1,
+
+  /**
+   *
+   */
   STREAM_TYPE_VIDEO = 2,
+
+  /**
+   *
+   */
   STREAM_TYPE_SUBTITLE = 3,
+
+  /**
+   *
+   */
   STREAM_TYPE_CONTAINER = 4,
+
+  /**
+   *
+   */
   STREAM_TYPE_IMAGE = 5
 };
 
 
+/**
+ * Closure we pass when processing a request.
+ */
 struct PrivStruct
 {
-  GstElement *source;
-  struct EXTRACTOR_ExtractContext *ec;
-  long length;
-  guint64 offset;
-  int toc_depth;
-  size_t toc_length;
-  size_t toc_pos;
-  gchar *toc;
-  gboolean toc_print_phase;
-  unsigned char time_to_leave;
-  enum CurrentStreamType st;
-  GMainLoop *loop;
-  GstDiscoverer *dc;
-  guint timeout_id;
+  /**
+   * Tracks the time from the last IO request so that we can decide
+   * to terminate processing if GStreamer just takes far too long.
+   * Values are based on 'g_get_monotonic_time()', in milliseconds.
+   */
   gint64 last_data_request_time;
+
+  /**
+   * Current read-offset in the 'ec' context (based on our read/seek calls).
+   */
+  guint64 offset;
+
+  /**
+   * Overall size of the file we're processing, UINT64_MAX if unknown.
+   */
+  uint64_t length;
+
+  /**
+   *
+   */
+  GstElement *source;
+
+  /**
+   * Extraction context for IO on the underlying data.
+   */
+  struct EXTRACTOR_ExtractContext *ec;
+
+  /**
+   * Glib main loop.
+   */
+  GMainLoop *loop;
+
+  /**
+   * Discoverer object we are using.
+   */
+  GstDiscoverer *dc;
+
+  /**
+   * Location for building the XML 'table of contents' (EXTRACTOR_METATYPE_TOC) for
+   * the input.  Used only during 'send_info'.
+   */
+  gchar *toc;
+
+  /**
+   * Length of the 'toc' string.
+   */
+  size_t toc_length;
+
+  /**
+   * Current position (used when creating the 'toc' string).
+   */
+  size_t toc_pos;
+
+  /**
+   *
+   */
+  guint timeout_id;
+
+  /**
+   * Counter used to determine our current depth in the TOC hierarchy.
+   */
+  int toc_depth;
+
+  /**
+   *
+   */
+  enum CurrentStreamType st;
+
+  /**
+   * Last return value from the meta data processor.  Set to
+   * 1 to abort, 0 to continue extracting.
+   */
+  int time_to_leave;
+
+  /**
+   * TOC generation is executed in two phases.  First phase determines
+   * the size of the string and the second phase actually does the
+   * 'printing' (string construction).  This bit is TRUE if we are
+   * in the 'printing' phase.
+   */
+  gboolean toc_print_phase;
+
 };
 
 
+/**
+ *
+ */
 static GQuark *audio_quarks;
 
+/**
+ *
+ */
 static GQuark *video_quarks;
 
+/**
+ *
+ */
 static GQuark *subtitle_quarks;
 
+/**
+ *
+ */
 static GQuark duration_quark;
 
 
+/**
+ * Implementation of GstElement's "need-data" callback.  Reads data from
+ * the extraction context and passes it to GStreamer.
+ *
+ * @param appsrc the GstElement for which we are implementing "need-data"
+ * @param size number of bytes requested
+ * @param ps our execution context
+ */
 static void
-feed_data (GstElement * appsrc, guint size, struct PrivStruct * ps)
+feed_data (GstElement * appsrc, 
+	   guint size, 
+	   struct PrivStruct * ps)
 {
-  long data_len;
+  ssize_t data_len;
   uint8_t *le_data;
   guint accumulated;
   GstMemory *mem;
   GstMapInfo mi;
+  GstBuffer *buffer;
 
   GST_DEBUG ("Request %u bytes", size);
 
   /* Update it now, in case we bail out due to error */
   ps->last_data_request_time = g_get_monotonic_time ();
 
-  if (ps->length > 0 && ps->offset >= ps->length) {
+  if ( (ps->length > 0) && (ps->offset >= ps->length) )
+  {
     /* we are at the EOS, send end-of-stream */
     gst_app_src_end_of_stream (GST_APP_SRC (ps->source));
     return;
@@ -831,7 +951,7 @@ feed_data (GstElement * appsrc, guint size, struct PrivStruct * ps)
 
   accumulated = 0;
   data_len = 1;
-  while (accumulated < size && data_len > 0)
+  while ( (accumulated < size) && (data_len > 0) )
   {
     data_len = ps->ec->read (ps->ec->cls, (void **) &le_data, size - accumulated);
     if (data_len > 0)
@@ -841,9 +961,8 @@ feed_data (GstElement * appsrc, guint size, struct PrivStruct * ps)
     }
   }
   gst_memory_unmap (mem, &mi);
-  if (data_len > 0)
+  if (size == accumulated)
   {
-    GstBuffer *buffer;
     buffer = gst_buffer_new ();
     gst_buffer_append_memory (buffer, mem);
 
@@ -851,8 +970,8 @@ feed_data (GstElement * appsrc, guint size, struct PrivStruct * ps)
     GST_BUFFER_OFFSET (buffer) = ps->offset;
     GST_BUFFER_OFFSET_END (buffer) = ps->offset + size;
 
-    GST_DEBUG ("feed buffer %p, offset %" G_GUINT64_FORMAT "-%u", buffer,
-        ps->offset, size);
+    GST_DEBUG ("feed buffer %p, offset %" G_GUINT64_FORMAT "-%u", 
+	       buffer, ps->offset, size);
     gst_app_src_push_buffer (GST_APP_SRC (ps->source), buffer);
     ps->offset += size;
   }
@@ -860,33 +979,43 @@ feed_data (GstElement * appsrc, guint size, struct PrivStruct * ps)
   {
     gst_memory_unref (mem);
     gst_app_src_end_of_stream (GST_APP_SRC (ps->source));
+    ps->offset = UINT64_MAX; /* set to invalid value */
   }
 
   /* Update it again to account for time we spent fulfilling the request */
   ps->last_data_request_time = g_get_monotonic_time ();
-  return;
 }
 
 
+/**
+ * Implementation of GstElement's "seek-data" callback.  Seeks to a new
+ * position in the extraction context.
+ *
+ * @param appsrc the GstElement for which we are implementing "need-data"
+ * @param position new desired absolute position in the file
+ * @param ps our execution context
+ * @return TRUE if seeking succeeded, FALSE if not
+ */
 static gboolean
-seek_data (GstElement * appsrc, guint64 position, struct PrivStruct * ps)
+seek_data (GstElement * appsrc, 
+	   guint64 position, 
+	   struct PrivStruct * ps)
 {
   GST_DEBUG ("seek to offset %" G_GUINT64_FORMAT, position);
   ps->offset = ps->ec->seek (ps->ec->cls, position, SEEK_SET);
-
   ps->last_data_request_time = g_get_monotonic_time ();
-  return ps->offset >= 0;
+  return ps->offset == position;
 }
 
 
-static gboolean
-_run_async (struct PrivStruct * ps)
-{
-  gst_discoverer_discover_uri_async (ps->dc, "appsrc://");
-  return FALSE;
-}
-
-
+/**
+ * FIXME
+ * 
+ * @param field_id FIXME
+ * @param value FIXME
+ * @param user_data our 'struct PrivStruct'
+ * @return TRUE to continue processing, FALSE to abort
+ */
 static gboolean
 send_structure_foreach (GQuark field_id, 
 			const GValue *value,
@@ -922,7 +1051,6 @@ send_structure_foreach (GQuark field_id,
     break;
   }
 
-
   switch (G_VALUE_TYPE (value))
   {
   case G_TYPE_STRING:
@@ -948,7 +1076,7 @@ send_structure_foreach (GQuark field_id,
     str = NULL;
     break;
   }
-  if (NULL != str)
+  if (NULL != str) 
   {
     unsigned int i;
 
@@ -969,16 +1097,24 @@ send_structure_foreach (GQuark field_id,
     gchar *senddata = g_strdup_printf ("%s=%s", field_name, str);
     ps->time_to_leave = ps->ec->proc (ps->ec->cls, "gstreamer",
 				      EXTRACTOR_METATYPE_UNKNOWN, EXTRACTOR_METAFORMAT_UTF8, "text/plain",
-				      (const char *) senddata, strlen (senddata) + 1);
+				      (const char *) senddata, 
+				      strlen (senddata) + 1);
     g_free (senddata);
   }
   g_free (str);
 
-  return !ps->time_to_leave;
+  return ! ps->time_to_leave;
 }
 
 
-static int
+/**
+ * FIXME
+ * 
+ * @param info FIXME
+ * @param ps processing context
+ * @return FALSE to continue processing, TRUE to abort
+ */
+static gboolean
 send_audio_info (GstDiscovererAudioInfo *info, 
 		 struct PrivStruct *ps)
 {
@@ -1059,15 +1195,24 @@ send_audio_info (GstDiscovererAudioInfo *info,
 }
 
 
+/**
+ * FIXME
+ * 
+ * @param info FIXME
+ * @param ps processing context
+ * @return FALSE to continue processing, TRUE to abort
+ */
 static int
-send_video_info (GstDiscovererVideoInfo *info, struct PrivStruct *ps)
+send_video_info (GstDiscovererVideoInfo *info, 
+		 struct PrivStruct *ps)
 {
   gchar *tmp;
-  guint u, u2;
+  guint u;
+  guint u2;
 
   u = gst_discoverer_video_info_get_width (info);
   u2 = gst_discoverer_video_info_get_height (info);
-  if (u > 0 && u2 > 0)
+  if ( (u > 0) && (u2 > 0) )
   {
     tmp = g_strdup_printf ("%ux%u", u, u2);
     ps->time_to_leave = ps->ec->proc (ps->ec->cls, "gstreamer",
@@ -1092,7 +1237,7 @@ send_video_info (GstDiscovererVideoInfo *info, struct PrivStruct *ps)
 
   u = gst_discoverer_video_info_get_framerate_num (info);
   u2 = gst_discoverer_video_info_get_framerate_denom (info);
-  if (u > 0 && u2 > 0)
+  if ( (u > 0) && (u2 > 0) )
   {
     tmp = g_strdup_printf ("%u/%u", u, u2);
     ps->time_to_leave = ps->ec->proc (ps->ec->cls, "gstreamer",
@@ -1105,7 +1250,7 @@ send_video_info (GstDiscovererVideoInfo *info, struct PrivStruct *ps)
 
   u = gst_discoverer_video_info_get_par_num (info);
   u2 = gst_discoverer_video_info_get_par_denom (info);
-  if (u > 0 && u2 > 0)
+  if ( (u > 0) && (u2 > 0) )
   {
     tmp = g_strdup_printf ("%u/%u", u, u2);
     ps->time_to_leave = ps->ec->proc (ps->ec->cls, "gstreamer",
@@ -1119,7 +1264,7 @@ send_video_info (GstDiscovererVideoInfo *info, struct PrivStruct *ps)
   /* gst_discoverer_video_info_is_interlaced (info) I don't trust it... */
 
   u = gst_discoverer_video_info_get_bitrate (info);
-  if (u > 0 && u2 > 0)
+  if (u > 0)
   {
     tmp = g_strdup_printf ("%u", u);
     ps->time_to_leave = ps->ec->proc (ps->ec->cls, "gstreamer",
@@ -1131,7 +1276,7 @@ send_video_info (GstDiscovererVideoInfo *info, struct PrivStruct *ps)
   }
 
   u = gst_discoverer_video_info_get_max_bitrate (info);
-  if (u > 0 && u2 > 0)
+  if (u > 0)
   {
     tmp = g_strdup_printf ("%u", u);
     ps->time_to_leave = ps->ec->proc (ps->ec->cls, "gstreamer",
@@ -1146,18 +1291,27 @@ send_video_info (GstDiscovererVideoInfo *info, struct PrivStruct *ps)
 }
 
 
+/**
+ * FIXME
+ * 
+ * @param info FIXME
+ * @param ps processing context
+ * @return FALSE to continue processing, TRUE to abort
+ */
 static int
-send_subtitle_info (GstDiscovererSubtitleInfo *info, struct PrivStruct *ps)
+send_subtitle_info (GstDiscovererSubtitleInfo *info, 
+		    struct PrivStruct *ps)
 {
   const gchar *ctmp;
 
   ctmp = gst_discoverer_subtitle_info_get_language (info);
-  if (ctmp)
-    if ((ps->time_to_leave = ps->ec->proc (ps->ec->cls, "gstreamer",
-        EXTRACTOR_METATYPE_SUBTITLE_LANGUAGE, EXTRACTOR_METAFORMAT_UTF8, "text/plain",
-        (const char *) ctmp, strlen (ctmp) + 1)))
-      return TRUE;
-
+  if ( (NULL != ctmp) &&
+       (0 != (ps->time_to_leave = ps->ec->proc (ps->ec->cls, "gstreamer",
+						EXTRACTOR_METATYPE_SUBTITLE_LANGUAGE,
+						EXTRACTOR_METAFORMAT_UTF8,
+						"text/plain",
+						(const char *) ctmp, strlen (ctmp) + 1))) )
+    return TRUE;
   return FALSE;
 }
 
@@ -1167,11 +1321,11 @@ send_tag_foreach (const GstTagList * tags,
 		  const gchar * tag,
 		  gpointer user_data)
 {
+  static struct KnownTag unknown_tag = {NULL, EXTRACTOR_METATYPE_UNKNOWN};
   struct PrivStruct *ps = user_data;
   size_t i;
   size_t tagl = sizeof (__known_tags) / sizeof (struct KnownTag);
-  struct KnownTag *kt = NULL;
-  struct KnownTag unknown_tag = {NULL, EXTRACTOR_METATYPE_UNKNOWN};
+  const struct KnownTag *kt = NULL;
   GQuark tag_quark;
   guint vallen;
   GstSample *sample;
@@ -1517,12 +1671,13 @@ send_stream_info (GstDiscovererStreamInfo * info,
 
 
 static void
-send_streams (GstDiscovererStreamInfo *info, struct PrivStruct *ps)
+send_streams (GstDiscovererStreamInfo *info, 
+	      struct PrivStruct *ps)
 {
+  GstDiscovererStreamInfo *next;
+
   while ( (NULL != info) && (! ps->time_to_leave) )
   {
-    GstDiscovererStreamInfo *next;
-
     send_stream_info (info, ps);
     next = gst_discoverer_stream_info_get_next (info);
     gst_discoverer_stream_info_unref (info);
@@ -1531,6 +1686,13 @@ send_streams (GstDiscovererStreamInfo *info, struct PrivStruct *ps)
 }
 
 
+/**
+ * Callback used to construct the XML 'toc'.
+ *
+ * @param tags  FIXME
+ * @param tag FIXME 
+ * @param user_data the 'struct PrivStruct' with the 'toc' string we are assembling
+ */
 static void
 send_toc_tags_foreach (const GstTagList * tags,
 		       const gchar * tag,
@@ -1588,6 +1750,12 @@ send_toc_tags_foreach (const GstTagList * tags,
 }
 
 
+/**
+ * Top-level callback used to construct the XML 'toc'.
+ *
+ * @param data the GstTocEntry we're processing
+ * @param user_data the 'struct PrivStruct' with the 'toc' string we are assembling
+ */
 static void
 send_toc_foreach (gpointer data, gpointer user_data)
 {
@@ -1595,68 +1763,72 @@ send_toc_foreach (gpointer data, gpointer user_data)
   struct PrivStruct *ps = user_data;
   GstTagList *tags;
   GList *subentries;
-  gint64 start, stop;
+  gint64 start;
+  gint64 stop;
   GstTocEntryType entype;
+  gchar *s;
 
   entype = gst_toc_entry_get_entry_type (entry);
-  if (GST_TOC_ENTRY_TYPE_INVALID != entype)
-  {
-    char *s;
-
-    gst_toc_entry_get_start_stop_times (entry, &start, &stop);
-    s = g_strdup_printf ("%*.*s<%s start=\"%" GST_TIME_FORMAT "\" stop=\"%"
-      GST_TIME_FORMAT"\">\n", ps->toc_depth * 2, ps->toc_depth * 2, " ",
-      gst_toc_entry_type_get_nick (entype), GST_TIME_ARGS (start),
-      GST_TIME_ARGS (stop));
-    if (ps->toc_print_phase)
-      ps->toc_pos += g_snprintf (&ps->toc[ps->toc_pos], ps->toc_length - ps->toc_pos, "%s", s);
-    else
-      ps->toc_length += strlen (s);
-    g_free (s);
-    ps->toc_depth++;
-    tags = gst_toc_entry_get_tags (entry);
-    if (tags)
+  if (GST_TOC_ENTRY_TYPE_INVALID == entype)
+    return;
+  gst_toc_entry_get_start_stop_times (entry, &start, &stop);
+  s = g_strdup_printf ("%*.*s<%s start=\"%" GST_TIME_FORMAT "\" stop=\"%"
+		       GST_TIME_FORMAT"\">\n", ps->toc_depth * 2, ps->toc_depth * 2, " ",
+		       gst_toc_entry_type_get_nick (entype), GST_TIME_ARGS (start),
+		       GST_TIME_ARGS (stop));
+  if (ps->toc_print_phase)
+    ps->toc_pos += g_snprintf (&ps->toc[ps->toc_pos], ps->toc_length - ps->toc_pos, "%s", s);
+  else
+    ps->toc_length += strlen (s);
+  g_free (s);
+  ps->toc_depth++;
+  tags = gst_toc_entry_get_tags (entry);
+  if (tags)
     {
       if (ps->toc_print_phase)
         ps->toc_pos += g_snprintf (&ps->toc[ps->toc_pos], ps->toc_length - ps->toc_pos,
-        "%*.*s<tags>\n", ps->toc_depth * 2, ps->toc_depth * 2, " ");
+				   "%*.*s<tags>\n", ps->toc_depth * 2, ps->toc_depth * 2, " ");
       else
         ps->toc_length += strlen ("<tags>\n") + ps->toc_depth * 2;
       ps->toc_depth++;
-      gst_tag_list_foreach (tags, send_toc_tags_foreach, ps);
+      gst_tag_list_foreach (tags, &send_toc_tags_foreach, ps);
       ps->toc_depth--;
       if (ps->toc_print_phase)
         ps->toc_pos += g_snprintf (&ps->toc[ps->toc_pos], ps->toc_length - ps->toc_pos,
-        "%*.*s</tags>\n", ps->toc_depth * 2, ps->toc_depth * 2, " ");
+				   "%*.*s</tags>\n", ps->toc_depth * 2, ps->toc_depth * 2, " ");
       else
         ps->toc_length += strlen ("</tags>\n") + ps->toc_depth * 2;
     }
-
-    subentries = gst_toc_entry_get_sub_entries (entry);
-    g_list_foreach (subentries, send_toc_foreach, ps);
-    ps->toc_depth--;
-
-    s = g_strdup_printf ("%*.*s</%s>\n", ps->toc_depth * 2, ps->toc_depth * 2, " ",
-      gst_toc_entry_type_get_nick (entype));
-    if (ps->toc_print_phase)
-      ps->toc_pos += g_snprintf (&ps->toc[ps->toc_pos], ps->toc_length - ps->toc_pos, "%s", s);
-    else
-      ps->toc_length += strlen (s);
-    g_free (s);
-  }
+  
+  subentries = gst_toc_entry_get_sub_entries (entry);
+  g_list_foreach (subentries, send_toc_foreach, ps);
+  ps->toc_depth--;
+  
+  s = g_strdup_printf ("%*.*s</%s>\n", ps->toc_depth * 2, ps->toc_depth * 2, " ",
+		       gst_toc_entry_type_get_nick (entype));
+  if (ps->toc_print_phase)
+    ps->toc_pos += g_snprintf (&ps->toc[ps->toc_pos], ps->toc_length - ps->toc_pos, "%s", s);
+  else
+    ps->toc_length += strlen (s);
+  g_free (s);
 }
 
 
+/**
+ * XML header for the table-of-contents meta data.
+ */
 #define TOC_XML_HEADER "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n"
 
 
 static void
-send_info (GstDiscovererInfo * info, struct PrivStruct *ps)
+send_info (GstDiscovererInfo * info, 
+	   struct PrivStruct *ps)
 {
   const GstToc *toc;
   gchar *s;
   GstDiscovererStreamInfo *sinfo;
   GstClockTime duration;
+  GList *entries;
 
   duration = gst_discoverer_info_get_duration (info);
   if ((GST_CLOCK_TIME_IS_VALID (duration)) && (duration > 0))
@@ -1684,12 +1856,10 @@ send_info (GstDiscovererInfo * info, struct PrivStruct *ps)
 
   if ((toc = gst_discoverer_info_get_toc (info)))
   {
-    GList *entries;
-
     entries = gst_toc_get_entries (toc);
     ps->toc_print_phase = FALSE;
     ps->toc_length = 0;
-    g_list_foreach (entries, send_toc_foreach, ps);
+    g_list_foreach (entries, &send_toc_foreach, ps);
 
     if (ps->toc_length > 0)
     {
@@ -1697,18 +1867,24 @@ send_info (GstDiscovererInfo * info, struct PrivStruct *ps)
       ps->toc_length += 1 + strlen (TOC_XML_HEADER);
       ps->toc = g_malloc (ps->toc_length);
       ps->toc_pos = 0;
-      ps->toc_pos += g_snprintf (&ps->toc[ps->toc_pos], ps->toc_length - ps->toc_pos, "%s", TOC_XML_HEADER);
-      g_list_foreach (entries, send_toc_foreach, ps);
+      ps->toc_pos += g_snprintf (&ps->toc[ps->toc_pos], 
+				 ps->toc_length - ps->toc_pos, 
+				 "%s", 
+				 TOC_XML_HEADER);
+      g_list_foreach (entries, &send_toc_foreach, ps);
       ps->toc[ps->toc_length - 1] = '\0';
       ps->time_to_leave = ps->ec->proc (ps->ec->cls, "gstreamer",
-          EXTRACTOR_METATYPE_TOC, EXTRACTOR_METAFORMAT_C_STRING, "application/xml",
-          (const char *) ps->toc, ps->toc_length);
+					EXTRACTOR_METATYPE_TOC, 
+					EXTRACTOR_METAFORMAT_C_STRING, 
+					"application/xml",
+					(const char *) ps->toc,
+					ps->toc_length);
       g_free (ps->toc);
       ps->toc = NULL;
     }
   }
 
-  if (ps->time_to_leave)
+  if (0 != ps->time_to_leave)
     return;
 
   sinfo = gst_discoverer_info_get_stream_info (info);
@@ -1717,7 +1893,8 @@ send_info (GstDiscovererInfo * info, struct PrivStruct *ps)
 
 
 static void
-send_discovered_info (GstDiscovererInfo * info, struct PrivStruct * ps)
+send_discovered_info (GstDiscovererInfo * info, 
+		      struct PrivStruct * ps)
 {
   GstDiscovererResult result;
 
@@ -1765,6 +1942,7 @@ _discoverer_finished (GstDiscoverer * dc, struct PrivStruct *ps)
   g_main_loop_quit (ps->loop);
 }
 
+
 static gboolean
 _data_timeout (struct PrivStruct *ps)
 {
@@ -1780,11 +1958,17 @@ _data_timeout (struct PrivStruct *ps)
   return TRUE;
 }
 
+
 /**
  * This callback is called when discoverer has constructed a source object to
  * read from. Since we provided the appsrc:// uri to discoverer, this will be
  * the appsrc that we must handle. We set up some signals - one to push data
- * into appsrc and one to perform a seek. */
+ * into appsrc and one to perform a seek. 
+ *
+ * @param dc
+ * @param source
+ * @param ps 
+ */
 static void
 _source_setup (GstDiscoverer * dc, 
 	       GstElement * source,
@@ -1812,6 +1996,20 @@ _source_setup (GstDiscoverer * dc,
   g_signal_connect (ps->source, "seek-data", G_CALLBACK (seek_data), ps);
   ps->timeout_id = g_timeout_add (DATA_TIMEOUT_FREQUENCY, (GSourceFunc) _data_timeout, ps);
   ps->last_data_request_time = g_get_monotonic_time ();
+}
+
+
+/**
+ * Task run from the main loop to call 'gst_discoverer_uri_async'.
+ *
+ * @param ps our execution context
+ * @return FALSE (always)
+ */
+static gboolean
+_run_async (struct PrivStruct * ps)
+{
+  gst_discoverer_discover_uri_async (ps->dc, "appsrc://");
+  return FALSE;
 }
 
 
