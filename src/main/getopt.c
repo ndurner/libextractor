@@ -72,9 +72,9 @@ USA.  */
 
 #ifdef VMS
 #include <unixlib.h>
-#if HAVE_STRING_H - 0
-#include <string.h>
 #endif
+#if HAVE_STRING_H
+#include <string.h>
 #endif
 
 #if defined (WIN32) && !defined (__CYGWIN32__)
