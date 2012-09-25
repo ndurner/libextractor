@@ -599,6 +599,10 @@ then
  LE_LIB_LDFLAGS="$LE_LIB_LDFLAGS -export-symbols-regex \"(EXTRACTOR|pl)_@<:@a-zA-Z0-9_@:>@*\""
  LE_PLUGIN_LDFLAGS="$LE_PLUGIN_LDFLAGS -export-symbols-regex \"(EXTRACTOR|pl)_@<:@a-zA-Z0-9_@:>@*_.......\""
 fi
+
+# restore LIBS
+LIBS=$LIBSOLD
+
 AC_SUBST(LE_LIB_LDFLAGS)
 AC_SUBST(LE_PLUGIN_LDFLAGS)
 AC_SUBST(LE_INTLINCL)
@@ -722,7 +726,10 @@ fi
 
 if test x$have_gstreamer = xyes -a x$have_gstreamer_pbutils = xyes -a x$have_gstreamer_tag = xyes -a x$have_gstreamer_app = xyes -a ! x$without_glib = xtrue
 then
+if test x$enable_experimental = xyes
+then
  AC_MSG_NOTICE([NOTICE: gstreamer enabled])
+fi
 else
  AC_MSG_NOTICE([NOTICE: gstreamer not found, gstreamer support disabled])
 fi
