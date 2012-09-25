@@ -639,6 +639,7 @@ EXTRACTOR_extract (struct EXTRACTOR_PluginList *plugins,
       if (NULL == shm)
 	{
 	  LOG ("Failed to setup IPC\n");
+	  EXTRACTOR_datasource_destroy_ (datasource);
 	  return;
 	}
     }
