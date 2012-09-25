@@ -86,7 +86,12 @@ EXTRACTOR_common_convert_to_utf8 (const char *input,
   iconv_close (cd);
   return ret;
 #else
-  return strdup (input);
+  char *ret;
+
+  ret = malloc (len + 1);
+  memcpy (ret, input, len);
+  ret[len] = '\0';
+  return ret;
 #endif
 }
 
