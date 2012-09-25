@@ -5,10 +5,10 @@
 # Benno Schulenberg <benno@vertaalt.nl>, 2008.
 msgid ""
 msgstr ""
-"Project-Id-Version: libextractor-0.5.20a\n"
+"Project-Id-Version: libextractor-0.5.22\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2012-09-06 09:40+0200\n"
-"PO-Revision-Date: 2009-03-08 16:59+0100\n"
+"POT-Creation-Date: 2012-09-25 16:36+0200\n"
+"PO-Revision-Date: 2009-05-08 10:26+0100\n"
 "Last-Translator: Erwin Poeze <erwin.poeze@gmail.com>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
 "Language: nl\n"
@@ -61,7 +61,7 @@ msgstr ""
 
 #: src/main/extract.c:227
 msgid "load an extractor plugin named LIBRARY"
-msgstr "deze extractor-plugin laden"
+msgstr "extractor-plugin 'LIBRARY' laden"
 
 #: src/main/extract.c:229
 msgid "list all keyword types"
@@ -96,53 +96,54 @@ msgstr "extract [OPTIES] [BESTANDSNAAM]*"
 msgid "Extract metadata from files."
 msgstr "Metadata uit bestanden lezen."
 
-#: src/main/extract.c:284
+#: src/main/extract.c:288
 #, fuzzy, c-format
 msgid "Found by `%s' plugin:\n"
 msgstr "Laden van plugin '%s' is mislukt: %s\n"
 
-#: src/main/extract.c:287 src/main/extract.c:368
-#: src/main/extractor_metatypes.c:145 src/main/extractor_print.c:82
+#: src/main/extract.c:291 src/main/extract.c:378
+#: src/main/extractor_metatypes.c:145 src/main/extractor_print.c:86
+#: src/main/extractor_print.c:96
 msgid "unknown"
 msgstr "onbekend"
 
-#: src/main/extract.c:292
+#: src/main/extract.c:296
 #, c-format
 msgid "%s - (unknown, %u bytes)\n"
 msgstr ""
 
-#: src/main/extract.c:317
+#: src/main/extract.c:325
 #, fuzzy, c-format
 msgid "%s - (binary, %u bytes)\n"
 msgstr "%s - (binair)\n"
 
-#: src/main/extract.c:658 src/main/extract.c:668
+#: src/main/extract.c:672 src/main/extract.c:682
 #, c-format
 msgid ""
 "Illegal combination of options, cannot combine multiple styles of printing.\n"
 msgstr ""
 
-#: src/main/extract.c:698
+#: src/main/extract.c:712
 #, c-format
 msgid "You must specify an argument for the `%s' option (option ignored).\n"
 msgstr "Optie '%s' vereist een argument -- optie is genegeerd.\n"
 
-#: src/main/extract.c:763
+#: src/main/extract.c:777
 #, c-format
 msgid "Use --help to get a list of options.\n"
 msgstr "Gebruik '--help' voor een lijst met mogelijke opties.\n"
 
-#: src/main/extract.c:801
+#: src/main/extract.c:815
 #, c-format
 msgid "%% BiBTeX file\n"
 msgstr "%% BiBTeX-bestand\n"
 
-#: src/main/extract.c:809
+#: src/main/extract.c:823
 #, c-format
 msgid "Keywords for file %s:\n"
 msgstr "Trefwoorden voor bestand %s:\n"
 
-#: src/main/extractor.c:673
+#: src/main/extractor.c:679
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "Initialisatie van plugin-mechanisme is mislukt: %s\n"
@@ -488,9 +489,8 @@ msgid "GPS longitude"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:136
-#, fuzzy
 msgid "city"
-msgstr "veiligheid"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:137
 msgid "name of the city where the document originated"
@@ -789,9 +789,8 @@ msgid "packages suggested for installation in conjunction with this package"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:219
-#, fuzzy
 msgid "maintainer"
-msgstr "manager"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:220
 msgid "name of the maintainer"
@@ -1057,9 +1056,8 @@ msgid "paragraph count"
 msgstr "aantal alinea's"
 
 #: src/main/extractor_metatypes.c:311
-#, fuzzy
 msgid "number of paragraphs"
-msgstr "bewerkingscycli"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:313
 msgid "word count"
@@ -1076,7 +1074,7 @@ msgstr "aantal tekens"
 #: src/main/extractor_metatypes.c:316
 #, fuzzy
 msgid "number of characters"
-msgstr "bewerkingscycli"
+msgstr "tekenset"
 
 #: src/main/extractor_metatypes.c:317 src/main/extractor_metatypes.c:318
 msgid "page orientation"
@@ -1120,18 +1118,16 @@ msgid "album"
 msgstr "album"
 
 #: src/main/extractor_metatypes.c:333
-#, fuzzy
 msgid "name of the album"
-msgstr "uitgever"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:335
 msgid "artist"
 msgstr "artiest"
 
 #: src/main/extractor_metatypes.c:336
-#, fuzzy
 msgid "name of the artist or band"
-msgstr "uitgever"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:337 src/main/extractor_metatypes.c:338
 msgid "genre"
@@ -1155,9 +1151,8 @@ msgid "number of the disk in a multi-disk (or volume) distribution"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:343
-#, fuzzy
 msgid "performer"
-msgstr "paginavolgorde"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:344
 msgid ""
@@ -1268,9 +1263,8 @@ msgid "order of the pages"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:372
-#, fuzzy
 msgid "writer"
-msgstr "ripper"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:373
 #, fuzzy
@@ -1296,14 +1290,12 @@ msgid "movie director"
 msgstr "regisseur"
 
 #: src/main/extractor_metatypes.c:380
-#, fuzzy
 msgid "name of the director"
-msgstr "uitgever"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:381
-#, fuzzy
 msgid "network"
-msgstr "generator"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:382
 msgid "name of the broadcasting network or station"
@@ -1314,37 +1306,33 @@ msgid "show"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:384
-#, fuzzy
 msgid "name of the show"
-msgstr "uitgever"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:385
 #, fuzzy
 msgid "chapter name"
-msgstr "tracknummer"
+msgstr "hoofdstuk"
 
 #: src/main/extractor_metatypes.c:386
-#, fuzzy
 msgid "name of the chapter"
-msgstr "uitgever"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:387
 msgid "song count"
 msgstr "aantal songs"
 
 #: src/main/extractor_metatypes.c:388
-#, fuzzy
 msgid "number of songs"
-msgstr "bewerkingscycli"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:390
 msgid "starting song"
 msgstr "beginsong"
 
 #: src/main/extractor_metatypes.c:391
-#, fuzzy
 msgid "number of the first song to play"
-msgstr "bewerkingscycli"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:392
 msgid "play counter"
@@ -1361,7 +1349,7 @@ msgstr "dirigent"
 #: src/main/extractor_metatypes.c:395
 #, fuzzy
 msgid "name of the conductor"
-msgstr "uitgever"
+msgstr "dirigent"
 
 #: src/main/extractor_metatypes.c:396
 #, fuzzy
@@ -1378,14 +1366,12 @@ msgid "composer"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:399
-#, fuzzy
 msgid "name of the composer"
-msgstr "uitgever"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:401 src/main/extractor_metatypes.c:402
-#, fuzzy
 msgid "beats per minute"
-msgstr "laatst afgedrukt"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:403
 msgid "encoded by"
@@ -1396,25 +1382,27 @@ msgid "name of person or organization that encoded the file"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:405
+#, fuzzy
 msgid "original title"
-msgstr ""
+msgstr "oorspronkelijk"
 
 #: src/main/extractor_metatypes.c:406
 msgid "title of the original work"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:407
+#, fuzzy
 msgid "original artist"
-msgstr ""
+msgstr "oorspronkelijk"
 
 #: src/main/extractor_metatypes.c:408
-#, fuzzy
 msgid "name of the original artist"
-msgstr "uitgever"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:409
+#, fuzzy
 msgid "original writer"
-msgstr ""
+msgstr "oorspronkelijk"
 
 #: src/main/extractor_metatypes.c:410
 msgid "name of the original lyricist or writer"
@@ -1429,8 +1417,9 @@ msgid "year of the original release"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:414
+#, fuzzy
 msgid "original performer"
-msgstr ""
+msgstr "oorspronkelijk"
 
 #: src/main/extractor_metatypes.c:415
 msgid "name of the original performer"
@@ -1450,9 +1439,8 @@ msgid "popularity"
 msgstr "populariteitsmeter"
 
 #: src/main/extractor_metatypes.c:419
-#, fuzzy
 msgid "information about the file's popularity"
-msgstr "informatie"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:420
 #, fuzzy
@@ -1534,24 +1522,22 @@ msgid "group"
 msgstr "groep"
 
 #: src/main/extractor_metatypes.c:443
-#, fuzzy
 msgid "name of the group or band"
-msgstr "uitgever"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:445
 #, fuzzy
 msgid "original filename"
-msgstr "naam"
+msgstr "bestandsnaam"
 
 #: src/main/extractor_metatypes.c:446
-#, fuzzy
 msgid "name of the original file (reserved for GNUnet)"
-msgstr "uitgever"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:447
 #, fuzzy
 msgid "disc count"
-msgstr "aantal regels"
+msgstr "aantal woorden"
 
 #: src/main/extractor_metatypes.c:448
 msgid "count of discs inside collection this disc belongs to"
@@ -1582,9 +1568,8 @@ msgid "codec the audio data is stored in"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:456
-#, fuzzy
 msgid "subtitle codec"
-msgstr "titel"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:457
 msgid "codec/format the subtitle data is stored in"
@@ -1638,9 +1623,8 @@ msgid "serial"
 msgstr "Industrial"
 
 #: src/main/extractor_metatypes.c:470
-#, fuzzy
 msgid "serial number of track"
-msgstr "bewerkingscycli"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:471
 #, fuzzy
@@ -1675,9 +1659,8 @@ msgid "track peak"
 msgstr "tracknummer"
 
 #: src/main/extractor_metatypes.c:479
-#, fuzzy
 msgid "peak of the track"
-msgstr "uitgever"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:480
 #, fuzzy
@@ -1694,9 +1677,8 @@ msgid "album peak"
 msgstr "album"
 
 #: src/main/extractor_metatypes.c:483
-#, fuzzy
 msgid "peak of the album"
-msgstr "uitgever"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:484
 msgid "reference level"
@@ -1737,9 +1719,8 @@ msgid "represents the expected error on the horizontal positioning in meters"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:493
-#, fuzzy
 msgid "location movement speed"
-msgstr "publicatiedatum"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:494
 msgid ""
@@ -1771,7 +1752,7 @@ msgstr ""
 #: src/main/extractor_metatypes.c:500
 #, fuzzy
 msgid "show episode number"
-msgstr "programmaversie tonen"
+msgstr "CD-nummer"
 
 #: src/main/extractor_metatypes.c:501
 msgid "number of the episode within a season/show"
@@ -1783,9 +1764,8 @@ msgid "show season number"
 msgstr "programmaversie tonen"
 
 #: src/main/extractor_metatypes.c:503
-#, fuzzy
 msgid "number of the season of a show/series"
-msgstr "bewerkingscycli"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:504
 #, fuzzy
@@ -1821,27 +1801,25 @@ msgid "audio language"
 msgstr "taal"
 
 #: src/main/extractor_metatypes.c:512
-#, fuzzy
 msgid "language of the audio track"
-msgstr "uitgever"
-
-#: src/main/extractor_metatypes.c:513
-msgid "channels"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:514
+#: src/main/extractor_metatypes.c:513
 #, fuzzy
+msgid "channels"
+msgstr "dubbel kanaal"
+
+#: src/main/extractor_metatypes.c:514
 msgid "number of audio channels"
-msgstr "bewerkingscycli"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:515
 msgid "sample rate"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:516
-#, fuzzy
 msgid "sample rate of the audio track"
-msgstr "uitgever"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:517
 msgid "audio depth"
@@ -1856,18 +1834,16 @@ msgid "audio bitrate"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:520
-#, fuzzy
 msgid "bitrate of the audio track"
-msgstr "uitgever"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:522 src/main/extractor_metatypes.c:523
 msgid "maximum audio bitrate"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:524
-#, fuzzy
 msgid "video dimensions"
-msgstr "paginastand"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:525
 msgid "width and height of the video track (WxH)"
@@ -1882,9 +1858,8 @@ msgid "numbers of bits per pixel"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:528
-#, fuzzy
 msgid "frame rate"
-msgstr "paginavolgorde"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:529
 msgid "number of frames per second (as D/N or floating point)"
@@ -1912,9 +1887,8 @@ msgid "subtitle language"
 msgstr "taal"
 
 #: src/main/extractor_metatypes.c:538
-#, fuzzy
 msgid "language of the subtitle track"
-msgstr "uitgever"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:539
 #, fuzzy
@@ -1922,9 +1896,8 @@ msgid "video language"
 msgstr "taal"
 
 #: src/main/extractor_metatypes.c:540
-#, fuzzy
 msgid "language of the video track"
-msgstr "uitgever"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:541
 msgid "table of contents"
@@ -1940,9 +1913,8 @@ msgid "video duration"
 msgstr "duur"
 
 #: src/main/extractor_metatypes.c:545
-#, fuzzy
 msgid "duration of a video stream"
-msgstr "uitgever"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:546
 #, fuzzy
@@ -1950,24 +1922,21 @@ msgid "audio duration"
 msgstr "duur"
 
 #: src/main/extractor_metatypes.c:547
-#, fuzzy
 msgid "duration of an audio stream"
-msgstr "uitgever"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:548
 #, fuzzy
 msgid "subtitle duration"
-msgstr "taal"
+msgstr "duur"
 
 #: src/main/extractor_metatypes.c:549
-#, fuzzy
 msgid "duration of a subtitle stream"
-msgstr "uitgever"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:551 src/main/extractor_metatypes.c:552
-#, fuzzy
 msgid "last"
-msgstr "flits"
+msgstr ""
 
 #: src/main/getopt.c:684
 #, c-format
@@ -2025,9 +1994,9 @@ msgid "%s: option `-W %s' doesn't allow an argument\n"
 msgstr "%s: optie '-W %s' staat geen argument toe\n"
 
 #: src/plugins/flac_extractor.c:314
-#, c-format
+#, fuzzy, c-format
 msgid "%u Hz, %u channels"
-msgstr ""
+msgstr "dubbel kanaal"
 
 #: src/plugins/man_extractor.c:215
 msgid "Commands"
@@ -2159,6 +2128,114 @@ msgstr "mono"
 msgid "stereo"
 msgstr "stereo"
 
+#~ msgid "do not remove any duplicates"
+#~ msgstr "duplicaten niet verwijderen"
+
+#~ msgid ""
+#~ "use the generic plaintext extractor for the language with the 2-letter "
+#~ "language code LANG"
+#~ msgstr "de gewone-tekstextractor voor deze (tweelettercode) taal gebruiken"
+
+#~ msgid "remove duplicates only if types match"
+#~ msgstr "duplicaten alleen verwijderen indien van hetzelfde type"
+
+#~ msgid "use the filename as a keyword (loads filename-extractor plugin)"
+#~ msgstr ""
+#~ "de bestandsnaam als sleutelwoord gebruiken (laadt de "
+#~ "bestandsnaamextractor-plugin)"
+
+#~ msgid "compute hash using the given ALGORITHM (currently sha1 or md5)"
+#~ msgstr "met dit algoritme ('sha1' of 'md5') de hashwaarde berekenen"
+
+#~ msgid "remove duplicates even if keyword types do not match"
+#~ msgstr "duplicaten verwijderen, ook als de sleutelwoordtypes verschillen"
+
+#~ msgid "use keyword splitting (loads split-extractor plugin)"
+#~ msgstr "sleutelwoordsplitsing gebruiken (laadt de splitextractor-plugin)"
+
+#~ msgid "INVALID TYPE - %s\n"
+#~ msgstr "ONGELDIG TYPE - %s\n"
+
+#~ msgid "date"
+#~ msgstr "datum"
+
+#~ msgid "relation"
+#~ msgstr "relatie"
+
+#~ msgid "coverage"
+#~ msgstr "dekking"
+
+#~ msgid "translated"
+#~ msgstr "vertaald"
+
+#~ msgid "used fonts"
+#~ msgstr "gebruikte lettertypes"
+
+#~ msgid "created for"
+#~ msgstr "gemaakt voor"
+
+#~ msgid "release"
+#~ msgstr "uitgave"
+
+#~ msgid "size"
+#~ msgstr "grootte"
+
+#~ msgid "category"
+#~ msgstr "categorie"
+
+#~ msgid "owner"
+#~ msgstr "eigenaar"
+
+#~ msgid "binary thumbnail data"
+#~ msgstr "binaire gegevens over miniatuur"
+
+#~ msgid "focal length (35mm equivalent)"
+#~ msgstr "brandpuntsafstand (35mm-equivalent)"
+
+#~ msgid "split"
+#~ msgstr "gesplitst"
+
+#~ msgid "security"
+#~ msgstr "veiligheid"
+
+#~ msgid "lower case conversion"
+#~ msgstr "omzetting naar kleine letters"
+
+#~ msgid "generator"
+#~ msgstr "generator"
+
+#~ msgid "scale"
+#~ msgstr "schaal"
+
+#~ msgid "year"
+#~ msgstr "jaar"
+
+#~ msgid "link"
+#~ msgstr "link"
+
+#~ msgid "music CD identifier"
+#~ msgstr "muziek CD-ID"
+
+#~ msgid "time"
+#~ msgstr "tijd"
+
+#~ msgid "preferred display style (GNUnet)"
+#~ msgstr "weergavestijl van voorkeur (GNUnet)"
+
+#~ msgid "GNUnet URI of ECBC data"
+#~ msgstr "GNUnet URI van ECBC-gegevens"
+
+#~ msgid ""
+#~ "Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
+#~ "failed also.  Errors are: `%s' and `%s'.\n"
+#~ msgstr ""
+#~ "Het herleiden van symbool '%s' uit bibliotheek '%s' is mislukt;\n"
+#~ "het herleiden van '%s' mislukte ook.\n"
+#~ "De foutmeldingen waren: '%s' en '%s'.\n"
+
+#~ msgid "Unloading plugin `%s' failed!\n"
+#~ msgstr "Verwijderen van plugin '%s' is mislukt.\n"
+
 #~ msgid "GB"
 #~ msgstr "GB"
 
@@ -2171,31 +2248,17 @@ msgstr "stereo"
 #~ msgid "Bytes"
 #~ msgstr "bytes"
 
-#, fuzzy
-#~ msgid "joint stereo"
-#~ msgstr "stereo"
+#~ msgid "%ux%u dots per cm"
+#~ msgstr "%ux%u dots per cm"
 
-#, fuzzy
-#~ msgid "no copyright"
-#~ msgstr "copyright"
-
-#, fuzzy
-#~ msgid "original"
-#~ msgstr "naam"
-
-#, fuzzy
-#~ msgid "copy"
-#~ msgstr "firma"
+#~ msgid "%ux%u dots per inch?"
+#~ msgstr "%ux%u dots per inch?"
 
 #~ msgid "Blues"
 #~ msgstr "Blues"
 
 #~ msgid "Classic Rock"
 #~ msgstr "Classic rock"
-
-#, fuzzy
-#~ msgid "Country"
-#~ msgstr "Country"
 
 #~ msgid "Dance"
 #~ msgstr "Dance"
@@ -2244,10 +2307,6 @@ msgstr "stereo"
 
 #~ msgid "Techno"
 #~ msgstr "Techno"
-
-#, fuzzy
-#~ msgid "Industrial"
-#~ msgstr "Techno-Industrial"
 
 #~ msgid "Alternative"
 #~ msgstr "Alternatief"
@@ -2447,10 +2506,6 @@ msgstr "stereo"
 #~ msgid "Bebob"
 #~ msgstr "Bop"
 
-#, fuzzy
-#~ msgid "Latin"
-#~ msgstr "Latin"
-
 #~ msgid "Revival"
 #~ msgstr "Revival"
 
@@ -2634,172 +2689,38 @@ msgstr "stereo"
 #~ msgid "Synthpop"
 #~ msgstr "Synthipop"
 
-#, fuzzy
-#~ msgid "%ux%u dots per inch"
-#~ msgstr "%ux%u dots per inch?"
+#~ msgid "joint stereo"
+#~ msgstr "gezamenlijke stereo"
 
-#~ msgid "%ux%u dots per cm"
-#~ msgstr "%ux%u dots per cm"
+#~ msgid "MPEG-1"
+#~ msgstr "MPEG-1"
 
-#~ msgid "%ux%u dots per inch?"
-#~ msgstr "%ux%u dots per inch?"
+#~ msgid "MPEG-2"
+#~ msgstr "MPEG-2"
 
-#~ msgid "compute hash using the given ALGORITHM (currently sha1 or md5)"
-#~ msgstr "met dit algoritme ('sha1' of 'md5') de hashwaarde berekenen"
+#~ msgid "MPEG-2.5"
+#~ msgstr "MPEG-2.5"
 
-#~ msgid ""
-#~ "use the generic plaintext extractor for the language with the 2-letter "
-#~ "language code LANG"
-#~ msgstr "de gewone-tekst-extractor voor deze (tweelettercode) taal gebruiken"
+#~ msgid "Layer I"
+#~ msgstr "Laag I"
 
-#, fuzzy
-#~ msgid "copyright information"
-#~ msgstr "informatie"
+#~ msgid "Layer II"
+#~ msgstr "Laag II"
 
-#~ msgid "author"
-#~ msgstr "auteur"
+#~ msgid "Layer III"
+#~ msgstr "Laag III"
 
-#~ msgid "date"
-#~ msgstr "datum"
+#~ msgid "VBR"
+#~ msgstr "VBR"
 
-#~ msgid "resource-type"
-#~ msgstr "resource-type"
+#~ msgid "CBR"
+#~ msgstr "CBR"
 
-#~ msgid "resource-identifier"
-#~ msgstr "resource-ID"
+#~ msgid "no copyright"
+#~ msgstr "geen copyright"
 
-#~ msgid "relation"
-#~ msgstr "relatie"
-
-#~ msgid "coverage"
-#~ msgstr "dekking"
-
-#~ msgid "software"
-#~ msgstr "software"
-
-#~ msgid "translated"
-#~ msgstr "vertaald"
-
-#~ msgid "used fonts"
-#~ msgstr "gebruikte lettertypes"
-
-#~ msgid "created for"
-#~ msgstr "gemaakt voor"
-
-#~ msgid "release"
-#~ msgstr "uitgave"
-
-#~ msgid "size"
-#~ msgstr "grootte"
-
-#~ msgid "packager"
-#~ msgstr "verpakker"
-
-#~ msgid "build-host"
-#~ msgstr "build-host"
-
-#~ msgid "operating system"
-#~ msgstr "besturingssysteem"
-
-#~ msgid "dependency"
-#~ msgstr "afhankelijkheid"
-
-#~ msgid "resolution"
-#~ msgstr "resolutie"
-
-#~ msgid "category"
-#~ msgstr "categorie"
-
-#~ msgid "priority"
-#~ msgstr "prioriteit"
-
-#~ msgid "conflicts"
-#~ msgstr "conflicteert"
-
-#~ msgid "replaces"
-#~ msgstr "vervangt"
-
-#~ msgid "owner"
-#~ msgstr "eigenaar"
-
-#~ msgid "binary thumbnail data"
-#~ msgstr "binaire gegevens over miniatuur"
-
-#~ msgid "focal length (35mm equivalent)"
-#~ msgstr "brandpuntsafstand (35mm-equivalent)"
-
-#~ msgid "split"
-#~ msgstr "gesplitst"
-
-#~ msgid "thumbnails"
-#~ msgstr "miniaturen"
-
-#~ msgid "security"
-#~ msgstr "veiligheid"
-
-#~ msgid "scale"
-#~ msgstr "schaal"
-
-#~ msgid "information"
-#~ msgstr "informatie"
-
-#~ msgid "chapter"
-#~ msgstr "hoofdstuk"
-
-#~ msgid "year"
-#~ msgstr "jaar"
-
-#~ msgid "link"
-#~ msgstr "link"
-
-#~ msgid "music CD identifier"
-#~ msgstr "muziek CD-ID"
-
-#~ msgid "content type"
-#~ msgstr "inhoudssoort"
-
-#~ msgid "time"
-#~ msgstr "tijd"
-
-#~ msgid "hardware dependency"
-#~ msgstr "hardware-afhankelijkheid"
-
-#~ msgid "filesize"
-#~ msgstr "bestandsgrootte"
-
-#~ msgid "do not remove any duplicates"
-#~ msgstr "duplicaten niet verwijderen"
-
-#~ msgid "remove duplicates only if types match"
-#~ msgstr "duplicaten alleen verwijderen indien van hetzelfde type"
-
-#~ msgid "use the filename as a keyword (loads filename-extractor plugin)"
-#~ msgstr ""
-#~ "de bestandsnaam als sleutelwoord gebruiken (laadt de "
-#~ "bestandsnaamextractor-plugin)"
-
-#~ msgid "remove duplicates even if keyword types do not match"
-#~ msgstr "duplicaten verwijderen, ook als de sleutelwoordtypes verschillen"
-
-#~ msgid "use keyword splitting (loads split-extractor plugin)"
-#~ msgstr "sleutelwoordsplitsing gebruiken (laadt de splitextractor-plugin)"
-
-#~ msgid "INVALID TYPE - %s\n"
-#~ msgstr "ONGELDIG TYPE - %s\n"
-
-#~ msgid "lower case conversion"
-#~ msgstr "omzetting naar kleine letters"
-
-#~ msgid ""
-#~ "Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
-#~ "failed also.  Errors are: `%s' and `%s'.\n"
-#~ msgstr ""
-#~ "Het herleiden van symbool '%s' uit bibliotheek '%s' is mislukt;\n"
-#~ "het herleiden van '%s' mislukte ook.\n"
-#~ "De foutmeldingen waren: '%s' en '%s'.\n"
-
-#~ msgid "Unloading plugin `%s' failed!\n"
-#~ msgstr "Verwijderen van plugin '%s' is mislukt.\n"
+#~ msgid "copy"
+#~ msgstr "kopie"
 
 #~ msgid ""
 #~ "Please provide the name of the language you are building\n"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor-0.6.0\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2012-09-06 09:40+0200\n"
+"POT-Creation-Date: 2012-09-25 16:36+0200\n"
 "PO-Revision-Date: 2010-09-30 23:41+0200\n"
 "Last-Translator: Sergio Zanchetta <primes2h@ubuntu.com>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
@@ -89,55 +89,56 @@ msgstr ""
 msgid "Extract metadata from files."
 msgstr ""
 
-#: src/main/extract.c:284
+#: src/main/extract.c:288
 #, c-format
 msgid "Found by `%s' plugin:\n"
 msgstr ""
 
-#: src/main/extract.c:287 src/main/extract.c:368
-#: src/main/extractor_metatypes.c:145 src/main/extractor_print.c:82
+#: src/main/extract.c:291 src/main/extract.c:378
+#: src/main/extractor_metatypes.c:145 src/main/extractor_print.c:86
+#: src/main/extractor_print.c:96
 msgid "unknown"
 msgstr ""
 
-#: src/main/extract.c:292
+#: src/main/extract.c:296
 #, c-format
 msgid "%s - (unknown, %u bytes)\n"
 msgstr ""
 
-#: src/main/extract.c:317
+#: src/main/extract.c:325
 #, c-format
 msgid "%s - (binary, %u bytes)\n"
 msgstr "%s - (binario, %u bite)\n"
 
-#: src/main/extract.c:658 src/main/extract.c:668
+#: src/main/extract.c:672 src/main/extract.c:682
 #, c-format
 msgid ""
 "Illegal combination of options, cannot combine multiple styles of printing.\n"
 msgstr ""
 
-#: src/main/extract.c:698
+#: src/main/extract.c:712
 #, c-format
 msgid "You must specify an argument for the `%s' option (option ignored).\n"
 msgstr ""
 "Deve essere specificato un argomento per l'opzione \"%s\" (opzione "
 "ignorata).\n"
 
-#: src/main/extract.c:763
+#: src/main/extract.c:777
 #, c-format
 msgid "Use --help to get a list of options.\n"
 msgstr "Usare --help per ottenere un elenco di opzioni.\n"
 
-#: src/main/extract.c:801
+#: src/main/extract.c:815
 #, c-format
 msgid "%% BiBTeX file\n"
 msgstr "%% file BiBTeX\n"
 
-#: src/main/extract.c:809
+#: src/main/extract.c:823
 #, c-format
 msgid "Keywords for file %s:\n"
 msgstr ""
 
-#: src/main/extractor.c:673
+#: src/main/extractor.c:679
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr ""
@@ -1827,9 +1828,8 @@ msgid "video duration"
 msgstr "durata"
 
 #: src/main/extractor_metatypes.c:545
-#, fuzzy
 msgid "duration of a video stream"
-msgstr "lingua usata dal lavoro"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:546
 #, fuzzy
@@ -1837,19 +1837,17 @@ msgid "audio duration"
 msgstr "durata"
 
 #: src/main/extractor_metatypes.c:547
-#, fuzzy
 msgid "duration of an audio stream"
-msgstr "titolo del lavoro"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:548
 #, fuzzy
 msgid "subtitle duration"
-msgstr "lingua"
+msgstr "sublocazione"
 
 #: src/main/extractor_metatypes.c:549
-#, fuzzy
 msgid "duration of a subtitle stream"
-msgstr "nome dell'artista o del gruppo"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:551 src/main/extractor_metatypes.c:552
 msgid "last"
@@ -2045,55 +2043,6 @@ msgstr "mono"
 msgid "stereo"
 msgstr "stereo"
 
-#~ msgid "GB"
-#~ msgstr "GB"
-
-#~ msgid "MB"
-#~ msgstr "MB"
-
-#~ msgid "KB"
-#~ msgstr "KB"
-
-#~ msgid "Bytes"
-#~ msgstr "Byte"
-
-#, fuzzy
-#~ msgid "joint stereo"
-#~ msgstr "stereo"
-
-#~ msgid "MPEG-1"
-#~ msgstr "MPEG-1"
-
-#~ msgid "MPEG-2"
-#~ msgstr "MPEG-2"
-
-#~ msgid "MPEG-2.5"
-#~ msgstr "MPEG-2.5"
-
-#~ msgid "Layer I"
-#~ msgstr "Layer I"
-
-#~ msgid "Layer II"
-#~ msgstr "Layer II"
-
-#~ msgid "Layer III"
-#~ msgstr "Layer III"
-
-#~ msgid "VBR"
-#~ msgstr "VBR"
-
-#~ msgid "CBR"
-#~ msgstr "CBR"
-
-#~ msgid "no copyright"
-#~ msgstr "nessun copyright"
-
-#~ msgid "original"
-#~ msgstr "originale"
-
-#~ msgid "copy"
-#~ msgstr "copia"
-
 #~ msgid "Blues"
 #~ msgstr "Blues"
 
@@ -2148,10 +2097,6 @@ msgstr "stereo"
 #~ msgid "Techno"
 #~ msgstr "Techno"
 
-#, fuzzy
-#~ msgid "Industrial"
-#~ msgstr "Techno-Industrial"
-
 #~ msgid "Alternative"
 #~ msgstr "Alternative"
 
@@ -2191,10 +2136,6 @@ msgstr "stereo"
 #~ msgid "House"
 #~ msgstr "House"
 
-#, fuzzy
-#~ msgid "Game"
-#~ msgstr "Giochi"
-
 #~ msgid "Gospel"
 #~ msgstr "Gospel"
 
@@ -2207,20 +2148,8 @@ msgstr "stereo"
 #~ msgid "Punk"
 #~ msgstr "Punk"
 
-#, fuzzy
-#~ msgid "Instrumental Pop"
-#~ msgstr "Strumentale"
-
-#, fuzzy
-#~ msgid "Instrumental Rock"
-#~ msgstr "Strumentale"
-
 #~ msgid "Ethnic"
 #~ msgstr "Etnica"
-
-#, fuzzy
-#~ msgid "Gothic"
-#~ msgstr "Gothic Rock"
 
 #~ msgid "Darkwave"
 #~ msgstr "Darkwave"
@@ -2242,10 +2171,6 @@ msgstr "stereo"
 
 #~ msgid "Pop/Funk"
 #~ msgstr "Pop/Funk"
-
-#, fuzzy
-#~ msgid "New Wave"
-#~ msgstr "New Age"
 
 #~ msgid "Psychedelic"
 #~ msgstr "Psichedelica"
@@ -2283,10 +2208,6 @@ msgstr "stereo"
 #~ msgid "Swing"
 #~ msgstr "Swing"
 
-#, fuzzy
-#~ msgid "Fast-Fusion"
-#~ msgstr "Fusion"
-
 #~ msgid "Revival"
 #~ msgstr "Revival"
 
@@ -2311,19 +2232,11 @@ msgstr "stereo"
 #~ msgid "Symphonic Rock"
 #~ msgstr "Rock sinfonico"
 
-#, fuzzy
-#~ msgid "Slow Rock"
-#~ msgstr "Alternative rock"
-
 #~ msgid "Opera"
 #~ msgstr "Opera"
 
 #~ msgid "Chamber Music"
 #~ msgstr "Musica da camera"
-
-#, fuzzy
-#~ msgid "Symphony"
-#~ msgstr "Rock sinfonico"
 
 #~ msgid "Club"
 #~ msgstr "Club"
@@ -2334,16 +2247,8 @@ msgstr "stereo"
 #~ msgid "Samba"
 #~ msgstr "Samba"
 
-#, fuzzy
-#~ msgid "Folklore"
-#~ msgstr "Folk"
-
 #~ msgid "Punk Rock"
 #~ msgstr "Punk Rock"
-
-#, fuzzy
-#~ msgid "Euro-House"
-#~ msgstr "House"
 
 #~ msgid "Dance Hall"
 #~ msgstr "Dancehall"
@@ -2353,10 +2258,6 @@ msgstr "stereo"
 
 #~ msgid "Drum & Bass"
 #~ msgstr "Drum & Bass"
-
-#, fuzzy
-#~ msgid "Club-House"
-#~ msgstr "House"
 
 #~ msgid "Hardcore"
 #~ msgstr "Hardcore"
@@ -2379,22 +2280,56 @@ msgstr "stereo"
 #~ msgid "Crossover"
 #~ msgstr "Crossover"
 
-#, fuzzy
-#~ msgid "Christian Rock"
-#~ msgstr "Rock classico"
-
 #~ msgid "Merengue"
 #~ msgstr "Merengue"
 
 #~ msgid "Salsa"
 #~ msgstr "Salsa"
 
-#, fuzzy
-#~ msgid "Thrash Metal"
-#~ msgstr "Death metal"
-
 #~ msgid "Synthpop"
 #~ msgstr "Synthpop"
+
+#~ msgid "GB"
+#~ msgstr "GB"
+
+#~ msgid "MB"
+#~ msgstr "MB"
+
+#~ msgid "KB"
+#~ msgstr "KB"
+
+#~ msgid "Bytes"
+#~ msgstr "Byte"
+
+#~ msgid "MPEG-1"
+#~ msgstr "MPEG-1"
+
+#~ msgid "MPEG-2"
+#~ msgstr "MPEG-2"
+
+#~ msgid "MPEG-2.5"
+#~ msgstr "MPEG-2.5"
+
+#~ msgid "Layer I"
+#~ msgstr "Layer I"
+
+#~ msgid "Layer II"
+#~ msgstr "Layer II"
+
+#~ msgid "Layer III"
+#~ msgstr "Layer III"
+
+#~ msgid "VBR"
+#~ msgstr "VBR"
+
+#~ msgid "CBR"
+#~ msgstr "CBR"
+
+#~ msgid "no copyright"
+#~ msgstr "nessun copyright"
+
+#~ msgid "copy"
+#~ msgstr "copia"
 
 #~ msgid "%ux%u dots per inch"
 #~ msgstr "%ux%u punti per pollice"

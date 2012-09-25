@@ -1,3 +1,6 @@
+Tue Sep 25 16:25:05 CEST 2012
+        Releasing GNU libextractor 1.0.0. 
+
 Fri Aug 17 21:28:33 CEST 2012
     	Major changes to plugin mechanism now allow out-of-process
 	plugins full random-access to the entire file.  Most plugins

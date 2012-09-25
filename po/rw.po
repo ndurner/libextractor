@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.4.2\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2012-09-06 09:40+0200\n"
+"POT-Creation-Date: 2012-09-25 16:36+0200\n"
 "PO-Revision-Date: 2005-04-04 10:55-0700\n"
 "Last-Translator: Steven Michael Murphy <murf@e-tools.com>\n"
 "Language-Team: Kinyarwanda <translation-team-rw@lists.sourceforge.net>\n"
@@ -104,53 +104,54 @@ msgstr ""
 msgid "Extract metadata from files."
 msgstr "Bivuye Idosiye"
 
-#: src/main/extract.c:284
+#: src/main/extract.c:288
 #, fuzzy, c-format
 msgid "Found by `%s' plugin:\n"
 msgstr "Byanze"
 
-#: src/main/extract.c:287 src/main/extract.c:368
-#: src/main/extractor_metatypes.c:145 src/main/extractor_print.c:82
+#: src/main/extract.c:291 src/main/extract.c:378
+#: src/main/extractor_metatypes.c:145 src/main/extractor_print.c:86
+#: src/main/extractor_print.c:96
 msgid "unknown"
 msgstr "itazwi"
 
-#: src/main/extract.c:292
+#: src/main/extract.c:296
 #, c-format
 msgid "%s - (unknown, %u bytes)\n"
 msgstr ""
 
-#: src/main/extract.c:317
+#: src/main/extract.c:325
 #, fuzzy, c-format
 msgid "%s - (binary, %u bytes)\n"
 msgstr "%s-(Nyabibiri"
 
-#: src/main/extract.c:658 src/main/extract.c:668
+#: src/main/extract.c:672 src/main/extract.c:682
 #, c-format
 msgid ""
 "Illegal combination of options, cannot combine multiple styles of printing.\n"
 msgstr ""
 
-#: src/main/extract.c:698
+#: src/main/extract.c:712
 #, fuzzy, c-format
 msgid "You must specify an argument for the `%s' option (option ignored).\n"
 msgstr "kugirango i Ihitamo Ihitamo"
 
-#: src/main/extract.c:763
+#: src/main/extract.c:777
 #, fuzzy, c-format
 msgid "Use --help to get a list of options.\n"
 msgstr "Ifashayobora Kuri Kubona a Urutonde Bya Amahitamo"
 
-#: src/main/extract.c:801
+#: src/main/extract.c:815
 #, c-format
 msgid "%% BiBTeX file\n"
 msgstr ""
 
-#: src/main/extract.c:809
+#: src/main/extract.c:823
 #, fuzzy, c-format
 msgid "Keywords for file %s:\n"
 msgstr "kugirango IDOSIYE"
 
-#: src/main/extractor.c:673
+#: src/main/extractor.c:679
 #, fuzzy, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "Bya Byanze"

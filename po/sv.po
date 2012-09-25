@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.5.22\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2012-09-06 09:40+0200\n"
+"POT-Creation-Date: 2012-09-25 16:36+0200\n"
 "PO-Revision-Date: 2009-05-12 17:45+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
@@ -91,53 +91,54 @@ msgstr "extract [FLAGGOR] [FILNAMN]*"
 msgid "Extract metadata from files."
 msgstr "Extrahera metadata från filer."
 
-#: src/main/extract.c:284
+#: src/main/extract.c:288
 #, fuzzy, c-format
 msgid "Found by `%s' plugin:\n"
 msgstr "Inläsning av instick \"%s\" misslyckades: %s\n"
 
-#: src/main/extract.c:287 src/main/extract.c:368
-#: src/main/extractor_metatypes.c:145 src/main/extractor_print.c:82
+#: src/main/extract.c:291 src/main/extract.c:378
+#: src/main/extractor_metatypes.c:145 src/main/extractor_print.c:86
+#: src/main/extractor_print.c:96
 msgid "unknown"
 msgstr "okänd"
 
-#: src/main/extract.c:292
+#: src/main/extract.c:296
 #, c-format
 msgid "%s - (unknown, %u bytes)\n"
 msgstr ""
 
-#: src/main/extract.c:317
+#: src/main/extract.c:325
 #, fuzzy, c-format
 msgid "%s - (binary, %u bytes)\n"
 msgstr "%s - (binär)\n"
 
-#: src/main/extract.c:658 src/main/extract.c:668
+#: src/main/extract.c:672 src/main/extract.c:682
 #, c-format
 msgid ""
 "Illegal combination of options, cannot combine multiple styles of printing.\n"
 msgstr ""
 
-#: src/main/extract.c:698
+#: src/main/extract.c:712
 #, c-format
 msgid "You must specify an argument for the `%s' option (option ignored).\n"
 msgstr "Du måste ange ett argument för flaggan \"%s\" (flagga ignoreras).\n"
 
-#: src/main/extract.c:763
+#: src/main/extract.c:777
 #, c-format
 msgid "Use --help to get a list of options.\n"
 msgstr "Använd --help för att få en lista på flaggor.\n"
 
-#: src/main/extract.c:801
+#: src/main/extract.c:815
 #, c-format
 msgid "%% BiBTeX file\n"
 msgstr "%% BiBTeX-fil\n"
 
-#: src/main/extract.c:809
+#: src/main/extract.c:823
 #, c-format
 msgid "Keywords for file %s:\n"
 msgstr "Nyckelord för filen %s:\n"
 
-#: src/main/extractor.c:673
+#: src/main/extractor.c:679
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "Initiering av insticksmekanism misslyckades: %s!\n"
@@ -483,9 +484,8 @@ msgid "GPS longitude"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:136
-#, fuzzy
 msgid "city"
-msgstr "säkerhet"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:137
 msgid "name of the city where the document originated"
@@ -784,9 +784,8 @@ msgid "packages suggested for installation in conjunction with this package"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:219
-#, fuzzy
 msgid "maintainer"
-msgstr "ansvarig"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:220
 msgid "name of the maintainer"
@@ -1054,9 +1053,8 @@ msgid "paragraph count"
 msgstr "antal stycken"
 
 #: src/main/extractor_metatypes.c:311
-#, fuzzy
 msgid "number of paragraphs"
-msgstr "redigeringscykler"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:313
 msgid "word count"
@@ -1073,7 +1071,7 @@ msgstr "teckenantal"
 #: src/main/extractor_metatypes.c:316
 #, fuzzy
 msgid "number of characters"
-msgstr "redigeringscykler"
+msgstr "teckenuppsättning"
 
 #: src/main/extractor_metatypes.c:317 src/main/extractor_metatypes.c:318
 msgid "page orientation"
@@ -1118,18 +1116,16 @@ msgid "album"
 msgstr "album"
 
 #: src/main/extractor_metatypes.c:333
-#, fuzzy
 msgid "name of the album"
-msgstr "publicerad av"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:335
 msgid "artist"
 msgstr "artist"
 
 #: src/main/extractor_metatypes.c:336
-#, fuzzy
 msgid "name of the artist or band"
-msgstr "publicerad av"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:337 src/main/extractor_metatypes.c:338
 msgid "genre"
@@ -1153,9 +1149,8 @@ msgid "number of the disk in a multi-disk (or volume) distribution"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:343
-#, fuzzy
 msgid "performer"
-msgstr "sidordning"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:344
 msgid ""
@@ -1266,9 +1261,8 @@ msgid "order of the pages"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:372
-#, fuzzy
 msgid "writer"
-msgstr "rippare"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:373
 #, fuzzy
@@ -1294,14 +1288,12 @@ msgid "movie director"
 msgstr "regissör"
 
 #: src/main/extractor_metatypes.c:380
-#, fuzzy
 msgid "name of the director"
-msgstr "publicerad av"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:381
-#, fuzzy
 msgid "network"
-msgstr "skapare"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:382
 msgid "name of the broadcasting network or station"
@@ -1312,37 +1304,33 @@ msgid "show"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:384
-#, fuzzy
 msgid "name of the show"
-msgstr "publicerad av"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:385
 #, fuzzy
 msgid "chapter name"
-msgstr "spårnummer"
+msgstr "kapitel"
 
 #: src/main/extractor_metatypes.c:386
-#, fuzzy
 msgid "name of the chapter"
-msgstr "publicerad av"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:387
 msgid "song count"
 msgstr "låtantal"
 
 #: src/main/extractor_metatypes.c:388
-#, fuzzy
 msgid "number of songs"
-msgstr "redigeringscykler"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:390
 msgid "starting song"
 msgstr "startlåt"
 
 #: src/main/extractor_metatypes.c:391
-#, fuzzy
 msgid "number of the first song to play"
-msgstr "redigeringscykler"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:392
 msgid "play counter"
@@ -1357,10 +1345,11 @@ msgstr ""
 msgid "conductor"
 msgstr "dirigent"
 
+# Osäker!
 #: src/main/extractor_metatypes.c:395
 #, fuzzy
 msgid "name of the conductor"
-msgstr "publicerad av"
+msgstr "dirigent"
 
 #: src/main/extractor_metatypes.c:396
 #, fuzzy
@@ -1377,14 +1366,12 @@ msgid "composer"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:399
-#, fuzzy
 msgid "name of the composer"
-msgstr "publicerad av"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:401 src/main/extractor_metatypes.c:402
-#, fuzzy
 msgid "beats per minute"
-msgstr "senast utskriven"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:403
 msgid "encoded by"
@@ -1409,9 +1396,8 @@ msgid "original artist"
 msgstr "original"
 
 #: src/main/extractor_metatypes.c:408
-#, fuzzy
 msgid "name of the original artist"
-msgstr "publicerad av"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:409
 #, fuzzy
@@ -1453,9 +1439,8 @@ msgid "popularity"
 msgstr "popularitetsmätare"
 
 #: src/main/extractor_metatypes.c:419
-#, fuzzy
 msgid "information about the file's popularity"
-msgstr "information"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:420
 #, fuzzy
@@ -1537,24 +1522,22 @@ msgid "group"
 msgstr "grupp"
 
 #: src/main/extractor_metatypes.c:443
-#, fuzzy
 msgid "name of the group or band"
-msgstr "publicerad av"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:445
 #, fuzzy
 msgid "original filename"
-msgstr "original"
+msgstr "filnamn"
 
 #: src/main/extractor_metatypes.c:446
-#, fuzzy
 msgid "name of the original file (reserved for GNUnet)"
-msgstr "publicerad av"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:447
 #, fuzzy
 msgid "disc count"
-msgstr "radantal"
+msgstr "antal ord"
 
 #: src/main/extractor_metatypes.c:448
 msgid "count of discs inside collection this disc belongs to"
@@ -1585,9 +1568,8 @@ msgid "codec the audio data is stored in"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:456
-#, fuzzy
 msgid "subtitle codec"
-msgstr "titel"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:457
 msgid "codec/format the subtitle data is stored in"
@@ -1610,9 +1592,8 @@ msgid "exact or average bitrate in bits/s"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:462
-#, fuzzy
 msgid "nominal bitrate"
-msgstr "original"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:463
 msgid ""
@@ -1642,9 +1623,8 @@ msgid "serial"
 msgstr "Industriell"
 
 #: src/main/extractor_metatypes.c:470
-#, fuzzy
 msgid "serial number of track"
-msgstr "redigeringscykler"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:471
 #, fuzzy
@@ -1679,9 +1659,8 @@ msgid "track peak"
 msgstr "spårnummer"
 
 #: src/main/extractor_metatypes.c:479
-#, fuzzy
 msgid "peak of the track"
-msgstr "publicerad av"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:480
 #, fuzzy
@@ -1698,9 +1677,8 @@ msgid "album peak"
 msgstr "album"
 
 #: src/main/extractor_metatypes.c:483
-#, fuzzy
 msgid "peak of the album"
-msgstr "publicerad av"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:484
 msgid "reference level"
@@ -1741,9 +1719,8 @@ msgid "represents the expected error on the horizontal positioning in meters"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:493
-#, fuzzy
 msgid "location movement speed"
-msgstr "publiceringsdatum"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:494
 msgid ""
@@ -1775,7 +1752,7 @@ msgstr ""
 #: src/main/extractor_metatypes.c:500
 #, fuzzy
 msgid "show episode number"
-msgstr "skriv ut versionsnummer"
+msgstr "skivnummer"
 
 #: src/main/extractor_metatypes.c:501
 msgid "number of the episode within a season/show"
@@ -1787,9 +1764,8 @@ msgid "show season number"
 msgstr "skriv ut versionsnummer"
 
 #: src/main/extractor_metatypes.c:503
-#, fuzzy
 msgid "number of the season of a show/series"
-msgstr "redigeringscykler"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:504
 #, fuzzy
@@ -1825,9 +1801,8 @@ msgid "audio language"
 msgstr "språk"
 
 #: src/main/extractor_metatypes.c:512
-#, fuzzy
 msgid "language of the audio track"
-msgstr "publicerad av"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:513
 #, fuzzy
@@ -1835,18 +1810,16 @@ msgid "channels"
 msgstr "dual channel"
 
 #: src/main/extractor_metatypes.c:514
-#, fuzzy
 msgid "number of audio channels"
-msgstr "redigeringscykler"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:515
 msgid "sample rate"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:516
-#, fuzzy
 msgid "sample rate of the audio track"
-msgstr "publicerad av"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:517
 msgid "audio depth"
@@ -1861,18 +1834,16 @@ msgid "audio bitrate"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:520
-#, fuzzy
 msgid "bitrate of the audio track"
-msgstr "publicerad av"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:522 src/main/extractor_metatypes.c:523
 msgid "maximum audio bitrate"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:524
-#, fuzzy
 msgid "video dimensions"
-msgstr "sidorientering"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:525
 msgid "width and height of the video track (WxH)"
@@ -1887,9 +1858,8 @@ msgid "numbers of bits per pixel"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:528
-#, fuzzy
 msgid "frame rate"
-msgstr "sidordning"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:529
 msgid "number of frames per second (as D/N or floating point)"
@@ -1917,9 +1887,8 @@ msgid "subtitle language"
 msgstr "språk"
 
 #: src/main/extractor_metatypes.c:538
-#, fuzzy
 msgid "language of the subtitle track"
-msgstr "publicerad av"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:539
 #, fuzzy
@@ -1927,9 +1896,8 @@ msgid "video language"
 msgstr "språk"
 
 #: src/main/extractor_metatypes.c:540
-#, fuzzy
 msgid "language of the video track"
-msgstr "publicerad av"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:541
 msgid "table of contents"
@@ -1946,9 +1914,8 @@ msgid "video duration"
 msgstr "speltid"
 
 #: src/main/extractor_metatypes.c:545
-#, fuzzy
 msgid "duration of a video stream"
-msgstr "publicerad av"
+msgstr ""
 
 # Detta rör sig om film och musik annars skulle det vara Varaktighet
 #: src/main/extractor_metatypes.c:546
@@ -1957,24 +1924,22 @@ msgid "audio duration"
 msgstr "speltid"
 
 #: src/main/extractor_metatypes.c:547
-#, fuzzy
 msgid "duration of an audio stream"
-msgstr "publicerad av"
+msgstr ""
 
+# Detta rör sig om film och musik annars skulle det vara Varaktighet
 #: src/main/extractor_metatypes.c:548
 #, fuzzy
 msgid "subtitle duration"
-msgstr "språk"
+msgstr "speltid"
 
 #: src/main/extractor_metatypes.c:549
-#, fuzzy
 msgid "duration of a subtitle stream"
-msgstr "publicerad av"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:551 src/main/extractor_metatypes.c:552
-#, fuzzy
 msgid "last"
-msgstr "blixt"
+msgstr ""
 
 #: src/main/getopt.c:684
 #, c-format
@@ -2167,6 +2132,116 @@ msgstr "mono"
 msgid "stereo"
 msgstr "stereo"
 
+#~ msgid "do not remove any duplicates"
+#~ msgstr "ta inte bort några dubbletter"
+
+#~ msgid ""
+#~ "use the generic plaintext extractor for the language with the 2-letter "
+#~ "language code LANG"
+#~ msgstr ""
+#~ "använd den generiska klartextuppackaren för språket med 2-bokstavskoden i "
+#~ "LANG"
+
+#~ msgid "remove duplicates only if types match"
+#~ msgstr "ta bort dubbletter endast om typen stämmer"
+
+#~ msgid "use the filename as a keyword (loads filename-extractor plugin)"
+#~ msgstr ""
+#~ "använd filnamnet som ett nyckelord (läser in insticket filename-extractor)"
+
+#~ msgid "compute hash using the given ALGORITHM (currently sha1 or md5)"
+#~ msgstr "beräkna hash med angiven ALGORITM (för närvarande sha1 eller md5)"
+
+#~ msgid "remove duplicates even if keyword types do not match"
+#~ msgstr "ta bort dubbletter även om nyckelordstyp inte stämmer"
+
+#~ msgid "use keyword splitting (loads split-extractor plugin)"
+#~ msgstr "använd delning av nyckelord (läser in insticket split-extractor)"
+
+#~ msgid "INVALID TYPE - %s\n"
+#~ msgstr "OGILTIG TYP - %s\n"
+
+#~ msgid "date"
+#~ msgstr "datum"
+
+#~ msgid "relation"
+#~ msgstr "relation"
+
+#~ msgid "coverage"
+#~ msgstr "täckning"
+
+#~ msgid "translated"
+#~ msgstr "översatt"
+
+#~ msgid "used fonts"
+#~ msgstr "använda typsnitt"
+
+#~ msgid "created for"
+#~ msgstr "skapad för"
+
+#~ msgid "release"
+#~ msgstr "utgåva"
+
+#~ msgid "size"
+#~ msgstr "storlek"
+
+#~ msgid "category"
+#~ msgstr "kategori"
+
+#~ msgid "owner"
+#~ msgstr "ägare"
+
+# Förslag på bättre önskas
+#~ msgid "binary thumbnail data"
+#~ msgstr "binär miniatyrbilddata"
+
+#~ msgid "focal length (35mm equivalent)"
+#~ msgstr "brännvidd (35mm motsvarande)"
+
+# Hjälp! En grovgissning.
+#~ msgid "split"
+#~ msgstr "delning"
+
+#~ msgid "security"
+#~ msgstr "säkerhet"
+
+#~ msgid "lower case conversion"
+#~ msgstr "gemenkonvertering"
+
+#~ msgid "generator"
+#~ msgstr "skapare"
+
+#~ msgid "scale"
+#~ msgstr "skala"
+
+#~ msgid "year"
+#~ msgstr "år"
+
+#~ msgid "link"
+#~ msgstr "länk"
+
+#~ msgid "music CD identifier"
+#~ msgstr "Identifierare för musik-cd"
+
+#~ msgid "time"
+#~ msgstr "tid"
+
+#~ msgid "preferred display style (GNUnet)"
+#~ msgstr "föredragen visningsstil (GNUnet)"
+
+#~ msgid "GNUnet URI of ECBC data"
+#~ msgstr "GNUnet-URI för ECBC-data"
+
+#~ msgid ""
+#~ "Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
+#~ "failed also.  Errors are: `%s' and `%s'.\n"
+#~ msgstr ""
+#~ "Uppslag av symbol \"%s\" i bibliotek \"%s\" misslyckades så jag försökte "
+#~ "med \"%s\" men det misslyckades också.  Felen är: \"%s\" och \"%s\".\n"
+
+#~ msgid "Unloading plugin `%s' failed!\n"
+#~ msgstr "Urläsning av instick \"%s\" misslyckades!\n"
+
 #~ msgid "GB"
 #~ msgstr "GB"
 
@@ -2179,56 +2254,17 @@ msgstr "stereo"
 #~ msgid "Bytes"
 #~ msgstr "Byte"
 
-#~ msgid "joint stereo"
-#~ msgstr "joint stereo"
+#~ msgid "%ux%u dots per cm"
+#~ msgstr "%u×%u punkter per cm"
 
-#, fuzzy
-#~ msgid "dual channel"
-#~ msgstr "dual channel"
-
-#~ msgid "MPEG-1"
-#~ msgstr "MPEG-1"
-
-#~ msgid "MPEG-2"
-#~ msgstr "MPEG-2"
-
-#~ msgid "MPEG-2.5"
-#~ msgstr "MPEG-2.5"
-
-#~ msgid "Layer I"
-#~ msgstr "Layer I"
-
-#~ msgid "Layer II"
-#~ msgstr "Layer II"
-
-#~ msgid "Layer III"
-#~ msgstr "Layer III"
-
-#~ msgid "VBR"
-#~ msgstr "VBR"
-
-#~ msgid "CBR"
-#~ msgstr "CBR"
-
-#~ msgid "no copyright"
-#~ msgstr "ingen copyright"
-
-#, fuzzy
-#~ msgid "original"
-#~ msgstr "original"
-
-#~ msgid "copy"
-#~ msgstr "kopia"
+#~ msgid "%ux%u dots per inch?"
+#~ msgstr "%u×%u punkter per tum?"
 
 #~ msgid "Blues"
 #~ msgstr "Blues"
 
 #~ msgid "Classic Rock"
 #~ msgstr "Klassisk rock"
-
-#, fuzzy
-#~ msgid "Country"
-#~ msgstr "Country"
 
 #~ msgid "Dance"
 #~ msgstr "Dans"
@@ -2277,10 +2313,6 @@ msgstr "stereo"
 
 #~ msgid "Techno"
 #~ msgstr "Techno"
-
-#, fuzzy
-#~ msgid "Industrial"
-#~ msgstr "Techno-Industrial"
 
 #~ msgid "Alternative"
 #~ msgstr "Alternativ"
@@ -2480,10 +2512,6 @@ msgstr "stereo"
 #~ msgid "Bebob"
 #~ msgstr "Bebob"
 
-#, fuzzy
-#~ msgid "Latin"
-#~ msgstr "Latin"
-
 #~ msgid "Revival"
 #~ msgstr "Revival"
 
@@ -2667,180 +2695,38 @@ msgstr "stereo"
 #~ msgid "Synthpop"
 #~ msgstr "Synthpop"
 
-#, fuzzy
-#~ msgid "%ux%u dots per inch"
-#~ msgstr "%u×%u punkter per tum?"
+#~ msgid "joint stereo"
+#~ msgstr "joint stereo"
 
-#~ msgid "%ux%u dots per cm"
-#~ msgstr "%u×%u punkter per cm"
+#~ msgid "MPEG-1"
+#~ msgstr "MPEG-1"
 
-#~ msgid "%ux%u dots per inch?"
-#~ msgstr "%u×%u punkter per tum?"
+#~ msgid "MPEG-2"
+#~ msgstr "MPEG-2"
 
-#~ msgid "compute hash using the given ALGORITHM (currently sha1 or md5)"
-#~ msgstr "beräkna hash med angiven ALGORITM (för närvarande sha1 eller md5)"
+#~ msgid "MPEG-2.5"
+#~ msgstr "MPEG-2.5"
 
-#~ msgid ""
-#~ "use the generic plaintext extractor for the language with the 2-letter "
-#~ "language code LANG"
-#~ msgstr ""
-#~ "använd den generiska klartextuppackaren för språket med 2-bokstavskoden i "
-#~ "LANG"
+#~ msgid "Layer I"
+#~ msgstr "Layer I"
 
-#, fuzzy
-#~ msgid "copyright information"
-#~ msgstr "information"
+#~ msgid "Layer II"
+#~ msgstr "Layer II"
 
-#~ msgid "author"
-#~ msgstr "upphovsman"
+#~ msgid "Layer III"
+#~ msgstr "Layer III"
 
-#~ msgid "date"
-#~ msgstr "datum"
+#~ msgid "VBR"
+#~ msgstr "VBR"
 
-#~ msgid "resource-type"
-#~ msgstr "resurstyp"
+#~ msgid "CBR"
+#~ msgstr "CBR"
 
-#~ msgid "resource-identifier"
-#~ msgstr "resursidentifierare"
+#~ msgid "no copyright"
+#~ msgstr "ingen copyright"
 
-#~ msgid "relation"
-#~ msgstr "relation"
-
-#~ msgid "coverage"
-#~ msgstr "täckning"
-
-#~ msgid "software"
-#~ msgstr "programvara"
-
-#~ msgid "translated"
-#~ msgstr "översatt"
-
-#~ msgid "used fonts"
-#~ msgstr "använda typsnitt"
-
-#~ msgid "created for"
-#~ msgstr "skapad för"
-
-#~ msgid "release"
-#~ msgstr "utgåva"
-
-#~ msgid "size"
-#~ msgstr "storlek"
-
-#~ msgid "packager"
-#~ msgstr "paketerare"
-
-#~ msgid "build-host"
-#~ msgstr "byggd på"
-
-#~ msgid "operating system"
-#~ msgstr "operativsystem"
-
-#~ msgid "dependency"
-#~ msgstr "beroende av"
-
-#~ msgid "resolution"
-#~ msgstr "upplösning"
-
-#~ msgid "category"
-#~ msgstr "kategori"
-
-#~ msgid "priority"
-#~ msgstr "prioritet"
-
-#~ msgid "conflicts"
-#~ msgstr "konflikt med"
-
-#~ msgid "replaces"
-#~ msgstr "ersätter"
-
-#~ msgid "owner"
-#~ msgstr "ägare"
-
-# Förslag på bättre önskas
-#~ msgid "binary thumbnail data"
-#~ msgstr "binär miniatyrbilddata"
-
-#~ msgid "focal length (35mm equivalent)"
-#~ msgstr "brännvidd (35mm motsvarande)"
-
-# Hjälp! En grovgissning.
-#~ msgid "split"
-#~ msgstr "delning"
-
-#~ msgid "thumbnails"
-#~ msgstr "miniatyrbilder"
-
-#~ msgid "security"
-#~ msgstr "säkerhet"
-
-#~ msgid "scale"
-#~ msgstr "skala"
-
-#~ msgid "information"
-#~ msgstr "information"
-
-#~ msgid "chapter"
-#~ msgstr "kapitel"
-
-#~ msgid "year"
-#~ msgstr "år"
-
-#~ msgid "link"
-#~ msgstr "länk"
-
-#~ msgid "music CD identifier"
-#~ msgstr "Identifierare för musik-cd"
-
-#~ msgid "content type"
-#~ msgstr "innehållstyp"
-
-#~ msgid "time"
-#~ msgstr "tid"
-
-#~ msgid "hardware dependency"
-#~ msgstr "hårdvaruberoende"
-
-#~ msgid "filesize"
-#~ msgstr "filstorlek"
-
-#~ msgid "preferred display style (GNUnet)"
-#~ msgstr "föredragen visningsstil (GNUnet)"
-
-#~ msgid "GNUnet URI of ECBC data"
-#~ msgstr "GNUnet-URI för ECBC-data"
-
-#~ msgid "do not remove any duplicates"
-#~ msgstr "ta inte bort några dubbletter"
-
-#~ msgid "remove duplicates only if types match"
-#~ msgstr "ta bort dubbletter endast om typen stämmer"
-
-#~ msgid "use the filename as a keyword (loads filename-extractor plugin)"
-#~ msgstr ""
-#~ "använd filnamnet som ett nyckelord (läser in insticket filename-extractor)"
-
-#~ msgid "remove duplicates even if keyword types do not match"
-#~ msgstr "ta bort dubbletter även om nyckelordstyp inte stämmer"
-
-#~ msgid "use keyword splitting (loads split-extractor plugin)"
-#~ msgstr "använd delning av nyckelord (läser in insticket split-extractor)"
-
-#~ msgid "INVALID TYPE - %s\n"
-#~ msgstr "OGILTIG TYP - %s\n"
-
-#~ msgid "lower case conversion"
-#~ msgstr "gemenkonvertering"
-
-#~ msgid ""
-#~ "Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
-#~ "failed also.  Errors are: `%s' and `%s'.\n"
-#~ msgstr ""
-#~ "Uppslag av symbol \"%s\" i bibliotek \"%s\" misslyckades så jag försökte "
-#~ "med \"%s\" men det misslyckades också.  Felen är: \"%s\" och \"%s\".\n"
-
-#~ msgid "Unloading plugin `%s' failed!\n"
-#~ msgstr "Urläsning av instick \"%s\" misslyckades!\n"
+#~ msgid "copy"
+#~ msgstr "kopia"
 
 #~ msgid ""
 #~ "Please provide the name of the language you are building\n"

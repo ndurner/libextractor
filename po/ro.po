@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.5.3\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2012-09-06 09:40+0200\n"
+"POT-Creation-Date: 2012-09-25 16:36+0200\n"
 "PO-Revision-Date: 2005-08-16 12:00-0500\n"
 "Last-Translator: Laurentiu Buzdugan <lbuz@rolix.org>\n"
 "Language-Team: Romanian <translation-team-ro@lists.sourceforge.net>\n"
@@ -96,54 +96,55 @@ msgstr "extract [OPÞIUNI] [NUME_FIªIER]*"
 msgid "Extract metadata from files."
 msgstr "Extrage metadata din fiºiere."
 
-#: src/main/extract.c:284
-#, fuzzy, c-format
+#: src/main/extract.c:288
+#, c-format
 msgid "Found by `%s' plugin:\n"
-msgstr "Încãrcarea plugin-ului '%s' a eºuat: %s\n"
+msgstr ""
 
-#: src/main/extract.c:287 src/main/extract.c:368
-#: src/main/extractor_metatypes.c:145 src/main/extractor_print.c:82
+#: src/main/extract.c:291 src/main/extract.c:378
+#: src/main/extractor_metatypes.c:145 src/main/extractor_print.c:86
+#: src/main/extractor_print.c:96
 msgid "unknown"
 msgstr "necunoscut"
 
-#: src/main/extract.c:292
+#: src/main/extract.c:296
 #, c-format
 msgid "%s - (unknown, %u bytes)\n"
 msgstr ""
 
-#: src/main/extract.c:317
+#: src/main/extract.c:325
 #, fuzzy, c-format
 msgid "%s - (binary, %u bytes)\n"
 msgstr "%s - (binar)\n"
 
-#: src/main/extract.c:658 src/main/extract.c:668
+#: src/main/extract.c:672 src/main/extract.c:682
 #, c-format
 msgid ""
 "Illegal combination of options, cannot combine multiple styles of printing.\n"
 msgstr ""
 
-#: src/main/extract.c:698
+#: src/main/extract.c:712
 #, fuzzy, c-format
 msgid "You must specify an argument for the `%s' option (option ignored).\n"
 msgstr ""
 "Trebuie sã specificaþi un argument pentru opþiunea '%s' (opþiune ignoratã).\n"
 
-#: src/main/extract.c:763
+#: src/main/extract.c:777
 #, c-format
 msgid "Use --help to get a list of options.\n"
 msgstr "Folosiþi --help pentru a obþine o listã de opþiuni.\n"
 
-#: src/main/extract.c:801
+#: src/main/extract.c:815
 #, c-format
 msgid "%% BiBTeX file\n"
 msgstr "%% BiBTeX file\n"
 
-#: src/main/extract.c:809
+#: src/main/extract.c:823
 #, c-format
 msgid "Keywords for file %s:\n"
 msgstr "Cuvinte cheie pentru fiºier %s:\n"
 
-#: src/main/extractor.c:673
+#: src/main/extractor.c:679
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "iniþializare mecanismului de plugin a eºuat: %s!\n"
@@ -210,17 +211,16 @@ msgstr ""
 #: src/main/extractor_metatypes.c:61
 #, fuzzy
 msgid "book chapter"
-msgstr "categorie"
+msgstr "titlu de carte"
 
 #: src/main/extractor_metatypes.c:62
 #, fuzzy
 msgid "chapter number"
-msgstr "categorie"
+msgstr "Numãr de fiºier incorect"
 
 #: src/main/extractor_metatypes.c:63
-#, fuzzy
 msgid "journal name"
-msgstr "nume_fiºier"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:64
 msgid "journal or magazine the work was published in"
@@ -235,8 +235,9 @@ msgid "volume of a journal or multi-volume book"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:68
+#, fuzzy
 msgid "journal number"
-msgstr ""
+msgstr "Numãr de fiºier incorect"
 
 #: src/main/extractor_metatypes.c:69
 msgid "number of a journal, magazine or tech-report"
@@ -543,9 +544,8 @@ msgid "rights"
 msgstr "copyright"
 
 #: src/main/extractor_metatypes.c:152
-#, fuzzy
 msgid "information about rights"
-msgstr "format"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:153 src/main/extractor_metatypes.c:154
 msgid "keywords"
@@ -678,9 +678,8 @@ msgid "information about the revision history"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:191
-#, fuzzy
 msgid "embedded file size"
-msgstr "mãrime"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:192
 msgid "size of the contents of the container as embedded in the file"
@@ -788,18 +787,16 @@ msgid "packages suggested for installation in conjunction with this package"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:219
-#, fuzzy
 msgid "maintainer"
-msgstr "limbã"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:220
 msgid "name of the maintainer"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:222
-#, fuzzy
 msgid "installed size"
-msgstr "mãrime"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:223
 msgid "space consumption after installation"
@@ -1006,9 +1003,8 @@ msgid "size of the image in pixels (width times height)"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:294 src/main/extractor_metatypes.c:295
-#, fuzzy
 msgid "produced by software"
-msgstr "creat pentru"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:299
 #, fuzzy
@@ -1038,9 +1034,8 @@ msgid "character set"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:307
-#, fuzzy
 msgid "character encoding used"
-msgstr "numãr de pagini"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:308
 #, fuzzy
@@ -1058,9 +1053,8 @@ msgid "paragraph count"
 msgstr "numãr de pagini"
 
 #: src/main/extractor_metatypes.c:311
-#, fuzzy
 msgid "number of paragraphs"
-msgstr "Numãr legãturi în afara domeniului"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:313
 #, fuzzy
@@ -1077,9 +1071,8 @@ msgid "character count"
 msgstr "numãr de pagini"
 
 #: src/main/extractor_metatypes.c:316
-#, fuzzy
 msgid "number of characters"
-msgstr "Numãr legãturi în afara domeniului"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:317 src/main/extractor_metatypes.c:318
 msgid "page orientation"
@@ -1090,9 +1083,8 @@ msgid "paper size"
 msgstr "dimensiune pagina"
 
 #: src/main/extractor_metatypes.c:321
-#, fuzzy
 msgid "template"
-msgstr "înlocuieºte"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:322
 msgid "template the document uses or is based on"
@@ -1105,7 +1097,7 @@ msgstr ""
 #: src/main/extractor_metatypes.c:326 src/main/extractor_metatypes.c:327
 #, fuzzy
 msgid "manager"
-msgstr "limbã"
+msgstr "împachetator"
 
 #: src/main/extractor_metatypes.c:328 src/main/extractor_metatypes.c:329
 #, fuzzy
@@ -1126,18 +1118,16 @@ msgid "album"
 msgstr "album"
 
 #: src/main/extractor_metatypes.c:333
-#, fuzzy
 msgid "name of the album"
-msgstr "publicist"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:335
 msgid "artist"
 msgstr "artist"
 
 #: src/main/extractor_metatypes.c:336
-#, fuzzy
 msgid "name of the artist or band"
-msgstr "publicist"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:337 src/main/extractor_metatypes.c:338
 msgid "genre"
@@ -1161,9 +1151,8 @@ msgid "number of the disk in a multi-disk (or volume) distribution"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:343
-#, fuzzy
 msgid "performer"
-msgstr "ordine pagini"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:344
 msgid ""
@@ -1273,9 +1262,8 @@ msgid "order of the pages"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:372
-#, fuzzy
 msgid "writer"
-msgstr "Trailer"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:373
 #, fuzzy
@@ -1299,17 +1287,16 @@ msgstr "contribuitor"
 #: src/main/extractor_metatypes.c:379
 #, fuzzy
 msgid "movie director"
-msgstr "Este un director"
+msgstr "Nu este un director"
 
 #: src/main/extractor_metatypes.c:380
 #, fuzzy
 msgid "name of the director"
-msgstr "publicist"
+msgstr "Nu este un director"
 
 #: src/main/extractor_metatypes.c:381
-#, fuzzy
 msgid "network"
-msgstr "creator"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:382
 msgid "name of the broadcasting network or station"
@@ -1320,19 +1307,16 @@ msgid "show"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:384
-#, fuzzy
 msgid "name of the show"
-msgstr "publicist"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:385
-#, fuzzy
 msgid "chapter name"
-msgstr "categorie"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:386
-#, fuzzy
 msgid "name of the chapter"
-msgstr "publicist"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:387
 #, fuzzy
@@ -1368,7 +1352,7 @@ msgstr "conducãtor"
 #: src/main/extractor_metatypes.c:395
 #, fuzzy
 msgid "name of the conductor"
-msgstr "publicist"
+msgstr "conducãtor"
 
 #: src/main/extractor_metatypes.c:396
 #, fuzzy
@@ -1385,9 +1369,8 @@ msgid "composer"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:399
-#, fuzzy
 msgid "name of the composer"
-msgstr "publicist"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:401 src/main/extractor_metatypes.c:402
 msgid "beats per minute"
@@ -1414,9 +1397,8 @@ msgid "original artist"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:408
-#, fuzzy
 msgid "name of the original artist"
-msgstr "publicist"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:409
 msgid "original writer"
@@ -1456,9 +1438,8 @@ msgid "popularity"
 msgstr "prioritate"
 
 #: src/main/extractor_metatypes.c:419
-#, fuzzy
 msgid "information about the file's popularity"
-msgstr "format"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:420
 #, fuzzy
@@ -1478,9 +1459,8 @@ msgid "names of contributing musicians"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:425
-#, fuzzy
 msgid "mood"
-msgstr "mono"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:426
 msgid "keywords reflecting the mood of the piece"
@@ -1505,9 +1485,8 @@ msgid "what rendering method should be used to display this item"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:431
-#, fuzzy
 msgid "full data"
-msgstr "nume_fiºier"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:432
 msgid ""
@@ -1528,9 +1507,8 @@ msgid "organization"
 msgstr "organizaþie"
 
 #: src/main/extractor_metatypes.c:438 src/main/extractor_metatypes.c:439
-#, fuzzy
 msgid "ripper"
-msgstr "Trailer"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:440 src/main/extractor_metatypes.c:441
 msgid "producer"
@@ -1541,9 +1519,8 @@ msgid "group"
 msgstr "grup"
 
 #: src/main/extractor_metatypes.c:443
-#, fuzzy
 msgid "name of the group or band"
-msgstr "publicist"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:445
 #, fuzzy
@@ -1551,9 +1528,8 @@ msgid "original filename"
 msgstr "nume_fiºier"
 
 #: src/main/extractor_metatypes.c:446
-#, fuzzy
 msgid "name of the original file (reserved for GNUnet)"
-msgstr "publicist"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:447
 #, fuzzy
@@ -1589,9 +1565,8 @@ msgid "codec the audio data is stored in"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:456
-#, fuzzy
 msgid "subtitle codec"
-msgstr "titlu"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:457
 msgid "codec/format the subtitle data is stored in"
@@ -1647,7 +1622,7 @@ msgstr "Industrial"
 #: src/main/extractor_metatypes.c:470
 #, fuzzy
 msgid "serial number of track"
-msgstr "Numãr legãturi în afara domeniului"
+msgstr "Numãr canal în afara domeniului"
 
 #: src/main/extractor_metatypes.c:471
 msgid "encoder"
@@ -1679,9 +1654,8 @@ msgid "track peak"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:479
-#, fuzzy
 msgid "peak of the track"
-msgstr "publicist"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:480
 #, fuzzy
@@ -1698,9 +1672,8 @@ msgid "album peak"
 msgstr "album"
 
 #: src/main/extractor_metatypes.c:483
-#, fuzzy
 msgid "peak of the album"
-msgstr "publicist"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:484
 msgid "reference level"
@@ -1741,9 +1714,8 @@ msgid "represents the expected error on the horizontal positioning in meters"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:493
-#, fuzzy
 msgid "location movement speed"
-msgstr "data publicãrii"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:494
 msgid ""
@@ -1773,9 +1745,8 @@ msgid ""
 msgstr ""
 
 #: src/main/extractor_metatypes.c:500
-#, fuzzy
 msgid "show episode number"
-msgstr "afiºeazã numãrul versiunii"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:501
 msgid "number of the episode within a season/show"
@@ -1824,27 +1795,24 @@ msgid "audio language"
 msgstr "limbã"
 
 #: src/main/extractor_metatypes.c:512
-#, fuzzy
 msgid "language of the audio track"
-msgstr "publicist"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:513
 msgid "channels"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:514
-#, fuzzy
 msgid "number of audio channels"
-msgstr "Numãr legãturi în afara domeniului"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:515
 msgid "sample rate"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:516
-#, fuzzy
 msgid "sample rate of the audio track"
-msgstr "publicist"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:517
 msgid "audio depth"
@@ -1859,18 +1827,16 @@ msgid "audio bitrate"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:520
-#, fuzzy
 msgid "bitrate of the audio track"
-msgstr "publicist"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:522 src/main/extractor_metatypes.c:523
 msgid "maximum audio bitrate"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:524
-#, fuzzy
 msgid "video dimensions"
-msgstr "orientare paginã"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:525
 msgid "width and height of the video track (WxH)"
@@ -1881,14 +1847,12 @@ msgid "video depth"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:527
-#, fuzzy
 msgid "numbers of bits per pixel"
-msgstr "Numãr legãturi în afara domeniului"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:528
-#, fuzzy
 msgid "frame rate"
-msgstr "ordine pagini"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:529
 msgid "number of frames per second (as D/N or floating point)"
@@ -1916,9 +1880,8 @@ msgid "subtitle language"
 msgstr "limbã"
 
 #: src/main/extractor_metatypes.c:538
-#, fuzzy
 msgid "language of the subtitle track"
-msgstr "publicist"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:539
 #, fuzzy
@@ -1926,9 +1889,8 @@ msgid "video language"
 msgstr "limbã"
 
 #: src/main/extractor_metatypes.c:540
-#, fuzzy
 msgid "language of the video track"
-msgstr "publicist"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:541
 msgid "table of contents"
@@ -1939,39 +1901,32 @@ msgid "chapters, contents or bookmarks (in xml format)"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:544
-#, fuzzy
 msgid "video duration"
-msgstr "relaþie"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:545
-#, fuzzy
 msgid "duration of a video stream"
-msgstr "publicist"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:546
-#, fuzzy
 msgid "audio duration"
-msgstr "relaþie"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:547
-#, fuzzy
 msgid "duration of an audio stream"
-msgstr "publicist"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:548
-#, fuzzy
 msgid "subtitle duration"
-msgstr "limbã"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:549
-#, fuzzy
 msgid "duration of a subtitle stream"
-msgstr "publicist"
+msgstr ""
 
 #: src/main/extractor_metatypes.c:551 src/main/extractor_metatypes.c:552
-#, fuzzy
 msgid "last"
-msgstr "bliþ"
+msgstr ""
 
 #: src/main/getopt.c:684
 #, c-format
@@ -2163,35 +2118,46 @@ msgstr "mono"
 msgid "stereo"
 msgstr "stereo"
 
-#, fuzzy
-#~ msgid "Bytes"
-#~ msgstr "Blues"
+#~ msgid "Source RPM %d.%d"
+#~ msgstr "Sursã RPM %d.%d"
 
-#, fuzzy
-#~ msgid "joint stereo"
-#~ msgstr "stereo"
+#~ msgid "Binary RPM %d.%d"
+#~ msgstr "Binar RPM %d.%d"
 
-#, fuzzy
-#~ msgid "no copyright"
-#~ msgstr "copyright"
+#~ msgid ""
+#~ "Please provide the name of the language you are building\n"
+#~ "a dictionary for.  For example:\n"
+#~ msgstr ""
+#~ "Vã rugãm furnizaþi numele limbii pentru care contruiþi\n"
+#~ "un dicþionar.  De exemplu:\n"
 
-#, fuzzy
-#~ msgid "original"
-#~ msgstr "nume_fiºier"
+#~ msgid "Error opening file '%s': %s\n"
+#~ msgstr "Eroare deschidere fiºier '%s': %s\n"
 
-#, fuzzy
-#~ msgid "copy"
-#~ msgstr "copyright"
+#~ msgid ""
+#~ "Error allocating: %s\n"
+#~ "."
+#~ msgstr ""
+#~ "Eroare de alocare: %s\n"
+#~ "."
+
+#~ msgid "Increase ALLOCSIZE (in %s).\n"
+#~ msgstr "Creºteþi ALLOCSIZE (în %s).\n"
+
+#~ msgid "Fatal: could not allocate (%s at %s:%d).\n"
+#~ msgstr "Fatal: nu am putut aloca (%s la %s:%d).\n"
+
+#~ msgid "%ux%u dots per cm"
+#~ msgstr "%ux%u puncte pe cm"
+
+#~ msgid "%ux%u dots per inch?"
+#~ msgstr "%ux%u puncte pe inci?"
 
 #~ msgid "Blues"
 #~ msgstr "Blues"
 
 #~ msgid "Classic Rock"
 #~ msgstr "Rock clasic"
-
-#, fuzzy
-#~ msgid "Country"
-#~ msgstr "Þarã"
 
 #~ msgid "Dance"
 #~ msgstr "Dance"
@@ -2240,10 +2206,6 @@ msgstr "stereo"
 
 #~ msgid "Techno"
 #~ msgstr "Techno"
-
-#, fuzzy
-#~ msgid "Industrial"
-#~ msgstr "Techno-Industrial"
 
 #~ msgid "Alternative"
 #~ msgstr "Alternative"
@@ -2443,10 +2405,6 @@ msgstr "stereo"
 #~ msgid "Bebob"
 #~ msgstr "Bebob"
 
-#, fuzzy
-#~ msgid "Latin"
-#~ msgstr "Latin"
-
 #~ msgid "Revival"
 #~ msgstr "Revival"
 
@@ -2630,20 +2588,11 @@ msgstr "stereo"
 #~ msgid "Synthpop"
 #~ msgstr "Synthpop"
 
-#, fuzzy
-#~ msgid "%ux%u dots per inch"
-#~ msgstr "%ux%u puncte pe inci?"
+#~ msgid "(variable bps)"
+#~ msgstr "(bps variabil)"
 
-#~ msgid "%ux%u dots per cm"
-#~ msgstr "%ux%u puncte pe cm"
-
-#~ msgid "%ux%u dots per inch?"
-#~ msgstr "%ux%u puncte pe inci?"
-
-#~ msgid "compute hash using the given ALGORITHM (currently sha1 or md5)"
-#~ msgstr ""
-#~ "calculeazã tabela de dispersie (hash) folosind ALGORITM-ul dat (curent "
-#~ "sha1 sau md5)"
+#~ msgid "do not remove any duplicates"
+#~ msgstr "nu îndepãrta nici un duplicat"
 
 #~ msgid ""
 #~ "use the generic plaintext extractor for the language with the 2-letter "
@@ -2652,107 +2601,6 @@ msgstr "stereo"
 #~ "foloseºte extractorul text-simplu generic pentru limba cu codul de limbã "
 #~ "din 2 litere LANG"
 
-#, fuzzy
-#~ msgid "copyright information"
-#~ msgstr "format"
-
-#~ msgid "author"
-#~ msgstr "autor"
-
-#~ msgid "date"
-#~ msgstr "data"
-
-#~ msgid "resource-type"
-#~ msgstr "tip-resursã"
-
-#~ msgid "resource-identifier"
-#~ msgstr "identificator-resursã"
-
-#~ msgid "relation"
-#~ msgstr "relaþie"
-
-#~ msgid "coverage"
-#~ msgstr "acoperire"
-
-#~ msgid "software"
-#~ msgstr "software"
-
-#~ msgid "translated"
-#~ msgstr "tradus"
-
-#~ msgid "used fonts"
-#~ msgstr "fonturi folosite"
-
-#~ msgid "created for"
-#~ msgstr "creat pentru"
-
-#~ msgid "release"
-#~ msgstr "release"
-
-#~ msgid "size"
-#~ msgstr "mãrime"
-
-#~ msgid "packager"
-#~ msgstr "împachetator"
-
-#~ msgid "build-host"
-#~ msgstr "gazdã-contruit"
-
-#~ msgid "dependency"
-#~ msgstr "dependinþe"
-
-#~ msgid "resolution"
-#~ msgstr "rezoluþie"
-
-#~ msgid "category"
-#~ msgstr "categorie"
-
-#~ msgid "conflicts"
-#~ msgstr "conflicte"
-
-#~ msgid "replaces"
-#~ msgstr "înlocuieºte"
-
-#~ msgid "owner"
-#~ msgstr "proprietar"
-
-#~ msgid "binary thumbnail data"
-#~ msgstr "data thumbnail binar"
-
-#~ msgid "focal length (35mm equivalent)"
-#~ msgstr "lungime focalã (echivalent 35mm)"
-
-#, fuzzy
-#~ msgid "scale"
-#~ msgstr "Musical"
-
-#, fuzzy
-#~ msgid "information"
-#~ msgstr "format"
-
-#, fuzzy
-#~ msgid "chapter"
-#~ msgstr "categorie"
-
-#, fuzzy
-#~ msgid "music CD identifier"
-#~ msgstr "identificator-resursã"
-
-#, fuzzy
-#~ msgid "time"
-#~ msgstr "Anime"
-
-#, fuzzy
-#~ msgid "hardware dependency"
-#~ msgstr "dependinþe"
-
-#, fuzzy
-#~ msgid "filesize"
-#~ msgstr "mãrime"
-
-#~ msgid "do not remove any duplicates"
-#~ msgstr "nu îndepãrta nici un duplicat"
-
 #~ msgid "remove duplicates only if types match"
 #~ msgstr "îndepãrteazã duplicatele numai dacã tipul este acelaºi"
 
@@ -2760,6 +2608,11 @@ msgstr "stereo"
 #~ msgstr ""
 #~ "foloseºte numele de fiºier ca ºi cuvânt cheie (încarcã plugin nume_fiºier-"
 #~ "extractor)"
+
+#~ msgid "compute hash using the given ALGORITHM (currently sha1 or md5)"
+#~ msgstr ""
+#~ "calculeazã tabela de dispersie (hash) folosind ALGORITM-ul dat (curent "
+#~ "sha1 sau md5)"
 
 #~ msgid "remove duplicates even if keyword types do not match"
 #~ msgstr ""
@@ -2773,53 +2626,48 @@ msgstr "stereo"
 #~ msgid "INVALID TYPE - %s\n"
 #~ msgstr "TIP INVALID - %s\n"
 
-#, fuzzy
+#~ msgid "date"
+#~ msgstr "data"
+
+#~ msgid "coverage"
+#~ msgstr "acoperire"
+
+#~ msgid "translated"
+#~ msgstr "tradus"
+
+#~ msgid "used fonts"
+#~ msgstr "fonturi folosite"
+
+#~ msgid "release"
+#~ msgstr "release"
+
+#~ msgid "size"
+#~ msgstr "mãrime"
+
+#~ msgid "os"
+#~ msgstr "sistem operare"
+
+#~ msgid "category"
+#~ msgstr "categorie"
+
+#~ msgid "owner"
+#~ msgstr "proprietar"
+
+#~ msgid "focal length (35mm equivalent)"
+#~ msgstr "lungime focalã (echivalent 35mm)"
+
 #~ msgid ""
-#~ "Resolving symbol `%s' in library `%s' failed, so I tried `%s', but that "
-#~ "failed also.  Errors are: `%s' and `%s'.\n"
+#~ "Resolving symbol '%s' in library '%s' failed, so I tried '%s', but that "
+#~ "failed also.  Errors are: '%s' and '%s'.\n"
 #~ msgstr ""
 #~ "Rezolvarea simbolului '%s' în biblioteca '%s' a eºuat, aºa cã am încercat "
 #~ "'%s', dar ºi acesta a eºuat.  Erorile sunt: '%s' ºi '%s'.\n"
 
-#, fuzzy
-#~ msgid "Unloading plugin `%s' failed!\n"
+#~ msgid "Loading '%s' plugin failed: %s\n"
+#~ msgstr "Încãrcarea plugin-ului '%s' a eºuat: %s\n"
+
+#~ msgid "Unloading plugin '%s' failed!\n"
 #~ msgstr "Descãrcarea plugin-ului '%s' a eºuat!\n"
-
-#~ msgid ""
-#~ "Please provide the name of the language you are building\n"
-#~ "a dictionary for.  For example:\n"
-#~ msgstr ""
-#~ "Vã rugãm furnizaþi numele limbii pentru care contruiþi\n"
-#~ "un dicþionar.  De exemplu:\n"
-
-#, fuzzy
-#~ msgid "Error opening file `%s': %s\n"
-#~ msgstr "Eroare deschidere fiºier '%s': %s\n"
-
-#~ msgid ""
-#~ "Error allocating: %s\n"
-#~ "."
-#~ msgstr ""
-#~ "Eroare de alocare: %s\n"
-#~ "."
-
-#~ msgid "Increase ALLOCSIZE (in %s).\n"
-#~ msgstr "Creºteþi ALLOCSIZE (în %s).\n"
-
-#~ msgid "Source RPM %d.%d"
-#~ msgstr "Sursã RPM %d.%d"
-
-#~ msgid "Binary RPM %d.%d"
-#~ msgstr "Binar RPM %d.%d"
-
-#~ msgid "Fatal: could not allocate (%s at %s:%d).\n"
-#~ msgstr "Fatal: nu am putut aloca (%s la %s:%d).\n"
-
-#~ msgid "(variable bps)"
-#~ msgstr "(bps variabil)"
-
-#~ msgid "os"
-#~ msgstr "sistem operare"
 
 #~ msgid "No error"
 #~ msgstr "Nici o eroare"
@@ -2899,8 +2747,8 @@ msgstr "stereo"
 #~ msgid "Cross-device link"
 #~ msgstr "Legãturã (link) între-dispozitive"
 
-#~ msgid "Not a directory"
-#~ msgstr "Nu este un director"
+#~ msgid "Is a directory"
+#~ msgstr "Este un director"
 
 #~ msgid "Invalid argument"
 #~ msgstr "Argument invalide"
@@ -2946,9 +2794,6 @@ msgstr "stereo"
 
 #~ msgid "Identifier removed"
 #~ msgstr "Identificator îndepãrtat"
-
-#~ msgid "Channel number out of range"
-#~ msgstr "Numãr canal în afara domeniului"
 
 #~ msgid "Level 2 not synchronized"
 #~ msgstr "Nivelul 2 nesincronizat"
