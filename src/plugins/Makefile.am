@@ -520,7 +520,7 @@ libextractor_png_la_SOURCES = \
 libextractor_png_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_png_la_LIBADD = \
-  $(top_builddir)/src/common/libextractor_common.la $(XLIB)
+  $(top_builddir)/src/common/libextractor_common.la $(XLIB) -lz
 
 test_png_SOURCES = \
   test_png.c
