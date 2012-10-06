@@ -215,6 +215,7 @@ get_path_from_NSGetExecutablePath ()
 {
   static char zero;
   char *path;
+  char *ret;
   size_t len;
   MyNSGetExecutablePathProto func;
 
@@ -243,7 +244,17 @@ get_path_from_NSGetExecutablePath ()
   while ((path[len] != '/') && (len > 0))
     len--;
   path[len] = '\0';
-  return path;
+  if (NULL != strstr (path, "/lib"))
+    return path;
+  path = cut_bin (path);
+  if (NULL == (ret = realloc (path, strlen (path) + 5)))
+  {
+     LOG_STRERROR ("realloc");
+     free (path);
+     return NULL;
+  }
+  strcat (ret, "/lib/");
+  return ret;
 }
 
 
@@ -293,7 +304,8 @@ get_path_from_dyld_image ()
  * @return path to binary, NULL if not found
  */
 static char *
-get_path_from_PATH() {
+get_path_from_PATH() 
+{
   struct stat sbuf;
   char *path;
   char *pos;
