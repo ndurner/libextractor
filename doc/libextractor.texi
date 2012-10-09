@@ -486,7 +486,7 @@ should not interfere with your main application --- does NOT install a
 signal handler for @code{SIGPIPE}.  You thus need to install a signal
 handler (or at least tell your system to ignore @code{SIGPIPE}) if you
 want to avoid unexpected problems during calls to GNU libextractor.  
-@cindex{SIGPIPE}
+@cindex SIGPIPE
 
 @node Extracting meta data
 @chapter Extracting meta data
