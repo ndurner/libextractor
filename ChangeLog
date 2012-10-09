@@ -1,3 +1,7 @@
+Tue Oct  9 22:28:50 CEST 2012
+	Fixing use-after-free in plugin IPC if plugin crashes
+	while no seek is pending. -CG
+
 Sat Oct  6 15:24:20 CEST 2012
 	Fixing installation path discovery on Darwin (#2562).
 	Releasing GNU libextractor 1.0.1. -CG
