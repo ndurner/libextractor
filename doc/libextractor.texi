@@ -480,6 +480,14 @@ in chapter @xref{Extracting meta data}.  Bindings for other languages
 are described in chapter @xref{Language bindings}.  The API for
 writing new plugins is described in chapter @xref{Writing new Plugins}.
 
+Note that it is possible for GNU libextractor to encounter a @code{SIGPIPE}
+during its execution.  GNU libextractor --- as it is a library and as such
+should not interfere with your main application --- does NOT install a 
+signal handler for @code{SIGPIPE}.  You thus need to install a signal
+handler (or at least tell your system to ignore @code{SIGPIPE}) if you
+want to avoid unexpected problems during calls to GNU libextractor.  
+@cindex{SIGPIPE}
+
 @node Extracting meta data
 @chapter Extracting meta data
 
@@ -663,7 +671,7 @@ This is the main function for extracting keywords with GNU libextractor.  The fi
 
 @cindex SIGBUS
 @cindex bus error
-Meta data extraction should never really fail --- at worst, GNU libextractor should not call @samp{proc} with any meta data. By design, GNU libextractor should never crash or leak memory, even given corrupt files as input.  Note however, that running GNU libextractor on a corrupt file system (or incorrectly @verb{|mmap|}ed files) can result in the operating system sending a SIGBUS (bus error) to the process.  While GNU libextractor runs plugins out-of-process, it first maps the file into memory and then attempts to decompress it.  During decompression it is possible to encounter a SIGBUS.   GNU libextractor will @emph{not} attempt to catch this signal and your application is likely to crash.  Note again that this should only happen if the file @emph{system} is corrupt (not if individual files are corrupt).  If this is not acceptable, you might want to consider running GNU libextractor itself also out-of-process (as done, for example, by @url{http://grothoff.org/christian/doodle/,doodle}).
+Meta data extraction should never really fail --- at worst, GNU libextractor should not call @samp{proc} with any meta data. By design, GNU libextractor should never crash or leak memory, even given corrupt files as input.  Note however, that running GNU libextractor on a corrupt file system (or incorrectly @verb{|mmap|}ed files) can result in the operating system sending a SIGBUS (bus error) to the process.  As GNU libextractor typically runs plugins out-of-process, it first maps the file into memory and then attempts to decompress it.  During decompression it is possible to encounter a SIGBUS.   GNU libextractor will @emph{not} attempt to catch this signal and your application is likely to crash.  Note again that this should only happen if the file @emph{system} is corrupt (not if individual files are corrupt).  If this is not acceptable, you might want to consider running GNU libextractor itself also out-of-process (as done, for example, by @url{http://grothoff.org/christian/doodle/,doodle}).
 
 @end deftypefun
 
