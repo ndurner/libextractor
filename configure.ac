@@ -369,13 +369,20 @@ AC_CHECK_LIB(magic, magic_open,
    AM_CONDITIONAL(HAVE_MAGIC, false))],
   AM_CONDITIONAL(HAVE_MAGIC, false))
 
-AC_MSG_CHECKING(for tidyInitSource -ltidy)
-SAVED_LDFLAGS=$LDFLAGS
-AC_CHECK_LIB(tidy, tidyInitSource,
-  [AC_CHECK_HEADERS([tidy/tidy.h],
-   AM_CONDITIONAL(HAVE_TIDY, true),
-   AM_CONDITIONAL(HAVE_TIDY, false))],
-  AM_CONDITIONAL(HAVE_TIDY, false))
+AC_MSG_CHECKING(for tidyInitSource in -ltidy)
+AC_LANG_PUSH(C++)
+SAVED_LIBS=$LIBS
+LIBS="$LIBS -ltidy"
+AC_LINK_IFELSE(
+  [AC_LANG_PROGRAM([[#include <tidy/tidy.h>]],
+    [[ Bool b = tidyInitSource (NULL, NULL, NULL, NULL, NULL); ]])],
+  [AC_MSG_RESULT(yes)
+   AM_CONDITIONAL(HAVE_TIDY, true)
+   AC_DEFINE(HAVE_TIDY,1,[Have tidyInitSource in libtidy])],
+  [AC_MSG_RESULT(no)
+   AM_CONDITIONAL(HAVE_TIDY, false)])
+LIBS=$SAVED_LIBS
+AC_LANG_POP(C++)
 
 # restore LIBS
 LIBS=$LIBSOLD
