@@ -458,14 +458,6 @@ do_extract (struct EXTRACTOR_PluginList *plugins,
       plugin_off = 0;
       for (pos = plugins; NULL != pos; pos = pos->next)
 	{
-	  if ( (NULL == channels[plugin_off]) &&
-	       (-1 == pos->seek_request) )
-	    {
-	      /* EXTRACTOR_IPC_channel_recv_ got a non-NULL channel (-1 == seek_request)
-		 but set it to NULL; that means the channel had an IPC error and was closed;
-		 so we need to update the plugin accordingly */
-	      pos->channel = NULL;
-	    }
 	  plugin_off++;
 	  if ( (1 == pos->round_finished) ||
 	       (NULL == pos->channel) )

@@ -28,6 +28,7 @@
 #include "extractor_datasource.h"
 #include "extractor_logging.h"
 #include "extractor_plugin_main.h"
+#include "extractor_plugins.h"
 #include "extractor_ipc.h"
 #include <dirent.h>
 #include <sys/types.h>
@@ -372,6 +373,8 @@ EXTRACTOR_IPC_channel_destroy_ (struct EXTRACTOR_Channel *channel)
     LOG_STRERROR ("close");
   if (0 != close (channel->cpipe_in))
     LOG_STRERROR ("close");
+  if (NULL != channel->plugin)
+    channel->plugin->channel = NULL;
   free (channel->mdata);
   free (channel);
 }

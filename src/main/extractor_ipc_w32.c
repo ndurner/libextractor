@@ -599,6 +599,8 @@ EXTRACTOR_IPC_channel_destroy_ (struct EXTRACTOR_Channel *channel)
     free (channel->ov_write_buffer);
     channel->ov_write_buffer = NULL;
   }
+  if (NULL != channel->plugin)
+    channel->plugin->channel = NULL;
   free (channel->mdata);
   free (channel);
 }
