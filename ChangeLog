@@ -1,3 +1,6 @@
+Thu Oct 11 09:19:42 CEST 2012
+	Fixing archive-plugin crash on ".lnk" files (#2586). -bratao
+
 Tue Oct  9 22:28:50 CEST 2012
 	Fixing use-after-free in plugin IPC if plugin crashes
 	while no seek is pending. -CG

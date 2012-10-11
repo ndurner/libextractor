@@ -101,7 +101,9 @@ EXTRACTOR_archive_extract_method (struct EXTRACTOR_ExtractContext *ec)
   a = archive_read_new ();
   archive_read_support_compression_all (a);
   archive_read_support_format_all (a);
-  archive_read_open2 (a, ec, NULL, &read_cb, &skip_cb, NULL);
+  if(archive_read_open2 (a, ec, NULL, &read_cb, &skip_cb, NULL)!= ARCHIVE_OK)
+	return;
+	
   while (ARCHIVE_OK == archive_read_next_header(a, &entry))
     {
       if ( (NULL == format) &&
