@@ -3,6 +3,11 @@ INCLUDES = -I$(top_srcdir)/src/include
 LIBS = \
  @LE_LIBINTL@ @LIBS@
 
+if USE_COVERAGE
+  AM_CFLAGS = --coverage -O0
+  XLIB = -lgcov
+endif
+
 lib_LTLIBRARIES = \
   libextractor_common.la
 
