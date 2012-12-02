@@ -1,0 +1,1985 @@
+# Polish translation for libextractor.
+# Copyright (C) 2012 Free Software Foundation, Inc.
+# This file is distributed under the same license as the libextractor package.
+# Jakub Bogusz <qboosh@pld-linux.org>, 2012.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: libextractor 1.0.0-pre1\n"
+"Report-Msgid-Bugs-To: libextractor@gnu.org\n"
+"POT-Creation-Date: 2012-09-04 20:36+0200\n"
+"PO-Revision-Date: 2012-12-01 15:45+0100\n"
+"Last-Translator: Jakub Bogusz <qboosh@pld-linux.org>\n"
+"Language-Team: Polish <translation-team-pl@lists.sourceforge.net>\n"
+"Language: pl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/main/extract.c:132
+#, c-format
+msgid ""
+"Usage: %s\n"
+"%s\n"
+"\n"
+msgstr ""
+"Składnia: %s\n"
+"%s\n"
+"\n"
+
+#: src/main/extract.c:135
+#, c-format
+msgid "Arguments mandatory for long options are also mandatory for short options.\n"
+msgstr "Argumenty obowiązkowe dla opcji długich są obowiązkowe także dla opcji krótkich.\n"
+
+#: src/main/extract.c:217
+msgid "print output in bibtex format"
+msgstr "wyjście w formacie bibtex"
+
+#: src/main/extract.c:219
+msgid "produce grep-friendly output (all results on one line per file)"
+msgstr "wyjście przyjazne dla grepa (wszystkie wyniki w jednej linii dla pliku)"
+
+#: src/main/extract.c:221
+msgid "print this help"
+msgstr "wyświetlenie tego opisu"
+
+#: src/main/extract.c:223
+msgid "run plugins in-process (simplifies debugging)"
+msgstr "uruchamianie wtyczek wewnątrz procesu (ułatwia diagnostykę)"
+
+#: src/main/extract.c:225
+msgid "read data from file into memory and extract from memory"
+msgstr "odczyt danych z pliku do pamięci i tworzenie wyciągów z pamięci"
+
+#: src/main/extract.c:227
+msgid "load an extractor plugin named LIBRARY"
+msgstr "odczyt wtyczki wyciągu o nazwie BIBLIOTEKA"
+
+#: src/main/extract.c:229
+msgid "list all keyword types"
+msgstr "wypisanie słów kluczowych wszystkich typów"
+
+#: src/main/extract.c:231
+msgid "do not use the default set of extractor plugins"
+msgstr "bez domyślnego zestawu wtyczek wyciągów"
+
+#: src/main/extract.c:233
+msgid "print only keywords of the given TYPE (use -L to get a list)"
+msgstr "wypisanie słów kluczowych tylko podanego TYPU (-L poda listę)"
+
+#: src/main/extract.c:235
+msgid "print the version number"
+msgstr "wypisanie numeru wersji"
+
+#: src/main/extract.c:237
+msgid "be verbose"
+msgstr "tryb szczegółowy"
+
+#: src/main/extract.c:239
+msgid "do not print keywords of the given TYPE"
+msgstr "bez wypisywania słów kluczowych podanego TYPU"
+
+#: src/main/extract.c:242
+msgid "extract [OPTIONS] [FILENAME]*"
+msgstr "extract [OPCJE] [NAZWA_PLIKU]*"
+
+#: src/main/extract.c:243
+msgid "Extract metadata from files."
+msgstr "Wyciąganie metadanych z plików."
+
+#: src/main/extract.c:284
+#, c-format
+msgid "Found by `%s' plugin:\n"
+msgstr "Znalezione przez wtyczkę `%s':\n"
+
+#: src/main/extract.c:287 src/main/extract.c:368
+#: src/main/extractor_metatypes.c:145 src/main/extractor_print.c:82
+msgid "unknown"
+msgstr "nieznany"
+
+#: src/main/extract.c:292
+#, c-format
+msgid "%s - (unknown, %u bytes)\n"
+msgstr "%s - (nieznany, bajtów: %u)\n"
+
+#: src/main/extract.c:317
+#, c-format
+msgid "%s - (binary, %u bytes)\n"
+msgstr "%s - (binarny, bajtów: %u)\n"
+
+#: src/main/extract.c:658 src/main/extract.c:668
+#, c-format
+msgid "Illegal combination of options, cannot combine multiple styles of printing.\n"
+msgstr "Niedozwolona kombinacja opcji, nie można łączyć wielu styli wypisywania.\n"
+
+#: src/main/extract.c:698
+#, c-format
+msgid "You must specify an argument for the `%s' option (option ignored).\n"
+msgstr "Opcja `%s' wymaga argumentu (zignorowano opcję).\n"
+
+#: src/main/extract.c:763
+#, c-format
+msgid "Use --help to get a list of options.\n"
+msgstr "Opcja --help pozwala uzyskać listę opcji.\n"
+
+#: src/main/extract.c:801
+#, c-format
+msgid "%% BiBTeX file\n"
+msgstr "%% plik BiBTeX\n"
+
+#: src/main/extract.c:809
+#, c-format
+msgid "Keywords for file %s:\n"
+msgstr "Słowa kluczowe dla pliku %s:\n"
+
+#: src/main/extractor.c:673
+#, c-format
+msgid "Initialization of plugin mechanism failed: %s!\n"
+msgstr "Inicjalizacja mechanizmu wtyczek nie powiodła się: %s!\n"
+
+#: src/main/extractor_metatypes.c:46
+msgid "reserved"
+msgstr "zarezerwowane"
+
+#: src/main/extractor_metatypes.c:47
+msgid "reserved value, do not use"
+msgstr "wartość zarezerwowana, nie używać"
+
+#: src/main/extractor_metatypes.c:48
+msgid "mimetype"
+msgstr "typ mime"
+
+#: src/main/extractor_metatypes.c:49
+msgid "mime type"
+msgstr "typ mime"
+
+#: src/main/extractor_metatypes.c:50
+msgid "embedded filename"
+msgstr "osadzona nazwa pliku"
+
+#: src/main/extractor_metatypes.c:51
+msgid "filename that was embedded (not necessarily the current filename)"
+msgstr "osadzona nazwa pliku (niekoniecznie bieżąca nazwa pliku)"
+
+#: src/main/extractor_metatypes.c:52
+msgid "comment"
+msgstr "komentarz"
+
+#: src/main/extractor_metatypes.c:53
+msgid "comment about the content"
+msgstr "komentarz dotyczący treści"
+
+#: src/main/extractor_metatypes.c:54
+msgid "title"
+msgstr "tytuł"
+
+#: src/main/extractor_metatypes.c:55
+msgid "title of the work"
+msgstr "tytuł pracy"
+
+#: src/main/extractor_metatypes.c:57
+msgid "book title"
+msgstr "tytuł książki"
+
+#: src/main/extractor_metatypes.c:58
+msgid "title of the book containing the work"
+msgstr "tytuł książki zawierającej pracę"
+
+#: src/main/extractor_metatypes.c:59
+msgid "book edition"
+msgstr "wydanie książki"
+
+#: src/main/extractor_metatypes.c:60
+msgid "edition of the book (or book containing the work)"
+msgstr "wydanie książki (lub książki zawierającej pracę)"
+
+#: src/main/extractor_metatypes.c:61
+msgid "book chapter"
+msgstr "rozdział książki"
+
+#: src/main/extractor_metatypes.c:62
+msgid "chapter number"
+msgstr "numer rozdziału"
+
+#: src/main/extractor_metatypes.c:63
+msgid "journal name"
+msgstr "nazwa periodyku"
+
+#: src/main/extractor_metatypes.c:64
+msgid "journal or magazine the work was published in"
+msgstr "periodyk lub magazyn, w którym została opublikowana praca"
+
+#: src/main/extractor_metatypes.c:65
+msgid "journal volume"
+msgstr "tom periodyku"
+
+#: src/main/extractor_metatypes.c:66
+msgid "volume of a journal or multi-volume book"
+msgstr "tom periodyku lub książki wielotomowej"
+
+#: src/main/extractor_metatypes.c:68
+msgid "journal number"
+msgstr "numer periodyku"
+
+#: src/main/extractor_metatypes.c:69
+msgid "number of a journal, magazine or tech-report"
+msgstr "numer periodyku, magazynu albo raportu"
+
+#: src/main/extractor_metatypes.c:70
+msgid "page count"
+msgstr "liczba stron"
+
+#: src/main/extractor_metatypes.c:71
+msgid "total number of pages of the work"
+msgstr "całkowita liczba stron pracy"
+
+#: src/main/extractor_metatypes.c:72
+msgid "page range"
+msgstr "zakres stron"
+
+#: src/main/extractor_metatypes.c:73
+msgid "page numbers of the publication in the respective journal or book"
+msgstr "numery stron publikacji w odpowiednim periodyku lub książce"
+
+#: src/main/extractor_metatypes.c:74
+msgid "author name"
+msgstr "nazwisko autora"
+
+#: src/main/extractor_metatypes.c:75
+msgid "name of the author(s)"
+msgstr "nazwisko autora/autorów"
+
+#: src/main/extractor_metatypes.c:76
+msgid "author email"
+msgstr "e-mail autora"
+
+#: src/main/extractor_metatypes.c:77
+msgid "e-mail of the author(s)"
+msgstr "adres e-mail autora/autorów"
+
+#: src/main/extractor_metatypes.c:79
+msgid "author institution"
+msgstr "instytucja autora"
+
+#: src/main/extractor_metatypes.c:80
+msgid "institution the author worked for"
+msgstr "instytucja, dla której pracował autor"
+
+#: src/main/extractor_metatypes.c:81
+msgid "publisher"
+msgstr "wydawca"
+
+#: src/main/extractor_metatypes.c:82
+msgid "name of the publisher"
+msgstr "nazwa wydawcy"
+
+#: src/main/extractor_metatypes.c:83
+msgid "publisher's address"
+msgstr "adres wydawcy"
+
+#: src/main/extractor_metatypes.c:84
+msgid "Address of the publisher (often only the city)"
+msgstr "adres wydawcy (często tylko miasto)"
+
+#: src/main/extractor_metatypes.c:85
+msgid "publishing institution"
+msgstr "instytucja wydawcza"
+
+#: src/main/extractor_metatypes.c:86
+msgid "institution that was involved in the publishing, but not necessarily the publisher"
+msgstr "instytucja zaangażowana w publikację, ale niekoniecznie wydawca"
+
+#: src/main/extractor_metatypes.c:87
+msgid "publication series"
+msgstr "seria publikacji"
+
+#: src/main/extractor_metatypes.c:88
+msgid "series of books the book was published in"
+msgstr "seria książek, w której została wydana książka"
+
+#: src/main/extractor_metatypes.c:90
+msgid "publication type"
+msgstr "rodzaj publikacji"
+
+#: src/main/extractor_metatypes.c:91
+msgid "type of the tech-report"
+msgstr "rodzaj raportu"
+
+#: src/main/extractor_metatypes.c:92
+msgid "publication year"
+msgstr "rok opublikowania"
+
+#: src/main/extractor_metatypes.c:93
+msgid "year of publication (or, if unpublished, the year of creation)"
+msgstr "rok opublikowania (lub powstania, jeśli praca nie została opublikowana)"
+
+#: src/main/extractor_metatypes.c:94
+msgid "publication month"
+msgstr "miesiąc opublikowania"
+
+#: src/main/extractor_metatypes.c:95
+msgid "month of publication (or, if unpublished, the month of creation)"
+msgstr "miesiąc opublikowania (lub powstania, jeśli praca nie została opublikowana)"
+
+#: src/main/extractor_metatypes.c:96
+msgid "publication day"
+msgstr "dzień opublikowania"
+
+#: src/main/extractor_metatypes.c:97
+msgid "day of publication (or, if unpublished, the day of creation), relative to the given month"
+msgstr "dzień opublikowania (lub powstania, jeśli praca nie została opublikowana) w miesiącu"
+
+#: src/main/extractor_metatypes.c:98
+msgid "publication date"
+msgstr "data opublikowania"
+
+#: src/main/extractor_metatypes.c:99
+msgid "date of publication (or, if unpublished, the date of creation)"
+msgstr "data opublikowania (lub powstania, jeśli praca nie została opublikowana)"
+
+#: src/main/extractor_metatypes.c:101
+msgid "bibtex eprint"
+msgstr "eprint bibtexowy"
+
+#: src/main/extractor_metatypes.c:102
+msgid "specification of an electronic publication"
+msgstr "specyfikacja publikacji elektronicznej"
+
+#: src/main/extractor_metatypes.c:103
+msgid "bibtex entry type"
+msgstr "rodzaj wpisu bibtex"
+
+#: src/main/extractor_metatypes.c:104
+msgid "type of the publication for bibTeX bibliographies"
+msgstr "rodzaj publikacji do bibliografii bibTeXowych"
+
+#: src/main/extractor_metatypes.c:105
+msgid "language"
+msgstr "język"
+
+#: src/main/extractor_metatypes.c:106
+msgid "language the work uses"
+msgstr "język użyty w pracy"
+
+#: src/main/extractor_metatypes.c:107
+msgid "creation time"
+msgstr "czas powstania"
+
+#: src/main/extractor_metatypes.c:108
+msgid "time and date of creation"
+msgstr "czas i data powstania"
+
+#: src/main/extractor_metatypes.c:109
+msgid "URL"
+msgstr "URL"
+
+#: src/main/extractor_metatypes.c:110
+msgid "universal resource location (where the work is made available)"
+msgstr "odnośnik URL do zasobu (miejsca udostępnienia pracy)"
+
+#: src/main/extractor_metatypes.c:112
+msgid "URI"
+msgstr "URI"
+
+#: src/main/extractor_metatypes.c:113
+msgid "universal resource identifier"
+msgstr "identyfikator URI zasobu"
+
+#: src/main/extractor_metatypes.c:114
+msgid "international standard recording code"
+msgstr "międzynarodowy standardowy kod nagrania"
+
+#: src/main/extractor_metatypes.c:115
+msgid "ISRC number identifying the work"
+msgstr "numer ISRC identyfikujący pracę"
+
+#: src/main/extractor_metatypes.c:116
+msgid "MD4"
+msgstr "MD4"
+
+#: src/main/extractor_metatypes.c:117
+msgid "MD4 hash"
+msgstr "skrót MD4"
+
+#: src/main/extractor_metatypes.c:118
+msgid "MD5"
+msgstr "MD5"
+
+#: src/main/extractor_metatypes.c:119
+msgid "MD5 hash"
+msgstr "skrót MD5"
+
+#: src/main/extractor_metatypes.c:120
+msgid "SHA-0"
+msgstr "SHA-0"
+
+#: src/main/extractor_metatypes.c:121
+msgid "SHA-0 hash"
+msgstr "skrót SHA-0"
+
+#: src/main/extractor_metatypes.c:123
+msgid "SHA-1"
+msgstr "SHA-1"
+
+#: src/main/extractor_metatypes.c:124
+msgid "SHA-1 hash"
+msgstr "skrót SHA-1"
+
+#: src/main/extractor_metatypes.c:125
+msgid "RipeMD160"
+msgstr "RipeMD160"
+
+#: src/main/extractor_metatypes.c:126
+msgid "RipeMD150 hash"
+msgstr "skrót RipeMD160"
+
+#: src/main/extractor_metatypes.c:127 src/main/extractor_metatypes.c:128
+msgid "GPS latitude ref"
+msgstr "szerokość wg GPS"
+
+#: src/main/extractor_metatypes.c:129 src/main/extractor_metatypes.c:130
+msgid "GPS latitude"
+msgstr "szerokość geograficzna wg GPS"
+
+#: src/main/extractor_metatypes.c:131 src/main/extractor_metatypes.c:132
+msgid "GPS longitude ref"
+msgstr "długość GPS"
+
+#: src/main/extractor_metatypes.c:134 src/main/extractor_metatypes.c:135
+msgid "GPS longitude"
+msgstr "długość geograficzna wg GPS"
+
+#: src/main/extractor_metatypes.c:136
+msgid "city"
+msgstr "miasto"
+
+#: src/main/extractor_metatypes.c:137
+msgid "name of the city where the document originated"
+msgstr "nazwa miasta, z którego pochodzi dokument"
+
+#: src/main/extractor_metatypes.c:138
+msgid "sublocation"
+msgstr "dzielnica"
+
+#: src/main/extractor_metatypes.c:139
+msgid "more specific location of the geographic origin"
+msgstr "dokładniejsze miejsce pochodzenia geograficznego"
+
+#: src/main/extractor_metatypes.c:140
+msgid "country"
+msgstr "kraj"
+
+#: src/main/extractor_metatypes.c:141
+msgid "name of the country where the document originated"
+msgstr "nazwa kraju, z którego pochodzi dokument"
+
+#: src/main/extractor_metatypes.c:142
+msgid "country code"
+msgstr "kod kraju"
+
+#: src/main/extractor_metatypes.c:143
+msgid "ISO 2-letter country code for the country of origin"
+msgstr "2-literowy kod ISO kraju pochodzenia"
+
+#: src/main/extractor_metatypes.c:146
+msgid "specifics are not known"
+msgstr "szczegóły nieznane"
+
+#: src/main/extractor_metatypes.c:147 src/main/extractor_metatypes.c:148
+msgid "description"
+msgstr "opis"
+
+#: src/main/extractor_metatypes.c:149
+msgid "copyright"
+msgstr "prawa autorskie"
+
+#: src/main/extractor_metatypes.c:150
+msgid "Name of the entity holding the copyright"
+msgstr "Nazwa podmiotu, do którego należą prawa autorskie"
+
+#: src/main/extractor_metatypes.c:151
+msgid "rights"
+msgstr "prawa"
+
+#: src/main/extractor_metatypes.c:152
+msgid "information about rights"
+msgstr "informacje o prawach"
+
+#: src/main/extractor_metatypes.c:153 src/main/extractor_metatypes.c:154
+msgid "keywords"
+msgstr "słowa kluczowe"
+
+#: src/main/extractor_metatypes.c:156 src/main/extractor_metatypes.c:157
+msgid "abstract"
+msgstr "abstrakt"
+
+#: src/main/extractor_metatypes.c:158 src/main/extractor_metatypes.c:159
+msgid "summary"
+msgstr "streszczenie"
+
+#: src/main/extractor_metatypes.c:160
+msgid "subject"
+msgstr "przedmiot"
+
+#: src/main/extractor_metatypes.c:161
+msgid "subject matter"
+msgstr "przedmiot tematu"
+
+#: src/main/extractor_metatypes.c:162 src/main/extractor_metatypes.c:195
+msgid "creator"
+msgstr "twórca"
+
+#: src/main/extractor_metatypes.c:163
+msgid "name of the person who created the document"
+msgstr "nazwisko osoby, która stworzyła dokument"
+
+#: src/main/extractor_metatypes.c:164
+msgid "format"
+msgstr "format"
+
+#: src/main/extractor_metatypes.c:165
+msgid "name of the document format"
+msgstr "nazwa formatu dokumentu"
+
+#: src/main/extractor_metatypes.c:167
+msgid "format version"
+msgstr "wersja formatu"
+
+#: src/main/extractor_metatypes.c:168
+msgid "version of the document format"
+msgstr "wersja formatu dokumentu"
+
+#: src/main/extractor_metatypes.c:169
+msgid "created by software"
+msgstr "program tworzący"
+
+#: src/main/extractor_metatypes.c:170
+msgid "name of the software that created the document"
+msgstr "nazwa programu, który utworzył dokument"
+
+#: src/main/extractor_metatypes.c:171
+msgid "unknown date"
+msgstr "nieznana data"
+
+#: src/main/extractor_metatypes.c:172
+msgid "ambiguous date (could specify creation time, modification time or access time)"
+msgstr "data bez określonego znaczenia (czas utworzenia, modyfikacji lub dostępu)"
+
+#: src/main/extractor_metatypes.c:173
+msgid "creation date"
+msgstr "data utworzenia"
+
+#: src/main/extractor_metatypes.c:174
+msgid "date the document was created"
+msgstr "data utworzenia dokumentu"
+
+#: src/main/extractor_metatypes.c:175
+msgid "modification date"
+msgstr "data modyfikacji"
+
+#: src/main/extractor_metatypes.c:176
+msgid "date the document was modified"
+msgstr "data modyfikacji dokumentu"
+
+#: src/main/extractor_metatypes.c:178
+msgid "last printed"
+msgstr "ostatni wydruk"
+
+#: src/main/extractor_metatypes.c:179
+msgid "date the document was last printed"
+msgstr "data ostatniego wydruku dokumentu"
+
+#: src/main/extractor_metatypes.c:180
+msgid "last saved by"
+msgstr "ostatni zapis przez"
+
+#: src/main/extractor_metatypes.c:181
+msgid "name of the user who saved the document last"
+msgstr "nazwa użytkownika, który ostatni zapisał dokument"
+
+#: src/main/extractor_metatypes.c:182
+msgid "total editing time"
+msgstr "całkowity czas edycji"
+
+#: src/main/extractor_metatypes.c:183
+msgid "time spent editing the document"
+msgstr "czas poświęcony na edycję dokumentu"
+
+#: src/main/extractor_metatypes.c:184
+msgid "editing cycles"
+msgstr "cykle edycyjne"
+
+#: src/main/extractor_metatypes.c:185
+msgid "number of editing cycles"
+msgstr "liczba cykli edycyjnych"
+
+#: src/main/extractor_metatypes.c:186
+msgid "modified by software"
+msgstr "program modyfikujący"
+
+#: src/main/extractor_metatypes.c:187
+msgid "name of software making modifications"
+msgstr "nazwa programu wykonującego modyfikacje"
+
+#: src/main/extractor_metatypes.c:189
+msgid "revision history"
+msgstr "historia wersji"
+
+#: src/main/extractor_metatypes.c:190
+msgid "information about the revision history"
+msgstr "informacja o historii wersji"
+
+#: src/main/extractor_metatypes.c:191
+msgid "embedded file size"
+msgstr "osadzony rozmiar pliku"
+
+#: src/main/extractor_metatypes.c:192
+msgid "size of the contents of the container as embedded in the file"
+msgstr "rozmiar treści w kontenerze osadzonym w pliku"
+
+#: src/main/extractor_metatypes.c:193
+msgid "file type"
+msgstr "rodzaj pliku"
+
+#: src/main/extractor_metatypes.c:194
+msgid "standard Macintosh Finder file type information"
+msgstr "standardowa informacja o rodzaju pliku wg Macintosh Findera"
+
+#: src/main/extractor_metatypes.c:196
+msgid "standard Macintosh Finder file creator information"
+msgstr "standardowa informacja o twórcy pliku wg Macintosh Findera"
+
+#: src/main/extractor_metatypes.c:197
+msgid "package name"
+msgstr "nazwa pakietu"
+
+#: src/main/extractor_metatypes.c:198
+msgid "unique identifier for the package"
+msgstr "unikalny identyfikator pakietu"
+
+#: src/main/extractor_metatypes.c:200
+msgid "package version"
+msgstr "wersja pakietu"
+
+#: src/main/extractor_metatypes.c:201
+msgid "version of the software and its package"
+msgstr "wersja programu i jego pakietu"
+
+#: src/main/extractor_metatypes.c:202
+msgid "section"
+msgstr "sekcja"
+
+#: src/main/extractor_metatypes.c:203
+msgid "category the software package belongs to"
+msgstr "kategoria, do której należy pakiet oprogramowania"
+
+#: src/main/extractor_metatypes.c:204
+msgid "upload priority"
+msgstr "priorytet wdrozenia"
+
+#: src/main/extractor_metatypes.c:205
+msgid "priority for promoting the release to production"
+msgstr "priorytet przesłania wydania na produkcję"
+
+#: src/main/extractor_metatypes.c:206
+msgid "dependencies"
+msgstr "zależności"
+
+#: src/main/extractor_metatypes.c:207
+msgid "packages this package depends upon"
+msgstr "pakiety, od których zależy ten pakiet"
+
+#: src/main/extractor_metatypes.c:208
+msgid "conflicting packages"
+msgstr "pakiety w konflikcie"
+
+#: src/main/extractor_metatypes.c:209
+msgid "packages that cannot be installed with this package"
+msgstr "pakiety, które nie mogą być zainstalowane równocześnie z tym pakietem"
+
+#: src/main/extractor_metatypes.c:211
+msgid "replaced packages"
+msgstr "pakiety zastępowane"
+
+#: src/main/extractor_metatypes.c:212
+msgid "packages made obsolete by this package"
+msgstr "pakiety wyłączane z użycia przez ten pakiet"
+
+#: src/main/extractor_metatypes.c:213
+msgid "provides"
+msgstr "dostarczane właściwości"
+
+#: src/main/extractor_metatypes.c:214
+msgid "functionality provided by this package"
+msgstr "funkcjonalność dostarczana przez ten pakiet"
+
+#: src/main/extractor_metatypes.c:215
+msgid "recommendations"
+msgstr "rekomendacje"
+
+#: src/main/extractor_metatypes.c:216
+msgid "packages recommended for installation in conjunction with this package"
+msgstr "pakiety rekomendowane do instalacji w połączeniu z tym pakietem"
+
+#: src/main/extractor_metatypes.c:217
+msgid "suggestions"
+msgstr "sugestie"
+
+#: src/main/extractor_metatypes.c:218
+msgid "packages suggested for installation in conjunction with this package"
+msgstr "pakiety sugerowane do instalacji w połączeniu z tym pakietem"
+
+#: src/main/extractor_metatypes.c:219
+msgid "maintainer"
+msgstr "utrzymujący"
+
+#: src/main/extractor_metatypes.c:220
+msgid "name of the maintainer"
+msgstr "nazwisko utrzymującego"
+
+#: src/main/extractor_metatypes.c:222
+msgid "installed size"
+msgstr "rozmiar po instalacji"
+
+#: src/main/extractor_metatypes.c:223
+msgid "space consumption after installation"
+msgstr "miejsce zajmowane przez pakiet po instalacji"
+
+#: src/main/extractor_metatypes.c:224 src/main/extractor_metatypes.c:304
+msgid "source"
+msgstr "źródło"
+
+#: src/main/extractor_metatypes.c:225
+msgid "original source code"
+msgstr "oryginalny kod źródłowy"
+
+#: src/main/extractor_metatypes.c:226
+msgid "is essential"
+msgstr "jest ważny"
+
+#: src/main/extractor_metatypes.c:227
+msgid "package is marked as essential"
+msgstr "pakiet jest oznaczony jako ważny"
+
+#: src/main/extractor_metatypes.c:228
+msgid "target architecture"
+msgstr "architektura docelowa"
+
+#: src/main/extractor_metatypes.c:229
+msgid "hardware architecture the contents can be used for"
+msgstr "architektura sprzętu, dla którego może być użyty pakiet"
+
+#: src/main/extractor_metatypes.c:230
+msgid "pre-dependency"
+msgstr "wczesna zależność"
+
+#: src/main/extractor_metatypes.c:231
+msgid "dependency that must be satisfied before installation"
+msgstr "zależność, która musi być spełniona przed instalacją"
+
+#: src/main/extractor_metatypes.c:233
+msgid "license"
+msgstr "licencja"
+
+#: src/main/extractor_metatypes.c:234
+msgid "applicable copyright license"
+msgstr "stosowana licencja"
+
+#: src/main/extractor_metatypes.c:235
+msgid "distribution"
+msgstr "dystrybucja"
+
+#: src/main/extractor_metatypes.c:236
+msgid "distribution the package is a part of"
+msgstr "dystrybucja, której częścią jest pakiet"
+
+#: src/main/extractor_metatypes.c:237
+msgid "build host"
+msgstr "host budowania"
+
+#: src/main/extractor_metatypes.c:238
+msgid "machine the package was build on"
+msgstr "maszyna, na której pakiet został zbudowany"
+
+#: src/main/extractor_metatypes.c:239
+msgid "vendor"
+msgstr "dostawca"
+
+#: src/main/extractor_metatypes.c:240
+msgid "name of the software vendor"
+msgstr "nazwa dostawcy oprogramowania"
+
+#: src/main/extractor_metatypes.c:241
+msgid "target operating system"
+msgstr "docelowy system operacyjny"
+
+#: src/main/extractor_metatypes.c:242
+msgid "operating system for which this package was made"
+msgstr "system operacyjny, dla którego pakiet został zrobiony"
+
+#: src/main/extractor_metatypes.c:244
+msgid "software version"
+msgstr "wersja oprogramowania"
+
+#: src/main/extractor_metatypes.c:245
+msgid "version of the software contained in the file"
+msgstr "wersja oprogramowania zawartego w pliku"
+
+#: src/main/extractor_metatypes.c:246
+msgid "target platform"
+msgstr "platforma docelowa"
+
+#: src/main/extractor_metatypes.c:247
+msgid "name of the architecture, operating system and distribution this package is for"
+msgstr "nazwa architektury, systemu operacyjnego i dystrybucji, dla której jest ten pakiet"
+
+#: src/main/extractor_metatypes.c:248
+msgid "resource type"
+msgstr "rodzaj zasobu"
+
+#: src/main/extractor_metatypes.c:249
+msgid "categorization of the nature of the resource that is more specific than the file format"
+msgstr "kategoryzacja charakteru zasobu bardziej konkretna od formatu pliku"
+
+#: src/main/extractor_metatypes.c:250
+msgid "library search path"
+msgstr "ścieżka poszukiwań bibliotek"
+
+#: src/main/extractor_metatypes.c:251
+msgid "path in the file system to be considered when looking for required libraries"
+msgstr "ścieżka w systemie plików, która ma być uwzględniana przy szukaniu wymaganych bibliotek"
+
+#: src/main/extractor_metatypes.c:252
+msgid "library dependency"
+msgstr "zależność od biblioteki"
+
+#: src/main/extractor_metatypes.c:253
+msgid "name of a library that this file depends on"
+msgstr "nazwa biblioteki, od której zależy ten plik"
+
+#: src/main/extractor_metatypes.c:255 src/main/extractor_metatypes.c:256
+msgid "camera make"
+msgstr "marka aparatu"
+
+#: src/main/extractor_metatypes.c:257 src/main/extractor_metatypes.c:258
+msgid "camera model"
+msgstr "model aparatu"
+
+#: src/main/extractor_metatypes.c:259 src/main/extractor_metatypes.c:260
+msgid "exposure"
+msgstr "ekspozycja"
+
+#: src/main/extractor_metatypes.c:261 src/main/extractor_metatypes.c:262
+msgid "aperture"
+msgstr "przysłona"
+
+#: src/main/extractor_metatypes.c:263 src/main/extractor_metatypes.c:264
+msgid "exposure bias"
+msgstr "odchylenie ekspozycji"
+
+#: src/main/extractor_metatypes.c:266 src/main/extractor_metatypes.c:267
+msgid "flash"
+msgstr "flesz"
+
+#: src/main/extractor_metatypes.c:268 src/main/extractor_metatypes.c:269
+msgid "flash bias"
+msgstr "odchylenie flesza"
+
+#: src/main/extractor_metatypes.c:270 src/main/extractor_metatypes.c:271
+msgid "focal length"
+msgstr "długość ogniskowej"
+
+#: src/main/extractor_metatypes.c:272 src/main/extractor_metatypes.c:273
+msgid "focal length 35mm"
+msgstr "ogniskowa 35mm"
+
+#: src/main/extractor_metatypes.c:274 src/main/extractor_metatypes.c:275
+msgid "iso speed"
+msgstr "czułość ISO"
+
+#: src/main/extractor_metatypes.c:277 src/main/extractor_metatypes.c:278
+msgid "exposure mode"
+msgstr "tryb ekspozycji"
+
+#: src/main/extractor_metatypes.c:279 src/main/extractor_metatypes.c:280
+msgid "metering mode"
+msgstr "tryb pomiaru"
+
+#: src/main/extractor_metatypes.c:281 src/main/extractor_metatypes.c:282
+msgid "macro mode"
+msgstr "tryb makro"
+
+#: src/main/extractor_metatypes.c:283 src/main/extractor_metatypes.c:284
+msgid "image quality"
+msgstr "jakość obrazu"
+
+#: src/main/extractor_metatypes.c:285 src/main/extractor_metatypes.c:286
+msgid "white balance"
+msgstr "balans bieli"
+
+#: src/main/extractor_metatypes.c:288 src/main/extractor_metatypes.c:289
+msgid "orientation"
+msgstr "orientacja"
+
+#: src/main/extractor_metatypes.c:290 src/main/extractor_metatypes.c:291
+msgid "magnification"
+msgstr "powiększenie"
+
+#: src/main/extractor_metatypes.c:292
+msgid "image dimensions"
+msgstr "wymiary obrazu"
+
+#: src/main/extractor_metatypes.c:293
+msgid "size of the image in pixels (width times height)"
+msgstr "rozmiar obrazu w pikselach (szerokość razy wysokość)"
+
+#: src/main/extractor_metatypes.c:294 src/main/extractor_metatypes.c:295
+msgid "produced by software"
+msgstr "oprogramowanie tworzące"
+
+#: src/main/extractor_metatypes.c:299
+msgid "thumbnail"
+msgstr "miniaturka"
+
+#: src/main/extractor_metatypes.c:300
+msgid "smaller version of the image for previewing"
+msgstr "mniejsza wersja obrazu do podglądu"
+
+#: src/main/extractor_metatypes.c:302
+msgid "image resolution"
+msgstr "rozdzielczość obrazu"
+
+#: src/main/extractor_metatypes.c:303
+msgid "resolution in dots per inch"
+msgstr "rozdzielczość w punktach na cal"
+
+#: src/main/extractor_metatypes.c:305
+msgid "Originating entity"
+msgstr "przedmiot początkowy"
+
+#: src/main/extractor_metatypes.c:306
+msgid "character set"
+msgstr "zestaw znaków"
+
+#: src/main/extractor_metatypes.c:307
+msgid "character encoding used"
+msgstr "użyte kodowanie znaków"
+
+#: src/main/extractor_metatypes.c:308
+msgid "line count"
+msgstr "liczba linii"
+
+#: src/main/extractor_metatypes.c:309
+msgid "number of lines"
+msgstr "liczba linii"
+
+#: src/main/extractor_metatypes.c:310
+msgid "paragraph count"
+msgstr "liczba akapitów"
+
+#: src/main/extractor_metatypes.c:311
+msgid "number of paragraphs"
+msgstr "liczba akapitów"
+
+#: src/main/extractor_metatypes.c:313
+msgid "word count"
+msgstr "liczba słów"
+
+#: src/main/extractor_metatypes.c:314
+msgid "number of words"
+msgstr "liczba słów"
+
+#: src/main/extractor_metatypes.c:315
+msgid "character count"
+msgstr "liczba znaków"
+
+#: src/main/extractor_metatypes.c:316
+msgid "number of characters"
+msgstr "liczba znaków"
+
+#: src/main/extractor_metatypes.c:317 src/main/extractor_metatypes.c:318
+msgid "page orientation"
+msgstr "orientacja strony"
+
+#: src/main/extractor_metatypes.c:319 src/main/extractor_metatypes.c:320
+msgid "paper size"
+msgstr "rozmiar papieru"
+
+#: src/main/extractor_metatypes.c:321
+msgid "template"
+msgstr "szablon"
+
+#: src/main/extractor_metatypes.c:322
+msgid "template the document uses or is based on"
+msgstr "szablon wykorzystywany przez dokument"
+
+#: src/main/extractor_metatypes.c:324 src/main/extractor_metatypes.c:325
+msgid "company"
+msgstr "firma"
+
+#: src/main/extractor_metatypes.c:326 src/main/extractor_metatypes.c:327
+msgid "manager"
+msgstr "zarządca"
+
+#: src/main/extractor_metatypes.c:328 src/main/extractor_metatypes.c:329
+msgid "revision number"
+msgstr "numer rewizji"
+
+#: src/main/extractor_metatypes.c:330
+msgid "duration"
+msgstr "czas trwania"
+
+#: src/main/extractor_metatypes.c:331
+msgid "play time for the medium"
+msgstr "czas odtwarzania nośnika"
+
+#: src/main/extractor_metatypes.c:332
+msgid "album"
+msgstr "album"
+
+#: src/main/extractor_metatypes.c:333
+msgid "name of the album"
+msgstr "nazwa albumu"
+
+#: src/main/extractor_metatypes.c:335
+msgid "artist"
+msgstr "artysta"
+
+#: src/main/extractor_metatypes.c:336
+msgid "name of the artist or band"
+msgstr "nazwisko/nazwa artysty lub zespołu"
+
+#: src/main/extractor_metatypes.c:337 src/main/extractor_metatypes.c:338
+msgid "genre"
+msgstr "gatunek"
+
+#: src/main/extractor_metatypes.c:339
+msgid "track number"
+msgstr "numer ścieżki"
+
+#: src/main/extractor_metatypes.c:340
+msgid "original number of the track on the distribution medium"
+msgstr "oryginalny numer ścieżki na nośniku dystrybucyjnym"
+
+#: src/main/extractor_metatypes.c:341
+msgid "disk number"
+msgstr "numer płyty"
+
+#: src/main/extractor_metatypes.c:342
+msgid "number of the disk in a multi-disk (or volume) distribution"
+msgstr "numer dysku w wydaniu wielopłytowym (lub wielowoluminowym)"
+
+#: src/main/extractor_metatypes.c:343
+msgid "performer"
+msgstr "wykonawca"
+
+#: src/main/extractor_metatypes.c:344
+msgid "The artist(s) who performed the work (conductor, orchestra, soloists, actor, etc.)"
+msgstr "artysta/artyści wykonujący utwory (dyrygent, orkiestra, soliści, aktor itp.)"
+
+#: src/main/extractor_metatypes.c:346
+msgid "contact"
+msgstr "kontakt"
+
+#: src/main/extractor_metatypes.c:347
+msgid "Contact information for the creator or distributor"
+msgstr "informacje kontaktowe do twórcy lub dystrybutora"
+
+#: src/main/extractor_metatypes.c:348
+msgid "song version"
+msgstr "wersja utworu"
+
+#: src/main/extractor_metatypes.c:349
+msgid "name of the version of the song (i.e. remix information)"
+msgstr "nazwa wersji utworu (np. informacje o remiksie)"
+
+#: src/main/extractor_metatypes.c:350
+msgid "picture"
+msgstr "grafika"
+
+#: src/main/extractor_metatypes.c:351
+msgid "associated misc. picture"
+msgstr "dowolna powiązana grafika"
+
+#: src/main/extractor_metatypes.c:352
+msgid "cover picture"
+msgstr "obraz okładki"
+
+#: src/main/extractor_metatypes.c:353
+msgid "picture of the cover of the distribution medium"
+msgstr "obraz okładki nośnika dystrybucyjnego"
+
+#: src/main/extractor_metatypes.c:354
+msgid "contributor picture"
+msgstr "zdjęcie współpracownika"
+
+#: src/main/extractor_metatypes.c:355
+msgid "picture of one of the contributors"
+msgstr "zdjęcie jednego ze współpracowników"
+
+#: src/main/extractor_metatypes.c:357
+msgid "event picture"
+msgstr "zdjęcie wydarzenia"
+
+#: src/main/extractor_metatypes.c:358
+msgid "picture of an associated event"
+msgstr "zdjęcie powiązanego wydarzenia"
+
+#: src/main/extractor_metatypes.c:359
+msgid "logo"
+msgstr "logo"
+
+#: src/main/extractor_metatypes.c:360
+msgid "logo of an associated organization"
+msgstr "logo powiązanej organizacji"
+
+#: src/main/extractor_metatypes.c:361
+msgid "broadcast television system"
+msgstr "system transmisji telewizyjnej"
+
+#: src/main/extractor_metatypes.c:362
+msgid "name of the television system for which the data is coded"
+msgstr "nazwa systemu telewizji, dla którego zostały zakodowane dane"
+
+#: src/main/extractor_metatypes.c:363
+msgid "source device"
+msgstr "urządzenie źródłowe"
+
+#: src/main/extractor_metatypes.c:364
+msgid "device used to create the object"
+msgstr "urządzenie użyte przy tworzeniu obiektu"
+
+#: src/main/extractor_metatypes.c:365
+msgid "disclaimer"
+msgstr "zastrzeżenia"
+
+#: src/main/extractor_metatypes.c:366
+msgid "legal disclaimer"
+msgstr "zastrzeżenia prawne"
+
+#: src/main/extractor_metatypes.c:368
+msgid "warning"
+msgstr "ostrzeżenie"
+
+#: src/main/extractor_metatypes.c:369
+msgid "warning about the nature of the content"
+msgstr "ostrzeżenie o charakterze treści"
+
+#: src/main/extractor_metatypes.c:370
+msgid "page order"
+msgstr "kolejność stron"
+
+#: src/main/extractor_metatypes.c:371
+msgid "order of the pages"
+msgstr "kolejność stron"
+
+#: src/main/extractor_metatypes.c:372
+msgid "writer"
+msgstr "pisarz"
+
+#: src/main/extractor_metatypes.c:373
+msgid "contributing writer"
+msgstr "pisarz współpracujący"
+
+#: src/main/extractor_metatypes.c:374 src/main/extractor_metatypes.c:375
+msgid "product version"
+msgstr "wersja produktu"
+
+#: src/main/extractor_metatypes.c:376
+msgid "contributor"
+msgstr "współpracownik"
+
+#: src/main/extractor_metatypes.c:377
+msgid "name of a contributor"
+msgstr "nazwisko współpracownika"
+
+#: src/main/extractor_metatypes.c:379
+msgid "movie director"
+msgstr "reżyser filmu"
+
+#: src/main/extractor_metatypes.c:380
+msgid "name of the director"
+msgstr "nazwisko reżysera"
+
+#: src/main/extractor_metatypes.c:381
+msgid "network"
+msgstr "sieć"
+
+#: src/main/extractor_metatypes.c:382
+msgid "name of the broadcasting network or station"
+msgstr "nazwa sieci lub stacji transmitującej"
+
+#: src/main/extractor_metatypes.c:383
+msgid "show"
+msgstr "przedstawienie"
+
+#: src/main/extractor_metatypes.c:384
+msgid "name of the show"
+msgstr "nazwa przedstawienia"
+
+#: src/main/extractor_metatypes.c:385
+msgid "chapter name"
+msgstr "nazwa rozdziału"
+
+#: src/main/extractor_metatypes.c:386
+msgid "name of the chapter"
+msgstr "nazwa rozdziału"
+
+#: src/main/extractor_metatypes.c:387
+msgid "song count"
+msgstr "liczba utworów"
+
+#: src/main/extractor_metatypes.c:388
+msgid "number of songs"
+msgstr "liczba utworów"
+
+#: src/main/extractor_metatypes.c:390
+msgid "starting song"
+msgstr "utwór początkowy"
+
+#: src/main/extractor_metatypes.c:391
+msgid "number of the first song to play"
+msgstr "numer pierwszego utworu do odtwarzania"
+
+#: src/main/extractor_metatypes.c:392
+msgid "play counter"
+msgstr "liczba odtworzeń"
+
+#: src/main/extractor_metatypes.c:393
+msgid "number of times the media has been played"
+msgstr "liczba razy, które nośnik był odtwarzany"
+
+#: src/main/extractor_metatypes.c:394
+msgid "conductor"
+msgstr "dyrygent"
+
+#: src/main/extractor_metatypes.c:395
+msgid "name of the conductor"
+msgstr "nazwisko dyrygenta"
+
+#: src/main/extractor_metatypes.c:396
+msgid "interpretation"
+msgstr "interpretacja"
+
+#: src/main/extractor_metatypes.c:397
+msgid "information about the people behind interpretations of an existing piece"
+msgstr "informacje o osobach odpowiedzialnych za interpretacje istniejącego utworu"
+
+#: src/main/extractor_metatypes.c:398
+msgid "composer"
+msgstr "kompozytor"
+
+#: src/main/extractor_metatypes.c:399
+msgid "name of the composer"
+msgstr "nazwisko kompozytora"
+
+#: src/main/extractor_metatypes.c:401 src/main/extractor_metatypes.c:402
+msgid "beats per minute"
+msgstr "uderzeń na minutę"
+
+#: src/main/extractor_metatypes.c:403
+msgid "encoded by"
+msgstr "kodujący"
+
+#: src/main/extractor_metatypes.c:404
+msgid "name of person or organization that encoded the file"
+msgstr "nazwisko/nazwa osoby lub organizacji, która zakodowała plik"
+
+#: src/main/extractor_metatypes.c:405
+msgid "original title"
+msgstr "tytuł oryginalny"
+
+#: src/main/extractor_metatypes.c:406
+msgid "title of the original work"
+msgstr "tytuł oryginalnego dzieła"
+
+#: src/main/extractor_metatypes.c:407
+msgid "original artist"
+msgstr "artysta oryginalny"
+
+#: src/main/extractor_metatypes.c:408
+msgid "name of the original artist"
+msgstr "nazwisko oryginalnego artysty"
+
+#: src/main/extractor_metatypes.c:409
+msgid "original writer"
+msgstr "pisarz oryginalny"
+
+#: src/main/extractor_metatypes.c:410
+msgid "name of the original lyricist or writer"
+msgstr "nazwisko oryginalnego poety lub pisarza"
+
+#: src/main/extractor_metatypes.c:412
+msgid "original release year"
+msgstr "oryginalny rok wydania"
+
+#: src/main/extractor_metatypes.c:413
+msgid "year of the original release"
+msgstr "rok oryginalnego wydania"
+
+#: src/main/extractor_metatypes.c:414
+msgid "original performer"
+msgstr "wykonawca oryginalny"
+
+#: src/main/extractor_metatypes.c:415
+msgid "name of the original performer"
+msgstr "nazwa oryginalnego wykonawcy"
+
+#: src/main/extractor_metatypes.c:416
+msgid "lyrics"
+msgstr "tekst"
+
+#: src/main/extractor_metatypes.c:417
+msgid "lyrics of the song or text description of vocal activities"
+msgstr "tekst utworu lub tekstowy opis dotyczący wokalu"
+
+#: src/main/extractor_metatypes.c:418
+msgid "popularity"
+msgstr "popularność"
+
+#: src/main/extractor_metatypes.c:419
+msgid "information about the file's popularity"
+msgstr "informacje o popularności pliku"
+
+#: src/main/extractor_metatypes.c:420
+msgid "licensee"
+msgstr "licencjobiorca"
+
+#: src/main/extractor_metatypes.c:421
+msgid "name of the owner or licensee of the file"
+msgstr "nazwisko/nazwa właściciela lub licencjobiorcy pliku"
+
+#: src/main/extractor_metatypes.c:423
+msgid "musician credit list"
+msgstr "lista podziękowań dla muzyków"
+
+#: src/main/extractor_metatypes.c:424
+msgid "names of contributing musicians"
+msgstr "nazwiska muzyków współpracujących"
+
+#: src/main/extractor_metatypes.c:425
+msgid "mood"
+msgstr "nastrój"
+
+#: src/main/extractor_metatypes.c:426
+msgid "keywords reflecting the mood of the piece"
+msgstr "słowa kluczowe odzwierciedlające nastrój utworu"
+
+#: src/main/extractor_metatypes.c:427
+msgid "subtitle"
+msgstr "podtytuł"
+
+#: src/main/extractor_metatypes.c:428
+msgid "subtitle of this part"
+msgstr "podtytuł tej części"
+
+#: src/main/extractor_metatypes.c:429
+msgid "display type"
+msgstr "rodzaj ekranu"
+
+#: src/main/extractor_metatypes.c:430
+msgid "what rendering method should be used to display this item"
+msgstr "metoda renderowania, jaka powinna być użyta do wyświetlania"
+
+#: src/main/extractor_metatypes.c:431
+msgid "full data"
+msgstr "pełne dane"
+
+#: src/main/extractor_metatypes.c:432
+msgid "entry that contains the full, original binary data (not really meta data)"
+msgstr "wpis zawierający pełne, oryginalne dane binarne (nie metadane)"
+
+#: src/main/extractor_metatypes.c:434
+msgid "rating"
+msgstr "ocena"
+
+#: src/main/extractor_metatypes.c:435
+msgid "rating of the content"
+msgstr "ocena treści"
+
+#: src/main/extractor_metatypes.c:436 src/main/extractor_metatypes.c:437
+msgid "organization"
+msgstr "organizacja"
+
+#: src/main/extractor_metatypes.c:438 src/main/extractor_metatypes.c:439
+msgid "ripper"
+msgstr "kopiujący"
+
+#: src/main/extractor_metatypes.c:440 src/main/extractor_metatypes.c:441
+msgid "producer"
+msgstr "producent"
+
+#: src/main/extractor_metatypes.c:442
+msgid "group"
+msgstr "grupa"
+
+#: src/main/extractor_metatypes.c:443
+msgid "name of the group or band"
+msgstr "nazwa grupy lub zespołu"
+
+#: src/main/extractor_metatypes.c:445
+msgid "original filename"
+msgstr "oryginalna nazwa pliku"
+
+#: src/main/extractor_metatypes.c:446
+msgid "name of the original file (reserved for GNUnet)"
+msgstr "nazwa oryginalnego pliku (zarezerwowane dla GNUneta)"
+
+#: src/main/extractor_metatypes.c:447
+msgid "disc count"
+msgstr "liczba płyt"
+
+#: src/main/extractor_metatypes.c:448
+msgid "count of discs inside collection this disc belongs to"
+msgstr "liczba płyt w zestawie, do którego należy ta płyta"
+
+#: src/main/extractor_metatypes.c:449
+msgid "codec"
+msgstr "kodek"
+
+#: src/main/extractor_metatypes.c:450
+msgid "codec the data is stored in"
+msgstr "kodek, przy użyciu którego zostały zapisane dane"
+
+#: src/main/extractor_metatypes.c:451
+msgid "video codec"
+msgstr "kodek obrazu"
+
+#: src/main/extractor_metatypes.c:452
+msgid "codec the video data is stored in"
+msgstr "kodek, przy użyciu którego zostały zapisane dane wideo"
+
+#: src/main/extractor_metatypes.c:453
+msgid "audio codec"
+msgstr "kodek dźwięku"
+
+#: src/main/extractor_metatypes.c:454
+msgid "codec the audio data is stored in"
+msgstr "kodek, przy użyciu którego zostały zapisane dane dźwiękowe"
+
+#: src/main/extractor_metatypes.c:456
+msgid "subtitle codec"
+msgstr "kodek napisów"
+
+#: src/main/extractor_metatypes.c:457
+msgid "codec/format the subtitle data is stored in"
+msgstr "kodek/format, w jakim zostały zapisane napisy"
+
+#: src/main/extractor_metatypes.c:458
+msgid "container format"
+msgstr "format kontenera"
+
+#: src/main/extractor_metatypes.c:459
+msgid "container format the data is stored in"
+msgstr "format kontenera, w którym zostały zapisane dane"
+
+#: src/main/extractor_metatypes.c:460
+msgid "bitrate"
+msgstr "prędkość transmisji"
+
+#: src/main/extractor_metatypes.c:461
+msgid "exact or average bitrate in bits/s"
+msgstr "dokładna lub średnia prędkość transmisji w bitach na sekundę"
+
+#: src/main/extractor_metatypes.c:462
+msgid "nominal bitrate"
+msgstr "nominalna prędkość transmisji"
+
+#: src/main/extractor_metatypes.c:463
+msgid "nominal bitrate in bits/s. The actual bitrate might be different from this target bitrate."
+msgstr "nominalna prędkość transmisji w bitach na sekundę; faktyczna prędkość może się różnić od tej docelowej"
+
+#: src/main/extractor_metatypes.c:464
+msgid "minimum bitrate"
+msgstr "minimalna prędkość transmisji"
+
+#: src/main/extractor_metatypes.c:465
+msgid "minimum bitrate in bits/s"
+msgstr "minimalna prędkość transmisji w bitach na sekundę"
+
+#: src/main/extractor_metatypes.c:467
+msgid "maximum bitrate"
+msgstr "maksymalna prędkość transmisji"
+
+#: src/main/extractor_metatypes.c:468
+msgid "maximum bitrate in bits/s"
+msgstr "maksymalna prędkość transmisji w bitach na sekundę"
+
+#: src/main/extractor_metatypes.c:469
+msgid "serial"
+msgstr "numer seryjny"
+
+#: src/main/extractor_metatypes.c:470
+msgid "serial number of track"
+msgstr "numer seryjny ścieżki"
+
+#: src/main/extractor_metatypes.c:471
+msgid "encoder"
+msgstr "koder"
+
+#: src/main/extractor_metatypes.c:472
+msgid "encoder used to encode this stream"
+msgstr "program kodujący użyty do zakodowania tego strumienia"
+
+#: src/main/extractor_metatypes.c:473
+msgid "encoder version"
+msgstr "wersja kodera"
+
+#: src/main/extractor_metatypes.c:474
+msgid "version of the encoder used to encode this stream"
+msgstr "wersja programu kodującego użytego do zakodowania tego strumienia"
+
+#: src/main/extractor_metatypes.c:475
+msgid "track gain"
+msgstr "wzmocnienie ścieżki"
+
+#: src/main/extractor_metatypes.c:476
+msgid "track gain in db"
+msgstr "wzmocnienie ścieżki w db"
+
+#: src/main/extractor_metatypes.c:478
+msgid "track peak"
+msgstr "poziom szczytowy ścieżki"
+
+#: src/main/extractor_metatypes.c:479
+msgid "peak of the track"
+msgstr "poziom szczytowy ścieżki"
+
+#: src/main/extractor_metatypes.c:480
+msgid "album gain"
+msgstr "wzmocnienie albumu"
+
+#: src/main/extractor_metatypes.c:481
+msgid "album gain in db"
+msgstr "wzmocnienie albumu w db"
+
+#: src/main/extractor_metatypes.c:482
+msgid "album peak"
+msgstr "poziom szczytowy albumu"
+
+#: src/main/extractor_metatypes.c:483
+msgid "peak of the album"
+msgstr "poziom szczytowy albumu"
+
+#: src/main/extractor_metatypes.c:484
+msgid "reference level"
+msgstr "poziom odniesienia"
+
+#: src/main/extractor_metatypes.c:485
+msgid "reference level of track and album gain values"
+msgstr "poziom odniesienia"
+
+#: src/main/extractor_metatypes.c:486
+msgid "location name"
+msgstr "nazwa miejsca"
+
+#: src/main/extractor_metatypes.c:487
+msgid "human readable descriptive location of where the media has been recorded or produced"
+msgstr "czytelny dla człowieka opis miejsca, gdzie wykonano lub wyprodukowano nagranie"
+
+#: src/main/extractor_metatypes.c:489
+msgid "location elevation"
+msgstr "wysokość miejsca"
+
+#: src/main/extractor_metatypes.c:490
+msgid "geo elevation of where the media has been recorded or produced in meters according to WGS84 (zero is average sea level)"
+msgstr "wysokość geograficzna miejsca, gdzie wykonano lub wyprodukowano nagranie w metrach zgodnie z WGS84 (zero to średni poziom morza)"
+
+#: src/main/extractor_metatypes.c:491
+msgid "location horizontal error"
+msgstr "błąd lokalizacji poziomej miejsca"
+
+#: src/main/extractor_metatypes.c:492
+msgid "represents the expected error on the horizontal positioning in meters"
+msgstr "spodziewany błąd lokalizacji poziomej w metrach"
+
+#: src/main/extractor_metatypes.c:493
+msgid "location movement speed"
+msgstr "szybkość ruchu miejsca"
+
+#: src/main/extractor_metatypes.c:494
+msgid "speed of the capturing device when performing the capture. Represented in m/s"
+msgstr "szybkość ruchu urządzenia nagrywającego podczas nagrania, wyrażona w m/s"
+
+#: src/main/extractor_metatypes.c:495
+msgid "location movement direction"
+msgstr "kierunek ruchu miejsca"
+
+#: src/main/extractor_metatypes.c:496
+msgid "indicates the movement direction of the device performing the capture of a media. It is represented as degrees in floating point representation, 0 means the geographic north, and increases clockwise"
+msgstr "kierunek ruchu urządzenia nagrywającego podczas nagrania; wyrażony w stopniach w reprezentacji zmiennoprzecinkowej, 0 oznacza północ geograficzną i rośnie zgodnie z ruchem wskazówek zegara"
+
+#: src/main/extractor_metatypes.c:497
+msgid "location capture direction"
+msgstr "kierunek wykonywania nagrania"
+
+#: src/main/extractor_metatypes.c:498
+msgid "indicates the direction the device is pointing to when capturing a media. It is represented as degrees in floating point representation, 0 means the geographic north, and increases clockwise"
+msgstr "kierunek skierowania urządzenia nagrywającego podczas nagrania; wyrażony w stopniach w reprezentacji zmiennoprzecinkowej, 0 oznacza północ geograficzną i rośnie zgodnie z ruchem wskazówek zegara"
+
+#: src/main/extractor_metatypes.c:500
+msgid "show episode number"
+msgstr "numer epizodu przedstawienia"
+
+#: src/main/extractor_metatypes.c:501
+msgid "number of the episode within a season/show"
+msgstr "numer epizodu w sezonie/przedstawieniu"
+
+#: src/main/extractor_metatypes.c:502
+msgid "show season number"
+msgstr "numer sezonu przestawienia"
+
+#: src/main/extractor_metatypes.c:503
+msgid "number of the season of a show/series"
+msgstr "numer sezonu przestawienia/serialu"
+
+#: src/main/extractor_metatypes.c:504
+msgid "gourping"
+msgstr "grupowanie"
+
+#: src/main/extractor_metatypes.c:505
+msgid "groups together media that are related and spans multiple tracks. An example are multiple pieces of a concerto"
+msgstr "grupowanie utworów powiązanych ze sobą, zajmujących wiele ścieżek - np. wielu fragmentów koncertu"
+
+#: src/main/extractor_metatypes.c:506
+msgid "device manufacturer"
+msgstr "producent urządzenia"
+
+#: src/main/extractor_metatypes.c:507
+msgid "manufacturer of the device used to create the media"
+msgstr "producent urządzenia wykorzystanego do wykonania nagrania"
+
+#: src/main/extractor_metatypes.c:508
+msgid "device model"
+msgstr "model urządzenia"
+
+#: src/main/extractor_metatypes.c:509
+msgid "model of the device used to create the media"
+msgstr "model urządzenia wykorzystanego do wykonania nagrania"
+
+#: src/main/extractor_metatypes.c:511
+msgid "audio language"
+msgstr "język dźwięku"
+
+#: src/main/extractor_metatypes.c:512
+msgid "language of the audio track"
+msgstr "język ścieżki dźwiękowej"
+
+#: src/main/extractor_metatypes.c:513
+msgid "channels"
+msgstr "liczba kanałów"
+
+#: src/main/extractor_metatypes.c:514
+msgid "number of audio channels"
+msgstr "liczba kanałów dźwięku"
+
+#: src/main/extractor_metatypes.c:515
+msgid "sample rate"
+msgstr "częstotliwość próbkowania"
+
+#: src/main/extractor_metatypes.c:516
+msgid "sample rate of the audio track"
+msgstr "częstotliwość próbkowania ścieżki dźwiękowej"
+
+#: src/main/extractor_metatypes.c:517
+msgid "audio depth"
+msgstr "głębia dźwięku"
+
+#: src/main/extractor_metatypes.c:518
+msgid "number of bits per audio sample"
+msgstr "liczba bitów na próbkę dźwięku"
+
+#: src/main/extractor_metatypes.c:519
+msgid "audio bitrate"
+msgstr "prędkosć transmisji dźwięku"
+
+#: src/main/extractor_metatypes.c:520
+msgid "bitrate of the audio track"
+msgstr "prędkość transmisji ścieżki dźwiękowej"
+
+#: src/main/extractor_metatypes.c:522 src/main/extractor_metatypes.c:523
+msgid "maximum audio bitrate"
+msgstr "maksymalna prędkość transmisji dźwięku"
+
+#: src/main/extractor_metatypes.c:524
+msgid "video dimensions"
+msgstr "wymiary obrazu"
+
+#: src/main/extractor_metatypes.c:525
+msgid "width and height of the video track (WxH)"
+msgstr "szerokośc i wysokość ścieżki obrazu (szer. x wys.)"
+
+#: src/main/extractor_metatypes.c:526
+msgid "video depth"
+msgstr "głębia obrazu"
+
+#: src/main/extractor_metatypes.c:527
+msgid "numbers of bits per pixel"
+msgstr "liczba bitów na piksel"
+
+#: src/main/extractor_metatypes.c:528
+msgid "frame rate"
+msgstr "częstotliwość odświeżania"
+
+#: src/main/extractor_metatypes.c:529
+msgid "number of frames per second (as D/N or floating point)"
+msgstr "liczba klatek na sekundę (jako M/L lub zmiennoprzecinkowa)"
+
+#: src/main/extractor_metatypes.c:530
+msgid "pixel aspect ratio"
+msgstr "proporcje piksela"
+
+#: src/main/extractor_metatypes.c:531
+msgid "pixel aspect ratio (as D/N)"
+msgstr "proporcje piksela (jako M/L)"
+
+#: src/main/extractor_metatypes.c:533 src/main/extractor_metatypes.c:534
+msgid "video bitrate"
+msgstr "prędkość transmisji obrazu"
+
+#: src/main/extractor_metatypes.c:535 src/main/extractor_metatypes.c:536
+msgid "maximum video bitrate"
+msgstr "maksymalna prędkość transmisji obrazu"
+
+#: src/main/extractor_metatypes.c:537
+msgid "subtitle language"
+msgstr "język napisów"
+
+#: src/main/extractor_metatypes.c:538
+msgid "language of the subtitle track"
+msgstr "język ścieżki napisów"
+
+#: src/main/extractor_metatypes.c:539
+msgid "video language"
+msgstr "język obrazu"
+
+#: src/main/extractor_metatypes.c:540
+msgid "language of the video track"
+msgstr "język ścieżki wideo"
+
+#: src/main/extractor_metatypes.c:541
+msgid "table of contents"
+msgstr "spis treści"
+
+#: src/main/extractor_metatypes.c:542
+msgid "chapters, contents or bookmarks (in xml format)"
+msgstr "rozdziały, treść lub zakładki (w formacie XML)"
+
+#: src/main/extractor_metatypes.c:544
+msgid "video duration"
+msgstr "czas trwania filmu"
+
+#: src/main/extractor_metatypes.c:545
+msgid "duration of a video stream"
+msgstr "czas trwania strumienia wideo"
+
+#: src/main/extractor_metatypes.c:546
+msgid "audio duration"
+msgstr "czas trwania dźwięku"
+
+#: src/main/extractor_metatypes.c:547
+msgid "duration of an audio stream"
+msgstr "czas trwania strumienia dźwiękowego"
+
+#: src/main/extractor_metatypes.c:548
+msgid "subtitle duration"
+msgstr "czas trwania napisów"
+
+#: src/main/extractor_metatypes.c:549
+msgid "duration of a subtitle stream"
+msgstr "czas trwania strumienia napisów"
+
+#: src/main/extractor_metatypes.c:551 src/main/extractor_metatypes.c:552
+msgid "last"
+msgstr "koniec"
+
+#: src/main/getopt.c:684
+#, c-format
+msgid "%s: option `%s' is ambiguous\n"
+msgstr "%s: opcja `%s' jest niejednoznaczna\n"
+
+#: src/main/getopt.c:709
+#, c-format
+msgid "%s: option `--%s' doesn't allow an argument\n"
+msgstr "%s: opcja `--%s' nie może mieć argumentów\n"
+
+#: src/main/getopt.c:715
+#, c-format
+msgid "%s: option `%c%s' doesn't allow an argument\n"
+msgstr "%s: opcja `%c%s' nie może mieć argumentów\n"
+
+#: src/main/getopt.c:732 src/main/getopt.c:903
+#, c-format
+msgid "%s: option `%s' requires an argument\n"
+msgstr "%s: opcja `%s' musi mieć argument\n"
+
+#: src/main/getopt.c:761
+#, c-format
+msgid "%s: unrecognized option `--%s'\n"
+msgstr "%s: nieznana opcja `--%s'\n"
+
+#: src/main/getopt.c:765
+#, c-format
+msgid "%s: unrecognized option `%c%s'\n"
+msgstr "%s: nieznana opcja `%c%s'\n"
+
+#: src/main/getopt.c:791
+#, c-format
+msgid "%s: illegal option -- %c\n"
+msgstr "%s: niewłaściwa opcja -- %c\n"
+
+#: src/main/getopt.c:793
+#, c-format
+msgid "%s: invalid option -- %c\n"
+msgstr "%s: błędna opcja -- %c\n"
+
+#: src/main/getopt.c:822 src/main/getopt.c:952
+#, c-format
+msgid "%s: option requires an argument -- %c\n"
+msgstr "%s: opcja musi mieć argument -- %c\n"
+
+#: src/main/getopt.c:870
+#, c-format
+msgid "%s: option `-W %s' is ambiguous\n"
+msgstr "%s: opcja `-W %s' jest niejednoznaczna\n"
+
+#: src/main/getopt.c:888
+#, c-format
+msgid "%s: option `-W %s' doesn't allow an argument\n"
+msgstr "%s: opcja `-W %s' nie może mieć argumentów\n"
+
+#: src/plugins/flac_extractor.c:314
+#, c-format
+msgid "%u Hz, %u channels"
+msgstr "%u Hz, kanałów: %u"
+
+#: src/plugins/man_extractor.c:215
+msgid "Commands"
+msgstr "Polecenia"
+
+#: src/plugins/man_extractor.c:219
+msgid "System calls"
+msgstr "Wywołania systemowe"
+
+#: src/plugins/man_extractor.c:223
+msgid "Library calls"
+msgstr "Funkcje biblioteczne"
+
+#: src/plugins/man_extractor.c:227
+msgid "Special files"
+msgstr "Pliki specjalne"
+
+#: src/plugins/man_extractor.c:231
+msgid "File formats and conventions"
+msgstr "Formaty i konwencje plików"
+
+#: src/plugins/man_extractor.c:235
+msgid "Games"
+msgstr "Gry"
+
+#: src/plugins/man_extractor.c:239
+msgid "Conventions and miscellaneous"
+msgstr "Konwencje i inne"
+
+#: src/plugins/man_extractor.c:243
+msgid "System management commands"
+msgstr "Polecenia zarządzania systemem"
+
+#: src/plugins/man_extractor.c:247
+msgid "Kernel routines"
+msgstr "Funkcje jądra"
+
+#: src/plugins/ole2_extractor.c:387
+msgid "No Proofing"
+msgstr "Bez korekty"
+
+#: src/plugins/ole2_extractor.c:395
+msgid "Traditional Chinese"
+msgstr "chiński tradycyjny"
+
+#: src/plugins/ole2_extractor.c:397
+msgid "Simplified Chinese"
+msgstr "chiński uproszczony"
+
+#: src/plugins/ole2_extractor.c:405
+msgid "Swiss German"
+msgstr "niemiecki szwajcarski"
+
+#: src/plugins/ole2_extractor.c:409
+msgid "U.S. English"
+msgstr "angielski amerykański"
+
+#: src/plugins/ole2_extractor.c:411
+msgid "U.K. English"
+msgstr "angielski brytyjski"
+
+#: src/plugins/ole2_extractor.c:413
+msgid "Australian English"
+msgstr "angielski australijski"
+
+#: src/plugins/ole2_extractor.c:415
+msgid "Castilian Spanish"
+msgstr "hiszpański kastylijski"
+
+#: src/plugins/ole2_extractor.c:417
+msgid "Mexican Spanish"
+msgstr "hiszpański meksykański"
+
+#: src/plugins/ole2_extractor.c:423
+msgid "Belgian French"
+msgstr "francuski belgijski"
+
+#: src/plugins/ole2_extractor.c:425
+msgid "Canadian French"
+msgstr "francuski kanadyjski"
+
+#: src/plugins/ole2_extractor.c:427
+msgid "Swiss French"
+msgstr "francuski szwajcarski"
+
+#: src/plugins/ole2_extractor.c:437
+msgid "Swiss Italian"
+msgstr "włoski szwajcarski"
+
+#: src/plugins/ole2_extractor.c:445
+msgid "Belgian Dutch"
+msgstr "holenderski belgijski"
+
+#: src/plugins/ole2_extractor.c:447
+msgid "Norwegian Bokmal"
+msgstr "norweski bokmaal"
+
+#: src/plugins/ole2_extractor.c:457
+msgid "Rhaeto-Romanic"
+msgstr "retoromański"
+
+#: src/plugins/ole2_extractor.c:463
+msgid "Croato-Serbian (Latin)"
+msgstr "chorwackoserbski (łaciński)"
+
+#: src/plugins/ole2_extractor.c:465
+msgid "Serbo-Croatian (Cyrillic)"
+msgstr "serbsko-chorwacki (cyrylicki)"
+
+#: src/plugins/ole2_extractor.c:493
+msgid "Farsi"
+msgstr "perski"
+
+#: src/plugins/ole2_extractor.c:578
+#, c-format
+msgid "Revision #%u: Author `%s' worked on `%s'"
+msgstr "Rewizja #%u: Autor `%s' pracował nad `%s'"
+
+#: src/plugins/riff_extractor.c:145
+#, c-format
+msgid "codec: %s, %u fps, %u ms"
+msgstr "kodek: %s, %u fps, %u ms"
+
+#: src/plugins/wav_extractor.c:120
+msgid "mono"
+msgstr "mono"
+
+#: src/plugins/wav_extractor.c:120
+msgid "stereo"
+msgstr "stereo"
