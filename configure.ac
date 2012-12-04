@@ -29,7 +29,6 @@ AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_PROG_MAKE_SET
 AC_CANONICAL_HOST
-AC_LIBLTDL_CONVENIENCE
 AC_PROG_LIBTOOL
 # save LIBS, libtool does a AC_SEARCH_LIBS(dlopen, dl), but plugins
 # need not have -ldl added
