@@ -156,7 +156,7 @@ TEST_OGG=test_ogg
 endif
 
 if HAVE_ZLIB
-PLUGIN_ZLIB=libextractor_deb.la
+PLUGIN_ZLIB=libextractor_deb.la libextractor_zip.la
 TEST_ZLIB=test_deb
 endif
 
@@ -175,7 +175,6 @@ plugin_LTLIBRARIES = \
   libextractor_sid.la \
   libextractor_wav.la \
   libextractor_xm.la \
-  libextractor_zip.la \
   $(PLUGIN_ARCHIVE) \
   $(PLUGIN_EXIV2) \
   $(PLUGIN_FFMPEG) \

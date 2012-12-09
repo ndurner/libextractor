@@ -7,6 +7,10 @@ if USE_COVERAGE
   AM_CFLAGS = --coverage -O0
   XLIB = -lgcov
 endif
+if HAVE_ZLIB
+  zlib = -lz
+  LINK_UNZIP = unzip.c unzip.h
+endif
 
 lib_LTLIBRARIES = \
   libextractor_common.la
@@ -16,9 +20,9 @@ libextractor_common_la_LDFLAGS = \
   -version-info 1:0:0
 
 libextractor_common_la_LIBADD = \
-  $(LTLIBICONV) -lz
+  $(LTLIBICONV) $(zlib)
 
 libextractor_common_la_SOURCES = \
   le_architecture.h \
-  unzip.c unzip.h \
+  $(LINK_UNZIP) \
   convert.c convert.h 

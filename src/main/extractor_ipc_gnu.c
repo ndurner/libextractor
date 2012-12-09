@@ -292,6 +292,7 @@ EXTRACTOR_IPC_channel_create_ (struct EXTRACTOR_PluginList *plugin,
   if (0 != pipe (p1))
     {
       LOG_STRERROR ("pipe");
+      free (channel->mdata);
       free (channel);
       return NULL;
     }
@@ -300,6 +301,7 @@ EXTRACTOR_IPC_channel_create_ (struct EXTRACTOR_PluginList *plugin,
       LOG_STRERROR ("pipe");
       (void) close (p1[0]);
       (void) close (p1[1]);
+      free (channel->mdata);
       free (channel);
       return NULL;
     }
@@ -311,6 +313,7 @@ EXTRACTOR_IPC_channel_create_ (struct EXTRACTOR_PluginList *plugin,
       (void) close (p1[1]);
       (void) close (p2[0]);
       (void) close (p2[1]);
+      free (channel->mdata);
       free (channel);
       return NULL;
     }
@@ -318,6 +321,8 @@ EXTRACTOR_IPC_channel_create_ (struct EXTRACTOR_PluginList *plugin,
     {
       (void) close (p1[1]);
       (void) close (p2[0]);
+      free (channel->mdata);
+      free (channel);
       EXTRACTOR_plugin_main_ (plugin, p1[0], p2[1]);
       _exit (0);
     }
