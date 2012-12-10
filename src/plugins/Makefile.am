@@ -156,7 +156,11 @@ TEST_OGG=test_ogg
 endif
 
 if HAVE_ZLIB
-PLUGIN_ZLIB=libextractor_deb.la libextractor_zip.la
+PLUGIN_ZLIB= \
+ libextractor_deb.la \
+ libextractor_odf.la \
+ libextractor_png.la \
+ libextractor_zip.la
 TEST_ZLIB=test_deb
 endif
 
@@ -167,8 +171,6 @@ plugin_LTLIBRARIES = \
   libextractor_man.la \
   libextractor_nsf.la \
   libextractor_nsfe.la \
-  libextractor_odf.la \
-  libextractor_png.la \
   libextractor_ps.la \
   libextractor_riff.la \
   libextractor_s3m.la \
