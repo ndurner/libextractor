@@ -926,7 +926,7 @@ cfs_read_bz2 (struct CompressedFileSource *cfs,
 	  return rc;
 	}
       cfs->bstrm.next_in = buf;
-      cfs->bstrm.avail_in = (uInt) in;
+      cfs->bstrm.avail_in = (unsigned int) in;
       cfs->bstrm.next_out = cfs->result;
       cfs->bstrm.avail_out = COM_CHUNK_SIZE;
       cfs->result_pos = 0;
