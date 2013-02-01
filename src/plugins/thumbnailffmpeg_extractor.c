@@ -75,6 +75,16 @@
 #define MAX_THUMB_BYTES (100*1024)
 
 /**
+ * Number of bytes to feed to libav in one go.
+ */
+#define BUFFER_SIZE (32 * 1024)
+
+/**
+ * Number of bytes to feed to libav in one go, with padding (padding is zeroed).
+ */
+#define PADDED_BUFFER_SIZE (BUFFER_SIZE + FF_INPUT_BUFFER_PADDING_SIZE)
+
+/**
  * Global handle to MAGIC data.
  */
 static magic_t magic;
@@ -340,6 +350,7 @@ extract_image (enum CodecID image_codec_id,
   int frame_finished;
   ssize_t iret;
   void *data;
+  unsigned char padded_data[PADDED_BUFFER_SIZE];
 
   if (NULL == (codec = avcodec_find_decoder (image_codec_id)))
     {
@@ -384,10 +395,12 @@ extract_image (enum CodecID image_codec_id,
     {
       if (0 >= (iret = ec->read (ec->cls,
 				 &data,
-				 32 * 1024)))
-	break;      
+				 BUFFER_SIZE)))
+	break;
+      memcpy (padded_data, data, iret);
+      memset (&padded_data[iret], 0, PADDED_BUFFER_SIZE - iret);
       av_init_packet (&avpkt);
-      avpkt.data = data;
+      avpkt.data = padded_data;
       avpkt.size = iret;
       avcodec_decode_video2 (codec_ctx, frame, &frame_finished, &avpkt);
     }
