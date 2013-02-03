@@ -732,6 +732,13 @@ RundllEntryPoint (HWND hwnd,
   EXTRACTOR_plugin_main_ (plugin, in, out);
   close (in);
   close (out);
+  /* libgobject may crash us hard if we LoadLibrary() it directly or
+   * indirectly, and then exit normally (causing FreeLibrary() to be
+   * called by the OS) or call FreeLibrary() on it directly or
+   * indirectly.
+   * By terminating here we alleviate that problem.
+   */
+  TerminateProcess (GetCurrentProcess (), 0);
 }
 
 
