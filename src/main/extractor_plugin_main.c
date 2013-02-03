@@ -543,7 +543,6 @@ process_requests (struct ProcessingContext *pc)
 }
 
 
-#ifndef WINDOWS
 /**
  * Open '/dev/null' and make the result the given
  * file descriptor.
@@ -557,7 +556,11 @@ open_dev_null (int target_fd,
 {
   int fd;
 
+#ifndef WINDOWS
   fd = open ("/dev/null", flags);
+#else
+  fd = open ("\\\\?\\NUL", flags);
+#endif
   if (-1 == fd)
     {
       LOG_STRERROR_FILE ("open", "/dev/null");
@@ -575,7 +578,6 @@ open_dev_null (int target_fd,
   if (0 != close (fd))
     LOG_STRERROR ("close");
 }
-#endif
 
 
 /**
@@ -605,18 +607,14 @@ EXTRACTOR_plugin_main_ (struct EXTRACTOR_PluginList *plugin,
     {
       if (0 != close (2))
 	LOG_STRERROR ("close");
-#ifndef WINDOWS
       open_dev_null (2, O_WRONLY);
-#endif
     }
   if ( (NULL != plugin->specials) &&
        (NULL != strstr (plugin->specials, "close-stdout")))
     {
       if (0 != close (1))
 	LOG_STRERROR ("close");
-#ifndef WINDOWS
       open_dev_null (1, O_WRONLY);
-#endif
     }
   pc.plugin = plugin;
   pc.in = in;

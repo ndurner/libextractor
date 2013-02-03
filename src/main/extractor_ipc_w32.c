@@ -588,8 +588,6 @@ EXTRACTOR_IPC_channel_destroy_ (struct EXTRACTOR_Channel *channel)
 {
   int status;
 
-  TerminateProcess (channel->hProcess, 0);
-  CloseHandle (channel->hProcess);
   CloseHandle (channel->cpipe_out);
   CloseHandle (channel->cpipe_in);
   CloseHandle (channel->ov_read.hEvent);
@@ -602,6 +600,9 @@ EXTRACTOR_IPC_channel_destroy_ (struct EXTRACTOR_Channel *channel)
   if (NULL != channel->plugin)
     channel->plugin->channel = NULL;
   free (channel->mdata);
+  WaitForSingleObject (channel->hProcess, 1000);
+  TerminateProcess (channel->hProcess, 0);
+  CloseHandle (channel->hProcess);
   free (channel);
 }
 
