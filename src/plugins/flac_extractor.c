@@ -150,9 +150,17 @@ flac_eof (const FLAC__StreamDecoder *decoder,
 	  void *client_data) 
 {
   struct EXTRACTOR_ExtractContext *ec = client_data;
+  uint64_t size;
+  int64_t seekresult;
+  size = ec->get_size (ec->cls);
+  seekresult = ec->seek (ec->cls, 0, SEEK_CUR);
 
-  return (ec->get_size (ec->cls) == 
-	  ec->seek (ec->cls, 0, SEEK_CUR)) ? true : false;
+  if (seekresult == -1)
+    /* Treat seek error as error (not as indication of file not being
+     * seekable).
+     */
+    return true;
+  return (size == seekresult) ? true : false;
 }
 
 
