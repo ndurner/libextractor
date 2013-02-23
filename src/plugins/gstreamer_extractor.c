@@ -29,6 +29,7 @@
 #include <gst/pbutils/pbutils.h>
 #include <gst/tag/tag.h>
 #include <gst/app/gstappsrc.h>
+#include <pthread.h>
 
 GST_DEBUG_CATEGORY_STATIC (gstreamer_extractor);
 #define GST_CAT_DEFAULT gstreamer_extractor
@@ -46,6 +47,8 @@ GST_DEBUG_CATEGORY_STATIC (gstreamer_extractor);
  * In microseconds.
  */
 #define DATA_TIMEOUT 80000LL /* 80ms */
+
+pthread_mutex_t pipe_mutex;
 
 /**
  * Struct mapping GSTREAMER tags to LE tags.
@@ -951,6 +954,7 @@ feed_data (GstElement * appsrc,
 
   accumulated = 0;
   data_len = 1;
+  pthread_mutex_lock (&pipe_mutex);
   while ( (accumulated < size) && (data_len > 0) )
   {
     data_len = ps->ec->read (ps->ec->cls, (void **) &le_data, size - accumulated);
@@ -960,6 +964,7 @@ feed_data (GstElement * appsrc,
       accumulated += data_len;
     }
   }
+  pthread_mutex_unlock (&pipe_mutex);
   gst_memory_unmap (mem, &mi);
   if (size == accumulated)
   {
@@ -1002,7 +1007,9 @@ seek_data (GstElement * appsrc,
 	   struct PrivStruct * ps)
 {
   GST_DEBUG ("seek to offset %" G_GUINT64_FORMAT, position);
+  pthread_mutex_lock (&pipe_mutex);
   ps->offset = ps->ec->seek (ps->ec->cls, position, SEEK_SET);
+  pthread_mutex_unlock (&pipe_mutex);
   ps->last_data_request_time = g_get_monotonic_time ();
   return ps->offset == position;
 }
@@ -1918,7 +1925,9 @@ send_discovered_info (GstDiscovererInfo * info,
     case GST_DISCOVERER_MISSING_PLUGINS:
       break;
     }
+  pthread_mutex_lock (&pipe_mutex);
   send_info (info, ps);
+  pthread_mutex_unlock (&pipe_mutex);
 }
 
 
@@ -2087,6 +2096,8 @@ gstreamer_init ()
   subtitle_quarks[1] = g_quark_from_string (NULL);
 
   duration_quark = g_quark_from_string ("duration");
+
+  pthread_mutex_init (&pipe_mutex, NULL);
 }
 
 
