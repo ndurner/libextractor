@@ -107,7 +107,8 @@ mingw*)
      AC_DEFINE_UNQUOTED(WINDOWS,1,[This is a Windows system])
      AC_CHECK_LIB(intl, gettext)
      # Sufficiently new Windows XP
-     CFLAGS="-D__MSVCRT_VERSION__=0x0601 -DFTRUNCATE_DEFINED=1 $CFLAGS"
+     CFLAGS="-D__MSVCRT_VERSION__=0x0601 $CFLAGS"
+     CPPFLAGS="-DFTRUNCATE_DEFINED=1 $CPPFLAGS"
 
     AC_MSG_CHECKING(for PlibC)
     plibc=0
