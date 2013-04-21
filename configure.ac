@@ -547,7 +547,7 @@ export CPPFLAGS=$CPPFLAGS_OLD
 # check for gtk >= 2.6.0
 AC_MSG_CHECKING(for gtk)
 check_for_3=3.0.0
-check_for_2=false
+check_for_2=2.6.0
 AC_ARG_WITH(gtk_version,
    [  --with-gtk-version=VERSION    version number of gtk to use (>=3.0.0 by default)],
    [AC_MSG_RESULT([$with_gtk_version])
