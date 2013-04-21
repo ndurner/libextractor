@@ -279,7 +279,7 @@ libextractor_dvi_la_SOURCES = \
 libextractor_dvi_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_dvi_la_LIBADD = \
- $(XLIB) 
+ $(XLIB) $(SOCKET_LIBS)
 
 test_dvi_SOURCES = \
   test_dvi.c
@@ -521,7 +521,7 @@ libextractor_png_la_SOURCES = \
 libextractor_png_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_png_la_LIBADD = \
-  $(top_builddir)/src/common/libextractor_common.la $(XLIB) -lz
+  $(top_builddir)/src/common/libextractor_common.la $(XLIB) -lz  $(SOCKET_LIBS)
 
 test_png_SOURCES = \
   test_png.c
