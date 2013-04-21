@@ -106,13 +106,6 @@ mingw*)
      AC_DEFINE_UNQUOTED(MINGW,1,[This is a MinGW system])
      AC_DEFINE_UNQUOTED(WINDOWS,1,[This is a Windows system])
      AC_CHECK_LIB(intl, gettext)
-     mingw32_ws2=yes
-     mingw64_ws2=yes
-     AC_CHECK_LIB(ws2_32, _head_libws2_32_a,,mingw32_ws2=no)
-     AC_CHECK_LIB(ws2_32, __imp_socket,,mingw64_ws2=no)
-     if test "x$mingw32_ws2" = "xno" -a "x$mingw64_ws2" = "xno"; then
-       AC_MSG_ERROR([libextractor requires Winsock2])
-     fi
      # Sufficiently new Windows XP
      CFLAGS="-D__MSVCRT_VERSION__=0x0601 $CFLAGS"
 
@@ -420,6 +413,80 @@ AC_FUNC_ERROR_AT_LINE
 AC_SEARCH_LIBS(dlopen, dl)
 AC_SEARCH_LIBS(shm_open, rt)
 AC_CHECK_FUNCS([mkstemp strndup munmap strcasecmp strdup strncasecmp memmove memset strtoul floor getcwd pow setenv sqrt strchr strcspn strrchr strnlen strndup ftruncate shm_open shm_unlink lseek64])
+
+
+dnl This is kind of tedious, but simple and straightforward
+sockets=no
+AC_MSG_CHECKING(for sockets)
+AC_LANG_PUSH(C)
+SAVED_LIBS="$LIBS"
+SOCKET_LIBS=
+AC_LINK_IFELSE(
+  [
+    AC_LANG_PROGRAM(
+      [[#include <sys/socket.h>]],
+      [[int s = socket (AF_INET, SOCK_STREAM, IPPROTO_TCP);]]
+    )
+  ],
+  [
+    sockets=yes
+  ],
+  [
+    LIBS="$SAVED_LIBS -lsocket"
+    AC_LINK_IFELSE(
+      [
+        AC_LANG_PROGRAM(
+          [[#include <sys/socket.h>]],
+          [[int s = socket (AF_INET, SOCK_STREAM, IPPROTO_TCP);]]
+        )
+      ],
+      [
+        sockets=yes
+        SOCKET_LIBS="-lsocket"
+      ],
+      [
+        AC_LINK_IFELSE(
+          [
+            AC_LANG_PROGRAM(
+              [[#include <winsock2.h>]],
+              [[int s = socket (AF_INET, SOCK_STREAM, IPPROTO_TCP);]]
+            )
+          ],
+          [
+            sockets=yes
+          ],
+          [
+            LIBS="$SAVED_LIBS -lws2_32"
+            AC_LINK_IFELSE(
+              [
+                AC_LANG_PROGRAM(
+                  [[#include <winsock2.h>]],
+                  [[int s = socket (AF_INET, SOCK_STREAM, IPPROTO_TCP);]]
+                )
+              ],
+              [
+                sockets=yes
+                SOCKET_LIBS="-lws2_32"
+              ],
+              [
+                sockets=no
+              ]
+            )
+          ]
+        )
+      ]
+    )
+  ]
+)
+LIBS="$SAVED_LIBS $SOCKET_LIBS"
+AC_LANG_POP(C)
+AC_MSG_RESULT([$sockets])
+if test "x$sockets" = "xno"
+then
+  AC_MSG_ERROR([libextractor requires some kind of socket library])
+fi
+AC_SUBST([SOCKET_LIBS],[$SOCKET_LIBS])
+
 LE_LIB_LIBS=$LIBS
 LIBS=$LIBSOLD
 
