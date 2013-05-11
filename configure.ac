@@ -426,7 +426,7 @@ AC_LINK_IFELSE(
   [
     AC_LANG_PROGRAM(
       [[#include <sys/socket.h>]],
-      [[int s = socket (AF_INET, SOCK_STREAM, IPPROTO_TCP);]]
+      [[int s = socket (AF_INET, SOCK_STREAM, 6);]]
     )
   ],
   [
@@ -438,7 +438,7 @@ AC_LINK_IFELSE(
       [
         AC_LANG_PROGRAM(
           [[#include <sys/socket.h>]],
-          [[int s = socket (AF_INET, SOCK_STREAM, IPPROTO_TCP);]]
+          [[int s = socket (AF_INET, SOCK_STREAM, 6);]]
         )
       ],
       [
@@ -450,7 +450,7 @@ AC_LINK_IFELSE(
           [
             AC_LANG_PROGRAM(
               [[#include <winsock2.h>]],
-              [[int s = socket (AF_INET, SOCK_STREAM, IPPROTO_TCP);]]
+              [[int s = socket (AF_INET, SOCK_STREAM, 6);]]
             )
           ],
           [
@@ -462,7 +462,7 @@ AC_LINK_IFELSE(
               [
                 AC_LANG_PROGRAM(
                   [[#include <winsock2.h>]],
-                  [[int s = socket (AF_INET, SOCK_STREAM, IPPROTO_TCP);]]
+                  [[int s = socket (AF_INET, SOCK_STREAM, 6);]]
                 )
               ],
               [
