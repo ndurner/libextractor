@@ -511,7 +511,8 @@ AC_ARG_ENABLE(glib,
         ;;
    *)   AC_MSG_RESULT(allowed)
         ;;
-   esac])
+   esac],
+  AC_MSG_RESULT(allowed))
 
 if test x$without_glib != xtrue
 then
@@ -531,10 +532,10 @@ else
 fi
 
 # smf requires glib.h
-CFLAGS_OLD=$CFLAGS
-CPPFLAGS_OLD=$CPPFLAGS
-export CFLAGS="$CFLAGS $GLIB_CFLAGS"
-export CPPFLAGS="$CPPFLAGS $GLIB_CFLAGS"
+CFLAGS_OLD="$CFLAGS"
+CPPFLAGS_OLD="$CPPFLAGS"
+CFLAGS="$CFLAGS $GLIB_CFLAGS"
+CPPFLAGS="$CPPFLAGS $GLIB_CFLAGS"
 
 AC_CHECK_LIB(smf, smf_load_from_memory,
         [AC_CHECK_HEADERS([smf.h],
@@ -542,8 +543,8 @@ AC_CHECK_LIB(smf, smf_load_from_memory,
            AC_DEFINE(HAVE_MPEG2,1,[Have libsmf]),
          AM_CONDITIONAL(HAVE_SMF, false))],
          AM_CONDITIONAL(HAVE_SMF, false))
-export CFLAGS=$CFLAGS_OLD
-export CPPFLAGS=$CPPFLAGS_OLD
+CFLAGS="$CFLAGS_OLD"
+CPPFLAGS="$CPPFLAGS_OLD"
 
 # check for gtk >= 2.6.0
 AC_MSG_CHECKING(for gtk)
