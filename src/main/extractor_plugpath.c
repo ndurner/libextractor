@@ -158,6 +158,23 @@ get_path_from_proc_exe ()
 
 
 #if WINDOWS
+static HMODULE le_dll = NULL;
+
+BOOL WINAPI
+DllMain (HINSTANCE hinstDLL,
+	 DWORD     fdwReason,
+	 LPVOID    lpvReserved)
+{
+  switch (fdwReason)
+  {
+  case DLL_PROCESS_ATTACH:
+    le_dll = (HMODULE) hinstDLL;
+    break;
+  }
+
+  return TRUE;
+}
+
 /**
  * Try to determine path with win32-specific function
  */
@@ -170,7 +187,7 @@ get_path_from_module_filename ()
 
   if (NULL == (path = malloc (4103))) /* 4096+nil+6 for "/lib/" catenation */
     return NULL;
-  GetModuleFileName (NULL, path, 4096);
+  GetModuleFileName (le_dll, path, 4096);
   idx = path + strlen (path);
   while ( (idx > path) &&
 	  ('\\' != *idx) &&
