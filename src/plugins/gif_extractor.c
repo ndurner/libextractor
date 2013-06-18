@@ -67,8 +67,10 @@ EXTRACTOR_gif_extract_method (struct EXTRACTOR_ExtractContext *ec)
   GifByteType *ext;
   int et;
   char dims[128];
-/* GIFLIB >= 5.0 does not define GIF_LIB_VERSION anymore */
-#if !defined (GIF_LIB_VERSION)
+#if defined (GIF_LIB_VERSION) || GIFLIB_MAJOR <= 4
+  if (NULL == (gif_file = DGifOpen (ec, &gif_read_func)))
+    return; /* not a GIF */
+#else
   int gif_error;
   
   gif_error = 0;
@@ -79,9 +81,6 @@ EXTRACTOR_gif_extract_method (struct EXTRACTOR_ExtractContext *ec)
       EGifCloseFile (gif_file);
     return; /* not a GIF */
   }
-#else
-  if (NULL == (gif_file = DGifOpen (ec, &gif_read_func)))
-    return; /* not a GIF */
 #endif
   if (0 !=
       ec->proc (ec->cls,
