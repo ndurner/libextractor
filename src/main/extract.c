@@ -592,7 +592,7 @@ finish_bibtex (const char *fn)
 	       "\t%s = {%s},\n",
 	       btm[i].bibTexName,
 	       btm[i].value);
-  FPRINTF (stdout, "}\n\n");
+  FPRINTF (stdout, "%s", "}\n\n");
 }
 
 
@@ -632,7 +632,7 @@ _wchar_to_str (const wchar_t *wstr, char **retstr, UINT cp)
  * Makes a copy of argv that consists of a single memory chunk that can be
  * freed with a single call to free ();
  */
-static char *const *
+static char **
 _make_continuous_arg_copy (int argc, char *const *argv)
 {
   size_t argvsize = 0;
@@ -650,7 +650,7 @@ _make_continuous_arg_copy (int argc, char *const *argv)
     p += strlen (argv[i]) + 1;
   }
   new_argv[argc] = NULL;
-  return (char *const *) new_argv;
+  return (char **) new_argv;
 }
 
 /**
@@ -666,7 +666,7 @@ _make_continuous_arg_copy (int argc, char *const *argv)
  * @return 0 on success, -1 on failure
  */
 int
-_get_utf8_args (int argc, char *const *argv, int *u8argc, char *const **u8argv)
+_get_utf8_args (int argc, char *const *argv, int *u8argc, char ***u8argv)
 {
 #ifdef WINDOWS
   wchar_t *wcmd;
@@ -686,7 +686,7 @@ _get_utf8_args (int argc, char *const *argv, int *u8argc, char *const **u8argv)
 
   for (i = 0; i < wargc; i++)
   {
-    if (_wchar_to_str (wargv[i], &split_u8argv[i], CP_UTF8, err) != 0)
+    if (_wchar_to_str (wargv[i], &split_u8argv[i], CP_UTF8) != 0)
     {
       int j;
       int e = errno;
@@ -793,6 +793,7 @@ main (int argc, char *argv[])
 	  if (NULL != processor)
 	    {
 	      FPRINTF (stderr,
+		       "%s",
 		       _("Illegal combination of options, cannot combine multiple styles of printing.\n"));
 	      free (utf8_argv);
 	      return 0;
@@ -804,6 +805,7 @@ main (int argc, char *argv[])
 	  if (NULL != processor)
 	    {
 	      FPRINTF (stderr,
+		       "%s",
 		       _("Illegal combination of options, cannot combine multiple styles of printing.\n"));
 	      free (utf8_argv);
 	      return 0;
@@ -905,6 +907,7 @@ main (int argc, char *argv[])
 	  break;
 	default:
 	  FPRINTF (stderr,
+		   "%s",
 		   _("Use --help to get a list of options.\n"));
 	  free (utf8_argv);
 	  return -1;
@@ -913,7 +916,7 @@ main (int argc, char *argv[])
   if (optind < 0)
     {
       FPRINTF (stderr,
-	       "Unknown error parsing options\n");
+	       "%s", "Unknown error parsing options\n");
       free (print);
       free (utf8_argv);
       return -1;
@@ -921,7 +924,7 @@ main (int argc, char *argv[])
   if (utf8_argc - optind < 1)
     {
       FPRINTF (stderr,
-	       "Invoke with list of filenames to extract keywords form!\n");
+	       "%s", "Invoke with list of filenames to extract keywords form!\n");
       free (print);
       free (utf8_argv);
       return -1;
@@ -946,7 +949,7 @@ main (int argc, char *argv[])
   /* extract keywords */
   if (YES == bibtex)
     FPRINTF(stdout,
-	    _("%% BiBTeX file\n"));
+	    "%s", _("% BiBTeX file\n"));
   for (i = optind; i < utf8_argc; i++) 
     {
       errno = 0;
@@ -966,7 +969,11 @@ main (int argc, char *argv[])
 			   NULL);
       else
 	{
+#if WINDOWS
+	  struct _stat sb;
+#else
 	  struct stat sb;
+#endif
 	  unsigned char *data = NULL;
 	  int f = OPEN (utf8_argv[i], O_RDONLY
 #if WINDOWS
@@ -998,15 +1005,15 @@ main (int argc, char *argv[])
 	    (void) CLOSE (f);
 	}
       if (YES == grepfriendly)
-	FPRINTF (stdout, "\n");
+	FPRINTF (stdout, "%s", "\n");
       continue;
     }
   if (YES == grepfriendly)
-    FPRINTF (stdout, "\n");
+    FPRINTF (stdout, "%s", "\n");
   if (bibtex)
     finish_bibtex (utf8_argv[i]);
   if (verbose > 0)
-    printf ("\n");
+    FPRINTF (stdout, "%s", "\n");
   free (print);
   free (utf8_argv);
   EXTRACTOR_plugin_remove_all (plugins);

@@ -668,15 +668,19 @@ char *strndup (const char *s, size_t n);
 #if !HAVE_STRNLEN && (!defined(__MINGW64_VERSION_MAJOR) || !defined(_INC_STRING))
 size_t strnlen (const char *str, size_t maxlen);
 #endif
-#if !HAVE_STRTOK_R
+#if !HAVE_STRTOK_R && !defined(WIN_PTHREADS_H) /* winpthreads defines strtok_r() */
 char *strtok_r (char *ptr, const char *sep, char **end);
 #endif
 char *stpcpy(char *dest, const char *src);
 char *strcasestr(const char *haystack_start, const char *needle_start);
 #ifndef __MINGW64_VERSION_MAJOR
 #define strcasecmp(a, b) stricmp(a, b)
-#define wcscasecmp(a, b) wcsicmp(a, b)
 #define strncasecmp(a, b, c) strnicmp(a, b, c)
+#endif
+#ifndef wcscasecmp
+#define wcscasecmp(a, b) wcsicmp(a, b)
+#endif
+#ifndef wcsncasecmp
 #define wcsncasecmp(a, b, c) wcsnicmp(a, b, c)
 #endif
 #endif /* WINDOWS */
