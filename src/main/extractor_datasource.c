@@ -1197,31 +1197,31 @@ EXTRACTOR_datasource_create_from_file_ (const char *filename,
   winmode = O_BINARY;
 #endif
 
-  if (-1 == (fd = open (filename, O_RDONLY | O_LARGEFILE | winmode)))
+  if (-1 == (fd = OPEN (filename, O_RDONLY | O_LARGEFILE | winmode)))
     {
       LOG_STRERROR_FILE ("open", filename);
       return NULL;
     }
-  if ( (0 != fstat (fd, &sb)) ||
+  if ( (0 != FSTAT (fd, &sb)) ||
        (S_ISDIR (sb.st_mode)) )       
     {
       if (! S_ISDIR (sb.st_mode))
 	LOG_STRERROR_FILE ("fstat", filename);
       else
 	LOG ("Skipping directory `%s'\n", filename);
-      (void) close (fd);
+      (void) CLOSE (fd);
       return NULL;
     }
   fsize = (int64_t) sb.st_size;
   if (0 == fsize)
     {
-      (void) close (fd);
+      (void) CLOSE (fd);
       return NULL;
     }
   bfds = bfds_new (NULL, fd, fsize);
   if (NULL == bfds)
     {
-      (void) close (fd);
+      (void) CLOSE (fd);
       return NULL;
     }
   if (NULL == (ds = malloc (sizeof (struct EXTRACTOR_Datasource))))
@@ -1243,7 +1243,7 @@ EXTRACTOR_datasource_create_from_file_ (const char *filename,
 	  LOG ("Failed to initialize decompressor\n");
 	  bfds_delete (bfds);
 	  free (ds);
-	  (void) close (fd);
+	  (void) CLOSE (fd);
 	  return NULL;
 	}
     }
@@ -1314,7 +1314,7 @@ EXTRACTOR_datasource_destroy_ (struct EXTRACTOR_Datasource *ds)
     cfs_destroy (ds->cfs);
   bfds_delete (ds->bfds);
   if (-1 != ds->fd)
-    (void) close (ds->fd);
+    (void) CLOSE (ds->fd);
   free (ds);
 }
 

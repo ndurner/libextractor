@@ -70,7 +70,7 @@ ignore_sigpipe ()
   sig.sa_flags = SA_RESTART;
 #endif
   if (0 != sigaction (SIGPIPE, &sig, &oldsig))
-    fprintf (stderr,
+    FPRINTF (stderr,
              "Failed to install SIGPIPE handler: %s\n", strerror (errno));
 }
 #endif
@@ -284,7 +284,7 @@ print_selected_keywords (void *cls,
   if (YES != print[type])
     return 0;
   if (verbose > 3)
-    fprintf (stdout,
+    FPRINTF (stdout,
 	     _("Found by `%s' plugin:\n"),
 	     plugin_name);
   mt = EXTRACTOR_metatype_to_string (type);
@@ -292,7 +292,7 @@ print_selected_keywords (void *cls,
   switch (format)
     {
     case EXTRACTOR_METAFORMAT_UNKNOWN:
-      fprintf (stdout,
+      FPRINTF (stdout,
 	       _("%s - (unknown, %u bytes)\n"),
 	       stype,
 	       (unsigned int) data_len);
@@ -309,7 +309,7 @@ print_selected_keywords (void *cls,
 	keyword = strdup (data);
       if (NULL != keyword)
 	{
-	  fprintf (stdout,
+	  FPRINTF (stdout,
 		   "%s - %s\n",
 		   stype,
 		   keyword);
@@ -321,13 +321,13 @@ print_selected_keywords (void *cls,
 #endif
       break;
     case EXTRACTOR_METAFORMAT_BINARY:
-      fprintf (stdout,
+      FPRINTF (stdout,
 	       _("%s - (binary, %u bytes)\n"),
 	       stype,
 	       (unsigned int) data_len);
       break;
     case EXTRACTOR_METAFORMAT_C_STRING:
-      fprintf (stdout,
+      FPRINTF (stdout,
 	       "%s - %.*s\n",
 	       stype,
 	       (int) data_len,
@@ -382,7 +382,7 @@ print_selected_keywords_grep_friendly (void *cls,
       break;
     case EXTRACTOR_METAFORMAT_UTF8:
       if (verbose > 1)
-	fprintf (stdout,
+	FPRINTF (stdout,
 		 "%s: ",
 		 gettext(mt));
 #if HAVE_ICONV 
@@ -396,7 +396,7 @@ print_selected_keywords_grep_friendly (void *cls,
 	keyword = strdup (data);
       if (NULL != keyword)
 	{
-	  fprintf (stdout,
+	  FPRINTF (stdout,
 		   "`%s' ",
 		   keyword);
 	  free (keyword);
@@ -410,10 +410,10 @@ print_selected_keywords_grep_friendly (void *cls,
       break;
     case EXTRACTOR_METAFORMAT_C_STRING:
       if (verbose > 1)
-	fprintf (stdout,
+	FPRINTF (stdout,
 		 "%s ",
 		 gettext(mt));
-      fprintf (stdout,
+      FPRINTF (stdout,
 	       "`%s'",
 	       data);
       break;
@@ -564,7 +564,7 @@ finish_bibtex (const char *fn)
   if ( (NULL == btm[0].value) ||
        (NULL == btm[1].value) ||
        (NULL == btm[2].value) )          
-    fprintf (stdout,
+    FPRINTF (stdout,
 	     "@%s %s { ",
 	     et,
 	     fn);
@@ -581,20 +581,136 @@ finish_bibtex (const char *fn)
 	  temp[n] = '_';
 	else 
 	  temp[n] = tolower ( (unsigned char) temp[n]);
-      fprintf (stdout,
+      FPRINTF (stdout,
 	       "@%s %s { ",
 	       et,
 	       temp);
     }
   for (i=0; NULL != btm[i].bibTexName; i++)
     if (NULL != btm[i].value) 
-      fprintf (stdout,
+      FPRINTF (stdout,
 	       "\t%s = {%s},\n",
 	       btm[i].bibTexName,
 	       btm[i].value);
-  fprintf (stdout, "}\n\n");
+  FPRINTF (stdout, "}\n\n");
 }
 
+
+#ifdef WINDOWS
+int
+_wchar_to_str (const wchar_t *wstr, char **retstr, UINT cp)
+{
+  char *str;
+  int len, lenc;
+  BOOL lossy = FALSE;
+  DWORD error;
+
+  SetLastError (0);
+  len = WideCharToMultiByte (cp, 0, wstr, -1, NULL, 0, NULL, (cp == CP_UTF8 || cp == CP_UTF7) ? NULL : &lossy);
+  error = GetLastError ();
+  if (len <= 0)
+    return -1;
+  
+  str = malloc (sizeof (char) * len);
+  
+  SetLastError (0);
+  lenc = WideCharToMultiByte (cp, 0, wstr, -1, str, len, NULL, (cp == CP_UTF8 || cp == CP_UTF7) ? NULL : &lossy);
+  error = GetLastError ();
+  if (lenc != len)
+  {
+    free (str);
+    return -3;
+  }
+  *retstr = str;
+  if (lossy)
+    return 1;
+  return 0;
+}
+#endif
+
+/**
+ * Makes a copy of argv that consists of a single memory chunk that can be
+ * freed with a single call to free ();
+ */
+static char *const *
+_make_continuous_arg_copy (int argc, char *const *argv)
+{
+  size_t argvsize = 0;
+  int i;
+  char **new_argv;
+  char *p;
+  for (i = 0; i < argc; i++)
+    argvsize += strlen (argv[i]) + 1 + sizeof (char *);
+  new_argv = malloc (argvsize + sizeof (char *));
+  p = (char *) &new_argv[argc + 1];
+  for (i = 0; i < argc; i++)
+  {
+    new_argv[i] = p;
+    strcpy (p, argv[i]);
+    p += strlen (argv[i]) + 1;
+  }
+  new_argv[argc] = NULL;
+  return (char *const *) new_argv;
+}
+
+/**
+ * Returns utf-8 encoded arguments.
+ * Returned argv has u8argv[u8argc] == NULL.
+ * Returned argv is a single memory block, and can be freed with a single
+ *   free () call.
+ *
+ * @param argc argc (as given by main())
+ * @param argv argv (as given by main())
+ * @param u8argc a location to store new argc in (though it's th same as argc)
+ * @param u8argv a location to store new argv in
+ * @return 0 on success, -1 on failure
+ */
+int
+_get_utf8_args (int argc, char *const *argv, int *u8argc, char *const **u8argv)
+{
+#ifdef WINDOWS
+  wchar_t *wcmd;
+  wchar_t **wargv;
+  int wargc;
+  int i;
+  char **split_u8argv;
+
+  wcmd = GetCommandLineW ();
+  if (NULL == wcmd)
+    return -1;
+  wargv = CommandLineToArgvW (wcmd, &wargc);
+  if (NULL == wargv)
+    return -1;
+
+  split_u8argv = malloc (wargc * sizeof (char *));
+
+  for (i = 0; i < wargc; i++)
+  {
+    if (_wchar_to_str (wargv[i], &split_u8argv[i], CP_UTF8, err) != 0)
+    {
+      int j;
+      int e = errno;
+      for (j = 0; j < i; j++)
+        free (split_u8argv[j]);
+      free (split_u8argv);
+      LocalFree (wargv);
+      errno = e;
+      return -1;
+    }
+  }
+
+  *u8argv = _make_continuous_arg_copy (wargc, split_u8argv);
+  *u8argc = wargc;
+
+  for (i = 0; i < wargc; i++)
+    free (split_u8argv[i]);
+  free (split_u8argv);
+#else
+  *utf8argv = _make_continuous_arg_copy (argc, argv);
+  *u8argc = argc;
+#endif
+  return 0;
+}
 
 /**
  * Main function for the 'extract' tool.  Invoke with a list of
@@ -618,6 +734,8 @@ main (int argc, char *argv[])
   int grepfriendly = NO;
   int ret = 0;
   EXTRACTOR_MetaDataProcessor processor = NULL;
+  char **utf8_argv;
+  int utf8_argc;
 
 #if ENABLE_NLS
   setlocale(LC_ALL, "");
@@ -628,13 +746,19 @@ main (int argc, char *argv[])
 #endif
   if (NULL == (print = malloc (sizeof (int) * EXTRACTOR_metatype_get_max ())))
     {
-      fprintf (stderr, 
+      FPRINTF (stderr, 
 	       "malloc failed: %s\n",
 	       strerror (errno));
       return 1;
     }
   for (i = 0; i < EXTRACTOR_metatype_get_max (); i++)
     print[i] = YES;		/* default: print everything */
+
+  if (0 != _get_utf8_args (argc, argv, &utf8_argc, &utf8_argv))
+  {
+    FPRINTF (stderr, "Failed to get arguments: %s\n", strerror (errno));
+    return 1;
+  }
 
   while (1)
     {
@@ -654,8 +778,8 @@ main (int argc, char *argv[])
 	{0, 0, 0, 0}
       };
       option_index = 0;
-      c = getopt_long (argc,
-		       argv, 
+      c = getopt_long (utf8_argc,
+		       utf8_argv, 
 		       "abghiml:Lnp:vVx:",
 		       long_options,
 		       &option_index);
@@ -668,8 +792,9 @@ main (int argc, char *argv[])
 	  bibtex = YES;
 	  if (NULL != processor)
 	    {
-	      fprintf (stderr,
+	      FPRINTF (stderr,
 		       _("Illegal combination of options, cannot combine multiple styles of printing.\n"));
+	      free (utf8_argv);
 	      return 0;
 	    }
 	  processor = &print_bibtex;
@@ -678,14 +803,16 @@ main (int argc, char *argv[])
 	  grepfriendly = YES;
 	  if (NULL != processor)
 	    {
-	      fprintf (stderr,
+	      FPRINTF (stderr,
 		       _("Illegal combination of options, cannot combine multiple styles of printing.\n"));
+	      free (utf8_argv);
 	      return 0;
 	    }
 	  processor = &print_selected_keywords_grep_friendly;
 	  break;
 	case 'h':
 	  print_help ();
+          free (utf8_argv);
 	  return 0;
 	case 'i':
 	  in_process = YES;
@@ -701,6 +828,7 @@ main (int argc, char *argv[])
 	  while (NULL != EXTRACTOR_metatype_to_string (i))
 	    printf ("%s\n",
 		    gettext(EXTRACTOR_metatype_to_string (i++)));
+	  free (utf8_argv);
 	  return 0;
 	case 'n':
 	  nodefault = YES;
@@ -708,7 +836,7 @@ main (int argc, char *argv[])
 	case 'p':
 	  if (NULL == optarg) 
 	    {
-	      fprintf(stderr,
+	      FPRINTF(stderr,
 		      _("You must specify an argument for the `%s' option (option ignored).\n"),
 		      "-p");
 	      break;
@@ -736,15 +864,17 @@ main (int argc, char *argv[])
 	    }
 	  if (NULL == EXTRACTOR_metatype_to_string (i))
 	    {
-	      fprintf(stderr,
+	      FPRINTF(stderr,
 		      "Unknown keyword type `%s', use option `%s' to get a list.\n",
 		      optarg,
 		       "-L");
+	      free (utf8_argv);
 	      return -1;
 	    }
 	  break;
        	case 'v':
 	  printf ("extract v%s\n", PACKAGE_VERSION);
+	  free (utf8_argv);
 	  return 0;
 	case 'V':
 	  verbose++;
@@ -765,31 +895,35 @@ main (int argc, char *argv[])
 	    }
 	  if (NULL == EXTRACTOR_metatype_to_string (i))
 	    {
-	      fprintf (stderr,
+	      FPRINTF (stderr,
 		       "Unknown keyword type `%s', use option `%s' to get a list.\n",
 		       optarg,
 		       "-L");
+	      free (utf8_argv);
 	      return -1;
 	    }
 	  break;
 	default:
-	  fprintf (stderr,
+	  FPRINTF (stderr,
 		   _("Use --help to get a list of options.\n"));
+	  free (utf8_argv);
 	  return -1;
 	}			/* end of parsing commandline */
     }				/* while (1) */
   if (optind < 0)
     {
-      fprintf (stderr,
+      FPRINTF (stderr,
 	       "Unknown error parsing options\n");
       free (print);
+      free (utf8_argv);
       return -1;
     }
-  if (argc - optind < 1)
+  if (utf8_argc - optind < 1)
     {
-      fprintf (stderr,
+      FPRINTF (stderr,
 	       "Invoke with list of filenames to extract keywords form!\n");
       free (print);
+      free (utf8_argv);
       return -1;
     }
 
@@ -811,22 +945,22 @@ main (int argc, char *argv[])
 
   /* extract keywords */
   if (YES == bibtex)
-    fprintf(stdout,
+    FPRINTF(stdout,
 	    _("%% BiBTeX file\n"));
-  for (i = optind; i < argc; i++) 
+  for (i = optind; i < utf8_argc; i++) 
     {
       errno = 0;
       if (YES == grepfriendly)
-	fprintf (stdout, "%s ", argv[i]);
+	FPRINTF (stdout, "%s ", utf8_argv[i]);
       else if (NO == bibtex)
-	fprintf (stdout,
+	FPRINTF (stdout,
 		 _("Keywords for file %s:\n"),
-		 argv[i]);
+		 utf8_argv[i]);
       else
 	cleanup_bibtex ();
       if (NO == from_memory)
 	EXTRACTOR_extract (plugins,
-			   argv[i],
+			   utf8_argv[i],
 			   NULL, 0,
 			   processor,
 			   NULL);
@@ -834,15 +968,15 @@ main (int argc, char *argv[])
 	{
 	  struct stat sb;
 	  unsigned char *data = NULL;
-	  int f = open (argv[i], O_RDONLY
+	  int f = OPEN (utf8_argv[i], O_RDONLY
 #if WINDOWS
 			| O_BINARY
 #endif
 			);
 	  if ( (-1 != f) &&
-	       (0 == fstat (f, &sb)) &&
+	       (0 == FSTAT (f, &sb)) &&
 	       (NULL != (data = malloc ((size_t) sb.st_size))) &&
-	       (sb.st_size == read (f, data, (size_t) sb.st_size) ) )
+	       (sb.st_size == READ (f, data, (size_t) sb.st_size) ) )
 	    {
 	      EXTRACTOR_extract (plugins,
 				 NULL,
@@ -853,27 +987,28 @@ main (int argc, char *argv[])
 	  else
 	    {
 	      if (verbose > 0) 
-		fprintf(stderr,
+		FPRINTF(stderr,
 			"%s: %s: %s\n",
-			argv[0], argv[i], strerror(errno));
+			utf8_argv[0], utf8_argv[i], strerror(errno));
 	      ret = 1;
 	    }
 	  if (NULL != data)
 	    free (data);
 	  if (-1 != f)
-	    (void) close (f);
+	    (void) CLOSE (f);
 	}
       if (YES == grepfriendly)
-	fprintf (stdout, "\n");
+	FPRINTF (stdout, "\n");
       continue;
     }
   if (YES == grepfriendly)
-    fprintf (stdout, "\n");
+    FPRINTF (stdout, "\n");
   if (bibtex)
-    finish_bibtex (argv[i]);
+    finish_bibtex (utf8_argv[i]);
   if (verbose > 0)
     printf ("\n");
   free (print);
+  free (utf8_argv);
   EXTRACTOR_plugin_remove_all (plugins);
   plugins = NULL;
   cleanup_bibtex (); /* actually free's stuff */
