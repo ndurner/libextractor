@@ -706,7 +706,7 @@ _get_utf8_args (int argc, char *const *argv, int *u8argc, char ***u8argv)
     free (split_u8argv[i]);
   free (split_u8argv);
 #else
-  *utf8argv = _make_continuous_arg_copy (argc, argv);
+  *u8argv = _make_continuous_arg_copy (argc, argv);
   *u8argc = argc;
 #endif
   return 0;
