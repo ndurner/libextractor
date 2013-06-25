@@ -112,10 +112,8 @@ TEST_GSF=test_ole2
 endif
 
 if HAVE_GSTREAMER
-if HAVE_EXPERIMENTAL
 PLUGIN_GSTREAMER=libextractor_gstreamer.la
 TEST_GSTREAMER=test_gstreamer
-endif
 endif
 
 if HAVE_JPEG
