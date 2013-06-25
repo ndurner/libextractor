@@ -45,37 +45,46 @@ EXTRACTOR_IPC_process_reply_ (struct EXTRACTOR_PluginList *plugin,
 			      EXTRACTOR_ChannelMessageProcessor proc,
 			      void *proc_cls)
 {
-  const char *cdata = data;
+  const char *cdata;
   unsigned char code;
   struct SeekRequestMessage seek;
   struct MetaMessage meta;
   const char *mime_type;
   const char *value;
+  ssize_t ret;
 
+  ret = 0;
   while (size > 0)
     {
+      cdata = data;
       code = (unsigned char) cdata[0];
       switch (code)
 	{
 	case MESSAGE_DONE: /* Done */
 	  plugin->seek_request = -1;
 	  plugin->round_finished = 1;
-	  return 1;
+	  ret++;
+	  size--;
+	  data++;
+	  continue;
 	case MESSAGE_SEEK: /* Seek */	  
 	  if (size < sizeof (struct SeekRequestMessage))
 	    {
 	      plugin->seek_request = -1;
-	      return 0;
+	      return ret;
 	    }
 	  memcpy (&seek, cdata, sizeof (seek));
 	  plugin->seek_request = (int64_t) seek.file_offset;
 	  plugin->seek_whence = seek.whence;
-	  return sizeof (struct SeekRequestMessage);
+	  ret += sizeof (struct SeekRequestMessage);
+	  data += sizeof (struct SeekRequestMessage);
+	  size -= sizeof (struct SeekRequestMessage);
+	  continue;
 	case MESSAGE_META: /* Meta */
 	  if (size < sizeof (struct MetaMessage))
 	    {
 	      plugin->seek_request = -1;
-	      return 0;
+	      return ret;
 	    }
 	  memcpy (&meta, cdata, sizeof (meta));
 	  /* check hdr for sanity */
@@ -87,7 +96,7 @@ EXTRACTOR_IPC_process_reply_ (struct EXTRACTOR_PluginList *plugin,
 	  if (size < sizeof (meta) + meta.mime_length + meta.value_size)
 	    { 
 	      plugin->seek_request = -1;
-	      return 0;
+	      return ret;
 	    }
 	  if (0 == meta.mime_length)
 	    {
@@ -113,13 +122,16 @@ EXTRACTOR_IPC_process_reply_ (struct EXTRACTOR_PluginList *plugin,
 		(enum EXTRACTOR_MetaType) meta.meta_type,
 		(enum EXTRACTOR_MetaFormat) meta.meta_format,
 		mime_type, value, meta.value_size);
-	  return sizeof (struct MetaMessage) + meta.mime_length + meta.value_size;
+	  ret += sizeof (struct MetaMessage) + meta.mime_length + meta.value_size;
+	  size -= sizeof (struct MetaMessage) + meta.mime_length + meta.value_size;
+	  data += sizeof (struct MetaMessage) + meta.mime_length + meta.value_size;
+	  continue;
 	default:
 	  LOG ("Invalid message type %d\n", (int) code);
 	  return -1;
 	}
     }
-  return 0;
+  return ret;
 }
 
 /* end of extractor_ipc.c */

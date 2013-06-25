@@ -465,7 +465,7 @@ EXTRACTOR_IPC_channel_recv_ (struct EXTRACTOR_Channel **channels,
     }
   tv.tv_sec = 0;
   tv.tv_usec = 100000; /* 100 ms */
-  if (-1 == select (max + 1, &to_check, NULL, NULL, &tv))
+  if (0 >= select (max + 1, &to_check, NULL, NULL, &tv))
     {
       /* an error or timeout -> something's wrong or all plugins hung up */
       if (EINTR != errno)
@@ -517,10 +517,10 @@ EXTRACTOR_IPC_channel_recv_ (struct EXTRACTOR_Channel **channels,
 	}
       else
 	{
+	  channel->size = channel->size + iret - ret;
 	  memmove (channel->mdata,
 		   &channel->mdata[ret],
-		   channel->size + iret - ret);
-	  channel->size = channel->size + iret - ret;
+		   channel->size);
 	}
     }
   return 1;

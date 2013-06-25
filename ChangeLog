@@ -1,3 +1,7 @@
+Tue Jun 25 14:24:00 CEST 2013
+	Fixing bug where LE could hang due to failure to process all
+	received data from the plugin. -CG
+
 Sun Dec  2 08:31:17 CET 2012
 	Added Polish translation. -CG
 
