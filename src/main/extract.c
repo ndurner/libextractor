@@ -597,7 +597,7 @@ finish_bibtex (const char *fn)
 
 
 #ifdef WINDOWS
-int
+static int
 _wchar_to_str (const wchar_t *wstr, char **retstr, UINT cp)
 {
   char *str;
@@ -628,6 +628,7 @@ _wchar_to_str (const wchar_t *wstr, char **retstr, UINT cp)
 }
 #endif
 
+
 /**
  * Makes a copy of argv that consists of a single memory chunk that can be
  * freed with a single call to free ();
@@ -653,6 +654,7 @@ _make_continuous_arg_copy (int argc, char *const *argv)
   return (char **) new_argv;
 }
 
+
 /**
  * Returns utf-8 encoded arguments.
  * Returned argv has u8argv[u8argc] == NULL.
@@ -665,7 +667,7 @@ _make_continuous_arg_copy (int argc, char *const *argv)
  * @param u8argv a location to store new argv in
  * @return 0 on success, -1 on failure
  */
-int
+static int
 _get_utf8_args (int argc, char *const *argv, int *u8argc, char ***u8argv)
 {
 #ifdef WINDOWS
@@ -711,6 +713,7 @@ _get_utf8_args (int argc, char *const *argv, int *u8argc, char ***u8argv)
 #endif
   return 0;
 }
+
 
 /**
  * Main function for the 'extract' tool.  Invoke with a list of
