@@ -1031,7 +1031,6 @@ send_structure_foreach (GQuark field_id,
   struct PrivStruct *ps = user_data;
   gchar *str;
   const gchar *field_name = g_quark_to_string (field_id);
-  const gchar *type_name = g_type_name (G_VALUE_TYPE (value));
   GType gst_fraction = GST_TYPE_FRACTION;
   GQuark *quark;
 
@@ -1398,8 +1397,9 @@ send_tag_foreach (const GstTagList * tags,
 
           mime_type = gst_structure_get_name (gst_caps_get_structure (caps, 0));
           info = gst_sample_get_info (sample);
-
-          if (!gst_structure_get (info, "image-type", GST_TYPE_TAG_IMAGE_TYPE, &imagetype, NULL))
+	  
+          if ( (NULL == info) ||
+	       (!gst_structure_get (info, "image-type", GST_TYPE_TAG_IMAGE_TYPE, &imagetype, NULL)) )
             le_type = EXTRACTOR_METATYPE_PICTURE;
           else
           {
@@ -1707,11 +1707,9 @@ send_toc_tags_foreach (const GstTagList * tags,
   struct PrivStruct *ps = user_data;
   GValue val = { 0 };
   gchar *topen, *str, *tclose;
-  const gchar *type_name;
   GType gst_fraction = GST_TYPE_FRACTION;
 
   gst_tag_list_copy_value (&val, tags, tag);
-  type_name = g_type_name (G_VALUE_TYPE (&val));
   switch (G_VALUE_TYPE (&val))
   {
   case G_TYPE_STRING:
