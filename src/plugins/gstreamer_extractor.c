@@ -1078,7 +1078,6 @@ send_structure_foreach (GQuark field_id,
     /* This is a potential source of invalid characters */
     /* And it also might attempt to serialize binary data - such as images. */
     str = gst_value_serialize (value);
-    g_print ("Will not try to serialize structure field %s (%s) = %s\n", field_name, type_name, str);
     g_free (str);
     str = NULL;
     break;
@@ -1732,7 +1731,6 @@ send_toc_tags_foreach (const GstTagList * tags,
     /* This is a potential source of invalid characters */
     /* And it also might attempt to serialize binary data - such as images. */
     str = gst_value_serialize (&val);
-    g_print ("Will not try to serialize tag %s (%s) = %s\n", tag, type_name, str);
     g_free (str);
     str = NULL;
     break;
@@ -2040,7 +2038,6 @@ EXTRACTOR_gstreamer_extract_method (struct EXTRACTOR_ExtractContext *ec)
   ps.dc = gst_discoverer_new (8 * GST_SECOND, &err);
   if (NULL == ps.dc) 
     {
-      g_print ("Error initializing: %s\n", err->message);
       if (NULL != err)
 	g_error_free (err);
       return;
