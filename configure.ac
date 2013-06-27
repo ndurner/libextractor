@@ -34,6 +34,7 @@ AC_PROG_LIBTOOL
 # need not have -ldl added
 LIBSOLD=$LIBS
 LT_INIT([disable-static dlopen win32-dll])
+LT_CONFIG_LTDL_DIR([libltdl])
 LTDL_INIT
 AC_SUBST(LTDLINCL)
 AC_SUBST(LIBLTDL)
