@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor-0.5.20a\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2012-09-25 16:36+0200\n"
+"POT-Creation-Date: 2013-06-29 21:26+0200\n"
 "PO-Revision-Date: 2008-08-24 19:08+0100\n"
 "Last-Translator: Nicolas Provost <nprovost@quadriv.com>\n"
 "Language-Team: French <traduc@traduc.org>\n"
@@ -117,33 +117,31 @@ msgstr ""
 msgid "%s - (binary, %u bytes)\n"
 msgstr "%s - (binaire)\n"
 
-#: src/main/extract.c:672 src/main/extract.c:682
-#, c-format
+#: src/main/extract.c:800 src/main/extract.c:812
 msgid ""
 "Illegal combination of options, cannot combine multiple styles of printing.\n"
 msgstr ""
 
-#: src/main/extract.c:712
+#: src/main/extract.c:845
 #, c-format
 msgid "You must specify an argument for the `%s' option (option ignored).\n"
 msgstr "Vous devez préciser un argument pour l'option `%s' (option ignorée).\n"
 
-#: src/main/extract.c:777
-#, c-format
+#: src/main/extract.c:914
 msgid "Use --help to get a list of options.\n"
 msgstr "Utilisez --help pour obtenir une liste d'options.\n"
 
-#: src/main/extract.c:815
-#, c-format
-msgid "%% BiBTeX file\n"
+#: src/main/extract.c:955
+#, fuzzy
+msgid "% BiBTeX file\n"
 msgstr "%% fichier BiBTeX\n"
 
-#: src/main/extract.c:823
+#: src/main/extract.c:963
 #, c-format
 msgid "Keywords for file %s:\n"
 msgstr "Mots-clés pour le fichier %s:\n"
 
-#: src/main/extractor.c:679
+#: src/main/extractor.c:672
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "Echec de l'initialisation du module %s !\n"
@@ -1985,7 +1983,7 @@ msgstr "%s: l'option `-W %s' est ambiguë\n"
 msgid "%s: option `-W %s' doesn't allow an argument\n"
 msgstr "%s: l'option `-W %s' ne prend pas d'argument\n"
 
-#: src/plugins/flac_extractor.c:314
+#: src/plugins/flac_extractor.c:322
 #, c-format
 msgid "%u Hz, %u channels"
 msgstr ""

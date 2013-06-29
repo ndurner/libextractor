@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 1.0.0-pre1\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2012-09-25 16:36+0200\n"
+"POT-Creation-Date: 2013-06-29 21:26+0200\n"
 "PO-Revision-Date: 2012-09-05 22:36+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <translation-team-uk@lists.sourceforge.net>\n"
@@ -121,39 +121,37 @@ msgstr "%s — (невідомий, %u байтів)\n"
 msgid "%s - (binary, %u bytes)\n"
 msgstr "%s — (бінарний, %u байтів)\n"
 
-#: src/main/extract.c:672 src/main/extract.c:682
-#, c-format
+#: src/main/extract.c:800 src/main/extract.c:812
 msgid ""
 "Illegal combination of options, cannot combine multiple styles of printing.\n"
 msgstr ""
 "Некоректне поєднання параметрів, не можна визначати декілька стилів "
 "виведення даних.\n"
 
-#: src/main/extract.c:712
+#: src/main/extract.c:845
 #, c-format
 msgid "You must specify an argument for the `%s' option (option ignored).\n"
 msgstr ""
 "Параметр «%s» можна використовувати лише з додатковим аргументом (параметр "
 "проігноровано).\n"
 
-#: src/main/extract.c:777
-#, c-format
+#: src/main/extract.c:914
 msgid "Use --help to get a list of options.\n"
 msgstr ""
 "Скористайтеся параметром --help для отримання списку можливих параметрів "
 "командного рядка.\n"
 
-#: src/main/extract.c:815
-#, c-format
-msgid "%% BiBTeX file\n"
+#: src/main/extract.c:955
+#, fuzzy
+msgid "% BiBTeX file\n"
 msgstr "%% файл BiBTeX\n"
 
-#: src/main/extract.c:823
+#: src/main/extract.c:963
 #, c-format
 msgid "Keywords for file %s:\n"
 msgstr "Ключові слова для файла %s:\n"
 
-#: src/main/extractor.c:679
+#: src/main/extractor.c:672
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "Помилка під час спроби ініціалізації механізму додатків: %s!\n"
@@ -1922,7 +1920,7 @@ msgstr "%s: параметр «-W %s» неоднозначний\n"
 msgid "%s: option `-W %s' doesn't allow an argument\n"
 msgstr "%s: параметр «-W %s» не повинен мати аргументу\n"
 
-#: src/plugins/flac_extractor.c:314
+#: src/plugins/flac_extractor.c:322
 #, c-format
 msgid "%u Hz, %u channels"
 msgstr "%u Гц, %u каналів"

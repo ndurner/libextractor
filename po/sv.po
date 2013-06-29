@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.5.22\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2012-09-25 16:36+0200\n"
+"POT-Creation-Date: 2013-06-29 21:26+0200\n"
 "PO-Revision-Date: 2009-05-12 17:45+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
@@ -112,33 +112,31 @@ msgstr ""
 msgid "%s - (binary, %u bytes)\n"
 msgstr "%s - (binär)\n"
 
-#: src/main/extract.c:672 src/main/extract.c:682
-#, c-format
+#: src/main/extract.c:800 src/main/extract.c:812
 msgid ""
 "Illegal combination of options, cannot combine multiple styles of printing.\n"
 msgstr ""
 
-#: src/main/extract.c:712
+#: src/main/extract.c:845
 #, c-format
 msgid "You must specify an argument for the `%s' option (option ignored).\n"
 msgstr "Du måste ange ett argument för flaggan \"%s\" (flagga ignoreras).\n"
 
-#: src/main/extract.c:777
-#, c-format
+#: src/main/extract.c:914
 msgid "Use --help to get a list of options.\n"
 msgstr "Använd --help för att få en lista på flaggor.\n"
 
-#: src/main/extract.c:815
-#, c-format
-msgid "%% BiBTeX file\n"
+#: src/main/extract.c:955
+#, fuzzy
+msgid "% BiBTeX file\n"
 msgstr "%% BiBTeX-fil\n"
 
-#: src/main/extract.c:823
+#: src/main/extract.c:963
 #, c-format
 msgid "Keywords for file %s:\n"
 msgstr "Nyckelord för filen %s:\n"
 
-#: src/main/extractor.c:679
+#: src/main/extractor.c:672
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "Initiering av insticksmekanism misslyckades: %s!\n"
@@ -1996,7 +1994,7 @@ msgstr "%s: flagga \"-W %s\" är tvetydig\n"
 msgid "%s: option `-W %s' doesn't allow an argument\n"
 msgstr "%s: flagga \"-W %s\" tillåter inte ett argument\n"
 
-#: src/plugins/flac_extractor.c:314
+#: src/plugins/flac_extractor.c:322
 #, fuzzy, c-format
 msgid "%u Hz, %u channels"
 msgstr "dual channel"

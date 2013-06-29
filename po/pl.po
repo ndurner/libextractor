@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 1.0.0-pre1\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2012-09-04 20:36+0200\n"
+"POT-Creation-Date: 2013-06-29 21:26+0200\n"
 "PO-Revision-Date: 2012-12-01 15:45+0100\n"
 "Last-Translator: Jakub Bogusz <qboosh@pld-linux.org>\n"
 "Language-Team: Polish <translation-team-pl@lists.sourceforge.net>\n"
@@ -29,8 +29,11 @@ msgstr ""
 
 #: src/main/extract.c:135
 #, c-format
-msgid "Arguments mandatory for long options are also mandatory for short options.\n"
-msgstr "Argumenty obowiązkowe dla opcji długich są obowiązkowe także dla opcji krótkich.\n"
+msgid ""
+"Arguments mandatory for long options are also mandatory for short options.\n"
+msgstr ""
+"Argumenty obowiązkowe dla opcji długich są obowiązkowe także dla opcji "
+"krótkich.\n"
 
 #: src/main/extract.c:217
 msgid "print output in bibtex format"
@@ -38,7 +41,8 @@ msgstr "wyjście w formacie bibtex"
 
 #: src/main/extract.c:219
 msgid "produce grep-friendly output (all results on one line per file)"
-msgstr "wyjście przyjazne dla grepa (wszystkie wyniki w jednej linii dla pliku)"
+msgstr ""
+"wyjście przyjazne dla grepa (wszystkie wyniki w jednej linii dla pliku)"
 
 #: src/main/extract.c:221
 msgid "print this help"
@@ -88,52 +92,53 @@ msgstr "extract [OPCJE] [NAZWA_PLIKU]*"
 msgid "Extract metadata from files."
 msgstr "Wyciąganie metadanych z plików."
 
-#: src/main/extract.c:284
+#: src/main/extract.c:288
 #, c-format
 msgid "Found by `%s' plugin:\n"
 msgstr "Znalezione przez wtyczkę `%s':\n"
 
-#: src/main/extract.c:287 src/main/extract.c:368
-#: src/main/extractor_metatypes.c:145 src/main/extractor_print.c:82
+#: src/main/extract.c:291 src/main/extract.c:378
+#: src/main/extractor_metatypes.c:145 src/main/extractor_print.c:86
+#: src/main/extractor_print.c:96
 msgid "unknown"
 msgstr "nieznany"
 
-#: src/main/extract.c:292
+#: src/main/extract.c:296
 #, c-format
 msgid "%s - (unknown, %u bytes)\n"
 msgstr "%s - (nieznany, bajtów: %u)\n"
 
-#: src/main/extract.c:317
+#: src/main/extract.c:325
 #, c-format
 msgid "%s - (binary, %u bytes)\n"
 msgstr "%s - (binarny, bajtów: %u)\n"
 
-#: src/main/extract.c:658 src/main/extract.c:668
-#, c-format
-msgid "Illegal combination of options, cannot combine multiple styles of printing.\n"
-msgstr "Niedozwolona kombinacja opcji, nie można łączyć wielu styli wypisywania.\n"
+#: src/main/extract.c:800 src/main/extract.c:812
+msgid ""
+"Illegal combination of options, cannot combine multiple styles of printing.\n"
+msgstr ""
+"Niedozwolona kombinacja opcji, nie można łączyć wielu styli wypisywania.\n"
 
-#: src/main/extract.c:698
+#: src/main/extract.c:845
 #, c-format
 msgid "You must specify an argument for the `%s' option (option ignored).\n"
 msgstr "Opcja `%s' wymaga argumentu (zignorowano opcję).\n"
 
-#: src/main/extract.c:763
-#, c-format
+#: src/main/extract.c:914
 msgid "Use --help to get a list of options.\n"
 msgstr "Opcja --help pozwala uzyskać listę opcji.\n"
 
-#: src/main/extract.c:801
-#, c-format
-msgid "%% BiBTeX file\n"
+#: src/main/extract.c:955
+#, fuzzy
+msgid "% BiBTeX file\n"
 msgstr "%% plik BiBTeX\n"
 
-#: src/main/extract.c:809
+#: src/main/extract.c:963
 #, c-format
 msgid "Keywords for file %s:\n"
 msgstr "Słowa kluczowe dla pliku %s:\n"
 
-#: src/main/extractor.c:673
+#: src/main/extractor.c:672
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "Inicjalizacja mechanizmu wtyczek nie powiodła się: %s!\n"
@@ -287,7 +292,9 @@ msgid "publishing institution"
 msgstr "instytucja wydawcza"
 
 #: src/main/extractor_metatypes.c:86
-msgid "institution that was involved in the publishing, but not necessarily the publisher"
+msgid ""
+"institution that was involved in the publishing, but not necessarily the "
+"publisher"
 msgstr "instytucja zaangażowana w publikację, ale niekoniecznie wydawca"
 
 #: src/main/extractor_metatypes.c:87
@@ -312,7 +319,8 @@ msgstr "rok opublikowania"
 
 #: src/main/extractor_metatypes.c:93
 msgid "year of publication (or, if unpublished, the year of creation)"
-msgstr "rok opublikowania (lub powstania, jeśli praca nie została opublikowana)"
+msgstr ""
+"rok opublikowania (lub powstania, jeśli praca nie została opublikowana)"
 
 #: src/main/extractor_metatypes.c:94
 msgid "publication month"
@@ -320,15 +328,20 @@ msgstr "miesiąc opublikowania"
 
 #: src/main/extractor_metatypes.c:95
 msgid "month of publication (or, if unpublished, the month of creation)"
-msgstr "miesiąc opublikowania (lub powstania, jeśli praca nie została opublikowana)"
+msgstr ""
+"miesiąc opublikowania (lub powstania, jeśli praca nie została opublikowana)"
 
 #: src/main/extractor_metatypes.c:96
 msgid "publication day"
 msgstr "dzień opublikowania"
 
 #: src/main/extractor_metatypes.c:97
-msgid "day of publication (or, if unpublished, the day of creation), relative to the given month"
-msgstr "dzień opublikowania (lub powstania, jeśli praca nie została opublikowana) w miesiącu"
+msgid ""
+"day of publication (or, if unpublished, the day of creation), relative to "
+"the given month"
+msgstr ""
+"dzień opublikowania (lub powstania, jeśli praca nie została opublikowana) w "
+"miesiącu"
 
 #: src/main/extractor_metatypes.c:98
 msgid "publication date"
@@ -336,7 +349,8 @@ msgstr "data opublikowania"
 
 #: src/main/extractor_metatypes.c:99
 msgid "date of publication (or, if unpublished, the date of creation)"
-msgstr "data opublikowania (lub powstania, jeśli praca nie została opublikowana)"
+msgstr ""
+"data opublikowania (lub powstania, jeśli praca nie została opublikowana)"
 
 #: src/main/extractor_metatypes.c:101
 msgid "bibtex eprint"
@@ -563,8 +577,11 @@ msgid "unknown date"
 msgstr "nieznana data"
 
 #: src/main/extractor_metatypes.c:172
-msgid "ambiguous date (could specify creation time, modification time or access time)"
-msgstr "data bez określonego znaczenia (czas utworzenia, modyfikacji lub dostępu)"
+msgid ""
+"ambiguous date (could specify creation time, modification time or access "
+"time)"
+msgstr ""
+"data bez określonego znaczenia (czas utworzenia, modyfikacji lub dostępu)"
 
 #: src/main/extractor_metatypes.c:173
 msgid "creation date"
@@ -831,15 +848,21 @@ msgid "target platform"
 msgstr "platforma docelowa"
 
 #: src/main/extractor_metatypes.c:247
-msgid "name of the architecture, operating system and distribution this package is for"
-msgstr "nazwa architektury, systemu operacyjnego i dystrybucji, dla której jest ten pakiet"
+msgid ""
+"name of the architecture, operating system and distribution this package is "
+"for"
+msgstr ""
+"nazwa architektury, systemu operacyjnego i dystrybucji, dla której jest ten "
+"pakiet"
 
 #: src/main/extractor_metatypes.c:248
 msgid "resource type"
 msgstr "rodzaj zasobu"
 
 #: src/main/extractor_metatypes.c:249
-msgid "categorization of the nature of the resource that is more specific than the file format"
+msgid ""
+"categorization of the nature of the resource that is more specific than the "
+"file format"
 msgstr "kategoryzacja charakteru zasobu bardziej konkretna od formatu pliku"
 
 #: src/main/extractor_metatypes.c:250
@@ -847,8 +870,11 @@ msgid "library search path"
 msgstr "ścieżka poszukiwań bibliotek"
 
 #: src/main/extractor_metatypes.c:251
-msgid "path in the file system to be considered when looking for required libraries"
-msgstr "ścieżka w systemie plików, która ma być uwzględniana przy szukaniu wymaganych bibliotek"
+msgid ""
+"path in the file system to be considered when looking for required libraries"
+msgstr ""
+"ścieżka w systemie plików, która ma być uwzględniana przy szukaniu "
+"wymaganych bibliotek"
 
 #: src/main/extractor_metatypes.c:252
 msgid "library dependency"
@@ -1075,8 +1101,11 @@ msgid "performer"
 msgstr "wykonawca"
 
 #: src/main/extractor_metatypes.c:344
-msgid "The artist(s) who performed the work (conductor, orchestra, soloists, actor, etc.)"
-msgstr "artysta/artyści wykonujący utwory (dyrygent, orkiestra, soliści, aktor itp.)"
+msgid ""
+"The artist(s) who performed the work (conductor, orchestra, soloists, actor, "
+"etc.)"
+msgstr ""
+"artysta/artyści wykonujący utwory (dyrygent, orkiestra, soliści, aktor itp.)"
 
 #: src/main/extractor_metatypes.c:346
 msgid "contact"
@@ -1263,8 +1292,10 @@ msgid "interpretation"
 msgstr "interpretacja"
 
 #: src/main/extractor_metatypes.c:397
-msgid "information about the people behind interpretations of an existing piece"
-msgstr "informacje o osobach odpowiedzialnych za interpretacje istniejącego utworu"
+msgid ""
+"information about the people behind interpretations of an existing piece"
+msgstr ""
+"informacje o osobach odpowiedzialnych za interpretacje istniejącego utworu"
 
 #: src/main/extractor_metatypes.c:398
 msgid "composer"
@@ -1387,7 +1418,8 @@ msgid "full data"
 msgstr "pełne dane"
 
 #: src/main/extractor_metatypes.c:432
-msgid "entry that contains the full, original binary data (not really meta data)"
+msgid ""
+"entry that contains the full, original binary data (not really meta data)"
 msgstr "wpis zawierający pełne, oryginalne dane binarne (nie metadane)"
 
 #: src/main/extractor_metatypes.c:434
@@ -1487,8 +1519,12 @@ msgid "nominal bitrate"
 msgstr "nominalna prędkość transmisji"
 
 #: src/main/extractor_metatypes.c:463
-msgid "nominal bitrate in bits/s. The actual bitrate might be different from this target bitrate."
-msgstr "nominalna prędkość transmisji w bitach na sekundę; faktyczna prędkość może się różnić od tej docelowej"
+msgid ""
+"nominal bitrate in bits/s. The actual bitrate might be different from this "
+"target bitrate."
+msgstr ""
+"nominalna prędkość transmisji w bitach na sekundę; faktyczna prędkość może "
+"się różnić od tej docelowej"
 
 #: src/main/extractor_metatypes.c:464
 msgid "minimum bitrate"
@@ -1575,16 +1611,24 @@ msgid "location name"
 msgstr "nazwa miejsca"
 
 #: src/main/extractor_metatypes.c:487
-msgid "human readable descriptive location of where the media has been recorded or produced"
-msgstr "czytelny dla człowieka opis miejsca, gdzie wykonano lub wyprodukowano nagranie"
+msgid ""
+"human readable descriptive location of where the media has been recorded or "
+"produced"
+msgstr ""
+"czytelny dla człowieka opis miejsca, gdzie wykonano lub wyprodukowano "
+"nagranie"
 
 #: src/main/extractor_metatypes.c:489
 msgid "location elevation"
 msgstr "wysokość miejsca"
 
 #: src/main/extractor_metatypes.c:490
-msgid "geo elevation of where the media has been recorded or produced in meters according to WGS84 (zero is average sea level)"
-msgstr "wysokość geograficzna miejsca, gdzie wykonano lub wyprodukowano nagranie w metrach zgodnie z WGS84 (zero to średni poziom morza)"
+msgid ""
+"geo elevation of where the media has been recorded or produced in meters "
+"according to WGS84 (zero is average sea level)"
+msgstr ""
+"wysokość geograficzna miejsca, gdzie wykonano lub wyprodukowano nagranie w "
+"metrach zgodnie z WGS84 (zero to średni poziom morza)"
 
 #: src/main/extractor_metatypes.c:491
 msgid "location horizontal error"
@@ -1599,24 +1643,38 @@ msgid "location movement speed"
 msgstr "szybkość ruchu miejsca"
 
 #: src/main/extractor_metatypes.c:494
-msgid "speed of the capturing device when performing the capture. Represented in m/s"
-msgstr "szybkość ruchu urządzenia nagrywającego podczas nagrania, wyrażona w m/s"
+msgid ""
+"speed of the capturing device when performing the capture. Represented in m/s"
+msgstr ""
+"szybkość ruchu urządzenia nagrywającego podczas nagrania, wyrażona w m/s"
 
 #: src/main/extractor_metatypes.c:495
 msgid "location movement direction"
 msgstr "kierunek ruchu miejsca"
 
 #: src/main/extractor_metatypes.c:496
-msgid "indicates the movement direction of the device performing the capture of a media. It is represented as degrees in floating point representation, 0 means the geographic north, and increases clockwise"
-msgstr "kierunek ruchu urządzenia nagrywającego podczas nagrania; wyrażony w stopniach w reprezentacji zmiennoprzecinkowej, 0 oznacza północ geograficzną i rośnie zgodnie z ruchem wskazówek zegara"
+msgid ""
+"indicates the movement direction of the device performing the capture of a "
+"media. It is represented as degrees in floating point representation, 0 "
+"means the geographic north, and increases clockwise"
+msgstr ""
+"kierunek ruchu urządzenia nagrywającego podczas nagrania; wyrażony w "
+"stopniach w reprezentacji zmiennoprzecinkowej, 0 oznacza północ geograficzną "
+"i rośnie zgodnie z ruchem wskazówek zegara"
 
 #: src/main/extractor_metatypes.c:497
 msgid "location capture direction"
 msgstr "kierunek wykonywania nagrania"
 
 #: src/main/extractor_metatypes.c:498
-msgid "indicates the direction the device is pointing to when capturing a media. It is represented as degrees in floating point representation, 0 means the geographic north, and increases clockwise"
-msgstr "kierunek skierowania urządzenia nagrywającego podczas nagrania; wyrażony w stopniach w reprezentacji zmiennoprzecinkowej, 0 oznacza północ geograficzną i rośnie zgodnie z ruchem wskazówek zegara"
+msgid ""
+"indicates the direction the device is pointing to when capturing a media. It "
+"is represented as degrees in floating point representation, 0 means the "
+"geographic north, and increases clockwise"
+msgstr ""
+"kierunek skierowania urządzenia nagrywającego podczas nagrania; wyrażony w "
+"stopniach w reprezentacji zmiennoprzecinkowej, 0 oznacza północ geograficzną "
+"i rośnie zgodnie z ruchem wskazówek zegara"
 
 #: src/main/extractor_metatypes.c:500
 msgid "show episode number"
@@ -1635,12 +1693,17 @@ msgid "number of the season of a show/series"
 msgstr "numer sezonu przestawienia/serialu"
 
 #: src/main/extractor_metatypes.c:504
-msgid "gourping"
+#, fuzzy
+msgid "grouping"
 msgstr "grupowanie"
 
 #: src/main/extractor_metatypes.c:505
-msgid "groups together media that are related and spans multiple tracks. An example are multiple pieces of a concerto"
-msgstr "grupowanie utworów powiązanych ze sobą, zajmujących wiele ścieżek - np. wielu fragmentów koncertu"
+msgid ""
+"groups together media that are related and spans multiple tracks. An example "
+"are multiple pieces of a concerto"
+msgstr ""
+"grupowanie utworów powiązanych ze sobą, zajmujących wiele ścieżek - np. "
+"wielu fragmentów koncertu"
 
 #: src/main/extractor_metatypes.c:506
 msgid "device manufacturer"
@@ -1849,7 +1912,7 @@ msgstr "%s: opcja `-W %s' jest niejednoznaczna\n"
 msgid "%s: option `-W %s' doesn't allow an argument\n"
 msgstr "%s: opcja `-W %s' nie może mieć argumentów\n"
 
-#: src/plugins/flac_extractor.c:314
+#: src/plugins/flac_extractor.c:322
 #, c-format
 msgid "%u Hz, %u channels"
 msgstr "%u Hz, kanałów: %u"

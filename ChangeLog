@@ -1,3 +1,6 @@
+Sat Jun 29 21:28:39 CEST 2013
+	Releasing GNU libextractor 1.1. -CG
+
 Tue Jun 25 14:24:00 CEST 2013
 	Fixing bug where LE could hang due to failure to process all
 	received data from the plugin. -CG

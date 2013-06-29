@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.4.2\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2012-09-25 16:36+0200\n"
+"POT-Creation-Date: 2013-06-29 21:26+0200\n"
 "PO-Revision-Date: 2005-04-04 10:55-0700\n"
 "Last-Translator: Steven Michael Murphy <murf@e-tools.com>\n"
 "Language-Team: Kinyarwanda <translation-team-rw@lists.sourceforge.net>\n"
@@ -125,33 +125,31 @@ msgstr ""
 msgid "%s - (binary, %u bytes)\n"
 msgstr "%s-(Nyabibiri"
 
-#: src/main/extract.c:672 src/main/extract.c:682
-#, c-format
+#: src/main/extract.c:800 src/main/extract.c:812
 msgid ""
 "Illegal combination of options, cannot combine multiple styles of printing.\n"
 msgstr ""
 
-#: src/main/extract.c:712
+#: src/main/extract.c:845
 #, fuzzy, c-format
 msgid "You must specify an argument for the `%s' option (option ignored).\n"
 msgstr "kugirango i Ihitamo Ihitamo"
 
-#: src/main/extract.c:777
-#, fuzzy, c-format
+#: src/main/extract.c:914
+#, fuzzy
 msgid "Use --help to get a list of options.\n"
 msgstr "Ifashayobora Kuri Kubona a Urutonde Bya Amahitamo"
 
-#: src/main/extract.c:815
-#, c-format
-msgid "%% BiBTeX file\n"
+#: src/main/extract.c:955
+msgid "% BiBTeX file\n"
 msgstr ""
 
-#: src/main/extract.c:823
+#: src/main/extract.c:963
 #, fuzzy, c-format
 msgid "Keywords for file %s:\n"
 msgstr "kugirango IDOSIYE"
 
-#: src/main/extractor.c:679
+#: src/main/extractor.c:672
 #, fuzzy, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "Bya Byanze"
@@ -2210,7 +2208,7 @@ msgstr "%s:Ihitamo ni"
 msgid "%s: option `-W %s' doesn't allow an argument\n"
 msgstr "%s:Ihitamo Kwemerera"
 
-#: src/plugins/flac_extractor.c:314
+#: src/plugins/flac_extractor.c:322
 #, c-format
 msgid "%u Hz, %u channels"
 msgstr ""
