@@ -29,6 +29,7 @@ do
       if ! "$bindir/extract" -i "$tmpfile" > /dev/null
       then
         echo "$tmpfile with seed $seed failed"
+	mv $tmpfile $tmpfile.keep
 	ret=1
       fi
       seed=`expr $seed + 1`
