@@ -327,6 +327,12 @@ calculate_thumbnail_dimensions (int src_width,
 #endif
 }
 
+#if AV_VERSION_INT(54,25,0) > LIBAVUTIL_VERSION_INT
+#define ENUM_CODEC_ID enum CodecID
+#else
+#define ENUM_CODEC_ID enum AvCodecID
+#endif
+
 
 /**
  * Perform thumbnailing when the input is an image.
@@ -335,7 +341,7 @@ calculate_thumbnail_dimensions (int src_width,
  * @param ec extraction context to use
  */
 static void
-extract_image (enum CodecID image_codec_id,
+extract_image (ENUM_CODEC_ID image_codec_id,
                struct EXTRACTOR_ExtractContext *ec)
 {
   AVDictionary *opts;
@@ -631,7 +637,7 @@ struct MIMEToDecoderMapping
   /**
    * Corresponding ffmpeg decoder ID.
    */
-  enum CodecID codec_id;
+  ENUM_CODEC_ID codec_id;
 };
 
 
