@@ -2,14 +2,14 @@
 # Copyright (C) 2013 Free Software Foundation, Inc.
 # This file is distributed under the same license as the libextractor package.
 #
-# Erwin Poeze <erwin.poeze@gmail.com>, 2009.
 # Benno Schulenberg <benno@vertaalt.nl>, 2008, 2013.
+# Erwin Poeze <erwin.poeze@gmail.com>, 2009.
 msgid ""
 msgstr ""
 "Project-Id-Version: libextractor-1.0.0-pre1\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
 "POT-Creation-Date: 2012-09-04 20:36+0200\n"
-"PO-Revision-Date: 2013-08-21 18:24+0200\n"
+"PO-Revision-Date: 2013-08-21 22:41+0200\n"
 "Last-Translator: Benno Schulenberg <benno@vertaalt.nl>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
 "Language: nl\n"
@@ -49,15 +49,15 @@ msgstr "deze hulptekst tonen"
 
 #: src/main/extract.c:223
 msgid "run plugins in-process (simplifies debugging)"
-msgstr ""
+msgstr "plugins in-proces draaien (vereenvoudigt het debuggen)"
 
 #: src/main/extract.c:225
 msgid "read data from file into memory and extract from memory"
-msgstr ""
+msgstr "alle bestandsdata inlezen in geheugen en daar extraheren"
 
 #: src/main/extract.c:227
 msgid "load an extractor plugin named LIBRARY"
-msgstr "extractor-plugin 'LIBRARY' laden"
+msgstr "extractor-plugin genaamd 'LIBRARY' laden"
 
 #: src/main/extract.c:229
 msgid "list all keyword types"
@@ -69,7 +69,7 @@ msgstr "de standaardset extractor-plugins niet gebruiken"
 
 #: src/main/extract.c:233
 msgid "print only keywords of the given TYPE (use -L to get a list)"
-msgstr "alleen sleutelwoorden van dit type tonen (gebruik '-L' voor een overzicht)"
+msgstr "alleen sleutelwoorden van dit TYPE tonen (gebruik '-L' voor een overzicht)"
 
 #: src/main/extract.c:235
 msgid "print the version number"
@@ -77,11 +77,11 @@ msgstr "programmaversie tonen"
 
 #: src/main/extract.c:237
 msgid "be verbose"
-msgstr "gedetailleerde uivoer produceren"
+msgstr "gedetailleerde uitvoer produceren"
 
 #: src/main/extract.c:239
 msgid "do not print keywords of the given TYPE"
-msgstr "sleutelwoorden van dit type niet tonen"
+msgstr "sleutelwoorden van dit TYPE niet tonen"
 
 #: src/main/extract.c:242
 msgid "extract [OPTIONS] [FILENAME]*"
@@ -89,7 +89,7 @@ msgstr "extract [OPTIES] [BESTANDSNAAM]*"
 
 #: src/main/extract.c:243
 msgid "Extract metadata from files."
-msgstr "Metadata uit bestanden lezen."
+msgstr "Leest metadata uit bestanden."
 
 #: src/main/extract.c:284
 #, c-format
@@ -227,7 +227,7 @@ msgstr "tijdschriftnummer"
 
 #: src/main/extractor_metatypes.c:69
 msgid "number of a journal, magazine or tech-report"
-msgstr "nummer van een blad, tijdschrift of technisch bericht"
+msgstr "nummer van een blad, tijdschrift of rapport"
 
 #: src/main/extractor_metatypes.c:70
 msgid "page count"
@@ -307,7 +307,7 @@ msgstr "publicatiesoort"
 
 #: src/main/extractor_metatypes.c:91
 msgid "type of the tech-report"
-msgstr "soort van het technisch bericht"
+msgstr "soort van het rapport"
 
 #: src/main/extractor_metatypes.c:92
 msgid "publication year"
@@ -343,20 +343,19 @@ msgstr "datum van publicatie (of, indien ongepubliceerd, de datum van creatie)"
 
 #: src/main/extractor_metatypes.c:101
 msgid "bibtex eprint"
-msgstr ""
+msgstr "BibTeX-eprint"
 
 #: src/main/extractor_metatypes.c:102
 msgid "specification of an electronic publication"
-msgstr ""
+msgstr "specificatie van een elektronische publicatie"
 
 #: src/main/extractor_metatypes.c:103
-#, fuzzy
 msgid "bibtex entry type"
-msgstr "inhoudssoort"
+msgstr "BibTeX-itemsoort"
 
 #: src/main/extractor_metatypes.c:104
 msgid "type of the publication for bibTeX bibliographies"
-msgstr ""
+msgstr "soort van publicatie volgens BibTeX-boekomschrijvingen"
 
 #: src/main/extractor_metatypes.c:105
 msgid "language"
@@ -367,10 +366,12 @@ msgid "language the work uses"
 msgstr "de taal die het werk gebruikt"
 
 #: src/main/extractor_metatypes.c:107
+#, fuzzy
 msgid "creation time"
 msgstr "creatietijd"
 
 #: src/main/extractor_metatypes.c:108
+#, fuzzy
 msgid "time and date of creation"
 msgstr "tijd en datum van creatie"
 
@@ -471,7 +472,7 @@ msgstr "sublocatie"
 
 #: src/main/extractor_metatypes.c:139
 msgid "more specific location of the geographic origin"
-msgstr "meer precisie plaats van geografische oorsprong"
+msgstr "meer precieze plaats van oorsprong"
 
 #: src/main/extractor_metatypes.c:140
 msgid "country"
@@ -499,11 +500,11 @@ msgstr "omschrijving"
 
 #: src/main/extractor_metatypes.c:149
 msgid "copyright"
-msgstr "copyright"
+msgstr "copyright-houder"
 
 #: src/main/extractor_metatypes.c:150
 msgid "Name of the entity holding the copyright"
-msgstr ""
+msgstr "naam van de entiteit die het copyright bezit"
 
 #: src/main/extractor_metatypes.c:151
 msgid "rights"
@@ -530,9 +531,8 @@ msgid "subject"
 msgstr "onderwerp"
 
 #: src/main/extractor_metatypes.c:161
-#, fuzzy
 msgid "subject matter"
-msgstr "onderwerp"
+msgstr "de onderwerpsmaterie"
 
 #: src/main/extractor_metatypes.c:162 src/main/extractor_metatypes.c:195
 msgid "creator"
@@ -587,6 +587,7 @@ msgid "modification date"
 msgstr "wijzigingsdatum"
 
 #: src/main/extractor_metatypes.c:176
+#, fuzzy
 msgid "date the document was modified"
 msgstr "datum dat het document voor het laatst gewijzigd werd"
 
@@ -844,11 +845,11 @@ msgstr "naam van architectuur, besturingssysteem en distributie waar het pakket 
 
 #: src/main/extractor_metatypes.c:248
 msgid "resource type"
-msgstr "resource-type"
+msgstr "informatiebron-soort"
 
 #: src/main/extractor_metatypes.c:249
 msgid "categorization of the nature of the resource that is more specific than the file format"
-msgstr ""
+msgstr "klassering van de bronsoort die preciezer is dan de bestandsindeling"
 
 #: src/main/extractor_metatypes.c:250
 msgid "library search path"
@@ -963,8 +964,9 @@ msgid "resolution in dots per inch"
 msgstr "resoltie in dots per inch"
 
 #: src/main/extractor_metatypes.c:305
+#, fuzzy
 msgid "Originating entity"
-msgstr ""
+msgstr "entiteit van oorsprong"
 
 #: src/main/extractor_metatypes.c:306
 msgid "character set"
@@ -1143,13 +1145,12 @@ msgid "logo of an associated organization"
 msgstr "logo van een bijbehorende organisatie"
 
 #: src/main/extractor_metatypes.c:361
-#, fuzzy
 msgid "broadcast television system"
 msgstr "televisiesysteem"
 
 #: src/main/extractor_metatypes.c:362
 msgid "name of the television system for which the data is coded"
-msgstr ""
+msgstr "naam van het televisiesysteem waarvoor de data gecodeerd is"
 
 #: src/main/extractor_metatypes.c:363
 msgid "source device"
@@ -1385,25 +1386,22 @@ msgid "subtitle of this part"
 msgstr "subtitel van dit deel"
 
 #: src/main/extractor_metatypes.c:429
-#, fuzzy
 msgid "display type"
-msgstr "soort drager"
+msgstr "weergavemethode"
 
 #: src/main/extractor_metatypes.c:430
 msgid "what rendering method should be used to display this item"
 msgstr "welke weergavemethode gebruikt dient te worden voor dit item"
 
 #: src/main/extractor_metatypes.c:431
-#, fuzzy
 msgid "full data"
-msgstr "naam"
+msgstr "volledige data"
 
 #: src/main/extractor_metatypes.c:432
 msgid "entry that contains the full, original binary data (not really meta data)"
-msgstr ""
+msgstr "item dat de volledige, originele binaire data bevat (feitelijk geen metadata)"
 
 #: src/main/extractor_metatypes.c:434
-#, fuzzy
 msgid "rating"
 msgstr "waardering"
 
@@ -1432,7 +1430,6 @@ msgid "name of the group or band"
 msgstr "naam van de groep of band"
 
 #: src/main/extractor_metatypes.c:445
-#, fuzzy
 msgid "original filename"
 msgstr "oorspronkelijke bestandsnaam"
 
@@ -1441,7 +1438,6 @@ msgid "name of the original file (reserved for GNUnet)"
 msgstr "naam van het oorspronkelijke bestand (gereserveerd voor GNUnet)"
 
 #: src/main/extractor_metatypes.c:447
-#, fuzzy
 msgid "disc count"
 msgstr "aantal CD's"
 
@@ -1483,128 +1479,120 @@ msgstr "de codec of indeling waarin de ondertitelsgegevens zijn opgeslagen"
 
 #: src/main/extractor_metatypes.c:458
 msgid "container format"
-msgstr ""
+msgstr "containersoort"
 
 #: src/main/extractor_metatypes.c:459
 msgid "container format the data is stored in"
-msgstr ""
+msgstr "de containerindeling waarin de data is opgeslagen"
 
 #: src/main/extractor_metatypes.c:460
 msgid "bitrate"
-msgstr ""
+msgstr "bitsnelheid"
 
 #: src/main/extractor_metatypes.c:461
 msgid "exact or average bitrate in bits/s"
-msgstr ""
+msgstr "precieze of gemiddelde bitsnelheid (in bits/seconde)"
 
 #: src/main/extractor_metatypes.c:462
 msgid "nominal bitrate"
-msgstr ""
+msgstr "nominale bitsnelheid"
 
 #: src/main/extractor_metatypes.c:463
 msgid "nominal bitrate in bits/s. The actual bitrate might be different from this target bitrate."
-msgstr ""
+msgstr "nominale bitsnelheid in bits/seconde; de werkelijke bitsnelheid kan verschillen van deze doelsnelheid"
 
 #: src/main/extractor_metatypes.c:464
 msgid "minimum bitrate"
-msgstr ""
+msgstr "minimum bitsnelheid"
 
 #: src/main/extractor_metatypes.c:465
 msgid "minimum bitrate in bits/s"
-msgstr ""
+msgstr "minimum bitsnelheid in bits/seconde"
 
 #: src/main/extractor_metatypes.c:467
 msgid "maximum bitrate"
-msgstr ""
+msgstr "maximum bitsnelheid"
 
 #: src/main/extractor_metatypes.c:468
 msgid "maximum bitrate in bits/s"
-msgstr ""
+msgstr "maximum bitsnelheid in bits/seconde"
 
 #: src/main/extractor_metatypes.c:469
-#, fuzzy
 msgid "serial"
-msgstr "Industrial"
+msgstr "serienummer"
 
 #: src/main/extractor_metatypes.c:470
 msgid "serial number of track"
-msgstr ""
+msgstr "serienummer van de track"
 
 #: src/main/extractor_metatypes.c:471
-#, fuzzy
 msgid "encoder"
-msgstr "gecodeerd door"
+msgstr "encoder"
 
 #: src/main/extractor_metatypes.c:472
 msgid "encoder used to encode this stream"
-msgstr ""
+msgstr "coderingsprogramma dat gebruikt is om deze stream te coderen"
 
 #: src/main/extractor_metatypes.c:473
-#, fuzzy
 msgid "encoder version"
-msgstr "indelingsversie"
+msgstr "encoder-versie"
 
 #: src/main/extractor_metatypes.c:474
 msgid "version of the encoder used to encode this stream"
-msgstr ""
+msgstr "versie van het coderingsprogramma dat gebruikt is om deze stream te coderen"
 
 #: src/main/extractor_metatypes.c:475
-#, fuzzy
 msgid "track gain"
-msgstr "tracknummer"
+msgstr "track-gain"
 
 #: src/main/extractor_metatypes.c:476
 msgid "track gain in db"
-msgstr ""
+msgstr "relatieve sterkte van de track in dB"
 
 #: src/main/extractor_metatypes.c:478
-#, fuzzy
 msgid "track peak"
-msgstr "tracknummer"
+msgstr "track-piek"
 
 #: src/main/extractor_metatypes.c:479
 msgid "peak of the track"
-msgstr ""
+msgstr "piekniveau van de track"
 
 #: src/main/extractor_metatypes.c:480
-#, fuzzy
 msgid "album gain"
-msgstr "album"
+msgstr "album-gain"
 
 #: src/main/extractor_metatypes.c:481
 msgid "album gain in db"
-msgstr ""
+msgstr "relatieve sterkte van het album in dB"
 
 #: src/main/extractor_metatypes.c:482
-#, fuzzy
 msgid "album peak"
-msgstr "album"
+msgstr "albumpiek"
 
 #: src/main/extractor_metatypes.c:483
 msgid "peak of the album"
-msgstr ""
+msgstr "piekniveau van het album"
 
 #: src/main/extractor_metatypes.c:484
 msgid "reference level"
-msgstr ""
+msgstr "referentieniveau"
 
 #: src/main/extractor_metatypes.c:485
 msgid "reference level of track and album gain values"
-msgstr ""
+msgstr "referentieniveau voor track- en album-gainwaarden"
 
 #: src/main/extractor_metatypes.c:486
-#, fuzzy
 msgid "location name"
-msgstr "lokatie"
+msgstr "locatienaam"
 
 #: src/main/extractor_metatypes.c:487
+#, fuzzy
 msgid "human readable descriptive location of where the media has been recorded or produced"
-msgstr ""
+msgstr "leesbare omschrijving van de locatie waar het medium werd opgenomen of geproduceerd"
 
 #: src/main/extractor_metatypes.c:489
-#, fuzzy
 msgid "location elevation"
-msgstr "lokatie"
+msgstr "locatie-elevatie"
 
 #: src/main/extractor_metatypes.c:490
 msgid "geo elevation of where the media has been recorded or produced in meters according to WGS84 (zero is average sea level)"
@@ -1665,7 +1653,7 @@ msgstr "groepering"
 
 #: src/main/extractor_metatypes.c:505
 msgid "groups together media that are related and spans multiple tracks. An example are multiple pieces of a concerto"
-msgstr ""
+msgstr "groepeert gerelateerde media en omvat meerdere tracks; een voorbeeld zijn de delen van een concerto"
 
 #: src/main/extractor_metatypes.c:506
 msgid "device manufacturer"
@@ -1704,8 +1692,9 @@ msgid "sample rate"
 msgstr ""
 
 #: src/main/extractor_metatypes.c:516
+#, fuzzy
 msgid "sample rate of the audio track"
-msgstr ""
+msgstr "... van het audiospoor"
 
 #: src/main/extractor_metatypes.c:517
 msgid "audio depth"
@@ -1729,11 +1718,11 @@ msgstr "maximum audio-bitsnelheid"
 
 #: src/main/extractor_metatypes.c:524
 msgid "video dimensions"
-msgstr ""
+msgstr "video-afmetingen"
 
 #: src/main/extractor_metatypes.c:525
 msgid "width and height of the video track (WxH)"
-msgstr ""
+msgstr "breedte en hoogte van het videospoor (bxh)"
 
 #: src/main/extractor_metatypes.c:526
 msgid "video depth"
@@ -1745,84 +1734,82 @@ msgstr "aantal bits per pixel"
 
 #: src/main/extractor_metatypes.c:528
 msgid "frame rate"
-msgstr ""
+msgstr "frame-snelheid"
 
 #: src/main/extractor_metatypes.c:529
+#, fuzzy
 msgid "number of frames per second (as D/N or floating point)"
-msgstr ""
+msgstr "aantal frames per seconde (als ... of drijvendekomma)"
 
 #: src/main/extractor_metatypes.c:530
 msgid "pixel aspect ratio"
-msgstr ""
+msgstr "pixelzijdenverhouding"
 
 #: src/main/extractor_metatypes.c:531
+#, fuzzy
 msgid "pixel aspect ratio (as D/N)"
-msgstr ""
+msgstr "pixelzijdenverhouding (als ...)"
 
 #: src/main/extractor_metatypes.c:533 src/main/extractor_metatypes.c:534
 msgid "video bitrate"
-msgstr ""
+msgstr "video-bitsnelheid"
 
 #: src/main/extractor_metatypes.c:535 src/main/extractor_metatypes.c:536
 msgid "maximum video bitrate"
-msgstr ""
+msgstr "maximum video-bitsnelheid"
 
 #: src/main/extractor_metatypes.c:537
-#, fuzzy
 msgid "subtitle language"
-msgstr "taal"
+msgstr "ondertitels-taal"
 
 #: src/main/extractor_metatypes.c:538
 msgid "language of the subtitle track"
-msgstr ""
+msgstr "taal van het ondertitelingsspoor"
 
 #: src/main/extractor_metatypes.c:539
-#, fuzzy
 msgid "video language"
-msgstr "taal"
+msgstr "video-taal"
 
 #: src/main/extractor_metatypes.c:540
 msgid "language of the video track"
-msgstr ""
+msgstr "taal van het videospoor"
 
 #: src/main/extractor_metatypes.c:541
 msgid "table of contents"
-msgstr ""
+msgstr "inhoudsopgave"
 
 #: src/main/extractor_metatypes.c:542
 msgid "chapters, contents or bookmarks (in xml format)"
-msgstr ""
+msgstr "hoofdstukken, inhoudsopgave of bladwijzers (in XML-opmaak)"
 
 #: src/main/extractor_metatypes.c:544
-#, fuzzy
 msgid "video duration"
-msgstr "duur"
+msgstr "video-duur"
 
 #: src/main/extractor_metatypes.c:545
 msgid "duration of a video stream"
-msgstr ""
+msgstr "speelduur van een video-stream"
 
 #: src/main/extractor_metatypes.c:546
-#, fuzzy
 msgid "audio duration"
-msgstr "duur"
+msgstr "audio-duur"
 
 #: src/main/extractor_metatypes.c:547
 msgid "duration of an audio stream"
-msgstr ""
+msgstr "speelduur van een audio-stream"
 
 #: src/main/extractor_metatypes.c:548
-#, fuzzy
 msgid "subtitle duration"
-msgstr "duur"
+msgstr "ondertitels-duur"
 
 #: src/main/extractor_metatypes.c:549
 msgid "duration of a subtitle stream"
-msgstr ""
+msgstr "speelduur van een ondertitelings-stream"
 
 #: src/main/extractor_metatypes.c:551 src/main/extractor_metatypes.c:552
+#, fuzzy
 msgid "last"
-msgstr ""
+msgstr "laatste"
 
 #: src/main/getopt.c:684
 #, c-format
@@ -1880,9 +1867,9 @@ msgid "%s: option `-W %s' doesn't allow an argument\n"
 msgstr "%s: optie '-W %s' staat geen argument toe\n"
 
 #: src/plugins/flac_extractor.c:314
-#, fuzzy, c-format
+#, c-format
 msgid "%u Hz, %u channels"
-msgstr "dubbel kanaal"
+msgstr "%u Hz, %u kanalen"
 
 #: src/plugins/man_extractor.c:215
 msgid "Commands"
@@ -1997,7 +1984,7 @@ msgid "Farsi"
 msgstr "Perzisch"
 
 #: src/plugins/ole2_extractor.c:578
-#, fuzzy, c-format
+#, c-format
 msgid "Revision #%u: Author `%s' worked on `%s'"
 msgstr "Revisie #%u: Auteur '%s' werkte aan '%s'"
 
