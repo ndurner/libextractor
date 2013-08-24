@@ -177,7 +177,9 @@ process_plugin_reply (void *cls,
 		      value_len))
     {
       prp->file_finished = 1;
+#if DEBUG
       fprintf (stderr, "Sending ABRT\n");
+#endif
       send_discard_message (plugin);
       return;
     }
