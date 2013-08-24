@@ -768,7 +768,7 @@ fi
 
 if test "x$without_gtk" = "xtrue" 
 then
- AC_MSG_NOTICE([NOTICE: libgtk2+ not found, gtk thumbnail support disabled])
+ AC_MSG_NOTICE([NOTICE: libgtk3+ not found, gtk thumbnail support disabled])
 fi
 
 if test "x$HAVE_VORBISFILE_TRUE" = "x#"
@@ -811,7 +811,3 @@ else
  AC_MSG_NOTICE([NOTICE: gstreamer not found, gstreamer support disabled])
 fi
 
-if test $without_gtk != false
-then
-  AC_MSG_NOTICE([NOTICE: gtk+ not found, gtk support disabled])
-fi
