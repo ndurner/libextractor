@@ -643,6 +643,8 @@ _make_continuous_arg_copy (int argc, char *const *argv)
   for (i = 0; i < argc; i++)
     argvsize += strlen (argv[i]) + 1 + sizeof (char *);
   new_argv = malloc (argvsize + sizeof (char *));
+  if (NULL == new_argv)
+    return NULL;
   p = (char *) &new_argv[argc + 1];
   for (i = 0; i < argc; i++)
   {
@@ -702,6 +704,11 @@ _get_utf8_args (int argc, char *const *argv, int *u8argc, char ***u8argv)
   }
 
   *u8argv = _make_continuous_arg_copy (wargc, split_u8argv);
+  if (NULL == *u8argv)
+    {
+      free (split_u8argv);
+      return -1;
+    }
   *u8argc = wargc;
 
   for (i = 0; i < wargc; i++)
@@ -709,6 +716,8 @@ _get_utf8_args (int argc, char *const *argv, int *u8argc, char ***u8argv)
   free (split_u8argv);
 #else
   *u8argv = _make_continuous_arg_copy (argc, argv);
+  if (NULL == *u8argv)
+    return -1;
   *u8argc = argc;
 #endif
   return 0;
