@@ -2004,6 +2004,17 @@ _source_setup (GstDiscoverer * dc,
 }
 
 
+
+static void
+log_handler (const gchar *log_domain,
+	     GLogLevelFlags log_level,
+	     const gchar *message,
+	     gpointer unused_data)
+{
+  /* do nothing */
+}
+
+
 /**
  * Task run from the main loop to call 'gst_discoverer_uri_async'.
  *
@@ -2013,6 +2024,9 @@ _source_setup (GstDiscoverer * dc,
 static gboolean
 _run_async (struct PrivStruct * ps)
 {
+  g_log_set_default_handler (&log_handler, NULL);
+  g_log_set_handler (NULL, G_LOG_LEVEL_MASK | G_LOG_FLAG_FATAL | G_LOG_FLAG_RECURSION,
+		     &log_handler, NULL);
   gst_discoverer_discover_uri_async (ps->dc, "appsrc://");
   return FALSE;
 }
@@ -2051,6 +2065,9 @@ EXTRACTOR_gstreamer_extract_method (struct EXTRACTOR_ExtractContext *ec)
   ps.length = ps.ec->get_size (ps.ec->cls);
   if (ps.length == UINT_MAX)
     ps.length = 0;
+  g_log_set_default_handler (&log_handler, NULL);
+  g_log_set_handler (NULL, G_LOG_LEVEL_MASK | G_LOG_FLAG_FATAL | G_LOG_FLAG_RECURSION,
+		     &log_handler, NULL);
   gst_discoverer_start (ps.dc);
   g_idle_add ((GSourceFunc) &_run_async, &ps);
   g_main_loop_run (ps.loop);
@@ -2069,6 +2086,9 @@ void __attribute__ ((constructor))
 gstreamer_init ()
 {
   gst_init (NULL, NULL);
+  g_log_set_default_handler (&log_handler, NULL);
+  g_log_set_handler (NULL, G_LOG_LEVEL_MASK | G_LOG_FLAG_FATAL | G_LOG_FLAG_RECURSION,
+		     &log_handler, NULL);
   GST_DEBUG_CATEGORY_INIT (gstreamer_extractor, "GstExtractor",
                          0, "GStreamer-based libextractor plugin");
 
