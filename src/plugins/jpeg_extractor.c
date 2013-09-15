@@ -153,8 +153,14 @@ EXTRACTOR_jpeg_extract_method (struct EXTRACTOR_ExtractContext *ec)
     goto EXIT;
   for (mptr = jds.marker_list; NULL != mptr; mptr = mptr->next)
     {
+      size_t off;
+
       if (JPEG_COM != mptr->marker)
 	continue;
+      off = 0;
+      while ( (off < mptr->data_length) &&
+	      (isspace ((int) ((const char *)mptr->data)[mptr->data_length - 1 - off])) )
+	off++;
       if (0 !=
 	  ec->proc (ec->cls,
 		    "jpeg",
@@ -162,7 +168,7 @@ EXTRACTOR_jpeg_extract_method (struct EXTRACTOR_ExtractContext *ec)
 		    EXTRACTOR_METAFORMAT_C_STRING,
 		    "text/plain",
 		    (const char *) mptr->data,
-		    mptr->data_length))
+		    mptr->data_length - off))
 	goto EXIT;
     }
   
