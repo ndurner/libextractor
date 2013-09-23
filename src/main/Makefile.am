@@ -1,6 +1,6 @@
 SUBDIRS  = .
 
-INCLUDES = -I$(top_srcdir)/src/include $(LTDLINCL)
+INCLUDES = -I$(top_srcdir)/src/include 
 
 LIBS = \
  @LE_LIBINTL@ @LE_LIB_LIBS@
@@ -59,7 +59,7 @@ libextractor_la_SOURCES = \
 libextractor_la_LDFLAGS = \
   $(LE_LIB_LDFLAGS) -version-info @LIB_VERSION_CURRENT@:@LIB_VERSION_REVISION@:@LIB_VERSION_AGE@
 libextractor_la_LIBADD = \
-  $(LIBLTDL) $(zlib) $(bz2lib) $(LTLIBICONV) $(XLIB) $(LE_LIBINTL)
+  -lltdl $(zlib) $(bz2lib) $(LTLIBICONV) $(XLIB) $(LE_LIBINTL)
 
 extract_SOURCES = \
   extract.c \

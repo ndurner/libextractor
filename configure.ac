@@ -34,10 +34,6 @@ AC_PROG_LIBTOOL
 # need not have -ldl added
 LIBSOLD=$LIBS
 LT_INIT([disable-static dlopen win32-dll])
-LT_CONFIG_LTDL_DIR([libltdl])
-LTDL_INIT
-AC_SUBST(LTDLINCL)
-AC_SUBST(LIBLTDL)
 AC_SUBST(MKDIR_P)
 
 case "$target_os" in
@@ -231,6 +227,41 @@ fi])
 # Checks for libraries.
 
 AC_CHECK_HEADERS(langinfo.h)
+
+# Check for libltdl header (#2999)
+ltdl=0
+AC_MSG_CHECKING(for libltdl)
+AC_ARG_WITH(ltdl,
+   [  --with-ltdl=PFX    base of libltdl installation],
+   [AC_MSG_RESULT([$with_ltdl])
+    case $with_ltdl in
+      no)
+        ;;
+      yes)
+        AC_CHECK_HEADERS(ltdl.h,
+          AC_CHECK_LIB([ltdl], [lt_dlopenext],
+            ltdl=1))
+        ;;
+      *)
+        LDFLAGS="-L$with_ltdl/lib $LDFLAGS"
+        CPPFLAGS="-I$with_ltdl/include $CPPFLAGS"
+        AC_CHECK_HEADERS(ltdl.h,
+          AC_CHECK_LIB([ltdl], [lt_dlopenext],
+            EXT_LIB_PATH="-L$with_ltdl/lib $EXT_LIB_PATH"
+            ltdl=1))
+        ;;
+    esac
+   ],
+   [AC_MSG_RESULT([--with-ltdl not specified])
+    AC_CHECK_HEADERS(ltdl.h,
+     AC_CHECK_LIB([ltdl], [lt_dlopenext],
+      ltdl=1))])
+if test "$ltdl" != 1
+then
+ AC_MSG_ERROR([libextractor requires libltdl (from GNU libtool), try installing libltdl-dev])
+fi
+
+# restore LIBS
 LIBS=$LIBSOLD
 # FIXME: allow --with-oggvorbis=PFX
 
@@ -363,16 +394,16 @@ AC_CHECK_LIB(magic, magic_open,
    AM_CONDITIONAL(HAVE_MAGIC, false))],
   AM_CONDITIONAL(HAVE_MAGIC, false))
 
-AC_MSG_CHECKING(for tidyInitSource in -ltidy)
+AC_MSG_CHECKING(for tidyNodeGetValue -ltidy)
 AC_LANG_PUSH(C++)
 SAVED_LIBS=$LIBS
 LIBS="$LIBS -ltidy"
 AC_LINK_IFELSE(
   [AC_LANG_PROGRAM([[#include <tidy/tidy.h>]],
-    [[ Bool b = tidyInitSource (NULL, NULL, NULL, NULL, NULL); ]])],
+    [[ Bool b = tidyNodeGetValue (NULL, NULL, NULL); ]])],
   [AC_MSG_RESULT(yes)
    AM_CONDITIONAL(HAVE_TIDY, true)
-   AC_DEFINE(HAVE_TIDY,1,[Have tidyInitSource in libtidy])],
+   AC_DEFINE(HAVE_TIDY,1,[Have tidyNodeGetValue in libtidy])],
   [AC_MSG_RESULT(no)
    AM_CONDITIONAL(HAVE_TIDY, false)])
 LIBS=$SAVED_LIBS
