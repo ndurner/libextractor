@@ -22,7 +22,7 @@
  * @brief PlibC header
  * @attention This file is usually not installed under Unix,
  *            so ship it with your application
- * @version $Revision$
+ * @version $Revision: 151 $
  */
 
 #ifndef _PLIBC_H_
@@ -71,7 +71,7 @@ extern "C" {
 #define Li2Double(x) ((double)((x).HighPart) * 4.294967296E9 + \
   (double)((x).LowPart))
 #ifndef __MINGW64_VERSION_MAJOR
-struct stat64
+struct _stati64
 {
     _dev_t st_dev;
     _ino_t st_ino;
@@ -81,9 +81,9 @@ struct stat64
     short st_gid;
     _dev_t st_rdev;
     __int64 st_size;
-    __time64_t st_atime;
-    __time64_t st_mtime;
-    __time64_t st_ctime;
+    time_t st_atime;
+    time_t st_mtime;
+    time_t st_ctime;
 };
 #endif
 typedef unsigned int sa_family_t;
@@ -114,6 +114,10 @@ enum
   _SC_PAGESIZE = 30,
   _SC_PAGE_SIZE = 30
 };
+
+#if !defined(EACCESS)
+#  define EACCESS EACCES
+#endif
 
 /* Thanks to the Cygwin project */
 #if !defined(ENOCSI)
@@ -360,7 +364,7 @@ enum
 /* Make sure it's the same as WSATIMEDOUT */
 #  define ETIMEDOUT 138		/* Connection timed out */
 #endif
-#if !defined(EWOULDBLOCK) || EWOULBLOCK == 140
+#if !defined(EWOULDBLOCK) || EWOULDBLOCK == 140
 #  undef EWOULDBLOCK /* MinGW-w64 defines it as 140, but we want it as EAGAIN */
 #  define EWOULDBLOCK EAGAIN	/* Operation would block */
 #endif
@@ -521,9 +525,6 @@ int inet_pton4(const char *src, u_char *dst, int pton);
 #if USE_IPV6
 int inet_pton6(const char *src, u_char *dst);
 #endif
-#if !defined(FTRUNCATE_DEFINED)
-int truncate(const char *fname, int distance);
-#endif
 int statfs(const char *path, struct statfs *buf);
 const char *hstrerror(int err);
 int mkstemp(char *tmplate);
@@ -557,9 +558,9 @@ int _win_close(int fd);
 int _win_creat(const char *path, mode_t mode);
 char *_win_ctime(const time_t *clock);
 char *_win_ctime_r(const time_t *clock, char *buf);
-int _win_fstat(int handle, struct _stat *buffer);
+int _win_fstat(int handle, struct stat *buffer);
 int _win_ftruncate(int fildes, off_t length);
-void _win_gettimeofday(struct timeval *tp, void *tzp);
+int _win_truncate(const char *fname, int distance);
 int _win_kill(pid_t pid, int sig);
 int _win_pipe(int *phandles);
 intptr_t _win_mkfifo(const char *path, mode_t mode);
@@ -571,8 +572,8 @@ long _win_random(void);
 void _win_srandom(unsigned int seed);
 int _win_remove(const char *path);
 int _win_rename(const char *oldname, const char *newname);
-int _win_stat(const char *path, struct _stat *buffer);
-int _win_stat64(const char *path, struct stat64 *buffer);
+int _win_stat(const char *path, struct stat *buffer);
+int _win_stati64(const char *path, struct _stati64 *buffer);
 long _win_sysconf(int name);
 int _win_unlink(const char *filename);
 int _win_write(int fildes, const void *buf, size_t nbyte);
@@ -584,8 +585,8 @@ void *_win_mmap(void *start, size_t len, int access, int flags, int fd,
                 unsigned long long offset);
 int _win_msync(void *start, size_t length, int flags);
 int _win_munmap(void *start, size_t length);
-int _win_lstat(const char *path, struct _stat *buf);
-int _win_lstat64(const char *path, struct stat64 *buf);
+int _win_lstat(const char *path, struct stat *buf);
+int _win_lstati64(const char *path, struct _stati64 *buf);
 int _win_readlink(const char *path, char *buf, size_t bufsize);
 int _win_accept(int s, struct sockaddr *addr, int *addrlen);
 
@@ -611,6 +612,7 @@ int _win_setsockopt(int s, int level, int optname, const void *optval,
                     int optlen);
 int _win_shutdown(int s, int how);
 int _win_socket(int af, int type, int protocol);
+int _win_socketpair(int af, int type, int protocol, int socket_vector[2]);
 struct hostent *_win_gethostbyaddr(const char *addr, int len, int type);
 struct hostent *_win_gethostbyname(const char *name);
 struct hostent *gethostbyname2(const char *name, int af);
@@ -659,6 +661,7 @@ char *strcasestr(const char *haystack_start, const char *needle_start);
  #define FOPEN(f, m) fopen(f, m)
  #define FCLOSE(f) fclose(f)
  #define FTRUNCATE(f, l) ftruncate(f, l)
+ #define TRUNCATE(f, l) truncate(f, l)
  #define OPENDIR(d) opendir(d)
  #define CLOSEDIR(d) closedir(d)
  #define READDIR(d) readdir(d)
@@ -723,6 +726,7 @@ char *strcasestr(const char *haystack_start, const char *needle_start);
  #define SETSOCKOPT(s, l, o, v, n) setsockopt(s, l, o, v, n)
  #define SHUTDOWN(s, h) shutdown(s, h)
  #define SOCKET(a, t, p) socket(a, t, p)
+ #define SOCKETPAIR(a, t, p, v) socketpair(a, t, p, v)
  #define GETHOSTBYADDR(a, l, t) gethostbyaddr(a, l, t)
  #define GETHOSTBYNAME(n) gethostbyname(n)
  #define GETTIMEOFDAY(t, n) gettimeofday(t, n)
@@ -741,6 +745,7 @@ char *strcasestr(const char *haystack_start, const char *needle_start);
  #define TDESTROY(r, f) tdestroy(r, f)
  #define LFIND(k, b, n, s, c) lfind(k, b, n, s, c)
  #define LSEARCH(k, b, n, s, c) lsearch(k, b, n, s, c)
+ #define STRUCT_STAT64 struct stat64
 #else
  #define DIR_SEPARATOR '\\'
  #define DIR_SEPARATOR_STR "\\"
@@ -757,6 +762,7 @@ char *strcasestr(const char *haystack_start, const char *needle_start);
  #define FOPEN(f, m) _win_fopen(f, m)
  #define FCLOSE(f) _win_fclose(f)
  #define FTRUNCATE(f, l) _win_ftruncate(f, l)
+ #define TRUNCATE(f, l) _win_truncate(f, l)
  #define OPENDIR(d) _win_opendir(d)
  #define CLOSEDIR(d) _win_closedir(d)
  #define READDIR(d) _win_readdir(d)
@@ -775,7 +781,7 @@ char *strcasestr(const char *haystack_start, const char *needle_start);
  #define REMOVE(p) _win_remove(p)
  #define RENAME(o, n) _win_rename(o, n)
  #define STAT(p, b) _win_stat(p, b)
- #define STAT64(p, b) _win_stat64(p, b)
+ #define STAT64(p, b) _win_stati64(p, b)
  #define SYSCONF(n) _win_sysconf(n)
  #define UNLINK(f) _win_unlink(f)
  #define WRITE(f, b, n) _win_write(f, b, n)
@@ -790,7 +796,7 @@ char *strcasestr(const char *haystack_start, const char *needle_start);
  #define STRERROR(i) _win_strerror(i)
  #define READLINK(p, b, s) _win_readlink(p, b, s)
  #define LSTAT(p, b) _win_lstat(p, b)
- #define LSTAT64(p, b) _win_lstat64(p, b)
+ #define LSTAT64(p, b) _win_lstati64(p, b)
  #define PRINTF printf
  #define FPRINTF fprintf
  #define VPRINTF(f, a) vprintf(f, a)
@@ -821,9 +827,10 @@ char *strcasestr(const char *haystack_start, const char *needle_start);
  #define SETSOCKOPT(s, l, o, v, n) _win_setsockopt(s, l, o, v, n)
  #define SHUTDOWN(s, h) _win_shutdown(s, h)
  #define SOCKET(a, t, p) _win_socket(a, t, p)
+ #define SOCKETPAIR(a, t, p, v) _win_socketpair(a, t, p, v)
  #define GETHOSTBYADDR(a, l, t) _win_gethostbyaddr(a, l, t)
  #define GETHOSTBYNAME(n) _win_gethostbyname(n)
- #define GETTIMEOFDAY(t, n) _win_gettimeofday(t, n)
+ #define GETTIMEOFDAY(t, n) gettimeofday(t, n)
  #define INSQUE(e, p) _win_insque(e, p)
  #define REMQUE(e) _win_remque(e)
  #define HSEARCH(i, a) _win_hsearch(i, a)
@@ -839,6 +846,7 @@ char *strcasestr(const char *haystack_start, const char *needle_start);
  #define TDESTROY(r, f) _win_tdestroy(r, f)
  #define LFIND(k, b, n, s, c) _win_lfind(k, b, n, s, c)
  #define LSEARCH(k, b, n, s, c) _win_lsearch(k, b, n, s, c)
+ #define STRUCT_STAT64 struct _stati64
 #endif
 
 /* search.h */

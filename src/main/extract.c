@@ -981,11 +981,7 @@ main (int argc, char *argv[])
 			   NULL);
       else
 	{
-#if WINDOWS
-	  struct _stat sb;
-#else
 	  struct stat sb;
-#endif
 	  unsigned char *data = NULL;
 	  int f = OPEN (utf8_argv[i], O_RDONLY
 #if WINDOWS

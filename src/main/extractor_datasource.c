@@ -1190,11 +1190,7 @@ EXTRACTOR_datasource_create_from_file_ (const char *filename,
   struct EXTRACTOR_Datasource *ds;
   enum ExtractorCompressionType ct;
   int fd;
-#if WINDOWS
-  struct _stat sb;
-#else
   struct stat sb;
-#endif
   int64_t fsize;
   int winmode = 0;
 #if WINDOWS
