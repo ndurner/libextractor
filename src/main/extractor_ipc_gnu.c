@@ -45,22 +45,22 @@ struct EXTRACTOR_SharedMemory
 {
   /**
    * Pointer to the mapped region of the shm (covers the whole shm)
-   */ 
+   */
   void *shm_ptr;
 
   /**
    * Allocated size of the shm
-   */ 
+   */
   size_t shm_size;
 
   /**
    * POSIX id of the shm into which data is uncompressed
-   */ 
+   */
   int shm_id;
 
   /**
    * Name of the shm
-   */ 
+   */
   char shm_name[MAX_SHM_NAME + 1];
 
   /**
@@ -84,7 +84,7 @@ struct EXTRACTOR_Channel
   char *mdata;
 
   /**
-   * Size of the 'mdata' buffer.
+   * Size of the @e mdata buffer.
    */
   size_t mdata_size;
 
@@ -147,10 +147,10 @@ EXTRACTOR_IPC_shared_memory_create_ (size_t size)
     tpath = "/tmp/";
 #else
   tpath = "/"; /* Linux */
-#endif 
+#endif
   snprintf (shm->shm_name,
-	    MAX_SHM_NAME, 
-	    "%sLE-%u-%u", 
+	    MAX_SHM_NAME,
+	    "%sLE-%u-%u",
 	    tpath, getpid (),
 	    (unsigned int) RANDOM());
   if (-1 == (shm->shm_id = shm_open (shm->shm_name,
@@ -161,8 +161,8 @@ EXTRACTOR_IPC_shared_memory_create_ (size_t size)
       return NULL;
     }
   if ( (0 != ftruncate (shm->shm_id, size)) ||
-       (NULL == (shm->shm_ptr = mmap (NULL, size, 
-				      PROT_WRITE, MAP_SHARED, 
+       (NULL == (shm->shm_ptr = mmap (NULL, size,
+				      PROT_WRITE, MAP_SHARED,
 				      shm->shm_id, 0))) ||
        (((void*) -1) == shm->shm_ptr) )
   {
@@ -174,7 +174,7 @@ EXTRACTOR_IPC_shared_memory_create_ (size_t size)
   }
   shm->shm_size = size;
   shm->rc = 0;
-  return shm; 
+  return shm;
 }
 
 
@@ -202,7 +202,7 @@ EXTRACTOR_IPC_shared_memory_change_rc_ (struct EXTRACTOR_SharedMemory *shm,
  */
 void
 EXTRACTOR_IPC_shared_memory_destroy_ (struct EXTRACTOR_SharedMemory *shm)
-{  
+{
   munmap (shm->shm_ptr, shm->shm_size);
   (void) close (shm->shm_id);
   (void) shm_unlink (shm->shm_name);
@@ -262,7 +262,7 @@ EXTRACTOR_datasource_get_pos_ (struct EXTRACTOR_Datasource *ds)
  * @param plugin the plugin
  * @param shm memory to share with the process
  * @return NULL on error, otherwise IPC channel
- */ 
+ */
 struct EXTRACTOR_Channel *
 EXTRACTOR_IPC_channel_create_ (struct EXTRACTOR_PluginList *plugin,
 			       struct EXTRACTOR_SharedMemory *shm)
@@ -284,8 +284,8 @@ EXTRACTOR_IPC_channel_create_ (struct EXTRACTOR_PluginList *plugin,
     {
       LOG_STRERROR ("malloc");
       free (channel);
-      return NULL;      
-    }  
+      return NULL;
+    }
   channel->shm = shm;
   channel->plugin = plugin;
   channel->size = 0;
@@ -337,7 +337,7 @@ EXTRACTOR_IPC_channel_create_ (struct EXTRACTOR_PluginList *plugin,
       LOG_STRERROR ("malloc");
       EXTRACTOR_IPC_channel_destroy_ (channel);
       return NULL;
-    }  
+    }
   init->opcode = MESSAGE_INIT_STATE;
   init->reserved = 0;
   init->reserved2 = 0;
@@ -427,10 +427,10 @@ EXTRACTOR_IPC_channel_send_ (struct EXTRACTOR_Channel *channel,
  * broken.
  *
  * @param channels array of channels, channels that break may be set to NULL
- * @param num_channels length of the 'channels' array
+ * @param num_channels length of the @a channels array
  * @param proc function to call to process messages (may be called
  *             more than once)
- * @param proc_cls closure for 'proc'
+ * @param proc_cls closure for @a proc
  * @return -1 on error, 1 on success
  */
 int
@@ -464,8 +464,8 @@ EXTRACTOR_IPC_channel_recv_ (struct EXTRACTOR_Channel **channels,
       return 1; /* nothing left to do! */
     }
   tv.tv_sec = 0;
-  tv.tv_usec = 100000; /* 100 ms */
-  if (0 >= select (max + 1, &to_check, NULL, NULL, &tv))
+  tv.tv_usec = 250000; /* 250 ms */
+  if (0 > select (max + 1, &to_check, NULL, NULL, &tv))
     {
       /* an error or timeout -> something's wrong or all plugins hung up */
       if (EINTR != errno)
@@ -486,7 +486,7 @@ EXTRACTOR_IPC_channel_recv_ (struct EXTRACTOR_Channel **channels,
 	    {
 	      LOG ("Inbound message from channel too large, aborting\n");
 	      EXTRACTOR_IPC_channel_destroy_ (channel);
-	      channels[i] = NULL;	      
+	      channels[i] = NULL;
 	    }
 	  channel->mdata_size *= 2;
 	  if (channel->mdata_size > MAX_META_DATA)
@@ -496,7 +496,7 @@ EXTRACTOR_IPC_channel_recv_ (struct EXTRACTOR_Channel **channels,
 	    {
 	      LOG_STRERROR ("realloc");
 	      EXTRACTOR_IPC_channel_destroy_ (channel);
-	      channels[i] = NULL;	      
+	      channels[i] = NULL;
 	    }
 	  channel->mdata = ndata;
 	}
@@ -505,8 +505,8 @@ EXTRACTOR_IPC_channel_recv_ (struct EXTRACTOR_Channel **channels,
 				channel->mdata_size - channel->size)) ) ||
 	   (0 == iret) ||
 	   (-1 == (ret = EXTRACTOR_IPC_process_reply_ (channel->plugin,
-						       channel->mdata, 
-						       channel->size + iret, 
+						       channel->mdata,
+						       channel->size + iret,
 						       proc, proc_cls)) ) )
 	{
 	  if (-1 == iret)

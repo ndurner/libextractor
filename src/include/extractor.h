@@ -35,7 +35,7 @@ extern "C" {
  * 0.2.6-1 => 0x00020601
  * 4.5.2-0 => 0x04050200
  */
-#define EXTRACTOR_VERSION 0x01010001
+#define EXTRACTOR_VERSION 0x01020000
 
 #include <stdio.h>
 
@@ -112,7 +112,7 @@ enum EXTRACTOR_MetaFormat
  * @defgroup types meta data types
  * @{
  */
-enum EXTRACTOR_MetaType 
+enum EXTRACTOR_MetaType
   {
     /* fundamental types */
     EXTRACTOR_METATYPE_RESERVED = 0,
@@ -126,7 +126,7 @@ enum EXTRACTOR_MetaType
     EXTRACTOR_METATYPE_BOOK_EDITION = 6,
     EXTRACTOR_METATYPE_BOOK_CHAPTER_NUMBER = 7,
     EXTRACTOR_METATYPE_JOURNAL_NAME = 8,
-    EXTRACTOR_METATYPE_JOURNAL_VOLUME = 9,    
+    EXTRACTOR_METATYPE_JOURNAL_VOLUME = 9,
     EXTRACTOR_METATYPE_JOURNAL_NUMBER = 10,
     EXTRACTOR_METATYPE_PAGE_COUNT = 11,
     EXTRACTOR_METATYPE_PAGE_RANGE = 12,
@@ -149,7 +149,7 @@ enum EXTRACTOR_MetaType
     EXTRACTOR_METATYPE_URL = 29,
 
     /* "unique" document identifiers */
-    EXTRACTOR_METATYPE_URI = 30, 
+    EXTRACTOR_METATYPE_URI = 30,
     EXTRACTOR_METATYPE_ISRC = 31,
     EXTRACTOR_METATYPE_HASH_MD4 = 32,
     EXTRACTOR_METATYPE_HASH_MD5 = 33,
@@ -181,8 +181,8 @@ enum EXTRACTOR_MetaType
     EXTRACTOR_METATYPE_FORMAT_VERSION = 55,
 
     /* processing history */
-    EXTRACTOR_METATYPE_CREATED_BY_SOFTWARE = 56, 
-    EXTRACTOR_METATYPE_UNKNOWN_DATE = 57, 
+    EXTRACTOR_METATYPE_CREATED_BY_SOFTWARE = 56,
+    EXTRACTOR_METATYPE_UNKNOWN_DATE = 57,
     EXTRACTOR_METATYPE_CREATION_DATE = 58,
     EXTRACTOR_METATYPE_MODIFICATION_DATE = 59,
     EXTRACTOR_METATYPE_LAST_PRINTED = 60,
@@ -223,7 +223,7 @@ enum EXTRACTOR_MetaType
     EXTRACTOR_METATYPE_RESOURCE_TYPE = 92,
     EXTRACTOR_METATYPE_LIBRARY_SEARCH_PATH = 93,
     EXTRACTOR_METATYPE_LIBRARY_DEPENDENCY = 94,
-    
+
     /* photography specifics */
     EXTRACTOR_METATYPE_CAMERA_MAKE = 95,
     EXTRACTOR_METATYPE_CAMERA_MODEL = 96,
@@ -244,8 +244,8 @@ enum EXTRACTOR_MetaType
     EXTRACTOR_METATYPE_MAGNIFICATION = 111,
 
     /* image specifics */
-    EXTRACTOR_METATYPE_IMAGE_DIMENSIONS = 112, 
-    EXTRACTOR_METATYPE_PRODUCED_BY_SOFTWARE = 113, 
+    EXTRACTOR_METATYPE_IMAGE_DIMENSIONS = 112,
+    EXTRACTOR_METATYPE_PRODUCED_BY_SOFTWARE = 113,
     EXTRACTOR_METATYPE_THUMBNAIL = 114,
     EXTRACTOR_METATYPE_IMAGE_RESOLUTION = 115,
     EXTRACTOR_METATYPE_SOURCE = 116,
@@ -307,8 +307,8 @@ enum EXTRACTOR_MetaType
     EXTRACTOR_METATYPE_POPULARITY_METER = 168,
     EXTRACTOR_METATYPE_LICENSEE = 169,
     EXTRACTOR_METATYPE_MUSICIAN_CREDITS_LIST = 170,
-    EXTRACTOR_METATYPE_MOOD = 171, 
-    EXTRACTOR_METATYPE_SUBTITLE = 172, 
+    EXTRACTOR_METATYPE_MOOD = 171,
+    EXTRACTOR_METATYPE_SUBTITLE = 172,
 
     /* GNUnet specific values (never extracted) */
     EXTRACTOR_METATYPE_GNUNET_DISPLAY_TYPE = 173,
@@ -434,13 +434,13 @@ EXTRACTOR_metatype_get_max (void);
  *        used in the main libextractor library and yielding
  *        meta data).
  * @param type libextractor-type describing the meta data
- * @param format basic format information about @a data 
+ * @param format basic format information about @a data
  * @param data_mime_type mime-type of @a data (not of the original file);
  *        can be NULL (if mime-type is not known)
  * @param data actual meta-data found
  * @param data_len number of bytes in @a data
  * @return 0 to continue extracting, 1 to abort
- */ 
+ */
 typedef int (*EXTRACTOR_MetaDataProcessor) (void *cls,
 					    const char *plugin_name,
 					    enum EXTRACTOR_MetaType type,
@@ -465,7 +465,7 @@ struct EXTRACTOR_ExtractContext
    * Configuration string for the plugin.
    */
   const char *config;
-  
+
   /**
    * Obtain a pointer to up to @a size bytes of data from the file to process.
    *
@@ -479,17 +479,17 @@ struct EXTRACTOR_ExtractContext
 		   void **data,
 		   size_t size);
 
-  
+
   /**
    * Seek in the file.  Use `SEEK_CUR` for @a whence and @a pos of 0 to
    * obtain the current position in the file.
-   * 
+   *
    * @param cls the @e cls member of this struct
    * @param pos position to seek (see 'man lseek')
    * @param whence how to see (absolute to start, relative, absolute to end)
    * @return new absolute position, -1 on error (i.e. desired position
    *         does not exist)
-   */ 
+   */
   int64_t (*seek) (void *cls,
 		   int64_t pos,
 		   int whence);
@@ -497,10 +497,10 @@ struct EXTRACTOR_ExtractContext
 
   /**
    * Determine the overall size of the file.
-   * 
+   *
    * @param cls the @a cls member of this struct
    * @return overall file size, `UINT64_MAX` on error (i.e. IPC failure)
-   */ 
+   */
   uint64_t (*get_size) (void *cls);
 
   /**
@@ -533,13 +533,13 @@ struct EXTRACTOR_PluginList;
  * Load the default set of plugins.  The default can be changed
  * by setting the LIBEXTRACTOR_LIBRARIES environment variable;
  * If it is set to "env", then this function will return
- * #EXTRACTOR_plugin_add_config (NULL, env, flags). 
+ * #EXTRACTOR_plugin_add_config (NULL, env, flags).
  *
  * If LIBEXTRACTOR_LIBRARIES is not set, the function will attempt
- * to locate the installed plugins and load all of them. 
+ * to locate the installed plugins and load all of them.
  * The directory where the code will search for plugins is typically
  * automatically determined; it can be specified explicitly using the
- * "LIBEXTRACTOR_PREFIX" environment variable.  
+ * "LIBEXTRACTOR_PREFIX" environment variable.
  *
  * This environment variable must be set to the precise directory with
  * the plugins (i.e. "/usr/lib/libextractor", not "/usr").  Note that
@@ -550,7 +550,7 @@ struct EXTRACTOR_PluginList;
  * @param flags options for all of the plugins loaded
  * @return the default set of plugins, NULL if no plugins were found
  */
-struct EXTRACTOR_PluginList * 
+struct EXTRACTOR_PluginList *
 EXTRACTOR_plugin_add_defaults (enum EXTRACTOR_Options flags);
 
 
@@ -590,7 +590,7 @@ EXTRACTOR_plugin_add_config (struct EXTRACTOR_PluginList *prev,
 			     const char *config,
 			     enum EXTRACTOR_Options flags);
 
-		
+
 /**
  * Remove a plugin from a list.
  *
@@ -608,7 +608,7 @@ EXTRACTOR_plugin_remove (struct EXTRACTOR_PluginList *prev,
  *
  * @param plugin the list of plugins
  */
-void 
+void
 EXTRACTOR_plugin_remove_all (struct EXTRACTOR_PluginList *plugins);
 
 
@@ -636,19 +636,19 @@ EXTRACTOR_extract (struct EXTRACTOR_PluginList *plugins,
  * Simple #EXTRACTOR_MetaDataProcessor implementation that simply
  * prints the extracted meta data to the given file.  Only prints
  * those keywords that are in UTF-8 format.
- * 
+ *
  * @param handle the file to write to (`stdout`, `stderr`), must NOT be NULL,
  *               must be of type `FILE *`.
  * @param plugin_name name of the plugin that produced this value
  * @param type libextractor-type describing the meta data
- * @param format basic format information about data 
+ * @param format basic format information about data
  * @param data_mime_type mime-type of @a data (not of the original file);
  *        can be NULL (if mime-type is not known)
  * @param data actual meta-data found
  * @param data_len number of bytes in @a data
  * @return non-zero if printing failed, otherwise 0.
  */
-int 
+int
 EXTRACTOR_meta_data_print (void *handle,
 			   const char *plugin_name,
 			   enum EXTRACTOR_MetaType type,

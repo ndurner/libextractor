@@ -1,6 +1,6 @@
 # Process this file with autoconf to produce a configure script.
 AC_PREREQ(2.61)
-AC_INIT([libextractor], [1.1], [bug-libextractor@gnu.org])
+AC_INIT([libextractor], [1.2], [bug-libextractor@gnu.org])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
 AH_TOP([#define _GNU_SOURCE  1])
@@ -9,7 +9,7 @@ AC_CANONICAL_HOST
 AC_CANONICAL_SYSTEM
 
 LIB_VERSION_CURRENT=4
-LIB_VERSION_REVISION=2
+LIB_VERSION_REVISION=3
 LIB_VERSION_AGE=1
 AC_SUBST(LIB_VERSION_CURRENT)
 AC_SUBST(LIB_VERSION_REVISION)
@@ -40,7 +40,7 @@ case "$target_os" in
 *linux-gnu)
      AC_DEFINE(GNU_LINUX,1,[This is a GNU/Linux system])
      AC_DEFINE_UNQUOTED(GNU_LINUX,1,[This is a GNU/Linux system])
-     AM_CONDITIONAL(HAVE_GNU_LD, true)    
+     AM_CONDITIONAL(HAVE_GNU_LD, true)
      AM_CONDITIONAL(SOMEBSD, false)
      AM_CONDITIONAL(WINDOWS, false)
      XTRA_CPPLIBS=-lstdc++
@@ -88,7 +88,7 @@ darwin*)
      AM_CONDITIONAL(HAVE_GNU_LD, false)
      AM_CONDITIONAL(SOMEBSD, false)
      AM_CONDITIONAL(WINDOWS, false)
-     CFLAGS="-no-cpp-precomp -fno-common $CFLAGS" 
+     CFLAGS="-no-cpp-precomp -fno-common $CFLAGS"
      LIBEXT=.so
      ;;
 cygwin*)
@@ -132,7 +132,7 @@ mingw*)
        ],
        [AC_MSG_RESULT([--with-plibc not specified])
         LDFLAGS="-L/usr/lib $LDFLAGS"
-        CPPFLAGS="-I/usr/include $CPPFLAGS"    
+        CPPFLAGS="-I/usr/include $CPPFLAGS"
         AC_CHECK_HEADERS([plibc.h],
               AC_CHECK_LIB([plibc], [plibc_init],
                 EXT_LIB_PATH="-L$with_plibc/lib $EXT_LIB_PATH"
@@ -195,7 +195,7 @@ AM_CONDITIONAL(MINGW, test "$build_os" = "mingw32")
 
 
 # use '-fno-strict-aliasing', but only if the compiler can take it
-if gcc -fno-strict-aliasing -S -o /dev/null -xc /dev/null >/dev/null 2>&1; 
+if gcc -fno-strict-aliasing -S -o /dev/null -xc /dev/null >/dev/null 2>&1;
 then
  CFLAGS="-fno-strict-aliasing $CFLAGS"
 fi
@@ -687,7 +687,7 @@ then
   AC_DEFINE([FRAMEWORK_BUILD], 1, [Build a Mac OS X Framework])
   LE_INTLINCL='-I$(top_srcdir)/src/intlemu'
   LE_LIBINTL='$(top_builddir)/src/intlemu/libintlemu.la -framework CoreFoundation'
-  AC_LIB_APPENDTOVAR([CPPFLAGS], [$LE_INTLINCL]) 
+  AC_LIB_APPENDTOVAR([CPPFLAGS], [$LE_INTLINCL])
 fi
 
 
@@ -697,7 +697,7 @@ LE_PLUGIN_LDFLAGS="-export-dynamic -avoid-version -module -no-undefined"
 
 # TODO insert a proper check here
 AC_CACHE_CHECK([whether -export-symbols-regex works],
- gn_cv_export_symbols_regex_works, 
+ gn_cv_export_symbols_regex_works,
  [
   case "$host_os" in
   mingw*) gn_cv_export_symbols_regex_works=no;;
@@ -731,10 +731,10 @@ AC_SUBST(PACKAGE_VERSION_NOALPHA)
 
 # gcov compilation
 AC_MSG_CHECKING(whether to compile with support for code coverage analysis)
-AC_ARG_ENABLE([coverage], 
+AC_ARG_ENABLE([coverage],
               AS_HELP_STRING([--enable-coverage],
                              [compile the library with code coverage support]),
-              [use_gcov=${enableval}], 
+              [use_gcov=${enableval}],
               [use_gcov=no])
 AC_MSG_RESULT($use_gcov)
 AM_CONDITIONAL([USE_COVERAGE], [test "x$use_gcov" = "xyes"])
@@ -742,7 +742,7 @@ AM_CONDITIONAL([USE_COVERAGE], [test "x$use_gcov" = "xyes"])
 
 
 AC_CONFIG_FILES([Makefile
-po/Makefile.in 
+po/Makefile.in
 m4/Makefile
 contrib/macosx/Info.plist
 contrib/macosx/Pkg-Info.plist
@@ -799,7 +799,7 @@ then
  AC_MSG_NOTICE([NOTICE: FFmpeg thumbnailer plugin disabled])
 fi
 
-if test "x$without_gtk" = "xtrue" 
+if test "x$without_gtk" = "xtrue"
 then
  AC_MSG_NOTICE([NOTICE: libgtk3+ not found, gtk thumbnail support disabled])
 fi
