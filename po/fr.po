@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor-0.5.20a\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2013-06-29 21:26+0200\n"
+"POT-Creation-Date: 2013-10-19 16:33+0200\n"
 "PO-Revision-Date: 2008-08-24 19:08+0100\n"
 "Last-Translator: Nicolas Provost <nprovost@quadriv.com>\n"
 "Language-Team: French <traduc@traduc.org>\n"
@@ -117,31 +117,31 @@ msgstr ""
 msgid "%s - (binary, %u bytes)\n"
 msgstr "%s - (binaire)\n"
 
-#: src/main/extract.c:800 src/main/extract.c:812
+#: src/main/extract.c:809 src/main/extract.c:821
 msgid ""
 "Illegal combination of options, cannot combine multiple styles of printing.\n"
 msgstr ""
 
-#: src/main/extract.c:845
+#: src/main/extract.c:854
 #, c-format
 msgid "You must specify an argument for the `%s' option (option ignored).\n"
 msgstr "Vous devez préciser un argument pour l'option `%s' (option ignorée).\n"
 
-#: src/main/extract.c:914
+#: src/main/extract.c:923
 msgid "Use --help to get a list of options.\n"
 msgstr "Utilisez --help pour obtenir une liste d'options.\n"
 
-#: src/main/extract.c:955
+#: src/main/extract.c:964
 #, fuzzy
 msgid "% BiBTeX file\n"
 msgstr "%% fichier BiBTeX\n"
 
-#: src/main/extract.c:963
+#: src/main/extract.c:972
 #, c-format
 msgid "Keywords for file %s:\n"
 msgstr "Mots-clés pour le fichier %s:\n"
 
-#: src/main/extractor.c:672
+#: src/main/extractor.c:674
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "Echec de l'initialisation du module %s !\n"

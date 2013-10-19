@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.6.0\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2013-06-29 21:26+0200\n"
+"POT-Creation-Date: 2013-10-19 16:33+0200\n"
 "PO-Revision-Date: 2010-02-11 00:13+0930\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
@@ -120,32 +120,32 @@ msgstr "%s - (không rõ, %u byte)\n"
 msgid "%s - (binary, %u bytes)\n"
 msgstr "%s - (nhị phân, %u byte)\n"
 
-#: src/main/extract.c:800 src/main/extract.c:812
+#: src/main/extract.c:809 src/main/extract.c:821
 msgid ""
 "Illegal combination of options, cannot combine multiple styles of printing.\n"
 msgstr "sai tổ hợp các tuỳ chọn này, không thể kết hợp nhiều cách in.\n"
 
-#: src/main/extract.c:845
+#: src/main/extract.c:854
 #, c-format
 msgid "You must specify an argument for the `%s' option (option ignored).\n"
 msgstr "Bạn phải ghi rõ một đối số cho tùy chọn « %s » (tùy chọn bị bỏ qua).\n"
 
-#: src/main/extract.c:914
+#: src/main/extract.c:923
 msgid "Use --help to get a list of options.\n"
 msgstr ""
 "Hãy sử dụng lệnh « --help » (trợ giúp) để xem một danh sách các tùy chọn.\n"
 
-#: src/main/extract.c:955
+#: src/main/extract.c:964
 #, fuzzy
 msgid "% BiBTeX file\n"
 msgstr "%% tập tin BiBTeX\n"
 
-#: src/main/extract.c:963
+#: src/main/extract.c:972
 #, c-format
 msgid "Keywords for file %s:\n"
 msgstr "Từ khoá cho tập tin %s:\n"
 
-#: src/main/extractor.c:672
+#: src/main/extractor.c:674
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "Việc khởi động cơ chế cầm phít bị lỗi: %s\n"
