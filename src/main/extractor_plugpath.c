@@ -36,7 +36,7 @@
 
 /**
  * Function to call on paths.
- * 
+ *
  * @param cls closure
  * @param path a directory path
  */
@@ -50,8 +50,8 @@ typedef void (*EXTRACTOR_PathProcessor) (void *cls,
  * @param in input string, modified
  * @return NULL if 'in' is NULL, otherwise 'in' with '/bin/' removed
  */
-static char * 
-cut_bin (char * in) 
+static char *
+cut_bin (char * in)
 {
   size_t p;
 
@@ -64,7 +64,7 @@ cut_bin (char * in)
        ('\\' == in[p-1]) )
     in[--p] = '\0';
   if (0 == strcmp (&in[p-4],
-		   "/bin")) 
+		   "/bin"))
     {
       in[p-4] = '\0';
       p -= 4;
@@ -88,7 +88,7 @@ cut_bin (char * in)
  * and the binary linking against it sits elsewhere.
  */
 static char *
-get_path_from_proc_exe () 
+get_path_from_proc_exe ()
 {
   char fn[64];
   char line[1024];
@@ -105,13 +105,13 @@ get_path_from_proc_exe ()
 	    getpid ());
   if (NULL != (f = FOPEN (fn, "r")))
     {
-      while (NULL != fgets (line, 1024, f)) 
+      while (NULL != fgets (line, 1024, f))
 	{
 	  if ( (1 == sscanf (line,
 			     "%*x-%*x %*c%*c%*c%*c %*x %*2x:%*2x %*u%*[ ]%s",
 			     dir)) &&
 	       (NULL != (lestr = strstr (dir,
-					 "libextractor")) ) ) 
+					 "libextractor")) ) )
 	    {
 	      lestr[0] = '\0';
 	      fclose (f);
@@ -178,8 +178,8 @@ DllMain (HINSTANCE hinstDLL,
 /**
  * Try to determine path with win32-specific function
  */
-static char * 
-get_path_from_module_filename () 
+static char *
+get_path_from_module_filename ()
 {
   char *path;
   char *ret;
@@ -218,7 +218,7 @@ get_path_from_module_filename ()
  * @param number of bytes available in 'buf'
  * @return 0 on success, otherwise desired number of bytes is stored in 'bufsize'
  */
-typedef int (*MyNSGetExecutablePathProto) (char *buf, 
+typedef int (*MyNSGetExecutablePathProto) (char *buf,
 					   size_t *bufsize);
 
 
@@ -280,8 +280,8 @@ get_path_from_NSGetExecutablePath ()
  *
  * @return NULL on error
  */
-static char * 
-get_path_from_dyld_image () 
+static char *
+get_path_from_dyld_image ()
 {
   const char *path;
   char *s;
@@ -290,7 +290,7 @@ get_path_from_dyld_image ()
   int c;
 
   c = _dyld_image_count ();
-  for (i = 0; i < c; i++) 
+  for (i = 0; i < c; i++)
     {
       if (((void *) _dyld_get_image_header (i)) != (void *) &_mh_dylib_header)
 	continue;
@@ -321,7 +321,7 @@ get_path_from_dyld_image ()
  * @return path to binary, NULL if not found
  */
 static char *
-get_path_from_PATH() 
+get_path_from_PATH()
 {
   struct stat sbuf;
   char *path;
@@ -345,11 +345,11 @@ get_path_from_PATH()
       return NULL;
     }
   pos = path;
-  while (NULL != (end = strchr(pos, ':'))) 
+  while (NULL != (end = strchr(pos, ':')))
     {
       *end = '\0';
       sprintf (buf, "%s/%s", pos, "extract");
-      if (0 == stat(buf, &sbuf)) 
+      if (0 == stat(buf, &sbuf))
 	{
 	  free (buf);
 	  if (NULL == (pos = strdup (pos)))
@@ -360,19 +360,19 @@ get_path_from_PATH()
 	    }
 	  free (path);
 	  pos = cut_bin (pos);
-	  if (NULL == (ret = realloc (pos, strlen (pos) + 5)))
+	  if (NULL == (ret = realloc (pos, strlen (pos) + 6)))
 	    {
 	      LOG_STRERROR ("realloc");
 	      free (pos);
 	      return NULL;
 	    }
-	  strcat (ret, "lib/");
+	  strcat (ret, "/lib/");
 	  return ret;
 	}
       pos = end + 1;
     }
   sprintf (buf, "%s/%s", pos, "extract");
-  if (0 == stat (buf, &sbuf)) 
+  if (0 == stat (buf, &sbuf))
     {
       pos = strdup (pos);
       free (buf);
@@ -380,13 +380,13 @@ get_path_from_PATH()
       if (NULL == pos)
 	return NULL;
       pos = cut_bin (pos);
-      if (NULL == (ret = realloc (pos, strlen (pos) + 5)))
+      if (NULL == (ret = realloc (pos, strlen (pos) + 6)))
 	{
 	  LOG_STRERROR ("realloc");
 	  free (pos);
 	  return NULL;
 	}
-      strcat (ret, "lib/");
+      strcat (ret, "/lib/");
       return ret;
     }
   free (buf);
@@ -398,7 +398,7 @@ get_path_from_PATH()
 /**
  * Create a filename by appending 'fname' to 'path'.
  *
- * @param path the base path 
+ * @param path the base path
  * @param fname the filename to append
  * @return '$path/$fname', NULL on error
  */
@@ -420,23 +420,23 @@ append_to_dir (const char *path,
   if ('\\' == path[slen-1])
     sprintf (ret,
 	     "%s%s",
-	     path, 
+	     path,
 	     fname);
   else
     sprintf (ret,
 	     "%s\\%s",
-	     path, 
+	     path,
 	     fname);
 #else
   if ('/' == path[slen-1])
     sprintf (ret,
 	     "%s%s",
-	     path, 
+	     path,
 	     fname);
   else
     sprintf (ret,
 	     "%s/%s",
-	     path, 
+	     path,
 	     fname);
 #endif
   return ret;
@@ -471,7 +471,7 @@ get_installation_paths (EXTRACTOR_PathProcessor pp,
       for (prefix = strtok_r (d, PATH_SEPARATOR_STR, &saveptr);
 	   NULL != prefix;
 	   prefix = strtok_r (NULL, PATH_SEPARATOR_STR, &saveptr))
-	pp (pp_cls, prefix);	
+	pp (pp_cls, prefix);
       free (d);
       return;
     }
@@ -515,17 +515,17 @@ struct SearchContext
    * Name of the plugin we are looking for.
    */
   const char *short_name;
-  
+
   /**
    * Location for storing the path to the plugin upon success.
-   */ 
+   */
   char *path;
 };
 
 
 /**
  * Load all plugins from the given directory.
- * 
+ *
  * @param cls pointer to the "struct EXTRACTOR_PluginList*" to extend
  * @param path path to a directory with plugins
  */
@@ -555,7 +555,7 @@ find_plugin_in_path (void *cls,
 	     (0 != strcasecmp (&ent->d_name[dlen-4], ".dll")) ) )
 	continue; /* only load '.so' and '.dll' */
       if (NULL == (sym_name = strrchr (ent->d_name, '_')))
-	continue;	
+	continue;
       sym_name++;
       if (NULL == (sym = strdup (sym_name)))
 	{
@@ -586,7 +586,7 @@ char *
 EXTRACTOR_find_plugin_ (const char *short_name)
 {
   struct SearchContext sc;
-  
+
   sc.path = NULL;
   sc.short_name = short_name;
   get_installation_paths (&find_plugin_in_path,
@@ -595,14 +595,14 @@ EXTRACTOR_find_plugin_ (const char *short_name)
 }
 
 
-/** 
+/**
  * Closure for 'load_plugins_from_dir'.
  */
 struct DefaultLoaderContext
 {
   /**
    * Accumulated result list.
-   */ 
+   */
   struct EXTRACTOR_PluginList *res;
 
   /**
@@ -614,7 +614,7 @@ struct DefaultLoaderContext
 
 /**
  * Load all plugins from the given directory.
- * 
+ *
  * @param cls pointer to the "struct EXTRACTOR_PluginList*" to extend
  * @param path path to a directory with plugins
  */
@@ -672,7 +672,7 @@ load_plugins_from_dir (void *cls,
  * @param flags options for all of the plugins loaded
  * @return the default set of plugins, NULL if no plugins were found
  */
-struct EXTRACTOR_PluginList * 
+struct EXTRACTOR_PluginList *
 EXTRACTOR_plugin_add_defaults (enum EXTRACTOR_Options flags)
 {
   struct DefaultLoaderContext dlc;
