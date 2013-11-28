@@ -28,7 +28,11 @@
 #include <rpm/rpmlib.h>
 #include <rpm/rpmts.h>
 #include <rpm/rpmlog.h>
+#if SOMEBSD
+#include <pthread_np.h>
+#else
 #include <pthread.h>
+#endif
 #include <sys/types.h>
 #include <signal.h>
 
@@ -36,9 +40,9 @@
 /**
  * Closure for the 'pipe_feeder'.
  */
-struct PipeArgs 
+struct PipeArgs
 {
-  
+
   /**
    * Context for reading data from.
    */
@@ -84,7 +88,7 @@ pipe_feeder (void * args)
   void *ptr;
   char *buf;
 
-  /* buffer is heap-allocated as this is a thread and 
+  /* buffer is heap-allocated as this is a thread and
      large stack allocations might not be the best idea */
   while (0 == p->shutdown)
     {
@@ -110,13 +114,13 @@ pipe_feeder (void * args)
 	    }
 	  if (0 == wret)
 	    break;
-	  done += wret;	   
+	  done += wret;
 	}
       if (done != rret)
 	break;
     }
   CLOSE (p->pi[1]);
-  return NULL;			    
+  return NULL;
 }
 
 
@@ -124,14 +128,14 @@ pipe_feeder (void * args)
  * LOG callback called by librpm.  Does nothing, we
  * just need this to override the default behavior.
  */
-static int 
+static int
 discard_log_callback (rpmlogRec rec,
-		      void *ctx) 
+		      void *ctx)
 {
   /* do nothing! */
   return 0;
 }
- 
+
 
 /**
  * Mapping from RPM tags to LE types.
@@ -152,7 +156,7 @@ struct Matches
 
 /**
  * List of mappings from RPM tags to LE types.
- */ 
+ */
 static struct Matches tests[] = {
   {RPMTAG_NAME, EXTRACTOR_METATYPE_PACKAGE_NAME},
   {RPMTAG_VERSION, EXTRACTOR_METATYPE_SOFTWARE_VERSION},
@@ -238,7 +242,7 @@ static struct Matches tests[] = {
 
 
 /**
- * Main entry method for the 'application/x-rpm' extraction plugin. 
+ * Main entry method for the 'application/x-rpm' extraction plugin.
  *
  * @param ec extraction context provided to the plugin
  */
@@ -298,7 +302,7 @@ EXTRACTOR_rpm_extract_method (struct EXTRACTOR_ExtractContext *ec)
       goto END;
     }
   pthread_mutex_lock (&parg.lock);
-  if (0 != ec->proc (ec->cls, 
+  if (0 != ec->proc (ec->cls,
 		     "rpm",
 		     EXTRACTOR_METATYPE_MIMETYPE,
 		     EXTRACTOR_METAFORMAT_UTF8,
@@ -322,18 +326,18 @@ EXTRACTOR_rpm_extract_method (struct EXTRACTOR_ExtractContext *ec)
 	  case RPM_STRING_ARRAY_TYPE:
 	  case RPM_I18NSTRING_TYPE:
 	  case RPM_STRING_TYPE:
-	    while (NULL != (str = rpmtdNextString (p))) 
+	    while (NULL != (str = rpmtdNextString (p)))
 	      {
 		pthread_mutex_lock (&parg.lock);
-		if (0 != ec->proc (ec->cls, 
+		if (0 != ec->proc (ec->cls,
 				   "rpm",
 				   tests[i].type,
 				   EXTRACTOR_METAFORMAT_UTF8,
 				   "text/plain",
 				   str,
 				   strlen (str) + 1))
-		  
-		  {		 
+
+		  {
 		    pthread_mutex_unlock (&parg.lock);
 		    goto CLEANUP;
 		  }
@@ -349,9 +353,9 @@ EXTRACTOR_rpm_extract_method (struct EXTRACTOR_ExtractContext *ec)
 		  time_t tp = (time_t) *v;
 
 		  ctime_r (&tp, tmp);
-		  tmp[strlen (tmp) - 1] = '\0';   /* eat linefeed */		  
+		  tmp[strlen (tmp) - 1] = '\0';   /* eat linefeed */
 		  pthread_mutex_lock (&parg.lock);
-		  if (0 != ec->proc (ec->cls, 
+		  if (0 != ec->proc (ec->cls,
 				     "rpm",
 				     tests[i].type,
 				     EXTRACTOR_METAFORMAT_UTF8,
@@ -369,12 +373,12 @@ EXTRACTOR_rpm_extract_method (struct EXTRACTOR_ExtractContext *ec)
 		  char tmp[14];
 		  uint32_t *s = rpmtdNextUint32 (p);
 
-		  snprintf (tmp, 
-			    sizeof (tmp), 
-			    "%u", 
+		  snprintf (tmp,
+			    sizeof (tmp),
+			    "%u",
 			    (unsigned int) *s);
 		  pthread_mutex_lock (&parg.lock);
-		  if (0 != ec->proc (ec->cls, 
+		  if (0 != ec->proc (ec->cls,
 				     "rpm",
 				     tests[i].type,
 				     EXTRACTOR_METAFORMAT_UTF8,
@@ -391,13 +395,13 @@ EXTRACTOR_rpm_extract_method (struct EXTRACTOR_ExtractContext *ec)
 	    }
 	  default:
 	    break;
-	  }      
+	  }
       }
  CLEANUP:
   rpmtdFree (p);
   headerFreeIterator (hi);
 
- END:				
+ END:
   headerFree (hdr);
   rpmtsFree(ts);
 
@@ -410,7 +414,7 @@ EXTRACTOR_rpm_extract_method (struct EXTRACTOR_ExtractContext *ec)
   sigaction (SIGALRM, &sig, &old);
   parg.shutdown = 1;
   CLOSE (parg.pi[0]);
-  Fclose (fdi);  
+  Fclose (fdi);
   pthread_kill (pthr, SIGALRM);
   pthread_join (pthr, &unused);
   pthread_mutex_destroy (&parg.lock);
