@@ -654,6 +654,7 @@ AC_CHECK_PROG([HAVE_ZZUF],[zzuf], 1, 0)
 AM_CONDITIONAL(HAVE_ZZUF, test 0 != $HAVE_ZZUF)
 
 AC_MSG_CHECKING([whether to enable the FFmpeg thumbnail extractor])
+new_ffmpeg=0
 AC_ARG_ENABLE(ffmpeg,
  [AC_HELP_STRING([--enable-ffmpeg],[Enable FFmpeg support])
   AC_HELP_STRING([--disable-ffmpeg],[Disable FFmpeg support])],
@@ -670,12 +671,15 @@ AC_ARG_ENABLE(ffmpeg,
 if test x$ffmpeg_enabled = x1
 then
   ffmpeg_enabled=0
+  new_ffmpeg=0
+  AC_CHECK_HEADERS([libavutil/frame.h],new_ffmpeg=1)
   AC_CHECK_LIB(swscale, sws_getContext,
     AC_CHECK_LIB(avcodec, avcodec_alloc_context3,
       ffmpeg_enabled=1))
-  AC_CHECK_HEADERS([libavutil/avutil.h ffmpeg/avutil.h libavformat/avformat.h ffmpeg/avformat.h libavcodec/avcodec.h ffmpeg/avcodec.h libswscale/swscale.h ffmpeg/swscale.h])
+  AC_CHECK_HEADERS([libavutil/avutil.h ffmpeg/avutil.h libavformat/avformat.h ffmpeg/avformat.h libavcodec/avcodec.h ffmpeg/avcodec.h libswscale/swscale.h ffmpeg/swscale.h libavresample/avresample.h ffmpeg/avresample.h])
 fi
 AM_CONDITIONAL(HAVE_FFMPEG, test x$ffmpeg_enabled != x0)
+AM_CONDITIONAL(HAVE_FFMPEG_NEW, test x$new_ffmpeg != x0)
 
 
 LE_INTLINCL=""
@@ -797,6 +801,11 @@ fi
 if test "x$ffmpeg_enabled" = "x0"
 then
  AC_MSG_NOTICE([NOTICE: FFmpeg thumbnailer plugin disabled])
+fi
+
+if test "x$new_ffmpeg" = "x0"
+then
+ AC_MSG_NOTICE([NOTICE: FFmpeg/opus audio preview plugin disabled])
 fi
 
 if test "x$without_gtk" = "xtrue"

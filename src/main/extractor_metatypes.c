@@ -548,6 +548,9 @@ static const struct MetaTypeDescription meta_type_descriptions[] = {
   { gettext_noop ("subtitle duration"),
     gettext_noop ("duration of a subtitle stream") },
 
+  { gettext_noop ("audio preview"),
+    gettext_noop ("a preview of the file audio stream") },
+	
   { gettext_noop ("last"),
     gettext_noop ("last") }
 };
