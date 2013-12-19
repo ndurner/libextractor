@@ -78,12 +78,12 @@
 /**
  * Set to 1 to enable debug output.
  */ 
-#define DEBUG 1
+#define DEBUG 0
 
 /**
  * Set to 1 to enable a output file for testing.
  */ 
-#define OUTPUT_FILE 1
+#define OUTPUT_FILE 0
 
 
 
