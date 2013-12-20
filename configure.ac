@@ -609,7 +609,7 @@ then
   AM_PATH_GTK_3_0([$check_for_3],without_gtk=false,without_gtk=true)
 fi
 
-if test "x$without_gtk" == "xfalse" -a "x$check_for_2" != "xfalse"
+if test "x$without_gtk" == "xtrue" -a "x$check_for_2" != "xfalse"
 then
   AM_PATH_GTK_2_0([$check_for_2],without_gtk=false,without_gtk=true)
 fi

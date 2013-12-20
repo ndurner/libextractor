@@ -1,3 +1,7 @@
+Sat Dec 21 00:26:34 CET 2013
+	Fix check for Gtk3. -CG
+	Added opus audio-preview plugin. -bratao
+
 Sat Oct 19 16:30:37 CEST 2013
 	Increase select() timeout, handle timeout case better.
 	Releasing GNU libextractor 1.2. -CG
