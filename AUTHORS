@@ -5,6 +5,7 @@ LRN <lrn1986@gmail.com>
 Developers:
 Andreas Huggel <ahuggel@gmx.net>
 Blake Matheny <bmatheny@mobocracy.net>
+Bruno Cabral <bcabral@uw.edu>
 Bruno Haible <bruno@clisp.org>
 Christopher Adam Telfer
 Filip Pizlo <pizlo@purdue.edu>
@@ -56,6 +57,7 @@ odf            - Christian Grothoff
 ole2           - Christian Grothoff
 ogg            - Christian Grothoff
 png            - Christian Grothoff
+previewopus - Bruno Cabral
 ps             - Christian Grothoff
 riff           - Christian Grothoff
 rpm            - Christian Grothoff

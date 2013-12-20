@@ -106,12 +106,10 @@
 #define OUTPUT_SAMPLE_FORMAT AV_SAMPLE_FMT_S16
 
 
-/**
- * Global handle to MAGIC data.
- */
-static magic_t magic;
-
+/** Our output buffer*/
 static unsigned char *buffer;
+
+/** Actual output buffer size */
 static int totalSize;
 
 /**
@@ -987,7 +985,6 @@ extract_audio (struct EXTRACTOR_ExtractContext *ec)
   frame_finished = 0;
 
 
-	
 	/**
      * Loop as long as we have input samples to read or output samples
      * to write; abort as soon as we have neither.
@@ -1126,14 +1123,13 @@ EXTRACTOR_previewopus_extract_method (struct EXTRACTOR_ExtractContext *ec)
   unsigned int i;
   ssize_t iret;
   void *data;
-  const char *mime;
+
 
   if (-1 == (iret = ec->read (ec->cls,
 			      &data,
 			      16 * 1024)))
     return;
-  if (NULL == (mime = magic_buffer (magic, data, iret)))
-    return;
+
   if (0 != ec->seek (ec->cls, 0, SEEK_SET))
     return;
 
@@ -1163,18 +1159,14 @@ previewopus_av_log_callback (void* ptr,
 
 
 /**
- * Initialize av-libs and load magic file.
+ * Initialize av-libs
  */
 void __attribute__ ((constructor)) 
 previewopus_lib_init (void)
 {
   av_log_set_callback (&previewopus_av_log_callback);
   av_register_all ();
-  magic = magic_open (MAGIC_MIME_TYPE);
-  if (0 != magic_load (magic, NULL))
-    {
-      /* FIXME: how to deal with errors? */
-    }
+
 }
 
 
@@ -1184,11 +1176,7 @@ previewopus_lib_init (void)
 void __attribute__ ((destructor)) 
 previewopus_ltdl_fini () 
 {
-  if (NULL != magic)
-    {
-      magic_close (magic);
-      magic = NULL;
-    }
+
 }
 
 
