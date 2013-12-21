@@ -807,7 +807,7 @@ fi
 
 if test "x$new_ffmpeg" = "x0"
 then
- AC_MSG_NOTICE([NOTICE: FFmpeg/opus audio preview plugin disabled, It needs libav > 10, or a FFmpeg with --enable-libavresample])
+ AC_MSG_NOTICE([NOTICE: FFmpeg/opus audio preview plugin disabled, It needs libav >= 10, or a FFmpeg with --enable-libavresample])
 fi
 
 if test "x$without_gtk" = "xtrue"
