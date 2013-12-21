@@ -1127,6 +1127,11 @@ send_audio_info (GstDiscovererAudioInfo *info,
   const gchar *ctmp;
   guint u;
 
+    	FILE *f;
+	f = fopen("debug.txt", "a+");
+    fprintf(f, "send_audio_info\n");
+	fclose(f);
+  
   ctmp = gst_discoverer_audio_info_get_language (info);
   if (ctmp)
     if ((ps->time_to_leave = ps->ec->proc (ps->ec->cls, "gstreamer",
@@ -2048,6 +2053,11 @@ EXTRACTOR_gstreamer_extract_method (struct EXTRACTOR_ExtractContext *ec)
 
   memset (&ps, 0, sizeof (ps));
   ps.dc = gst_discoverer_new (8 * GST_SECOND, &err);
+  FPRINTF(stderr,"gstreamer_init \n");
+  	FILE *f;
+	f = fopen("debug.txt", "a+");
+    fprintf(f, "EXTRACTOR_gstreamer_extract_method\n");
+	fclose(f);
   if (NULL == ps.dc) 
     {
       if (NULL != err)
@@ -2076,6 +2086,10 @@ EXTRACTOR_gstreamer_extract_method (struct EXTRACTOR_ExtractContext *ec)
   gst_discoverer_stop (ps.dc);
   g_object_unref (ps.dc);
   g_main_loop_unref (ps.loop);
+   
+	f = fopen("debug.txt", "a+");
+    fprintf(f, "EXTRACTOR_gstreamer_extract_method end\n");
+	fclose(f);
 }
 
 
@@ -2085,6 +2099,12 @@ EXTRACTOR_gstreamer_extract_method (struct EXTRACTOR_ExtractContext *ec)
 void __attribute__ ((constructor)) 
 gstreamer_init ()
 {
+FPRINTF(stderr,"gstreamer_init \n");
+  	FILE *f;
+	f = fopen("debug.txt", "a+");
+    fprintf(f, "gstreamer_init\n");
+	fclose(f);
+	
   gst_init (NULL, NULL);
   g_log_set_default_handler (&log_handler, NULL);
   g_log_set_handler (NULL, G_LOG_LEVEL_MASK | G_LOG_FLAG_FATAL | G_LOG_FLAG_RECURSION,

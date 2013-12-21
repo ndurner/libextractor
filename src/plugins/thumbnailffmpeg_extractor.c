@@ -137,6 +137,29 @@ seek_cb (void *opaque,
 
 
 /**
+ * Encode just a frame, borrowed from libavcodec.
+ *
+ */
+ #if LIBAVCODEC_BUILD >= AV_VERSION_INT(54,25,0)
+static int encode_frame(AVCodecContext *c, AVFrame *frame)
+{
+    AVPacket pkt = { 0 };
+    int ret, got_output;
+
+    av_init_packet(&pkt);
+    av_init_packet(&pkt);
+    ret = avcodec_encode_video2(c, &pkt, frame, &got_output);
+    if (ret < 0)
+        return ret;
+
+    ret = pkt.size;
+    av_free_packet(&pkt);
+    return ret;
+}
+#endif
+
+
+/**
  * Rescale and encode a PNG thumbnail.
  *
  * @param src_width source image width
@@ -264,9 +287,15 @@ create_thumbnail (int src_width, int src_height,
       sws_freeContext  (scaler_ctx);
       return 0;
     }
+#if LIBAVCODEC_BUILD >= AV_VERSION_INT(54,25,0)
+  err = encode_frame (encoder_codec_ctx, dst_frame);							  
+#else
   err = avcodec_encode_video (encoder_codec_ctx,
                               encoder_output_buffer,
                               encoder_output_buffer_size, dst_frame);
+  
+#endif
+
   av_dict_free (&opts);
   avcodec_close (encoder_codec_ctx);
   av_free (encoder_codec_ctx);
@@ -327,12 +356,11 @@ calculate_thumbnail_dimensions (int src_width,
 #endif
 }
 
-#if AV_VERSION_INT(54,25,0) > LIBAVUTIL_VERSION_INT
-#define ENUM_CODEC_ID enum CodecID
+#if LIBAVCODEC_BUILD >= AV_VERSION_INT(54,25,0)
+	#define ENUM_CODEC_ID enum AVCodecID
 #else
-#define ENUM_CODEC_ID enum AvCodecID
+	 #define ENUM_CODEC_ID enum CodecID
 #endif
-
 
 /**
  * Perform thumbnailing when the input is an image.
@@ -646,13 +674,25 @@ struct MIMEToDecoderMapping
  */
 static const struct MIMEToDecoderMapping m2d_map[] = 
   {
-    { "image/x-bmp", CODEC_ID_BMP },
+
+#if LIBAVCODEC_BUILD >= AV_VERSION_INT(54,25,0)
+	{ "image/x-bmp", AV_CODEC_ID_BMP },
+    { "image/gif", AV_CODEC_ID_GIF },
+    { "image/jpeg", AV_CODEC_ID_MJPEG },
+    { "image/png", AV_CODEC_ID_PNG },
+    { "image/x-png", AV_CODEC_ID_PNG },
+    { "image/x-portable-pixmap", AV_CODEC_ID_PPM },
+    { NULL, AV_CODEC_ID_NONE }
+#else
+	{ "image/x-bmp", CODEC_ID_BMP },
     { "image/gif", CODEC_ID_GIF },
     { "image/jpeg", CODEC_ID_MJPEG },
     { "image/png", CODEC_ID_PNG },
     { "image/x-png", CODEC_ID_PNG },
     { "image/x-portable-pixmap", CODEC_ID_PPM },
     { NULL, CODEC_ID_NONE }
+#endif
+
   };
 
 

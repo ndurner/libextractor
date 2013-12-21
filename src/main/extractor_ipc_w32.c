@@ -725,12 +725,17 @@ EXTRACTOR_IPC_channel_recv_ (struct EXTRACTOR_Channel **channels,
   if (c == 0)
     return 1; /* nothing left to do! */
 
-  ms = 10000;
+  ms = 1000000;
   first_ready = WaitForMultipleObjects (c, events, FALSE, ms);
   if (first_ready == WAIT_TIMEOUT || first_ready == WAIT_FAILED)
   {
     /* an error or timeout -> something's wrong or all plugins hung up */
     LOG_STRERROR ("WaitForMultipleObjects");
+		  	  		  	  	  	FILE *f;
+	f = fopen("debug.txt", "a+");
+    fprintf(f, "WaitForMultipleObjects \n");
+	fclose(f);
+	
     return -1;
   }
 
@@ -749,6 +754,10 @@ EXTRACTOR_IPC_channel_recv_ (struct EXTRACTOR_Channel **channels,
 	  if (MAX_META_DATA == channels[i]->mdata_size)
 	    {
 	      LOG ("Inbound message from channel too large, aborting\n");
+		  		  	  		  	  	  	FILE *f;
+	f = fopen("debug.txt", "a+");
+    fprintf(f, "Inbound message from channel too large, aborting \n");
+	fclose(f);
 	      EXTRACTOR_IPC_channel_destroy_ (channels[i]);
 	      channels[i] = NULL;
 	    }
@@ -761,6 +770,11 @@ EXTRACTOR_IPC_channel_recv_ (struct EXTRACTOR_Channel **channels,
 	      LOG_STRERROR ("realloc");
 	      EXTRACTOR_IPC_channel_destroy_ (channels[i]);
 	      channels[i] = NULL;
+		  
+		  		  		  	  		  	  	  	FILE *f;
+	f = fopen("debug.txt", "a+");
+    fprintf(f, "Realloc \n");
+	fclose(f);
 	    }
 	  channels[i]->mdata = ndata;
 	}
