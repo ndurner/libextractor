@@ -35,7 +35,7 @@
 /**
  * Size used for the shared memory segment.
  */
-#define DEFAULT_SHM_SIZE (160 * 1024)
+#define DEFAULT_SHM_SIZE (16 * 1024)
 
 
 /**
@@ -382,8 +382,6 @@ do_extract (struct EXTRACTOR_PluginList *plugins,
   ssize_t ready;
   int done;
   int have_in_memory;
-  
-  LOG ("Stating !\n");
 
   plugin_count = 0;
   for (pos = plugins; NULL != pos; pos = pos->next)
@@ -403,7 +401,6 @@ do_extract (struct EXTRACTOR_PluginList *plugins,
   start.reserved2 = 0;
   start.shm_ready_bytes = (uint32_t) ready;
   start.file_size = EXTRACTOR_datasource_get_size_ (ds, 0);
-  LOG ("Have  %d\ !\n",plugin_count);
   for (pos = plugins; NULL != pos; pos = pos->next)
     {
       if (EXTRACTOR_OPTION_IN_PROCESS == pos->flags)
@@ -427,7 +424,6 @@ do_extract (struct EXTRACTOR_PluginList *plugins,
     done = 0;
   while (! done)
     {
-	//LOG ("In !done while\n");
       struct EXTRACTOR_Channel *channels[plugin_count];
 
       /* calculate current 'channels' array */
@@ -437,18 +433,15 @@ do_extract (struct EXTRACTOR_PluginList *plugins,
 	  if (-1 == pos->seek_request)
 	    {
 	      /* channel is not seeking, must be running or done */
-		  //LOG ("No seeking, done\n");
 	      channels[plugin_off] = pos->channel;
 	    }
 	  else
 	    {
 	      /* not running this round, seeking! */
-		  //LOG ("Nor running, seeking\n");
 	      channels[plugin_off] = NULL; 
 	    }
 	  plugin_off++;
 	}
-		//LOG ("Will call EXTRACTOR_IPC_channel_recv_\n");
       /* give plugins chance to send us meta data, seek or finished messages */
       if (-1 == 
 	  EXTRACTOR_IPC_channel_recv_ (channels,
@@ -457,7 +450,7 @@ do_extract (struct EXTRACTOR_PluginList *plugins,
 				       &prp))
 	{
 	  /* serious problem in IPC; reset *all* channels */
-	  //LOG ("Failed to receive message from channels; full reset\n");
+	  LOG ("Failed to receive message from channels; full reset\n");
 	  abort_all_channels (plugins);
 	  break;
 	}
@@ -470,14 +463,10 @@ do_extract (struct EXTRACTOR_PluginList *plugins,
 	{
 	  plugin_off++;
 	  if ( (1 == pos->round_finished) ||
-	       (NULL == pos->channel) ){
-		   //LOG ("Inative plugin\n"); 
+	       (NULL == pos->channel) )
 	    continue; /* inactive plugin */
-		
-		}
 	  if (-1 == pos->seek_request)
 	    {
-		 //LOG ("pos->seek_request\n"); 
 	      /* possibly more meta data at current position, at least 
 		 this plugin is still working on it... */
 	      done = 0; 

@@ -66,10 +66,11 @@
 #endif
 
 //TODO: Check for ffmpeg
+#if HAVE_LIBAVRESAMPLE_AVRESAMPLE_H
 #include <libavresample/avresample.h>
-
-
-
+#elif HAVE_FFMPEG_AVRESAMPLE_H
+#include <ffmpeg/avresample.h>
+#endif
 
 
 
@@ -201,16 +202,19 @@ static int open_output_file(
                             AVFormatContext **output_format_context,
                             AVCodecContext **output_codec_context)
 {
+    AVIOContext *output_io_context = NULL;
 	AVStream *stream               = NULL;
     AVCodec *output_codec          = NULL;
 	AVIOContext *io_ctx;
     int error;
 	
-
+	
+	
+	AVDictionary *options;
 	unsigned char *iob;
 
   if (NULL == (iob = av_malloc (16 * 1024)))
-    return AVERROR_EXIT;
+    return;
   if (NULL == (io_ctx = avio_alloc_context (iob, 16 * 1024,
 					    AVIO_FLAG_WRITE, NULL, 
 					   NULL,
@@ -218,12 +222,12 @@ static int open_output_file(
 					    NULL)))
     {
       av_free (iob);
-      return AVERROR_EXIT;
+      return;
     }
   if (NULL == ((*output_format_context) = avformat_alloc_context ()))
     {
       av_free (io_ctx);
-      return AVERROR_EXIT;
+      return;
     }
   (*output_format_context)->pb = io_ctx;
   
@@ -821,6 +825,7 @@ static int write_output_file_trailer(AVFormatContext *output_format_context)
 static void
 extract_audio (struct EXTRACTOR_ExtractContext *ec)
 {
+  AVPacket packet;
   AVIOContext *io_ctx;
   struct AVFormatContext *format_ctx;
   AVCodecContext *codec_ctx;
@@ -828,18 +833,23 @@ extract_audio (struct EXTRACTOR_ExtractContext *ec)
   AVCodec *codec;
   AVDictionary *options;
   AVFrame *frame;
+  
   AVCodecContext* output_codec_context = NULL;
+  
+    
   AVAudioResampleContext  *resample_context = NULL;
   AVAudioFifo *fifo = NULL;
 	
 	
   int audio_stream_index;
+  int thumb_width;
+  int thumb_height;
   int i;
   int err;
+  int frame_finished;
   int duration;
   unsigned char *iob;
-  
-  
+
   totalSize =0;
   
   if (NULL == (iob = av_malloc (16 * 1024)))
@@ -972,6 +982,7 @@ extract_audio (struct EXTRACTOR_ExtractContext *ec)
   
   if (err >= 0)        
     avcodec_flush_buffers (codec_ctx);        
+  frame_finished = 0;
 
 
 	/**
@@ -1109,6 +1120,7 @@ extract_audio (struct EXTRACTOR_ExtractContext *ec)
 void 
 EXTRACTOR_previewopus_extract_method (struct EXTRACTOR_ExtractContext *ec)
 {
+  unsigned int i;
   ssize_t iret;
   void *data;
 

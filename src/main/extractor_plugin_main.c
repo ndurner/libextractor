@@ -460,7 +460,6 @@ handle_start_message (struct ProcessingContext *pc)
       LOG ("Failed to read 'start' message\n");
       return -1;
     }
-	 fprintf (stderr,	     "Got start msg\n");
   pc->shm_ready_bytes = start.shm_ready_bytes;
   pc->file_size = start.file_size;
   pc->read_position = 0;
@@ -476,10 +475,6 @@ handle_start_message (struct ProcessingContext *pc)
   if (-1 == EXTRACTOR_write_all_ (pc->out, &done, sizeof (done)))
     {
       LOG ("Failed to write 'done' message\n");
-	  	  	FILE *f;
-	f = fopen("debug.txt", "a+");
-    fprintf(f, "Failed to write 'done' message' \n");
-	fclose(f);
       return -1;
     }
   if ( (NULL != pc->plugin->specials) &&
@@ -529,33 +524,18 @@ process_requests (struct ProcessingContext *pc)
 	  if (0 != handle_start_message (pc))
 	    {
 	      LOG ("Failure to handle START\n");
-		  	  	  	FILE *f;
-	f = fopen("debug.txt", "a+");
-    fprintf(f, "Failure to handle START' \n");
-	fclose(f);
 	      return;
 	    }
 	  break;
-	case MESSAGE_UPDATED_SHM:{
+	case MESSAGE_UPDATED_SHM:
 	  LOG ("Illegal message\n");
 	  /* not allowed here, we're not waiting for SHM to move! */
-	  		  	  	  	FILE *f;
-	f = fopen("debug.txt", "a+");
-    fprintf(f, "Illegal message' \n");
-	fclose(f);
-	
 	  return;
-	  }
 	case MESSAGE_DISCARD_STATE:
 	  /* odd, we're already in the start state... */
 	  continue;
 	default:
 	  LOG ("Received invalid messag %d\n", (int) code);
-	  	  		  	  	  	FILE *f;
-	f = fopen("debug.txt", "a+");
-    fprintf(f, "Received invalid messag' \n");
-	fclose(f);
-	
 	  /* error, unexpected message */
 	  return;
 	}
@@ -645,14 +625,6 @@ EXTRACTOR_plugin_main_ (struct EXTRACTOR_PluginList *plugin,
   process_requests (&pc);
   LOG ("IPC error; plugin `%s' terminates!\n",
        plugin->short_libname);
-	   
-
-	  	  	FILE *f;
-	f = fopen("debug.txt", "a+");
-    fprintf(f, "IPC error; plugin `%s' terminates!\n",
-       plugin->short_libname);
-	fclose(f);
-	
 #if WINDOWS
   if (NULL != pc.shm)
     UnmapViewOfFile (pc.shm);

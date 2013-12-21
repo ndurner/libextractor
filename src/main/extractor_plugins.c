@@ -120,14 +120,6 @@ get_symbol_with_prefix (void *lib_handle,
 int
 EXTRACTOR_plugin_load_ (struct EXTRACTOR_PluginList *plugin)
 {
-
-LOG ("In EXTRACTOR_plugin_load_");
-
-  	FILE *f;
-	f = fopen("debug.txt", "a+");
-    fprintf(f, "EXTRACTOR_plugin_load_\n");
-	fclose(f);
-
 #if WINDOWS
   wchar_t wlibname[4097];
   char llibname[4097];
@@ -145,11 +137,6 @@ LOG ("In EXTRACTOR_plugin_load_");
       plugin->flags = EXTRACTOR_OPTION_DISABLED;
       return -1;
     }
-	
-	LOG ("Loading plugin `%s' \n",  plugin->short_libname);
-      lt_dlclose (plugin->libraryHandle);
-	  
-	  
   lt_dladvise_init (&advise);
   lt_dladvise_ext (&advise);
   lt_dladvise_local (&advise);
@@ -164,11 +151,6 @@ LOG ("In EXTRACTOR_plugin_load_");
       LOG ("Loading `%s' plugin failed: %s\n",
 	   plugin->short_libname,
 	   "can't convert plugin name to local encoding");
-	   	  	  	FILE *f;
-	f = fopen("debug.txt", "a+");
-    fprintf(f, "Loading `%s' plugin failed!\n",
-       plugin->short_libname);
-	fclose(f);
       free (plugin->libname);
       plugin->libname = NULL;
       plugin->flags = EXTRACTOR_OPTION_DISABLED;
@@ -207,15 +189,6 @@ LOG ("In EXTRACTOR_plugin_load_");
       plugin->flags = EXTRACTOR_OPTION_DISABLED;
       return -1;
     }
-	
-	LOG ("Loaded plugin `%s' \n",  plugin->short_libname);
-	
-
-	f = fopen("debug.txt", "a+");
-    fprintf(f, "Loaded plugin `%s' \n",  plugin->short_libname);
-	fclose(f);
-
-	
   return 0;
 }
 
@@ -238,12 +211,6 @@ EXTRACTOR_plugin_add (struct EXTRACTOR_PluginList *prev,
   struct EXTRACTOR_PluginList *plugin;
   struct EXTRACTOR_PluginList *pos;
   char *libname;
-  
-  	FILE *f;
-	f = fopen("debug.txt", "a+");
-    fprintf(f, "EXTRACTOR_plugin_add\n");
-	fclose(f);
-	
 
   for (pos = prev; NULL != pos; pos = pos->next)
     if (0 == strcmp (pos->short_libname, library))
@@ -377,9 +344,6 @@ EXTRACTOR_plugin_remove (struct EXTRACTOR_PluginList *prev,
   struct EXTRACTOR_PluginList *pos;
   struct EXTRACTOR_PluginList *first;
 
-
-	
-	
   pos = prev;
   first = prev;
   while ( (NULL != pos) && 
@@ -394,13 +358,6 @@ EXTRACTOR_plugin_remove (struct EXTRACTOR_PluginList *prev,
 	   library);
       return first;
     }
-	
-	    	FILE *f;
-	f = fopen("debug.txt", "a+");
-    fprintf(f, "Closoing %s\n",pos->short_libname);
-	fclose(f);
-	
-	
   /* found, close library */
   if (first == pos)
     first = pos->next;

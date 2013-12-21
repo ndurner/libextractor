@@ -672,13 +672,11 @@ if test x$ffmpeg_enabled = x1
 then
   ffmpeg_enabled=0
   new_ffmpeg=0
-  AC_CHECK_HEADERS([libavutil/frame.h],
-  AC_CHECK_HEADERS([libavresample/avresample.h],new_ffmpeg=1))
-  
+  AC_CHECK_HEADERS([libavutil/frame.h],new_ffmpeg=1)
   AC_CHECK_LIB(swscale, sws_getContext,
     AC_CHECK_LIB(avcodec, avcodec_alloc_context3,
       ffmpeg_enabled=1))
-  AC_CHECK_HEADERS([libavutil/avutil.h ffmpeg/avutil.h libavformat/avformat.h ffmpeg/avformat.h libavcodec/avcodec.h ffmpeg/avcodec.h libswscale/swscale.h ffmpeg/swscale.h])
+  AC_CHECK_HEADERS([libavutil/avutil.h ffmpeg/avutil.h libavformat/avformat.h ffmpeg/avformat.h libavcodec/avcodec.h ffmpeg/avcodec.h libswscale/swscale.h ffmpeg/swscale.h libavresample/avresample.h ffmpeg/avresample.h])
 fi
 AM_CONDITIONAL(HAVE_FFMPEG, test x$ffmpeg_enabled != x0)
 AM_CONDITIONAL(HAVE_FFMPEG_NEW, test x$new_ffmpeg != x0)
@@ -807,7 +805,7 @@ fi
 
 if test "x$new_ffmpeg" = "x0"
 then
- AC_MSG_NOTICE([NOTICE: FFmpeg/opus audio preview plugin disabled, It needs libav > 10, or a FFmpeg with --enable-libavresample])
+ AC_MSG_NOTICE([NOTICE: FFmpeg/opus audio preview plugin disabled])
 fi
 
 if test "x$without_gtk" = "xtrue"

@@ -25,7 +25,7 @@
 #ifndef EXTRACTOR_LOGGING_H
 #define EXTRACTOR_LOGGING_H
 
-#define DEBUG 1
+#define DEBUG 0
 
 #if DEBUG
 
