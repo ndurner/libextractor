@@ -70,13 +70,11 @@ if HAVE_FFMPEG
 # FFmpeg-thumbnailer requires MAGIC and FFMPEG
 PLUGIN_FFMPEG=libextractor_thumbnailffmpeg.la
 TEST_FFMPEG=test_thumbnailffmpeg
-
+endif
 
 if HAVE_FFMPEG_NEW
 PLUGIN_PREVIEWOPUS=libextractor_previewopus.la
 TEST_PREVIEWOPUS=test_previewopus
-endif
-
 endif
 
 if HAVE_GTK
