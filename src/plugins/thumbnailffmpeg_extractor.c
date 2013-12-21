@@ -168,6 +168,12 @@ create_thumbnail (int src_width, int src_height,
   uint8_t *encoder_output_buffer;
   size_t encoder_output_buffer_size;
   int err;
+  
+  AVPacket pkt;
+  av_init_packet(&pkt);
+  pkt.data = NULL;
+  pkt.size = 0;
+  int gotPacket;
 
   if (NULL == (encoder_codec = avcodec_find_encoder_by_name ("png")))
     {
@@ -264,9 +270,29 @@ create_thumbnail (int src_width, int src_height,
       sws_freeContext  (scaler_ctx);
       return 0;
     }
+	
+			   
+#if LIBAVCODEC_BUILD >= AV_VERSION_INT(54,25,0)
+  //err = encode_frame (encoder_codec_ctx, dst_frame);							  
+  err = avcodec_encode_video2 (encoder_codec_ctx,
+                              &pkt,
+                               dst_frame, &gotPacket);
+
+  if(err < 0)
+	goto cleanup;
+  err = pkt.size;
+  memcpy(encoder_output_buffer,pkt.data, pkt.size);
+
+  av_free_packet(&pkt);
+							  
+							  
+#else
   err = avcodec_encode_video (encoder_codec_ctx,
                               encoder_output_buffer,
                               encoder_output_buffer_size, dst_frame);
+  
+#endif
+cleanup:
   av_dict_free (&opts);
   avcodec_close (encoder_codec_ctx);
   av_free (encoder_codec_ctx);
@@ -327,12 +353,11 @@ calculate_thumbnail_dimensions (int src_width,
 #endif
 }
 
-#if AV_VERSION_INT(54,25,0) > LIBAVUTIL_VERSION_INT
-#define ENUM_CODEC_ID enum CodecID
+#if LIBAVCODEC_BUILD >= AV_VERSION_INT(54,25,0)
+	#define ENUM_CODEC_ID enum AVCodecID
 #else
-#define ENUM_CODEC_ID enum AvCodecID
+	 #define ENUM_CODEC_ID enum CodecID
 #endif
-
 
 /**
  * Perform thumbnailing when the input is an image.
@@ -608,6 +633,7 @@ extract_video (struct EXTRACTOR_ExtractContext *ec)
                           &encoded_thumbnail, MAX_THUMB_BYTES);
   if (err > 0)
     {
+	
       ec->proc (ec->cls,
 		"thumbnailffmpeg",
 		EXTRACTOR_METATYPE_THUMBNAIL,
@@ -646,13 +672,25 @@ struct MIMEToDecoderMapping
  */
 static const struct MIMEToDecoderMapping m2d_map[] = 
   {
-    { "image/x-bmp", CODEC_ID_BMP },
+
+#if LIBAVCODEC_BUILD >= AV_VERSION_INT(54,25,0)
+	{ "image/x-bmp", AV_CODEC_ID_BMP },
+    { "image/gif", AV_CODEC_ID_GIF },
+    { "image/jpeg", AV_CODEC_ID_MJPEG },
+    { "image/png", AV_CODEC_ID_PNG },
+    { "image/x-png", AV_CODEC_ID_PNG },
+    { "image/x-portable-pixmap", AV_CODEC_ID_PPM },
+    { NULL, AV_CODEC_ID_NONE }
+#else
+	{ "image/x-bmp", CODEC_ID_BMP },
     { "image/gif", CODEC_ID_GIF },
     { "image/jpeg", CODEC_ID_MJPEG },
     { "image/png", CODEC_ID_PNG },
     { "image/x-png", CODEC_ID_PNG },
     { "image/x-portable-pixmap", CODEC_ID_PPM },
     { NULL, CODEC_ID_NONE }
+#endif
+
   };
 
 
