@@ -36,6 +36,8 @@ LIBSOLD=$LIBS
 LT_INIT([disable-static dlopen win32-dll])
 AC_SUBST(MKDIR_P)
 
+AC_CHECK_DECLS([_stati64])
+
 case "$target_os" in
 *linux-gnu)
      AC_DEFINE(GNU_LINUX,1,[This is a GNU/Linux system])
