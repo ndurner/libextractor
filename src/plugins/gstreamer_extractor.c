@@ -38,7 +38,7 @@ GST_DEBUG_CATEGORY_STATIC (gstreamer_extractor);
  * How often should we check for data timeout.
  * In milliseconds.
  */
-#define DATA_TIMEOUT_FREQUENCY 45 /* 45ms, hang up for 90ms at most */
+#define DATA_TIMEOUT_FREQUENCY 750 /* 750ms, hang up for 1.5s at most */
 
 /**
  * Once discoverer has gone for that long without asking for data or
@@ -917,8 +917,8 @@ static GQuark duration_quark;
  * @param ps our execution context
  */
 static void
-feed_data (GstElement * appsrc, 
-	   guint size, 
+feed_data (GstElement * appsrc,
+	   guint size,
 	   struct PrivStruct * ps)
 {
   ssize_t data_len;
@@ -975,7 +975,7 @@ feed_data (GstElement * appsrc,
     GST_BUFFER_OFFSET (buffer) = ps->offset;
     GST_BUFFER_OFFSET_END (buffer) = ps->offset + size;
 
-    GST_DEBUG ("feed buffer %p, offset %" G_GUINT64_FORMAT "-%u", 
+    GST_DEBUG ("feed buffer %p, offset %" G_GUINT64_FORMAT "-%u",
 	       buffer, ps->offset, size);
     gst_app_src_push_buffer (GST_APP_SRC (ps->source), buffer);
     ps->offset += size;
@@ -1002,8 +1002,8 @@ feed_data (GstElement * appsrc,
  * @return TRUE if seeking succeeded, FALSE if not
  */
 static gboolean
-seek_data (GstElement * appsrc, 
-	   guint64 position, 
+seek_data (GstElement * appsrc,
+	   guint64 position,
 	   struct PrivStruct * ps)
 {
   GST_DEBUG ("seek to offset %" G_GUINT64_FORMAT, position);
@@ -1017,14 +1017,14 @@ seek_data (GstElement * appsrc,
 
 /**
  * FIXME
- * 
+ *
  * @param field_id FIXME
  * @param value FIXME
  * @param user_data our 'struct PrivStruct'
  * @return TRUE to continue processing, FALSE to abort
  */
 static gboolean
-send_structure_foreach (GQuark field_id, 
+send_structure_foreach (GQuark field_id,
 			const GValue *value,
 			gpointer user_data)
 {
@@ -1081,7 +1081,7 @@ send_structure_foreach (GQuark field_id,
     str = NULL;
     break;
   }
-  if (NULL != str) 
+  if (NULL != str)
   {
     unsigned int i;
 
@@ -1089,7 +1089,7 @@ send_structure_foreach (GQuark field_id,
       if (0 == strcmp (named_tags[i].tag, field_name))
 	{
 	  ps->time_to_leave = ps->ec->proc (ps->ec->cls, "gstreamer",
-					    named_tags[i].le_type, 
+					    named_tags[i].le_type,
 					    EXTRACTOR_METAFORMAT_UTF8, "text/plain",
 					    (const char *) str, strlen (str) + 1);
 	  g_free (str);
@@ -1102,7 +1102,7 @@ send_structure_foreach (GQuark field_id,
     gchar *senddata = g_strdup_printf ("%s=%s", field_name, str);
     ps->time_to_leave = ps->ec->proc (ps->ec->cls, "gstreamer",
 				      EXTRACTOR_METATYPE_UNKNOWN, EXTRACTOR_METAFORMAT_UTF8, "text/plain",
-				      (const char *) senddata, 
+				      (const char *) senddata,
 				      strlen (senddata) + 1);
     g_free (senddata);
   }
@@ -1114,13 +1114,13 @@ send_structure_foreach (GQuark field_id,
 
 /**
  * FIXME
- * 
+ *
  * @param info FIXME
  * @param ps processing context
  * @return FALSE to continue processing, TRUE to abort
  */
 static gboolean
-send_audio_info (GstDiscovererAudioInfo *info, 
+send_audio_info (GstDiscovererAudioInfo *info,
 		 struct PrivStruct *ps)
 {
   gchar *tmp;
@@ -1131,7 +1131,7 @@ send_audio_info (GstDiscovererAudioInfo *info,
   if (ctmp)
     if ((ps->time_to_leave = ps->ec->proc (ps->ec->cls, "gstreamer",
 					   EXTRACTOR_METATYPE_AUDIO_LANGUAGE,
-					   EXTRACTOR_METAFORMAT_UTF8, 
+					   EXTRACTOR_METAFORMAT_UTF8,
 					   "text/plain",
 					   (const char *) ctmp, strlen (ctmp) + 1)))
       return TRUE;
@@ -1202,13 +1202,13 @@ send_audio_info (GstDiscovererAudioInfo *info,
 
 /**
  * FIXME
- * 
+ *
  * @param info FIXME
  * @param ps processing context
  * @return FALSE to continue processing, TRUE to abort
  */
 static int
-send_video_info (GstDiscovererVideoInfo *info, 
+send_video_info (GstDiscovererVideoInfo *info,
 		 struct PrivStruct *ps)
 {
   gchar *tmp;
@@ -1298,13 +1298,13 @@ send_video_info (GstDiscovererVideoInfo *info,
 
 /**
  * FIXME
- * 
+ *
  * @param info FIXME
  * @param ps processing context
  * @return FALSE to continue processing, TRUE to abort
  */
 static int
-send_subtitle_info (GstDiscovererSubtitleInfo *info, 
+send_subtitle_info (GstDiscovererSubtitleInfo *info,
 		    struct PrivStruct *ps)
 {
   const gchar *ctmp;
@@ -1397,7 +1397,7 @@ send_tag_foreach (const GstTagList * tags,
 
           mime_type = gst_structure_get_name (gst_caps_get_structure (caps, 0));
           info = gst_sample_get_info (sample);
-	  
+
           if ( (NULL == info) ||
 	       (!gst_structure_get (info, "image-type", GST_TYPE_TAG_IMAGE_TYPE, &imagetype, NULL)) )
             le_type = EXTRACTOR_METATYPE_PICTURE;
@@ -1583,13 +1583,13 @@ send_tag_foreach (const GstTagList * tags,
 }
 
 
-static void 
-send_streams (GstDiscovererStreamInfo *info, 
+static void
+send_streams (GstDiscovererStreamInfo *info,
 	      struct PrivStruct *ps);
 
 
 static void
-send_stream_info (GstDiscovererStreamInfo * info, 
+send_stream_info (GstDiscovererStreamInfo * info,
 		  struct PrivStruct *ps)
 {
   const GstStructure *misc;
@@ -1677,7 +1677,7 @@ send_stream_info (GstDiscovererStreamInfo * info,
 
 
 static void
-send_streams (GstDiscovererStreamInfo *info, 
+send_streams (GstDiscovererStreamInfo *info,
 	      struct PrivStruct *ps)
 {
   GstDiscovererStreamInfo *next;
@@ -1696,7 +1696,7 @@ send_streams (GstDiscovererStreamInfo *info,
  * Callback used to construct the XML 'toc'.
  *
  * @param tags  FIXME
- * @param tag FIXME 
+ * @param tag FIXME
  * @param user_data the 'struct PrivStruct' with the 'toc' string we are assembling
  */
 static void
@@ -1802,11 +1802,11 @@ send_toc_foreach (gpointer data, gpointer user_data)
       else
         ps->toc_length += strlen ("</tags>\n") + ps->toc_depth * 2;
     }
-  
+
   subentries = gst_toc_entry_get_sub_entries (entry);
   g_list_foreach (subentries, send_toc_foreach, ps);
   ps->toc_depth--;
-  
+
   s = g_strdup_printf ("%*.*s</%s>\n", ps->toc_depth * 2, ps->toc_depth * 2, " ",
 		       gst_toc_entry_type_get_nick (entype));
   if (ps->toc_print_phase)
@@ -1824,7 +1824,7 @@ send_toc_foreach (gpointer data, gpointer user_data)
 
 
 static void
-send_info (GstDiscovererInfo * info, 
+send_info (GstDiscovererInfo * info,
 	   struct PrivStruct *ps)
 {
   const GstToc *toc;
@@ -1870,15 +1870,15 @@ send_info (GstDiscovererInfo * info,
       ps->toc_length += 1 + strlen (TOC_XML_HEADER);
       ps->toc = g_malloc (ps->toc_length);
       ps->toc_pos = 0;
-      ps->toc_pos += g_snprintf (&ps->toc[ps->toc_pos], 
-				 ps->toc_length - ps->toc_pos, 
-				 "%s", 
+      ps->toc_pos += g_snprintf (&ps->toc[ps->toc_pos],
+				 ps->toc_length - ps->toc_pos,
+				 "%s",
 				 TOC_XML_HEADER);
       g_list_foreach (entries, &send_toc_foreach, ps);
       ps->toc[ps->toc_length - 1] = '\0';
       ps->time_to_leave = ps->ec->proc (ps->ec->cls, "gstreamer",
-					EXTRACTOR_METATYPE_TOC, 
-					EXTRACTOR_METAFORMAT_C_STRING, 
+					EXTRACTOR_METATYPE_TOC,
+					EXTRACTOR_METAFORMAT_C_STRING,
 					"application/xml",
 					(const char *) ps->toc,
 					ps->toc_length);
@@ -1896,7 +1896,7 @@ send_info (GstDiscovererInfo * info,
 
 
 static void
-send_discovered_info (GstDiscovererInfo * info, 
+send_discovered_info (GstDiscovererInfo * info,
 		      struct PrivStruct * ps)
 {
   GstDiscovererResult result;
@@ -1928,9 +1928,9 @@ send_discovered_info (GstDiscovererInfo * info,
 
 
 static void
-_new_discovered_uri (GstDiscoverer * dc, 
-		     GstDiscovererInfo * info, 
-		     GError * err, 
+_new_discovered_uri (GstDiscoverer * dc,
+		     GstDiscovererInfo * info,
+		     GError * err,
 		     struct PrivStruct *ps)
 {
   send_discovered_info (info, ps);
@@ -1968,14 +1968,14 @@ _data_timeout (struct PrivStruct *ps)
  * This callback is called when discoverer has constructed a source object to
  * read from. Since we provided the appsrc:// uri to discoverer, this will be
  * the appsrc that we must handle. We set up some signals - one to push data
- * into appsrc and one to perform a seek. 
+ * into appsrc and one to perform a seek.
  *
  * @param dc
  * @param source
- * @param ps 
+ * @param ps
  */
 static void
-_source_setup (GstDiscoverer * dc, 
+_source_setup (GstDiscoverer * dc,
 	       GstElement * source,
 	       struct PrivStruct *ps)
 {
@@ -2048,7 +2048,7 @@ EXTRACTOR_gstreamer_extract_method (struct EXTRACTOR_ExtractContext *ec)
 
   memset (&ps, 0, sizeof (ps));
   ps.dc = gst_discoverer_new (8 * GST_SECOND, &err);
-  if (NULL == ps.dc) 
+  if (NULL == ps.dc)
     {
       if (NULL != err)
 	g_error_free (err);
@@ -2082,7 +2082,7 @@ EXTRACTOR_gstreamer_extract_method (struct EXTRACTOR_ExtractContext *ec)
 /**
  * Initialize glib and globals.
  */
-void __attribute__ ((constructor)) 
+void __attribute__ ((constructor))
 gstreamer_init ()
 {
   gst_init (NULL, NULL);
