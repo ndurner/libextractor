@@ -45,8 +45,9 @@ GST_DEBUG_CATEGORY_STATIC (gstreamer_extractor);
  * asking to seek, or giving us discovered info, assume it hanged up
  * and kill it.
  * In microseconds.
+ * Keep this value a bit less than DATA_TIMEOUT_FREQUENCY
  */
-#define DATA_TIMEOUT 80000LL /* 80ms */
+#define DATA_TIMEOUT 1350000LL /* 1.35s */
 
 pthread_mutex_t pipe_mutex;
 
