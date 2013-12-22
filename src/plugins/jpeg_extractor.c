@@ -79,11 +79,11 @@ no_exit (j_common_ptr cinfo)
 
 
 /**
- * Main entry method for the 'image/jpeg' extraction plugin.  
+ * Main entry method for the 'image/jpeg' extraction plugin.
  *
  * @param ec extraction context provided to the plugin
  */
-void 
+void
 EXTRACTOR_jpeg_extract_method (struct EXTRACTOR_ExtractContext *ec)
 {
   struct jpeg_decompress_struct jds;
@@ -103,7 +103,7 @@ EXTRACTOR_jpeg_extract_method (struct EXTRACTOR_ExtractContext *ec)
   em.output_message = &no_output;
   em.error_exit = &no_exit;
   jds.client_data = &ctx;
-  if (1 == setjmp (ctx.env)) 
+  if (1 == setjmp (ctx.env))
     goto EXIT; /* we get here if libjpeg calls 'no_exit' because it wants to die */
   jds.err = &em;
   jpeg_create_decompress (&jds);
@@ -118,7 +118,7 @@ EXTRACTOR_jpeg_extract_method (struct EXTRACTOR_ExtractContext *ec)
 	break;
       jpeg_mem_src (&jds, buf, size);
       if (0 == is_jpeg)
-	{      
+	{
 	  if (JPEG_HEADER_OK == jpeg_read_header (&jds, 1))
 	    is_jpeg = 1; /* ok, really a jpeg, keep going until the end */
 	  continue;
@@ -171,7 +171,7 @@ EXTRACTOR_jpeg_extract_method (struct EXTRACTOR_ExtractContext *ec)
 		    mptr->data_length - off))
 	goto EXIT;
     }
-  
+
  EXIT:
   jpeg_destroy_decompress (&jds);
 }
