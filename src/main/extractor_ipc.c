@@ -67,7 +67,7 @@ EXTRACTOR_IPC_process_reply_ (struct EXTRACTOR_PluginList *plugin,
 	  size--;
 	  data++;
 	  continue;
-	case MESSAGE_SEEK: /* Seek */	  
+	case MESSAGE_SEEK: /* Seek */
 	  if (size < sizeof (struct SeekRequestMessage))
 	    {
 	      plugin->seek_request = -1;
@@ -88,13 +88,13 @@ EXTRACTOR_IPC_process_reply_ (struct EXTRACTOR_PluginList *plugin,
 	    }
 	  memcpy (&meta, cdata, sizeof (meta));
 	  /* check hdr for sanity */
-	  if (meta.value_size > MAX_META_DATA)        
+	  if (meta.value_size > MAX_META_DATA)
 	    {
 	      LOG ("Meta data exceeds size limit\n");
 	      return -1; /* not allowing more than MAX_META_DATA meta data */
 	    }
 	  if (size < sizeof (meta) + meta.mime_length + meta.value_size)
-	    { 
+	    {
 	      plugin->seek_request = -1;
 	      return ret;
 	    }
@@ -108,7 +108,7 @@ EXTRACTOR_IPC_process_reply_ (struct EXTRACTOR_PluginList *plugin,
 	      if ('\0' != mime_type[meta.mime_length - 1])
 		{
 		  LOG ("Mime type not 0-terminated\n");
-		  return -1;		
+		  return -1;
 		}
 	    }
 	  if (0 == meta.value_size)
@@ -117,7 +117,7 @@ EXTRACTOR_IPC_process_reply_ (struct EXTRACTOR_PluginList *plugin,
 	    value = &cdata[sizeof (struct MetaMessage) + meta.mime_length];
           if (meta.meta_type >= EXTRACTOR_metatype_get_max ())
             meta.meta_type = EXTRACTOR_METATYPE_UNKNOWN;
-	  proc (proc_cls, 
+	  proc (proc_cls,
 		plugin,
 		(enum EXTRACTOR_MetaType) meta.meta_type,
 		(enum EXTRACTOR_MetaFormat) meta.meta_format,

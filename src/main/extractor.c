@@ -92,7 +92,7 @@ send_update_message (struct EXTRACTOR_PluginList *plugin,
       EXTRACTOR_IPC_channel_destroy_ (plugin->channel);
       plugin->channel = NULL;
       plugin->round_finished = 1;
-    }  
+    }
 }
 
 
@@ -166,7 +166,7 @@ process_plugin_reply (void *cls,
   if (0 != prp->file_finished)
     {
       /* client already aborted, ignore message, tell plugin about abort */
-      return; 
+      return;
     }
   if (0 != prp->proc (prp->proc_cls,
 		      plugin->short_libname,
@@ -271,13 +271,13 @@ in_process_read (void *cls,
  * Seek in the file.  Use 'SEEK_CUR' for whence and 'pos' of 0 to
  * obtain the current position in the file.
  * Callback used for in-process plugins.
- * 
+ *
  * @param cls a 'struct InProcessContext'
  * @param pos position to seek (see 'man lseek')
  * @param whence how to see (absolute to start, relative, absolute to end)
  * @return new absolute position, -1 on error (i.e. desired position
  *         does not exist)
- */ 
+ */
 static int64_t
 in_process_seek (void *cls,
 		 int64_t pos,
@@ -294,15 +294,15 @@ in_process_seek (void *cls,
 /**
  * Determine the overall size of the file.
  * Callback used for in-process plugins.
- * 
+ *
  * @param cls a 'struct InProcessContext'
  * @return overall file size, UINT64_MAX on error (i.e. IPC failure)
- */ 
+ */
 static uint64_t
 in_process_get_size (void *cls)
 {
   struct InProcessContext *ctx = cls;
-  
+
   return (uint64_t) EXTRACTOR_datasource_get_size_ (ctx->ds, 0);
 }
 
@@ -318,13 +318,13 @@ in_process_get_size (void *cls)
  *        used in the main libextractor library and yielding
  *        meta data).
  * @param type libextractor-type describing the meta data
- * @param format basic format information about data 
+ * @param format basic format information about data
  * @param data_mime_type mime-type of data (not of the original file);
  *        can be NULL (if mime-type is not known)
  * @param data actual meta-data found
  * @param data_len number of bytes in data
  * @return 0 to continue extracting, 1 to abort
- */ 
+ */
 static int
 in_process_proc (void *cls,
 		 const char *plugin_name,
@@ -363,7 +363,7 @@ in_process_proc (void *cls,
  * @param proc_cls cls argument to proc
  */
 static void
-do_extract (struct EXTRACTOR_PluginList *plugins, 
+do_extract (struct EXTRACTOR_PluginList *plugins,
 	    struct EXTRACTOR_SharedMemory *shm,
 	    struct EXTRACTOR_Datasource *ds,
 	    EXTRACTOR_MetaDataProcessor proc, void *proc_cls)
@@ -438,12 +438,12 @@ do_extract (struct EXTRACTOR_PluginList *plugins,
 	  else
 	    {
 	      /* not running this round, seeking! */
-	      channels[plugin_off] = NULL; 
+	      channels[plugin_off] = NULL;
 	    }
 	  plugin_off++;
 	}
       /* give plugins chance to send us meta data, seek or finished messages */
-      if (-1 == 
+      if (-1 ==
 	  EXTRACTOR_IPC_channel_recv_ (channels,
 				       plugin_count,
 				       &process_plugin_reply,
@@ -464,12 +464,14 @@ do_extract (struct EXTRACTOR_PluginList *plugins,
 	  plugin_off++;
 	  if ( (1 == pos->round_finished) ||
 	       (NULL == pos->channel) )
-	    continue; /* inactive plugin */
+          {
+            continue; /* inactive plugin */
+          }
 	  if (-1 == pos->seek_request)
 	    {
-	      /* possibly more meta data at current position, at least 
+	      /* possibly more meta data at current position, at least
 		 this plugin is still working on it... */
-	      done = 0; 
+	      done = 0;
 	      break;
 	    }
 	  if (-1 != pos->seek_request)
@@ -485,14 +487,14 @@ do_extract (struct EXTRACTOR_PluginList *plugins,
 		      pos->seek_request = 0;
 		    }
 		  else
-		    {		      
+		    {
 		      pos->seek_request = end - pos->seek_request;
 		    }
 		}
 	      if ( (-1 == min_seek) ||
 		   (min_seek > pos->seek_request) )
 		{
-		  min_seek = pos->seek_request;		
+		  min_seek = pos->seek_request;
 		}
 	    }
 	}
@@ -521,16 +523,16 @@ do_extract (struct EXTRACTOR_PluginList *plugins,
 	    {
 	      /* Skipping plugin: channel down */
 	      continue;
-	    }	  
-	  if ( (-1 != pos->seek_request) && 
+	    }
+	  if ( (-1 != pos->seek_request) &&
 	       (1 == prp.file_finished) )
 	    {
 	      send_discard_message (pos);
 	      pos->round_finished = 1;
-	      pos->seek_request = -1; 
-	    }	      
+	      pos->seek_request = -1;
+	    }
 	  if ( (-1 != data_available) &&
-	       (-1 != pos->seek_request) && 
+	       (-1 != pos->seek_request) &&
 	       (min_seek <= pos->seek_request) &&
 	       ( (min_seek + data_available > pos->seek_request) ||
 		 (min_seek == EXTRACTOR_datasource_get_size_ (ds, 0))) )
@@ -540,10 +542,10 @@ do_extract (struct EXTRACTOR_PluginList *plugins,
 				   min_seek,
 				   data_available,
 				   ds);
-	      pos->seek_request = -1; 
+	      pos->seek_request = -1;
 	    }
 	  if (0 == pos->round_finished)
-	    done = 0; /* can't be done, plugin still active */	
+	    done = 0; /* can't be done, plugin still active */
 	}
     }
 
@@ -615,7 +617,7 @@ EXTRACTOR_extract (struct EXTRACTOR_PluginList *plugins,
     datasource = EXTRACTOR_datasource_create_from_file_ (filename,
 							 proc, proc_cls);
   if (NULL == datasource)
-    return;  
+    return;
   shm = NULL;
   have_oop = 0;
   for (pos = plugins; NULL != pos; pos = pos->next)
@@ -658,8 +660,8 @@ EXTRACTOR_extract (struct EXTRACTOR_PluginList *plugins,
 /**
  * Initialize gettext and libltdl (and W32 if needed).
  */
-void __attribute__ ((constructor)) 
-EXTRACTOR_ltdl_init () 
+void __attribute__ ((constructor))
+EXTRACTOR_ltdl_init ()
 {
   int err;
 
@@ -667,7 +669,7 @@ EXTRACTOR_ltdl_init ()
   BINDTEXTDOMAIN (PACKAGE, LOCALEDIR);
 #endif
   err = lt_dlinit ();
-  if (err > 0) 
+  if (err > 0)
     {
 #if DEBUG
       fprintf (stderr,
@@ -685,7 +687,7 @@ EXTRACTOR_ltdl_init ()
 /**
  * Deinit.
  */
-void __attribute__ ((destructor)) 
+void __attribute__ ((destructor))
 EXTRACTOR_ltdl_fini () {
 #if WINDOWS
   plibc_shutdown ();
