@@ -675,7 +675,9 @@ then
   ffmpeg_enabled=0
   new_ffmpeg=0
   AC_CHECK_HEADERS([libavutil/avutil.h libavformat/avformat.h libavcodec/avcodec.h libavutil/frame.h],
-  AC_CHECK_HEADERS([libavresample/avresample.h],new_ffmpeg=1))
+    AC_CHECK_HEADERS([libavresample/avresample.h],
+      AC_CHECK_LIB(avutil, av_frame_alloc,
+        new_ffmpeg=1)))
   
   AC_CHECK_LIB(swscale, sws_getContext,
     AC_CHECK_LIB(avcodec, avcodec_alloc_context3,
