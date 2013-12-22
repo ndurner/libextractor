@@ -447,6 +447,7 @@ EXTRACTOR_IPC_channel_recv_ (struct EXTRACTOR_Channel **channels,
   ssize_t ret;
   ssize_t iret;
   char *ndata;
+  int closed_channel;
 
   FD_ZERO (&to_check);
   max = -1;
@@ -468,6 +469,27 @@ EXTRACTOR_IPC_channel_recv_ (struct EXTRACTOR_Channel **channels,
   if (0 >= select (max + 1, &to_check, NULL, NULL, &tv))
     {
       /* an error or timeout -> something's wrong or all plugins hung up */
+      closed_channel = 0;
+      for (i=0;i<num_channels;i++)
+        {
+          channel = channels[i];
+          if (NULL == channel)
+            continue;
+          if (-1 == channel->plugin->seek_request)
+          {
+            /* plugin blocked for too long, kill channel */
+            LOG ("Channel blocked, closing channel to %s\n",
+                 channel->plugin->libname);
+            channel->plugin->channel = NULL;
+            channel->plugin->round_finished = 1;
+            EXTRACTOR_IPC_channel_destroy_ (channel);
+            channels[i] = NULL;
+            closed_channel = 1;
+          }
+        }
+      if (1 == closed_channel)
+        return 1;
+      /* strange, no channel is to blame, let's die just to be safe */
       if ((EINTR != errno) && (0 != errno))
 	LOG_STRERROR ("select");
       return -1;
@@ -511,7 +533,8 @@ EXTRACTOR_IPC_channel_recv_ (struct EXTRACTOR_Channel **channels,
 	{
 	  if (-1 == iret)
 	    LOG_STRERROR ("read");
-	  LOG ("Read error from channel, closing channel %d\n", i+1);
+	  LOG ("Read error from channel, closing channel %s\n",
+               channel->plugin->libname);
 	  EXTRACTOR_IPC_channel_destroy_ (channel);
 	  channels[i] = NULL;
 	}
