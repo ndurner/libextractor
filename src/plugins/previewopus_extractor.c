@@ -296,7 +296,7 @@ static void init_packet(AVPacket *packet)
 /** Initialize one audio frame for reading from the input file */
 static int init_input_frame(AVFrame **frame)
 {
-    if (!(*frame = av_frame_alloc())) {
+    if (!(*frame = avcodec_alloc_frame())) {
  #if DEBUG
         fprintf(stderr, "Could not allocate input frame\n");
 #endif
@@ -655,7 +655,7 @@ cleanup:
         av_freep(&converted_input_samples[0]);
         free(converted_input_samples);
     }
-    av_frame_free(&input_frame);
+    avcodec_free_frame(&input_frame);
 
     return ret;
 }
@@ -671,7 +671,7 @@ static int init_output_frame(AVFrame **frame,
     int error;
 
     /** Create a new frame to store the audio samples. */
-    if (!(*frame = av_frame_alloc())) {
+    if (!(*frame = avcodec_alloc_frame())) {
         #if DEBUG
 		fprintf(stderr, "Could not allocate output frame\n");
 		#endif
@@ -702,7 +702,7 @@ static int init_output_frame(AVFrame **frame,
         #if DEBUG
 		fprintf(stderr, "Could allocate output frame samples (error '%s')\n", get_error_text(error));
 		#endif
-        av_frame_free(frame);
+        avcodec_free_frame(frame);
         return error;
     }
 
@@ -783,17 +783,17 @@ static int load_encode_and_write(AVAudioFifo *fifo,
         #if DEBUG
 		fprintf(stderr, "Could not read data from FIFO\n");
 		#endif
-        av_frame_free(&output_frame);
+        avcodec_free_frame(&output_frame);
         return AVERROR_EXIT;
     }
 
     /** Encode one frame worth of audio samples. */
     if (encode_audio_frame(output_frame, output_format_context,
                            output_codec_context, &data_written)) {
-        av_frame_free(&output_frame);
+        avcodec_free_frame(&output_frame);
         return AVERROR_EXIT;
     }
-    av_frame_free(&output_frame);
+    avcodec_free_frame(&output_frame);
     return 0;
 }
 /** Write the trailer of the output file container. */

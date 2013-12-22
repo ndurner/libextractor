@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 1.0.0-pre1\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2013-12-22 17:50+0100\n"
+"POT-Creation-Date: 2013-12-22 23:11+0100\n"
 "PO-Revision-Date: 2012-09-05 22:36+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <translation-team-uk@lists.sourceforge.net>\n"
@@ -151,7 +151,7 @@ msgstr "%% файл BiBTeX\n"
 msgid "Keywords for file %s:\n"
 msgstr "Ключові слова для файла %s:\n"
 
-#: src/main/extractor.c:674
+#: src/main/extractor.c:676
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "Помилка під час спроби ініціалізації механізму додатків: %s!\n"
