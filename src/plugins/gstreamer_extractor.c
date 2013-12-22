@@ -35,19 +35,12 @@ GST_DEBUG_CATEGORY_STATIC (gstreamer_extractor);
 #define GST_CAT_DEFAULT gstreamer_extractor
 
 /**
- * How often should we check for data timeout.
- * In milliseconds.
- */
-#define DATA_TIMEOUT_FREQUENCY 750 /* 750ms, hang up for 1.5s at most */
-
-/**
  * Once discoverer has gone for that long without asking for data or
  * asking to seek, or giving us discovered info, assume it hanged up
  * and kill it.
- * In microseconds.
- * Keep this value a bit less than DATA_TIMEOUT_FREQUENCY
+ * In milliseconds.
  */
-#define DATA_TIMEOUT 1350000LL /* 1.35s */
+#define DATA_TIMEOUT 750 /* 750ms */
 
 pthread_mutex_t pipe_mutex;
 
@@ -804,13 +797,6 @@ enum CurrentStreamType
 struct PrivStruct
 {
   /**
-   * Tracks the time from the last IO request so that we can decide
-   * to terminate processing if GStreamer just takes far too long.
-   * Values are based on 'g_get_monotonic_time()', in milliseconds.
-   */
-  gint64 last_data_request_time;
-
-  /**
    * Current read-offset in the 'ec' context (based on our read/seek calls).
    */
   guint64 offset;
@@ -857,7 +843,7 @@ struct PrivStruct
   size_t toc_pos;
 
   /**
-   *
+   * Identifier of the timeout event source
    */
   guint timeout_id;
 
@@ -909,6 +895,16 @@ static GQuark *subtitle_quarks;
 static GQuark duration_quark;
 
 
+static gboolean
+_data_timeout (struct PrivStruct *ps)
+{
+  GST_ERROR ("GstDiscoverer I/O timed out");
+  ps->timeout_id = 0;
+  g_main_loop_quit (ps->loop);
+  return FALSE;
+}
+
+
 /**
  * Implementation of GstElement's "need-data" callback.  Reads data from
  * the extraction context and passes it to GStreamer.
@@ -931,8 +927,9 @@ feed_data (GstElement * appsrc,
 
   GST_DEBUG ("Request %u bytes", size);
 
-  /* Update it now, in case we bail out due to error */
-  ps->last_data_request_time = g_get_monotonic_time ();
+  if (ps->timeout_id > 0)
+    g_source_remove (ps->timeout_id);
+  ps->timeout_id = g_timeout_add (DATA_TIMEOUT, (GSourceFunc) _data_timeout, ps);
 
   if ( (ps->length > 0) && (ps->offset >= ps->length) )
   {
@@ -988,8 +985,9 @@ feed_data (GstElement * appsrc,
     ps->offset = UINT64_MAX; /* set to invalid value */
   }
 
-  /* Update it again to account for time we spent fulfilling the request */
-  ps->last_data_request_time = g_get_monotonic_time ();
+  if (ps->timeout_id > 0)
+    g_source_remove (ps->timeout_id);
+  ps->timeout_id = g_timeout_add (DATA_TIMEOUT, (GSourceFunc) _data_timeout, ps);
 }
 
 
@@ -1011,7 +1009,9 @@ seek_data (GstElement * appsrc,
   pthread_mutex_lock (&pipe_mutex);
   ps->offset = ps->ec->seek (ps->ec->cls, position, SEEK_SET);
   pthread_mutex_unlock (&pipe_mutex);
-  ps->last_data_request_time = g_get_monotonic_time ();
+  if (ps->timeout_id > 0)
+    g_source_remove (ps->timeout_id);
+  ps->timeout_id = g_timeout_add (DATA_TIMEOUT, (GSourceFunc) _data_timeout, ps);
   return ps->offset == position;
 }
 
@@ -1935,7 +1935,9 @@ _new_discovered_uri (GstDiscoverer * dc,
 		     struct PrivStruct *ps)
 {
   send_discovered_info (info, ps);
-  ps->last_data_request_time = g_get_monotonic_time ();
+  if (ps->timeout_id > 0)
+    g_source_remove (ps->timeout_id);
+  ps->timeout_id = g_timeout_add (DATA_TIMEOUT, (GSourceFunc) _data_timeout, ps);
 }
 
 
@@ -1946,22 +1948,6 @@ _discoverer_finished (GstDiscoverer * dc, struct PrivStruct *ps)
     g_source_remove (ps->timeout_id);
   ps->timeout_id = 0;
   g_main_loop_quit (ps->loop);
-}
-
-
-static gboolean
-_data_timeout (struct PrivStruct *ps)
-{
-  gint64 now = g_get_monotonic_time ();
-  if (now - ps->last_data_request_time > DATA_TIMEOUT)
-  {
-    GST_ERROR ("GstDiscoverer I/O timed out (last heard from discoverer on %lld, now is %lld, difference is %lld > %lld",
-        ps->last_data_request_time, now, now - ps->last_data_request_time, DATA_TIMEOUT);
-    ps->timeout_id = 0;
-    g_main_loop_quit (ps->loop);
-    return FALSE;
-  }
-  return TRUE;
 }
 
 
@@ -2000,8 +1986,7 @@ _source_setup (GstDiscoverer * dc,
    * data */
   g_signal_connect (ps->source, "need-data", G_CALLBACK (feed_data), ps);
   g_signal_connect (ps->source, "seek-data", G_CALLBACK (seek_data), ps);
-  ps->timeout_id = g_timeout_add (DATA_TIMEOUT_FREQUENCY, (GSourceFunc) _data_timeout, ps);
-  ps->last_data_request_time = g_get_monotonic_time ();
+  ps->timeout_id = g_timeout_add (DATA_TIMEOUT, (GSourceFunc) _data_timeout, ps);
 }
 
 
