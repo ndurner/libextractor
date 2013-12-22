@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor-0.5.20a\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2013-10-19 16:33+0200\n"
+"POT-Creation-Date: 2013-12-22 17:50+0100\n"
 "PO-Revision-Date: 2008-08-24 19:08+0100\n"
 "Last-Translator: Nicolas Provost <nprovost@quadriv.com>\n"
 "Language-Team: French <traduc@traduc.org>\n"
@@ -1924,7 +1924,15 @@ msgstr "durée"
 msgid "duration of a subtitle stream"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:551 src/main/extractor_metatypes.c:552
+#: src/main/extractor_metatypes.c:551
+msgid "audio preview"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:552
+msgid "a preview of the file audio stream"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:554 src/main/extractor_metatypes.c:555
 msgid "last"
 msgstr ""
 

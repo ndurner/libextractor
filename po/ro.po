@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.5.3\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2013-10-19 16:33+0200\n"
+"POT-Creation-Date: 2013-12-22 17:50+0100\n"
 "PO-Revision-Date: 2005-08-16 12:00-0500\n"
 "Last-Translator: Laurentiu Buzdugan <lbuz@rolix.org>\n"
 "Language-Team: Romanian <translation-team-ro@lists.sourceforge.net>\n"
@@ -1922,7 +1922,16 @@ msgstr ""
 msgid "duration of a subtitle stream"
 msgstr ""
 
-#: src/main/extractor_metatypes.c:551 src/main/extractor_metatypes.c:552
+#: src/main/extractor_metatypes.c:551
+msgid "audio preview"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:552
+#, fuzzy
+msgid "a preview of the file audio stream"
+msgstr "Dispozitivul nu este un flux (stream)"
+
+#: src/main/extractor_metatypes.c:554 src/main/extractor_metatypes.c:555
 msgid "last"
 msgstr ""
 
@@ -2840,9 +2849,6 @@ msgstr "stereo"
 
 #~ msgid "Bad font file fmt"
 #~ msgstr "Format fiºier font incorect"
-
-#~ msgid "Device not a stream"
-#~ msgstr "Dispozitivul nu este un flux (stream)"
 
 #~ msgid "No data (for no delay io)"
 #~ msgstr "Nici o datã (pentru intrare/ieºire fãrã întârziere)"

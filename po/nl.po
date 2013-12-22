@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor-1.0.0-pre1\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2013-10-19 16:33+0200\n"
+"POT-Creation-Date: 2013-12-22 17:50+0100\n"
 "PO-Revision-Date: 2013-08-21 22:41+0200\n"
 "Last-Translator: Benno Schulenberg <benno@vertaalt.nl>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
@@ -1865,7 +1865,17 @@ msgstr "ondertitels-duur"
 msgid "duration of a subtitle stream"
 msgstr "speelduur van een ondertitelings-stream"
 
-#: src/main/extractor_metatypes.c:551 src/main/extractor_metatypes.c:552
+#: src/main/extractor_metatypes.c:551
+#, fuzzy
+msgid "audio preview"
+msgstr "audio-bitsnelheid"
+
+#: src/main/extractor_metatypes.c:552
+#, fuzzy
+msgid "a preview of the file audio stream"
+msgstr "... van het audiospoor"
+
+#: src/main/extractor_metatypes.c:554 src/main/extractor_metatypes.c:555
 #, fuzzy
 msgid "last"
 msgstr "laatste"
