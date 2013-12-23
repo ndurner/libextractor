@@ -60,7 +60,18 @@
 #endif
 
 /**
- * Set to 1 to enable debug output.
+ * Set to 1 to use JPEG, PNG otherwise
+ */ 
+#define USE_JPEG 1
+
+/**
+ * Set to 1 to enable a output file for testing.
+ */ 
+#define OUTPUT_FILE 1
+
+
+/**
+ * Set to 1 to use jpeg.
  */ 
 #define DEBUG 0
 
@@ -114,7 +125,7 @@ read_cb (void *opaque,
   return ret;
 }
 
-
+  
 /**
  * Seek callback.
  *
@@ -151,7 +162,7 @@ seek_cb (void *opaque,
  * @return the number of bytes used, 0 on error
  */
 static size_t 
-create_thumbnail (int src_width, int src_height, 
+create_thumbnail (AVCodecContext *pCodecCtx, int src_width, int src_height, 
 		  int src_stride[],
 		  enum PixelFormat src_pixfmt, 
 		  const uint8_t * const src_data[],
@@ -174,12 +185,19 @@ create_thumbnail (int src_width, int src_height,
   pkt.data = NULL;
   pkt.size = 0;
   int gotPacket;
-
-  if (NULL == (encoder_codec = avcodec_find_encoder_by_name ("png")))
+#if USE_JPEG
+	#if LIBAVCODEC_BUILD >= AV_VERSION_INT(54,25,0)
+	if (NULL == (encoder_codec = avcodec_find_encoder ( AV_CODEC_ID_MJPEG )))
+	#else
+	if (NULL == (encoder_codec = avcodec_find_encoder ( CODEC_ID_MJPEG )))
+	#endif
+ #else
+ if (NULL == (encoder_codec = avcodec_find_encoder_by_name ("png")))
+ #endif
     {
 #if DEBUG
       fprintf (stderr,
-	       "Couldn't find a PNG encoder\n");
+	       "Couldn't find a encoder\n");
 #endif
       return 0;
     }
@@ -189,8 +207,13 @@ create_thumbnail (int src_width, int src_height,
   if (NULL == 
       (scaler_ctx =
        sws_getContext (src_width, src_height, src_pixfmt,
-		       dst_width, dst_height, PIX_FMT_RGB24, 
-		       SWS_BILINEAR, NULL, NULL, NULL)))
+		       dst_width, dst_height, 
+			   #if USE_JPEG
+			   PIX_FMT_YUVJ420P
+			   #else
+			   PIX_FMT_RGB24
+			   #endif
+			   ,SWS_BILINEAR, NULL, NULL, NULL)))
     {
 #if DEBUG
       fprintf (stderr,
@@ -209,7 +232,13 @@ create_thumbnail (int src_width, int src_height,
       return 0;
     }
   if (NULL == (dst_buffer =
-	       av_malloc (avpicture_get_size (PIX_FMT_RGB24, dst_width, dst_height))))
+	       av_malloc (avpicture_get_size (			   
+			   #if USE_JPEG
+			   PIX_FMT_YUVJ420P
+			   #else
+			   PIX_FMT_RGB24
+			   #endif
+			   ,dst_width, dst_height))))
     {
 #if DEBUG
       fprintf (stderr,
@@ -220,7 +249,12 @@ create_thumbnail (int src_width, int src_height,
       return 0;
     }
   avpicture_fill ((AVPicture *) dst_frame, dst_buffer,
-                  PIX_FMT_RGB24, dst_width, dst_height);
+               #if USE_JPEG
+			   PIX_FMT_YUVJ420P
+			   #else
+			   PIX_FMT_RGB24
+			   #endif
+			   , dst_width, dst_height);
   sws_scale (scaler_ctx,
              src_data, 
              src_stride,
@@ -255,7 +289,22 @@ create_thumbnail (int src_width, int src_height,
     }
   encoder_codec_ctx->width = dst_width;
   encoder_codec_ctx->height = dst_height;
+  #if USE_JPEG
+  encoder_codec_ctx->bit_rate      = pCodecCtx->bit_rate;
+  #if LIBAVCODEC_BUILD >= AV_VERSION_INT(54,25,0)
+    encoder_codec_ctx->codec_id      = AV_CODEC_ID_MJPEG;
+    encoder_codec_ctx->codec_type    = AVMEDIA_TYPE_VIDEO;
+  #else
+    encoder_codec_ctx->codec_id      = CODEC_ID_MJPEG;
+    encoder_codec_ctx->codec_type    = CODEC_TYPE_VIDEO;
+   #endif 
+  encoder_codec_ctx->time_base.num = pCodecCtx->time_base.num;
+  encoder_codec_ctx->time_base.den = pCodecCtx->time_base.den;
+  encoder_codec_ctx->pix_fmt = PIX_FMT_YUVJ420P;
+  #else
   encoder_codec_ctx->pix_fmt = PIX_FMT_RGB24;
+  #endif
+			   
   opts = NULL;
   if (avcodec_open2 (encoder_codec_ctx, encoder_codec, &opts) < 0)
     {
@@ -271,9 +320,19 @@ create_thumbnail (int src_width, int src_height,
       return 0;
     }
 	
+	
+	
+#ifdef USE_JPEG
+   encoder_codec_ctx->mb_lmin        = encoder_codec_ctx->lmin = encoder_codec_ctx->qmin * FF_QP2LAMBDA;
+   encoder_codec_ctx->mb_lmax        = encoder_codec_ctx->lmax = encoder_codec_ctx->qmax * FF_QP2LAMBDA;
+   encoder_codec_ctx->flags          = CODEC_FLAG_QSCALE;
+   encoder_codec_ctx->global_quality = encoder_codec_ctx->qmin * FF_QP2LAMBDA;
+
+   dst_frame->pts     = 1;
+   dst_frame->quality = encoder_codec_ctx->global_quality;
+#endif
 			   
-#if LIBAVCODEC_BUILD >= AV_VERSION_INT(54,25,0)
-  //err = encode_frame (encoder_codec_ctx, dst_frame);							  
+#if LIBAVCODEC_BUILD >= AV_VERSION_INT(54,25,0)				  
   err = avcodec_encode_video2 (encoder_codec_ctx,
                               &pkt,
                                dst_frame, &gotPacket);
@@ -451,7 +510,7 @@ extract_image (ENUM_CODEC_ID image_codec_id,
                                   codec_ctx->sample_aspect_ratio.den,
                                   &thumb_width, &thumb_height);
 
-  err = create_thumbnail (codec_ctx->width, codec_ctx->height,
+  err = create_thumbnail (codec_ctx, codec_ctx->width, codec_ctx->height,
                           frame->linesize, codec_ctx->pix_fmt, 
 			  (const uint8_t * const*) frame->data,
                           thumb_width, thumb_height,
@@ -465,6 +524,25 @@ extract_image (ENUM_CODEC_ID image_codec_id,
 		"image/png",
 		(const char*) encoded_thumbnail,
 		err);
+		
+		#if OUTPUT_FILE
+        	FILE *f;
+			#ifdef USE_JPEG
+        	f = fopen("thumb.jpg", "wb");
+			#else
+			f = fopen("thumb.png", "wb");
+			#endif
+            if (!f) {
+                fprintf(stderr, "Could not open %s\n", "file");
+                exit(1);
+            }
+        	
+        	fwrite(encoded_thumbnail, 1, err, f);
+        	fclose(f);
+        
+        #endif
+
+
       av_free (encoded_thumbnail);
     }
   av_free (frame);
@@ -574,18 +652,33 @@ extract_video (struct EXTRACTOR_ExtractContext *ec)
       av_free (io_ctx);
       return;
     }
-#if DEBUG
+  int duration;
   if (format_ctx->duration == AV_NOPTS_VALUE)
+	{
+	duration = -1;
+#if DEBUG
     fprintf (stderr,
 	     "Duration unknown\n");
+#endif
+	}
   else
+  {
+ #if DEBUG
+	duration = format_ctx->duration;
     fprintf (stderr,
 	     "Duration: %lld\n", 
-	     format_ctx->duration);      
-#endif
-  /* TODO: if duration is known, seek to some better place,
-   * but use 10 sec into stream for now */
-  err = av_seek_frame (format_ctx, -1, 10 * AV_TIME_BASE, 0);
+	     format_ctx->duration);  
+#endif		 
+	}
+	
+  /* if duration is known, seek to first tried,
+   * else use 10 sec into stream */
+ 
+  if(-1 != duration)
+	err = av_seek_frame (format_ctx, -1, (duration/3), 0);
+  else
+	err = av_seek_frame (format_ctx, -1, 10 * AV_TIME_BASE, 0);
+	
   if (err >= 0)        
     avcodec_flush_buffers (codec_ctx);        
   frame_finished = 0;
@@ -626,7 +719,8 @@ extract_video (struct EXTRACTOR_ExtractContext *ec)
                                   codec_ctx->sample_aspect_ratio.num,
                                   codec_ctx->sample_aspect_ratio.den,
                                   &thumb_width, &thumb_height);
-  err = create_thumbnail (codec_ctx->width, codec_ctx->height,
+
+  err = create_thumbnail (codec_ctx, codec_ctx->width, codec_ctx->height,
                           frame->linesize, codec_ctx->pix_fmt,
 			  (const uint8_t* const *) frame->data,
                           thumb_width, thumb_height,
@@ -641,6 +735,22 @@ extract_video (struct EXTRACTOR_ExtractContext *ec)
 		"image/png",
 		(const char*) encoded_thumbnail,
 		err);
+		#if OUTPUT_FILE
+        	FILE *f;
+			#ifdef USE_JPEG
+        	f = fopen("thumb.jpg", "wb");
+			#else
+			f = fopen("thumb.png", "wb");
+			#endif
+            if (!f) {
+                fprintf(stderr, "Could not open %s\n", "file");
+                exit(1);
+            }
+        	
+        	fwrite(encoded_thumbnail, 1, err, f);
+        	fclose(f);
+        
+        #endif
       av_free (encoded_thumbnail);
     }
   av_free (frame);
