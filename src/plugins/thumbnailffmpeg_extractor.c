@@ -67,7 +67,7 @@
 /**
  * Set to 1 to enable a output file for testing.
  */ 
-#define OUTPUT_FILE 1
+#define OUTPUT_FILE 0
 
 
 /**
