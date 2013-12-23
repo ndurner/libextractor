@@ -680,6 +680,8 @@ EXTRACTOR_ltdl_init ()
     }
 #if WINDOWS
   plibc_init_utf8 ("GNU", PACKAGE, 1);
+  plibc_set_stat_size_size (sizeof (((struct stat *) 0)->st_size));
+  plibc_set_stat_time_size (sizeof (((struct stat *) 0)->st_mtime));
 #endif
 }
 
