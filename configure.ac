@@ -90,7 +90,7 @@ darwin*)
      AM_CONDITIONAL(HAVE_GNU_LD, false)
      AM_CONDITIONAL(SOMEBSD, false)
      AM_CONDITIONAL(WINDOWS, false)
-     CFLAGS="-no-cpp-precomp -fno-common $CFLAGS"
+     CFLAGS="-fno-common $CFLAGS"
      LIBEXT=.so
      ;;
 cygwin*)
