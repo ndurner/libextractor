@@ -95,7 +95,7 @@ darwin*)
      ;;
 cygwin*)
      AC_DEFINE_UNQUOTED(CYGWIN,1,[This is a CYGWIN system])
-     LDFLAGS="$LDFLAGS -no-undefined"
+     LDFLAGS="$LDFLAGS -Wl,-no-undefined"
      AM_CONDITIONAL(SOMEBSD, false)
      AM_CONDITIONAL(HAVE_GNU_LD, false)
      AM_CONDITIONAL(WINDOWS, false)
@@ -701,8 +701,8 @@ then
 fi
 
 
-LE_LIB_LDFLAGS="-export-dynamic -no-undefined"
-LE_PLUGIN_LDFLAGS="-export-dynamic -avoid-version -module -no-undefined"
+LE_LIB_LDFLAGS="-export-dynamic -Wl,-no-undefined"
+LE_PLUGIN_LDFLAGS="-export-dynamic -avoid-version -module -Wl,-no-undefined"
 
 
 # TODO insert a proper check here
