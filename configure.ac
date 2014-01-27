@@ -95,7 +95,6 @@ darwin*)
      ;;
 cygwin*)
      AC_DEFINE_UNQUOTED(CYGWIN,1,[This is a CYGWIN system])
-     LDFLAGS="$LDFLAGS -Wl,-no-undefined"
      AM_CONDITIONAL(SOMEBSD, false)
      AM_CONDITIONAL(HAVE_GNU_LD, false)
      AM_CONDITIONAL(WINDOWS, false)
@@ -147,7 +146,7 @@ mingw*)
         LIBS="$LIBS -lplibc"
      fi
 
-     LDFLAGS="$LDFLAGS -Wl,-no-undefined -Wl,--export-all-symbols"
+     LDFLAGS="$LDFLAGS -Wl,--export-all-symbols"
 		 LIBSOLD=$LIBS
      AM_CONDITIONAL(HAVE_GNU_LD, true)
      AM_CONDITIONAL(SOMEBSD, false)
@@ -701,8 +700,8 @@ then
 fi
 
 
-LE_LIB_LDFLAGS="-export-dynamic -Wl,-no-undefined"
-LE_PLUGIN_LDFLAGS="-export-dynamic -avoid-version -module -Wl,-no-undefined"
+LE_LIB_LDFLAGS="-export-dynamic -no-undefined"
+LE_PLUGIN_LDFLAGS="-export-dynamic -avoid-version -module -no-undefined"
 
 
 # TODO insert a proper check here
