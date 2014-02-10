@@ -604,7 +604,7 @@ AC_ARG_WITH(gtk_version,
    ],
    [AC_MSG_RESULT([--with-gtk-version not specified])])
 
-without_gtk=false
+without_gtk=true
 if test "x$check_for_3" != "xfalse"
 then
   AM_PATH_GTK_3_0([$check_for_3],without_gtk=false,without_gtk=true)
