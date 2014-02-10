@@ -581,51 +581,23 @@ AC_CHECK_LIB(smf, smf_load_from_memory,
 CFLAGS="$CFLAGS_OLD"
 CPPFLAGS="$CPPFLAGS_OLD"
 
-# check for gtk >= 2.6.0
-AC_MSG_CHECKING(for gtk)
-check_for_3=3.0.0
-check_for_2=2.6.0
-AC_ARG_WITH(gtk_version,
-   [  --with-gtk-version=VERSION    version number of gtk to use (>=3.0.0 by default)],
-   [AC_MSG_RESULT([$with_gtk_version])
-    case $with_gtk_version in
-      *)
-        if test "x${with_gtk_version:0:1}" == "x2"
-        then
-          check_for_3=false
-          check_for_2=$with_gtk_version
-        elif test "x${with_gtk_version:0:1}" == "x3"
-        then
-          check_for_3=$with_gtk_version
-          check_for_2=false
-        fi
-        ;;
-    esac
-   ],
-   [AC_MSG_RESULT([--with-gtk-version not specified])])
+# check for gdk-pixbuf >= 2.4
+AC_MSG_CHECKING(for gdk-pixbuf)
+PKG_CHECK_MODULES([GDK_PIXBUF], [gdk-pixbuf-2.0 >= 2.4], [have_gdk_pixbuf=yes], [have_gdk_pixbuf=no])
 
-without_gtk=true
-if test "x$check_for_3" != "xfalse"
+AM_CONDITIONAL(HAVE_GDK_PIXBUF, test x$have_gdk_pixbuf != xno)
+if test $have_gdk_pixbuf != no
 then
-  AM_PATH_GTK_3_0([$check_for_3],without_gtk=false,without_gtk=true)
-fi
-
-if test "x$without_gtk" == "xtrue" -a "x$check_for_2" != "xfalse"
-then
-  AM_PATH_GTK_2_0([$check_for_2],without_gtk=false,without_gtk=true)
-fi
-
-AM_CONDITIONAL(HAVE_GTK, test x$without_gtk != xtrue)
-if test $without_gtk != true
-then
-  AC_DEFINE_UNQUOTED([HAVE_GTK], 1, [We have GTK])
+  have_gdk_pixbuf=1
 else
-  AC_MSG_NOTICE([Cannot find GTK: Is pkg-config in path?])
+  have_gdk_pixbuf=0
+  AC_MSG_NOTICE([Cannot find Gdk-pixbuf: Is pkg-config in path?])
 fi
+AC_DEFINE_UNQUOTED([HAVE_GDK_PIXBUF], [$have_gdk_pixbuf], [We have Gdk-pixbuf])
 
-CFLAGS="$CFLAGS $GTK_CFLAGS"
-CPPFLAGS="$CPPFLAGS $GTK_CFLAGS"
-LIBS="$LIBS $GTK_LIBS"
+CFLAGS="$CFLAGS $GDK_PIXBUF_CFLAGS"
+CPPFLAGS="$CPPFLAGS $GDK_PIXBUF_CFLAGS"
+LIBS="$LIBS $GDK_PIXBUF_LIBS"
 
 
 AC_ARG_WITH([gstreamer], AS_HELP_STRING([--with-gstreamer], [Build with the GStreamer plugin]), [], [with_gstreamer=yes])
@@ -813,9 +785,9 @@ then
  AC_MSG_NOTICE([NOTICE: FFmpeg/opus audio preview plugin disabled, It needs libav >= 10, or a FFmpeg with --enable-libavresample])
 fi
 
-if test "x$without_gtk" = "xtrue"
+if test "x$have_gdk_pixbuf" = "x0"
 then
- AC_MSG_NOTICE([NOTICE: libgtk3+ not found, gtk thumbnail support disabled])
+ AC_MSG_NOTICE([NOTICE: libgdk-pixbuf not found, gtk thumbnail support disabled])
 fi
 
 if test "x$HAVE_VORBISFILE_TRUE" = "x#"

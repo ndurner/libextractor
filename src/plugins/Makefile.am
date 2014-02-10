@@ -77,8 +77,8 @@ PLUGIN_PREVIEWOPUS=libextractor_previewopus.la
 TEST_PREVIEWOPUS=test_previewopus
 endif
 
-if HAVE_GTK
-# Gtk-thumbnailer requires MAGIC and GTK
+if HAVE_GDK_PIXBUF
+# Gtk-thumbnailer requires MAGIC and GDK_PIXBUF
 PLUGIN_GTK=libextractor_thumbnailgtk.la
 TEST_GTK=test_thumbnailgtk
 endif
@@ -619,9 +619,9 @@ libextractor_thumbnailgtk_la_SOURCES = \
 libextractor_thumbnailgtk_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_thumbnailgtk_la_CFLAGS = \
-  $(GTK_CFLAGS)
+  $(GDK_PIXBUF_CFLAGS)
 libextractor_thumbnailgtk_la_LIBADD = \
-  -lmagic $(GTK_LIBS) $(XLIB)
+  -lmagic $(GDK_PIXBUF_LIBS) $(XLIB)
 
 test_thumbnailgtk_SOURCES = \
   test_thumbnailgtk.c

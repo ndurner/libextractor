@@ -25,7 +25,7 @@
  * of the file includes a decoder method that can be used
  * to reproduce the 128x128 PNG thumbnails.  We use
  * libmagic to test if the input data is actually an
- * image before trying to give it to gtk.
+ * image before trying to give it to gdk-pixbuf.
  */
 #include "platform.h"
 #include "extractor.h"
