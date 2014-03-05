@@ -25,14 +25,14 @@
  * thumbnail of images and videos using the ffmpeg libs.
  *
  * This is a thumbnail extractor using the ffmpeg libraries that will eventually
- * support extracting thumbnails from both image and video files. 
+ * support extracting thumbnails from both image and video files.
  *
  * Note that ffmpeg has a few issues:
  * (1) there are no recent official releases of the ffmpeg libs
  * (2) ffmpeg has a history of having security issues (parser is not robust)
  *
  *  So this plugin cannot be recommended for system with high security
- *requirements. 
+ *requirements.
  */
 #include "platform.h"
 #include "extractor.h"
@@ -61,24 +61,24 @@
 
 /**
  * Set to 1 to use JPEG, PNG otherwise
- */ 
+ */
 #define USE_JPEG 1
 
 /**
  * Set to 1 to enable a output file for testing.
- */ 
+ */
 #define OUTPUT_FILE 0
 
 
 /**
  * Set to 1 to use jpeg.
- */ 
+ */
 #define DEBUG 0
 
 /**
  * max dimension in pixels for the thumbnail.
  */
-#define MAX_THUMB_DIMENSION 128         
+#define MAX_THUMB_DIMENSION 128
 
 /**
  * Maximum size in bytes for the thumbnail.
@@ -125,7 +125,7 @@ read_cb (void *opaque,
   return ret;
 }
 
-  
+
 /**
  * Seek callback.
  *
@@ -152,7 +152,7 @@ seek_cb (void *opaque,
  *
  * @param src_width source image width
  * @param src_height source image height
- * @param src_stride 
+ * @param src_stride
  * @param src_pixfmt
  * @param src_data source data
  * @param dst_width desired thumbnail width
@@ -161,13 +161,13 @@ seek_cb (void *opaque,
  * @param output_max_size maximum size of result that is allowed
  * @return the number of bytes used, 0 on error
  */
-static size_t 
-create_thumbnail (AVCodecContext *pCodecCtx, int src_width, int src_height, 
+static size_t
+create_thumbnail (AVCodecContext *pCodecCtx, int src_width, int src_height,
 		  int src_stride[],
-		  enum PixelFormat src_pixfmt, 
+		  enum PixelFormat src_pixfmt,
 		  const uint8_t * const src_data[],
 		  int dst_width, int dst_height,
-		  uint8_t **output_data, 
+		  uint8_t **output_data,
 		  size_t output_max_size)
 {
   AVCodecContext *encoder_codec_ctx;
@@ -179,7 +179,7 @@ create_thumbnail (AVCodecContext *pCodecCtx, int src_width, int src_height,
   uint8_t *encoder_output_buffer;
   size_t encoder_output_buffer_size;
   int err;
-  
+
   AVPacket pkt;
   av_init_packet(&pkt);
   pkt.data = NULL;
@@ -204,10 +204,10 @@ create_thumbnail (AVCodecContext *pCodecCtx, int src_width, int src_height,
 
   /* NOTE: the scaler will be used even if the src and dst image dimensions
    * match, because the scaler will also perform colour space conversion */
-  if (NULL == 
+  if (NULL ==
       (scaler_ctx =
        sws_getContext (src_width, src_height, src_pixfmt,
-		       dst_width, dst_height, 
+		       dst_width, dst_height,
 			   #if USE_JPEG
 			   PIX_FMT_YUVJ420P
 			   #else
@@ -232,7 +232,7 @@ create_thumbnail (AVCodecContext *pCodecCtx, int src_width, int src_height,
       return 0;
     }
   if (NULL == (dst_buffer =
-	       av_malloc (avpicture_get_size (			   
+	       av_malloc (avpicture_get_size (
 			   #if USE_JPEG
 			   PIX_FMT_YUVJ420P
 			   #else
@@ -256,10 +256,10 @@ create_thumbnail (AVCodecContext *pCodecCtx, int src_width, int src_height,
 			   #endif
 			   , dst_width, dst_height);
   sws_scale (scaler_ctx,
-             src_data, 
+             src_data,
              src_stride,
-             0, src_height, 
-             dst_frame->data, 
+             0, src_height,
+             dst_frame->data,
              dst_frame->linesize);
 
   encoder_output_buffer_size = output_max_size;
@@ -289,22 +289,25 @@ create_thumbnail (AVCodecContext *pCodecCtx, int src_width, int src_height,
     }
   encoder_codec_ctx->width = dst_width;
   encoder_codec_ctx->height = dst_height;
-  #if USE_JPEG
+#if USE_JPEG
   encoder_codec_ctx->bit_rate      = pCodecCtx->bit_rate;
-  #if LIBAVCODEC_BUILD >= AV_VERSION_INT(54,25,0)
-    encoder_codec_ctx->codec_id      = AV_CODEC_ID_MJPEG;
-    encoder_codec_ctx->codec_type    = AVMEDIA_TYPE_VIDEO;
-  #else
-    encoder_codec_ctx->codec_id      = CODEC_ID_MJPEG;
-    encoder_codec_ctx->codec_type    = CODEC_TYPE_VIDEO;
-   #endif 
+#if LIBAVCODEC_BUILD >= AV_VERSION_INT(54,25,0)
+  encoder_codec_ctx->codec_id      = AV_CODEC_ID_MJPEG;
+#else
+  encoder_codec_ctx->codec_id      = CODEC_ID_MJPEG;
+#endif
+#if LIBAVCODEC_BUILD >= AV_VERSION_INT(53,35,0)
+  encoder_codec_ctx->codec_type    = AVMEDIA_TYPE_VIDEO;
+#else
+  encoder_codec_ctx->codec_type    = CODEC_TYPE_VIDEO;
+#endif
   encoder_codec_ctx->time_base.num = pCodecCtx->time_base.num;
   encoder_codec_ctx->time_base.den = pCodecCtx->time_base.den;
   encoder_codec_ctx->pix_fmt = PIX_FMT_YUVJ420P;
-  #else
+#else
   encoder_codec_ctx->pix_fmt = PIX_FMT_RGB24;
-  #endif
-			   
+#endif
+
   opts = NULL;
   if (avcodec_open2 (encoder_codec_ctx, encoder_codec, &opts) < 0)
     {
@@ -319,9 +322,9 @@ create_thumbnail (AVCodecContext *pCodecCtx, int src_width, int src_height,
       sws_freeContext  (scaler_ctx);
       return 0;
     }
-	
-	
-	
+
+
+
 #ifdef USE_JPEG
    encoder_codec_ctx->mb_lmin        = encoder_codec_ctx->lmin = encoder_codec_ctx->qmin * FF_QP2LAMBDA;
    encoder_codec_ctx->mb_lmax        = encoder_codec_ctx->lmax = encoder_codec_ctx->qmax * FF_QP2LAMBDA;
@@ -331,8 +334,8 @@ create_thumbnail (AVCodecContext *pCodecCtx, int src_width, int src_height,
    dst_frame->pts     = 1;
    dst_frame->quality = encoder_codec_ctx->global_quality;
 #endif
-			   
-#if LIBAVCODEC_BUILD >= AV_VERSION_INT(54,25,0)				  
+
+#if LIBAVCODEC_BUILD >= AV_VERSION_INT(54,25,0)
   err = avcodec_encode_video2 (encoder_codec_ctx,
                               &pkt,
                                dst_frame, &gotPacket);
@@ -343,13 +346,13 @@ create_thumbnail (AVCodecContext *pCodecCtx, int src_width, int src_height,
   memcpy(encoder_output_buffer,pkt.data, pkt.size);
 
   av_free_packet(&pkt);
-							  
-							  
+
+
 #else
   err = avcodec_encode_video (encoder_codec_ctx,
                               encoder_output_buffer,
                               encoder_output_buffer_size, dst_frame);
-  
+
 #endif
 cleanup:
   av_dict_free (&opts);
@@ -366,7 +369,7 @@ cleanup:
 
 
 /**
- * calculate the thumbnail dimensions, taking pixel aspect into account 
+ * calculate the thumbnail dimensions, taking pixel aspect into account
  *
  * @param src_width source image width
  * @param src_height source image height
@@ -375,7 +378,7 @@ cleanup:
  * @param dst_width desired thumbnail width (set)
  * @param dst_height desired thumbnail height (set)
   */
-static void 
+static void
 calculate_thumbnail_dimensions (int src_width,
 				int src_height,
 				int src_sar_num,
@@ -407,7 +410,7 @@ calculate_thumbnail_dimensions (int src_width,
     *dst_height = 1;
 #if DEBUG
   fprintf (stderr,
-           "Thumbnail dimensions: %d %d\n", 
+           "Thumbnail dimensions: %d %d\n",
            *dst_width, *dst_height);
 #endif
 }
@@ -511,7 +514,7 @@ extract_image (ENUM_CODEC_ID image_codec_id,
                                   &thumb_width, &thumb_height);
 
   err = create_thumbnail (codec_ctx, codec_ctx->width, codec_ctx->height,
-                          frame->linesize, codec_ctx->pix_fmt, 
+                          frame->linesize, codec_ctx->pix_fmt,
 			  (const uint8_t * const*) frame->data,
                           thumb_width, thumb_height,
                           &encoded_thumbnail, MAX_THUMB_BYTES);
@@ -524,7 +527,7 @@ extract_image (ENUM_CODEC_ID image_codec_id,
 		"image/png",
 		(const char*) encoded_thumbnail,
 		err);
-		
+
 		#if OUTPUT_FILE
         	FILE *f;
 			#ifdef USE_JPEG
@@ -536,10 +539,10 @@ extract_image (ENUM_CODEC_ID image_codec_id,
                 fprintf(stderr, "Could not open %s\n", "file");
                 exit(1);
             }
-        	
+
         	fwrite(encoded_thumbnail, 1, err, f);
         	fclose(f);
-        
+
         #endif
 
 
@@ -578,7 +581,7 @@ extract_video (struct EXTRACTOR_ExtractContext *ec)
   if (NULL == (iob = av_malloc (16 * 1024)))
     return;
   if (NULL == (io_ctx = avio_alloc_context (iob, 16 * 1024,
-					    0, ec, 
+					    0, ec,
 					    &read_cb,
 					    NULL /* no writing */,
 					    &seek_cb)))
@@ -595,7 +598,7 @@ extract_video (struct EXTRACTOR_ExtractContext *ec)
   options = NULL;
   if (0 != avformat_open_input (&format_ctx, "<no file>", NULL, &options))
     return;
-  av_dict_free (&options);  
+  av_dict_free (&options);
   if (0 > avformat_find_stream_info (format_ctx, NULL))
     {
  #if DEBUG
@@ -622,12 +625,12 @@ extract_video (struct EXTRACTOR_ExtractContext *ec)
           codec = NULL;
           continue;
         }
-      av_dict_free (&options); 
+      av_dict_free (&options);
       video_stream_index = i;
       break;
     }
   if ( (-1 == video_stream_index) ||
-       (0 == codec_ctx->width) || 
+       (0 == codec_ctx->width) ||
        (0 == codec_ctx->height) )
     {
 #if DEBUG
@@ -666,21 +669,21 @@ extract_video (struct EXTRACTOR_ExtractContext *ec)
  #if DEBUG
 	duration = format_ctx->duration;
     fprintf (stderr,
-	     "Duration: %lld\n", 
-	     format_ctx->duration);  
-#endif		 
+	     "Duration: %lld\n",
+	     format_ctx->duration);
+#endif
 	}
-	
+
   /* if duration is known, seek to first tried,
    * else use 10 sec into stream */
- 
+
   if(-1 != duration)
 	err = av_seek_frame (format_ctx, -1, (duration/3), 0);
   else
 	err = av_seek_frame (format_ctx, -1, 10 * AV_TIME_BASE, 0);
-	
-  if (err >= 0)        
-    avcodec_flush_buffers (codec_ctx);        
+
+  if (err >= 0)
+    avcodec_flush_buffers (codec_ctx);
   frame_finished = 0;
 
   while (1)
@@ -727,7 +730,7 @@ extract_video (struct EXTRACTOR_ExtractContext *ec)
                           &encoded_thumbnail, MAX_THUMB_BYTES);
   if (err > 0)
     {
-	
+
       ec->proc (ec->cls,
 		"thumbnailffmpeg",
 		EXTRACTOR_METATYPE_THUMBNAIL,
@@ -746,10 +749,10 @@ extract_video (struct EXTRACTOR_ExtractContext *ec)
                 fprintf(stderr, "Could not open %s\n", "file");
                 exit(1);
             }
-        	
+
         	fwrite(encoded_thumbnail, 1, err, f);
         	fclose(f);
-        
+
         #endif
       av_free (encoded_thumbnail);
     }
@@ -778,9 +781,9 @@ struct MIMEToDecoderMapping
 
 
 /**
- * map MIME image types to an ffmpeg decoder 
+ * map MIME image types to an ffmpeg decoder
  */
-static const struct MIMEToDecoderMapping m2d_map[] = 
+static const struct MIMEToDecoderMapping m2d_map[] =
   {
 
 #if LIBAVCODEC_BUILD >= AV_VERSION_INT(54,25,0)
@@ -809,7 +812,7 @@ static const struct MIMEToDecoderMapping m2d_map[] =
  *
  * @param ec extraction context
  */
-void 
+void
 EXTRACTOR_thumbnailffmpeg_extract_method (struct EXTRACTOR_ExtractContext *ec)
 {
   unsigned int i;
@@ -841,7 +844,7 @@ EXTRACTOR_thumbnailffmpeg_extract_method (struct EXTRACTOR_ExtractContext *ec)
  *
  * @param ec extraction context
  */
-void 
+void
 EXTRACTOR_thumbnail_extract_method (struct EXTRACTOR_ExtractContext *ec)
 {
   EXTRACTOR_thumbnailffmpeg_extract_method (ec);
@@ -856,8 +859,8 @@ EXTRACTOR_thumbnail_extract_method (struct EXTRACTOR_ExtractContext *ec)
  * @param format format string
  * @param ap arguments for format
  */
-static void 
-thumbnailffmpeg_av_log_callback (void* ptr, 
+static void
+thumbnailffmpeg_av_log_callback (void* ptr,
 				 int level,
 				 const char *format,
 				 va_list ap)
@@ -871,7 +874,7 @@ thumbnailffmpeg_av_log_callback (void* ptr,
 /**
  * Initialize av-libs and load magic file.
  */
-void __attribute__ ((constructor)) 
+void __attribute__ ((constructor))
 thumbnailffmpeg_lib_init (void)
 {
   av_log_set_callback (&thumbnailffmpeg_av_log_callback);
@@ -887,8 +890,8 @@ thumbnailffmpeg_lib_init (void)
 /**
  * Destructor for the library, cleans up.
  */
-void __attribute__ ((destructor)) 
-thumbnailffmpeg_ltdl_fini () 
+void __attribute__ ((destructor))
+thumbnailffmpeg_ltdl_fini ()
 {
   if (NULL != magic)
     {
