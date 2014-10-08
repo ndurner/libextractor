@@ -59,7 +59,8 @@ EXTRA_DIST = \
   testdata/wav_noise.wav \
   testdata/wav_alert.wav \
   testdata/xm_diesel.xm \
-  testdata/zip_test.zip
+  testdata/zip_test.zip \
+  testdata/README
 
 
 if HAVE_MAGIC
