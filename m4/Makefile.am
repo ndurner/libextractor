@@ -1,3 +1,4 @@
+# This Makefile.am is in the public domain
 EXTRA_DIST = glibc2.m4 intl.m4 intldir.m4 lock.m4 visibility.m4 \
  ac_python_devel.m4 \
  abi-gsf.m4 \

@@ -1,3 +1,4 @@
+# This Makefile.am is in the public domain
 INCLUDES = \
  -I$(top_srcdir)/src/include \
  -I$(top_srcdir)/src/common 

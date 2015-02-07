@@ -1,3 +1,4 @@
+# This Makefile.am is in the public domain
 man_MANS = extract.1  libextractor.3
 EXTRA_DIST = $(man_MANS)  
 

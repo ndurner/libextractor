@@ -1,3 +1,4 @@
+# This Makefile.am is in the public domain
 SUBDIRS  = m4 po src doc . 
 EXTRA_DIST = config.rpath \
   ABOUT-NLS install-sh   
