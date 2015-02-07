@@ -1,6 +1,6 @@
 /*
      This file is part of libextractor.
-     Copyright (C) 2008 Heikki Lindholm
+     Copyright Copyright (C) 2008 Heikki Lindholm
 
      libextractor is free software; you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published

@@ -1,6 +1,6 @@
 /*
      This file is part of libextractor.
-     (C) 2012 Vidyut Samanta and Christian Grothoff
+     Copyright (C) 2012 Vidyut Samanta and Christian Grothoff
 
      libextractor is free software; you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published
@@ -59,8 +59,8 @@ main (int argc, char *argv[])
 	EXTRACTOR_METATYPE_COMMENT,
 	EXTRACTOR_METAFORMAT_C_STRING,
 	"text/plain",
-	"(C) 2001 by Christian Grothoff, using gimp 1.2 1",
-	strlen ("(C) 2001 by Christian Grothoff, using gimp 1.2 1"),
+	"Copyright (C) 2001 by Christian Grothoff, using gimp 1.2 1",
+	strlen ("Copyright (C) 2001 by Christian Grothoff, using gimp 1.2 1"),
 	0 
       },
       { 0, 0, NULL, NULL, 0, -1 }

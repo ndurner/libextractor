@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2000-2002 the xine project
+ * Copyright Copyright (C) 2000-2002 the xine project
  *
  * This file is part of xine, a free video player.
  *
@@ -234,7 +234,7 @@ demux_nsf_send_headers (demux_plugin_t * this_gen)
 
   this->stream->meta_info[XINE_META_INFO_TITLE] = strdup (this->title);
   this->stream->meta_info[XINE_META_INFO_ARTIST] = strdup (this->artist);
-  sprintf (copyright, "(C) %s", this->copyright);
+  sprintf (copyright, "Copyright (C) %s", this->copyright);
   this->stream->meta_info[XINE_META_INFO_COMMENT] = strdup (copyright);
 
   /* send start buffers */

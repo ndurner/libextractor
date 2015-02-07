@@ -1,6 +1,6 @@
 /*
      This file is part of libextractor.
-     (C) 2002, 2003, 2011 Vidyut Samanta and Christian Grothoff
+     Copyright (C) 2002, 2003, 2011 Vidyut Samanta and Christian Grothoff
 
      libextractor is free software; you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published
@@ -21,7 +21,7 @@
 /*
  * This file is based on demux_asf from the xine project (copyright follows).
  *
- * Copyright (C) 2000-2002 the xine project
+ * Copyright Copyright (C) 2000-2002 the xine project
  *
  * This file is part of xine, a free video player.
  *

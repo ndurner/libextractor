@@ -1,6 +1,6 @@
 /*
      This file is part of libextractor.
-     (C) 2004, 2005, 2006, 2007, 2009, 2012 Vidyut Samanta and Christian Grothoff
+     Copyright (C) 2004, 2005, 2006, 2007, 2009, 2012 Vidyut Samanta and Christian Grothoff
 
      libextractor is free software; you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published
@@ -19,7 +19,7 @@
 
      This code makes extensive use of libgsf
      -- the Gnome Structured File Library
-     Copyright (C) 2002-2004 Jody Goldberg (jody@gnome.org)
+     Copyright Copyright (C) 2002-2004 Jody Goldberg (jody@gnome.org)
 
      Part of this code was adapted from wordleaker.
 */
