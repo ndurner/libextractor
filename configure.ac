@@ -1,4 +1,20 @@
 # Process this file with autoconf to produce a configure script.
+#
+#  This file is part of TALER
+#  Copyright (C) 2014 GNUnet e.V.
+#
+#  TALER is free software; you can redistribute it and/or modify it under the
+#  terms of the GNU General Public License as published by the Free Software
+#  Foundation; either version 3, or (at your option) any later version.
+#
+#  TALER is distributed in the hope that it will be useful, but WITHOUT ANY
+#  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+#  A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License along with
+#  TALER; see the file COPYING.  If not, If not, see <http://www.gnu.org/license>
+#
+#
 AC_PREREQ(2.61)
 AC_INIT([libextractor], [1.3], [bug-libextractor@gnu.org])
 AC_CONFIG_HEADERS([config.h])
@@ -649,7 +665,7 @@ then
     AC_CHECK_HEADERS([libavresample/avresample.h],
       AC_CHECK_LIB(avutil, av_audio_fifo_alloc,
         new_ffmpeg=1)))
-  
+
   AC_CHECK_LIB(swscale, sws_getContext,
     AC_CHECK_LIB(avcodec, avcodec_alloc_context3,
       ffmpeg_enabled=1))
@@ -829,4 +845,3 @@ fi
 else
  AC_MSG_NOTICE([NOTICE: gstreamer not found, gstreamer support disabled])
 fi
-
