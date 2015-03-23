@@ -59,8 +59,8 @@ main (int argc, char *argv[])
 	EXTRACTOR_METATYPE_COMMENT,
 	EXTRACTOR_METAFORMAT_C_STRING,
 	"text/plain",
-	"Copyright (C) 2001 by Christian Grothoff, using gimp 1.2 1",
-	strlen ("Copyright (C) 2001 by Christian Grothoff, using gimp 1.2 1"),
+	"(C) 2001 by Christian Grothoff, using gimp 1.2 1",
+	strlen ("(C) 2001 by Christian Grothoff, using gimp 1.2 1"),
 	0 
       },
       { 0, 0, NULL, NULL, 0, -1 }
