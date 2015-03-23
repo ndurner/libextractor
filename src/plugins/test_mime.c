@@ -43,8 +43,8 @@ main (int argc, char *argv[])
 	EXTRACTOR_METATYPE_MIMETYPE,
 	EXTRACTOR_METAFORMAT_UTF8,
 	"text/plain",
-	"application/ogg",
-	strlen ("application/ogg") + 1,
+	"audio/ogg",
+	strlen ("audio/ogg") + 1,
 	0 
       },
       { 0, 0, NULL, NULL, 0, -1 }

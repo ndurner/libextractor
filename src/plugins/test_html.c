@@ -106,8 +106,8 @@ main (int argc, char *argv[])
 	EXTRACTOR_METATYPE_RIGHTS,
 	EXTRACTOR_METAFORMAT_UTF8,
 	"text/plain",
-	"Copyright (C) 2000 by Christian Grothoff",
-	strlen ("Copyright (C) 2000 by Christian Grothoff") + 1,
+	"(C) 2000 by Christian Grothoff",
+	strlen ("(C) 2000 by Christian Grothoff") + 1,
 	0 
       },
       { 0, 0, NULL, NULL, 0, -1 }
