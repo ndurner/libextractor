@@ -24,7 +24,7 @@
  */
 #include "platform.h"
 #include "test_lib.h"
-
+#include <magic.h>
 
 
 /**
@@ -39,25 +39,35 @@ main (int argc, char *argv[])
 {
   struct SolutionData courseclear_sol[] =
     {
-      { 
+      {
 	EXTRACTOR_METATYPE_MIMETYPE,
 	EXTRACTOR_METAFORMAT_UTF8,
 	"text/plain",
+        /* not sure which is the exact version, but old ones do
+           not even define MAGIC_VERSION, so this is approximately
+           right. Users where this tests fail should report
+           their version number from "magic.h" so we can adjust
+           if necessary. */
+#ifdef MAGIC_VERSION
 	"audio/ogg",
 	strlen ("audio/ogg") + 1,
-	0 
+#else
+        "application/ogg",
+	strlen ("application/ogg") + 1,
+#endif
+	0
       },
       { 0, 0, NULL, NULL, 0, -1 }
     };
   struct SolutionData gif_image_sol[] =
     {
-      { 
+      {
 	EXTRACTOR_METATYPE_MIMETYPE,
 	EXTRACTOR_METAFORMAT_UTF8,
 	"text/plain",
 	"image/gif",
 	strlen ("image/gif") + 1,
-	0 
+	0
       },
       { 0, 0, NULL, NULL, 0, -1 }
     };
