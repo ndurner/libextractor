@@ -14,7 +14,7 @@
 
 	   You should have received a copy of the GNU Lesser General Public
 	   License along with this library; if not, write to the Free Software
-	   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+	   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
 /**
@@ -22,7 +22,7 @@
  * @brief PlibC header
  * @attention This file is usually not installed under Unix,
  *            so ship it with your application
- * @version $Revision: 151 $
+ * @version $Revision: 158 $
  */
 
 #ifndef _PLIBC_H_
@@ -70,7 +70,7 @@ extern "C" {
 /* Convert LARGE_INTEGER to double */
 #define Li2Double(x) ((double)((x).HighPart) * 4.294967296E9 + \
   (double)((x).LowPart))
-#ifndef __MINGW64_VERSION_MAJOR
+#ifndef HAVE_DECL__STATI64
 struct _stati64
 {
     _dev_t st_dev;
@@ -403,49 +403,6 @@ struct statfs
   long f_namelen;               /* maximum length of filenames */
   long f_spare[6];              /* spare for later */
 };
-
-/* Taken from the Wine project <http://www.winehq.org>
-    /wine/include/winternl.h */
-enum SYSTEM_INFORMATION_CLASS
-{
-  SystemBasicInformation = 0,
-  Unknown1,
-  SystemPerformanceInformation = 2,
-  SystemTimeOfDayInformation = 3, /* was SystemTimeInformation */
-  Unknown4,
-  SystemProcessInformation = 5,
-  Unknown6,
-  Unknown7,
-  SystemProcessorPerformanceInformation = 8,
-  Unknown9,
-  Unknown10,
-  SystemDriverInformation,
-  Unknown12,
-  Unknown13,
-  Unknown14,
-  Unknown15,
-  SystemHandleList,
-  Unknown17,
-  Unknown18,
-  Unknown19,
-  Unknown20,
-  SystemCacheInformation,
-  Unknown22,
-  SystemInterruptInformation = 23,
-  SystemExceptionInformation = 33,
-  SystemRegistryQuotaInformation = 37,
-  SystemLookasideInformation = 45
-};
-
-typedef struct
-{
-    LARGE_INTEGER IdleTime;
-    LARGE_INTEGER KernelTime;
-    LARGE_INTEGER UserTime;
-    LARGE_INTEGER Reserved1[2];
-    ULONG Reserved2;
-} SYSTEM_PROCESSOR_PERFORMANCE_INFORMATION;
-
 #define sleep(secs) (Sleep(secs * 1000))
 
 /*********************** statfs *****************************/
@@ -468,17 +425,39 @@ typedef struct
 #define LOCK_UN  8       /* remove lock */
 
 /* Not supported under MinGW */
+#ifndef S_IRGRP
 #define S_IRGRP 0
+#endif
+#ifndef S_IWGRP
 #define S_IWGRP 0
+#endif
+#ifndef S_IROTH
 #define S_IROTH 0
+#endif
+#ifndef S_IXGRP
 #define S_IXGRP 0
+#endif
+#ifndef S_IWOTH
 #define S_IWOTH 0
+#endif
+#ifndef S_IXOTH
 #define S_IXOTH 0
+#endif
+#ifndef S_ISUID
 #define S_ISUID 0
+#endif
+#ifndef S_ISGID
 #define S_ISGID 0
+#endif
+#ifndef S_ISVTX
 #define S_ISVTX 0
+#endif
+#ifndef S_IRWXG
 #define S_IRWXG 0
+#endif
+#ifndef S_IRWXO
 #define S_IRWXO 0
+#endif
 
 #define SHUT_WR SD_SEND
 #define SHUT_RD SD_RECEIVE
@@ -517,6 +496,8 @@ unsigned plibc_get_handle_count();
 
 typedef void (*TPanicProc) (int, char *);
 void plibc_set_panic_proc(TPanicProc proc);
+void plibc_set_stat_size_size(int iLength);
+void plibc_set_stat_time_size(int iLength);
 
 int flock(int fd, int operation);
 int fsync(int fildes);
@@ -563,7 +544,7 @@ int _win_ftruncate(int fildes, off_t length);
 int _win_truncate(const char *fname, int distance);
 int _win_kill(pid_t pid, int sig);
 int _win_pipe(int *phandles);
-intptr_t _win_mkfifo(const char *path, mode_t mode);
+int _win_mkfifo(const char *path, mode_t mode);
 int _win_rmdir(const char *path);
 int _win_access( const char *path, int mode );
 int _win_chmod(const char *filename, int pmode);
