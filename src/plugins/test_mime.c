@@ -37,7 +37,10 @@
 int
 main (int argc, char *argv[])
 {
-  struct SolutionData courseclear_sol[] =
+  int result = 0;
+  int test_result;
+  int test_result_around_19, test_result_around_22;
+  struct SolutionData courseclear_file_around_19_sol[] =
     {
       {
 	EXTRACTOR_METATYPE_MIMETYPE,
@@ -59,6 +62,18 @@ main (int argc, char *argv[])
       },
       { 0, 0, NULL, NULL, 0, -1 }
     };
+  struct SolutionData courseclear_file_around_22_sol[] =
+    {
+      {
+	EXTRACTOR_METATYPE_MIMETYPE,
+	EXTRACTOR_METAFORMAT_UTF8,
+	"text/plain",
+	"audio/ogg",
+	strlen ("audio/ogg") + 1,
+	0
+      },
+      { 0, 0, NULL, NULL, 0, -1 }
+    };
   struct SolutionData gif_image_sol[] =
     {
       {
@@ -71,15 +86,40 @@ main (int argc, char *argv[])
       },
       { 0, 0, NULL, NULL, 0, -1 }
     };
-  struct ProblemSet ps[] =
+  struct ProblemSet ps_gif[] =
     {
-      { "testdata/ogg_courseclear.ogg",
-	courseclear_sol },
       { "testdata/gif_image.gif",
 	gif_image_sol },
       { NULL, NULL }
     };
-  return ET_main ("mime", ps);
+  struct ProblemSet ps_ogg_around_19[] =
+    {
+      { "testdata/ogg_courseclear.ogg",
+	courseclear_file_around_19_sol },
+      { NULL, NULL }
+    };
+  struct ProblemSet ps_ogg_around_22[] =
+    {
+      { "testdata/ogg_courseclear.ogg",
+	courseclear_file_around_22_sol },
+      { NULL, NULL }
+    };
+  printf ("Running gif test on libmagic:\n");
+  test_result = (0 == ET_main ("mime", ps_gif) ? 0 : 1);
+  printf ("gif libmagic test result: %s\n", test_result == 0 ? "OK" : "FAILED");
+  result += test_result;
+
+  printf ("Running ogg test on libmagic, assuming version ~5.19:\n");
+  test_result_around_19 = (0 == ET_main ("mime", ps_ogg_around_19) ? 0 : 1);
+  printf ("ogg libmagic test result: %s\n", test_result_around_19 == 0 ? "OK" : "FAILED");
+
+  printf ("Running ogg test on libmagic, assuming version ~5.22:\n");
+  test_result_around_22 = (0 == ET_main ("mime", ps_ogg_around_22) ? 0 : 1);
+  printf ("ogg libmagic test result: %s\n", test_result_around_22 == 0 ? "OK" : "FAILED");
+
+  if ((test_result_around_19 != 0) && (test_result_around_22 != 0))
+    result++;
+  return result;
 }
 
 /* end of test_mime.c */
