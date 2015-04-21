@@ -601,7 +601,7 @@ extract_video (struct EXTRACTOR_ExtractContext *ec)
   av_dict_free (&options);
   if (0 > avformat_find_stream_info (format_ctx, NULL))
     {
- #if DEBUG
+#if DEBUG
       fprintf (stderr,
                "Failed to read stream info\n");
 #endif
@@ -666,7 +666,7 @@ extract_video (struct EXTRACTOR_ExtractContext *ec)
 	}
   else
   {
- #if DEBUG
+#if DEBUG
 	duration = format_ctx->duration;
     fprintf (stderr,
 	     "Duration: %lld\n",
