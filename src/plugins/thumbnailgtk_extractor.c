@@ -210,7 +210,9 @@ EXTRACTOR_thumbnail_extract_method (struct EXTRACTOR_ExtractContext *ec)
 void __attribute__ ((constructor)) 
 thumbnailgtk_gobject_init ()
 {
+#if !GLIB_CHECK_VERSION(2, 35, 0)
   g_type_init ();
+#endif
   magic = magic_open (MAGIC_MIME_TYPE);
   if (0 != magic_load (magic, NULL))
     {

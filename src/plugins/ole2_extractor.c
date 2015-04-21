@@ -1007,7 +1007,9 @@ nolog (const gchar *log_domain,
 void __attribute__ ((constructor)) 
 ole2_ltdl_init() 
 {
-  g_type_init();
+#if !GLIB_CHECK_VERSION(2, 35, 0)
+  g_type_init ();
+#endif
 #ifdef HAVE_GSF_INIT
   gsf_init();
 #endif
