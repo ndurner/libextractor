@@ -638,6 +638,7 @@ AM_CONDITIONAL(HAVE_GSF, test "x$have_gsf" = "xtrue")
 # produce new line
 echo ""
 AC_CHECK_LIB(gsf-1, gsf_init, AC_DEFINE(HAVE_GSF_INIT,1,[gsf_init supported]))
+AC_CHECK_LIB(gsf-1, gsf_doc_meta_data_read_from_msole, AC_DEFINE(HAVE_GSF_DOC_META_DATA_READ_FROM_MSOLE,1,[gsf_doc_meta_data_read_from_msole supported]))
 
 AC_CHECK_PROG([HAVE_ZZUF],[zzuf], 1, 0)
 AM_CONDITIONAL(HAVE_ZZUF, test 0 != $HAVE_ZZUF)

@@ -283,16 +283,26 @@ process (GsfInput *in,
 {
   struct ProcContext pc;
   GsfDocMetaData *sections;
+  GError *error;
 
   pc.proc = proc;
   pc.proc_cls = proc_cls;
   pc.ret = 0;
   sections = gsf_doc_meta_data_new ();
-  if (NULL == gsf_msole_metadata_read (in, sections))
+#ifdef HAVE_GSF_DOC_META_DATA_READ_FROM_MSOLE
+  error = gsf_doc_meta_data_read_from_msole (sections, in);
+#else
+  error = gsf_msole_metadata_read (in, sections);
+#endif
+  if (NULL == error)
     {
       gsf_doc_meta_data_foreach (sections,
 				 &process_metadata,
 				 &pc);
+    }
+  else
+    {
+      g_error_free (error);
     }
   g_object_unref (G_OBJECT (sections));
   return pc.ret;
