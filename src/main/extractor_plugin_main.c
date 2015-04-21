@@ -39,6 +39,13 @@
 #include <signal.h>
 #endif
 
+#if WINDOWS
+#define SHM_ID HANDLE
+#define INVALID_SHM_ID NULL
+#else
+#define SHM_ID int
+#define INVALID_SHM_ID -1
+#endif
 
 /**
  * Closure we use for processing requests inside the helper process.
@@ -73,7 +80,7 @@ struct ProcessingContext
   /**
    * Handle to the shared memory.
    */
-  int shm_id;
+  SHM_ID shm_id;
   
   /**
    * Size of the shared memory map.
@@ -619,7 +626,7 @@ EXTRACTOR_plugin_main_ (struct EXTRACTOR_PluginList *plugin,
   pc.plugin = plugin;
   pc.in = in;
   pc.out = out;
-  pc.shm_id = -1;
+  pc.shm_id = INVALID_SHM_ID;
   pc.shm = NULL;
   pc.shm_map_size = 0;
   process_requests (&pc);
