@@ -105,7 +105,7 @@ tag_to_type (const char *tag)
  * @param mssg message
  * @return FALSE (no output)
  */
-static Bool
+static Bool TIDY_CALL
 report_cb (TidyDoc doc,
 	   TidyReportLevel lvl,
 	   uint line,
@@ -122,7 +122,7 @@ report_cb (TidyDoc doc,
  * @param sourceData our 'struct EXTRACTOR_ExtractContext'
  * @return next byte of input, EndOfStream on errors and EOF
  */
-static int
+static int TIDY_CALL
 get_byte_cb (void *sourceData)
 {
   struct EXTRACTOR_ExtractContext *ec = sourceData;
@@ -142,7 +142,7 @@ get_byte_cb (void *sourceData)
  * @param sourceData our 'struct EXTRACTOR_ExtractContext'
  * @param bt byte to unget (ignored)
  */
-static void
+static void TIDY_CALL
 unget_byte_cb (void *sourceData, byte bt)
 {
   struct EXTRACTOR_ExtractContext *ec = sourceData;
@@ -157,7 +157,7 @@ unget_byte_cb (void *sourceData, byte bt)
  * @param sourceData our 'struct EXTRACTOR_ExtractContext'
  * @return true if we are at the EOF
  */
-static Bool
+static Bool TIDY_CALL
 eof_cb (void *sourceData)
 {
   struct EXTRACTOR_ExtractContext *ec = sourceData;
