@@ -296,7 +296,12 @@ static void init_packet(AVPacket *packet)
 /** Initialize one audio frame for reading from the input file */
 static int init_input_frame(AVFrame **frame)
 {
-    if (!(*frame = avcodec_alloc_frame())) {
+#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(55,28,1)
+    *frame = av_frame_alloc ();
+#else
+    *frame = avcodec_alloc_frame();
+#endif
+    if (NULL == *frame) {
 #if DEBUG
         fprintf(stderr, "Could not allocate input frame\n");
 #endif
@@ -655,7 +660,11 @@ cleanup:
         av_freep(&converted_input_samples[0]);
         free(converted_input_samples);
     }
+#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(55,28,1)
+    av_frame_free (&input_frame);
+#else
     avcodec_free_frame(&input_frame);
+#endif
 
     return ret;
 }
@@ -671,7 +680,12 @@ static int init_output_frame(AVFrame **frame,
     int error;
 
     /** Create a new frame to store the audio samples. */
-    if (!(*frame = avcodec_alloc_frame())) {
+#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(55,28,1)
+    *frame = av_frame_alloc ();
+#else
+    *frame = avcodec_alloc_frame();
+#endif
+    if (NULL == *frame) {
 #if DEBUG
 		fprintf(stderr, "Could not allocate output frame\n");
 #endif
@@ -702,7 +716,11 @@ static int init_output_frame(AVFrame **frame,
 #if DEBUG
 		fprintf(stderr, "Could allocate output frame samples (error '%s')\n", get_error_text(error));
 #endif
+#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(55,28,1)
+        av_frame_free (frame);
+#else
         avcodec_free_frame(frame);
+#endif
         return error;
     }
 
@@ -783,17 +801,29 @@ static int load_encode_and_write(AVAudioFifo *fifo,
 #if DEBUG
 		fprintf(stderr, "Could not read data from FIFO\n");
 #endif
+#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(55,28,1)
+        av_frame_free (&output_frame);
+#else
         avcodec_free_frame(&output_frame);
+#endif
         return AVERROR_EXIT;
     }
 
     /** Encode one frame worth of audio samples. */
     if (encode_audio_frame(output_frame, output_format_context,
                            output_codec_context, &data_written)) {
+#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(55,28,1)
+        av_frame_free (&output_frame);
+#else
         avcodec_free_frame(&output_frame);
+#endif
         return AVERROR_EXIT;
     }
+#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(55,28,1)
+    av_frame_free (&output_frame);
+#else
     avcodec_free_frame(&output_frame);
+#endif
     return 0;
 }
 /** Write the trailer of the output file container. */
@@ -907,7 +937,12 @@ extract_audio (struct EXTRACTOR_ExtractContext *ec)
       return;
     }
 
-  if (NULL == (frame = avcodec_alloc_frame ()))
+#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(55,28,1)
+  frame = av_frame_alloc ();
+#else
+  frame = avcodec_alloc_frame();
+#endif
+  if (NULL == frame)
     {
 #if DEBUG
       fprintf (stderr,
