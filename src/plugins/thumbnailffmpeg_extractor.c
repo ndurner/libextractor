@@ -222,7 +222,12 @@ create_thumbnail (AVCodecContext *pCodecCtx, int src_width, int src_height,
       return 0;
     }
 
-  if (NULL == (dst_frame = avcodec_alloc_frame ()))
+#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(55,28,1)
+  dst_frame = av_frame_alloc ();
+#else
+  dst_frame = avcodec_alloc_frame();
+#endif
+  if (NULL == dst_frame)
     {
 #if DEBUG
       fprintf (stderr,
@@ -244,7 +249,11 @@ create_thumbnail (AVCodecContext *pCodecCtx, int src_width, int src_height,
       fprintf (stderr,
                "Failed to allocate the destination image buffer\n");
 #endif
-      av_free (dst_frame);
+#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(55,28,1)
+      av_frame_free (&dst_frame);
+#else
+      avcodec_free_frame (&dst_frame);
+#endif
       sws_freeContext (scaler_ctx);
       return 0;
     }
@@ -270,7 +279,11 @@ create_thumbnail (AVCodecContext *pCodecCtx, int src_width, int src_height,
                "Failed to allocate the encoder output buffer\n");
 #endif
       av_free (dst_buffer);
-      av_free (dst_frame);
+#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(55,28,1)
+      av_frame_free (&dst_frame);
+#else
+      avcodec_free_frame (&dst_frame);
+#endif
       sws_freeContext (scaler_ctx);
       return 0;
     }
@@ -283,7 +296,11 @@ create_thumbnail (AVCodecContext *pCodecCtx, int src_width, int src_height,
 #endif
       av_free (encoder_output_buffer);
       av_free (dst_buffer);
-      av_free (dst_frame);
+#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(55,28,1)
+      av_frame_free (&dst_frame);
+#else
+      avcodec_free_frame (&dst_frame);
+#endif
       sws_freeContext (scaler_ctx);
       return 0;
     }
@@ -315,10 +332,14 @@ create_thumbnail (AVCodecContext *pCodecCtx, int src_width, int src_height,
       fprintf (stderr,
                "Failed to open the encoder\n");
 #endif
-      av_free (encoder_codec_ctx);
+      avcodec_free_context (&encoder_codec_ctx);
       av_free (encoder_output_buffer);
       av_free (dst_buffer);
-      av_free (dst_frame);
+#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(55,28,1)
+      av_frame_free (&dst_frame);
+#else
+      avcodec_free_frame (&dst_frame);
+#endif
       sws_freeContext  (scaler_ctx);
       return 0;
     }
@@ -357,9 +378,13 @@ create_thumbnail (AVCodecContext *pCodecCtx, int src_width, int src_height,
 cleanup:
   av_dict_free (&opts);
   avcodec_close (encoder_codec_ctx);
-  av_free (encoder_codec_ctx);
+  avcodec_free_context (&encoder_codec_ctx);
   av_free (dst_buffer);
-  av_free (dst_frame);
+#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(55,28,1)
+  av_frame_free (&dst_frame);
+#else
+  avcodec_free_frame (&dst_frame);
+#endif
   sws_freeContext (scaler_ctx);
   *output_data = encoder_output_buffer;
 
@@ -468,18 +493,23 @@ extract_image (ENUM_CODEC_ID image_codec_id,
       fprintf (stderr,
 	       "Failed to open image codec\n");
 #endif
-      av_free (codec_ctx);
+      avcodec_free_context (&codec_ctx);
       return;
     }
   av_dict_free (&opts);
-  if (NULL == (frame = avcodec_alloc_frame ()))
+#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(55,28,1)
+  frame = av_frame_alloc ();
+#else
+  frame = avcodec_alloc_frame();
+#endif
+  if (NULL == frame)
     {
 #if DEBUG
       fprintf (stderr,
                "Failed to allocate frame\n");
 #endif
       avcodec_close (codec_ctx);
-      av_free (codec_ctx);
+      avcodec_free_context (&codec_ctx);
       return;
     }
 
@@ -503,9 +533,13 @@ extract_image (ENUM_CODEC_ID image_codec_id,
       fprintf (stderr,
 	       "Failed to decode a complete frame\n");
 #endif
-      av_free (frame);
+#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(55,28,1)
+      av_frame_free (&frame);
+#else
+      avcodec_free_frame (&frame);
+#endif
       avcodec_close (codec_ctx);
-      av_free (codec_ctx);
+      avcodec_free_context (&codec_ctx);
       return;
     }
   calculate_thumbnail_dimensions (codec_ctx->width, codec_ctx->height,
@@ -548,9 +582,13 @@ extract_image (ENUM_CODEC_ID image_codec_id,
 
       av_free (encoded_thumbnail);
     }
-  av_free (frame);
+#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(55,28,1)
+  av_frame_free (&frame);
+#else
+  avcodec_free_frame (&frame);
+#endif
   avcodec_close (codec_ctx);
-  av_free (codec_ctx);
+  avcodec_free_context (&codec_ctx);
 }
 
 
@@ -644,7 +682,12 @@ extract_video (struct EXTRACTOR_ExtractContext *ec)
       return;
     }
 
-  if (NULL == (frame = avcodec_alloc_frame ()))
+#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(55,28,1)
+  frame = av_frame_alloc ();
+#else
+  frame = avcodec_alloc_frame();
+#endif
+  if (NULL == frame)
     {
 #if DEBUG
       fprintf (stderr,
@@ -712,7 +755,11 @@ extract_video (struct EXTRACTOR_ExtractContext *ec)
       fprintf (stderr,
 	       "Failed to decode a complete frame\n");
 #endif
-      av_free (frame);
+#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(55,28,1)
+      av_frame_free (&frame);
+#else
+      avcodec_free_frame (&frame);
+#endif
       avcodec_close (codec_ctx);
       avformat_close_input (&format_ctx);
       av_free (io_ctx);
@@ -756,7 +803,11 @@ extract_video (struct EXTRACTOR_ExtractContext *ec)
         #endif
       av_free (encoded_thumbnail);
     }
-  av_free (frame);
+#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(55,28,1)
+  av_frame_free (&frame);
+#else
+  avcodec_free_frame (&frame);
+#endif
   avcodec_close (codec_ctx);
   avformat_close_input (&format_ctx);
   av_free (io_ctx);
