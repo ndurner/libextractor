@@ -99,7 +99,11 @@ EXTRACTOR_archive_extract_method (struct EXTRACTOR_ExtractContext *ec)
 
   format = NULL;
   a = archive_read_new ();
+#if ARCHIVE_VERSION_NUMBER >= 3000000
+  archive_read_support_filter_all (a);
+#else
   archive_read_support_compression_all (a);
+#endif
   archive_read_support_format_all (a);
   if(archive_read_open2 (a, ec, NULL, &read_cb, &skip_cb, NULL)!= ARCHIVE_OK)
 	return;
@@ -118,7 +122,11 @@ EXTRACTOR_archive_extract_method (struct EXTRACTOR_ExtractContext *ec)
 			 s, strlen (s) + 1))
 	break;
     }
+#if ARCHIVE_VERSION_NUMBER >= 3000000
+  archive_read_free (a);
+#else
   archive_read_finish (a);
+#endif
   if (NULL != format)
     {
       if (0 != ec->proc (ec->cls, 
