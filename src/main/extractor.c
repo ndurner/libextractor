@@ -295,7 +295,7 @@ in_process_seek (void *cls,
  * Determine the overall size of the file.
  * Callback used for in-process plugins.
  *
- * @param cls a 'struct InProcessContext'
+ * @param cls a `struct InProcessContext`
  * @return overall file size, UINT64_MAX on error (i.e. IPC failure)
  */
 static uint64_t
@@ -593,7 +593,7 @@ do_extract (struct EXTRACTOR_PluginList *plugins,
  *        case libextractor will open file) if filename is not NULL
  * @param size number of bytes in data, ignored if data is NULL
  * @param proc function to call for each meta data item found
- * @param proc_cls cls argument to proc
+ * @param proc_cls cls argument to @a proc
  */
 void
 EXTRACTOR_extract (struct EXTRACTOR_PluginList *plugins,
