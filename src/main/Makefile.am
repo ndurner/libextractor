@@ -24,7 +24,9 @@ if HAVE_BZ2
 bz2lib = -lbz2
 TEST_BZIP2 = test_bzip2
 endif
-
+#if HAVE_LIBAPPARMOR
+apparmor=-lapparmor
+#endif
 
 if WINDOWS
 EXTRACTOR_IPC=extractor_ipc_w32.c
@@ -63,7 +65,7 @@ libextractor_la_SOURCES = \
 libextractor_la_LDFLAGS = \
   $(LE_LIB_LDFLAGS) -version-info @LIB_VERSION_CURRENT@:@LIB_VERSION_REVISION@:@LIB_VERSION_AGE@
 libextractor_la_LIBADD = \
-  -lltdl $(zlib) $(bz2lib) $(LTLIBICONV) $(XLIB) $(LE_LIBINTL)
+  -lltdl $(zlib) $(bz2lib) $(LTLIBICONV) $(XLIB) $(LE_LIBINTL) $(apparmor)
 
 extract_SOURCES = \
   extract.c \

@@ -1,0 +1,21 @@
+# Last Modified: Mon Aug 31 18:30:49 2015
+#include <tunables/global>
+
+# vim:syntax=apparmor
+
+
+profile libextractor {
+  #include <abstractions/base>
+
+  /dev/shm/LE-* r,
+  @{HOME}/.cache/gstreamer-1.0/registry.x86_64.bin r,
+  @{HOME}/.cache/gstreamer-1.0/registry.x86_64.bin.tmp* a,
+  @{PROC}/cmdline r,
+  @{PROC}/fd/ r,
+  /sys/devices/system/cpu/ r,
+  /usr/lib/gstreamer-1.0/gst-plugin-scanner rix,
+  /usr/local/lib/libextractor/libextractor_*.so* mr,
+  /usr/local/lib/libextractor_common.so.* mr,
+  /usr/share/file/misc/magic.mgc r,
+
+}

@@ -36,6 +36,7 @@
 #include <sys/shm.h>
 #include <signal.h>
 
+#include <sys/apparmor.h>
 
 /**
  * A shared memory resource (often shared with several
@@ -323,6 +324,13 @@ EXTRACTOR_IPC_channel_create_ (struct EXTRACTOR_PluginList *plugin,
       (void) close (p2[0]);
       free (channel->mdata);
       free (channel);
+//#if HAVE_LIBAPPARMOR
+      if (0 > aa_change_profile("libextractor"))
+	{
+	  perror("Failure changing profile -- aborting");
+	  _exit(1);
+	}
+//#endif
       EXTRACTOR_plugin_main_ (plugin, p1[0], p2[1]);
       _exit (0);
     }
