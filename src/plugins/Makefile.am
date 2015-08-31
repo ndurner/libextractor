@@ -1,5 +1,5 @@
 # This Makefile.am is in the public domain
-INCLUDES = \
+AM_CPPFLAGS = \
  -I$(top_srcdir)/src/include \
  -I$(top_srcdir)/src/common
 
@@ -498,7 +498,7 @@ libextractor_ole2_la_SOURCES = \
 libextractor_ole2_la_CFLAGS = \
   $(GSF_CFLAGS)
 libextractor_ole2_la_CPPFLAGS = \
-  $(GSF_CFLAGS)
+  $(GSF_CFLAGS) $(AM_CPPFLAGS)
 libextractor_ole2_la_LDFLAGS = \
   $(PLUGINFLAGS)
 libextractor_ole2_la_LIBADD = \

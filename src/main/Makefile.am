@@ -1,7 +1,7 @@
 # This Makefile.am is in the public domain
 SUBDIRS  = .
 
-INCLUDES = -I$(top_srcdir)/src/include
+AM_CPPFLAGS = -I$(top_srcdir)/src/include
 
 LIBS = \
  @LE_LIBINTL@ @LE_LIB_LIBS@
@@ -24,9 +24,9 @@ if HAVE_BZ2
 bz2lib = -lbz2
 TEST_BZIP2 = test_bzip2
 endif
-#if HAVE_LIBAPPARMOR
+if HAVE_APPARMOR
 apparmor=-lapparmor
-#endif
+endif
 
 if WINDOWS
 EXTRACTOR_IPC=extractor_ipc_w32.c

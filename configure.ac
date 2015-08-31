@@ -282,6 +282,17 @@ fi
 
 # restore LIBS
 LIBS=$LIBSOLD
+
+# check for apparmor
+AC_CHECK_LIB(apparmor, aa_change_profile,
+        [AC_CHECK_HEADERS([sys/apparmor.h],
+          AM_CONDITIONAL(HAVE_APPARMOR, true)
+          AC_DEFINE(HAVE_APPARMOR,1,[Have apparmor]),
+          AM_CONDITIONAL(HAVE_APPARMOR, false)
+          AC_DEFINE(HAVE_APPARMOR,0,[lacking apparmor]))],
+        AM_CONDITIONAL(HAVE_APPARMOR, false),
+        -lapparmor)
+
 # FIXME: allow --with-oggvorbis=PFX
 
 # test if we have vorbisfile
@@ -845,4 +856,9 @@ then
 fi
 else
  AC_MSG_NOTICE([NOTICE: gstreamer not found, gstreamer support disabled])
+fi
+
+if test "x$HAVE_APPARMOR_TRUE" = "x#"
+then
+ AC_MSG_NOTICE([NOTICE: libapparmor not found, apparmor support disabled])
 fi
