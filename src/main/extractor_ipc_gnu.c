@@ -328,10 +328,15 @@ EXTRACTOR_IPC_channel_create_ (struct EXTRACTOR_PluginList *plugin,
 #if HAVE_SYS_APPARMOR_H
 #if HAVE_APPARMOR
       if (0 > aa_change_profile("libextractor"))
+      {
+        if (EINVAL != errno)
         {
-	  perror("Failure changing profile -- aborting");
+          fprintf (stderr,
+                   "Failure changing profile: %s",
+                   strerror (errno));
 	  _exit(1);
 	}
+      }
 #endif
 #endif
       EXTRACTOR_plugin_main_ (plugin, p1[0], p2[1]);
