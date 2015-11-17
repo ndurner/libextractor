@@ -48,7 +48,6 @@ AC_CANONICAL_HOST
 AC_PROG_LIBTOOL
 # save LIBS, libtool does a AC_SEARCH_LIBS(dlopen, dl), but plugins
 # need not have -ldl added
-LIBSOLD=$LIBS
 LT_INIT([disable-static dlopen win32-dll])
 AC_SUBST(MKDIR_P)
 
@@ -98,7 +97,7 @@ netbsd*)
      AM_CONDITIONAL(HAVE_GNU_LD, false)
      AM_CONDITIONAL(SOMEBSD, false)
      AM_CONDITIONAL(WINDOWS, false)
-     CFLAGS="-D_POSIX_PTHREAD_SEMANTICS $CFLAGS"
+     AM_CFLAGS="-D_POSIX_PTHREAD_SEMANTICS $AM_CFLAGS"
      LIBEXT=.so
      ;;
 darwin*)
@@ -106,7 +105,7 @@ darwin*)
      AM_CONDITIONAL(HAVE_GNU_LD, false)
      AM_CONDITIONAL(SOMEBSD, false)
      AM_CONDITIONAL(WINDOWS, false)
-     CFLAGS="-fno-common $CFLAGS"
+     AM_CFLAGS="-fno-common $AM_CFLAGS"
      LIBEXT=.so
      ;;
 cygwin*)
@@ -121,8 +120,8 @@ mingw*)
      AC_DEFINE_UNQUOTED(WINDOWS,1,[This is a Windows system])
      AC_CHECK_LIB(intl, gettext)
      # Sufficiently new Windows XP
-     CFLAGS="-D__MSVCRT_VERSION__=0x0601 $CFLAGS"
-     CPPFLAGS="-DFTRUNCATE_DEFINED=1 $CPPFLAGS"
+     AM_CFLAGS="-D__MSVCRT_VERSION__=0x0601 $AM_CFLAGS"
+     AM_CPPFLAGS="-DFTRUNCATE_DEFINED=1 $AM_CPPFLAGS"
 
     AC_MSG_CHECKING(for PlibC)
     plibc=0
@@ -138,8 +137,8 @@ mingw*)
                 plibc=1))
             ;;
           *)
-            LDFLAGS="-L$with_plibc/lib $LDFLAGS"
-            CPPFLAGS="-I$with_plibc/include $CPPFLAGS"
+            AM_LDFLAGS="-L$with_plibc/lib $AM_LDFLAGS"
+            AM_CPPFLAGS="-I$with_plibc/include $AM_CPPFLAGS"
             AC_CHECK_HEADERS([plibc.h],
               AC_CHECK_LIB([plibc], [plibc_init],
                 EXT_LIB_PATH="-L$with_plibc/lib $EXT_LIB_PATH"
@@ -148,8 +147,8 @@ mingw*)
         esac
        ],
        [AC_MSG_RESULT([--with-plibc not specified])
-        LDFLAGS="-L/usr/lib $LDFLAGS"
-        CPPFLAGS="-I/usr/include $CPPFLAGS"
+        AM_LDFLAGS="-L/usr/lib $AM_LDFLAGS"
+        AM_CPPFLAGS="-I/usr/include $AM_CPPFLAGS"
         AC_CHECK_HEADERS([plibc.h],
               AC_CHECK_LIB([plibc], [plibc_init],
                 EXT_LIB_PATH="-L$with_plibc/lib $EXT_LIB_PATH"
@@ -162,8 +161,7 @@ mingw*)
         LIBS="$LIBS -lplibc"
      fi
 
-     LDFLAGS="$LDFLAGS -Wl,--export-all-symbols"
-		 LIBSOLD=$LIBS
+     AM_LDFLAGS="$AM_LDFLAGS -Wl,--export-all-symbols"
      AM_CONDITIONAL(HAVE_GNU_LD, true)
      AM_CONDITIONAL(SOMEBSD, false)
      AM_CONDITIONAL(WINDOWS, true)
@@ -214,7 +212,7 @@ AM_CONDITIONAL(MINGW, test "$build_os" = "mingw32")
 # use '-fno-strict-aliasing', but only if the compiler can take it
 if gcc -fno-strict-aliasing -S -o /dev/null -xc /dev/null >/dev/null 2>&1;
 then
- CFLAGS="-fno-strict-aliasing $CFLAGS"
+ AM_CFLAGS="-fno-strict-aliasing $AM_CFLAGS"
 fi
 
 AM_CONDITIONAL(HAVE_CXX, test "x$HAVE_CXX" = "xyes")
@@ -225,10 +223,10 @@ AM_CONDITIONAL(HAVE_CXX, test "x$HAVE_CXX" = "xyes")
 AC_ARG_ENABLE(gcc-hardening,
    AS_HELP_STRING(--enable-gcc-hardening, enable compiler security checks),
 [if test x$enableval = xyes; then
-    CFLAGS="$CFLAGS -D_FORTIFY_SOURCE=2 -fstack-protector-all"
-    CFLAGS="$CFLAGS -fwrapv -fPIE -Wstack-protector"
-    CFLAGS="$CFLAGS --param ssp-buffer-size=1"
-    LDFLAGS="$LDFLAGS -pie"
+    AM_CFLAGS="$AM_CFLAGS -D_FORTIFY_SOURCE=2 -fstack-protector-all"
+    AM_CFLAGS="$AM_CFLAGS -fwrapv -fPIE -Wstack-protector"
+    AM_CFLAGS="$AM_CFLAGS --param ssp-buffer-size=1"
+    AM_LDFLAGS="$AM_LDFLAGS -pie"
 fi])
 
 
@@ -237,7 +235,7 @@ fi])
 AC_ARG_ENABLE(linker-hardening,
   AS_HELP_STRING(--enable-linker-hardening, enable linker security fixups),
 [if test x$enableval = xyes; then
-   LDFLAGS="$LDFLAGS -z relro -z now"
+   AM_LDFLAGS="$AM_LDFLAGS -z relro -z now"
 fi])
 
 
@@ -260,8 +258,8 @@ AC_ARG_WITH(ltdl,
             ltdl=1))
         ;;
       *)
-        LDFLAGS="-L$with_ltdl/lib $LDFLAGS"
-        CPPFLAGS="-I$with_ltdl/include $CPPFLAGS"
+        AM_LDFLAGS="-L$with_ltdl/lib $AM_LDFLAGS"
+        AM_CPPFLAGS="-I$with_ltdl/include $AM_CPPFLAGS"
         AC_CHECK_HEADERS(ltdl.h,
           AC_CHECK_LIB([ltdl], [lt_dlopenext],
             EXT_LIB_PATH="-L$with_ltdl/lib $EXT_LIB_PATH"
@@ -279,9 +277,6 @@ then
 else
  AC_MSG_ERROR([libextractor requires libltdl (from GNU libtool), try installing libltdl-dev])
 fi
-
-# restore LIBS
-LIBS=$LIBSOLD
 
 # check for apparmor
 AC_CHECK_LIB(apparmor, aa_change_profile,
@@ -391,8 +386,8 @@ AM_CONDITIONAL([HAVE_EXPERIMENTAL], [test "x$enable_experimental" = "xyes"])
 
 AC_MSG_CHECKING(for ImageFactory::iptcData in -lexiv2)
 AC_LANG_PUSH(C++)
-SAVED_LDFLAGS=$LDFLAGS
-LDFLAGS="$LDFLAGS -lexiv2"
+SAVED_AM_LDFLAGS=$AM_LDFLAGS
+AM_LDFLAGS="$AM_LDFLAGS -lexiv2"
 AC_LINK_IFELSE(
   [AC_LANG_PROGRAM([[#include <iostream>
 #include <exiv2/exif.hpp>
@@ -404,12 +399,12 @@ AC_LINK_IFELSE(
    AC_DEFINE(HAVE_EXIV2,1,[Have exifData in libexiv2])],
   [AC_MSG_RESULT(no)
    AM_CONDITIONAL(HAVE_EXIV2, false)])
-LDFLAGS=$SAVED_LDFLAGS
+AM_LDFLAGS=$SAVED_AM_LDFLAGS
 AC_LANG_POP(C++)
 
 
 AC_MSG_CHECKING(for DGifOpen -lgif)
-SAVED_LDFLAGS=$LDFLAGS
+SAVED_AM_LDFLAGS=$AM_LDFLAGS
 AC_CHECK_LIB(gif, DGifOpen,
   [AC_CHECK_HEADERS([gif_lib.h],
    AM_CONDITIONAL(HAVE_GIF, true),
@@ -417,7 +412,7 @@ AC_CHECK_LIB(gif, DGifOpen,
   AM_CONDITIONAL(HAVE_GIF, false))
 
 AC_MSG_CHECKING(for magic_open -lmagic)
-SAVED_LDFLAGS=$LDFLAGS
+SAVED_AM_LDFLAGS=$AM_LDFLAGS
 AC_CHECK_LIB(magic, magic_open,
   [AC_CHECK_HEADERS([magic.h],
    AM_CONDITIONAL(HAVE_MAGIC, true),
@@ -596,8 +591,8 @@ fi
 # smf requires glib.h
 CFLAGS_OLD="$CFLAGS"
 CPPFLAGS_OLD="$CPPFLAGS"
-CFLAGS="$CFLAGS $GLIB_CFLAGS"
-CPPFLAGS="$CPPFLAGS $GLIB_CFLAGS"
+CFLAGS="$AM_CFLAGS $GLIB_CFLAGS"
+CPPFLAGS="$AM_CPPFLAGS $GLIB_CFLAGS"
 
 AC_CHECK_LIB(smf, smf_load_from_memory,
         [AC_CHECK_HEADERS([smf.h],
@@ -605,8 +600,6 @@ AC_CHECK_LIB(smf, smf_load_from_memory,
            AC_DEFINE(HAVE_MPEG2,1,[Have libsmf]),
          AM_CONDITIONAL(HAVE_SMF, false))],
          AM_CONDITIONAL(HAVE_SMF, false))
-CFLAGS="$CFLAGS_OLD"
-CPPFLAGS="$CPPFLAGS_OLD"
 
 # check for gdk-pixbuf >= 2.4
 AC_MSG_CHECKING(for gdk-pixbuf)
@@ -650,6 +643,11 @@ AM_CONDITIONAL(HAVE_GSF, test "x$have_gsf" = "xtrue")
 echo ""
 AC_CHECK_LIB(gsf-1, gsf_init, AC_DEFINE(HAVE_GSF_INIT,1,[gsf_init supported]))
 AC_CHECK_LIB(gsf-1, gsf_doc_meta_data_read_from_msole, AC_DEFINE(HAVE_GSF_DOC_META_DATA_READ_FROM_MSOLE,1,[gsf_doc_meta_data_read_from_msole supported]))
+
+
+CFLAGS="$CFLAGS_OLD"
+CPPFLAGS="$CPPFLAGS_OLD"
+
 
 AC_CHECK_PROG([HAVE_ZZUF],[zzuf], 1, 0)
 AM_CONDITIONAL(HAVE_ZZUF, test 0 != $HAVE_ZZUF)
@@ -696,7 +694,7 @@ then
   AC_DEFINE([FRAMEWORK_BUILD], 1, [Build a Mac OS X Framework])
   LE_INTLINCL='-I$(top_srcdir)/src/intlemu'
   LE_LIBINTL='$(top_builddir)/src/intlemu/libintlemu.la -framework CoreFoundation'
-  AC_LIB_APPENDTOVAR([CPPFLAGS], [$LE_INTLINCL])
+  AC_LIB_APPENDTOVAR([AM_CPPFLAGS], [$LE_INTLINCL])
 fi
 
 
@@ -728,8 +726,6 @@ AC_SUBST(LE_INTLINCL)
 AC_SUBST(LE_LIBINTL)
 AC_SUBST(LE_LIB_LIBS)
 
-AC_SUBST(CPPFLAGS)
-AC_SUBST(LDFLAGS)
 AC_SUBST(QT_CPPFLAGS)
 AC_SUBST(QT_LDFLAGS)
 AC_SUBST(XTRA_CPPLIBS)
