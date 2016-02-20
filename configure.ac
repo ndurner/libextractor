@@ -258,12 +258,14 @@ AC_ARG_WITH(ltdl,
             ltdl=1))
         ;;
       *)
-        AM_LDFLAGS="-L$with_ltdl/lib $AM_LDFLAGS"
+        OLD_LIBS="$LIBS"
+        LIBS="-L$with_ltdl/lib $LIBS"
         AM_CPPFLAGS="-I$with_ltdl/include $AM_CPPFLAGS"
         AC_CHECK_HEADERS(ltdl.h,
           AC_CHECK_LIB([ltdl], [lt_dlopenext],
             EXT_LIB_PATH="-L$with_ltdl/lib $EXT_LIB_PATH"
             ltdl=1))
+        LIBS="$OLD_LIBS"
         ;;
     esac
    ],
