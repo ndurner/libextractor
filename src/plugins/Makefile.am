@@ -160,6 +160,9 @@ PLUGIN_OGG=libextractor_ogg.la
 TEST_OGG=test_ogg
 endif
 
+if ! WINDOWS
+PLUGIN_PDF=libextractor_pdf.la
+endif
 
 if HAVE_ZLIB
 PLUGIN_ZLIB= \
@@ -198,6 +201,7 @@ plugin_LTLIBRARIES = \
   $(PLUGIN_MP4) \
   $(PLUGIN_MPEG) \
   $(PLUGIN_OGG) \
+  $(PLUGIN_PDF) \
   $(PLUGIN_PREVIEWOPUS) \
   $(PLUGIN_RPM) \
   $(PLUGIN_TIFF) \
@@ -522,6 +526,14 @@ test_ogg_SOURCES = \
   test_ogg.c
 test_ogg_LDADD = \
   $(top_builddir)/src/plugins/libtest.la
+
+
+libextractor_pdf_la_SOURCES = \
+  pdf_extractor.c
+libextractor_pdf_la_LDFLAGS = \
+  $(PLUGINFLAGS)
+libextractor_pdf_la_LIBADD = \
+  $(top_builddir)/src/common/libextractor_common.la $(XLIB)  $(SOCKET_LIBS)
 
 
 libextractor_png_la_SOURCES = \

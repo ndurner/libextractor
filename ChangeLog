@@ -1,3 +1,7 @@
+Sat Mar 26 16:23:56 CET 2016
+	Adding PDF support using pdfinfo.
+	Likely conflicts with Apparmor. -CG
+
 Mon Aug 31 19:19:17 CEST 2015
 	Adding apparmor support. -jmorvan/CG
 

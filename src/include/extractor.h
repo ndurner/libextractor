@@ -35,7 +35,7 @@ extern "C" {
  * 0.2.6-1 => 0x00020601
  * 4.5.2-0 => 0x04050200
  */
-#define EXTRACTOR_VERSION 0x01030001
+#define EXTRACTOR_VERSION 0x01030002
 
 #include <stdio.h>
 
@@ -383,7 +383,7 @@ enum EXTRACTOR_MetaType
     EXTRACTOR_METATYPE_AUDIO_DURATION = 226,
     EXTRACTOR_METATYPE_SUBTITLE_DURATION = 227,
 
-	EXTRACTOR_METATYPE_AUDIO_PREVIEW = 228,
+    EXTRACTOR_METATYPE_AUDIO_PREVIEW = 228,
 
     EXTRACTOR_METATYPE_LAST = 229
   };
@@ -443,13 +443,14 @@ EXTRACTOR_metatype_get_max (void);
  * @param data_len number of bytes in @a data
  * @return 0 to continue extracting, 1 to abort
  */
-typedef int (*EXTRACTOR_MetaDataProcessor) (void *cls,
-					    const char *plugin_name,
-					    enum EXTRACTOR_MetaType type,
-					    enum EXTRACTOR_MetaFormat format,
-					    const char *data_mime_type,
-					    const char *data,
-					    size_t data_len);
+typedef int
+(*EXTRACTOR_MetaDataProcessor) (void *cls,
+                                const char *plugin_name,
+                                enum EXTRACTOR_MetaType type,
+                                enum EXTRACTOR_MetaFormat format,
+                                const char *data_mime_type,
+                                const char *data,
+                                size_t data_len);
 
 
 /**
@@ -519,7 +520,8 @@ struct EXTRACTOR_ExtractContext
  *
  * @param ec extraction context provided to the plugin
  */
-typedef void (*EXTRACTOR_extract_method) (struct EXTRACTOR_ExtractContext *ec);
+typedef void
+(*EXTRACTOR_extract_method) (struct EXTRACTOR_ExtractContext *ec);
 
 
 /**
