@@ -59,6 +59,20 @@
 #include <ffmpeg/swscale.h>
 #endif
 
+#if USE_JPEG
+#ifdef PIX_FMT_YUVJ420P
+#define PIX_OUTPUT_FORMAT PIX_FMT_YUVJ420P
+#else
+#define PIX_OUTPUT_FORMAT AV_PIX_FMT_YUVJ420P
+#endif
+#else
+#ifdef PIX_FMT_RGB24
+#define PIX_OUTPUT_FORMAT PIX_FMT_RGB24
+#else
+#define PIX_OUTPUT_FORMAT AV_PIX_FMT_RGB24
+#endif
+#endif
+
 /**
  * Set to 1 to use JPEG, PNG otherwise
  */
@@ -164,7 +178,7 @@ seek_cb (void *opaque,
 static size_t
 create_thumbnail (AVCodecContext *pCodecCtx, int src_width, int src_height,
 		  int src_stride[],
-		  enum PixelFormat src_pixfmt,
+		  enum AVPixelFormat src_pixfmt,
 		  const uint8_t * const src_data[],
 		  int dst_width, int dst_height,
 		  uint8_t **output_data,
@@ -208,12 +222,8 @@ create_thumbnail (AVCodecContext *pCodecCtx, int src_width, int src_height,
       (scaler_ctx =
        sws_getContext (src_width, src_height, src_pixfmt,
 		       dst_width, dst_height,
-			   #if USE_JPEG
-			   PIX_FMT_YUVJ420P
-			   #else
-			   PIX_FMT_RGB24
-			   #endif
-			   ,SWS_BILINEAR, NULL, NULL, NULL)))
+                       PIX_OUTPUT_FORMAT,
+                       SWS_BILINEAR, NULL, NULL, NULL)))
     {
 #if DEBUG
       fprintf (stderr,
@@ -237,13 +247,8 @@ create_thumbnail (AVCodecContext *pCodecCtx, int src_width, int src_height,
       return 0;
     }
   if (NULL == (dst_buffer =
-	       av_malloc (avpicture_get_size (
-			   #if USE_JPEG
-			   PIX_FMT_YUVJ420P
-			   #else
-			   PIX_FMT_RGB24
-			   #endif
-			   ,dst_width, dst_height))))
+	       av_malloc (avpicture_get_size (PIX_OUTPUT_FORMAT,
+                                              dst_width, dst_height))))
     {
 #if DEBUG
       fprintf (stderr,
@@ -258,12 +263,8 @@ create_thumbnail (AVCodecContext *pCodecCtx, int src_width, int src_height,
       return 0;
     }
   avpicture_fill ((AVPicture *) dst_frame, dst_buffer,
-               #if USE_JPEG
-			   PIX_FMT_YUVJ420P
-			   #else
-			   PIX_FMT_RGB24
-			   #endif
-			   , dst_width, dst_height);
+                  PIX_OUTPUT_FORMAT,
+                  dst_width, dst_height);
   sws_scale (scaler_ctx,
              src_data,
              src_stride,
@@ -320,9 +321,9 @@ create_thumbnail (AVCodecContext *pCodecCtx, int src_width, int src_height,
 #endif
   encoder_codec_ctx->time_base.num = pCodecCtx->time_base.num;
   encoder_codec_ctx->time_base.den = pCodecCtx->time_base.den;
-  encoder_codec_ctx->pix_fmt = PIX_FMT_YUVJ420P;
+  encoder_codec_ctx->pix_fmt = PIX_OUTPUT_FORMAT;
 #else
-  encoder_codec_ctx->pix_fmt = PIX_FMT_RGB24;
+  encoder_codec_ctx->pix_fmt = PIX_OUTPUT_FORMAT;
 #endif
 
   opts = NULL;
@@ -347,8 +348,13 @@ create_thumbnail (AVCodecContext *pCodecCtx, int src_width, int src_height,
 
 
 #ifdef USE_JPEG
+#if FF_API_MPV_OPT
    encoder_codec_ctx->mb_lmin        = encoder_codec_ctx->lmin = encoder_codec_ctx->qmin * FF_QP2LAMBDA;
    encoder_codec_ctx->mb_lmax        = encoder_codec_ctx->lmax = encoder_codec_ctx->qmax * FF_QP2LAMBDA;
+#else
+   encoder_codec_ctx->mb_lmin = encoder_codec_ctx->qmin * FF_QP2LAMBDA;
+   encoder_codec_ctx->mb_lmax = encoder_codec_ctx->qmax * FF_QP2LAMBDA;
+#endif
    encoder_codec_ctx->flags          = CODEC_FLAG_QSCALE;
    encoder_codec_ctx->global_quality = encoder_codec_ctx->qmin * FF_QP2LAMBDA;
 
