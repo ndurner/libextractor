@@ -24,7 +24,10 @@
  */
 #include "platform.h"
 #include "extractor.h"
-#if WINDOWS
+#if WINDOWS || DARWIN
+#if DARWIN
+typedef int boolean;
+#endif
 #define HAVE_BOOLEAN
 #endif
 #include <jpeglib.h>
