@@ -507,7 +507,7 @@ get_installation_paths (EXTRACTOR_PathProcessor pp,
 
 
 /**
- * Closure for 'find_plugin_in_path'.
+ * Closure for #find_plugin_in_path().
  */
 struct SearchContext
 {
@@ -596,7 +596,7 @@ EXTRACTOR_find_plugin_ (const char *short_name)
 
 
 /**
- * Closure for 'load_plugins_from_dir'.
+ * Closure for #load_plugins_from_dir().
  */
 struct DefaultLoaderContext
 {
@@ -666,7 +666,7 @@ load_plugins_from_dir (void *cls,
  * Load the default set of plugins. The default can be changed
  * by setting the LIBEXTRACTOR_LIBRARIES environment variable.
  * If it is set to "env", then this function will return
- * EXTRACTOR_plugin_add_config (NULL, env, flags).  Otherwise,
+ * #EXTRACTOR_plugin_add_config(NULL, env, flags).  Otherwise,
  * it will load all of the installed plugins and return them.
  *
  * @param flags options for all of the plugins loaded

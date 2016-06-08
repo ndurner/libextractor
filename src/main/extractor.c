@@ -39,7 +39,7 @@
 
 
 /**
- * Closure for 'process_plugin_reply'
+ * Closure for #process_plugin_reply()
  */
 struct PluginReplyProcessor
 {
@@ -49,7 +49,7 @@ struct PluginReplyProcessor
   EXTRACTOR_MetaDataProcessor proc;
 
   /**
-   * Closure for 'proc'.
+   * Closure for @e proc.
    */
   void *proc_cls;
 
