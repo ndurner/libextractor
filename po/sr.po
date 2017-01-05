@@ -1,0 +1,1987 @@
+# Serbian translation of libextractor.
+# Copyright © 2017 Free Software Foundation, Inc.
+# This file is distributed under the same license as the libextractor package.
+# Мирослав Николић <miroslavnikolic@rocketmail.com>, 2017.
+msgid ""
+msgstr ""
+"Project-Id-Version: libextractor-1.0.0-pre1\n"
+"Report-Msgid-Bugs-To: libextractor@gnu.org\n"
+"POT-Creation-Date: 2012-09-04 20:36+0200\n"
+"PO-Revision-Date: 2017-01-05 06:41+0200\n"
+"Last-Translator: Мирослав Николић <miroslavnikolic@rocketmail.com>\n"
+"Language-Team: Serbian <(nothing)>\n"
+"Language: sr\n"
+"X-Bugs: Report translation errors to the Language-Team address.\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: src/main/extract.c:132
+#, c-format
+msgid ""
+"Usage: %s\n"
+"%s\n"
+"\n"
+msgstr ""
+"Употреба: %s\n"
+"%s\n"
+"\n"
+
+#: src/main/extract.c:135
+#, c-format
+msgid "Arguments mandatory for long options are also mandatory for short options.\n"
+msgstr "Аргументи обавезни за дуге опције су такође обавезни за кратке опције.\n"
+
+#: src/main/extract.c:217
+msgid "print output in bibtex format"
+msgstr "исписује излаз у бибтекс формату"
+
+#: src/main/extract.c:219
+msgid "produce grep-friendly output (all results on one line per file)"
+msgstr "даје грепу-пријатељски излаз (сви резултати у једном реду по датотеци)"
+
+#: src/main/extract.c:221
+msgid "print this help"
+msgstr "исписује ову помоћ"
+
+#: src/main/extract.c:223
+msgid "run plugins in-process (simplifies debugging)"
+msgstr "покреће прикључке у-процесу (поједностављује прочишћавање)"
+
+#: src/main/extract.c:225
+msgid "read data from file into memory and extract from memory"
+msgstr "чита податке из датотеке у меморију и извлачи из меморије"
+
+#: src/main/extract.c:227
+msgid "load an extractor plugin named LIBRARY"
+msgstr "учитава прикључак извлачивача под називом БИБЛОТЕКА"
+
+#: src/main/extract.c:229
+msgid "list all keyword types"
+msgstr "исписује све врсте кључних речи"
+
+#: src/main/extract.c:231
+msgid "do not use the default set of extractor plugins"
+msgstr "не користи основни скуп прикључака извлачивача"
+
+#: src/main/extract.c:233
+msgid "print only keywords of the given TYPE (use -L to get a list)"
+msgstr "исписује само кључне речи дате ВРСТЕ (користите „-L“ да добијете списак)"
+
+#: src/main/extract.c:235
+msgid "print the version number"
+msgstr "исписује број издања"
+
+#: src/main/extract.c:237
+msgid "be verbose"
+msgstr "даје опширнији испис"
+
+#: src/main/extract.c:239
+msgid "do not print keywords of the given TYPE"
+msgstr "не исписује кључне речи дате ВРСТЕ"
+
+#: src/main/extract.c:242
+msgid "extract [OPTIONS] [FILENAME]*"
+msgstr "extract [ОПЦИЈЕ] [ДАТОТЕКА]*"
+
+#: src/main/extract.c:243
+msgid "Extract metadata from files."
+msgstr "Извлачи метаподатке из датотеке."
+
+#: src/main/extract.c:284
+#, c-format
+msgid "Found by `%s' plugin:\n"
+msgstr "Нађено је прикључком „%s“:\n"
+
+#: src/main/extract.c:287 src/main/extract.c:368
+#: src/main/extractor_metatypes.c:145 src/main/extractor_print.c:82
+msgid "unknown"
+msgstr "непознато"
+
+#: src/main/extract.c:292
+#, c-format
+msgid "%s - (unknown, %u bytes)\n"
+msgstr "%s — (непознато, %u бајта)\n"
+
+#: src/main/extract.c:317
+#, c-format
+msgid "%s - (binary, %u bytes)\n"
+msgstr "%s — (извршна, %u бајта)\n"
+
+#: src/main/extract.c:658 src/main/extract.c:668
+#, c-format
+msgid "Illegal combination of options, cannot combine multiple styles of printing.\n"
+msgstr "Неисправна комбинација опција, не могу да комбинујем више стилова исписивања.\n"
+
+#: src/main/extract.c:698
+#, c-format
+msgid "You must specify an argument for the `%s' option (option ignored).\n"
+msgstr "Морате навести аргумент за опцију „%s“ (опција је занемарена).\n"
+
+#: src/main/extract.c:763
+#, c-format
+msgid "Use --help to get a list of options.\n"
+msgstr "Употребите „--help“ да добавите списак опција.\n"
+
+#: src/main/extract.c:801
+#, c-format
+msgid "%% BiBTeX file\n"
+msgstr "%% БиБТеКс датотека\n"
+
+#: src/main/extract.c:809
+#, c-format
+msgid "Keywords for file %s:\n"
+msgstr "Кључне речи за датотеку „%s“:\n"
+
+#: src/main/extractor.c:673
+#, c-format
+msgid "Initialization of plugin mechanism failed: %s!\n"
+msgstr "Покретање механизма прикључка није успело: %s!\n"
+
+#: src/main/extractor_metatypes.c:46
+msgid "reserved"
+msgstr "резервисано"
+
+#: src/main/extractor_metatypes.c:47
+msgid "reserved value, do not use"
+msgstr "резервисана вредност, немојте користити"
+
+#: src/main/extractor_metatypes.c:48
+msgid "mimetype"
+msgstr "миме_врста"
+
+#: src/main/extractor_metatypes.c:49
+msgid "mime type"
+msgstr "миме врста"
+
+#: src/main/extractor_metatypes.c:50
+msgid "embedded filename"
+msgstr "угнежђени назив датотеке"
+
+#: src/main/extractor_metatypes.c:51
+msgid "filename that was embedded (not necessarily the current filename)"
+msgstr "назив датотеке који је угнежђен (није неопходно текући назив датотеке)"
+
+#: src/main/extractor_metatypes.c:52
+msgid "comment"
+msgstr "напомена"
+
+#
+#: src/main/extractor_metatypes.c:53
+msgid "comment about the content"
+msgstr "напомена о садржају"
+
+#: src/main/extractor_metatypes.c:54
+msgid "title"
+msgstr "наслов"
+
+#: src/main/extractor_metatypes.c:55
+msgid "title of the work"
+msgstr "наслов посла"
+
+#: src/main/extractor_metatypes.c:57
+msgid "book title"
+msgstr "наслов књиге"
+
+#: src/main/extractor_metatypes.c:58
+msgid "title of the book containing the work"
+msgstr "наслов књиге која садржи посао"
+
+#: src/main/extractor_metatypes.c:59
+msgid "book edition"
+msgstr "издање књиге"
+
+#: src/main/extractor_metatypes.c:60
+msgid "edition of the book (or book containing the work)"
+msgstr "издање књиге (или књига која садржи посао)"
+
+#: src/main/extractor_metatypes.c:61
+msgid "book chapter"
+msgstr "поглавље књиге"
+
+#: src/main/extractor_metatypes.c:62
+msgid "chapter number"
+msgstr "број поглавља"
+
+#: src/main/extractor_metatypes.c:63
+msgid "journal name"
+msgstr "назив новина"
+
+#: src/main/extractor_metatypes.c:64
+msgid "journal or magazine the work was published in"
+msgstr "новине или магазин у коме је објављен посао"
+
+#: src/main/extractor_metatypes.c:65
+msgid "journal volume"
+msgstr "волумен новина"
+
+#: src/main/extractor_metatypes.c:66
+msgid "volume of a journal or multi-volume book"
+msgstr "волумен новина или књига у више волумена"
+
+#: src/main/extractor_metatypes.c:68
+msgid "journal number"
+msgstr "број новина"
+
+#: src/main/extractor_metatypes.c:69
+msgid "number of a journal, magazine or tech-report"
+msgstr "број новина, магазина или техничког извештаја"
+
+#: src/main/extractor_metatypes.c:70
+msgid "page count"
+msgstr "број страница"
+
+#: src/main/extractor_metatypes.c:71
+msgid "total number of pages of the work"
+msgstr "укупан број страница посла"
+
+#: src/main/extractor_metatypes.c:72
+msgid "page range"
+msgstr "опсег страница"
+
+#: src/main/extractor_metatypes.c:73
+msgid "page numbers of the publication in the respective journal or book"
+msgstr "бројеви страница издања у одговарајућим новинама или књизи"
+
+#: src/main/extractor_metatypes.c:74
+msgid "author name"
+msgstr "име аутора"
+
+#: src/main/extractor_metatypes.c:75
+msgid "name of the author(s)"
+msgstr "име(на) аутора"
+
+#: src/main/extractor_metatypes.c:76
+msgid "author email"
+msgstr "е-пошта аутора"
+
+#: src/main/extractor_metatypes.c:77
+msgid "e-mail of the author(s)"
+msgstr "е-пошта аутора"
+
+#: src/main/extractor_metatypes.c:79
+msgid "author institution"
+msgstr "организација аутора"
+
+#: src/main/extractor_metatypes.c:80
+msgid "institution the author worked for"
+msgstr "организација за коју је радио аутор"
+
+#: src/main/extractor_metatypes.c:81
+msgid "publisher"
+msgstr "издавач"
+
+#: src/main/extractor_metatypes.c:82
+msgid "name of the publisher"
+msgstr "назив издавача"
+
+#: src/main/extractor_metatypes.c:83
+msgid "publisher's address"
+msgstr "адреса издавача"
+
+#: src/main/extractor_metatypes.c:84
+msgid "Address of the publisher (often only the city)"
+msgstr "Адреса издавача (често само град)"
+
+#: src/main/extractor_metatypes.c:85
+msgid "publishing institution"
+msgstr "организација издаваштва"
+
+#: src/main/extractor_metatypes.c:86
+msgid "institution that was involved in the publishing, but not necessarily the publisher"
+msgstr "организација која се бавила издавањем, али није неопходно издавач"
+
+#: src/main/extractor_metatypes.c:87
+msgid "publication series"
+msgstr "серије издаваштва"
+
+#: src/main/extractor_metatypes.c:88
+msgid "series of books the book was published in"
+msgstr "серије књига у којима је издата књига"
+
+#: src/main/extractor_metatypes.c:90
+msgid "publication type"
+msgstr "врста издаваштва"
+
+#: src/main/extractor_metatypes.c:91
+msgid "type of the tech-report"
+msgstr "врста техно-извештаја"
+
+#: src/main/extractor_metatypes.c:92
+msgid "publication year"
+msgstr "година издавања"
+
+#: src/main/extractor_metatypes.c:93
+msgid "year of publication (or, if unpublished, the year of creation)"
+msgstr "година издавања (или, ако није издато, година стварања)"
+
+#: src/main/extractor_metatypes.c:94
+msgid "publication month"
+msgstr "месец издавања"
+
+#: src/main/extractor_metatypes.c:95
+msgid "month of publication (or, if unpublished, the month of creation)"
+msgstr "месец издавања (или, ако није издато, месец стварања)"
+
+#: src/main/extractor_metatypes.c:96
+msgid "publication day"
+msgstr "дан издавања"
+
+#: src/main/extractor_metatypes.c:97
+msgid "day of publication (or, if unpublished, the day of creation), relative to the given month"
+msgstr "дан издавања (или, ако није издато, дан стварања), који се односи на дати месец"
+
+#: src/main/extractor_metatypes.c:98
+msgid "publication date"
+msgstr "датум издавања"
+
+#: src/main/extractor_metatypes.c:99
+msgid "date of publication (or, if unpublished, the date of creation)"
+msgstr "датум издавања (или, ако није издато, датум стварања)"
+
+#: src/main/extractor_metatypes.c:101
+msgid "bibtex eprint"
+msgstr "е-штампа бибтекса"
+
+#: src/main/extractor_metatypes.c:102
+msgid "specification of an electronic publication"
+msgstr "одредба електронског издања"
+
+#: src/main/extractor_metatypes.c:103
+msgid "bibtex entry type"
+msgstr "врста уноса бибтекса"
+
+#: src/main/extractor_metatypes.c:104
+msgid "type of the publication for bibTeX bibliographies"
+msgstr "врста издања за бибТеКс библиографије"
+
+#: src/main/extractor_metatypes.c:105
+msgid "language"
+msgstr "језик"
+
+#: src/main/extractor_metatypes.c:106
+msgid "language the work uses"
+msgstr "језик који користи посао"
+
+#: src/main/extractor_metatypes.c:107
+msgid "creation time"
+msgstr "време стварања"
+
+#: src/main/extractor_metatypes.c:108
+msgid "time and date of creation"
+msgstr "време и датум стварања"
+
+#: src/main/extractor_metatypes.c:109
+msgid "URL"
+msgstr "УРЛ"
+
+#: src/main/extractor_metatypes.c:110
+msgid "universal resource location (where the work is made available)"
+msgstr "универзална ресурсна локација (на којој је посао доступан)"
+
+#: src/main/extractor_metatypes.c:112
+msgid "URI"
+msgstr "УРИ"
+
+#: src/main/extractor_metatypes.c:113
+msgid "universal resource identifier"
+msgstr "универзални ресурсни идентификатор"
+
+#: src/main/extractor_metatypes.c:114
+msgid "international standard recording code"
+msgstr "међународни стандардни код за снимање"
+
+#: src/main/extractor_metatypes.c:115
+msgid "ISRC number identifying the work"
+msgstr "ИСРЦ број који одређује посао"
+
+#: src/main/extractor_metatypes.c:116
+msgid "MD4"
+msgstr "МД4"
+
+#: src/main/extractor_metatypes.c:117
+msgid "MD4 hash"
+msgstr "МД4 хеш"
+
+#: src/main/extractor_metatypes.c:118
+msgid "MD5"
+msgstr "МД5"
+
+#: src/main/extractor_metatypes.c:119
+msgid "MD5 hash"
+msgstr "МД5 хеш"
+
+#: src/main/extractor_metatypes.c:120
+msgid "SHA-0"
+msgstr "ША-0"
+
+#: src/main/extractor_metatypes.c:121
+msgid "SHA-0 hash"
+msgstr "ША-0 хеш"
+
+#: src/main/extractor_metatypes.c:123
+msgid "SHA-1"
+msgstr "ША-1"
+
+#: src/main/extractor_metatypes.c:124
+msgid "SHA-1 hash"
+msgstr "ША-1 хеш"
+
+#: src/main/extractor_metatypes.c:125
+msgid "RipeMD160"
+msgstr "РипеМД160"
+
+#: src/main/extractor_metatypes.c:126
+msgid "RipeMD150 hash"
+msgstr "РипеМД150 хеш"
+
+#: src/main/extractor_metatypes.c:127 src/main/extractor_metatypes.c:128
+msgid "GPS latitude ref"
+msgstr "ГПС упута географске ширине"
+
+#: src/main/extractor_metatypes.c:129 src/main/extractor_metatypes.c:130
+msgid "GPS latitude"
+msgstr "ГПС географске ширине"
+
+#: src/main/extractor_metatypes.c:131 src/main/extractor_metatypes.c:132
+msgid "GPS longitude ref"
+msgstr "ГПС упута географске дужине"
+
+#: src/main/extractor_metatypes.c:134 src/main/extractor_metatypes.c:135
+msgid "GPS longitude"
+msgstr "ГПС географске дужине"
+
+#: src/main/extractor_metatypes.c:136
+msgid "city"
+msgstr "град"
+
+#: src/main/extractor_metatypes.c:137
+msgid "name of the city where the document originated"
+msgstr "назив града у коме је документ створен"
+
+#: src/main/extractor_metatypes.c:138
+msgid "sublocation"
+msgstr "подместо"
+
+#: src/main/extractor_metatypes.c:139
+msgid "more specific location of the geographic origin"
+msgstr "одређеније место географског порекла"
+
+#: src/main/extractor_metatypes.c:140
+msgid "country"
+msgstr "држава"
+
+#: src/main/extractor_metatypes.c:141
+msgid "name of the country where the document originated"
+msgstr "назив државе у којој је документ створен"
+
+#: src/main/extractor_metatypes.c:142
+msgid "country code"
+msgstr "код државе"
+
+#: src/main/extractor_metatypes.c:143
+msgid "ISO 2-letter country code for the country of origin"
+msgstr "2-словни ИСО код државе за државу порекла"
+
+#: src/main/extractor_metatypes.c:146
+msgid "specifics are not known"
+msgstr "одреднице нису познате"
+
+#: src/main/extractor_metatypes.c:147 src/main/extractor_metatypes.c:148
+msgid "description"
+msgstr "опис"
+
+#: src/main/extractor_metatypes.c:149
+msgid "copyright"
+msgstr "ауторска права"
+
+#: src/main/extractor_metatypes.c:150
+msgid "Name of the entity holding the copyright"
+msgstr "Назив ентитета које је носилац ауторских права"
+
+#: src/main/extractor_metatypes.c:151
+msgid "rights"
+msgstr "права"
+
+#: src/main/extractor_metatypes.c:152
+msgid "information about rights"
+msgstr "подаци о правима"
+
+#: src/main/extractor_metatypes.c:153 src/main/extractor_metatypes.c:154
+msgid "keywords"
+msgstr "кључне речи"
+
+#: src/main/extractor_metatypes.c:156 src/main/extractor_metatypes.c:157
+msgid "abstract"
+msgstr "резиме"
+
+#: src/main/extractor_metatypes.c:158 src/main/extractor_metatypes.c:159
+msgid "summary"
+msgstr "сажетак"
+
+#: src/main/extractor_metatypes.c:160
+msgid "subject"
+msgstr "тема"
+
+#: src/main/extractor_metatypes.c:161
+msgid "subject matter"
+msgstr "главни предмет"
+
+#: src/main/extractor_metatypes.c:162 src/main/extractor_metatypes.c:195
+msgid "creator"
+msgstr "стваралац"
+
+#: src/main/extractor_metatypes.c:163
+msgid "name of the person who created the document"
+msgstr "име особе која је створила документ"
+
+#: src/main/extractor_metatypes.c:164
+msgid "format"
+msgstr "формат"
+
+#: src/main/extractor_metatypes.c:165
+msgid "name of the document format"
+msgstr "назив формата документа"
+
+#: src/main/extractor_metatypes.c:167
+msgid "format version"
+msgstr "издање формата"
+
+#: src/main/extractor_metatypes.c:168
+msgid "version of the document format"
+msgstr "издање формата документа"
+
+#: src/main/extractor_metatypes.c:169
+msgid "created by software"
+msgstr "створено софтвером"
+
+#: src/main/extractor_metatypes.c:170
+msgid "name of the software that created the document"
+msgstr "назив софтвера који је створио документ"
+
+#: src/main/extractor_metatypes.c:171
+msgid "unknown date"
+msgstr "непознат датум"
+
+#: src/main/extractor_metatypes.c:172
+msgid "ambiguous date (could specify creation time, modification time or access time)"
+msgstr "нејасан датум (може навести време стварања, време измена или време приступа)"
+
+#: src/main/extractor_metatypes.c:173
+msgid "creation date"
+msgstr "датум стварања"
+
+#: src/main/extractor_metatypes.c:174
+msgid "date the document was created"
+msgstr "датум када је створен документ"
+
+#: src/main/extractor_metatypes.c:175
+msgid "modification date"
+msgstr "датум измене"
+
+#: src/main/extractor_metatypes.c:176
+msgid "date the document was modified"
+msgstr "датум када је измењен документ"
+
+#: src/main/extractor_metatypes.c:178
+msgid "last printed"
+msgstr "последње штампање"
+
+#: src/main/extractor_metatypes.c:179
+msgid "date the document was last printed"
+msgstr "датум када је последњи пут штампан документ"
+
+#: src/main/extractor_metatypes.c:180
+msgid "last saved by"
+msgstr "последњи га је сачувао"
+
+#: src/main/extractor_metatypes.c:181
+msgid "name of the user who saved the document last"
+msgstr "име корисника који је последњи сачувао документ"
+
+#: src/main/extractor_metatypes.c:182
+msgid "total editing time"
+msgstr "укупно време уређивања"
+
+#: src/main/extractor_metatypes.c:183
+msgid "time spent editing the document"
+msgstr "време које је утрошено за уређивање документа"
+
+#: src/main/extractor_metatypes.c:184
+msgid "editing cycles"
+msgstr "циклуси уређивања"
+
+#: src/main/extractor_metatypes.c:185
+msgid "number of editing cycles"
+msgstr "број циклуса уређивања"
+
+#: src/main/extractor_metatypes.c:186
+msgid "modified by software"
+msgstr "измењено софтвером"
+
+#: src/main/extractor_metatypes.c:187
+msgid "name of software making modifications"
+msgstr "назив софтвера којим су урађене измене"
+
+#: src/main/extractor_metatypes.c:189
+msgid "revision history"
+msgstr "историјат ревизије"
+
+#: src/main/extractor_metatypes.c:190
+msgid "information about the revision history"
+msgstr "подаци о историјату ревизије"
+
+#: src/main/extractor_metatypes.c:191
+msgid "embedded file size"
+msgstr "величина уграђене датотеке"
+
+#: src/main/extractor_metatypes.c:192
+msgid "size of the contents of the container as embedded in the file"
+msgstr "величина садржаја садржаоца као што је угнежђен у датотеци"
+
+#: src/main/extractor_metatypes.c:193
+msgid "file type"
+msgstr "врста датотеке"
+
+#: src/main/extractor_metatypes.c:194
+msgid "standard Macintosh Finder file type information"
+msgstr "стандардне информације врсте датотеке Мекинтош Налазача"
+
+#: src/main/extractor_metatypes.c:196
+msgid "standard Macintosh Finder file creator information"
+msgstr "стандардне информације стварања датотеке Мекинтош Налазача"
+
+#: src/main/extractor_metatypes.c:197
+msgid "package name"
+msgstr "назив пакета"
+
+#: src/main/extractor_metatypes.c:198
+msgid "unique identifier for the package"
+msgstr "јединствени одредник за пакет"
+
+#: src/main/extractor_metatypes.c:200
+msgid "package version"
+msgstr "издање пакета"
+
+#: src/main/extractor_metatypes.c:201
+msgid "version of the software and its package"
+msgstr "издање софтвера и његовог пакета"
+
+#: src/main/extractor_metatypes.c:202
+msgid "section"
+msgstr "одељак"
+
+#: src/main/extractor_metatypes.c:203
+msgid "category the software package belongs to"
+msgstr "категорија којој припада пакет софтвера"
+
+#: src/main/extractor_metatypes.c:204
+msgid "upload priority"
+msgstr "приоритет слања"
+
+#: src/main/extractor_metatypes.c:205
+msgid "priority for promoting the release to production"
+msgstr "приоритет за промовисање издања у производњу"
+
+#: src/main/extractor_metatypes.c:206
+msgid "dependencies"
+msgstr "зависности"
+
+#: src/main/extractor_metatypes.c:207
+msgid "packages this package depends upon"
+msgstr "пакети од којих зависи пакет"
+
+#: src/main/extractor_metatypes.c:208
+msgid "conflicting packages"
+msgstr "сукобљавајући пакети"
+
+#: src/main/extractor_metatypes.c:209
+msgid "packages that cannot be installed with this package"
+msgstr "пакети који не могу да буду инсталирани са овим пакетом"
+
+#: src/main/extractor_metatypes.c:211
+msgid "replaced packages"
+msgstr "замењени пакети"
+
+#: src/main/extractor_metatypes.c:212
+msgid "packages made obsolete by this package"
+msgstr "пакети су учињени застарелим овим пакетом"
+
+#: src/main/extractor_metatypes.c:213
+msgid "provides"
+msgstr "обезбеђује"
+
+#: src/main/extractor_metatypes.c:214
+msgid "functionality provided by this package"
+msgstr "функционалност обезбеђена овим пакетом"
+
+#: src/main/extractor_metatypes.c:215
+msgid "recommendations"
+msgstr "препоруке"
+
+#: src/main/extractor_metatypes.c:216
+msgid "packages recommended for installation in conjunction with this package"
+msgstr "пакети препоручени за инсталацију у садејству са овим пакетом"
+
+#: src/main/extractor_metatypes.c:217
+msgid "suggestions"
+msgstr "предлагања"
+
+#: src/main/extractor_metatypes.c:218
+msgid "packages suggested for installation in conjunction with this package"
+msgstr "пакети предложени за инсталацију у садејству са овим пакетом"
+
+#: src/main/extractor_metatypes.c:219
+msgid "maintainer"
+msgstr "одржавалац"
+
+#: src/main/extractor_metatypes.c:220
+msgid "name of the maintainer"
+msgstr "име одржаваоца"
+
+#: src/main/extractor_metatypes.c:222
+msgid "installed size"
+msgstr "величина инсталираног"
+
+#: src/main/extractor_metatypes.c:223
+msgid "space consumption after installation"
+msgstr "заузетост простора након инсталације"
+
+#: src/main/extractor_metatypes.c:224 src/main/extractor_metatypes.c:304
+msgid "source"
+msgstr "извор"
+
+#: src/main/extractor_metatypes.c:225
+msgid "original source code"
+msgstr "оригинални изворни код"
+
+#: src/main/extractor_metatypes.c:226
+msgid "is essential"
+msgstr "неопходан је"
+
+#: src/main/extractor_metatypes.c:227
+msgid "package is marked as essential"
+msgstr "пакет је означен као неопходан"
+
+#: src/main/extractor_metatypes.c:228
+msgid "target architecture"
+msgstr "циљна архитектура"
+
+#: src/main/extractor_metatypes.c:229
+msgid "hardware architecture the contents can be used for"
+msgstr "архитектура хардвера за коју се може користити садржаји"
+
+#: src/main/extractor_metatypes.c:230
+msgid "pre-dependency"
+msgstr "пред-зависности"
+
+#: src/main/extractor_metatypes.c:231
+msgid "dependency that must be satisfied before installation"
+msgstr "зависност која мора бити задовољена пре инсталације"
+
+#: src/main/extractor_metatypes.c:233
+msgid "license"
+msgstr "дозвола"
+
+#: src/main/extractor_metatypes.c:234
+msgid "applicable copyright license"
+msgstr "применљива дозвола ауторских права"
+
+#: src/main/extractor_metatypes.c:235
+msgid "distribution"
+msgstr "дистрибуција"
+
+#: src/main/extractor_metatypes.c:236
+msgid "distribution the package is a part of"
+msgstr "дистрибуција којој припада пакет"
+
+#: src/main/extractor_metatypes.c:237
+msgid "build host"
+msgstr "домаћин изградње"
+
+#: src/main/extractor_metatypes.c:238
+msgid "machine the package was build on"
+msgstr "рачунар на којој је изграђен пакет"
+
+#: src/main/extractor_metatypes.c:239
+msgid "vendor"
+msgstr "продавац"
+
+#: src/main/extractor_metatypes.c:240
+msgid "name of the software vendor"
+msgstr "назив продавца софтвера"
+
+#: src/main/extractor_metatypes.c:241
+msgid "target operating system"
+msgstr "циљни оперативни систем"
+
+#: src/main/extractor_metatypes.c:242
+msgid "operating system for which this package was made"
+msgstr "оперативни систем за који је направљен овај пакет"
+
+#: src/main/extractor_metatypes.c:244
+msgid "software version"
+msgstr "издање програма"
+
+#: src/main/extractor_metatypes.c:245
+msgid "version of the software contained in the file"
+msgstr "издање софтвера садржаног у датотеци"
+
+#: src/main/extractor_metatypes.c:246
+msgid "target platform"
+msgstr "циљна платформа"
+
+#: src/main/extractor_metatypes.c:247
+msgid "name of the architecture, operating system and distribution this package is for"
+msgstr "назив архитектуре, оперативног система и дистрибуција за које је овај пакет"
+
+#: src/main/extractor_metatypes.c:248
+msgid "resource type"
+msgstr "врста изворишта"
+
+#: src/main/extractor_metatypes.c:249
+msgid "categorization of the nature of the resource that is more specific than the file format"
+msgstr "категоризација природе изворишта која је специфичнија од формата датотеке"
+
+#: src/main/extractor_metatypes.c:250
+msgid "library search path"
+msgstr "путања претраге библиотеке"
+
+#: src/main/extractor_metatypes.c:251
+msgid "path in the file system to be considered when looking for required libraries"
+msgstr "путања у систему датотека коју треба размотрити када се траже потребне библиотеке"
+
+#: src/main/extractor_metatypes.c:252
+msgid "library dependency"
+msgstr "зависности библиотеке"
+
+#: src/main/extractor_metatypes.c:253
+msgid "name of a library that this file depends on"
+msgstr "назив библиотеке о којој зависи ова датотека"
+
+#: src/main/extractor_metatypes.c:255 src/main/extractor_metatypes.c:256
+msgid "camera make"
+msgstr "марка фото-апарата"
+
+#: src/main/extractor_metatypes.c:257 src/main/extractor_metatypes.c:258
+msgid "camera model"
+msgstr "модел фото-апарата"
+
+#: src/main/extractor_metatypes.c:259 src/main/extractor_metatypes.c:260
+msgid "exposure"
+msgstr "излагање"
+
+#: src/main/extractor_metatypes.c:261 src/main/extractor_metatypes.c:262
+msgid "aperture"
+msgstr "бленда"
+
+#: src/main/extractor_metatypes.c:263 src/main/extractor_metatypes.c:264
+msgid "exposure bias"
+msgstr "нагиб излагања"
+
+#: src/main/extractor_metatypes.c:266 src/main/extractor_metatypes.c:267
+msgid "flash"
+msgstr "блиц"
+
+#: src/main/extractor_metatypes.c:268 src/main/extractor_metatypes.c:269
+msgid "flash bias"
+msgstr "нагиб блица"
+
+#: src/main/extractor_metatypes.c:270 src/main/extractor_metatypes.c:271
+msgid "focal length"
+msgstr "жижна даљина"
+
+#: src/main/extractor_metatypes.c:272 src/main/extractor_metatypes.c:273
+msgid "focal length 35mm"
+msgstr "жижна даљина 35mm"
+
+#: src/main/extractor_metatypes.c:274 src/main/extractor_metatypes.c:275
+msgid "iso speed"
+msgstr "исо брзина"
+
+#: src/main/extractor_metatypes.c:277 src/main/extractor_metatypes.c:278
+msgid "exposure mode"
+msgstr "режим изложености"
+
+#: src/main/extractor_metatypes.c:279 src/main/extractor_metatypes.c:280
+msgid "metering mode"
+msgstr "режим мерења"
+
+#: src/main/extractor_metatypes.c:281 src/main/extractor_metatypes.c:282
+msgid "macro mode"
+msgstr "макро режим"
+
+#: src/main/extractor_metatypes.c:283 src/main/extractor_metatypes.c:284
+msgid "image quality"
+msgstr "квалитет слике"
+
+#: src/main/extractor_metatypes.c:285 src/main/extractor_metatypes.c:286
+msgid "white balance"
+msgstr "баланс белог"
+
+#: src/main/extractor_metatypes.c:288 src/main/extractor_metatypes.c:289
+msgid "orientation"
+msgstr "усмерење"
+
+#: src/main/extractor_metatypes.c:290 src/main/extractor_metatypes.c:291
+msgid "magnification"
+msgstr "увеличавање"
+
+#: src/main/extractor_metatypes.c:292
+msgid "image dimensions"
+msgstr "димензије слике"
+
+#: src/main/extractor_metatypes.c:293
+msgid "size of the image in pixels (width times height)"
+msgstr "величина слике у пикселима (ширина пута висина)"
+
+#: src/main/extractor_metatypes.c:294 src/main/extractor_metatypes.c:295
+msgid "produced by software"
+msgstr "произведено софтвером"
+
+#: src/main/extractor_metatypes.c:299
+msgid "thumbnail"
+msgstr "сличица"
+
+#: src/main/extractor_metatypes.c:300
+msgid "smaller version of the image for previewing"
+msgstr "мање издање слике за претпреглед"
+
+#: src/main/extractor_metatypes.c:302
+msgid "image resolution"
+msgstr "резолуција слике"
+
+#: src/main/extractor_metatypes.c:303
+msgid "resolution in dots per inch"
+msgstr "резолуција у тачкама по инчу"
+
+#: src/main/extractor_metatypes.c:305
+msgid "Originating entity"
+msgstr "Порекло ентитета"
+
+#: src/main/extractor_metatypes.c:306
+msgid "character set"
+msgstr "скуп знакова"
+
+#: src/main/extractor_metatypes.c:307
+msgid "character encoding used"
+msgstr "коришћено кодирање знакова"
+
+#: src/main/extractor_metatypes.c:308
+msgid "line count"
+msgstr "укупно редова"
+
+#: src/main/extractor_metatypes.c:309
+msgid "number of lines"
+msgstr "број редова"
+
+#: src/main/extractor_metatypes.c:310
+msgid "paragraph count"
+msgstr "укупно пасуса"
+
+#: src/main/extractor_metatypes.c:311
+msgid "number of paragraphs"
+msgstr "број пасуса"
+
+#: src/main/extractor_metatypes.c:313
+msgid "word count"
+msgstr "укупно речи"
+
+#: src/main/extractor_metatypes.c:314
+msgid "number of words"
+msgstr "број речи"
+
+#: src/main/extractor_metatypes.c:315
+msgid "character count"
+msgstr "укупно знакова"
+
+#: src/main/extractor_metatypes.c:316
+msgid "number of characters"
+msgstr "број знакова"
+
+#: src/main/extractor_metatypes.c:317 src/main/extractor_metatypes.c:318
+msgid "page orientation"
+msgstr "усмерење странице"
+
+#: src/main/extractor_metatypes.c:319 src/main/extractor_metatypes.c:320
+msgid "paper size"
+msgstr "величина папира"
+
+#: src/main/extractor_metatypes.c:321
+msgid "template"
+msgstr "шаблон"
+
+#: src/main/extractor_metatypes.c:322
+msgid "template the document uses or is based on"
+msgstr "шаблон који користи документ или на коме се заснива"
+
+#: src/main/extractor_metatypes.c:324 src/main/extractor_metatypes.c:325
+msgid "company"
+msgstr "предузеће"
+
+#: src/main/extractor_metatypes.c:326 src/main/extractor_metatypes.c:327
+msgid "manager"
+msgstr "управник"
+
+#: src/main/extractor_metatypes.c:328 src/main/extractor_metatypes.c:329
+msgid "revision number"
+msgstr "број ревизије"
+
+#: src/main/extractor_metatypes.c:330
+msgid "duration"
+msgstr "трајање"
+
+#: src/main/extractor_metatypes.c:331
+msgid "play time for the medium"
+msgstr "време пуштања за медијум"
+
+#: src/main/extractor_metatypes.c:332
+msgid "album"
+msgstr "албум"
+
+#: src/main/extractor_metatypes.c:333
+msgid "name of the album"
+msgstr "назив албума"
+
+#: src/main/extractor_metatypes.c:335
+msgid "artist"
+msgstr "уметник"
+
+#: src/main/extractor_metatypes.c:336
+msgid "name of the artist or band"
+msgstr "име уметника или групе"
+
+#: src/main/extractor_metatypes.c:337 src/main/extractor_metatypes.c:338
+msgid "genre"
+msgstr "жанр"
+
+#: src/main/extractor_metatypes.c:339
+msgid "track number"
+msgstr "број нумере"
+
+#: src/main/extractor_metatypes.c:340
+msgid "original number of the track on the distribution medium"
+msgstr "изворни број нумера на медијуму расподеле"
+
+#: src/main/extractor_metatypes.c:341
+msgid "disk number"
+msgstr "број диска"
+
+#: src/main/extractor_metatypes.c:342
+msgid "number of the disk in a multi-disk (or volume) distribution"
+msgstr "број диска у расподели са више дискова (или волумена)"
+
+#: src/main/extractor_metatypes.c:343
+msgid "performer"
+msgstr "извођач"
+
+#: src/main/extractor_metatypes.c:344
+msgid "The artist(s) who performed the work (conductor, orchestra, soloists, actor, etc.)"
+msgstr "Уметник који је обавио посао (диригент, оркестар, солисти, глумац, итд.)"
+
+#: src/main/extractor_metatypes.c:346
+msgid "contact"
+msgstr "контакт"
+
+#: src/main/extractor_metatypes.c:347
+msgid "Contact information for the creator or distributor"
+msgstr "Контактне информације за ствараоца или дитрибутера"
+
+#: src/main/extractor_metatypes.c:348
+msgid "song version"
+msgstr "издање песме"
+
+#: src/main/extractor_metatypes.c:349
+msgid "name of the version of the song (i.e. remix information)"
+msgstr "назив верзије песме (тј. информације о ремиксу)"
+
+#: src/main/extractor_metatypes.c:350
+msgid "picture"
+msgstr "слика"
+
+#: src/main/extractor_metatypes.c:351
+msgid "associated misc. picture"
+msgstr "придружена друга слика"
+
+#: src/main/extractor_metatypes.c:352
+msgid "cover picture"
+msgstr "слика омота"
+
+#: src/main/extractor_metatypes.c:353
+msgid "picture of the cover of the distribution medium"
+msgstr "слика омода медијума расподеле"
+
+#: src/main/extractor_metatypes.c:354
+msgid "contributor picture"
+msgstr "слика доприносиоца"
+
+#: src/main/extractor_metatypes.c:355
+msgid "picture of one of the contributors"
+msgstr "слика једног од доприносиоца"
+
+#: src/main/extractor_metatypes.c:357
+msgid "event picture"
+msgstr "слика догађаја"
+
+#: src/main/extractor_metatypes.c:358
+msgid "picture of an associated event"
+msgstr "слика придруженог догађаја"
+
+#: src/main/extractor_metatypes.c:359
+msgid "logo"
+msgstr "логотип"
+
+#: src/main/extractor_metatypes.c:360
+msgid "logo of an associated organization"
+msgstr "логотип придружене организације"
+
+#: src/main/extractor_metatypes.c:361
+msgid "broadcast television system"
+msgstr "систем телевизијског емитовања"
+
+#: src/main/extractor_metatypes.c:362
+msgid "name of the television system for which the data is coded"
+msgstr "назив телевизијског система за који су кодирани подаци"
+
+#: src/main/extractor_metatypes.c:363
+msgid "source device"
+msgstr "изворни уређај"
+
+#: src/main/extractor_metatypes.c:364
+msgid "device used to create the object"
+msgstr "уређај коришћен за стварање објекта"
+
+#: src/main/extractor_metatypes.c:365
+msgid "disclaimer"
+msgstr "одрицање"
+
+#: src/main/extractor_metatypes.c:366
+msgid "legal disclaimer"
+msgstr "правно одрицање"
+
+#: src/main/extractor_metatypes.c:368
+msgid "warning"
+msgstr "упозорење"
+
+#: src/main/extractor_metatypes.c:369
+msgid "warning about the nature of the content"
+msgstr "упозорење о природи садржаја"
+
+#: src/main/extractor_metatypes.c:370
+msgid "page order"
+msgstr "поредак странице"
+
+#: src/main/extractor_metatypes.c:371
+msgid "order of the pages"
+msgstr "поредак страница"
+
+#: src/main/extractor_metatypes.c:372
+msgid "writer"
+msgstr "писац"
+
+#: src/main/extractor_metatypes.c:373
+msgid "contributing writer"
+msgstr "писац доприносилац"
+
+#: src/main/extractor_metatypes.c:374 src/main/extractor_metatypes.c:375
+msgid "product version"
+msgstr "издање производа"
+
+#: src/main/extractor_metatypes.c:376
+msgid "contributor"
+msgstr "доприносилац"
+
+#: src/main/extractor_metatypes.c:377
+msgid "name of a contributor"
+msgstr "име доприносиоца"
+
+#: src/main/extractor_metatypes.c:379
+msgid "movie director"
+msgstr "режисер филма"
+
+#: src/main/extractor_metatypes.c:380
+msgid "name of the director"
+msgstr "име режисера"
+
+#: src/main/extractor_metatypes.c:381
+msgid "network"
+msgstr "мрежа"
+
+#: src/main/extractor_metatypes.c:382
+msgid "name of the broadcasting network or station"
+msgstr "назив емисионе мреже или станице"
+
+#: src/main/extractor_metatypes.c:383
+msgid "show"
+msgstr "шоу"
+
+#: src/main/extractor_metatypes.c:384
+msgid "name of the show"
+msgstr "назив шоа"
+
+#: src/main/extractor_metatypes.c:385
+msgid "chapter name"
+msgstr "назив поглавља"
+
+#: src/main/extractor_metatypes.c:386
+msgid "name of the chapter"
+msgstr "назив поглавља"
+
+#: src/main/extractor_metatypes.c:387
+msgid "song count"
+msgstr "укупно песама"
+
+#: src/main/extractor_metatypes.c:388
+msgid "number of songs"
+msgstr "број песама"
+
+#: src/main/extractor_metatypes.c:390
+msgid "starting song"
+msgstr "почетна песма"
+
+#: src/main/extractor_metatypes.c:391
+msgid "number of the first song to play"
+msgstr "број прве песме за пуштање"
+
+#: src/main/extractor_metatypes.c:392
+msgid "play counter"
+msgstr "бројач пуштања"
+
+#: src/main/extractor_metatypes.c:393
+msgid "number of times the media has been played"
+msgstr "колико је пута пуштан медиј"
+
+#: src/main/extractor_metatypes.c:394
+msgid "conductor"
+msgstr "диригент"
+
+#: src/main/extractor_metatypes.c:395
+msgid "name of the conductor"
+msgstr "име диригента"
+
+#: src/main/extractor_metatypes.c:396
+msgid "interpretation"
+msgstr "изведба"
+
+#: src/main/extractor_metatypes.c:397
+msgid "information about the people behind interpretations of an existing piece"
+msgstr "информације о људима који стоје иза извођења постојећег комада"
+
+#: src/main/extractor_metatypes.c:398
+msgid "composer"
+msgstr "композитор"
+
+#: src/main/extractor_metatypes.c:399
+msgid "name of the composer"
+msgstr "име композитора"
+
+#: src/main/extractor_metatypes.c:401 src/main/extractor_metatypes.c:402
+msgid "beats per minute"
+msgstr "тактова у минуту"
+
+#: src/main/extractor_metatypes.c:403
+msgid "encoded by"
+msgstr "кодирао"
+
+#: src/main/extractor_metatypes.c:404
+msgid "name of person or organization that encoded the file"
+msgstr "име особе или назив организације која је кодирала датотеку"
+
+#: src/main/extractor_metatypes.c:405
+msgid "original title"
+msgstr "оригинални наслов"
+
+#: src/main/extractor_metatypes.c:406
+msgid "title of the original work"
+msgstr "наслов оригиналног посла"
+
+#: src/main/extractor_metatypes.c:407
+msgid "original artist"
+msgstr "оригинални уметник"
+
+#: src/main/extractor_metatypes.c:408
+msgid "name of the original artist"
+msgstr "име оригиналног уметника"
+
+#: src/main/extractor_metatypes.c:409
+msgid "original writer"
+msgstr "оригинални писац"
+
+#: src/main/extractor_metatypes.c:410
+msgid "name of the original lyricist or writer"
+msgstr "име оригиналног стихоклепца или писца"
+
+#: src/main/extractor_metatypes.c:412
+msgid "original release year"
+msgstr "оригинална година издавања"
+
+#: src/main/extractor_metatypes.c:413
+msgid "year of the original release"
+msgstr "година оригиналног издања"
+
+#: src/main/extractor_metatypes.c:414
+msgid "original performer"
+msgstr "оригинални уметник"
+
+#: src/main/extractor_metatypes.c:415
+msgid "name of the original performer"
+msgstr "име оригиналног извођача"
+
+#: src/main/extractor_metatypes.c:416
+msgid "lyrics"
+msgstr "стихови"
+
+#: src/main/extractor_metatypes.c:417
+msgid "lyrics of the song or text description of vocal activities"
+msgstr "стихови песме или опис текста вокалних активности"
+
+#: src/main/extractor_metatypes.c:418
+msgid "popularity"
+msgstr "популарност"
+
+#: src/main/extractor_metatypes.c:419
+msgid "information about the file's popularity"
+msgstr "подаци о популарности датотеке"
+
+#: src/main/extractor_metatypes.c:420
+msgid "licensee"
+msgstr "дозволе"
+
+#: src/main/extractor_metatypes.c:421
+msgid "name of the owner or licensee of the file"
+msgstr "име власника илидозвола датотеке"
+
+#: src/main/extractor_metatypes.c:423
+msgid "musician credit list"
+msgstr "списак заслуга музичара"
+
+#: src/main/extractor_metatypes.c:424
+msgid "names of contributing musicians"
+msgstr "имена музичара сарадника"
+
+#: src/main/extractor_metatypes.c:425
+msgid "mood"
+msgstr "тоналитет"
+
+#: src/main/extractor_metatypes.c:426
+msgid "keywords reflecting the mood of the piece"
+msgstr "кључне речи које одражавају тоналитет комада"
+
+#: src/main/extractor_metatypes.c:427
+msgid "subtitle"
+msgstr "поднаслов"
+
+#: src/main/extractor_metatypes.c:428
+msgid "subtitle of this part"
+msgstr "поднаслов овог дела"
+
+#: src/main/extractor_metatypes.c:429
+msgid "display type"
+msgstr "врста приказа"
+
+#: src/main/extractor_metatypes.c:430
+msgid "what rendering method should be used to display this item"
+msgstr "који метод исцртавања треба да се користи за приказивање ове ставке"
+
+#: src/main/extractor_metatypes.c:431
+msgid "full data"
+msgstr "читави подаци"
+
+#: src/main/extractor_metatypes.c:432
+msgid "entry that contains the full, original binary data (not really meta data)"
+msgstr "унос који садржи потпуне, оригиналне бинарне податке (не баш мета податке)"
+
+#: src/main/extractor_metatypes.c:434
+msgid "rating"
+msgstr "оцена"
+
+#: src/main/extractor_metatypes.c:435
+msgid "rating of the content"
+msgstr "оцена садржаја"
+
+#: src/main/extractor_metatypes.c:436 src/main/extractor_metatypes.c:437
+msgid "organization"
+msgstr "организација"
+
+#: src/main/extractor_metatypes.c:438 src/main/extractor_metatypes.c:439
+msgid "ripper"
+msgstr "извлачивач"
+
+#: src/main/extractor_metatypes.c:440 src/main/extractor_metatypes.c:441
+msgid "producer"
+msgstr "продуцент"
+
+#: src/main/extractor_metatypes.c:442
+msgid "group"
+msgstr "група"
+
+#: src/main/extractor_metatypes.c:443
+msgid "name of the group or band"
+msgstr "име групе или бенда"
+
+#: src/main/extractor_metatypes.c:445
+msgid "original filename"
+msgstr "оригинални назив датотеке"
+
+#: src/main/extractor_metatypes.c:446
+msgid "name of the original file (reserved for GNUnet)"
+msgstr "назив оригиналне датотеке (резервисано за ГНУнет)"
+
+#: src/main/extractor_metatypes.c:447
+msgid "disc count"
+msgstr "укупно дискова"
+
+#: src/main/extractor_metatypes.c:448
+msgid "count of discs inside collection this disc belongs to"
+msgstr "укупно дискова у збирци којој припада овај диск"
+
+#: src/main/extractor_metatypes.c:449
+msgid "codec"
+msgstr "кодек"
+
+#: src/main/extractor_metatypes.c:450
+msgid "codec the data is stored in"
+msgstr "кодек у коме су подаци сачувани"
+
+#: src/main/extractor_metatypes.c:451
+msgid "video codec"
+msgstr "видео кодек"
+
+#: src/main/extractor_metatypes.c:452
+msgid "codec the video data is stored in"
+msgstr "кодек у коме су видео подаци сачувани"
+
+#: src/main/extractor_metatypes.c:453
+msgid "audio codec"
+msgstr "звучни кодек"
+
+#: src/main/extractor_metatypes.c:454
+msgid "codec the audio data is stored in"
+msgstr "кодек у коме су звучни подаци сачувани"
+
+#: src/main/extractor_metatypes.c:456
+msgid "subtitle codec"
+msgstr "кодек превода"
+
+#: src/main/extractor_metatypes.c:457
+msgid "codec/format the subtitle data is stored in"
+msgstr "кодек/формат у коме су подаци превода сачувани"
+
+#: src/main/extractor_metatypes.c:458
+msgid "container format"
+msgstr "облик садржаоца"
+
+#: src/main/extractor_metatypes.c:459
+msgid "container format the data is stored in"
+msgstr "облик садржаоца у коме су подаци сачувани"
+
+#: src/main/extractor_metatypes.c:460
+msgid "bitrate"
+msgstr "проток битова"
+
+#: src/main/extractor_metatypes.c:461
+msgid "exact or average bitrate in bits/s"
+msgstr "тачна или просечна брзина битова у битовима по секунди"
+
+#: src/main/extractor_metatypes.c:462
+msgid "nominal bitrate"
+msgstr "наведена брзина битова"
+
+#: src/main/extractor_metatypes.c:463
+msgid "nominal bitrate in bits/s. The actual bitrate might be different from this target bitrate."
+msgstr "номинална проток бита у битима/сек. Стварни проток бита може да се разликује од овог циљног протока бита."
+
+#: src/main/extractor_metatypes.c:464
+msgid "minimum bitrate"
+msgstr "најмања брзина битова"
+
+#: src/main/extractor_metatypes.c:465
+msgid "minimum bitrate in bits/s"
+msgstr "најмања брзина битова у битовима по секунди"
+
+#: src/main/extractor_metatypes.c:467
+msgid "maximum bitrate"
+msgstr "највећа брзина битова"
+
+#: src/main/extractor_metatypes.c:468
+msgid "maximum bitrate in bits/s"
+msgstr "највећа брзина битова у битовима по секунди"
+
+#: src/main/extractor_metatypes.c:469
+msgid "serial"
+msgstr "серија"
+
+#: src/main/extractor_metatypes.c:470
+msgid "serial number of track"
+msgstr "серијски број нумере"
+
+#: src/main/extractor_metatypes.c:471
+msgid "encoder"
+msgstr "кодер"
+
+#: src/main/extractor_metatypes.c:472
+msgid "encoder used to encode this stream"
+msgstr "кодер коришћен за кодирање овог тока"
+
+#: src/main/extractor_metatypes.c:473
+msgid "encoder version"
+msgstr "издање кодера"
+
+#: src/main/extractor_metatypes.c:474
+msgid "version of the encoder used to encode this stream"
+msgstr "издање кодера коришћеног за кодирање овог тока"
+
+#: src/main/extractor_metatypes.c:475
+msgid "track gain"
+msgstr "појачање песме"
+
+#: src/main/extractor_metatypes.c:476
+msgid "track gain in db"
+msgstr "појачање песме у децибелима"
+
+#: src/main/extractor_metatypes.c:478
+msgid "track peak"
+msgstr "врхунац нумере"
+
+#: src/main/extractor_metatypes.c:479
+msgid "peak of the track"
+msgstr "врхунац нумере"
+
+#: src/main/extractor_metatypes.c:480
+msgid "album gain"
+msgstr "појачање албума"
+
+#: src/main/extractor_metatypes.c:481
+msgid "album gain in db"
+msgstr "појачање албума у децибелима"
+
+#: src/main/extractor_metatypes.c:482
+msgid "album peak"
+msgstr "врхунац албума"
+
+#: src/main/extractor_metatypes.c:483
+msgid "peak of the album"
+msgstr "врхунац албума"
+
+#: src/main/extractor_metatypes.c:484
+msgid "reference level"
+msgstr "ниво упуте"
+
+#: src/main/extractor_metatypes.c:485
+msgid "reference level of track and album gain values"
+msgstr "подсетни ниво вредности појачања нумере и албума"
+
+#: src/main/extractor_metatypes.c:486
+msgid "location name"
+msgstr "назив места"
+
+#: src/main/extractor_metatypes.c:487
+msgid "human readable descriptive location of where the media has been recorded or produced"
+msgstr "људима читљиво описно место где је медиј снимљен или произведен"
+
+#: src/main/extractor_metatypes.c:489
+msgid "location elevation"
+msgstr "надморска висина места"
+
+#: src/main/extractor_metatypes.c:490
+msgid "geo elevation of where the media has been recorded or produced in meters according to WGS84 (zero is average sea level)"
+msgstr "надморска висина места у коме је медиј снимљен или произведен у метрима према стандарду „WGS84“ (нула је просечни ниво мора)"
+
+#: src/main/extractor_metatypes.c:491
+msgid "location horizontal error"
+msgstr "водоравна грешка гео положаја"
+
+#: src/main/extractor_metatypes.c:492
+msgid "represents the expected error on the horizontal positioning in meters"
+msgstr "представља очекивану грешку водоравног позиционирања у метрима"
+
+#: src/main/extractor_metatypes.c:493
+msgid "location movement speed"
+msgstr "брзина кретања гео положаја"
+
+#: src/main/extractor_metatypes.c:494
+msgid "speed of the capturing device when performing the capture. Represented in m/s"
+msgstr "брзина кретања уређаја за снимање приликом извршавања снимања. У метрима у секунди"
+
+#: src/main/extractor_metatypes.c:495
+msgid "location movement direction"
+msgstr "усмерење кретања гео положаја"
+
+#: src/main/extractor_metatypes.c:496
+msgid "indicates the movement direction of the device performing the capture of a media. It is represented as degrees in floating point representation, 0 means the geographic north, and increases clockwise"
+msgstr "означава усмерење померања уређаја који обавља снимање медија. Представља се у степенима са покретним зарезом, 0 значи северни пол, и повећава се у смеру казаљке на сату"
+
+#: src/main/extractor_metatypes.c:497
+msgid "location capture direction"
+msgstr "усмерење снимања гео положаја"
+
+#: src/main/extractor_metatypes.c:498
+msgid "indicates the direction the device is pointing to when capturing a media. It is represented as degrees in floating point representation, 0 means the geographic north, and increases clockwise"
+msgstr "означава усмерење на које уређај указује приликом снимања медија. Представља се у степенима са покретним зарезом, 0 значи северни пол, и повећава се у смеру казаљке на сату"
+
+#: src/main/extractor_metatypes.c:500
+msgid "show episode number"
+msgstr "приказује број епизоде"
+
+#: src/main/extractor_metatypes.c:501
+msgid "number of the episode within a season/show"
+msgstr "број епизоде у сезони/програму"
+
+#: src/main/extractor_metatypes.c:502
+msgid "show season number"
+msgstr "приказује број сезоне"
+
+#: src/main/extractor_metatypes.c:503
+msgid "number of the season of a show/series"
+msgstr "број сезоне програма/серије"
+
+#: src/main/extractor_metatypes.c:504
+msgid "gourping"
+msgstr "груписање"
+
+#: src/main/extractor_metatypes.c:505
+msgid "groups together media that are related and spans multiple tracks. An example are multiple pieces of a concerto"
+msgstr "групише заједно медије који су повезани и обухватају више нумера. Пример је више комада једног концерта"
+
+#: src/main/extractor_metatypes.c:506
+msgid "device manufacturer"
+msgstr "произвођач уређаја"
+
+#: src/main/extractor_metatypes.c:507
+msgid "manufacturer of the device used to create the media"
+msgstr "произвођач уређаја коришћеног за стварање овог медија"
+
+#: src/main/extractor_metatypes.c:508
+msgid "device model"
+msgstr "модел уређаја"
+
+#: src/main/extractor_metatypes.c:509
+msgid "model of the device used to create the media"
+msgstr "модел уређаја коришћеног за стварање овог медија"
+
+#: src/main/extractor_metatypes.c:511
+msgid "audio language"
+msgstr "језик звука"
+
+#: src/main/extractor_metatypes.c:512
+msgid "language of the audio track"
+msgstr "језик звучне нумере"
+
+#: src/main/extractor_metatypes.c:513
+msgid "channels"
+msgstr "канали"
+
+#: src/main/extractor_metatypes.c:514
+msgid "number of audio channels"
+msgstr "број звучних канала"
+
+#: src/main/extractor_metatypes.c:515
+msgid "sample rate"
+msgstr "проток узорака"
+
+#: src/main/extractor_metatypes.c:516
+msgid "sample rate of the audio track"
+msgstr "проток узорака звучне нумере"
+
+#: src/main/extractor_metatypes.c:517
+msgid "audio depth"
+msgstr "дубина звука"
+
+#: src/main/extractor_metatypes.c:518
+msgid "number of bits per audio sample"
+msgstr "број тактова по узорку звука"
+
+#: src/main/extractor_metatypes.c:519
+msgid "audio bitrate"
+msgstr "битски проток звука"
+
+#: src/main/extractor_metatypes.c:520
+msgid "bitrate of the audio track"
+msgstr "проток битова звучне нумере"
+
+#: src/main/extractor_metatypes.c:522 src/main/extractor_metatypes.c:523
+msgid "maximum audio bitrate"
+msgstr "највећа проток битова звука"
+
+#: src/main/extractor_metatypes.c:524
+msgid "video dimensions"
+msgstr "димензије снимка"
+
+#: src/main/extractor_metatypes.c:525
+msgid "width and height of the video track (WxH)"
+msgstr "висина и ширина стазе снимка (ШхВ)"
+
+#: src/main/extractor_metatypes.c:526
+msgid "video depth"
+msgstr "дубина снимка"
+
+#: src/main/extractor_metatypes.c:527
+msgid "numbers of bits per pixel"
+msgstr "број битова по пикселу"
+
+#: src/main/extractor_metatypes.c:528
+msgid "frame rate"
+msgstr "проток кадрова"
+
+#: src/main/extractor_metatypes.c:529
+msgid "number of frames per second (as D/N or floating point)"
+msgstr "број кадрова у секунди (као Д/Н или покретни зарез)"
+
+#: src/main/extractor_metatypes.c:530
+msgid "pixel aspect ratio"
+msgstr "однос сразмере пиксела"
+
+#: src/main/extractor_metatypes.c:531
+msgid "pixel aspect ratio (as D/N)"
+msgstr "однос сразмере пиксела (као Д/Н)"
+
+#: src/main/extractor_metatypes.c:533 src/main/extractor_metatypes.c:534
+msgid "video bitrate"
+msgstr "битски проток снимка"
+
+#: src/main/extractor_metatypes.c:535 src/main/extractor_metatypes.c:536
+msgid "maximum video bitrate"
+msgstr "највећа проток битова снимка"
+
+#: src/main/extractor_metatypes.c:537
+msgid "subtitle language"
+msgstr "језик превода"
+
+#: src/main/extractor_metatypes.c:538
+msgid "language of the subtitle track"
+msgstr "језик нумере превода"
+
+#: src/main/extractor_metatypes.c:539
+msgid "video language"
+msgstr "језик снимка"
+
+#: src/main/extractor_metatypes.c:540
+msgid "language of the video track"
+msgstr "језик нумере снимка"
+
+#: src/main/extractor_metatypes.c:541
+msgid "table of contents"
+msgstr "табела садржаја"
+
+#: src/main/extractor_metatypes.c:542
+msgid "chapters, contents or bookmarks (in xml format)"
+msgstr "поглавља, садржај или обележивачи (у иксмл формату)"
+
+#: src/main/extractor_metatypes.c:544
+msgid "video duration"
+msgstr "трајање снимка"
+
+#: src/main/extractor_metatypes.c:545
+msgid "duration of a video stream"
+msgstr "трајање тока снимка"
+
+#: src/main/extractor_metatypes.c:546
+msgid "audio duration"
+msgstr "трајање звука"
+
+#: src/main/extractor_metatypes.c:547
+msgid "duration of an audio stream"
+msgstr "трајање тока звука"
+
+#: src/main/extractor_metatypes.c:548
+msgid "subtitle duration"
+msgstr "трајање превода"
+
+#: src/main/extractor_metatypes.c:549
+msgid "duration of a subtitle stream"
+msgstr "трајање тока превода"
+
+#: src/main/extractor_metatypes.c:551 src/main/extractor_metatypes.c:552
+msgid "last"
+msgstr "последње"
+
+#: src/main/getopt.c:684
+#, c-format
+msgid "%s: option `%s' is ambiguous\n"
+msgstr "%s: опција „%s“ је нејасна\n"
+
+#: src/main/getopt.c:709
+#, c-format
+msgid "%s: option `--%s' doesn't allow an argument\n"
+msgstr "%s: опција „--%s“ не дозвољава аргумент\n"
+
+#: src/main/getopt.c:715
+#, c-format
+msgid "%s: option `%c%s' doesn't allow an argument\n"
+msgstr "%s: опција „%c%s“ не дозвољава аргумент\n"
+
+#: src/main/getopt.c:732 src/main/getopt.c:903
+#, c-format
+msgid "%s: option `%s' requires an argument\n"
+msgstr "%s: опција „%s“ захтева аргумент\n"
+
+#: src/main/getopt.c:761
+#, c-format
+msgid "%s: unrecognized option `--%s'\n"
+msgstr "%s: непозната опција „--%s“\n"
+
+#: src/main/getopt.c:765
+#, c-format
+msgid "%s: unrecognized option `%c%s'\n"
+msgstr "%s: непозната опција „%c%s“\n"
+
+#: src/main/getopt.c:791
+#, c-format
+msgid "%s: illegal option -- %c\n"
+msgstr "%s: неисправна опција -- %c\n"
+
+#: src/main/getopt.c:793
+#, c-format
+msgid "%s: invalid option -- %c\n"
+msgstr "%s: неисправна опција -- %c\n"
+
+#: src/main/getopt.c:822 src/main/getopt.c:952
+#, c-format
+msgid "%s: option requires an argument -- %c\n"
+msgstr "%s: опција захтева аргумент -- %c\n"
+
+#: src/main/getopt.c:870
+#, c-format
+msgid "%s: option `-W %s' is ambiguous\n"
+msgstr "%s: опција „-W %s“ је нејасна\n"
+
+#: src/main/getopt.c:888
+#, c-format
+msgid "%s: option `-W %s' doesn't allow an argument\n"
+msgstr "%s: опција „-W %s“ не дозвољава аргумент\n"
+
+#: src/plugins/flac_extractor.c:314
+#, c-format
+msgid "%u Hz, %u channels"
+msgstr "%u Hz, %u канала"
+
+#: src/plugins/man_extractor.c:215
+msgid "Commands"
+msgstr "Наредбе"
+
+#: src/plugins/man_extractor.c:219
+msgid "System calls"
+msgstr "Позиви система"
+
+#: src/plugins/man_extractor.c:223
+msgid "Library calls"
+msgstr "Позиви библиотеке"
+
+#: src/plugins/man_extractor.c:227
+msgid "Special files"
+msgstr "Посебне датотеке"
+
+#: src/plugins/man_extractor.c:231
+msgid "File formats and conventions"
+msgstr "Формати датотеке и договори"
+
+#: src/plugins/man_extractor.c:235
+msgid "Games"
+msgstr "Игре"
+
+#: src/plugins/man_extractor.c:239
+msgid "Conventions and miscellaneous"
+msgstr "Договори и разно"
+
+#: src/plugins/man_extractor.c:243
+msgid "System management commands"
+msgstr "Наредбе управљања системом"
+
+#: src/plugins/man_extractor.c:247
+msgid "Kernel routines"
+msgstr "Рутине кернела"
+
+#: src/plugins/ole2_extractor.c:387
+msgid "No Proofing"
+msgstr "Без доказивања"
+
+#: src/plugins/ole2_extractor.c:395
+msgid "Traditional Chinese"
+msgstr "Традиционални кинески"
+
+#: src/plugins/ole2_extractor.c:397
+msgid "Simplified Chinese"
+msgstr "Поједностављени кинески"
+
+#: src/plugins/ole2_extractor.c:405
+msgid "Swiss German"
+msgstr "Швајцарски немачки"
+
+#: src/plugins/ole2_extractor.c:409
+msgid "U.S. English"
+msgstr "Амерички енглески"
+
+#: src/plugins/ole2_extractor.c:411
+msgid "U.K. English"
+msgstr "Британски енглески"
+
+#: src/plugins/ole2_extractor.c:413
+msgid "Australian English"
+msgstr "Аустралијски енглески"
+
+#: src/plugins/ole2_extractor.c:415
+msgid "Castilian Spanish"
+msgstr "Кастиљски шпамски"
+
+#: src/plugins/ole2_extractor.c:417
+msgid "Mexican Spanish"
+msgstr "Мексички шпански"
+
+#: src/plugins/ole2_extractor.c:423
+msgid "Belgian French"
+msgstr "Белгијски француски"
+
+#: src/plugins/ole2_extractor.c:425
+msgid "Canadian French"
+msgstr "Канадски француски"
+
+#: src/plugins/ole2_extractor.c:427
+msgid "Swiss French"
+msgstr "Швајцарски француски"
+
+#: src/plugins/ole2_extractor.c:437
+msgid "Swiss Italian"
+msgstr "Швајцарски италијански"
+
+#: src/plugins/ole2_extractor.c:445
+msgid "Belgian Dutch"
+msgstr "Белгијски холандски"
+
+#: src/plugins/ole2_extractor.c:447
+msgid "Norwegian Bokmal"
+msgstr "Норвешки букмал"
+
+#: src/plugins/ole2_extractor.c:457
+msgid "Rhaeto-Romanic"
+msgstr "Реторомански"
+
+#: src/plugins/ole2_extractor.c:463
+msgid "Croato-Serbian (Latin)"
+msgstr "Хрватски (латиница)"
+
+#: src/plugins/ole2_extractor.c:465
+msgid "Serbo-Croatian (Cyrillic)"
+msgstr "Српски (ћирилица)"
+
+#: src/plugins/ole2_extractor.c:493
+msgid "Farsi"
+msgstr "Фарси"
+
+#: src/plugins/ole2_extractor.c:578
+#, c-format
+msgid "Revision #%u: Author `%s' worked on `%s'"
+msgstr "Ревизија #%u: Аутор „%s“ је радио „%s“"
+
+#: src/plugins/riff_extractor.c:145
+#, c-format
+msgid "codec: %s, %u fps, %u ms"
+msgstr "кодек: %s, %u к/с, %u ms"
+
+#: src/plugins/wav_extractor.c:120
+msgid "mono"
+msgstr "моно"
+
+#: src/plugins/wav_extractor.c:120
+msgid "stereo"
+msgstr "стерео"
