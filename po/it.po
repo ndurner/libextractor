@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor-0.6.0\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2013-12-22 23:11+0100\n"
+"POT-Creation-Date: 2017-06-10 14:17+0200\n"
 "PO-Revision-Date: 2010-09-30 23:41+0200\n"
 "Last-Translator: Sergio Zanchetta <primes2h@ubuntu.com>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
@@ -1956,83 +1956,83 @@ msgstr ""
 msgid "Kernel routines"
 msgstr "Routine del kernel"
 
-#: src/plugins/ole2_extractor.c:387
+#: src/plugins/ole2_extractor.c:397
 msgid "No Proofing"
 msgstr ""
 
-#: src/plugins/ole2_extractor.c:395
+#: src/plugins/ole2_extractor.c:405
 msgid "Traditional Chinese"
 msgstr "Cinese tradizionale"
 
-#: src/plugins/ole2_extractor.c:397
+#: src/plugins/ole2_extractor.c:407
 msgid "Simplified Chinese"
 msgstr "Cinese semplificato"
 
-#: src/plugins/ole2_extractor.c:405
+#: src/plugins/ole2_extractor.c:415
 msgid "Swiss German"
 msgstr "Tedesco svizzero"
 
-#: src/plugins/ole2_extractor.c:409
+#: src/plugins/ole2_extractor.c:419
 msgid "U.S. English"
 msgstr "Inglese americano"
 
-#: src/plugins/ole2_extractor.c:411
+#: src/plugins/ole2_extractor.c:421
 msgid "U.K. English"
 msgstr "Inglese britannico"
 
-#: src/plugins/ole2_extractor.c:413
+#: src/plugins/ole2_extractor.c:423
 msgid "Australian English"
 msgstr "Inglese australiano"
 
-#: src/plugins/ole2_extractor.c:415
+#: src/plugins/ole2_extractor.c:425
 msgid "Castilian Spanish"
 msgstr ""
 
-#: src/plugins/ole2_extractor.c:417
+#: src/plugins/ole2_extractor.c:427
 msgid "Mexican Spanish"
 msgstr "Spagnolo messicano"
 
-#: src/plugins/ole2_extractor.c:423
+#: src/plugins/ole2_extractor.c:433
 msgid "Belgian French"
 msgstr "Francese belga"
 
-#: src/plugins/ole2_extractor.c:425
+#: src/plugins/ole2_extractor.c:435
 msgid "Canadian French"
 msgstr "Franco canadese"
 
-#: src/plugins/ole2_extractor.c:427
+#: src/plugins/ole2_extractor.c:437
 msgid "Swiss French"
 msgstr "Francese svizzero"
 
-#: src/plugins/ole2_extractor.c:437
+#: src/plugins/ole2_extractor.c:447
 msgid "Swiss Italian"
 msgstr "Italiano svizzero"
 
-#: src/plugins/ole2_extractor.c:445
+#: src/plugins/ole2_extractor.c:455
 msgid "Belgian Dutch"
 msgstr "Olandese belga"
 
-#: src/plugins/ole2_extractor.c:447
+#: src/plugins/ole2_extractor.c:457
 msgid "Norwegian Bokmal"
 msgstr "Bokmal norvegese"
 
-#: src/plugins/ole2_extractor.c:457
+#: src/plugins/ole2_extractor.c:467
 msgid "Rhaeto-Romanic"
 msgstr ""
 
-#: src/plugins/ole2_extractor.c:463
+#: src/plugins/ole2_extractor.c:473
 msgid "Croato-Serbian (Latin)"
 msgstr ""
 
-#: src/plugins/ole2_extractor.c:465
+#: src/plugins/ole2_extractor.c:475
 msgid "Serbo-Croatian (Cyrillic)"
 msgstr ""
 
-#: src/plugins/ole2_extractor.c:493
+#: src/plugins/ole2_extractor.c:503
 msgid "Farsi"
 msgstr "Farsi"
 
-#: src/plugins/ole2_extractor.c:578
+#: src/plugins/ole2_extractor.c:588
 #, c-format
 msgid "Revision #%u: Author `%s' worked on `%s'"
 msgstr ""

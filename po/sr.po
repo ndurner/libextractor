@@ -6,16 +6,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor-1.0.0-pre1\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2012-09-04 20:36+0200\n"
+"POT-Creation-Date: 2017-06-10 14:17+0200\n"
 "PO-Revision-Date: 2017-01-05 06:41+0200\n"
 "Last-Translator: Мирослав Николић <miroslavnikolic@rocketmail.com>\n"
 "Language-Team: Serbian <(nothing)>\n"
 "Language: sr\n"
-"X-Bugs: Report translation errors to the Language-Team address.\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Bugs: Report translation errors to the Language-Team address.\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: src/main/extract.c:132
 #, c-format
@@ -30,8 +31,10 @@ msgstr ""
 
 #: src/main/extract.c:135
 #, c-format
-msgid "Arguments mandatory for long options are also mandatory for short options.\n"
-msgstr "Аргументи обавезни за дуге опције су такође обавезни за кратке опције.\n"
+msgid ""
+"Arguments mandatory for long options are also mandatory for short options.\n"
+msgstr ""
+"Аргументи обавезни за дуге опције су такође обавезни за кратке опције.\n"
 
 #: src/main/extract.c:217
 msgid "print output in bibtex format"
@@ -67,7 +70,8 @@ msgstr "не користи основни скуп прикључака изв�
 
 #: src/main/extract.c:233
 msgid "print only keywords of the given TYPE (use -L to get a list)"
-msgstr "исписује само кључне речи дате ВРСТЕ (користите „-L“ да добијете списак)"
+msgstr ""
+"исписује само кључне речи дате ВРСТЕ (користите „-L“ да добијете списак)"
 
 #: src/main/extract.c:235
 msgid "print the version number"
@@ -89,52 +93,54 @@ msgstr "extract [ОПЦИЈЕ] [ДАТОТЕКА]*"
 msgid "Extract metadata from files."
 msgstr "Извлачи метаподатке из датотеке."
 
-#: src/main/extract.c:284
+#: src/main/extract.c:288
 #, c-format
 msgid "Found by `%s' plugin:\n"
 msgstr "Нађено је прикључком „%s“:\n"
 
-#: src/main/extract.c:287 src/main/extract.c:368
-#: src/main/extractor_metatypes.c:145 src/main/extractor_print.c:82
+#: src/main/extract.c:291 src/main/extract.c:378
+#: src/main/extractor_metatypes.c:145 src/main/extractor_print.c:86
+#: src/main/extractor_print.c:96
 msgid "unknown"
 msgstr "непознато"
 
-#: src/main/extract.c:292
+#: src/main/extract.c:296
 #, c-format
 msgid "%s - (unknown, %u bytes)\n"
 msgstr "%s — (непознато, %u бајта)\n"
 
-#: src/main/extract.c:317
+#: src/main/extract.c:325
 #, c-format
 msgid "%s - (binary, %u bytes)\n"
 msgstr "%s — (извршна, %u бајта)\n"
 
-#: src/main/extract.c:658 src/main/extract.c:668
-#, c-format
-msgid "Illegal combination of options, cannot combine multiple styles of printing.\n"
-msgstr "Неисправна комбинација опција, не могу да комбинујем више стилова исписивања.\n"
+#: src/main/extract.c:809 src/main/extract.c:821
+msgid ""
+"Illegal combination of options, cannot combine multiple styles of printing.\n"
+msgstr ""
+"Неисправна комбинација опција, не могу да комбинујем више стилова "
+"исписивања.\n"
 
-#: src/main/extract.c:698
+#: src/main/extract.c:854
 #, c-format
 msgid "You must specify an argument for the `%s' option (option ignored).\n"
 msgstr "Морате навести аргумент за опцију „%s“ (опција је занемарена).\n"
 
-#: src/main/extract.c:763
-#, c-format
+#: src/main/extract.c:923
 msgid "Use --help to get a list of options.\n"
 msgstr "Употребите „--help“ да добавите списак опција.\n"
 
-#: src/main/extract.c:801
-#, c-format
-msgid "%% BiBTeX file\n"
+#: src/main/extract.c:964
+#, fuzzy
+msgid "% BiBTeX file\n"
 msgstr "%% БиБТеКс датотека\n"
 
-#: src/main/extract.c:809
+#: src/main/extract.c:972
 #, c-format
 msgid "Keywords for file %s:\n"
 msgstr "Кључне речи за датотеку „%s“:\n"
 
-#: src/main/extractor.c:673
+#: src/main/extractor.c:676
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "Покретање механизма прикључка није успело: %s!\n"
@@ -289,7 +295,9 @@ msgid "publishing institution"
 msgstr "организација издаваштва"
 
 #: src/main/extractor_metatypes.c:86
-msgid "institution that was involved in the publishing, but not necessarily the publisher"
+msgid ""
+"institution that was involved in the publishing, but not necessarily the "
+"publisher"
 msgstr "организација која се бавила издавањем, али није неопходно издавач"
 
 #: src/main/extractor_metatypes.c:87
@@ -329,8 +337,12 @@ msgid "publication day"
 msgstr "дан издавања"
 
 #: src/main/extractor_metatypes.c:97
-msgid "day of publication (or, if unpublished, the day of creation), relative to the given month"
-msgstr "дан издавања (или, ако није издато, дан стварања), који се односи на дати месец"
+msgid ""
+"day of publication (or, if unpublished, the day of creation), relative to "
+"the given month"
+msgstr ""
+"дан издавања (или, ако није издато, дан стварања), који се односи на дати "
+"месец"
 
 #: src/main/extractor_metatypes.c:98
 msgid "publication date"
@@ -565,8 +577,11 @@ msgid "unknown date"
 msgstr "непознат датум"
 
 #: src/main/extractor_metatypes.c:172
-msgid "ambiguous date (could specify creation time, modification time or access time)"
-msgstr "нејасан датум (може навести време стварања, време измена или време приступа)"
+msgid ""
+"ambiguous date (could specify creation time, modification time or access "
+"time)"
+msgstr ""
+"нејасан датум (може навести време стварања, време измена или време приступа)"
 
 #: src/main/extractor_metatypes.c:173
 msgid "creation date"
@@ -833,24 +848,33 @@ msgid "target platform"
 msgstr "циљна платформа"
 
 #: src/main/extractor_metatypes.c:247
-msgid "name of the architecture, operating system and distribution this package is for"
-msgstr "назив архитектуре, оперативног система и дистрибуција за које је овај пакет"
+msgid ""
+"name of the architecture, operating system and distribution this package is "
+"for"
+msgstr ""
+"назив архитектуре, оперативног система и дистрибуција за које је овај пакет"
 
 #: src/main/extractor_metatypes.c:248
 msgid "resource type"
 msgstr "врста изворишта"
 
 #: src/main/extractor_metatypes.c:249
-msgid "categorization of the nature of the resource that is more specific than the file format"
-msgstr "категоризација природе изворишта која је специфичнија од формата датотеке"
+msgid ""
+"categorization of the nature of the resource that is more specific than the "
+"file format"
+msgstr ""
+"категоризација природе изворишта која је специфичнија од формата датотеке"
 
 #: src/main/extractor_metatypes.c:250
 msgid "library search path"
 msgstr "путања претраге библиотеке"
 
 #: src/main/extractor_metatypes.c:251
-msgid "path in the file system to be considered when looking for required libraries"
-msgstr "путања у систему датотека коју треба размотрити када се траже потребне библиотеке"
+msgid ""
+"path in the file system to be considered when looking for required libraries"
+msgstr ""
+"путања у систему датотека коју треба размотрити када се траже потребне "
+"библиотеке"
 
 #: src/main/extractor_metatypes.c:252
 msgid "library dependency"
@@ -1077,8 +1101,11 @@ msgid "performer"
 msgstr "извођач"
 
 #: src/main/extractor_metatypes.c:344
-msgid "The artist(s) who performed the work (conductor, orchestra, soloists, actor, etc.)"
-msgstr "Уметник који је обавио посао (диригент, оркестар, солисти, глумац, итд.)"
+msgid ""
+"The artist(s) who performed the work (conductor, orchestra, soloists, actor, "
+"etc.)"
+msgstr ""
+"Уметник који је обавио посао (диригент, оркестар, солисти, глумац, итд.)"
 
 #: src/main/extractor_metatypes.c:346
 msgid "contact"
@@ -1265,7 +1292,8 @@ msgid "interpretation"
 msgstr "изведба"
 
 #: src/main/extractor_metatypes.c:397
-msgid "information about the people behind interpretations of an existing piece"
+msgid ""
+"information about the people behind interpretations of an existing piece"
 msgstr "информације о људима који стоје иза извођења постојећег комада"
 
 #: src/main/extractor_metatypes.c:398
@@ -1389,8 +1417,10 @@ msgid "full data"
 msgstr "читави подаци"
 
 #: src/main/extractor_metatypes.c:432
-msgid "entry that contains the full, original binary data (not really meta data)"
-msgstr "унос који садржи потпуне, оригиналне бинарне податке (не баш мета податке)"
+msgid ""
+"entry that contains the full, original binary data (not really meta data)"
+msgstr ""
+"унос који садржи потпуне, оригиналне бинарне податке (не баш мета податке)"
 
 #: src/main/extractor_metatypes.c:434
 msgid "rating"
@@ -1489,8 +1519,12 @@ msgid "nominal bitrate"
 msgstr "наведена брзина битова"
 
 #: src/main/extractor_metatypes.c:463
-msgid "nominal bitrate in bits/s. The actual bitrate might be different from this target bitrate."
-msgstr "номинална проток бита у битима/сек. Стварни проток бита може да се разликује од овог циљног протока бита."
+msgid ""
+"nominal bitrate in bits/s. The actual bitrate might be different from this "
+"target bitrate."
+msgstr ""
+"номинална проток бита у битима/сек. Стварни проток бита може да се разликује "
+"од овог циљног протока бита."
 
 #: src/main/extractor_metatypes.c:464
 msgid "minimum bitrate"
@@ -1577,7 +1611,9 @@ msgid "location name"
 msgstr "назив места"
 
 #: src/main/extractor_metatypes.c:487
-msgid "human readable descriptive location of where the media has been recorded or produced"
+msgid ""
+"human readable descriptive location of where the media has been recorded or "
+"produced"
 msgstr "људима читљиво описно место где је медиј снимљен или произведен"
 
 #: src/main/extractor_metatypes.c:489
@@ -1585,8 +1621,12 @@ msgid "location elevation"
 msgstr "надморска висина места"
 
 #: src/main/extractor_metatypes.c:490
-msgid "geo elevation of where the media has been recorded or produced in meters according to WGS84 (zero is average sea level)"
-msgstr "надморска висина места у коме је медиј снимљен или произведен у метрима према стандарду „WGS84“ (нула је просечни ниво мора)"
+msgid ""
+"geo elevation of where the media has been recorded or produced in meters "
+"according to WGS84 (zero is average sea level)"
+msgstr ""
+"надморска висина места у коме је медиј снимљен или произведен у метрима "
+"према стандарду „WGS84“ (нула је просечни ниво мора)"
 
 #: src/main/extractor_metatypes.c:491
 msgid "location horizontal error"
@@ -1601,24 +1641,39 @@ msgid "location movement speed"
 msgstr "брзина кретања гео положаја"
 
 #: src/main/extractor_metatypes.c:494
-msgid "speed of the capturing device when performing the capture. Represented in m/s"
-msgstr "брзина кретања уређаја за снимање приликом извршавања снимања. У метрима у секунди"
+msgid ""
+"speed of the capturing device when performing the capture. Represented in m/s"
+msgstr ""
+"брзина кретања уређаја за снимање приликом извршавања снимања. У метрима у "
+"секунди"
 
 #: src/main/extractor_metatypes.c:495
 msgid "location movement direction"
 msgstr "усмерење кретања гео положаја"
 
 #: src/main/extractor_metatypes.c:496
-msgid "indicates the movement direction of the device performing the capture of a media. It is represented as degrees in floating point representation, 0 means the geographic north, and increases clockwise"
-msgstr "означава усмерење померања уређаја који обавља снимање медија. Представља се у степенима са покретним зарезом, 0 значи северни пол, и повећава се у смеру казаљке на сату"
+msgid ""
+"indicates the movement direction of the device performing the capture of a "
+"media. It is represented as degrees in floating point representation, 0 "
+"means the geographic north, and increases clockwise"
+msgstr ""
+"означава усмерење померања уређаја који обавља снимање медија. Представља се "
+"у степенима са покретним зарезом, 0 значи северни пол, и повећава се у смеру "
+"казаљке на сату"
 
 #: src/main/extractor_metatypes.c:497
 msgid "location capture direction"
 msgstr "усмерење снимања гео положаја"
 
 #: src/main/extractor_metatypes.c:498
-msgid "indicates the direction the device is pointing to when capturing a media. It is represented as degrees in floating point representation, 0 means the geographic north, and increases clockwise"
-msgstr "означава усмерење на које уређај указује приликом снимања медија. Представља се у степенима са покретним зарезом, 0 значи северни пол, и повећава се у смеру казаљке на сату"
+msgid ""
+"indicates the direction the device is pointing to when capturing a media. It "
+"is represented as degrees in floating point representation, 0 means the "
+"geographic north, and increases clockwise"
+msgstr ""
+"означава усмерење на које уређај указује приликом снимања медија. Представља "
+"се у степенима са покретним зарезом, 0 значи северни пол, и повећава се у "
+"смеру казаљке на сату"
 
 #: src/main/extractor_metatypes.c:500
 msgid "show episode number"
@@ -1637,12 +1692,17 @@ msgid "number of the season of a show/series"
 msgstr "број сезоне програма/серије"
 
 #: src/main/extractor_metatypes.c:504
-msgid "gourping"
+#, fuzzy
+msgid "grouping"
 msgstr "груписање"
 
 #: src/main/extractor_metatypes.c:505
-msgid "groups together media that are related and spans multiple tracks. An example are multiple pieces of a concerto"
-msgstr "групише заједно медије који су повезани и обухватају више нумера. Пример је више комада једног концерта"
+msgid ""
+"groups together media that are related and spans multiple tracks. An example "
+"are multiple pieces of a concerto"
+msgstr ""
+"групише заједно медије који су повезани и обухватају више нумера. Пример је "
+"више комада једног концерта"
 
 #: src/main/extractor_metatypes.c:506
 msgid "device manufacturer"
@@ -1792,7 +1852,17 @@ msgstr "трајање превода"
 msgid "duration of a subtitle stream"
 msgstr "трајање тока превода"
 
-#: src/main/extractor_metatypes.c:551 src/main/extractor_metatypes.c:552
+#: src/main/extractor_metatypes.c:551
+#, fuzzy
+msgid "audio preview"
+msgstr "битски проток звука"
+
+#: src/main/extractor_metatypes.c:552
+#, fuzzy
+msgid "a preview of the file audio stream"
+msgstr "проток узорака звучне нумере"
+
+#: src/main/extractor_metatypes.c:554 src/main/extractor_metatypes.c:555
 msgid "last"
 msgstr "последње"
 
@@ -1851,7 +1921,7 @@ msgstr "%s: опција „-W %s“ је нејасна\n"
 msgid "%s: option `-W %s' doesn't allow an argument\n"
 msgstr "%s: опција „-W %s“ не дозвољава аргумент\n"
 
-#: src/plugins/flac_extractor.c:314
+#: src/plugins/flac_extractor.c:322
 #, c-format
 msgid "%u Hz, %u channels"
 msgstr "%u Hz, %u канала"
@@ -1892,83 +1962,83 @@ msgstr "Наредбе управљања системом"
 msgid "Kernel routines"
 msgstr "Рутине кернела"
 
-#: src/plugins/ole2_extractor.c:387
+#: src/plugins/ole2_extractor.c:397
 msgid "No Proofing"
 msgstr "Без доказивања"
 
-#: src/plugins/ole2_extractor.c:395
+#: src/plugins/ole2_extractor.c:405
 msgid "Traditional Chinese"
 msgstr "Традиционални кинески"
 
-#: src/plugins/ole2_extractor.c:397
+#: src/plugins/ole2_extractor.c:407
 msgid "Simplified Chinese"
 msgstr "Поједностављени кинески"
 
-#: src/plugins/ole2_extractor.c:405
+#: src/plugins/ole2_extractor.c:415
 msgid "Swiss German"
 msgstr "Швајцарски немачки"
 
-#: src/plugins/ole2_extractor.c:409
+#: src/plugins/ole2_extractor.c:419
 msgid "U.S. English"
 msgstr "Амерички енглески"
 
-#: src/plugins/ole2_extractor.c:411
+#: src/plugins/ole2_extractor.c:421
 msgid "U.K. English"
 msgstr "Британски енглески"
 
-#: src/plugins/ole2_extractor.c:413
+#: src/plugins/ole2_extractor.c:423
 msgid "Australian English"
 msgstr "Аустралијски енглески"
 
-#: src/plugins/ole2_extractor.c:415
+#: src/plugins/ole2_extractor.c:425
 msgid "Castilian Spanish"
 msgstr "Кастиљски шпамски"
 
-#: src/plugins/ole2_extractor.c:417
+#: src/plugins/ole2_extractor.c:427
 msgid "Mexican Spanish"
 msgstr "Мексички шпански"
 
-#: src/plugins/ole2_extractor.c:423
+#: src/plugins/ole2_extractor.c:433
 msgid "Belgian French"
 msgstr "Белгијски француски"
 
-#: src/plugins/ole2_extractor.c:425
+#: src/plugins/ole2_extractor.c:435
 msgid "Canadian French"
 msgstr "Канадски француски"
 
-#: src/plugins/ole2_extractor.c:427
+#: src/plugins/ole2_extractor.c:437
 msgid "Swiss French"
 msgstr "Швајцарски француски"
 
-#: src/plugins/ole2_extractor.c:437
+#: src/plugins/ole2_extractor.c:447
 msgid "Swiss Italian"
 msgstr "Швајцарски италијански"
 
-#: src/plugins/ole2_extractor.c:445
+#: src/plugins/ole2_extractor.c:455
 msgid "Belgian Dutch"
 msgstr "Белгијски холандски"
 
-#: src/plugins/ole2_extractor.c:447
+#: src/plugins/ole2_extractor.c:457
 msgid "Norwegian Bokmal"
 msgstr "Норвешки букмал"
 
-#: src/plugins/ole2_extractor.c:457
+#: src/plugins/ole2_extractor.c:467
 msgid "Rhaeto-Romanic"
 msgstr "Реторомански"
 
-#: src/plugins/ole2_extractor.c:463
+#: src/plugins/ole2_extractor.c:473
 msgid "Croato-Serbian (Latin)"
 msgstr "Хрватски (латиница)"
 
-#: src/plugins/ole2_extractor.c:465
+#: src/plugins/ole2_extractor.c:475
 msgid "Serbo-Croatian (Cyrillic)"
 msgstr "Српски (ћирилица)"
 
-#: src/plugins/ole2_extractor.c:493
+#: src/plugins/ole2_extractor.c:503
 msgid "Farsi"
 msgstr "Фарси"
 
-#: src/plugins/ole2_extractor.c:578
+#: src/plugins/ole2_extractor.c:588
 #, c-format
 msgid "Revision #%u: Author `%s' worked on `%s'"
 msgstr "Ревизија #%u: Аутор „%s“ је радио „%s“"
