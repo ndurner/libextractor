@@ -550,7 +550,13 @@ static const struct MetaTypeDescription meta_type_descriptions[] = {
 
   { gettext_noop ("audio preview"),
     gettext_noop ("a preview of the file audio stream") },
-	
+
+  { gettext_noop ("narinfo"),
+    gettext_noop ("file containing information about contents of a normalized archive (nar)") },
+  /* 230 */
+  { gettext_noop ("nar"),
+    gettext_noop ("normalized archive") },
+
   { gettext_noop ("last"),
     gettext_noop ("last") }
 };
