@@ -46,12 +46,12 @@
  * @return status code (error, end-of-file or success)
  */
 static FLAC__StreamDecoderReadStatus
-flac_read (const FLAC__StreamDecoder *decoder, 
-	   FLAC__byte buffer[], 
-	   size_t *bytes, 
+flac_read (const FLAC__StreamDecoder *decoder,
+	   FLAC__byte buffer[],
+	   size_t *bytes,
 	   void *client_data)
 {
-  struct EXTRACTOR_ExtractContext *ec = client_data;  
+  struct EXTRACTOR_ExtractContext *ec = client_data;
   void *data;
   ssize_t ret;
 
@@ -81,7 +81,7 @@ flac_read (const FLAC__StreamDecoder *decoder,
  * @param client_data  the 'struct EXTRACTOR_ExtractContext'
  * @return status code (error or success)
  */
-static FLAC__StreamDecoderSeekStatus 
+static FLAC__StreamDecoderSeekStatus
 flac_seek (const FLAC__StreamDecoder *decoder,
 	   FLAC__uint64 absolute_byte_offset,
 	   void *client_data)
@@ -103,9 +103,9 @@ flac_seek (const FLAC__StreamDecoder *decoder,
  * @param client_data  the 'struct EXTRACTOR_ExtractContext'
  * @return status code (error or success)
  */
-static FLAC__StreamDecoderTellStatus 
+static FLAC__StreamDecoderTellStatus
 flac_tell (const FLAC__StreamDecoder *decoder,
-	   FLAC__uint64 *absolute_byte_offset, 
+	   FLAC__uint64 *absolute_byte_offset,
 	   void *client_data)
 {
   struct EXTRACTOR_ExtractContext *ec = client_data;
@@ -113,7 +113,7 @@ flac_tell (const FLAC__StreamDecoder *decoder,
   *absolute_byte_offset = ec->seek (ec->cls,
 				    0,
 				    SEEK_CUR);
-  return FLAC__STREAM_DECODER_TELL_STATUS_OK;  
+  return FLAC__STREAM_DECODER_TELL_STATUS_OK;
 }
 
 
@@ -125,13 +125,13 @@ flac_tell (const FLAC__StreamDecoder *decoder,
  * @param client_data  the 'struct EXTRACTOR_ExtractContext'
  * @return true at EOF, false if not
  */
-static FLAC__StreamDecoderLengthStatus 
+static FLAC__StreamDecoderLengthStatus
 flac_length (const FLAC__StreamDecoder *decoder,
-	     FLAC__uint64 *stream_length, 
+	     FLAC__uint64 *stream_length,
 	     void *client_data)
 {
   struct EXTRACTOR_ExtractContext *ec = client_data;
-  
+
   *stream_length = ec->get_size (ec->cls);
   return FLAC__STREAM_DECODER_LENGTH_STATUS_OK;
 }
@@ -146,8 +146,8 @@ flac_length (const FLAC__StreamDecoder *decoder,
  * @return true at EOF, false if not
  */
 static FLAC__bool
-flac_eof (const FLAC__StreamDecoder *decoder, 
-	  void *client_data) 
+flac_eof (const FLAC__StreamDecoder *decoder,
+	  void *client_data)
 {
   struct EXTRACTOR_ExtractContext *ec = client_data;
   uint64_t size;
@@ -175,9 +175,9 @@ flac_eof (const FLAC__StreamDecoder *decoder,
  */
 static FLAC__StreamDecoderWriteStatus
 flac_write (const FLAC__StreamDecoder *decoder,
-	    const FLAC__Frame *frame, 
-	    const FLAC__int32 *const buffer[], 
-	    void *client_data) 
+	    const FLAC__Frame *frame,
+	    const FLAC__int32 *const buffer[],
+	    void *client_data)
 {
   return FLAC__STREAM_DECODER_WRITE_STATUS_CONTINUE;
 }
@@ -217,7 +217,7 @@ static struct Matches tmap[] = {
   {"GENRE", EXTRACTOR_METATYPE_GENRE},
   {"DATE", EXTRACTOR_METATYPE_CREATION_DATE},
   {"LOCATION", EXTRACTOR_METATYPE_LOCATION_SUBLOCATION},
-  {"CONTACT", EXTRACTOR_METATYPE_CONTACT_INFORMATION}, 
+  {"CONTACT", EXTRACTOR_METATYPE_CONTACT_INFORMATION},
   {"TRACKNUMBER", EXTRACTOR_METATYPE_TRACK_NUMBER},
   {"ISRC", EXTRACTOR_METATYPE_ISRC},
   {NULL, 0}
@@ -241,7 +241,7 @@ static struct Matches tmap[] = {
  * @return NULL on error, otherwise 0-terminated version of 's'
  */
 static char *
-xstrndup (const char *s, 
+xstrndup (const char *s,
 	  size_t n)
 {
   char * d;
@@ -281,7 +281,7 @@ check (const char *type,
 			      type,
 			      type_length)) )
 	continue;
-      if (NULL == 
+      if (NULL ==
 	  (tmp = xstrndup (value,
 			   value_length)))
 	continue;
@@ -299,10 +299,10 @@ check (const char *type,
  * @param metadata meta data that was found
  * @param client_data  the 'struct EXTRACTOR_ExtractContext'
  */
-static void 
+static void
 flac_metadata (const FLAC__StreamDecoder *decoder,
-	       const FLAC__StreamMetadata *metadata, 
-	       void *client_data) 
+	       const FLAC__StreamMetadata *metadata,
+	       void *client_data)
 {
   struct EXTRACTOR_ExtractContext *ec = client_data;
   enum EXTRACTOR_MetaType type;
@@ -313,32 +313,34 @@ flac_metadata (const FLAC__StreamDecoder *decoder,
   unsigned int len;
   unsigned int ilen;
   char buf[128];
-	
+
   switch (metadata->type)
     {
     case FLAC__METADATA_TYPE_STREAMINFO:
       {
 	snprintf (buf, sizeof (buf),
-		  _("%u Hz, %u channels"), 
+		  _("%u Hz, %u channels"),
 		  metadata->data.stream_info.sample_rate,
-		  metadata->data.stream_info.channels); 
+		  metadata->data.stream_info.channels);
 	ADD (EXTRACTOR_METATYPE_RESOURCE_TYPE, buf);
 	break;
       }
     case FLAC__METADATA_TYPE_APPLICATION:
       /* FIXME: could find out generator application here:
 	 http://flac.sourceforge.net/api/structFLAC____StreamMetadata__Application.html and
-	 http://flac.sourceforge.net/id.html 
+	 http://flac.sourceforge.net/id.html
       */
       break;
     case FLAC__METADATA_TYPE_VORBIS_COMMENT:
       {
 	vc = &metadata->data.vorbis_comment;
 	count = vc->num_comments;
-	while (count-- > 0) 
+	while (count-- > 0)
 	  {
 	    entry = &vc->comments[count];
 	    eq = (const char*) entry->entry;
+            if (NULL == eq)
+              break;
 	    len = entry->length;
 	    ilen = 0;
 	    while ( ('=' != *eq) && ('\0' != *eq) &&
@@ -355,7 +357,7 @@ flac_metadata (const FLAC__StreamDecoder *decoder,
 		   ilen,
 		   eq,
 		   len - ilen,
-		   ec);		  
+		   ec);
 	  }
 	break;
       }
@@ -366,11 +368,11 @@ flac_metadata (const FLAC__StreamDecoder *decoder,
 	  case FLAC__STREAM_METADATA_PICTURE_TYPE_OTHER:
 	  case FLAC__STREAM_METADATA_PICTURE_TYPE_FILE_ICON_STANDARD:
 	  case FLAC__STREAM_METADATA_PICTURE_TYPE_FILE_ICON:
-	    type = EXTRACTOR_METATYPE_THUMBNAIL; 
+	    type = EXTRACTOR_METATYPE_THUMBNAIL;
 	    break;
 	  case FLAC__STREAM_METADATA_PICTURE_TYPE_FRONT_COVER:
 	  case FLAC__STREAM_METADATA_PICTURE_TYPE_BACK_COVER:
-	    type = EXTRACTOR_METATYPE_COVER_PICTURE; 
+	    type = EXTRACTOR_METATYPE_COVER_PICTURE;
 	    break;
 	  case FLAC__STREAM_METADATA_PICTURE_TYPE_LEAD_ARTIST:
 	  case FLAC__STREAM_METADATA_PICTURE_TYPE_ARTIST:
@@ -378,13 +380,13 @@ flac_metadata (const FLAC__StreamDecoder *decoder,
 	  case FLAC__STREAM_METADATA_PICTURE_TYPE_BAND:
 	  case FLAC__STREAM_METADATA_PICTURE_TYPE_COMPOSER:
 	  case FLAC__STREAM_METADATA_PICTURE_TYPE_LYRICIST:
-	    type = EXTRACTOR_METATYPE_CONTRIBUTOR_PICTURE; 
+	    type = EXTRACTOR_METATYPE_CONTRIBUTOR_PICTURE;
 	    break;
 	  case FLAC__STREAM_METADATA_PICTURE_TYPE_RECORDING_LOCATION:
 	  case FLAC__STREAM_METADATA_PICTURE_TYPE_DURING_RECORDING:
 	  case FLAC__STREAM_METADATA_PICTURE_TYPE_DURING_PERFORMANCE:
 	  case FLAC__STREAM_METADATA_PICTURE_TYPE_VIDEO_SCREEN_CAPTURE:
-	    type = EXTRACTOR_METATYPE_EVENT_PICTURE; 
+	    type = EXTRACTOR_METATYPE_EVENT_PICTURE;
 	    break;
 	  case FLAC__STREAM_METADATA_PICTURE_TYPE_BAND_LOGOTYPE:
 	  case FLAC__STREAM_METADATA_PICTURE_TYPE_PUBLISHER_LOGOTYPE:
@@ -396,10 +398,10 @@ flac_metadata (const FLAC__StreamDecoder *decoder,
 	  case FLAC__STREAM_METADATA_PICTURE_TYPE_ILLUSTRATION:
 	  default:
 	    type = EXTRACTOR_METATYPE_PICTURE;
-	    break;		
+	    break;
 	  }
-	ec->proc (ec->cls, 
-		  "flac", 
+	ec->proc (ec->cls,
+		  "flac",
 		  type,
 		  EXTRACTOR_METAFORMAT_BINARY,
 		  metadata->data.picture.mime_type,
@@ -413,7 +415,7 @@ flac_metadata (const FLAC__StreamDecoder *decoder,
     case FLAC__METADATA_TYPE_UNDEFINED:
       break;
     }
-}  
+}
 
 
 /**
@@ -424,9 +426,9 @@ flac_metadata (const FLAC__StreamDecoder *decoder,
  * @param client_data our 'struct EXTRACTOR_ExtractContext'
  */
 static void
-flac_error (const FLAC__StreamDecoder *decoder, 
-	    FLAC__StreamDecoderErrorStatus status, 
-	    void *client_data) 
+flac_error (const FLAC__StreamDecoder *decoder,
+	    FLAC__StreamDecoderErrorStatus status,
+	    void *client_data)
 {
   /* ignore errors */
 }
@@ -437,7 +439,7 @@ flac_error (const FLAC__StreamDecoder *decoder,
  *
  * @param ec extraction context provided to the plugin
  */
-void 
+void
 EXTRACTOR_flac_extract_method (struct EXTRACTOR_ExtractContext *ec)
 {
   FLAC__StreamDecoder * decoder;
@@ -448,7 +450,7 @@ EXTRACTOR_flac_extract_method (struct EXTRACTOR_ExtractContext *ec)
   FLAC__stream_decoder_set_metadata_ignore_all (decoder);
   if (false == FLAC__stream_decoder_set_metadata_respond_all (decoder))
     {
-      FLAC__stream_decoder_delete (decoder); 
+      FLAC__stream_decoder_delete (decoder);
       return;
     }
   if (FLAC__STREAM_DECODER_INIT_STATUS_OK !=
@@ -463,17 +465,17 @@ EXTRACTOR_flac_extract_method (struct EXTRACTOR_ExtractContext *ec)
 					&flac_error,
 					ec))
     {
-      FLAC__stream_decoder_delete (decoder);     
+      FLAC__stream_decoder_delete (decoder);
       return;
     }
   if (FLAC__STREAM_DECODER_SEARCH_FOR_METADATA != FLAC__stream_decoder_get_state(decoder))
     {
-      FLAC__stream_decoder_delete (decoder);     
+      FLAC__stream_decoder_delete (decoder);
       return;
     }
   if (! FLAC__stream_decoder_process_until_end_of_metadata(decoder))
     {
-      FLAC__stream_decoder_delete (decoder);     
+      FLAC__stream_decoder_delete (decoder);
       return;
     }
   switch (FLAC__stream_decoder_get_state (decoder))
@@ -487,9 +489,8 @@ EXTRACTOR_flac_extract_method (struct EXTRACTOR_ExtractContext *ec)
       /* not so sure... */
       break;
     }
-  FLAC__stream_decoder_finish (decoder); 
+  FLAC__stream_decoder_finish (decoder);
   FLAC__stream_decoder_delete (decoder);
 }
 
 /* end of flac_extractor.c */
-
