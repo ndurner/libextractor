@@ -49,7 +49,7 @@ little_endian_to_host32 (uint32_t in)
 {
   unsigned char *ptr = (unsigned char *) &in;
 
-  return ((ptr[3] & 0xFF) << 24) | ((ptr[2] & 0xFF) << 16) | 
+  return ((ptr[3] & 0xFF) << 24) | ((ptr[2] & 0xFF) << 16) |
     ((ptr[1] & 0xFF) << 8) | (ptr[0] & 0xFF);
 }
 #endif
@@ -81,7 +81,7 @@ EXTRACTOR_wav_extract_method (struct EXTRACTOR_ExtractContext *ec)
   uint32_t samples;
   char scratch[256];
 
-  if (44 > 
+  if (44 >
       ec->read (ec->cls,  &data, 44))
     return;
   buf = data;
@@ -109,6 +109,8 @@ EXTRACTOR_wav_extract_method (struct EXTRACTOR_ExtractContext *ec)
     return;                /* invalid sample size found in wav file */
   if (0 == channels)
     return;                /* invalid channels value -- avoid division by 0! */
+  if (0 == sample_rate)
+    return;                /* invalid sample_rate */
   samples = data_len / (channels * (sample_size >> 3));
 
   snprintf (scratch,
@@ -118,7 +120,7 @@ EXTRACTOR_wav_extract_method (struct EXTRACTOR_ExtractContext *ec)
             ? (samples * 1000 / sample_rate)
             : (samples / sample_rate) * 1000,
             sample_rate, (1 == channels) ? _("mono") : _("stereo"));
-  if (0 != ec->proc (ec->cls, 
+  if (0 != ec->proc (ec->cls,
 		     "wav",
 		     EXTRACTOR_METATYPE_RESOURCE_TYPE,
 		     EXTRACTOR_METAFORMAT_UTF8,
@@ -126,7 +128,7 @@ EXTRACTOR_wav_extract_method (struct EXTRACTOR_ExtractContext *ec)
 		     scratch,
 		     strlen (scratch) + 1))
     return;
-  if (0 != ec->proc (ec->cls, 
+  if (0 != ec->proc (ec->cls,
 		     "wav",
 		     EXTRACTOR_METATYPE_MIMETYPE,
 		     EXTRACTOR_METAFORMAT_UTF8,
