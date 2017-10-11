@@ -55,7 +55,7 @@ public:
 
   /**
    * Constructor.
-   * 
+   *
    * @param s_ec extract context to wrap
    */
   ExtractorIO (struct EXTRACTOR_ExtractContext *s_ec)
@@ -73,18 +73,18 @@ public:
 
   /**
    * Open stream.
-   * 
+   *
    * @return 0 (always successful)
    */
   virtual int open ();
 
   /**
    * Close stream.
-   * 
+   *
    * @return 0 (always successful)
    */
   virtual int close ();
-  
+
   /**
    * Read up to 'rcount' bytes into a buffer
    *
@@ -117,7 +117,7 @@ public:
    * @param data data to write
    * @param wcount how many bytes to write
    * @return -1 (always fails)
-   */ 
+   */
   virtual long write (const Exiv2::byte *data,
 		      long wcount);
 
@@ -126,7 +126,7 @@ public:
    *
    * @param src stream to copy
    * @return -1 (always fails)
-   */ 
+   */
   virtual long write (Exiv2::BasicIo &src);
 
   /**
@@ -160,7 +160,7 @@ public:
    * @throws error
    */
   virtual Exiv2::byte* mmap (bool isWritable);
-  
+
   /**
    * Not supported.
    *
@@ -180,11 +180,15 @@ public:
    *
    * @return -1 on error
    */
+#if EXIV2_VERSION >= EXIV2_MAKE_VERSION(0,26,0)
+  virtual size_t size (void) const;
+#else
   virtual long int size (void) const;
+#endif
 
   /**
    * Check if file is open.
-   * 
+   *
    * @return true (always).
    */
   virtual bool isopen () const;
@@ -198,7 +202,7 @@ public:
 
   /**
    * Check if current position of the file is at the end
-   * 
+   *
    * @return true if at EOF, false if not.
    */
   virtual bool eof () const;
@@ -218,7 +222,7 @@ public:
    */
   virtual std::wstring wpath () const;
 #endif
-  
+
   /**
    * Not supported.
    *
@@ -227,14 +231,14 @@ public:
   virtual Exiv2::BasicIo::AutoPtr temporary () const;
 
 };
-  
+
 
 /**
  * Open stream.
- * 
+ *
  * @return 0 (always successful)
  */
-int 
+int
 ExtractorIO::open ()
 {
   return 0;
@@ -242,10 +246,10 @@ ExtractorIO::open ()
 
 /**
  * Close stream.
- * 
+ *
  * @return 0 (always successful)
  */
-int 
+int
 ExtractorIO::close ()
 {
   return 0;
@@ -277,7 +281,7 @@ ExtractorIO::read (long rcount)
  * @param rcount size of 'buf'
  * @return number of bytes read successfully, 0 on failure (!)
  */
-long 
+long
 ExtractorIO::read (Exiv2::byte *buf,
 		   long rcount)
 {
@@ -305,12 +309,12 @@ ExtractorIO::read (Exiv2::byte *buf,
  * @return the character
  * @throw exception on errors
  */
-int 
+int
 ExtractorIO::getb ()
 {
   void *data;
   const unsigned char *r;
-  
+
   if (1 != ec->read (ec->cls, &data, 1))
     throw Exiv2::BasicError<char> (42 /* error code */);
   r = (const unsigned char *) data;
@@ -324,8 +328,8 @@ ExtractorIO::getb ()
  * @param data data to write
  * @param wcount how many bytes to write
  * @return -1 (always fails)
- */ 
-long 
+ */
+long
 ExtractorIO::write (const Exiv2::byte *data,
 		    long wcount)
 {
@@ -338,8 +342,8 @@ ExtractorIO::write (const Exiv2::byte *data,
  *
  * @param src stream to copy
  * @return -1 (always fails)
- */ 
-long 
+ */
+long
 ExtractorIO::write (Exiv2::BasicIo &src)
 {
   return -1;
@@ -352,7 +356,7 @@ ExtractorIO::write (Exiv2::BasicIo &src)
  * @param data byte to write
  * @return -1 (always fails)
  */
-int 
+int
 ExtractorIO::putb (Exiv2::byte data)
 {
   return -1;
@@ -378,12 +382,12 @@ ExtractorIO::transfer (Exiv2::BasicIo& src)
  * @parma pos offset is relative to where?
  * @return -1 on failure, 0 on success
  */
-int 
+int
 ExtractorIO::seek (long offset,
 		   Exiv2::BasicIo::Position pos)
 {
   int rel;
-  
+
   switch (pos)
     {
     case beg: // Exiv2::BasicIo::beg:
@@ -445,7 +449,11 @@ ExtractorIO::tell (void) const
  *
  * @return -1 on error
  */
-long int 
+#if EXIV2_VERSION >= EXIV2_MAKE_VERSION(0,26,0)
+size_t
+#else
+long int
+#endif
 ExtractorIO::size (void) const
 {
   return (long) ec->get_size (ec->cls);
@@ -454,10 +462,10 @@ ExtractorIO::size (void) const
 
 /**
  * Check if file is open.
- * 
+ *
  * @return true (always).
  */
-bool 
+bool
 ExtractorIO::isopen () const
 {
   return true;
@@ -478,10 +486,10 @@ ExtractorIO::error () const
 
 /**
  * Check if current position of the file is at the end
- * 
+ *
  * @return true if at EOF, false if not.
  */
-bool 
+bool
 ExtractorIO::eof () const
 {
   return size () == tell ();
@@ -559,7 +567,7 @@ add_exiv2_tag (const Exiv2::ExifData& exifData,
   Exiv2::ExifKey ek (key);
   Exiv2::ExifData::const_iterator md = exifData.findKey (ek);
 
-  if (exifData.end () == md) 
+  if (exifData.end () == md)
     return 0; /* not found */
   std::string ccstr = Exiv2::toString(*md);
   str = ccstr.c_str();
@@ -595,14 +603,14 @@ add_iptc_data (const Exiv2::IptcData& iptcData,
   Exiv2::IptcKey ek (key);
   Exiv2::IptcData::const_iterator md = iptcData.findKey (ek);
 
-  while (iptcData.end () !=  md) 
+  while (iptcData.end () !=  md)
     {
       if (0 != strcmp (Exiv2::toString (md->key ()).c_str (), key.c_str ()))
 	  break;
       std::string ccstr = Exiv2::toString (*md);
       str = ccstr.c_str ();
       /* skip over whitespace */
-      while ((strlen (str) > 0) && isspace ((unsigned char) str[0])) 
+      while ((strlen (str) > 0) && isspace ((unsigned char) str[0]))
 	str++;
       if (strlen (str) > 0)
 	ADD (str, type);
@@ -634,7 +642,7 @@ add_xmp_data (const Exiv2::XmpData& xmpData,
   Exiv2::XmpKey ek (key);
   Exiv2::XmpData::const_iterator md = xmpData.findKey (ek);
 
-  while (xmpData.end () != md) 
+  while (xmpData.end () != md)
     {
       if (0 != strcmp (Exiv2::toString (md->key ()).c_str (), key.c_str ()))
 	break;
@@ -680,7 +688,7 @@ add_xmp_data (const Exiv2::XmpData& xmpData,
 
 
 /**
- * Main entry method for the 'exiv2' extraction plugin.  
+ * Main entry method for the 'exiv2' extraction plugin.
  *
  * @param ec extraction context provided to the plugin
  */
@@ -688,7 +696,7 @@ extern "C" void
 EXTRACTOR_exiv2_extract_method (struct EXTRACTOR_ExtractContext *ec)
 {
   try
-    {	    
+    {
 #if EXIV2_MAKE_VERSION(0,23,0) <= EXIV2_VERSION
       Exiv2::LogMsg::setLevel (Exiv2::LogMsg::mute);
 #endif
@@ -698,15 +706,15 @@ EXTRACTOR_exiv2_extract_method (struct EXTRACTOR_ExtractContext *ec)
 	return;
       image->readMetadata ();
       Exiv2::ExifData &exifData = image->exifData ();
-      if (! exifData.empty ()) 
-	{	   			  
+      if (! exifData.empty ())
+	{
 	  ADDEXIV ("Exif.Image.Copyright", EXTRACTOR_METATYPE_COPYRIGHT);
 	  ADDEXIV ("Exif.Photo.UserComment", EXTRACTOR_METATYPE_COMMENT);
 	  ADDEXIV ("Exif.GPSInfo.GPSLatitudeRef", EXTRACTOR_METATYPE_GPS_LATITUDE_REF);
 	  ADDEXIV ("Exif.GPSInfo.GPSLatitude", EXTRACTOR_METATYPE_GPS_LATITUDE);
 	  ADDEXIV ("Exif.GPSInfo.GPSLongitudeRef", EXTRACTOR_METATYPE_GPS_LONGITUDE_REF);
 	  ADDEXIV ("Exif.GPSInfo.GPSLongitude", EXTRACTOR_METATYPE_GPS_LONGITUDE);
-	  ADDEXIV ("Exif.Image.Make", EXTRACTOR_METATYPE_CAMERA_MAKE);    
+	  ADDEXIV ("Exif.Image.Make", EXTRACTOR_METATYPE_CAMERA_MAKE);
 	  ADDEXIV ("Exif.Image.Model", EXTRACTOR_METATYPE_CAMERA_MODEL);
 	  ADDEXIV ("Exif.Image.Orientation", EXTRACTOR_METATYPE_ORIENTATION);
 	  ADDEXIV ("Exif.Photo.DateTimeOriginal", EXTRACTOR_METATYPE_CREATION_DATE);
@@ -747,19 +755,19 @@ EXTRACTOR_exiv2_extract_method (struct EXTRACTOR_ExtractContext *ec)
 	  ADDEXIV ("Exif.Panasonic.WhiteBalance", EXTRACTOR_METATYPE_WHITE_BALANCE);
 	  ADDEXIV ("Exif.Photo.FNumber", EXTRACTOR_METATYPE_APERTURE);
 	  ADDEXIV ("Exif.Photo.ExposureTime", EXTRACTOR_METATYPE_EXPOSURE);
-	} 
-      
+	}
+
       Exiv2::IptcData &iptcData = image->iptcData();
-      if (! iptcData.empty()) 
+      if (! iptcData.empty())
 	{
 	  ADDIPTC ("Iptc.Application2.Keywords", EXTRACTOR_METATYPE_KEYWORDS);
 	  ADDIPTC ("Iptc.Application2.City", EXTRACTOR_METATYPE_LOCATION_CITY);
 	  ADDIPTC ("Iptc.Application2.SubLocation", EXTRACTOR_METATYPE_LOCATION_SUBLOCATION);
 	  ADDIPTC ("Iptc.Application2.CountryName", EXTRACTOR_METATYPE_LOCATION_COUNTRY);
 	}
-      
+
       Exiv2::XmpData &xmpData = image->xmpData();
-      if (! xmpData.empty()) 
+      if (! xmpData.empty())
 	{
 	  ADDXMP ("Xmp.photoshop.Country", EXTRACTOR_METATYPE_LOCATION_COUNTRY);
 	  ADDXMP ("Xmp.photoshop.City", EXTRACTOR_METATYPE_LOCATION_CITY);
@@ -768,9 +776,9 @@ EXTRACTOR_exiv2_extract_method (struct EXTRACTOR_ExtractContext *ec)
 	  ADDXMP ("Xmp.iptc.CountryCode", EXTRACTOR_METATYPE_LOCATION_COUNTRY_CODE);
 	  ADDXMP ("Xmp.xmp.CreatorTool", EXTRACTOR_METATYPE_CREATED_BY_SOFTWARE);
 	  ADDXMP ("Xmp.lr.hierarchicalSubject", EXTRACTOR_METATYPE_SUBJECT);
-	}	
+	}
       }
-  catch (const Exiv2::AnyError& e) 
+  catch (const Exiv2::AnyError& e)
     {
 #if DEBUG
       std::cerr << "Caught Exiv2 exception '" << e << "'\n";
