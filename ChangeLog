@@ -4,6 +4,11 @@ Mon Oct  9 15:33:01 CEST 2017
 Mon Oct  9 15:30:01 CEST 2017
 	Fix SIGFPE in WAV plugin found by Leon Zhao. -CG
 
+Sat Jun 10 14:12:44 CEST 2017
+	Make code compile against libexiv 0.26.
+	Avoid use of deprecated libtidy header.
+	Releasing GNU libextractor 1.4. -CG
+
 Sun Apr 30 01:50:01 CEST 2017
 	Updating French translation. -SA
 
