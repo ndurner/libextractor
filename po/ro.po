@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 0.5.3\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2013-12-22 23:11+0100\n"
+"POT-Creation-Date: 2017-10-11 20:53+0200\n"
 "PO-Revision-Date: 2005-08-16 12:00-0500\n"
 "Last-Translator: Laurentiu Buzdugan <lbuz@rolix.org>\n"
 "Language-Team: Romanian <translation-team-ro@lists.sourceforge.net>\n"
@@ -1931,7 +1931,25 @@ msgstr ""
 msgid "a preview of the file audio stream"
 msgstr "Dispozitivul nu este un flux (stream)"
 
-#: src/main/extractor_metatypes.c:554 src/main/extractor_metatypes.c:555
+#: src/main/extractor_metatypes.c:554
+msgid "narinfo"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:555
+msgid ""
+"file containing information about contents of a normalized archive (nar)"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:557
+#, fuzzy
+msgid "nar"
+msgstr "împachetator"
+
+#: src/main/extractor_metatypes.c:558
+msgid "normalized archive"
+msgstr ""
+
+#: src/main/extractor_metatypes.c:560 src/main/extractor_metatypes.c:561
 msgid "last"
 msgstr ""
 
@@ -2031,83 +2049,83 @@ msgstr "Comenzi pentru managementul sistemului"
 msgid "Kernel routines"
 msgstr "Proceduri kernel"
 
-#: src/plugins/ole2_extractor.c:387
+#: src/plugins/ole2_extractor.c:397
 msgid "No Proofing"
 msgstr ""
 
-#: src/plugins/ole2_extractor.c:395
+#: src/plugins/ole2_extractor.c:405
 msgid "Traditional Chinese"
 msgstr ""
 
-#: src/plugins/ole2_extractor.c:397
+#: src/plugins/ole2_extractor.c:407
 msgid "Simplified Chinese"
 msgstr ""
 
-#: src/plugins/ole2_extractor.c:405
+#: src/plugins/ole2_extractor.c:415
 msgid "Swiss German"
 msgstr ""
 
-#: src/plugins/ole2_extractor.c:409
+#: src/plugins/ole2_extractor.c:419
 msgid "U.S. English"
 msgstr ""
 
-#: src/plugins/ole2_extractor.c:411
+#: src/plugins/ole2_extractor.c:421
 msgid "U.K. English"
 msgstr ""
 
-#: src/plugins/ole2_extractor.c:413
+#: src/plugins/ole2_extractor.c:423
 msgid "Australian English"
 msgstr ""
 
-#: src/plugins/ole2_extractor.c:415
+#: src/plugins/ole2_extractor.c:425
 msgid "Castilian Spanish"
 msgstr ""
 
-#: src/plugins/ole2_extractor.c:417
+#: src/plugins/ole2_extractor.c:427
 msgid "Mexican Spanish"
 msgstr ""
 
-#: src/plugins/ole2_extractor.c:423
+#: src/plugins/ole2_extractor.c:433
 msgid "Belgian French"
 msgstr ""
 
-#: src/plugins/ole2_extractor.c:425
+#: src/plugins/ole2_extractor.c:435
 msgid "Canadian French"
 msgstr ""
 
-#: src/plugins/ole2_extractor.c:427
+#: src/plugins/ole2_extractor.c:437
 msgid "Swiss French"
 msgstr ""
 
-#: src/plugins/ole2_extractor.c:437
+#: src/plugins/ole2_extractor.c:447
 msgid "Swiss Italian"
 msgstr ""
 
-#: src/plugins/ole2_extractor.c:445
+#: src/plugins/ole2_extractor.c:455
 msgid "Belgian Dutch"
 msgstr ""
 
-#: src/plugins/ole2_extractor.c:447
+#: src/plugins/ole2_extractor.c:457
 msgid "Norwegian Bokmal"
 msgstr ""
 
-#: src/plugins/ole2_extractor.c:457
+#: src/plugins/ole2_extractor.c:467
 msgid "Rhaeto-Romanic"
 msgstr ""
 
-#: src/plugins/ole2_extractor.c:463
+#: src/plugins/ole2_extractor.c:473
 msgid "Croato-Serbian (Latin)"
 msgstr ""
 
-#: src/plugins/ole2_extractor.c:465
+#: src/plugins/ole2_extractor.c:475
 msgid "Serbo-Croatian (Cyrillic)"
 msgstr ""
 
-#: src/plugins/ole2_extractor.c:493
+#: src/plugins/ole2_extractor.c:503
 msgid "Farsi"
 msgstr ""
 
-#: src/plugins/ole2_extractor.c:578
+#: src/plugins/ole2_extractor.c:588
 #, c-format
 msgid "Revision #%u: Author `%s' worked on `%s'"
 msgstr ""
@@ -2117,11 +2135,11 @@ msgstr ""
 msgid "codec: %s, %u fps, %u ms"
 msgstr "codec: %s, %u fps, %u ms"
 
-#: src/plugins/wav_extractor.c:120
+#: src/plugins/wav_extractor.c:122
 msgid "mono"
 msgstr "mono"
 
-#: src/plugins/wav_extractor.c:120
+#: src/plugins/wav_extractor.c:122
 msgid "stereo"
 msgstr "stereo"
 
