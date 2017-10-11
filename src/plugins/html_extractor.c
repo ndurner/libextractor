@@ -27,7 +27,7 @@
 #include "extractor.h"
 #include <magic.h>
 #include <tidy/tidy.h>
-#include <tidy/buffio.h>
+#include <tidy/tidybuffio.h>
 
 /**
  * Mapping of HTML META names to LE types.
@@ -59,7 +59,7 @@ static struct
   { "rights", EXTRACTOR_METATYPE_RIGHTS },
   { "dc.rights", EXTRACTOR_METATYPE_RIGHTS },
   { "copyright", EXTRACTOR_METATYPE_COPYRIGHT },
-  { "language", EXTRACTOR_METATYPE_LANGUAGE },  
+  { "language", EXTRACTOR_METATYPE_LANGUAGE },
   { "keywords", EXTRACTOR_METATYPE_KEYWORDS },
   { "abstract", EXTRACTOR_METATYPE_ABSTRACT },
   { "formatter", EXTRACTOR_METATYPE_CREATED_BY_SOFTWARE },
@@ -82,7 +82,7 @@ static magic_t magic;
  * @param tag tag to map
  * @return EXTRACTOR_METATYPE_RESERVED if the type was not found
  */
-static enum EXTRACTOR_MetaType 
+static enum EXTRACTOR_MetaType
 tag_to_type (const char *tag)
 {
   unsigned int i;
@@ -146,7 +146,7 @@ static void TIDY_CALL
 unget_byte_cb (void *sourceData, byte bt)
 {
   struct EXTRACTOR_ExtractContext *ec = sourceData;
-  
+
   (void) ec->seek (ec->cls, -1, SEEK_CUR);
 }
 
@@ -167,11 +167,11 @@ eof_cb (void *sourceData)
 
 
 /**
- * Main entry method for the 'text/html' extraction plugin.  
+ * Main entry method for the 'text/html' extraction plugin.
  *
  * @param ec extraction context provided to the plugin
  */
-void 
+void
 EXTRACTOR_html_extract_method (struct EXTRACTOR_ExtractContext *ec)
 {
   TidyDoc doc;
@@ -250,9 +250,9 @@ EXTRACTOR_html_extract_method (struct EXTRACTOR_ExtractContext *ec)
 	case TidyNode_Php:
 	  break;
 	case TidyNode_XmlDecl:
-	  break;	  
+	  break;
 	case TidyNode_Start:
-	case TidyNode_StartEnd:	
+	case TidyNode_StartEnd:
 	  name = tidyNodeGetName (child);
 	  if ( (0 == strcasecmp (name, "title")) &&
 	       (NULL != (title = tidyGetChild (child))) )
@@ -278,13 +278,13 @@ EXTRACTOR_html_extract_method (struct EXTRACTOR_ExtractContext *ec)
 	    }
 	  if (0 == strcasecmp (name, "meta"))
 	    {
-	      if (NULL == (attr = tidyAttrGetById (child, 
+	      if (NULL == (attr = tidyAttrGetById (child,
 						   TidyAttr_NAME)))
 		break;
-	      if (EXTRACTOR_METATYPE_RESERVED == 
+	      if (EXTRACTOR_METATYPE_RESERVED ==
 		  (type = tag_to_type (tidyAttrValue (attr))))
 		break;
-	      if (NULL == (attr = tidyAttrGetById (child, 
+	      if (NULL == (attr = tidyAttrGetById (child,
 						   TidyAttr_CONTENT)))
 		break;
 	      name = tidyAttrValue (attr);
@@ -297,14 +297,14 @@ EXTRACTOR_html_extract_method (struct EXTRACTOR_ExtractContext *ec)
 			    name,
 			    strlen (name) + 1))
 		goto CLEANUP;
-	      break;	
+	      break;
 	    }
 	  break;
 	case TidyNode_End:
-	  break;	  
+	  break;
 	default:
 	  break;
-	}      
+	}
     }
  CLEANUP:
   tidyRelease (doc);
@@ -463,7 +463,7 @@ findInTags (struct TagInfo * t,
 
 
 /* mimetype = text/html */
-int 
+int
 EXTRACTOR_html_extract (const char *data,
 			size_t size,
 			EXTRACTOR_MetaDataProcessor proc,
@@ -562,7 +562,7 @@ EXTRACTOR_html_extract (const char *data,
          if text/html is present, we take that as the mime-type; if charset=
          is present, we try to use that for character set conversion. */
       if (0 == strncasecmp (tmp, "text/html", strlen ("text/html")))
-        ret = proc (proc_cls, 
+        ret = proc (proc_cls,
 		    "html",
 		    EXTRACTOR_METATYPE_MIMETYPE,
 		    EXTRACTOR_METAFORMAT_UTF8,
@@ -613,7 +613,7 @@ EXTRACTOR_html_extract (const char *data,
 	free (tmp);
       i++;
     }
-  while (tags != NULL) 
+  while (tags != NULL)
     {
       t = tags;
       if ( (tagMatch ("title", t->tagStart, t->tagEnd)) &&
@@ -667,7 +667,7 @@ EXTRACTOR_html_extract (const char *data,
 /**
  * Initialize glib and load magic file.
  */
-void __attribute__ ((constructor)) 
+void __attribute__ ((constructor))
 html_gobject_init ()
 {
   magic = magic_open (MAGIC_MIME_TYPE);
@@ -681,8 +681,8 @@ html_gobject_init ()
 /**
  * Destructor for the library, cleans up.
  */
-void __attribute__ ((destructor)) 
-html_ltdl_fini () 
+void __attribute__ ((destructor))
+html_ltdl_fini ()
 {
   if (NULL != magic)
     {
