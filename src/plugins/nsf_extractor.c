@@ -51,7 +51,7 @@ struct header
    * Magic code.
    */
   char magicid[5];
-  
+
   /**
    * NSF version number.
    */
@@ -86,9 +86,9 @@ struct header
    * Album title.
    */
   char title[32];
-  
+
   /**
-   * Artist name. 
+   * Artist name.
    */
   char artist[32];
 
@@ -152,13 +152,15 @@ EXTRACTOR_nsf_extract_method (struct EXTRACTOR_ExtractContext *ec)
   char nsfversion[32];
   const struct header *head;
   void *data;
+  ssize_t ds;
 
-  if (sizeof (struct header) >
-      ec->read (ec->cls,
-		&data,
-		sizeof (struct header)))
+  ds = ec->read (ec->cls,
+                 &data,
+                 sizeof (struct header));
+  if ( (-1 == ds) ||
+       (sizeof (struct header) > ds) )
     return;
-  head = data; 
+  head = data;
 
   /* Check "magic" id bytes */
   if (memcmp (head->magicid, "NESM\x1a", 5))
@@ -166,17 +168,17 @@ EXTRACTOR_nsf_extract_method (struct EXTRACTOR_ExtractContext *ec)
   ADD ("audio/x-nsf", EXTRACTOR_METATYPE_MIMETYPE);
   snprintf (nsfversion,
 	    sizeof(nsfversion),
-	    "%d", 
+	    "%d",
 	    head->nsfversion);
   ADD (nsfversion, EXTRACTOR_METATYPE_FORMAT_VERSION);
-  snprintf (songs, 
+  snprintf (songs,
 	    sizeof(songs),
 	    "%d",
 	    (int) head->songs);
   ADD (songs, EXTRACTOR_METATYPE_SONG_COUNT);
-  snprintf (startingsong, 
+  snprintf (startingsong,
 	    sizeof(startingsong),
-	    "%d", 
+	    "%d",
 	    (int) head->firstsong);
   ADD (startingsong, EXTRACTOR_METATYPE_STARTING_SONG);
   memcpy (&album, head->title, 32);
@@ -196,14 +198,14 @@ EXTRACTOR_nsf_extract_method (struct EXTRACTOR_ExtractContext *ec)
   else
     {
       if (0 != (head->tvflags & PAL_FLAG))
-	ADD ("PAL", EXTRACTOR_METATYPE_BROADCAST_TELEVISION_SYSTEM);        
+	ADD ("PAL", EXTRACTOR_METATYPE_BROADCAST_TELEVISION_SYSTEM);
       else
-        ADD ("NTSC", EXTRACTOR_METATYPE_BROADCAST_TELEVISION_SYSTEM);        
+        ADD ("NTSC", EXTRACTOR_METATYPE_BROADCAST_TELEVISION_SYSTEM);
     }
 
   /* Detect Extra Sound Chips needed to play the files */
   if (0 != (head->chipflags & VRCVI_FLAG))
-    ADD ("VRCVI", EXTRACTOR_METATYPE_TARGET_ARCHITECTURE);    
+    ADD ("VRCVI", EXTRACTOR_METATYPE_TARGET_ARCHITECTURE);
   if (0 != (head->chipflags & VRCVII_FLAG))
     ADD ("VRCVII", EXTRACTOR_METATYPE_TARGET_ARCHITECTURE);
   if (0 != (head->chipflags & FDS_FLAG))

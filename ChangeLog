@@ -1,3 +1,6 @@
+Fri Oct 13 12:30:37 CEST 2017
+	Properly check read error in NSF plugin (from signedness confusion) found by Leon Zhao. -CG
+
 Fri Oct 13 12:27:38 CEST 2017
 	Protect against problematic integer offset in NSFE plugin found by Leon Zhao. -CG
 
