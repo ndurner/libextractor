@@ -1,3 +1,6 @@
+Fri Oct 13 12:15:35 CEST 2017
+	Protect against integer overflows in PNG plugin found by Leon Zhao. -CG
+
 Wed Oct 11 20:14:12 CEST 2017
 	Releasing GNU libextractor 1.5. -CG
 

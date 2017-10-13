@@ -42,11 +42,13 @@
  * @return n-bytes from str followed by 0-termination, NULL on error
  */
 static char *
-stndup (const char *str, 
+stndup (const char *str,
 	size_t n)
 {
   char *tmp;
 
+  if (n + 1 < n)
+    return NULL;
   if (NULL == (tmp = malloc (n + 1)))
     return NULL;
   tmp[n] = '\0';
@@ -64,7 +66,7 @@ stndup (const char *str,
  * @return first position of 0-terminator in str, or maxlen
  */
 static size_t
-stnlen (const char *str, 
+stnlen (const char *str,
 	size_t maxlen)
 {
   size_t ret;
@@ -171,7 +173,7 @@ processtEXt (struct EXTRACTOR_ExtractContext *ec,
   if (off >= length)
     return 0;                /* failed to find '\0' */
   if (NULL == (keyword = EXTRACTOR_common_convert_to_utf8 ((char*) &data[off],
-							   length - off, 
+							   length - off,
 							   "ISO-8859-1")))
     return 0;
   ret = 0;
@@ -221,6 +223,8 @@ processiTXt (struct EXTRACTOR_ExtractContext *ec,
   compressed = data[pos++];
   if (compressed && (0 != data[pos++]))
     return 0;                /* bad compression method */
+  if (pos > length)
+    return 0;
   language = (char *) &data[pos];
   ret = 0;
   if ( (stnlen (language, length - pos) > 0) &&
@@ -255,7 +259,7 @@ processiTXt (struct EXTRACTOR_ExtractContext *ec,
               /* printf("out of memory"); */
               return 0;      /* out of memory */
             }
-          if (Z_OK == 
+          if (Z_OK ==
 	      (zret = uncompress ((Bytef *) buf,
 				  &bufLen,
 				  (const Bytef *) &data[pos], length - pos)))
@@ -367,10 +371,10 @@ processzTXt (struct EXTRACTOR_ExtractContext *ec,
           /* printf("out of memory"); */
           return 0;          /* out of memory */
         }
-      if (Z_OK == 
+      if (Z_OK ==
 	  (zret = uncompress ((Bytef *) buf,
 			      &bufLen,
-			      (const Bytef *) &data[off], 
+			      (const Bytef *) &data[off],
 			      length - off)))
         {
           /* printf("zlib ok"); */
@@ -380,8 +384,8 @@ processzTXt (struct EXTRACTOR_ExtractContext *ec,
       if (Z_BUF_ERROR != zret)
         return 0;            /* unknown error, abort */
     }
-  keyword = EXTRACTOR_common_convert_to_utf8 (buf, 
-					      bufLen, 
+  keyword = EXTRACTOR_common_convert_to_utf8 (buf,
+					      bufLen,
 					      "ISO-8859-1");
   free (buf);
   for (i = 0; NULL != tagmap[i].name; i++)
@@ -432,9 +436,9 @@ processtIME (struct EXTRACTOR_ExtractContext *ec,
   h = (unsigned char) data[8];
   m = (unsigned char) data[9];
   s = (unsigned char) data[10];
-  snprintf (val, 
+  snprintf (val,
 	    sizeof (val),
-	    "%04u-%02u-%02u %02d:%02d:%02d", 
+	    "%04u-%02u-%02u %02d:%02d:%02d",
 	    year, mo, day, h, m, s);
   ADD (EXTRACTOR_METATYPE_MODIFICATION_DATE, val);
 FINISH:
@@ -443,7 +447,7 @@ FINISH:
 
 
 /**
- * Main entry method for the 'image/png' extraction plugin.  
+ * Main entry method for the 'image/png' extraction plugin.
  *
  * @param ec extraction context provided to the plugin
  */
@@ -465,8 +469,8 @@ EXTRACTOR_png_extract_method (struct EXTRACTOR_ExtractContext *ec)
   ret = 0;
   while (0 == ret)
     {
-      if (sizeof (uint32_t) + 4 != ec->read (ec->cls, 
-					     &data, 
+      if (sizeof (uint32_t) + 4 != ec->read (ec->cls,
+					     &data,
 					     sizeof (uint32_t) + 4))
         break;
       length = get_int_at (data);
