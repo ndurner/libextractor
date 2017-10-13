@@ -373,9 +373,9 @@ EXTRACTOR_nsfe_extract_method (struct EXTRACTOR_ExtractContext *ec)
 		    8))
 	break;
       chunksize = nsfeuint (data);
-      if (off + chunksize + 8 <= off)
+      if (off + chunksize + 8LLU <= off)
         break; /* protect against looping */
-      off += 8 + chunksize;
+      off += 8LLU + chunksize;
       if (0 == memcmp (data + 4, "INFO", 4))
         ret = info_extract (ec, chunksize);
       else if (0 == memcmp (data + 4, "auth", 4))

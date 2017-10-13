@@ -1,3 +1,6 @@
+Fri Oct 13 12:27:38 CEST 2017
+	Protect against problematic integer offset in NSFE plugin found by Leon Zhao. -CG
+
 Fri Oct 13 12:15:35 CEST 2017
 	Protect against integer overflows in PNG plugin found by Leon Zhao. -CG
 
