@@ -1,17 +1,17 @@
 /*
  * This file is part of libextractor.
  * Copyright (C) 2007, 2009, 2012 Toni Ruottu and Christian Grothoff
- * 
+ *
  * libextractor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published
  * by the Free Software Foundation; either version 3, or (at your
  * option) any later version.
- * 
+ *
  * libextractor is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with libextractor; see the file COPYING.  If not, write to the
  * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
@@ -52,17 +52,16 @@ struct header
 
 /**
  * Read an unsigned integer at the current offset.
- * 
+ *
  * @param data input data to parse
  * @return parsed integer
- */ 
+ */
 static uint32_t
 nsfeuint (const char *data)
 {
-  int i;
   uint32_t value = 0;
 
-  for (i = 3; i > 0; i--)
+  for (int i = 3; i > 0; i--)
     {
       value += (unsigned char) data[i];
       value *= 0x100;
@@ -81,7 +80,7 @@ nsfeuint (const char *data)
  * @return copy of the string at data
  */
 static char *
-nsfestring (const char *data, 
+nsfestring (const char *data,
 	    size_t size)
 {
   char *s;
@@ -181,7 +180,7 @@ info_extract (struct EXTRACTOR_ExtractContext *ec,
 		&data,
 		size))
     return 1;
-  ichunk = data; 
+  ichunk = data;
 
   if (0 != (ichunk->tvflags & DUAL_FLAG))
     {
@@ -192,7 +191,7 @@ info_extract (struct EXTRACTOR_ExtractContext *ec,
       if (0 != (ichunk->tvflags & PAL_FLAG))
         ADD ("PAL", EXTRACTOR_METATYPE_BROADCAST_TELEVISION_SYSTEM);
       else
-        ADD ("NTSC", EXTRACTOR_METATYPE_BROADCAST_TELEVISION_SYSTEM);        
+        ADD ("NTSC", EXTRACTOR_METATYPE_BROADCAST_TELEVISION_SYSTEM);
     }
 
   if (0 != (ichunk->chipflags & VRCVI_FLAG))
@@ -200,25 +199,25 @@ info_extract (struct EXTRACTOR_ExtractContext *ec,
   if (0 != (ichunk->chipflags & VRCVII_FLAG))
     ADD ("VRCVII", EXTRACTOR_METATYPE_TARGET_ARCHITECTURE);
   if (0 != (ichunk->chipflags & FDS_FLAG))
-    ADD ("FDS Sound", EXTRACTOR_METATYPE_TARGET_ARCHITECTURE);    
+    ADD ("FDS Sound", EXTRACTOR_METATYPE_TARGET_ARCHITECTURE);
   if (0 != (ichunk->chipflags & MMC5_FLAG))
-    ADD ("MMC5 audio", EXTRACTOR_METATYPE_TARGET_ARCHITECTURE);    
+    ADD ("MMC5 audio", EXTRACTOR_METATYPE_TARGET_ARCHITECTURE);
   if (0 != (ichunk->chipflags & NAMCO_FLAG))
     ADD ("Namco 106", EXTRACTOR_METATYPE_TARGET_ARCHITECTURE);
   if (0 != (ichunk->chipflags & SUNSOFT_FLAG))
-    ADD ("Sunsoft FME-07", EXTRACTOR_METATYPE_TARGET_ARCHITECTURE);    
+    ADD ("Sunsoft FME-07", EXTRACTOR_METATYPE_TARGET_ARCHITECTURE);
 
   if (size < sizeof (struct infochunk))
     {
       ADD ("1", EXTRACTOR_METATYPE_SONG_COUNT);
       return 0;
     }
-  snprintf (songs, 
+  snprintf (songs,
 	    sizeof (songs),
 	    "%d",
 	    ichunk->songs);
   ADD (songs, EXTRACTOR_METATYPE_SONG_COUNT);
-  snprintf (songs, 
+  snprintf (songs,
 	    sizeof (songs),
 	    "%d",
 	    ichunk->firstsong);
@@ -249,14 +248,14 @@ tlbl_extract (struct EXTRACTOR_ExtractContext *ec,
 		&data,
 		size))
     return 1;
-  cdata = data; 
+  cdata = data;
 
-  left = size; 
+  left = size;
   while (left > 0)
     {
       title = nsfestring (&cdata[size - left], left);
       if (NULL == title)
-	return 0; 
+	return 0;
       length = strlen (title) + 1;
       ADDF (title, EXTRACTOR_METATYPE_TITLE);
       left -= length;
@@ -291,15 +290,15 @@ auth_extract (struct EXTRACTOR_ExtractContext *ec,
 		&data,
 		size))
     return 1;
-  cdata = data; 
+  cdata = data;
 
   album = nsfestring (&cdata[size - left], left);
   if (NULL != album)
     {
       left -= (strlen (album) + 1);
       ADDF (album, EXTRACTOR_METATYPE_ALBUM);
-      if (left < 1)    
-	return 0;    
+      if (left < 1)
+	return 0;
     }
 
   artist = nsfestring (&cdata[size - left], left);
@@ -307,7 +306,7 @@ auth_extract (struct EXTRACTOR_ExtractContext *ec,
     {
       left -= (strlen (artist) + 1);
       ADDF (artist, EXTRACTOR_METATYPE_ARTIST);
-      if (left < 1)    
+      if (left < 1)
 	return 0;
     }
 
@@ -342,24 +341,24 @@ EXTRACTOR_nsfe_extract_method (struct EXTRACTOR_ExtractContext *ec)
   uint64_t off;
   uint32_t chunksize;
   int ret;
-  
+
   if (sizeof (struct header) >
       ec->read (ec->cls,
 		&data,
 		sizeof (struct header)))
     return;
-  head = data; 
+  head = data;
   if (0 != memcmp (head->magicid, "NSFE", 4))
     return;
 
-  if (0 != ec->proc (ec->cls, 
+  if (0 != ec->proc (ec->cls,
 		     "nsfe",
 		     EXTRACTOR_METATYPE_MIMETYPE,
-		     EXTRACTOR_METAFORMAT_UTF8, 
-		     "text/plain", 
-		     "audio/x-nsfe", 
+		     EXTRACTOR_METAFORMAT_UTF8,
+		     "text/plain",
+		     "audio/x-nsfe",
 		     strlen ("audio/x-nsfe") + 1))
-    return; 
+    return;
   off = sizeof (struct header);
   ret = 0;
   while (0 == ret)
@@ -374,11 +373,13 @@ EXTRACTOR_nsfe_extract_method (struct EXTRACTOR_ExtractContext *ec)
 		    8))
 	break;
       chunksize = nsfeuint (data);
+      if (off + chunksize + 8 <= off)
+        break; /* protect against looping */
       off += 8 + chunksize;
       if (0 == memcmp (data + 4, "INFO", 4))
-        ret = info_extract (ec, chunksize);        
+        ret = info_extract (ec, chunksize);
       else if (0 == memcmp (data + 4, "auth", 4))
-	ret = auth_extract (ec, chunksize);        
+	ret = auth_extract (ec, chunksize);
       else if (0 == memcmp (data + 4, "tlbl", 4))
 	ret = tlbl_extract (ec, chunksize);
       /* Ignored chunks: DATA, NEND, plst, time, fade, BANK */

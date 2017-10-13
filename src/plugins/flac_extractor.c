@@ -409,13 +409,7 @@ flac_metadata (const FLAC__StreamDecoder *decoder,
 		  metadata->data.picture.data_length);
 	break;
       }
-    case FLAC__METADATA_TYPE_PADDING:
-    case FLAC__METADATA_TYPE_SEEKTABLE:
-    case FLAC__METADATA_TYPE_CUESHEET:
-    case FLAC__METADATA_TYPE_UNDEFINED:
-#ifdef FLAC__MAX_METADATA_TYPE
-    case FLAC__MAX_METADATA_TYPE:
-#endif
+    default:
       break;
     }
 }
