@@ -413,6 +413,9 @@ flac_metadata (const FLAC__StreamDecoder *decoder,
     case FLAC__METADATA_TYPE_SEEKTABLE:
     case FLAC__METADATA_TYPE_CUESHEET:
     case FLAC__METADATA_TYPE_UNDEFINED:
+#ifdef FLAC__MAX_METADATA_TYPE
+    case FLAC__MAX_METADATA_TYPE:
+#endif
       break;
     }
 }
