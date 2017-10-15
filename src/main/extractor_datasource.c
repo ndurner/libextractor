@@ -64,7 +64,7 @@
 
 /**
  * Enum with the various possible types of compression supported.
- */ 
+ */
 enum ExtractorCompressionType
 {
   /**
@@ -92,49 +92,49 @@ enum ExtractorCompressionType
 /**
  * Abstraction of the data source (file or a memory buffer)
  * for the decompressor.
- */ 
+ */
 struct BufferedFileDataSource
 {
   /**
    * Pointer to the buffer to read from (may be NULL)
-   */ 
+   */
   const void *data;
 
   /**
    * A buffer to read into. For fd != -1: when data != NULL,
    * data is used directly.
-   */ 
+   */
   void *buffer;
 
   /**
    * Size of the file (or the data buffer)
-   */ 
+   */
   uint64_t fsize;
 
   /**
    * Position of the buffer in the file.
-   */ 
+   */
   uint64_t fpos;
 
   /**
    * Position within the buffer.  Our absolute offset in the file
    * is thus 'fpos + buffer_pos'.
-   */ 
+   */
   size_t buffer_pos;
 
   /**
    * Number of valid bytes in the buffer (<= buffer_size)
-   */ 
+   */
   size_t buffer_bytes;
 
   /**
    * Allocated size of the buffer
-   */ 
+   */
   size_t buffer_size;
 
   /**
    * Descriptor of the file to read data from (may be -1)
-   */ 
+   */
   int fd;
 
 };
@@ -142,12 +142,12 @@ struct BufferedFileDataSource
 
 /**
  * An object from which uncompressed data can be read
- */ 
+ */
 struct CompressedFileSource
 {
   /**
    * The source of data
-   */ 
+   */
   struct BufferedFileDataSource *bfds;
 
   /**
@@ -155,49 +155,49 @@ struct CompressedFileSource
    */
   char result[COM_CHUNK_SIZE];
 
-  /** 
+  /**
    * At which offset in 'result' is 'fpos'?
    */
   size_t result_pos;
 
   /**
    * Size of the source (same as bfds->fsize)
-   */ 
+   */
   int64_t fsize;
 
   /**
    * Position within the (decompressed) source
-   */ 
+   */
   int64_t fpos;
 
   /**
    * Total size of the uncompressed data. Remains -1 until
    * decompression is finished.
-   */ 
+   */
   int64_t uncompressed_size;
 
 #if HAVE_LIBBZ2
   /**
    * BZ2 stream object
-   */ 
+   */
   bz_stream bstrm;
 #endif
 
 #if HAVE_ZLIB
   /**
    * ZLIB stream object
-   */ 
+   */
   z_stream strm;
 
   /**
    * Length of gzip header (may be 0, in that case ZLIB parses the header)
-   */ 
+   */
   int gzip_header_length;
 #endif
 
   /**
    * The type of compression used in the source
-   */ 
+   */
   enum ExtractorCompressionType compression_type;
 
 };
@@ -211,14 +211,14 @@ struct CompressedFileSource
  * @param bfds bfds
  * @param pos position
  * @return 0 on success, -1 on error
- */ 
+ */
 static int
-bfds_pick_next_buffer_at (struct BufferedFileDataSource *bfds, 
+bfds_pick_next_buffer_at (struct BufferedFileDataSource *bfds,
 			  uint64_t pos)
 {
   int64_t position;
   ssize_t rd;
-  
+
   if (pos > bfds->fsize)
     {
       LOG ("Invalid seek operation\n");
@@ -257,7 +257,7 @@ bfds_pick_next_buffer_at (struct BufferedFileDataSource *bfds,
  * @return newly allocated bfds
  */
 static struct BufferedFileDataSource *
-bfds_new (const void *data, 
+bfds_new (const void *data,
 	  int fd,
 	  int64_t fsize)
 {
@@ -298,7 +298,7 @@ bfds_new (const void *data,
  * Unallocates bfds
  *
  * @param bfds bfds to deallocate
- */ 
+ */
 static void
 bfds_delete (struct BufferedFileDataSource *bfds)
 {
@@ -315,9 +315,9 @@ bfds_delete (struct BufferedFileDataSource *bfds)
  * @param pos position to seek to
  * @param whence one of the seek constants (SEEK_CUR, SEEK_SET, SEEK_END)
  * @return new absolute position, -1 on error
- */ 
+ */
 static int64_t
-bfds_seek (struct BufferedFileDataSource *bfds, 
+bfds_seek (struct BufferedFileDataSource *bfds,
 	   int64_t pos, int whence)
 {
   uint64_t npos;
@@ -339,10 +339,10 @@ bfds_seek (struct BufferedFileDataSource *bfds,
       if ( (NULL == bfds->buffer) ||
 	   (nbpos < bfds->buffer_bytes) )
 	{
-	  bfds->buffer_pos = nbpos; 
+	  bfds->buffer_pos = nbpos;
 	  return npos;
 	}
-      if (0 != bfds_pick_next_buffer_at (bfds, 
+      if (0 != bfds_pick_next_buffer_at (bfds,
 					 npos))
 	{
 	  LOG ("seek operation failed\n");
@@ -380,7 +380,7 @@ bfds_seek (struct BufferedFileDataSource *bfds,
 	   ( (bfds->fpos <= pos) &&
 	     (bfds->fpos + bfds->buffer_bytes > pos) ) )
 	{
-	  bfds->buffer_pos = pos - bfds->fpos; 
+	  bfds->buffer_pos = pos - bfds->fpos;
 	  return pos;
 	}
       if (0 != bfds_pick_next_buffer_at (bfds, pos))
@@ -400,14 +400,14 @@ bfds_seek (struct BufferedFileDataSource *bfds,
  * fail if 'count' exceeds buffer size.
  *
  * @param bfds bfds
- * @param buf_ptr location to store data 
+ * @param buf_ptr location to store data
  * @param count number of bytes to read
  * @return number of bytes (<= count) available at location pointed by buf_ptr,
  *         0 for end of stream, -1 on error
- */ 
+ */
 static ssize_t
-bfds_read (struct BufferedFileDataSource *bfds, 
-	   void *buf_ptr, 
+bfds_read (struct BufferedFileDataSource *bfds,
+	   void *buf_ptr,
 	   size_t count)
 {
   char *cbuf = buf_ptr;
@@ -422,7 +422,7 @@ bfds_read (struct BufferedFileDataSource *bfds,
   while (count > 0)
     {
       if ( (bfds->buffer_bytes == bfds->buffer_pos) &&
-	   (0 != bfds_pick_next_buffer_at (bfds, 
+	   (0 != bfds_pick_next_buffer_at (bfds,
 					   bfds->fpos + bfds->buffer_bytes)) )
 	{
 	  /* revert to original position, invalidate buffer */
@@ -468,20 +468,20 @@ cfs_init_decompressor_zlib (struct CompressedFileSource *cfs,
       LOG ("Failed to seek to offset 0!\n");
       return -1;
     }
-  /* Process gzip header */  
+  /* Process gzip header */
   if (sizeof (hdata) > bfds_read (cfs->bfds, hdata, sizeof (hdata)))
     return -1;
   if (0 != (hdata[3] & 0x4)) /* FEXTRA  set */
-    gzip_header_length += 2 + (hdata[10] & 0xff) + ((hdata[11] & 0xff) * 256);    
+    gzip_header_length += 2 + (hdata[10] & 0xff) + ((hdata[11] & 0xff) * 256);
 
-  if (0 != (hdata[3] & 0x8)) 
+  if (0 != (hdata[3] & 0x8))
     {
       /* FNAME set */
       char fname[1024];
       char *cptr;
       size_t len;
       ssize_t buf_bytes;
-      
+
       if (gzip_header_length > bfds_seek (cfs->bfds, gzip_header_length, SEEK_SET))
 	{
 	  LOG ("Corrupt gzip, failed to seek to end of header\n");
@@ -490,7 +490,7 @@ cfs_init_decompressor_zlib (struct CompressedFileSource *cfs,
       buf_bytes = bfds_read (cfs->bfds, fname, sizeof (fname));
       if (buf_bytes <= 0)
 	{
-	  LOG ("Corrupt gzip, failed to read filename\n");	  
+	  LOG ("Corrupt gzip, failed to read filename\n");
 	  return -1;
 	}
       if (NULL == (cptr = memchr (fname, 0, buf_bytes)))
@@ -504,18 +504,18 @@ cfs_init_decompressor_zlib (struct CompressedFileSource *cfs,
 		       EXTRACTOR_METAFORMAT_C_STRING, "text/plain",
 		       fname,
 		       len)) )
-	return 0; /* done */	
+	return 0; /* done */
       gzip_header_length += len + 1;
     }
-  
-  if (0 != (hdata[3] & 0x16)) 
+
+  if (0 != (hdata[3] & 0x16))
     {
       /* FCOMMENT set */
       char fcomment[1024];
       char *cptr;
       ssize_t buf_bytes;
       size_t len;
-      
+
       if (gzip_header_length > bfds_seek (cfs->bfds, gzip_header_length, SEEK_SET))
 	{
 	  LOG ("Corrupt gzip, failed to seek to end of header\n");
@@ -524,7 +524,7 @@ cfs_init_decompressor_zlib (struct CompressedFileSource *cfs,
       buf_bytes = bfds_read (cfs->bfds, fcomment, sizeof (fcomment));
       if (buf_bytes <= 0)
 	{
-	  LOG ("Corrupt gzip, failed to read comment\n");	  
+	  LOG ("Corrupt gzip, failed to read comment\n");
 	  return -1;
 	}
       if (NULL == (cptr = memchr (fcomment, 0, buf_bytes)))
@@ -544,14 +544,14 @@ cfs_init_decompressor_zlib (struct CompressedFileSource *cfs,
   if (0 != (hdata[3] & 0x2)) /* FCHRC set */
     gzip_header_length += 2;
   memset (&cfs->strm, 0, sizeof (z_stream));
-  
+
 #ifdef ZLIB_VERNUM
   /* zlib will take care of its header */
   gzip_header_length = 0;
 #endif
   cfs->gzip_header_length = gzip_header_length;
 
-  if (cfs->gzip_header_length != 
+  if (cfs->gzip_header_length !=
       bfds_seek (cfs->bfds, cfs->gzip_header_length, SEEK_SET))
     {
       LOG ("Failed to seek to start to initialize gzip decompressor\n");
@@ -592,7 +592,7 @@ cfs_init_decompressor_zlib (struct CompressedFileSource *cfs,
  * @return 1 on success, -1 on error
  */
 static int
-cfs_init_decompressor_bz2 (struct CompressedFileSource *cfs, 
+cfs_init_decompressor_bz2 (struct CompressedFileSource *cfs,
 			   EXTRACTOR_MetaDataProcessor proc, void *proc_cls)
 {
   if (0 !=
@@ -624,7 +624,7 @@ cfs_init_decompressor_bz2 (struct CompressedFileSource *cfs,
  * @return 1 on success, 0 to terminate extraction, -1 on error
  */
 static int
-cfs_init_decompressor (struct CompressedFileSource *cfs, 
+cfs_init_decompressor (struct CompressedFileSource *cfs,
 		       EXTRACTOR_MetaDataProcessor proc, void *proc_cls)
 {
   cfs->result_pos = 0;
@@ -746,9 +746,9 @@ cfs_destroy (struct CompressedFileSource *cfs)
  * @return newly allocated cfs on success, NULL on error
  */
 struct CompressedFileSource *
-cfs_new (struct BufferedFileDataSource *bfds, 
+cfs_new (struct BufferedFileDataSource *bfds,
 	 int64_t fsize,
-	 enum ExtractorCompressionType compression_type, 
+	 enum ExtractorCompressionType compression_type,
 	 EXTRACTOR_MetaDataProcessor proc, void *proc_cls)
 {
   struct CompressedFileSource *cfs;
@@ -785,7 +785,7 @@ cfs_new (struct BufferedFileDataSource *bfds,
  * @return number of bytes in data. 0 if no more data can be uncompressed, -1 on error
  */
 static ssize_t
-cfs_read_zlib (struct CompressedFileSource *cfs, 
+cfs_read_zlib (struct CompressedFileSource *cfs,
 	       void *data,
 	       size_t size)
 {
@@ -818,7 +818,7 @@ cfs_read_zlib (struct CompressedFileSource *cfs,
       /* read block from original data source */
       in = bfds_read (cfs->bfds,
 		      buf, sizeof (buf));
-      if (in < 0)	
+      if (in < 0)
 	{
 	  LOG ("unexpected EOF\n");
 	  return -1; /* unexpected EOF */
@@ -826,7 +826,7 @@ cfs_read_zlib (struct CompressedFileSource *cfs,
       if (0 == in)
 	{
 	  cfs->uncompressed_size = cfs->fpos;
-	  return rc; 
+	  return rc;
 	}
       cfs->strm.next_in = buf;
       cfs->strm.avail_in = (uInt) in;
@@ -882,7 +882,7 @@ cfs_read_zlib (struct CompressedFileSource *cfs,
  * @return number of bytes in data. 0 if no more data can be uncompressed, -1 on error
  */
 static ssize_t
-cfs_read_bz2 (struct CompressedFileSource *cfs, 
+cfs_read_bz2 (struct CompressedFileSource *cfs,
 	      void *data,
 	      size_t size)
 {
@@ -894,7 +894,7 @@ cfs_read_bz2 (struct CompressedFileSource *cfs,
 
   if (cfs->fpos == cfs->uncompressed_size)
     {
-      /* end of file */      
+      /* end of file */
       return 0;
     }
   rc = 0;
@@ -915,7 +915,7 @@ cfs_read_bz2 (struct CompressedFileSource *cfs,
       /* read block from original data source */
       in = bfds_read (cfs->bfds,
 		      buf, sizeof (buf));
-      if (in < 0)	
+      if (in < 0)
 	{
 	  LOG ("unexpected EOF\n");
 	  return -1; /* unexpected EOF */
@@ -978,7 +978,7 @@ cfs_read_bz2 (struct CompressedFileSource *cfs,
  * @return number of bytes in data. 0 if no more data can be uncompressed, -1 on error
  */
 static ssize_t
-cfs_read (struct CompressedFileSource *cfs, 
+cfs_read (struct CompressedFileSource *cfs,
 	  void *data,
 	  size_t size)
 {
@@ -1006,11 +1006,11 @@ cfs_read (struct CompressedFileSource *cfs,
  *
  * @param cfs cfs to seek on
  * @param position new starting point for the buffer
- * @param whence one of the seek constants (SEEK_CUR, SEEK_SET, SEEK_END) 
+ * @param whence one of the seek constants (SEEK_CUR, SEEK_SET, SEEK_END)
  * @return new absolute buffer position, -1 on error or EOS
  */
 static int64_t
-cfs_seek (struct CompressedFileSource *cfs, 
+cfs_seek (struct CompressedFileSource *cfs,
 	  int64_t position,
 	  int whence)
 {
@@ -1090,7 +1090,7 @@ cfs_seek (struct CompressedFileSource *cfs,
       char buf[COM_CHUNK_SIZE];
       size_t max;
       int64_t ret;
-      
+
       max = (sizeof (buf) > delta) ? delta : sizeof (buf);
       ret = cfs_read (cfs, buf, max);
       if (-1 == ret)
@@ -1107,7 +1107,7 @@ cfs_seek (struct CompressedFileSource *cfs,
 	  return -1;
 	}
       ASSERT (ret <= delta);
-      delta -= ret;      
+      delta -= ret;
     }
   return cfs->fpos;
 }
@@ -1133,17 +1133,17 @@ get_compression_type (struct BufferedFileDataSource *bfds)
     return COMP_TYPE_UNDEFINED;
 
 #if HAVE_ZLIB
-  if ( (bfds->fsize >= MIN_ZLIB_HEADER) && 
-       (read_data[0] == 0x1f) && 
-       (read_data[1] == 0x8b) && 
+  if ( (bfds->fsize >= MIN_ZLIB_HEADER) &&
+       (read_data[0] == 0x1f) &&
+       (read_data[1] == 0x8b) &&
        (read_data[2] == 0x08) )
     return COMP_TYPE_ZLIB;
 #endif
 #if HAVE_LIBBZ2
-  if ( (bfds->fsize >= MIN_BZ2_HEADER) && 
-       (read_data[0] == 'B') && 
-       (read_data[1] == 'Z') && 
-       (read_data[2] == 'h')) 
+  if ( (bfds->fsize >= MIN_BZ2_HEADER) &&
+       (read_data[0] == 'B') &&
+       (read_data[1] == 'Z') &&
+       (read_data[2] == 'h'))
     return COMP_TYPE_BZ2;
 #endif
   return COMP_TYPE_INVALID;
@@ -1152,7 +1152,7 @@ get_compression_type (struct BufferedFileDataSource *bfds)
 
 /**
  * Handle to a datasource we can use for the plugins.
- */ 
+ */
 struct EXTRACTOR_Datasource
 {
 
@@ -1183,7 +1183,7 @@ struct EXTRACTOR_Datasource
  */
 struct EXTRACTOR_Datasource *
 EXTRACTOR_datasource_create_from_file_ (const char *filename,
-					EXTRACTOR_MetaDataProcessor proc, 
+					EXTRACTOR_MetaDataProcessor proc,
 					void *proc_cls)
 {
   struct BufferedFileDataSource *bfds;
@@ -1203,7 +1203,7 @@ EXTRACTOR_datasource_create_from_file_ (const char *filename,
       return NULL;
     }
   if ( (0 != FSTAT (fd, &sb)) ||
-       (S_ISDIR (sb.st_mode)) )       
+       (S_ISDIR (sb.st_mode)) )
     {
       if (! S_ISDIR (sb.st_mode))
 	LOG_STRERROR_FILE ("fstat", filename);
@@ -1228,6 +1228,7 @@ EXTRACTOR_datasource_create_from_file_ (const char *filename,
     {
       LOG_STRERROR ("malloc");
       bfds_delete (bfds);
+      (void) CLOSE (fd);
       return NULL;
     }
   ds->bfds = bfds;
@@ -1344,7 +1345,7 @@ EXTRACTOR_datasource_read_ (void *cls,
 /**
  * Seek in the datasource.  Use 'SEEK_CUR' for whence and 'pos' of 0 to
  * obtain the current position in the file.
- * 
+ *
  * @param cls must be a 'struct EXTRACTOR_Datasource'
  * @param pos position to seek (see 'man lseek')
  * @param whence how to see (absolute to start, relative, absolute to end)
@@ -1376,18 +1377,18 @@ EXTRACTOR_datasource_seek_ (void *cls,
 
 /**
  * Determine the overall size of the data source (after compression).
- * 
+ *
  * @param cls must be a 'struct EXTRACTOR_Datasource'
  * @param force force computing the size if it is unavailable
  * @return overall file size, UINT64_MAX on error or unknown
- */ 
-int64_t 
+ */
+int64_t
 EXTRACTOR_datasource_get_size_ (void *cls,
 				int force)
 {
   struct EXTRACTOR_Datasource *ds = cls;
   char buf[32 * 1024];
-  uint64_t pos;  
+  uint64_t pos;
 
   if (NULL != ds->cfs)
     {
@@ -1401,10 +1402,10 @@ EXTRACTOR_datasource_get_size_ (void *cls,
 	    {
 	      LOG ("Serious problem, I moved the buffer to determine the file size but could not restore it...\n");
 	      return -1;
-	    } 
+	    }
 	  if (-1 == ds->cfs->uncompressed_size)
 	    return -1;
-	}	
+	}
       return ds->cfs->uncompressed_size;
     }
   return ds->bfds->fsize;
