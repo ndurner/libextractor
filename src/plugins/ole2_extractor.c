@@ -586,13 +586,16 @@ history_extract (GsfInput *stream,
           bsize = strlen (author) + strlen (filename) + 512;
           if (NULL != (rbuf = malloc (bsize)))
 	    {
-              if (bsize >
-                  snprintf (rbuf,
-                            bsize,
-                            _("Revision #%u: Author `%s' worked on `%s'"),
-                            i,
-                            author,
-                            filename))
+              int snret;
+
+              snret = snprintf (rbuf,
+                                bsize,
+                                _("Revision #%u: Author `%s' worked on `%s'"),
+                                i,
+                                author,
+                                filename);
+              if ( (-1 != snret) &&
+                   (bsize > (size_t) snret) )
                 {
                   ret = add_metadata (proc,
                                       proc_cls,
