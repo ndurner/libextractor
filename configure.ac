@@ -1,22 +1,22 @@
 # Process this file with autoconf to produce a configure script.
 #
-#  This file is part of TALER
-#  Copyright (C) 2014 GNUnet e.V.
+#  This file is part of GNU libextractor
+#  Copyright (C) 2003-2017 Christian Grothoff
 #
-#  TALER is free software; you can redistribute it and/or modify it under the
+#  GNU libextractor is free software; you can redistribute it and/or modify it under the
 #  terms of the GNU General Public License as published by the Free Software
 #  Foundation; either version 3, or (at your option) any later version.
 #
-#  TALER is distributed in the hope that it will be useful, but WITHOUT ANY
+#  GNU libextractor is distributed in the hope that it will be useful, but WITHOUT ANY
 #  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
 #  A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 #
 #  You should have received a copy of the GNU General Public License along with
-#  TALER; see the file COPYING.  If not, If not, see <http://www.gnu.org/license>
+#  GNU libextractor; see the file COPYING.  If not, If not, see <http://www.gnu.org/license>
 #
 #
 AC_PREREQ(2.61)
-AC_INIT([libextractor], [1.5], [bug-libextractor@gnu.org])
+AC_INIT([libextractor], [1.6], [bug-libextractor@gnu.org])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
 AH_TOP([#define _GNU_SOURCE  1])
@@ -25,7 +25,7 @@ AC_CANONICAL_HOST
 AC_CANONICAL_SYSTEM
 
 LIB_VERSION_CURRENT=4
-LIB_VERSION_REVISION=4
+LIB_VERSION_REVISION=5
 LIB_VERSION_AGE=1
 AC_SUBST(LIB_VERSION_CURRENT)
 AC_SUBST(LIB_VERSION_REVISION)

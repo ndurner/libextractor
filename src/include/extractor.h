@@ -1,6 +1,6 @@
 /*
      This file is part of libextractor.
-     Copyright (C) 2002-2013 Vidyut Samanta and Christian Grothoff
+     Copyright (C) 2002-2017 Vidyut Samanta and Christian Grothoff
 
      libextractor is free software; you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published
@@ -35,7 +35,7 @@ extern "C" {
  * 0.2.6-1 => 0x00020601
  * 4.5.2-0 => 0x04050200
  */
-#define EXTRACTOR_VERSION 0x01050001
+#define EXTRACTOR_VERSION 0x01060000
 
 #include <stdio.h>
 

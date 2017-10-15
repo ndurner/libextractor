@@ -5,7 +5,9 @@ Sun Oct 15 19:36:41 CEST 2017
 	Avoid malloc(0) in DEB extractor under certain conditions.
 	Properly initialize 'duration' in ffmpeg extractor.
 	Fix potential buffer underflow read in DEB extractor.
-	Avoid NPE in 'extract' if extracted value has 0 bytes. -CG
+	Avoid NPE in 'extract' if extracted value has 0 bytes.
+	Fix various minor cosmetic issues.
+	Releasing GNU libextractor 1.6. -CG
 
 Fri Oct 13 12:30:37 CEST 2017
 	Properly check read error in NSF plugin (from signedness confusion) found by Leon Zhao. -CG
