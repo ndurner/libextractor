@@ -535,6 +535,7 @@ EXTRACTOR_IPC_channel_recv_ (struct EXTRACTOR_Channel **channels,
 	      LOG ("Inbound message from channel too large, aborting\n");
 	      EXTRACTOR_IPC_channel_destroy_ (channel);
 	      channels[i] = NULL;
+              continue;
 	    }
 	  channel->mdata_size *= 2;
 	  if (channel->mdata_size > MAX_META_DATA)
