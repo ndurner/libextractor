@@ -79,16 +79,16 @@ ignore_sigpipe ()
 /**
  * Information about command-line options.
  */
-struct Help 
+struct Help
 {
   /**
    * Single-character option name, '\0' for none.
-   */ 
+   */
   char shortArg;
-  
+
   /**
    * Long name of the option.
-   */ 
+   */
   const char * longArg;
 
   /**
@@ -116,10 +116,10 @@ struct Help
  * @param description program description
  * @param opt program options (NULL-terminated array)
  */
-static void 
+static void
 format_help (const char *general,
 	     const char *description,
-	     const struct Help *opt) 
+	     const struct Help *opt)
 {
   size_t slen;
   unsigned int i;
@@ -128,14 +128,14 @@ format_help (const char *general,
   size_t p;
   char scp[80];
   const char *trans;
-	
+
   printf (_("Usage: %s\n%s\n\n"),
 	  gettext(general),
 	  gettext(description));
   printf (_("Arguments mandatory for long options are also mandatory for short options.\n"));
   slen = 0;
   i = 0;
-  while (NULL != opt[i].description) 
+  while (NULL != opt[i].description)
     {
       if (0 == opt[i].shortArg)
 	printf ("      ");
@@ -145,18 +145,18 @@ format_help (const char *general,
       printf ("--%s",
 	      opt[i].longArg);
       slen = 8 + strlen(opt[i].longArg);
-      if (NULL != opt[i].mandatoryArg) 
+      if (NULL != opt[i].mandatoryArg)
 	{
 	  printf ("=%s",
 		  opt[i].mandatoryArg);
 	  slen += 1+strlen(opt[i].mandatoryArg);
 	}
-      if (slen > BORDER) 
+      if (slen > BORDER)
 	{
 	  printf ("\n%*s", BORDER, "");
 	  slen = BORDER;
 	}
-      if (slen < BORDER) 
+      if (slen < BORDER)
 	{
 	  printf ("%*s", (int) (BORDER - slen), "");
 	  slen = BORDER;
@@ -165,7 +165,7 @@ format_help (const char *general,
       ml = strlen(trans);
       p = 0;
     OUTER:
-      while (ml - p > 78 - slen) 
+      while (ml - p > 78 - slen)
 	{
 	  for (j=p+78-slen;j>p;j--)
 	    {
@@ -192,7 +192,7 @@ format_help (const char *general,
 	  printf ("%s\n%*s",
 		  scp,
 		  BORDER+2,
-		  "");	
+		  "");
 	  slen = BORDER+2;
 	  p = p + 78 - slen;
 	}
@@ -211,7 +211,7 @@ format_help (const char *general,
 static void
 print_help ()
 {
-  static struct Help help[] = 
+  static struct Help help[] =
     {
       { 'b', "bibtex", NULL,
 	gettext_noop("print output in bibtex format") },
@@ -258,13 +258,13 @@ print_help ()
  *        used in the main libextractor library and yielding
  *        meta data).
  * @param type libextractor-type describing the meta data
- * @param format basic format information about data 
+ * @param format basic format information about data
  * @param data_mime_type mime-type of data (not of the original file);
  *        can be NULL (if mime-type is not known)
  * @param data actual meta-data found
  * @param data_len number of bytes in data
  * @return 0 to continue extracting, 1 to abort
- */ 
+ */
 static int
 print_selected_keywords (void *cls,
 			 const char *plugin_name,
@@ -273,7 +273,7 @@ print_selected_keywords (void *cls,
 			 const char *data_mime_type,
 			 const char *data,
 			 size_t data_len)
-{ 
+{
   char *keyword;
 #if HAVE_ICONV
   iconv_t cd;
@@ -298,6 +298,8 @@ print_selected_keywords (void *cls,
 	       (unsigned int) data_len);
       break;
     case EXTRACTOR_METAFORMAT_UTF8:
+      if (0 == data_len)
+        break;
 #if HAVE_ICONV
       cd = iconv_open (nl_langinfo(CODESET), "UTF-8");
       if (((iconv_t) -1) != cd)
@@ -306,7 +308,7 @@ print_selected_keywords (void *cls,
 				data_len);
       else
 #endif
-	keyword = strdup (data);
+        keyword = strdup (data);
       if (NULL != keyword)
 	{
 	  FPRINTF (stdout,
@@ -349,13 +351,13 @@ print_selected_keywords (void *cls,
  *        used in the main libextractor library and yielding
  *        meta data).
  * @param type libextractor-type describing the meta data
- * @param format basic format information about data 
+ * @param format basic format information about data
  * @param data_mime_type mime-type of data (not of the original file);
  *        can be NULL (if mime-type is not known)
  * @param data actual meta-data found
  * @param data_len number of bytes in data
  * @return 0 to continue extracting, 1 to abort
- */ 
+ */
 static int
 print_selected_keywords_grep_friendly (void *cls,
 				       const char *plugin_name,
@@ -364,9 +366,9 @@ print_selected_keywords_grep_friendly (void *cls,
 				       const char *data_mime_type,
 				       const char *data,
 				       size_t data_len)
-{ 
+{
   char *keyword;
-#if HAVE_ICONV 
+#if HAVE_ICONV
   iconv_t cd;
 #endif
   const char *mt;
@@ -378,14 +380,14 @@ print_selected_keywords_grep_friendly (void *cls,
     mt = gettext_noop ("unknown");
   switch (format)
     {
-    case EXTRACTOR_METAFORMAT_UNKNOWN:      
+    case EXTRACTOR_METAFORMAT_UNKNOWN:
       break;
     case EXTRACTOR_METAFORMAT_UTF8:
       if (verbose > 1)
 	FPRINTF (stdout,
 		 "%s: ",
 		 gettext(mt));
-#if HAVE_ICONV 
+#if HAVE_ICONV
       cd = iconv_open (nl_langinfo (CODESET), "UTF-8");
       if (((iconv_t) -1) != cd)
 	keyword = iconv_helper (cd,
@@ -401,7 +403,7 @@ print_selected_keywords_grep_friendly (void *cls,
 		   keyword);
 	  free (keyword);
 	}
-#if HAVE_ICONV 
+#if HAVE_ICONV
       if (((iconv_t) -1) != cd)
 	iconv_close (cd);
 #endif
@@ -474,7 +476,7 @@ static struct BibTexMap btm[] =
     { "institution", EXTRACTOR_METATYPE_PUBLISHER_INSTITUTION, NULL },
     { "series", EXTRACTOR_METATYPE_PUBLISHER_SERIES, NULL},
     { "month", EXTRACTOR_METATYPE_PUBLICATION_MONTH, NULL },
-    { "url", EXTRACTOR_METATYPE_URL, NULL}, 
+    { "url", EXTRACTOR_METATYPE_URL, NULL},
     { "note", EXTRACTOR_METATYPE_COMMENT, NULL},
     { "eprint", EXTRACTOR_METATYPE_BIBTEX_EPRINT, NULL },
     { "type", EXTRACTOR_METATYPE_PUBLICATION_TYPE, NULL },
@@ -485,11 +487,11 @@ static struct BibTexMap btm[] =
 /**
  * Clean up the bibtex processor in preparation for the next round.
  */
-static void 
+static void
 cleanup_bibtex ()
 {
   unsigned int i;
-  
+
   for (i = 0; NULL != btm[i].bibTexName; i++)
     {
       free (btm[i].value);
@@ -509,7 +511,7 @@ cleanup_bibtex ()
  *        used in the main libextractor library and yielding
  *        meta data).
  * @param type libextractor-type describing the meta data
- * @param format basic format information about data 
+ * @param format basic format information about data
  * @param data_mime_type mime-type of data (not of the original file);
  *        can be NULL (if mime-type is not known)
  * @param data actual meta-data found
@@ -527,6 +529,8 @@ print_bibtex (void *cls,
 {
   unsigned int i;
 
+  if (0 == data_len)
+    return 0;
   if (YES != print[type])
     return 0;
   if (EXTRACTOR_METAFORMAT_UTF8 != format)
@@ -563,7 +567,7 @@ finish_bibtex (const char *fn)
     et = "misc";
   if ( (NULL == btm[0].value) ||
        (NULL == btm[1].value) ||
-       (NULL == btm[2].value) )          
+       (NULL == btm[2].value) )
     FPRINTF (stdout,
 	     "@%s %s { ",
 	     et,
@@ -577,9 +581,9 @@ finish_bibtex (const char *fn)
 		btm[1].value,
 		btm[0].value);
       for (n=strlen (temp)-1;n>=0;n-- )
-	if (! isalnum ( (unsigned char) temp[n]) ) 
+	if (! isalnum ( (unsigned char) temp[n]) )
 	  temp[n] = '_';
-	else 
+	else
 	  temp[n] = tolower ( (unsigned char) temp[n]);
       FPRINTF (stdout,
 	       "@%s %s { ",
@@ -587,7 +591,7 @@ finish_bibtex (const char *fn)
 	       temp);
     }
   for (i=0; NULL != btm[i].bibTexName; i++)
-    if (NULL != btm[i].value) 
+    if (NULL != btm[i].value)
       FPRINTF (stdout,
 	       "\t%s = {%s},\n",
 	       btm[i].bibTexName,
@@ -610,9 +614,9 @@ _wchar_to_str (const wchar_t *wstr, char **retstr, UINT cp)
   error = GetLastError ();
   if (len <= 0)
     return -1;
-  
+
   str = malloc (sizeof (char) * len);
-  
+
   SetLastError (0);
   lenc = WideCharToMultiByte (cp, 0, wstr, -1, str, len, NULL, (cp == CP_UTF8 || cp == CP_UTF7) ? NULL : &lossy);
   error = GetLastError ();
@@ -758,7 +762,7 @@ main (int argc, char *argv[])
 #endif
   if (NULL == (print = malloc (sizeof (int) * EXTRACTOR_metatype_get_max ())))
     {
-      FPRINTF (stderr, 
+      FPRINTF (stderr,
 	       "malloc failed: %s\n",
 	       strerror (errno));
       return 1;
@@ -791,7 +795,7 @@ main (int argc, char *argv[])
       };
       option_index = 0;
       c = getopt_long (utf8_argc,
-		       utf8_argv, 
+		       utf8_argv,
 		       "abghiml:Lnp:vVx:",
 		       long_options,
 		       &option_index);
@@ -848,7 +852,7 @@ main (int argc, char *argv[])
 	  nodefault = YES;
 	  break;
 	case 'p':
-	  if (NULL == optarg) 
+	  if (NULL == optarg)
 	    {
 	      FPRINTF(stderr,
 		      _("You must specify an argument for the `%s' option (option ignored).\n"),
@@ -865,11 +869,11 @@ main (int argc, char *argv[])
 	  i = 0;
 	  while (NULL != EXTRACTOR_metatype_to_string (i))
 	    {
-	      if ( (0 == strcmp (optarg, 
+	      if ( (0 == strcmp (optarg,
 				 EXTRACTOR_metatype_to_string (i))) ||
-		   (0 == strcmp (optarg, 
+		   (0 == strcmp (optarg,
 				 gettext(EXTRACTOR_metatype_to_string (i)))) )
-		
+
 		{
 		  print[i] = YES;
 		  break;
@@ -897,9 +901,9 @@ main (int argc, char *argv[])
 	  i = 0;
 	  while (NULL != EXTRACTOR_metatype_to_string (i))
 	    {
-	      if ( (0 == strcmp (optarg, 
+	      if ( (0 == strcmp (optarg,
 				 EXTRACTOR_metatype_to_string (i))) ||
-		   (0 == strcmp (optarg, 
+		   (0 == strcmp (optarg,
 				 gettext(EXTRACTOR_metatype_to_string (i)))) )
 		{
 		  print[i] = NO;
@@ -950,7 +954,7 @@ main (int argc, char *argv[])
   else
     plugins = NULL;
   if (NULL != libraries)
-    plugins = EXTRACTOR_plugin_add_config (plugins, 
+    plugins = EXTRACTOR_plugin_add_config (plugins,
 					   libraries,
 					   in_process
 					   ? EXTRACTOR_OPTION_IN_PROCESS
@@ -962,7 +966,7 @@ main (int argc, char *argv[])
   if (YES == bibtex)
     FPRINTF(stdout,
 	    "%s", _("% BiBTeX file\n"));
-  for (i = optind; i < utf8_argc; i++) 
+  for (i = optind; i < utf8_argc; i++)
     {
       errno = 0;
       if (YES == grepfriendly)
@@ -1001,7 +1005,7 @@ main (int argc, char *argv[])
 	    }
 	  else
 	    {
-	      if (verbose > 0) 
+	      if (verbose > 0)
 		FPRINTF(stderr,
 			"%s: %s: %s\n",
 			utf8_argv[0], utf8_argv[i], strerror(errno));
