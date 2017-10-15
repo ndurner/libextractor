@@ -68,7 +68,7 @@ static int
 add_metadata (EXTRACTOR_MetaDataProcessor proc,
 	      void *proc_cls,
 	      const char *phrase,
-	      enum EXTRACTOR_MetaType type) 
+	      enum EXTRACTOR_MetaType type)
 {
   char *tmp;
   int ret;
@@ -83,11 +83,11 @@ add_metadata (EXTRACTOR_MetaDataProcessor proc,
     return 0;
   if (NULL == (tmp = strdup (phrase)))
     return 0;
-  
+
   while ( (strlen (tmp) > 0) &&
 	  (isblank ((unsigned char) tmp [strlen (tmp) - 1])) )
     tmp [strlen (tmp) - 1] = '\0';
-  ret = proc (proc_cls, 
+  ret = proc (proc_cls,
 	      "ole2",
 	      type,
 	      EXTRACTOR_METAFORMAT_UTF8,
@@ -103,7 +103,7 @@ add_metadata (EXTRACTOR_MetaDataProcessor proc,
  * Entry in the map from OLE meta type  strings
  * to LE types.
  */
-struct Matches 
+struct Matches
 {
   /**
    * OLE description.
@@ -152,7 +152,7 @@ static struct Matches tmap[] = {
   { "meta:creation-date", EXTRACTOR_METATYPE_CREATION_DATE },
   { "meta:generator", EXTRACTOR_METATYPE_CREATED_BY_SOFTWARE },
   { "meta:template", EXTRACTOR_METATYPE_TEMPLATE },
-  { "meta:editing-cycles", EXTRACTOR_METATYPE_EDITING_CYCLES }, 
+  { "meta:editing-cycles", EXTRACTOR_METATYPE_EDITING_CYCLES },
   /* { "Dictionary", EXTRACTOR_METATYPE_LANGUAGE },  */
   /* { "gsf:security", EXTRACTOR_SECURITY }, */
   /* { "gsf:scale", EXTRACTOR_SCALE }, // always "false"? */
@@ -192,10 +192,10 @@ struct ProcContext
  * @param value the UTF8 representation of the meta data
  * @param user_data our 'struct ProcContext' (closure)
  */
-static void 
+static void
 process_metadata (gpointer key,
 		  gpointer value,
-		  gpointer user_data) 
+		  gpointer user_data)
 {
   const char *type = key;
   const GsfDocProp *prop = value;
@@ -211,7 +211,7 @@ process_metadata (gpointer key,
     return;
   gval = gsf_doc_prop_get_val (prop);
 
-  if (G_VALUE_TYPE(gval) == G_TYPE_STRING) 
+  if (G_VALUE_TYPE(gval) == G_TYPE_STRING)
     {
       contents = strdup (g_value_get_string (gval));
     }
@@ -241,8 +241,8 @@ process_metadata (gpointer key,
       else if (0 == strncmp(value, "Microsoft Office", 16))
 	mimetype = "application/vnd.ms-office";
       if (0 != add_metadata (pc->proc,
-			     pc->proc_cls, 
-			     mimetype, 
+			     pc->proc_cls,
+			     mimetype,
 			     EXTRACTOR_METATYPE_MIMETYPE))
 	{
 	  free (contents);
@@ -270,7 +270,7 @@ process_metadata (gpointer key,
 /**
  * Function called on (Document)SummaryInformation OLE
  * streams.
- * 
+ *
  * @param in the input OLE stream
  * @param proc function to call on meta data found
  * @param proc_cls closure for proc
@@ -312,7 +312,7 @@ process (GsfInput *in,
 /**
  * Function called on SfxDocumentInfo OLE
  * streams.
- * 
+ *
  * @param in the input OLE stream
  * @param proc function to call on meta data found
  * @param proc_cls closure for proc
@@ -321,11 +321,11 @@ process (GsfInput *in,
 static int
 process_star_office (GsfInput *src,
 		     EXTRACTOR_MetaDataProcessor proc,
-		     void *proc_cls) 
+		     void *proc_cls)
 {
   off_t size = gsf_input_size (src);
 
-  if ( (size < 0x374) || 
+  if ( (size < 0x374) ||
        (size > 4*1024*1024) )  /* == 0x375?? */
     return 0;
   {
@@ -339,7 +339,7 @@ process_star_office (GsfInput *src,
 			strlen ("SfxDocumentInfo"))) ||
 	 (buf[0x11] != 0x0B) ||
 	 (buf[0x13] != 0x00) || /* pw protected! */
-	 (buf[0x12] != 0x00) ) 
+	 (buf[0x12] != 0x00) )
       return 0;
     buf[0xd3] = '\0';
     if ( (buf[0x94] + buf[0x93] > 0) &&
@@ -374,7 +374,7 @@ process_star_office (GsfInput *src,
 
 /**
  * We use "__" to translate using iso-639.
- * 
+ *
  * @param a string to translate
  * @return translated string
  */
@@ -384,11 +384,11 @@ process_star_office (GsfInput *src,
 /**
  * Get the language string for the given language ID (lid)
  * value.
- * 
+ *
  * @param lid language id value
  * @return language string corresponding to the lid
  */
-static const char * 
+static const char *
 lid_to_language (unsigned int lid)
 {
   switch (lid)
@@ -554,7 +554,7 @@ history_extract (GsfInput *stream,
   nRev = (lbuffer[2] + (lbuffer[3] << 8)) / 2;
   where = 6;
   ret = 0;
-  for (i=0; i < nRev; i++) 
+  for (i=0; i < nRev; i++)
     {
       if (where >= lcbSttbSavedBy)
 	break;
@@ -568,7 +568,7 @@ history_extract (GsfInput *stream,
       where += length * 2 + 1;
       length = lbuffer[where++];
       if ( (where + 2 * length >= lcbSttbSavedBy) ||
-	   (where + 2 * length + 1 <= where) ) 
+	   (where + 2 * length + 1 <= where) )
 	{
 	  if (NULL != author)
 	    free(author);
@@ -581,17 +581,24 @@ history_extract (GsfInput *stream,
       if ( (NULL != author) &&
 	   (NULL != filename) )
 	{
-	  if (NULL != (rbuf = malloc (strlen (author) + strlen (filename) + 512)))
+          size_t bsize;
+
+          bsize = strlen (author) + strlen (filename) + 512;
+          if (NULL != (rbuf = malloc (bsize))
 	    {
-	      snprintf (rbuf, 
-			512 + strlen (author) + strlen (filename),
-			_("Revision #%u: Author `%s' worked on `%s'"),
-			i,
-			author,
-			filename);
-	      ret = add_metadata (proc, proc_cls,
-				  rbuf,
-				  EXTRACTOR_METATYPE_REVISION_HISTORY);    
+              if (bsize >
+                  snprintf (rbuf,
+                            bsize,
+                            _("Revision #%u: Author `%s' worked on `%s'"),
+                            i,
+                            author,
+                            filename))
+                {
+                  ret = add_metadata (proc,
+                                      proc_cls,
+                                      rbuf,
+                                      EXTRACTOR_METATYPE_REVISION_HISTORY);
+                }
 	      free (rbuf);
 	    }
 	}
@@ -619,7 +626,7 @@ history_extract (GsfInput *stream,
 /**
  * Internal state of an "LeInput" object.
  */
-typedef struct _LeInputPrivate 
+typedef struct _LeInputPrivate
 {
   /**
    * Our extraction context.
@@ -631,13 +638,13 @@ typedef struct _LeInputPrivate
 /**
  * Overall state of an "LeInput" object.
  */
-typedef struct _LeInput 
+typedef struct _LeInput
 {
   /**
    * Inherited state from parent (GsfInput).
    */
   GsfInput input;
-  
+
   /*< private > */
   /**
    * Private state of the LeInput.
@@ -665,7 +672,7 @@ typedef struct _LeInputClass
 
 
 /**
- * Constructor for LeInput objects. 
+ * Constructor for LeInput objects.
  *
  * @param ec extraction context to use
  * @return the LeInput, NULL on error
@@ -737,15 +744,15 @@ le_input_read (GsfInput *input,
   void *buf;
   uint64_t old_off;
   ssize_t ret;
-  
+
   ec = li->priv->ec;
   old_off = ec->seek (ec->cls, 0, SEEK_CUR);
-  if (num_bytes 
+  if (num_bytes
       != (ret = ec->read (ec->cls,
 			  &buf,
 			  num_bytes)))
     {
-      /* we don't support partial reads; 
+      /* we don't support partial reads;
 	 most other GsfInput implementations in this case
 	 allocate some huge temporary buffer just to avoid
 	 the partial read; we might need to do that as well!? */
@@ -794,7 +801,7 @@ le_input_seek (GsfInput *input,
     default:
       return TRUE;
     }
-  if (-1 == 
+  if (-1 ==
       (ret = ec->seek (ec->cls,
 		       offset,
 		       w)))
@@ -869,7 +876,7 @@ le_input_new (struct EXTRACTOR_ExtractContext *ec)
 
 
 /**
- * Main entry method for the OLE2 extraction plugin.  
+ * Main entry method for the OLE2 extraction plugin.
  *
  * @param ec extraction context provided to the plugin
  */
@@ -933,7 +940,7 @@ EXTRACTOR_ole2_extract_method (struct EXTRACTOR_ExtractContext *ec)
       return;
     }
   ret = 0;
-  for (i=0;i<gsf_infile_num_children (infile);i++) 
+  for (i=0;i<gsf_infile_num_children (infile);i++)
     {
       if (0 != ret)
 	break;
@@ -944,7 +951,7 @@ EXTRACTOR_ole2_extract_method (struct EXTRACTOR_ExtractContext *ec)
 	     (0 == strcmp (name, "\005DocumentSummaryInformation")) ) &&
 	   (NULL != (src = gsf_infile_child_by_index (infile, i))) )
 	ret = process (src,
-		       ec->proc, 
+		       ec->proc,
 		       ec->cls);
       if ( (0 == strcmp (name, "SfxDocumentInfo")) &&
 	   (NULL != (src = gsf_infile_child_by_index (infile, i))) )
@@ -959,7 +966,7 @@ EXTRACTOR_ole2_extract_method (struct EXTRACTOR_ExtractContext *ec)
 
   if (lcb < 6)
     goto CLEANUP;
-  for (i=0;i<gsf_infile_num_children (infile);i++) 
+  for (i=0;i<gsf_infile_num_children (infile);i++)
     {
       if (ret != 0)
 	break;
@@ -974,7 +981,7 @@ EXTRACTOR_ole2_extract_method (struct EXTRACTOR_ExtractContext *ec)
 				 fcb,
 				 ec->proc, ec->cls);
 	  g_object_unref (G_OBJECT (src));
-	}    
+	}
     }
  CLEANUP:
   g_object_unref (G_OBJECT (infile));
@@ -990,11 +997,11 @@ EXTRACTOR_ole2_extract_method (struct EXTRACTOR_ExtractContext *ec)
  * @param message unused
  * @param user_data unused
  */
-static void 
+static void
 nolog (const gchar *log_domain,
        GLogLevelFlags log_level,
        const gchar *message,
-       gpointer user_data) 
+       gpointer user_data)
 {
   /* do nothing */
 }
@@ -1004,8 +1011,8 @@ nolog (const gchar *log_domain,
  * OLE2 plugin constructor. Initializes glib and gsf, in particular
  * gsf logging is disabled.
  */
-void __attribute__ ((constructor)) 
-ole2_ltdl_init() 
+void __attribute__ ((constructor))
+ole2_ltdl_init()
 {
 #if !GLIB_CHECK_VERSION(2, 35, 0)
   g_type_init ();
@@ -1015,7 +1022,7 @@ ole2_ltdl_init()
 #endif
   /* disable logging -- thanks, Jody! */
   g_log_set_handler ("libgsf:msole",
-		     G_LOG_LEVEL_CRITICAL | G_LOG_LEVEL_WARNING,  
+		     G_LOG_LEVEL_CRITICAL | G_LOG_LEVEL_WARNING,
 		     &nolog, NULL);
 }
 
@@ -1024,7 +1031,7 @@ ole2_ltdl_init()
  * OLE2 plugin destructor.  Shutdown of gsf.
  */
 void __attribute__ ((destructor))
-ole2_ltdl_fini() 
+ole2_ltdl_fini()
 {
 #ifdef HAVE_GSF_INIT
   gsf_shutdown();
