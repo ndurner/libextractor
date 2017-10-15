@@ -393,6 +393,8 @@ do_extract (struct EXTRACTOR_PluginList *plugins,
                                               DEFAULT_SHM_SIZE);
   else
     ready = 0;
+  if (-1 == ready)
+    return; /* failed to ready _any_ data!? */
   have_in_memory = 0;
   prp.file_finished = 0;
   prp.proc = proc;
