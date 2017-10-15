@@ -621,6 +621,7 @@ extract_video (struct EXTRACTOR_ExtractContext *ec)
   int err;
   int frame_finished;
   unsigned char *iob;
+  int duration;
 
   if (NULL == (iob = av_malloc (16 * 1024)))
     return;
@@ -704,32 +705,27 @@ extract_video (struct EXTRACTOR_ExtractContext *ec)
       av_free (io_ctx);
       return;
     }
-  int duration;
+
   if (format_ctx->duration == AV_NOPTS_VALUE)
-	{
-	duration = -1;
+    {
+      duration = -1;
 #if DEBUG
-    fprintf (stderr,
-	     "Duration unknown\n");
+      fprintf (stderr,
+               "Duration unknown\n");
 #endif
-	}
+    }
   else
-  {
-#if DEBUG
-	duration = format_ctx->duration;
-    fprintf (stderr,
-	     "Duration: %lld\n",
-	     format_ctx->duration);
-#endif
-	}
+    {
+      duration = format_ctx->duration;
+    }
 
   /* if duration is known, seek to first tried,
    * else use 10 sec into stream */
 
   if(-1 != duration)
-	err = av_seek_frame (format_ctx, -1, (duration/3), 0);
+    err = av_seek_frame (format_ctx, -1, (duration/3), 0);
   else
-	err = av_seek_frame (format_ctx, -1, 10 * AV_TIME_BASE, 0);
+    err = av_seek_frame (format_ctx, -1, 10 * AV_TIME_BASE, 0);
 
   if (err >= 0)
     avcodec_flush_buffers (codec_ctx);
