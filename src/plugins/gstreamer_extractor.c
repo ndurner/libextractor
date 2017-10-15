@@ -1078,8 +1078,11 @@ send_structure_foreach (GQuark field_id,
     /* This is a potential source of invalid characters */
     /* And it also might attempt to serialize binary data - such as images. */
     str = gst_value_serialize (value);
-    g_free (str);
-    str = NULL;
+    if (NULL != str)
+    {
+      g_free (str);
+      str = NULL;
+    }
     break;
   }
   if (NULL != str)
@@ -1093,21 +1096,33 @@ send_structure_foreach (GQuark field_id,
 					    named_tags[i].le_type,
 					    EXTRACTOR_METAFORMAT_UTF8, "text/plain",
 					    (const char *) str, strlen (str) + 1);
-	  g_free (str);
-	  str = NULL;
+          if (NULL != str)
+            {
+              g_free (str);
+              str = NULL;
+            }
 	  break;
 	}
   }
   if (NULL != str)
   {
-    gchar *senddata = g_strdup_printf ("%s=%s", field_name, str);
-    ps->time_to_leave = ps->ec->proc (ps->ec->cls, "gstreamer",
-				      EXTRACTOR_METATYPE_UNKNOWN, EXTRACTOR_METAFORMAT_UTF8, "text/plain",
-				      (const char *) senddata,
-				      strlen (senddata) + 1);
-    g_free (senddata);
+    gchar *senddata = g_strdup_printf ("%s=%s",
+                                       field_name,
+                                       str);
+    if (NULL != senddata)
+      {
+        ps->time_to_leave = ps->ec->proc (ps->ec->cls,
+                                          "gstreamer",
+                                          EXTRACTOR_METATYPE_UNKNOWN,
+                                          EXTRACTOR_METAFORMAT_UTF8,
+                                          "text/plain",
+                                          (const char *) senddata,
+                                          strlen (senddata) + 1);
+        g_free (senddata);
+      }
   }
-  g_free (str);
+  if (NULL != str)
+    g_free (str);
 
   return ! ps->time_to_leave;
 }
@@ -1141,10 +1156,17 @@ send_audio_info (GstDiscovererAudioInfo *info,
   if (u > 0)
   {
     tmp = g_strdup_printf ("%u", u);
-    ps->time_to_leave = ps->ec->proc (ps->ec->cls, "gstreamer",
-      EXTRACTOR_METATYPE_CHANNELS, EXTRACTOR_METAFORMAT_UTF8, "text/plain",
-      (const char *) tmp, strlen (tmp) + 1);
-    g_free (tmp);
+    if (NULL != tmp)
+      {
+        ps->time_to_leave = ps->ec->proc (ps->ec->cls,
+                                          "gstreamer",
+                                          EXTRACTOR_METATYPE_CHANNELS,
+                                          EXTRACTOR_METAFORMAT_UTF8,
+                                          "text/plain",
+                                          (const char *) tmp,
+                                          strlen (tmp) + 1);
+        g_free (tmp);
+      }
     if (ps->time_to_leave)
       return TRUE;
   }
@@ -1153,10 +1175,17 @@ send_audio_info (GstDiscovererAudioInfo *info,
   if (u > 0)
   {
     tmp = g_strdup_printf ("%u", u);
-    ps->time_to_leave = ps->ec->proc (ps->ec->cls, "gstreamer",
-      EXTRACTOR_METATYPE_SAMPLE_RATE, EXTRACTOR_METAFORMAT_UTF8, "text/plain",
-      (const char *) tmp, strlen (tmp) + 1);
-    g_free (tmp);
+    if (NULL != tmp)
+      {
+        ps->time_to_leave = ps->ec->proc (ps->ec->cls,
+                                          "gstreamer",
+                                          EXTRACTOR_METATYPE_SAMPLE_RATE,
+                                          EXTRACTOR_METAFORMAT_UTF8,
+                                          "text/plain",
+                                          (const char *) tmp,
+                                          strlen (tmp) + 1);
+        g_free (tmp);
+      }
     if (ps->time_to_leave)
       return TRUE;
   }
@@ -1165,10 +1194,17 @@ send_audio_info (GstDiscovererAudioInfo *info,
   if (u > 0)
   {
     tmp = g_strdup_printf ("%u", u);
-    ps->time_to_leave = ps->ec->proc (ps->ec->cls, "gstreamer",
-      EXTRACTOR_METATYPE_AUDIO_DEPTH, EXTRACTOR_METAFORMAT_UTF8, "text/plain",
-      (const char *) tmp, strlen (tmp) + 1);
-    g_free (tmp);
+    if (NULL != tmp)
+      {
+        ps->time_to_leave = ps->ec->proc (ps->ec->cls,
+                                          "gstreamer",
+                                          EXTRACTOR_METATYPE_AUDIO_DEPTH,
+                                          EXTRACTOR_METAFORMAT_UTF8,
+                                          "text/plain",
+                                          (const char *) tmp,
+                                          strlen (tmp) + 1);
+        g_free (tmp);
+      }
     if (ps->time_to_leave)
       return TRUE;
   }
@@ -1177,10 +1213,17 @@ send_audio_info (GstDiscovererAudioInfo *info,
   if (u > 0)
   {
     tmp = g_strdup_printf ("%u", u);
-    ps->time_to_leave = ps->ec->proc (ps->ec->cls, "gstreamer",
-      EXTRACTOR_METATYPE_AUDIO_BITRATE, EXTRACTOR_METAFORMAT_UTF8, "text/plain",
-      (const char *) tmp, strlen (tmp) + 1);
-    g_free (tmp);
+    if (NULL != tmp)
+      {
+        ps->time_to_leave = ps->ec->proc (ps->ec->cls,
+                                          "gstreamer",
+                                          EXTRACTOR_METATYPE_AUDIO_BITRATE,
+                                          EXTRACTOR_METAFORMAT_UTF8,
+                                          "text/plain",
+                                          (const char *) tmp,
+                                          strlen (tmp) + 1);
+        g_free (tmp);
+      }
     if (ps->time_to_leave)
       return TRUE;
   }
@@ -1189,10 +1232,17 @@ send_audio_info (GstDiscovererAudioInfo *info,
   if (u > 0)
   {
     tmp = g_strdup_printf ("%u", u);
-    ps->time_to_leave = ps->ec->proc (ps->ec->cls, "gstreamer",
-      EXTRACTOR_METATYPE_MAXIMUM_AUDIO_BITRATE, EXTRACTOR_METAFORMAT_UTF8, "text/plain",
-      (const char *) tmp, strlen (tmp) + 1);
-    g_free (tmp);
+    if (NULL != tmp)
+      {
+        ps->time_to_leave = ps->ec->proc (ps->ec->cls,
+                                          "gstreamer",
+                                          EXTRACTOR_METATYPE_MAXIMUM_AUDIO_BITRATE,
+                                          EXTRACTOR_METAFORMAT_UTF8,
+                                          "text/plain",
+                                          (const char *) tmp,
+                                          strlen (tmp) + 1);
+        g_free (tmp);
+      }
     if (ps->time_to_leave)
       return TRUE;
   }
@@ -1221,10 +1271,17 @@ send_video_info (GstDiscovererVideoInfo *info,
   if ( (u > 0) && (u2 > 0) )
   {
     tmp = g_strdup_printf ("%ux%u", u, u2);
-    ps->time_to_leave = ps->ec->proc (ps->ec->cls, "gstreamer",
-      EXTRACTOR_METATYPE_VIDEO_DIMENSIONS, EXTRACTOR_METAFORMAT_UTF8, "text/plain",
-      (const char *) tmp, strlen (tmp) + 1);
-    g_free (tmp);
+    if (NULL != tmp)
+      {
+        ps->time_to_leave = ps->ec->proc (ps->ec->cls,
+                                          "gstreamer",
+                                          EXTRACTOR_METATYPE_VIDEO_DIMENSIONS,
+                                          EXTRACTOR_METAFORMAT_UTF8,
+                                          "text/plain",
+                                          (const char *) tmp,
+                                          strlen (tmp) + 1);
+        g_free (tmp);
+      }
     if (ps->time_to_leave)
       return TRUE;
   }
@@ -1233,10 +1290,17 @@ send_video_info (GstDiscovererVideoInfo *info,
   if (u > 0)
   {
     tmp = g_strdup_printf ("%u", u);
-    ps->time_to_leave = ps->ec->proc (ps->ec->cls, "gstreamer",
-      EXTRACTOR_METATYPE_VIDEO_DEPTH, EXTRACTOR_METAFORMAT_UTF8, "text/plain",
-      (const char *) tmp, strlen (tmp) + 1);
-    g_free (tmp);
+    if (NULL != tmp)
+      {
+        ps->time_to_leave = ps->ec->proc (ps->ec->cls,
+                                          "gstreamer",
+                                          EXTRACTOR_METATYPE_VIDEO_DEPTH,
+                                          EXTRACTOR_METAFORMAT_UTF8,
+                                          "text/plain",
+                                          (const char *) tmp,
+                                          strlen (tmp) + 1);
+        g_free (tmp);
+      }
     if (ps->time_to_leave)
       return TRUE;
   }
@@ -1246,10 +1310,17 @@ send_video_info (GstDiscovererVideoInfo *info,
   if ( (u > 0) && (u2 > 0) )
   {
     tmp = g_strdup_printf ("%u/%u", u, u2);
-    ps->time_to_leave = ps->ec->proc (ps->ec->cls, "gstreamer",
-      EXTRACTOR_METATYPE_FRAME_RATE, EXTRACTOR_METAFORMAT_UTF8, "text/plain",
-      (const char *) tmp, strlen (tmp) + 1);
-    g_free (tmp);
+    if (NULL != tmp)
+      {
+        ps->time_to_leave = ps->ec->proc (ps->ec->cls,
+                                          "gstreamer",
+                                          EXTRACTOR_METATYPE_FRAME_RATE,
+                                          EXTRACTOR_METAFORMAT_UTF8,
+                                          "text/plain",
+                                          (const char *) tmp,
+                                          strlen (tmp) + 1);
+        g_free (tmp);
+      }
     if (ps->time_to_leave)
       return TRUE;
   }
@@ -1259,10 +1330,17 @@ send_video_info (GstDiscovererVideoInfo *info,
   if ( (u > 0) && (u2 > 0) )
   {
     tmp = g_strdup_printf ("%u/%u", u, u2);
-    ps->time_to_leave = ps->ec->proc (ps->ec->cls, "gstreamer",
-      EXTRACTOR_METATYPE_PIXEL_ASPECT_RATIO, EXTRACTOR_METAFORMAT_UTF8, "text/plain",
-      (const char *) tmp, strlen (tmp) + 1);
-    g_free (tmp);
+    if (NULL != tmp)
+      {
+        ps->time_to_leave = ps->ec->proc (ps->ec->cls,
+                                          "gstreamer",
+                                          EXTRACTOR_METATYPE_PIXEL_ASPECT_RATIO,
+                                          EXTRACTOR_METAFORMAT_UTF8,
+                                          "text/plain",
+                                          (const char *) tmp,
+                                          strlen (tmp) + 1);
+        g_free (tmp);
+      }
     if (ps->time_to_leave)
       return TRUE;
   }
@@ -1273,10 +1351,17 @@ send_video_info (GstDiscovererVideoInfo *info,
   if (u > 0)
   {
     tmp = g_strdup_printf ("%u", u);
-    ps->time_to_leave = ps->ec->proc (ps->ec->cls, "gstreamer",
-      EXTRACTOR_METATYPE_VIDEO_BITRATE, EXTRACTOR_METAFORMAT_UTF8, "text/plain",
-      (const char *) tmp, strlen (tmp) + 1);
-    g_free (tmp);
+    if (NULL != tmp)
+      {
+        ps->time_to_leave = ps->ec->proc (ps->ec->cls,
+                                          "gstreamer",
+                                          EXTRACTOR_METATYPE_VIDEO_BITRATE,
+                                          EXTRACTOR_METAFORMAT_UTF8,
+                                          "text/plain",
+                                          (const char *) tmp,
+                                          strlen (tmp) + 1);
+        g_free (tmp);
+      }
     if (ps->time_to_leave)
       return TRUE;
   }
@@ -1285,10 +1370,17 @@ send_video_info (GstDiscovererVideoInfo *info,
   if (u > 0)
   {
     tmp = g_strdup_printf ("%u", u);
-    ps->time_to_leave = ps->ec->proc (ps->ec->cls, "gstreamer",
-      EXTRACTOR_METATYPE_MAXIMUM_VIDEO_BITRATE, EXTRACTOR_METAFORMAT_UTF8, "text/plain",
-      (const char *) tmp, strlen (tmp) + 1);
-    g_free (tmp);
+    if (NULL != tmp)
+      {
+        ps->time_to_leave = ps->ec->proc (ps->ec->cls,
+                                          "gstreamer",
+                                          EXTRACTOR_METATYPE_MAXIMUM_VIDEO_BITRATE,
+                                          EXTRACTOR_METAFORMAT_UTF8,
+                                          "text/plain",
+                                          (const char *) tmp,
+                                          strlen (tmp) + 1);
+        g_free (tmp);
+      }
     if (ps->time_to_leave)
       return TRUE;
   }
@@ -1442,8 +1534,11 @@ send_tag_foreach (const GstTagList * tags,
 
           buf = gst_sample_get_buffer (sample);
           gst_buffer_map (buf, &mi, GST_MAP_READ);
-          ps->time_to_leave = ps->ec->proc (ps->ec->cls, "gstreamer", le_type,
-              EXTRACTOR_METAFORMAT_BINARY, mime_type,
+          ps->time_to_leave = ps->ec->proc (ps->ec->cls,
+                                            "gstreamer",
+                                            le_type,
+                                            EXTRACTOR_METAFORMAT_BINARY,
+                                            mime_type,
               (const char *) mi.data, mi.size);
           gst_buffer_unmap (buf, &mi);
         }
@@ -1564,7 +1659,8 @@ send_tag_foreach (const GstTagList * tags,
           if ((0 != strcmp (tag, "extended-comment")) || !strchr (str, '='))
           {
             new_str = g_strdup_printf ("%s=%s", tag, str);
-            g_free (str);
+            if (NULL != str)
+              g_free (str);
             str = new_str;
           }
         }
@@ -1572,13 +1668,18 @@ send_tag_foreach (const GstTagList * tags,
       default:
         break;
       }
-      if (!skip)
-        ps->time_to_leave = ps->ec->proc (ps->ec->cls, "gstreamer", le_type,
-            EXTRACTOR_METAFORMAT_UTF8, "text/plain",
-            (const char *) str, strlen (str) + 1);
+      if ( (! skip) &&
+           (NULL != str) )
+        ps->time_to_leave = ps->ec->proc (ps->ec->cls,
+                                          "gstreamer",
+                                          le_type,
+                                          EXTRACTOR_METAFORMAT_UTF8,
+                                          "text/plain",
+                                          (const char *) str,
+                                          strlen (str) + 1);
     }
-
-    g_free (str);
+    if (NULL != str)
+      g_free (str);
     g_value_unset (&val);
   }
 }
@@ -1730,24 +1831,39 @@ send_toc_tags_foreach (const GstTagList * tags,
     /* This is a potential source of invalid characters */
     /* And it also might attempt to serialize binary data - such as images. */
     str = gst_value_serialize (&val);
-    g_free (str);
-    str = NULL;
+    if (NULL != str)
+    {
+      g_free (str);
+      str = NULL;
+    }
     break;
   }
-  if (str != NULL)
+  if (NULL != str)
   {
-    topen = g_strdup_printf ("%*.*s<%s>", ps->toc_depth * 2,
-      ps->toc_depth * 2, " ", tag);
-    tclose = g_strdup_printf ("%*.*s</%s>\n", ps->toc_depth * 2,
-      ps->toc_depth * 2, " ", tag);
-
-    if (ps->toc_print_phase)
-      ps->toc_pos += g_snprintf (&ps->toc[ps->toc_pos],
-          ps->toc_length - ps->toc_pos, "%s%s%s", topen, str, tclose);
-    else
-      ps->toc_length += strlen (topen) + strlen (str) + strlen (tclose);
-    g_free (topen);
-    g_free (tclose);
+    topen = g_strdup_printf ("%*.*s<%s>",
+                             ps->toc_depth * 2,
+                             ps->toc_depth * 2, " ", tag);
+    tclose = g_strdup_printf ("%*.*s</%s>\n",
+                              ps->toc_depth * 2,
+                              ps->toc_depth * 2, " ",
+                              tag);
+    if ( (NULL != topen) &&
+         (NULL != tclose) )
+    {
+      if (ps->toc_print_phase)
+        ps->toc_pos += g_snprintf (&ps->toc[ps->toc_pos],
+                                   ps->toc_length - ps->toc_pos,
+                                   "%s%s%s",
+                                   topen,
+                                   str,
+                                   tclose);
+      else
+        ps->toc_length += strlen (topen) + strlen (str) + strlen (tclose);
+    }
+    if (NULL != topen)
+      g_free (topen);
+    if (NULL != tclose)
+      g_free (tclose);
     g_free (str);
   }
   g_value_unset (&val);
@@ -1780,11 +1896,17 @@ send_toc_foreach (gpointer data, gpointer user_data)
 		       GST_TIME_FORMAT"\">\n", ps->toc_depth * 2, ps->toc_depth * 2, " ",
 		       gst_toc_entry_type_get_nick (entype), GST_TIME_ARGS (start),
 		       GST_TIME_ARGS (stop));
-  if (ps->toc_print_phase)
-    ps->toc_pos += g_snprintf (&ps->toc[ps->toc_pos], ps->toc_length - ps->toc_pos, "%s", s);
-  else
-    ps->toc_length += strlen (s);
-  g_free (s);
+  if (NULL != s)
+  {
+    if (ps->toc_print_phase)
+      ps->toc_pos += g_snprintf (&ps->toc[ps->toc_pos],
+                                 ps->toc_length - ps->toc_pos,
+                                 "%s",
+                                 s);
+    else
+      ps->toc_length += strlen (s);
+    g_free (s);
+  }
   ps->toc_depth++;
   tags = gst_toc_entry_get_tags (entry);
   if (tags)
@@ -1808,13 +1930,18 @@ send_toc_foreach (gpointer data, gpointer user_data)
   g_list_foreach (subentries, send_toc_foreach, ps);
   ps->toc_depth--;
 
-  s = g_strdup_printf ("%*.*s</%s>\n", ps->toc_depth * 2, ps->toc_depth * 2, " ",
+  s = g_strdup_printf ("%*.*s</%s>\n",
+                       ps->toc_depth * 2,
+                       ps->toc_depth * 2, " ",
 		       gst_toc_entry_type_get_nick (entype));
-  if (ps->toc_print_phase)
-    ps->toc_pos += g_snprintf (&ps->toc[ps->toc_pos], ps->toc_length - ps->toc_pos, "%s", s);
-  else
-    ps->toc_length += strlen (s);
-  g_free (s);
+  if (NULL != s)
+  {
+    if (ps->toc_print_phase)
+      ps->toc_pos += g_snprintf (&ps->toc[ps->toc_pos], ps->toc_length - ps->toc_pos, "%s", s);
+    else
+      ps->toc_length += strlen (s);
+    g_free (s);
+  }
 }
 
 
@@ -1838,11 +1965,17 @@ send_info (GstDiscovererInfo * info,
   if ((GST_CLOCK_TIME_IS_VALID (duration)) && (duration > 0))
   {
     s = g_strdup_printf ("%" GST_TIME_FORMAT, GST_TIME_ARGS (duration));
-    if (s)
-      ps->time_to_leave = ps->ec->proc (ps->ec->cls, "gstreamer",
-          EXTRACTOR_METATYPE_DURATION, EXTRACTOR_METAFORMAT_UTF8, "text/plain",
-          (const char *) s, strlen (s) + 1);
-    g_free (s);
+    if (NULL != s)
+    {
+      ps->time_to_leave = ps->ec->proc (ps->ec->cls,
+                                        "gstreamer",
+                                        EXTRACTOR_METATYPE_DURATION,
+                                        EXTRACTOR_METAFORMAT_UTF8,
+                                        "text/plain",
+                                        (const char *) s,
+                                        strlen (s) + 1);
+      g_free (s);
+    }
   }
 
   if (ps->time_to_leave)
@@ -1870,21 +2003,25 @@ send_info (GstDiscovererInfo * info,
       ps->toc_print_phase = TRUE;
       ps->toc_length += 1 + strlen (TOC_XML_HEADER);
       ps->toc = g_malloc (ps->toc_length);
-      ps->toc_pos = 0;
-      ps->toc_pos += g_snprintf (&ps->toc[ps->toc_pos],
-				 ps->toc_length - ps->toc_pos,
-				 "%s",
-				 TOC_XML_HEADER);
-      g_list_foreach (entries, &send_toc_foreach, ps);
-      ps->toc[ps->toc_length - 1] = '\0';
-      ps->time_to_leave = ps->ec->proc (ps->ec->cls, "gstreamer",
-					EXTRACTOR_METATYPE_TOC,
-					EXTRACTOR_METAFORMAT_C_STRING,
-					"application/xml",
-					(const char *) ps->toc,
-					ps->toc_length);
-      g_free (ps->toc);
-      ps->toc = NULL;
+      if (NULL != ps->toc)
+      {
+        ps->toc_pos = 0;
+        ps->toc_pos += g_snprintf (&ps->toc[ps->toc_pos],
+                                   ps->toc_length - ps->toc_pos,
+                                   "%s",
+                                   TOC_XML_HEADER);
+        g_list_foreach (entries, &send_toc_foreach, ps);
+        ps->toc[ps->toc_length - 1] = '\0';
+        ps->time_to_leave = ps->ec->proc (ps->ec->cls,
+                                          "gstreamer",
+                                          EXTRACTOR_METATYPE_TOC,
+                                          EXTRACTOR_METAFORMAT_C_STRING,
+                                          "application/xml",
+                                          (const char *) ps->toc,
+                                          ps->toc_length);
+        g_free (ps->toc);
+        ps->toc = NULL;
+      }
     }
   }
 

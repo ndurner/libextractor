@@ -584,7 +584,7 @@ history_extract (GsfInput *stream,
           size_t bsize;
 
           bsize = strlen (author) + strlen (filename) + 512;
-          if (NULL != (rbuf = malloc (bsize))
+          if (NULL != (rbuf = malloc (bsize)))
 	    {
               if (bsize >
                   snprintf (rbuf,
@@ -601,7 +601,7 @@ history_extract (GsfInput *stream,
                 }
 	      free (rbuf);
 	    }
-	}
+        }
       if (NULL != author)
 	free (author);
       if (NULL != filename)
