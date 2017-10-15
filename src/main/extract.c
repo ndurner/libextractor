@@ -383,6 +383,8 @@ print_selected_keywords_grep_friendly (void *cls,
     case EXTRACTOR_METAFORMAT_UNKNOWN:
       break;
     case EXTRACTOR_METAFORMAT_UTF8:
+      if (0 == data_len)
+        return 0;
       if (verbose > 1)
 	FPRINTF (stdout,
 		 "%s: ",
