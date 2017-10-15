@@ -158,14 +158,18 @@ EXTRACTOR_IPC_shared_memory_create_ (size_t size)
   if (-1 == (shm->shm_id = shm_open (shm->shm_name,
 				     O_RDWR | O_CREAT, S_IRUSR | S_IWUSR)))
     {
-      LOG_STRERROR_FILE ("shm_open", shm->shm_name);
+      LOG_STRERROR_FILE ("shm_open",
+                         shm->shm_name);
       free (shm);
       return NULL;
     }
   if ( (0 != ftruncate (shm->shm_id, size)) ||
-       (NULL == (shm->shm_ptr = mmap (NULL, size,
-				      PROT_WRITE, MAP_SHARED,
-				      shm->shm_id, 0))) ||
+       (NULL == (shm->shm_ptr = mmap (NULL,
+                                      size,
+				      PROT_WRITE,
+                                      MAP_SHARED,
+				      shm->shm_id,
+                                      0))) ||
        (((void*) -1) == shm->shm_ptr) )
   {
     LOG_STRERROR ("ftruncate/mmap");
@@ -205,7 +209,8 @@ EXTRACTOR_IPC_shared_memory_change_rc_ (struct EXTRACTOR_SharedMemory *shm,
 void
 EXTRACTOR_IPC_shared_memory_destroy_ (struct EXTRACTOR_SharedMemory *shm)
 {
-  munmap (shm->shm_ptr, shm->shm_size);
+  munmap (shm->shm_ptr,
+          shm->shm_size);
   (void) close (shm->shm_id);
   (void) shm_unlink (shm->shm_name);
   free (shm);
@@ -228,7 +233,9 @@ EXTRACTOR_IPC_shared_memory_set_ (struct EXTRACTOR_SharedMemory *shm,
 				  size_t size)
 {
   if (-1 ==
-      EXTRACTOR_datasource_seek_ (ds, off, SEEK_SET))
+      EXTRACTOR_datasource_seek_ (ds,
+                                  off,
+                                  SEEK_SET))
     {
       LOG ("Failed to set IPC memory due to seek error\n");
       return -1;
@@ -250,7 +257,10 @@ EXTRACTOR_IPC_shared_memory_set_ (struct EXTRACTOR_SharedMemory *shm,
 uint64_t
 EXTRACTOR_datasource_get_pos_ (struct EXTRACTOR_Datasource *ds)
 {
-  int64_t pos = EXTRACTOR_datasource_seek_ (ds, 0, SEEK_CUR);
+  int64_t pos = EXTRACTOR_datasource_seek_ (ds,
+                                            0,
+                                            SEEK_CUR);
+
   if (-1 == pos)
     return UINT_MAX;
   return pos;
