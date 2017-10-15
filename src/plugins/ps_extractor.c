@@ -49,7 +49,7 @@ struct Matches
    * PS header prefix.
    */
   const char *prefix;
-  
+
   /**
    * Corresponding LE type.
    */
@@ -106,7 +106,7 @@ readline (struct EXTRACTOR_ExtractContext *ec)
 
   pos = ec->seek (ec->cls, 0, SEEK_CUR);
   if (0 >= (ret = ec->read (ec->cls, &data, MAX_LINE)))
-    return NULL; 
+    return NULL;
   cdata = data;
   if (NULL == (eol = memchr (cdata, '\n', ret)))
     return NULL; /* no end-of-line found */
@@ -120,7 +120,7 @@ readline (struct EXTRACTOR_ExtractContext *ec)
 
 
 /**
- * Main entry method for the 'application/postscript' extraction plugin.  
+ * Main entry method for the 'application/postscript' extraction plugin.
  *
  * @param ec extraction context provided to the plugin
  */
@@ -152,7 +152,7 @@ EXTRACTOR_ps_extract_method (struct EXTRACTOR_ExtractContext *ec)
 		     "application/postscript",
 		     strlen ("application/postscript") + 1))
     return;
-  
+
   line = NULL;
   next = readline (ec);
   while ( (NULL != next) &&
@@ -170,8 +170,8 @@ EXTRACTOR_ps_extract_method (struct EXTRACTOR_ExtractContext *ec)
 	  while ( (NULL != next) &&
 		  (0 == strncmp (next, "%%+", strlen ("%%+"))) )
 	    {
-	      if (NULL == (acc = malloc (strlen (line) + strlen (next) - 1)))		
-		break;			      
+	      if (NULL == (acc = malloc (strlen (line) + strlen (next) - 1)))
+		break;
 	      strcpy (acc, line);
 	      strcat (acc, " ");
 	      strcat (acc, next + 3);
@@ -180,7 +180,7 @@ EXTRACTOR_ps_extract_method (struct EXTRACTOR_ExtractContext *ec)
 	      free (next);
 	      next = readline (ec);
 	    }
-	  if ( (line[strlen (line) - 1] == ')') && 
+	  if ( (line[strlen (line) - 1] == ')') &&
 	       (line[strlen (match)] == '(') )
 	    {
 	      acc = &line[strlen (match) + 1];
@@ -190,7 +190,7 @@ EXTRACTOR_ps_extract_method (struct EXTRACTOR_ExtractContext *ec)
 	    {
 	      acc = &line[strlen (match)];
 	    }
-	  while (isspace ((unsigned int) acc[0]))
+	  while (isspace ((unsigned char) acc[0]))
 	    acc++;
 	  if ( (strlen (acc) > 0) &&
 	       (0 != ec->proc (ec->cls,

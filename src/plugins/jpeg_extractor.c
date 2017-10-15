@@ -162,7 +162,7 @@ EXTRACTOR_jpeg_extract_method (struct EXTRACTOR_ExtractContext *ec)
 	continue;
       off = 0;
       while ( (off < mptr->data_length) &&
-	      (isspace ((int) ((const char *)mptr->data)[mptr->data_length - 1 - off])) )
+	      (isspace (((const unsigned char *)mptr->data)[mptr->data_length - 1 - off])) )
 	off++;
       if (0 !=
 	  ec->proc (ec->cls,

@@ -1,6 +1,7 @@
 Sun Oct 15 19:36:41 CEST 2017
 	Fix potential file descriptor leak (on error handling path).
-	Fix potential assign-after-free (on IPC error handling path). -CG
+	Fix potential assign-after-free (on IPC error handling path).
+	Make sure to only pass "unsigned char" to functions like isspace(). -CG
 
 Fri Oct 13 12:30:37 CEST 2017
 	Properly check read error in NSF plugin (from signedness confusion) found by Leon Zhao. -CG

@@ -100,7 +100,7 @@ process_stdout (FILE *fout,
       if (NULL == colon)
         break;
       psuffix = colon + 1;
-      while (isblank ((int) psuffix[0]))
+      while (isblank ((unsigned char) psuffix[0]))
         psuffix++;
       if (0 == strlen (psuffix))
         continue;

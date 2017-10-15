@@ -19,7 +19,7 @@
  */
 /**
  * @file plugins/deb_extractor.c
- * @brief plugin to support Debian archives 
+ * @brief plugin to support Debian archives
  * @author Christian Grothoff
  *
  * The .deb is an ar-chive file.  It contains a tar.gz file
@@ -86,7 +86,7 @@ struct Matches
 /**
  * Map from deb-control entries to LE types.
  *
- * see also: "man 5 deb-control" 
+ * see also: "man 5 deb-control"
  */
 static struct Matches tmap[] = {
   {"Package: ",       EXTRACTOR_METATYPE_PACKAGE_NAME},
@@ -131,7 +131,7 @@ processControl (const char *data,
   size_t colon;
   size_t eol;
   unsigned int i;
-  
+
   pos = 0;
   while (pos < size)
     {
@@ -159,7 +159,7 @@ processControl (const char *data,
 	      free (key);
 	      return 0;
 	    }
-	  if (0 != proc (proc_cls, 
+	  if (0 != proc (proc_cls,
 			 "deb",
 			 tmap[i].type,
 			 EXTRACTOR_METAFORMAT_UTF8,
@@ -190,7 +190,7 @@ struct TarHeader
    * Filename.
    */
   char name[100];
- 
+
   /**
    * File access modes.
    */
@@ -210,7 +210,7 @@ struct TarHeader
    * Size of the file, in octal.
    */
   char filesize[12];
-  
+
   /**
    * Last modification time.
    */
@@ -363,6 +363,8 @@ processControlTGZ (struct EXTRACTOR_ExtractContext *ec,
 
   if (size > MAX_CONTROL_SIZE)
     return 0;
+  if (0 == size)
+    return 0;
   if (NULL == (cdata = malloc (size)))
     return 0;
   off = 0;
@@ -392,12 +394,12 @@ processControlTGZ (struct EXTRACTOR_ExtractContext *ec,
   strm.next_in = (Bytef *) data;
   strm.avail_in = size;
   if (Z_OK == inflateInit2 (&strm, 15 + 32))
-    {  
+    {
       strm.next_out = (Bytef *) buf;
       strm.avail_out = bufSize;
       inflate (&strm, Z_FINISH);
       if (strm.total_out > 0)
-	ret = processControlTar (buf, strm.total_out, 
+	ret = processControlTar (buf, strm.total_out,
 				 ec->proc, ec->cls);
       inflateEnd (&strm);
     }
@@ -450,11 +452,11 @@ struct ObjectHeader
 
 
 /**
- * Main entry method for the DEB extraction plugin.  
+ * Main entry method for the DEB extraction plugin.
  *
  * @param ec extraction context provided to the plugin
  */
-void 
+void
 EXTRACTOR_deb_extract_method (struct EXTRACTOR_ExtractContext *ec)
 {
   uint64_t pos;
@@ -493,7 +495,7 @@ EXTRACTOR_deb_extract_method (struct EXTRACTOR_ExtractContext *ec)
       if ((pos + csize > fsize) || (csize > fsize) || (pos + csize < pos))
         return;
       if (0 == strncmp (&hdr->name[0],
-                        "control.tar.gz", 
+                        "control.tar.gz",
 			strlen ("control.tar.gz")))
         {
 	  if (0 != processControlTGZ (ec,
@@ -504,7 +506,7 @@ EXTRACTOR_deb_extract_method (struct EXTRACTOR_ExtractContext *ec)
       if (0 == strncmp (&hdr->name[0],
                         "debian-binary", strlen ("debian-binary")))
         {
-	  if (0 != ec->proc (ec->cls, 
+	  if (0 != ec->proc (ec->cls,
 			     "deb",
 			     EXTRACTOR_METATYPE_MIMETYPE,
 			     EXTRACTOR_METAFORMAT_UTF8,
