@@ -545,6 +545,7 @@ EXTRACTOR_IPC_channel_recv_ (struct EXTRACTOR_Channel **channels,
 	      LOG_STRERROR ("realloc");
 	      EXTRACTOR_IPC_channel_destroy_ (channel);
 	      channels[i] = NULL;
+              continue;
 	    }
 	  channel->mdata = ndata;
 	}
@@ -563,6 +564,7 @@ EXTRACTOR_IPC_channel_recv_ (struct EXTRACTOR_Channel **channels,
                channel->plugin->libname);
 	  EXTRACTOR_IPC_channel_destroy_ (channel);
 	  channels[i] = NULL;
+          continue;
 	}
       else
 	{
