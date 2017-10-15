@@ -50,7 +50,7 @@ get_symbol_with_prefix (void *lib_handle,
   char *dot;
   const char *(*opt_fun)(void);
 
-  if (NULL != options) 
+  if (NULL != options)
     *options = NULL;
   if (NULL == (sym_name = strrchr (prefix, '_')))
     return NULL;
@@ -72,7 +72,7 @@ get_symbol_with_prefix (void *lib_handle,
 	  sym);
   /* try without '_' first */
   symbol = lt_dlsym (lib_handle, name + 1);
-  if (NULL == symbol) 
+  if (NULL == symbol)
     {
       /* now try with the '_' */
       char *first_error = strdup (lt_dlerror ());
@@ -100,9 +100,9 @@ get_symbol_with_prefix (void *lib_handle,
 	       sym);
       /* try without '_' first */
       opt_fun = lt_dlsym (lib_handle, name + 1);
-      if (NULL == opt_fun) 
+      if (NULL == opt_fun)
 	opt_fun = lt_dlsym (lib_handle, name);
-      if (NULL != opt_fun)	
+      if (NULL != opt_fun)
 	*options = opt_fun ();
     }
   free (sym);
@@ -143,7 +143,7 @@ EXTRACTOR_plugin_load_ (struct EXTRACTOR_PluginList *plugin)
 #if WINDOWS
   wlibname[0] = L'\0';
   llibname[0] = '\0';
-  if ( (MultiByteToWideChar (CP_UTF8, 0, plugin->libname, -1, 
+  if ( (MultiByteToWideChar (CP_UTF8, 0, plugin->libname, -1,
 			     wlibname, sizeof (wlibname)) <= 0) ||
        (WideCharToMultiByte (CP_ACP, 0, wlibname, -1,
 			     llibname, sizeof (llibname), NULL, NULL) < 0) )
@@ -159,7 +159,7 @@ EXTRACTOR_plugin_load_ (struct EXTRACTOR_PluginList *plugin)
   plugin->libraryHandle = lt_dlopenadvise (llibname,
 					   advise);
 #else
-  plugin->libraryHandle = lt_dlopenadvise (plugin->libname, 
+  plugin->libraryHandle = lt_dlopenadvise (plugin->libname,
 					   advise);
 #endif
   lt_dladvise_destroy (&advise);
@@ -178,7 +178,7 @@ EXTRACTOR_plugin_load_ (struct EXTRACTOR_PluginList *plugin)
 						   "_EXTRACTOR_%s_extract_method",
 						   plugin->libname,
 						   &plugin->specials);
-  if (NULL == plugin->extract_method) 
+  if (NULL == plugin->extract_method)
     {
       LOG ("Resolving `extract' method of plugin `%s' failed: %s\n",
 	   plugin->short_libname,
@@ -286,17 +286,17 @@ EXTRACTOR_plugin_add_config (struct EXTRACTOR_PluginList *prev,
 	case '(':
 	  cpy[pos++] = '\0';	/* replace '(' by termination */
 	  lastconf = pos;         /* start config from here, after (. */
-	  while ( ('\0' != cpy[pos]) && 
+	  while ( ('\0' != cpy[pos]) &&
 		  (')' != cpy[pos]))
 	    pos++; /* config until ) or EOS. */
-	  if (')' == cpy[pos]) 
+	  if (')' == cpy[pos])
 	    {
 	      cpy[pos++] = '\0'; /* write end of config here. */
-	      while ( (':' != cpy[pos]) && 
+	      while ( (':' != cpy[pos]) &&
 		      ('\0' != cpy[pos]) )
 		pos++; /* forward until real end of string found. */
 	      cpy[pos++] = '\0';
-	    } 
+	    }
 	  else
 	    {
 	      cpy[pos++] = '\0'; /* end of string. */
@@ -313,13 +313,13 @@ EXTRACTOR_plugin_add_config (struct EXTRACTOR_PluginList *prev,
       if ('-' == cpy[last])
 	{
 	  last++;
-	  prev = EXTRACTOR_plugin_remove (prev, 
+	  prev = EXTRACTOR_plugin_remove (prev,
 					  &cpy[last]);
 	}
       else
 	{
-	  prev = EXTRACTOR_plugin_add (prev, 
-				       &cpy[last], 
+	  prev = EXTRACTOR_plugin_add (prev,
+				       &cpy[last],
 				       (-1 != lastconf) ? &cpy[lastconf] : NULL,
 				       flags);
 	}
@@ -346,7 +346,7 @@ EXTRACTOR_plugin_remove (struct EXTRACTOR_PluginList *prev,
 
   pos = prev;
   first = prev;
-  while ( (NULL != pos) && 
+  while ( (NULL != pos) &&
 	  (0 != strcmp (pos->short_libname, library)) )
     {
       prev = pos;
@@ -368,11 +368,11 @@ EXTRACTOR_plugin_remove (struct EXTRACTOR_PluginList *prev,
   if ( (NULL != pos->shm) &&
        (0 == EXTRACTOR_IPC_shared_memory_change_rc_ (pos->shm, -1)) )
     EXTRACTOR_IPC_shared_memory_destroy_ (pos->shm);
-  free (pos->short_libname);
-  free (pos->libname);
+  if (NULL != pos->libname)
+    free (pos->libname);
   free (pos->plugin_options);
-  if (NULL != pos->libraryHandle) 
-	lt_dlclose (pos->libraryHandle);      
+  if (NULL != pos->libraryHandle)
+	lt_dlclose (pos->libraryHandle);
   free (pos);
   return first;
 }
@@ -383,7 +383,7 @@ EXTRACTOR_plugin_remove (struct EXTRACTOR_PluginList *prev,
  *
  * @param plugin the list of plugins
  */
-void 
+void
 EXTRACTOR_plugin_remove_all (struct EXTRACTOR_PluginList *plugins)
 {
   while (NULL != plugins)
