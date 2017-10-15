@@ -363,8 +363,6 @@ processControlTGZ (struct EXTRACTOR_ExtractContext *ec,
 
   if (size > MAX_CONTROL_SIZE)
     return 0;
-  if (0 == size)
-    return 0;
   if (NULL == (cdata = malloc (size)))
     return 0;
   off = 0;
