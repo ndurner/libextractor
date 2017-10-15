@@ -75,7 +75,7 @@ read_ogg (void *ptr, size_t size, size_t nmemb, void *datasource)
  * @param whence how to seek
  * @return -1 on error, new position on success
  */
-static int 
+static int
 seek_ogg (void *datasource,
 	  ogg_int64_t offset,
 	  int whence)
@@ -92,7 +92,7 @@ seek_ogg (void *datasource,
  * Tell ogg where we are in the file
  *
  * @param datasource  the 'struct EXTRACTOR_ExtractContext'
- * @return 
+ * @return
  */
 static long
 tell_ogg (void *datasource)
@@ -114,7 +114,7 @@ tell_ogg (void *datasource)
  * @return NULL on error, otherwise the meta data
  */
 static char *
-get_comment (vorbis_comment *vc, 
+get_comment (vorbis_comment *vc,
 	     const char *label)
 {
   if (NULL == vc)
@@ -176,7 +176,6 @@ EXTRACTOR_ogg_extract_method (struct EXTRACTOR_ExtractContext *ec)
     ov_clear (&vf);
     return;
   }
-  ret = 0;
   ADD (EXTRACTOR_METATYPE_MIMETYPE, "application/ogg");
   if ((comments->vendor != NULL) && (strlen (comments->vendor) > 0))
     ADD (EXTRACTOR_METATYPE_VENDOR, comments->vendor);
@@ -202,4 +201,3 @@ FINISH:
 }
 
 /* end of ogg_extractor.c */
-
