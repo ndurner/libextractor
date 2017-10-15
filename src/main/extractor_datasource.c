@@ -462,6 +462,7 @@ cfs_init_decompressor_zlib (struct CompressedFileSource *cfs,
 {
   unsigned int gzip_header_length = 10;
   unsigned char hdata[12];
+  ssize_t rsize;
 
   if (0 != bfds_seek (cfs->bfds, 0, SEEK_SET))
     {
@@ -469,7 +470,9 @@ cfs_init_decompressor_zlib (struct CompressedFileSource *cfs,
       return -1;
     }
   /* Process gzip header */
-  if (sizeof (hdata) > bfds_read (cfs->bfds, hdata, sizeof (hdata)))
+  rsize = bfds_read (cfs->bfds, hdata, sizeof (hdata));
+  if ( (-1 == rsize) ||
+       (sizeof (hdata) > (size_t) rsize) )
     return -1;
   if (0 != (hdata[3] & 0x4)) /* FEXTRA  set */
     gzip_header_length += 2 + (hdata[10] & 0xff) + ((hdata[11] & 0xff) * 256);
