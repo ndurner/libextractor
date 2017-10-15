@@ -348,7 +348,7 @@ EXTRACTOR_rpm_extract_method (struct EXTRACTOR_ExtractContext *ec)
 	    {
 	      if (p->tag == RPMTAG_BUILDTIME)
 		{
-		  char tmp[30];
+		  char tmp[80];
 		  uint32_t *v = rpmtdNextUint32 (p);
 		  time_t tp = (time_t) *v;
 
