@@ -365,6 +365,8 @@ processControlTGZ (struct EXTRACTOR_ExtractContext *ec,
     return 0;
   if (0 == size)
     return 0;
+  if (size < 4)
+    return 0;
   if (NULL == (cdata = malloc (size)))
     return 0;
   off = 0;
@@ -375,7 +377,9 @@ processControlTGZ (struct EXTRACTOR_ExtractContext *ec,
 	  free (cdata);
 	  return 0;
 	}
-      memcpy (&cdata[off], data, sret);
+      memcpy (&cdata[off],
+              data,
+              sret);
       off += sret;
     }
   bufSize = cdata[size - 4] + (cdata[size - 3] << 8) + (cdata[size - 2] << 16) + (cdata[size - 1] << 24);
