@@ -54,6 +54,7 @@ po/pl.gmo
 po/ro.gmo
 po/rw.gmo
 po/stamp-po
+po/sr.gmo
 po/sv.gmo
 po/uk.gmo
 po/vi.gmo
@@ -161,6 +162,8 @@ src/plugins/it_extractor.lo
 src/plugins/it_extractor.o
 src/plugins/jpeg_extractor.lo
 src/plugins/jpeg_extractor.o
+src/plugins/thumbnailffmpeg_extractor.lo
+src/plugins/thumbnailffmpeg_extractor.o
 src/plugins/libextractor_archive.la
 src/plugins/libextractor_deb.la
 src/plugins/libextractor_dvi.la
@@ -168,6 +171,7 @@ src/plugins/libextractor_exiv2.la
 src/plugins/libextractor_flac.la
 src/plugins/libextractor_gif.la
 src/plugins/libextractor_gstreamer.la
+src/plugins/libextractor_thumbnailffmpeg.la
 src/plugins/libextractor_gstreamer_la-gstreamer_extractor.lo
 src/plugins/libextractor_gstreamer_la-gstreamer_extractor.o
 src/plugins/libextractor_html.la
