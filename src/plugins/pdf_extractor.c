@@ -191,7 +191,14 @@ EXTRACTOR_pdf_extract_method (struct EXTRACTOR_ExtractContext *ec)
   close (in[0]);
   close (out[1]);
   fout = fdopen (out[0], "r");
-
+  if (NULL == fout)
+    {
+      close (in[1]);
+      close (out[0]);
+      kill (pid, SIGKILL);
+      waitpid (pid, NULL, 0);
+      return;
+    }
   pos = 0;
   while (pos < fsize)
     {
