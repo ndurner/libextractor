@@ -355,7 +355,7 @@ EXTRACTOR_rpm_extract_method (struct EXTRACTOR_ExtractContext *ec)
                   if (NULL == ctime_r (&tp, tmp))
                     break;
                   if ( (strlen (tmp) > 0) &&
-                       (isblank ((unsigned char) tmp[strlen(tmp)-1])) )
+                       (isspace ((unsigned char) tmp[strlen(tmp)-1])) )
                     tmp[strlen (tmp) - 1] = '\0';   /* eat linefeed */
 		  pthread_mutex_lock (&parg.lock);
 		  if (0 != ec->proc (ec->cls,
