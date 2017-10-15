@@ -218,8 +218,9 @@ get_path_from_module_filename ()
  * @param number of bytes available in 'buf'
  * @return 0 on success, otherwise desired number of bytes is stored in 'bufsize'
  */
-typedef int (*MyNSGetExecutablePathProto) (char *buf,
-					   size_t *bufsize);
+typedef int
+(*MyNSGetExecutablePathProto) (char *buf,
+                               size_t *bufsize);
 
 
 /**
