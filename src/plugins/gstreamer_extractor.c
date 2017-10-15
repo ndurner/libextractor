@@ -1038,17 +1038,23 @@ send_structure_foreach (GQuark field_id,
   switch (ps->st)
   {
   case STREAM_TYPE_AUDIO:
+    if (NULL == audio_quarks)
+      return FALSE;
     for (quark = audio_quarks; *quark != 0; quark++)
       if (*quark == field_id)
         return TRUE;
     break;
   case STREAM_TYPE_VIDEO:
   case STREAM_TYPE_IMAGE:
+    if (NULL == video_quarks)
+      return FALSE;
     for (quark = video_quarks; *quark != 0; quark++)
       if (*quark == field_id)
         return TRUE;
     break;
   case STREAM_TYPE_SUBTITLE:
+    if (NULL == subtitle_quarks)
+      return FALSE;
     for (quark = subtitle_quarks; *quark != 0; quark++)
       if (*quark == field_id)
         return TRUE;
@@ -2216,22 +2222,29 @@ gstreamer_init ()
                          0, "GStreamer-based libextractor plugin");
 
   audio_quarks = g_new0 (GQuark, 4);
-  audio_quarks[0] = g_quark_from_string ("rate");
-  audio_quarks[1] = g_quark_from_string ("channels");
-  audio_quarks[2] = g_quark_from_string ("depth");
-  audio_quarks[3] = g_quark_from_string (NULL);
-
+  if (NULL != audio_quarks)
+    {
+      audio_quarks[0] = g_quark_from_string ("rate");
+      audio_quarks[1] = g_quark_from_string ("channels");
+      audio_quarks[2] = g_quark_from_string ("depth");
+      audio_quarks[3] = g_quark_from_string (NULL);
+    }
   video_quarks = g_new0 (GQuark, 6);
-  video_quarks[0] = g_quark_from_string ("width");
-  video_quarks[1] = g_quark_from_string ("height");
-  video_quarks[2] = g_quark_from_string ("framerate");
-  video_quarks[3] = g_quark_from_string ("max-framerate");
-  video_quarks[4] = g_quark_from_string ("pixel-aspect-ratio");
-  video_quarks[5] = g_quark_from_string (NULL);
-
+  if (NULL != video_quarks)
+    {
+      video_quarks[0] = g_quark_from_string ("width");
+      video_quarks[1] = g_quark_from_string ("height");
+      video_quarks[2] = g_quark_from_string ("framerate");
+      video_quarks[3] = g_quark_from_string ("max-framerate");
+      video_quarks[4] = g_quark_from_string ("pixel-aspect-ratio");
+      video_quarks[5] = g_quark_from_string (NULL);
+    }
   subtitle_quarks = g_new0 (GQuark, 2);
-  subtitle_quarks[0] = g_quark_from_string ("language-code");
-  subtitle_quarks[1] = g_quark_from_string (NULL);
+  if (NULL != subtitle_quarks)
+    {
+      subtitle_quarks[0] = g_quark_from_string ("language-code");
+      subtitle_quarks[1] = g_quark_from_string (NULL);
+    }
 
   duration_quark = g_quark_from_string ("duration");
 
