@@ -178,8 +178,9 @@ EXTRACTOR_pdf_extract_method (struct EXTRACTOR_ExtractContext *ec)
       /* am child, exec 'pdfinfo' */
       close (0);
       close (1);
-      dup2 (in[0], 0);
-      dup2 (out[1], 1);
+      if ( (-1 == dup2 (in[0], 0)) ||
+           (-1 == dup2 (out[1], 1)) )
+        exit (1);
       close (in[0]);
       close (in[1]);
       close (out[0]);
