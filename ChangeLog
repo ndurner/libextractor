@@ -3,6 +3,10 @@ Wed Nov  1 09:06:07 CET 2017
 	plugins, caused (except for GIF) by signed/unsigned confusion.
 	Found by Leon Zhao. -CG
 
+Tue Oct 17 08:49:31 CEST 2017
+	Fix integer overflows in DVI extractor found by Leon Zhao, which
+	could cause SEGVs (read-only). -CG
+
 Sun Oct 15 19:36:41 CEST 2017
 	Fix potential file descriptor leak (on error handling path).
 	Fix potential assign-after-free (on IPC error handling path).

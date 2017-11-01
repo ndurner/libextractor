@@ -1,6 +1,6 @@
 /*
      This file is part of libextractor.
-     Copyright (C) 2002, 2003, 2004, 2012 Vidyut Samanta and Christian Grothoff
+     Copyright (C) 2002, 2003, 2004, 2012, 2017 Vidyut Samanta and Christian Grothoff
 
      libextractor is free software; you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published
@@ -175,7 +175,8 @@ EXTRACTOR_dvi_extract_method (struct EXTRACTOR_ExtractContext *ec)
   if (40 >= (iret = ec->read (ec->cls, &buf, 1024)))
     return;
   data = buf;
-  if ((data[0] != 247) || (data[1] != 2))
+  if ( (data[0] != 247) ||
+       (data[1] != 2) )
     return;                /* cannot be DVI or unsupported version */
   klen = data[14];
   size = ec->get_size (ec->cls);
@@ -196,9 +197,11 @@ EXTRACTOR_dvi_extract_method (struct EXTRACTOR_ExtractContext *ec)
       off += iret;
     }
   pos = size - 1;
-  while ((223 == data[pos]) && (pos > 0))
+  while ( (223 == data[pos]) &&
+	  (pos > 0) )
     pos--;
-  if ((2 != data[pos]) || (pos < 40))
+  if ( (2 != data[pos]) ||
+       (pos < 40) )
     goto CLEANUP;
   pos--;
   pos -= 4;
@@ -207,7 +210,8 @@ EXTRACTOR_dvi_extract_method (struct EXTRACTOR_ExtractContext *ec)
     goto CLEANUP;
   opos = pos;
   pos = getIntAt (&data[opos + 1]);
-  if (pos + 25 > size)
+  if ( (pos + 25 > size) ||
+       (pos + 25 < pos) )
     goto CLEANUP;
   /* assert pos at 'post' command */
   if (data[pos] != 248)
@@ -219,7 +223,8 @@ EXTRACTOR_dvi_extract_method (struct EXTRACTOR_ExtractContext *ec)
     {
       if (UINT32_MAX == pos)
         break;
-      if (pos + 45 > size)
+      if ( (pos + 45 > size) ||
+	   (pos + 45 < pos) )
 	goto CLEANUP;
       if (data[pos] != 139)     /* expect 'bop' */
 	goto CLEANUP;
@@ -268,7 +273,8 @@ EXTRACTOR_dvi_extract_method (struct EXTRACTOR_ExtractContext *ec)
   }
   /* try to find PDF/ps special */
   pos = opos;
-  while (pos < size - 100)
+  while ( (size >= 100) &&
+	  (pos < size - 100) )
     {
       switch (data[pos])
         {
