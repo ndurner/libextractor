@@ -70,7 +70,7 @@ EXTRACTOR_xm_extract_method (struct EXTRACTOR_ExtractContext *ec)
   char xmversion[8];
   size_t n;
 
-  if (sizeof (struct Header) >
+  if ((ssize_t) sizeof (struct Header) >
       ec->read (ec->cls,
 		&data,
 		sizeof (struct Header)))
@@ -81,9 +81,9 @@ EXTRACTOR_xm_extract_method (struct EXTRACTOR_ExtractContext *ec)
     return;
   ADD("audio/x-xm", EXTRACTOR_METATYPE_MIMETYPE);
   /* Version of Tracker */
-  snprintf (xmversion, 
+  snprintf (xmversion,
 	    sizeof (xmversion),
-	    "%d.%d", 
+	    "%d.%d",
 	    head->version[1],
 	    head->version[0]);
   ADD (xmversion, EXTRACTOR_METATYPE_FORMAT_VERSION);
@@ -99,7 +99,7 @@ EXTRACTOR_xm_extract_method (struct EXTRACTOR_ExtractContext *ec)
   n = 19;
   while ( (n > 0) && isspace ((unsigned char) tracker[n]))
     n--;
-  tracker[n + 1] = '\0'; 
+  tracker[n + 1] = '\0';
   ADD (tracker, EXTRACTOR_METATYPE_CREATED_BY_SOFTWARE);
   return;
 }

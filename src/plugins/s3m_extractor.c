@@ -80,7 +80,7 @@ EXTRACTOR_s3m_extract_method (struct EXTRACTOR_ExtractContext *ec)
   struct S3MHeader header;
   char song_name_NT[29];
 
-  if (sizeof (header) >
+  if ((ssize_t) sizeof (header) >
       ec->read (ec->cls,
 		&data,
 		sizeof (header)))

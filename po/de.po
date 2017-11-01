@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libextractor 1.0.0-pre1\n"
 "Report-Msgid-Bugs-To: libextractor@gnu.org\n"
-"POT-Creation-Date: 2017-10-11 20:53+0200\n"
+"POT-Creation-Date: 2017-10-15 21:38+0200\n"
 "PO-Revision-Date: 2014-03-03 19:53+0100\n"
 "Last-Translator: Mario Blättermann <mario.blaettermann@gmail.com>\n"
 "Language-Team: German <translation-team-de@lists.sourceforge.net>\n"
@@ -106,7 +106,7 @@ msgstr "Metadaten aus den Dateien extrahieren."
 msgid "Found by `%s' plugin:\n"
 msgstr "Gefunden vom »%s«-Plugin:\n"
 
-#: src/main/extract.c:291 src/main/extract.c:378
+#: src/main/extract.c:291 src/main/extract.c:380
 #: src/main/extractor_metatypes.c:145 src/main/extractor_print.c:86
 #: src/main/extractor_print.c:96
 msgid "unknown"
@@ -117,40 +117,40 @@ msgstr "unbekannt"
 msgid "%s - (unknown, %u bytes)\n"
 msgstr "%s - (unbekannt, %u Bytes)\n"
 
-#: src/main/extract.c:325
+#: src/main/extract.c:327
 #, c-format
 msgid "%s - (binary, %u bytes)\n"
 msgstr "%s - (binär, %u Bytes)\n"
 
-#: src/main/extract.c:809 src/main/extract.c:821
+#: src/main/extract.c:815 src/main/extract.c:827
 msgid ""
 "Illegal combination of options, cannot combine multiple styles of printing.\n"
 msgstr ""
 "Unzulässige Kombination der Optionen, mehrere Ausgabestile können nicht "
 "gemischt werden.\n"
 
-#: src/main/extract.c:854
+#: src/main/extract.c:860
 #, c-format
 msgid "You must specify an argument for the `%s' option (option ignored).\n"
 msgstr ""
 "Sie müssen ein Argument für die Option »%s« angeben (Option wird "
 "ignoriert).\n"
 
-#: src/main/extract.c:923
+#: src/main/extract.c:929
 msgid "Use --help to get a list of options.\n"
 msgstr "Verwenden Sie --help, um eine Liste aller Optionen zu sehen.\n"
 
-#: src/main/extract.c:964
+#: src/main/extract.c:970
 #, fuzzy
 msgid "% BiBTeX file\n"
 msgstr "%% BibTeX-Datei\n"
 
-#: src/main/extract.c:972
+#: src/main/extract.c:978
 #, c-format
 msgid "Keywords for file %s:\n"
 msgstr "Schlüsserwörter für die Datei %s:\n"
 
-#: src/main/extractor.c:676
+#: src/main/extractor.c:687
 #, c-format
 msgid "Initialization of plugin mechanism failed: %s!\n"
 msgstr "Initialisierung des Plugin-Mechanismus ist fehlgeschlagen: %s.\n"
@@ -2084,7 +2084,7 @@ msgstr "Serbokroatisch (Kyrillisch)"
 msgid "Farsi"
 msgstr "Farsi"
 
-#: src/plugins/ole2_extractor.c:588
+#: src/plugins/ole2_extractor.c:593
 #, c-format
 msgid "Revision #%u: Author `%s' worked on `%s'"
 msgstr "Revision #%u: Autor »%s« arbeitete an »%s«"

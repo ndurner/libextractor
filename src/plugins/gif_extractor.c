@@ -43,7 +43,7 @@ gif_read_func (GifFileType *ft,
   struct EXTRACTOR_ExtractContext *ec = ft->UserData;
   void *data;
   ssize_t ret;
-  
+
   ret = ec->read (ec->cls,
 		  &data,
 		  arg);
@@ -55,7 +55,7 @@ gif_read_func (GifFileType *ft,
 
 
 /**
- * Main entry method for the 'image/gif' extraction plugin.  
+ * Main entry method for the 'image/gif' extraction plugin.
  *
  * @param ec extraction context provided to the plugin
  */
@@ -72,7 +72,7 @@ EXTRACTOR_gif_extract_method (struct EXTRACTOR_ExtractContext *ec)
     return; /* not a GIF */
 #else
   int gif_error;
-  
+
   gif_error = 0;
   gif_file = DGifOpen (ec, &gif_read_func, &gif_error);
   if (gif_file == NULL || gif_error != 0)
@@ -97,8 +97,8 @@ EXTRACTOR_gif_extract_method (struct EXTRACTOR_ExtractContext *ec)
     return;
   snprintf (dims,
 	    sizeof (dims),
-	    "%dx%d", 
-	    gif_file->SHeight, 
+	    "%dx%d",
+	    gif_file->SHeight,
 	    gif_file->SWidth);
   if (0 !=
       ec->proc (ec->cls,
@@ -111,7 +111,7 @@ EXTRACTOR_gif_extract_method (struct EXTRACTOR_ExtractContext *ec)
     return;
   while (1)
     {
-      if (GIF_OK != 
+      if (GIF_OK !=
 	  DGifGetRecordType (gif_file,
 			     &gif_type))
 	break;
@@ -122,6 +122,8 @@ EXTRACTOR_gif_extract_method (struct EXTRACTOR_ExtractContext *ec)
       if (GIF_OK !=
 	  DGifGetExtension (gif_file, &et, &ext))
 	continue;
+      if (NULL == ext)
+        continue;
       if (COMMENT_EXT_FUNC_CODE == et)
 	{
 	  ec->proc (ec->cls,
@@ -133,7 +135,7 @@ EXTRACTOR_gif_extract_method (struct EXTRACTOR_ExtractContext *ec)
 		    (uint8_t) ext[0]);
 	  break;
 	}
-      while ( (GIF_ERROR != 
+      while ( (GIF_ERROR !=
 	       DGifGetExtensionNext(gif_file, &ext)) &&
 	      (NULL != ext) ) ; /* keep going */
     }

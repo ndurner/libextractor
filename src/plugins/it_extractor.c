@@ -70,7 +70,7 @@ EXTRACTOR_it_extract_method (struct EXTRACTOR_ExtractContext *ec)
   char itversion[8];
   const struct Header *head;
 
-  if (HEADER_SIZE >
+  if ((ssize_t) HEADER_SIZE >
       ec->read (ec->cls,
 		&data,
 		HEADER_SIZE))
@@ -90,9 +90,9 @@ EXTRACTOR_it_extract_method (struct EXTRACTOR_ExtractContext *ec)
     return;
 
   /* Version of Tracker */
-  snprintf (itversion, 
+  snprintf (itversion,
 	    sizeof (itversion),
-	    "%d.%d", 
+	    "%d.%d",
 	    (head->version[0] & 0x01),
 	    head->version[1]);
   if (0 != ec->proc (ec->cls,

@@ -116,7 +116,7 @@ struct header
   /**
    * Flags
    */
-  sidwrd flags;                 
+  sidwrd flags;
 
   /**
    * Unknown.
@@ -176,7 +176,7 @@ EXTRACTOR_sid_extract_method (struct EXTRACTOR_ExtractContext *ec)
   const struct header *head;
   void *data;
 
-  if (sizeof (struct header) >
+  if ((ssize_t) sizeof (struct header) >
       ec->read (ec->cls,
 		&data,
 		sizeof (struct header)))
@@ -193,7 +193,7 @@ EXTRACTOR_sid_extract_method (struct EXTRACTOR_ExtractContext *ec)
 
   /* Version of SID format */
   version = sidword (head->sidversion);
-  snprintf (sidversion, 
+  snprintf (sidversion,
 	    sizeof (sidversion),
 	    "%d",
 	    version);
@@ -208,7 +208,7 @@ EXTRACTOR_sid_extract_method (struct EXTRACTOR_ExtractContext *ec)
   /* Get number of the first song to be played */
   snprintf (startingsong,
 	    sizeof (startingsong),
-	    "%d", 
+	    "%d",
 	    sidword (head->firstsong));
   ADD (startingsong, EXTRACTOR_METATYPE_STARTING_SONG);
 
@@ -218,9 +218,9 @@ EXTRACTOR_sid_extract_method (struct EXTRACTOR_ExtractContext *ec)
   ADD (album, EXTRACTOR_METATYPE_ALBUM);
 
   memcpy (&artist, head->artist, 32);
-  artist[32] = '\0'; 
+  artist[32] = '\0';
   ADD (artist, EXTRACTOR_METATYPE_ARTIST);
-  
+
   memcpy (&copyright, head->copyright, 32);
   copyright[32] = '\0';
   ADD (copyright, EXTRACTOR_METATYPE_COPYRIGHT);
@@ -236,24 +236,24 @@ EXTRACTOR_sid_extract_method (struct EXTRACTOR_ExtractContext *ec)
   flags = sidword (head->flags);
   /* MUS data */
   if (0 != (flags & MUSPLAYER_FLAG))
-    ADD ("Compute!'s Sidplayer", EXTRACTOR_METATYPE_CREATED_BY_SOFTWARE);    
+    ADD ("Compute!'s Sidplayer", EXTRACTOR_METATYPE_CREATED_BY_SOFTWARE);
 
   /* PlaySID data */
   if (0 != (flags & PLAYSID_FLAG))
-    ADD ("PlaySID", EXTRACTOR_METATYPE_CREATED_BY_SOFTWARE);    
+    ADD ("PlaySID", EXTRACTOR_METATYPE_CREATED_BY_SOFTWARE);
 
 
   /* PAL or NTSC */
   if (0 != (flags & NTSC_FLAG))
-    ADD ("PAL/NTSC", EXTRACTOR_METATYPE_BROADCAST_TELEVISION_SYSTEM);        
+    ADD ("PAL/NTSC", EXTRACTOR_METATYPE_BROADCAST_TELEVISION_SYSTEM);
   else if (0 != (flags & PAL_FLAG))
-    ADD ("PAL", EXTRACTOR_METATYPE_BROADCAST_TELEVISION_SYSTEM);        
+    ADD ("PAL", EXTRACTOR_METATYPE_BROADCAST_TELEVISION_SYSTEM);
 
   /* Detect SID Chips suitable for play the files */
   if (0 != (flags & MOS8580_FLAG))
-    ADD ("MOS6581/MOS8580", EXTRACTOR_METATYPE_TARGET_ARCHITECTURE);        
+    ADD ("MOS6581/MOS8580", EXTRACTOR_METATYPE_TARGET_ARCHITECTURE);
   else if (0 != (flags & MOS6581_FLAG))
-    ADD ("MOS6581", EXTRACTOR_METATYPE_TARGET_ARCHITECTURE);        
+    ADD ("MOS6581", EXTRACTOR_METATYPE_TARGET_ARCHITECTURE);
 }
 
 /* end of sid_extractor.c */

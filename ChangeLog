@@ -1,3 +1,8 @@
+Wed Nov  1 09:06:07 CET 2017
+	Fixing NULL pointer issues in GIF, IT, NSFE, S3M, SID and XM
+	plugins, caused (except for GIF) by signed/unsigned confusion.
+	Found by Leon Zhao. -CG
+
 Sun Oct 15 19:36:41 CEST 2017
 	Fix potential file descriptor leak (on error handling path).
 	Fix potential assign-after-free (on IPC error handling path).
